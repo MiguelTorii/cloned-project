@@ -51,11 +51,7 @@ const PdfGallery = ({ title, classes, pdfs }: Props) => {
     <div className={classes.root}>
       <div className={classes.gallery}>
         {urls.map((url) => (
-          <ButtonBase
-            key={url}
-            onClick={() => setSelected(url)}
-            className={classes.buttonBase}
-          >
+          <ButtonBase key={url} onClick={() => setSelected(url)} className={classes.buttonBase}>
             <PdfComponent url={url} height={120} width={120} />
           </ButtonBase>
         ))}
@@ -69,12 +65,7 @@ const PdfGallery = ({ title, classes, pdfs }: Props) => {
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
+            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />
             </IconButton>
             <Typography color="textPrimary" variant="h4">

@@ -10,26 +10,11 @@ import { useStyles } from '../_styles/Workflow/WorkflowList';
 
 const WorkflowList = () => {
   const { tasks, listView } = useContext(WorkflowContext);
-  const indexed = useMemo(
-    () => tasks.map((t, index) => ({ ...t, index })),
-    [tasks]
-  );
-  const upcoming = useMemo(
-    () => indexed.filter((t) => t.categoryId === 1),
-    [indexed]
-  );
-  const inprogress = useMemo(
-    () => indexed.filter((t) => t.categoryId === 2),
-    [indexed]
-  );
-  const ready = useMemo(
-    () => indexed.filter((t) => t.categoryId === 3),
-    [indexed]
-  );
-  const done = useMemo(
-    () => indexed.filter((t) => t.categoryId === 4),
-    [indexed]
-  );
+  const indexed = useMemo(() => tasks.map((t, index) => ({ ...t, index })), [tasks]);
+  const upcoming = useMemo(() => indexed.filter((t) => t.categoryId === 1), [indexed]);
+  const inprogress = useMemo(() => indexed.filter((t) => t.categoryId === 2), [indexed]);
+  const ready = useMemo(() => indexed.filter((t) => t.categoryId === 3), [indexed]);
+  const done = useMemo(() => indexed.filter((t) => t.categoryId === 4), [indexed]);
   const classes = useStyles();
 
   const taskLists = [upcoming, inprogress, ready, done];

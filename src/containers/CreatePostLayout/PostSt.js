@@ -139,9 +139,7 @@ const CreatePostSt = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost
-          ? `?class=${cypher(`${classId}:${sectionId}`)}`
-          : '';
+        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);
@@ -170,7 +168,9 @@ const CreatePostSt = ({
   }, [postId, segment, userClasses.classList, userId]);
 
   useEffect(() => {
-    if (postId && userId) loadData();
+    if (postId && userId) {
+      loadData();
+    }
     // const { classId, sectionId } = decypherClass()
 
     // setClassId(Number(classId))
@@ -209,7 +209,9 @@ const CreatePostSt = ({
         content: body
       });
 
-      if (!res.success) throw new Error('Couldnt update');
+      if (!res.success) {
+        throw new Error('Couldnt update');
+      }
 
       enqueueSnackbar({
         notification: {
@@ -243,15 +245,7 @@ const CreatePostSt = ({
       });
       setErrorDialog(true);
     }
-  }, [
-    body,
-    classes.stackbar,
-    enqueueSnackbar,
-    handlePush,
-    postId,
-    classId,
-    title
-  ]);
+  }, [body, classes.stackbar, enqueueSnackbar, handlePush, postId, classId, title]);
 
   const createPostSt = useCallback(async () => {
     setLoading(true);
@@ -309,7 +303,9 @@ const CreatePostSt = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') {
+            hasError = true;
+          }
         });
         if (hasError || resClasses.length === 0) {
           setIsPosting(false);
@@ -380,8 +376,11 @@ const CreatePostSt = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      if (postId) updatePostSt();
-      else createPostSt();
+      if (postId) {
+        updatePostSt();
+      } else {
+        createPostSt();
+      }
     },
     [createPostSt, postId, updatePostSt]
   );
@@ -458,10 +457,7 @@ const CreatePostSt = ({
               />
             </Grid>
             <Grid item xs={12} sm={12} className={classes.quillGrid}>
-              <ToolbarTooltip
-                toolbar={postToolbar}
-                toolbarClass={classes.toolbarClass}
-              />
+              <ToolbarTooltip toolbar={postToolbar} toolbarClass={classes.toolbarClass} />
               <RichTextEditor
                 setEditor={setEditor}
                 placeholder="Looking for someone to study with? Wanna share your thoughts? Write anything! :) "

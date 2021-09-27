@@ -9,21 +9,12 @@ const LoadImg = ({ url, loadingSize, style, fallback, className, alt }) => {
     setFallbackComponent(fallback);
   }, [fallback]);
 
-  const loading = useCallback(
-    () => <CircularProgress size={loadingSize} />,
-    [loadingSize]
-  );
+  const loading = useCallback(() => <CircularProgress size={loadingSize} />, [loadingSize]);
 
   return (
     <HideUntilLoaded animationIn="bounceIn" imageToLoad={url} Spinner={loading}>
       {fallbackComponent === null ? (
-        <img
-          onError={onError}
-          alt={alt || 'alt'}
-          src={url}
-          style={style}
-          className={className}
-        />
+        <img onError={onError} alt={alt || 'alt'} src={url} style={style} className={className} />
       ) : (
         fallbackComponent
       )}

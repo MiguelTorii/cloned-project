@@ -8,12 +8,12 @@ import Layout from '../../containers/Layout/Layout';
 import ClassesGrid from '../../containers/ClassesGrid/Classes';
 
 const Classes = () => (
-    <main>
-      <CssBaseline />
-      <Layout>
-        <ClassesGrid />
-      </Layout>
-    </main>
-  );
+  <main>
+    <CssBaseline />
+    <Layout>
+      <ClassesGrid />
+    </Layout>
+  </main>
+);
 
 export default withRoot(withWidth()(Classes));

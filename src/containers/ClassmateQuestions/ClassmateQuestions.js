@@ -17,7 +17,9 @@ const ClassmateQuestions = () => {
     setSelectedClass(newClass);
   }, []);
 
-  if (_.isEmpty(activeClasses)) return null;
+  if (_.isEmpty(activeClasses)) {
+    return null;
+  }
 
   return (
     <>
@@ -34,23 +36,13 @@ const ClassmateQuestions = () => {
           root: classes.tabs
         }}
       >
-        <Tab
-          key="all"
-          label="All Courses"
-          value="all"
-        />
+        <Tab key="all" label="All Courses" value="all" />
         {activeClasses.map((item) => (
-          <Tab
-            key={item.classId}
-            label={item.className}
-            value={item.classId}
-          />
+          <Tab key={item.classId} label={item.className} value={item.classId} />
         ))}
       </Tabs>
-      <Box mb={3}/>
-      {selectedClass && (
-        <ClassQuestions classId={selectedClass === 'all' ? null : selectedClass} />
-      )}
+      <Box mb={3} />
+      {selectedClass && <ClassQuestions classId={selectedClass === 'all' ? null : selectedClass} />}
     </>
   );
 };

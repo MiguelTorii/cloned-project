@@ -85,9 +85,13 @@ export const updateUser =
 
     let expertMode = false;
 
-    if (isExpert) expertMode = await apiGetExpertMode(user.userId);
+    if (isExpert) {
+      expertMode = await apiGetExpertMode(user.userId);
+    }
 
-    if (isTutor) expertMode = await apiSetExpertMode(user.userId, true);
+    if (isTutor) {
+      expertMode = await apiSetExpertMode(user.userId, true);
+    }
 
     dispatch(setUser({ user, isExpert, expertMode }));
 
@@ -102,15 +106,7 @@ export const updateUser =
   };
 
 export const signIn =
-  ({
-    email,
-    password,
-    schoolId
-  }: {
-    email: string,
-    password: string,
-    schoolId: number
-  }) =>
+  ({ email, password, schoolId }: { email: string, password: string, schoolId: number }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(requestSignIn());
@@ -122,7 +118,7 @@ export const signIn =
       const { response = {} } = err;
       const { data = {} } = response;
 
-      if (data.code === 401)
+      if (data.code === 401) {
         return dispatch(
           setError({
             title: "Something doesn't look right",
@@ -130,6 +126,7 @@ export const signIn =
             showSignup: true
           })
         );
+      }
       return dispatch(
         setError({
           title: 'Hm, something’s wrong.',
@@ -144,13 +141,15 @@ export const samlLogin =
   async (dispatch: Dispatch) => {
     try {
       const user = await samlSignin(token, isGondor);
-      if (user.jwtToken) dispatch(updateUser({ user }));
+      if (user.jwtToken) {
+        dispatch(updateUser({ user }));
+      }
       return dispatch(push('/', { error: !user.jwtToken }));
     } catch (err) {
       const { response = {} } = err;
       const { data = {} } = response;
 
-      if (data.code === 401)
+      if (data.code === 401) {
         return dispatch(
           setError({
             title: "Something doesn't look right",
@@ -158,63 +157,60 @@ export const samlLogin =
             showSignup: true
           })
         );
-      return dispatch(
-        setError({ title: 'Unknown error', body: 'Please contact us' })
-      );
+      }
+      return dispatch(setError({ title: 'Unknown error', body: 'Please contact us' }));
     }
   };
 
-export const clearSignInError = () => async (dispatch: Dispatch) =>
-  dispatch(clearError());
+export const clearSignInError = () => async (dispatch: Dispatch) => dispatch(clearError());
 
-export const checkUserSession =
-  () => async (dispatch: Dispatch, getState: Function) => {
-    try {
-      dispatch(requestUserCheck());
-      // $FlowFixMe
-      const user = await checkUser();
+export const checkUserSession = () => async (dispatch: Dispatch, getState: Function) => {
+  try {
+    dispatch(requestUserCheck());
+    // $FlowFixMe
+    const user = await checkUser();
 
-      if (user.email) {
-        dispatch(updateUser({ user }));
-        return true;
-      }
-      store.remove('TOKEN');
-      store.remove('REFRESH_TOKEN');
-      store.remove('USER_ID');
-      store.remove('SEGMENT');
-      await dispatch(clearError());
-    } catch (err) {
-      console.log(err);
+    if (user.email) {
+      dispatch(updateUser({ user }));
+      return true;
     }
+    store.remove('TOKEN');
+    store.remove('REFRESH_TOKEN');
+    store.remove('USER_ID');
+    store.remove('SEGMENT');
+    await dispatch(clearError());
+  } catch (err) {
+    console.log(err);
+  }
 
-    const {
-      router: {
-        location: { pathname }
-      }
-    } = getState();
-
-    // TODO: redirect urls before login should remove the code bellow
-    if (
-      ![
-        '/new',
-        '/reset_password',
-        '/old',
-        '/oauth',
-        '/auth',
-        '/forgot_password',
-        '/reset_password',
-        '/terms-of-use',
-        '/redirect',
-        '/saml',
-        '/gondor'
-      ].includes(pathname) &&
-      !pathname.includes('/canvas') &&
-      !deepLinkCheck(pathname)
-    ) {
-      dispatch(push('/'));
+  const {
+    router: {
+      location: { pathname }
     }
-    return false;
-  };
+  } = getState();
+
+  // TODO: redirect urls before login should remove the code bellow
+  if (
+    ![
+      '/new',
+      '/reset_password',
+      '/old',
+      '/oauth',
+      '/auth',
+      '/forgot_password',
+      '/reset_password',
+      '/terms-of-use',
+      '/redirect',
+      '/saml',
+      '/gondor'
+    ].includes(pathname) &&
+    !pathname.includes('/canvas') &&
+    !deepLinkCheck(pathname)
+  ) {
+    dispatch(push('/'));
+  }
+  return false;
+};
 
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
@@ -229,15 +225,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
 };
 
 export const updateError =
-  ({
-    title,
-    body,
-    action
-  }: {
-    title: string,
-    body: string,
-    action?: boolean
-  }) =>
+  ({ title, body, action }: { title: string, body: string, action?: boolean }) =>
   async (dispatch: Dispatch) => {
     dispatch(setError({ title, body, action }));
   };

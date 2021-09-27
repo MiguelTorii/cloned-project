@@ -1,11 +1,5 @@
 // @flow
-import React, {
-  useEffect,
-  useMemo,
-  useCallback,
-  useState,
-  useRef
-} from 'react';
+import React, { useEffect, useMemo, useCallback, useState, useRef } from 'react';
 import { bindActionCreators } from 'redux';
 import ReactQuill from 'react-quill';
 import { useDebounce } from '@react-hook/debounce';
@@ -26,10 +20,7 @@ import { ReactComponent as QuickNoteIcon } from 'assets/svg/quick-note.svg';
 import { ReactComponent as DropdownCheckIcon } from 'assets/svg/dropdown-check.svg';
 import * as notesActions from 'actions/notes';
 import * as notificationsActions from 'actions/notifications';
-import EditorToolbar, {
-  modules,
-  formats
-} from 'containers/QuickNotes/QuickNoteToolbar';
+import EditorToolbar, { modules, formats } from 'containers/QuickNotes/QuickNoteToolbar';
 import Tooltip from 'containers/Tooltip/Tooltip';
 import { Picker } from 'emoji-mart';
 import useStyles from './_styles/style';
@@ -58,10 +49,7 @@ const QuickNotes = ({
   const [debouncedContent, setDebouncedContent] = useDebounce('', 2000);
   const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
 
-  useEffect(
-    () => setDebouncedContent(quicknoteContent),
-    [quicknoteContent, setDebouncedContent]
-  );
+  useEffect(() => setDebouncedContent(quicknoteContent), [quicknoteContent, setDebouncedContent]);
 
   const bindings = useMemo(
     () => ({
@@ -87,26 +75,21 @@ const QuickNotes = ({
         !selectedClass ||
         !selectedClass.sectionId ||
         !selectedClass.classId
-      )
+      ) {
         return;
+      }
       setPrevContent(debouncedContent);
       if (!quicknoteId || currentClass) {
         await saveNoteAction({
           note: {
             title: 'Untitled',
-            sectionId: currentClass
-              ? currentClass.sectionId
-              : selectedClass.sectionId,
-            classId: currentClass
-              ? currentClass.classId
-              : selectedClass.classId,
+            sectionId: currentClass ? currentClass.sectionId : selectedClass.sectionId,
+            classId: currentClass ? currentClass.classId : selectedClass.classId,
             lastModified: now,
             content
           },
           quicknote: true,
-          sectionId: currentClass
-            ? currentClass.sectionId
-            : selectedClass.sectionId,
+          sectionId: currentClass ? currentClass.sectionId : selectedClass.sectionId,
           classId: currentClass ? currentClass.classId : selectedClass.classId
         });
       } else {
@@ -136,7 +119,9 @@ const QuickNotes = ({
   const handleUpdate = useCallback(
     (text) => {
       setTimeout(() => {
-        if (selectedClass) setSavedState('saving');
+        if (selectedClass) {
+          setSavedState('saving');
+        }
       }, 100);
       updateQuickNoteContent({ content: text });
     },
@@ -172,9 +157,12 @@ const QuickNotes = ({
   }, []);
 
   const renderSaved = useMemo(() => {
-    if (savedState === 'hidden') return null;
-    if (savedState === 'saving')
+    if (savedState === 'hidden') {
+      return null;
+    }
+    if (savedState === 'saving') {
       return <div className={classes.lastSaved}>Saving...</div>;
+    }
     return (
       <Tooltip
         id={3499}
@@ -183,9 +171,7 @@ const QuickNotes = ({
         placement="bottom"
         text="We save your QuickNotes with the date and time you created it."
       >
-        <div className={classes.lastSaved}>
-          Saved to your class folder for later.
-        </div>
+        <div className={classes.lastSaved}>Saved to your class folder for later.</div>
       </Tooltip>
     );
   }, [classes.lastSaved, savedState, viewedOnboarding]);
@@ -349,12 +335,8 @@ const QuickNotes = ({
                       selected: classes.selectedMenuItem
                     }}
                   >
-                    <Typography className={classes.menuTypo}>
-                      {cl.name}
-                    </Typography>
-                    {cl.sectionId === selectedClass?.sectionId && (
-                      <DropdownCheckIcon />
-                    )}
+                    <Typography className={classes.menuTypo}>{cl.name}</Typography>
+                    {cl.sectionId === selectedClass?.sectionId && <DropdownCheckIcon />}
                   </MenuItem>
                 ))}
               </Select>

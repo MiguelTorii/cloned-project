@@ -75,7 +75,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Canvas));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Canvas));

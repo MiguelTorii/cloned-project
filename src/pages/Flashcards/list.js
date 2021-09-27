@@ -13,12 +13,8 @@ import Layout from '../../containers/Layout/Layout';
 import withRoot from '../../withRoot';
 
 const FlashcardsListPage = () => {
-  const isNewVersion = useSelector(
-    (state) => state.campaign.newFlashcardsExperience
-  );
-  const isLoading = useSelector(
-    isApiCalling(campaignActions.GET_FLASHCARDS_CAMPAIGN)
-  );
+  const isNewVersion = useSelector((state) => state.campaign.newFlashcardsExperience);
+  const isLoading = useSelector(isApiCalling(campaignActions.GET_FLASHCARDS_CAMPAIGN));
   const { flashcardId } = useParams();
 
   const renderBody = () => {

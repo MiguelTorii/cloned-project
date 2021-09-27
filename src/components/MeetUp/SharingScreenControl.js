@@ -25,10 +25,7 @@ class SharingScreenControl extends React.PureComponent<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Paper
-          className={cx(classes.paper, !isSharing && classes.paperHide)}
-          elevation={1}
-        >
+        <Paper className={cx(classes.paper, !isSharing && classes.paperHide)} elevation={1}>
           <Typography variant="h5" align="center" paragraph>
             You are sharing your screen
           </Typography>

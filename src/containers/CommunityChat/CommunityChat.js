@@ -93,28 +93,24 @@ const CommunityChat = ({
           // currentCommunityChannel is not in course channels, set the default first channel
           setSelctedChannel(currentCommunityChannels[0]);
           setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
-          setCurrentCommunityChannel(
-            local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
-          );
+          setCurrentCommunityChannel(local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel);
         }
       } else {
         // currentCommunityChannel is not exists, set the default first channel
         setSelctedChannel(currentCommunityChannels[0]);
-        setCurrentCommunityChannel(
-          local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel
-        );
+        setCurrentCommunityChannel(local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel);
         setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
       }
     }
   }, [allCommunityChannels, currentCommunity, currentCommunityChannel, local]);
 
   useEffect(() => {
-    const targetSelectedChannel = selectedChannel
-      ? local[selectedChannel.chat_id]
-      : null;
+    const targetSelectedChannel = selectedChannel ? local[selectedChannel.chat_id] : null;
 
     if (targetSelectedChannel) {
-      if (['xs'].includes(width)) setLeftSpace(0);
+      if (['xs'].includes(width)) {
+        setLeftSpace(0);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel, width, isLoading]);
@@ -127,27 +123,30 @@ const CommunityChat = ({
   const handleOpenRightPanel = useCallback(() => {
     if (['xs', 'sm'].includes(width)) {
       setRightSpace(0);
-    } else if (!rightSpace) setRightSpace(3);
-    else setRightSpace(0);
+    } else if (!rightSpace) {
+      setRightSpace(3);
+    } else {
+      setRightSpace(0);
+    }
   }, [rightSpace, width]);
 
   useEffect(() => {
     if (width !== prevWidth) {
       if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
-        if (currentCommunityChannel) setLeftSpace(0);
-        else setLeftSpace(curSize);
+        if (currentCommunityChannel) {
+          setLeftSpace(0);
+        } else {
+          setLeftSpace(curSize);
+        }
       } else {
         setLeftSpace(curSize);
       }
     }
 
-    if (
-      currentCommunityChannel &&
-      !isLoading &&
-      !['xs', 'sm', 'md'].includes(width)
-    )
+    if (currentCommunityChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) {
       setRightSpace(3);
+    }
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);
@@ -180,11 +179,7 @@ const CommunityChat = ({
         {renderIcon(leftSpace !== 0)}
       </IconButton>
       {leftSpace !== 0 && (
-        <Grid
-          item
-          xs={leftSpace || 1}
-          className={leftSpace !== 0 ? classes.left : classes.hidden}
-        >
+        <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left : classes.hidden}>
           {isLoading ? (
             <Box
               className={classes.loading}
@@ -270,7 +265,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withWidth()(CommunityChat));
+export default connect(mapStateToProps, mapDispatchToProps)(withWidth()(CommunityChat));

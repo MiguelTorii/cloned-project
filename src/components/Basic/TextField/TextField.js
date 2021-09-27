@@ -7,6 +7,8 @@ type Props = {
   [key: string]: any
 };
 
-const TextField = ({ variant, ...rest }: Props) => <StyledTextField variant={variant || 'outlined'} {...rest} />;
+const TextField = ({ variant, ...rest }: Props) => (
+  <StyledTextField variant={variant || 'outlined'} {...rest} />
+);
 
 export default TextField;

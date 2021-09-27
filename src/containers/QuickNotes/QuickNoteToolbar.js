@@ -222,10 +222,7 @@ export const QuillToolbar = ({ open, insertEmoji }) => {
             }}
           >
             <div className={cx('ql-emoji', classes.emoji)}>
-              <EmojiSelector
-                onSelect={insertEmoji}
-                emoIconStyle={classes.emoIconStyle}
-              />
+              <EmojiSelector onSelect={insertEmoji} emoIconStyle={classes.emoIconStyle} />
             </div>
           </Tooltip>
           <Tooltip

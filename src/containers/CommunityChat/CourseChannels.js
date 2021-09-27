@@ -40,9 +40,7 @@ const CourseChannels = ({
 
   const handleGoToFeed = useCallback(() => {
     const communityClass = (userClasses.classList || []).find((item) =>
-      (item.section || [])
-        .map((section) => section.sectionId)
-        .includes(currentCommunity.section_id)
+      (item.section || []).map((section) => section.sectionId).includes(currentCommunity.section_id)
     );
 
     if (!communityClass) {
@@ -51,11 +49,7 @@ const CourseChannels = ({
     }
 
     dispatch(
-      push(
-        `/feed?class=${cypher(
-          `${communityClass.classId}:${currentCommunity.section_id}`
-        )}`
-      )
+      push(`/feed?class=${cypher(`${communityClass.classId}:${currentCommunity.section_id}`)}`)
     );
   }, [currentCommunity, userClasses, dispatch]);
 
@@ -69,17 +63,12 @@ const CourseChannels = ({
           alignItems="center"
           mb={3}
         >
-          <LoadImg
-            url={currentCommunity.communityBannerUrl}
-            className={classes.courseBanner}
-          />
+          <LoadImg url={currentCommunity.communityBannerUrl} className={classes.courseBanner} />
         </Box>
       )}
       <Box
         className={cx(
-          currentCommunity.communityBannerUrl
-            ? classes.courseNameWithLogo
-            : classes.courseName
+          currentCommunity.communityBannerUrl ? classes.courseNameWithLogo : classes.courseName
         )}
         display="flex"
         justifyContent="center"

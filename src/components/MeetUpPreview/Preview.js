@@ -136,9 +136,7 @@ class Preview extends React.Component<Props, State> {
                     }}
                   />
                 ) : (
-                  <Typography className={classes.initials}>
-                    {initials}
-                  </Typography>
+                  <Typography className={classes.initials}>{initials}</Typography>
                 )}
               </div>
             )}
@@ -196,9 +194,7 @@ class Preview extends React.Component<Props, State> {
             >
               <Box>
                 <SettingsIcon className={classes.icon} />
-                <Typography className={classes.controlLabel}>
-                  A/V Settings
-                </Typography>
+                <Typography className={classes.controlLabel}>A/V Settings</Typography>
               </Box>
             </Button>
             <Button
@@ -228,8 +224,7 @@ class Preview extends React.Component<Props, State> {
             </span>
           </Button>
           <Typography component="p" className={classes.rules}>
-            By joining this call, you agree to abide by and respect CircleIn’s
-            Community Rules
+            By joining this call, you agree to abide by and respect CircleIn’s Community Rules
           </Typography>
         </Paper>
         <DeviceSettings
@@ -249,8 +244,7 @@ class Preview extends React.Component<Props, State> {
           showHeader={false}
         >
           <Typography color="textPrimary" paragraph>
-            To access this feature you need to grant permissions to use your
-            media devices.
+            To access this feature you need to grant permissions to use your media devices.
           </Typography>
           <Typography color="textPrimary">
             Refresh the page after you have granted permissions.

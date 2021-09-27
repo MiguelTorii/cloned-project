@@ -49,7 +49,9 @@ const HoverPopup = ({
   const [profile, setProfile] = useState({});
 
   const fetchUserInfo = async () => {
-    if (isLoading) return;
+    if (isLoading) {
+      return;
+    }
     setIsLoading(true);
 
     try {
@@ -74,7 +76,9 @@ const HoverPopup = ({
   };
 
   const keepPopoverOpen = () => {
-    if (userId !== myUserId) setOpen(true);
+    if (userId !== myUserId) {
+      setOpen(true);
+    }
   };
 
   const mouseEnter = (event) => {
@@ -84,8 +88,7 @@ const HoverPopup = ({
       if (
         rect.top < 0 ||
         rect.left < 0 ||
-        rect.bottom + 230 >
-          (window.innerHeight || document.documentElement.clientHeight) ||
+        rect.bottom + 230 > (window.innerHeight || document.documentElement.clientHeight) ||
         rect.right < 0
       ) {
         setOutOfScreen(true);
@@ -102,8 +105,9 @@ const HoverPopup = ({
   };
 
   const onTimeout = useCallback(() => {
-    if (userId !== myUserId && (profile.firstName || profile.lastName))
+    if (userId !== myUserId && (profile.firstName || profile.lastName)) {
       setOpen(true);
+    }
   }, [userId, myUserId, profile]);
 
   useEffect(() => {
@@ -210,11 +214,7 @@ const HoverPopup = ({
               </Avatar>
             </OnlineBadge>
             <div className={cx(classes.userInfo, classes.hasBio)}>
-              <Typography
-                variant="subtitle1"
-                className={classes.name}
-                onClick={handleGotoProfile}
-              >
+              <Typography variant="subtitle1" className={classes.name} onClick={handleGotoProfile}>
                 {fullName}
               </Typography>
 
@@ -238,11 +238,7 @@ const HoverPopup = ({
             alignItems="center"
             className={classes.buttonBox}
           >
-            <GradientButton
-              startIcon={<Message />}
-              disabled={chatLoading}
-              onClick={onStartChat}
-            >
+            <GradientButton startIcon={<Message />} disabled={chatLoading} onClick={onStartChat}>
               Message
             </GradientButton>
             <TransparentButton

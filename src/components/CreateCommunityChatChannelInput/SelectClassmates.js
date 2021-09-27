@@ -74,10 +74,7 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   return (
     <TextField
       classes={{
-        root:
-          searchClassmate && !isFloatChat
-            ? classes.searchInput
-            : classes.floatChatSearchInput
+        root: searchClassmate && !isFloatChat ? classes.searchInput : classes.floatChatSearchInput
       }}
       fullWidth
       variant="outlined"
@@ -105,9 +102,7 @@ function Control({ selectProps, innerProps, innerRef, children }) {
         ),
         inputProps: {
           autoFocus,
-          className: searchClassmate
-            ? classes.addClassmateInput
-            : classes.input,
+          className: searchClassmate ? classes.addClassmateInput : classes.input,
           inputRef: innerRef,
           children: children[0],
           ...innerProps
@@ -119,15 +114,7 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   );
 }
 
-function Option({
-  innerRef,
-  innerProps,
-  isFocused,
-  isSelected,
-  children,
-  data,
-  selectProps
-}) {
+function Option({ innerRef, innerProps, isFocused, isSelected, children, data, selectProps }) {
   const {
     avatar = '',
     initials = '',
@@ -139,7 +126,7 @@ function Option({
     isOnline = false
   } = data || {};
 
-  if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
+  if (!noAvatar && (avatar !== '' || initials !== '' || school !== '')) {
     return (
       <ListItem
         alignItems="center"
@@ -154,15 +141,8 @@ function Option({
         {...innerProps}
       >
         <ListItemAvatar>
-          <OnlineBadge
-            isOnline={isOnline}
-            bgColorPath="circleIn.palette.feedBackground"
-          >
-            <Avatar
-              alt={initials}
-              className={selectProps.classes.avatar}
-              src={avatar}
-            >
+          <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
+            <Avatar alt={initials} className={selectProps.classes.avatar} src={avatar}>
               {initials}
             </Avatar>
           </OnlineBadge>
@@ -180,6 +160,7 @@ function Option({
         />
       </ListItem>
     );
+  }
   return (
     <MenuItem
       buttonRef={innerRef}
@@ -221,11 +202,7 @@ function ValueContainer({ selectProps, children }) {
 
 function SingleValue({ selectProps, innerProps, children }) {
   return (
-    <Typography
-      color="textPrimary"
-      className={selectProps.classes.singleValue}
-      {...innerProps}
-    >
+    <Typography color="textPrimary" className={selectProps.classes.singleValue} {...innerProps}>
       {children}
     </Typography>
   );
@@ -234,7 +211,7 @@ function SingleValue({ selectProps, innerProps, children }) {
 function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   const { avatar = '', initials = '' } = data || {};
   const { classes, searchClassmate } = selectProps;
-  if (avatar !== '' || initials !== '')
+  if (avatar !== '' || initials !== '') {
     return (
       <Chip
         avatar={
@@ -246,22 +223,16 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
         }
         tabIndex={-1}
         label={children}
-        className={cx(
-          searchClassmate ? classes.addClassmateChip : classes.chip,
-          {
-            [classes.chipFocused]: isFocused
-          }
-        )}
+        className={cx(searchClassmate ? classes.addClassmateChip : classes.chip, {
+          [classes.chipFocused]: isFocused
+        })}
         onDelete={removeProps.onClick}
         deleteIcon={
-          searchClassmate ? (
-            <ClearIcon {...removeProps} />
-          ) : (
-            <CancelIcon {...removeProps} />
-          )
+          searchClassmate ? <ClearIcon {...removeProps} /> : <CancelIcon {...removeProps} />
         }
       />
     );
+  }
   return (
     <Chip
       tabIndex={-1}
@@ -271,11 +242,7 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
       })}
       onDelete={removeProps.onClick}
       deleteIcon={
-        searchClassmate ? (
-          <ClearIcon {...removeProps} />
-        ) : (
-          <CancelIcon {...removeProps} />
-        )
+        searchClassmate ? <ClearIcon {...removeProps} /> : <CancelIcon {...removeProps} />
       }
     />
   );
@@ -290,7 +257,9 @@ function Menu({ selectProps, children, innerProps }) {
     searchClassmate,
     classes
   } = selectProps;
-  if (options.length === 0 && inputValue === '') return null;
+  if (options.length === 0 && inputValue === '') {
+    return null;
+  }
   return (
     <Paper
       square
@@ -415,7 +384,9 @@ const SelectClassmates = ({
           isDisabled={isDisabled}
           cacheUniq={cacheUniq}
           noOptionsMessage={({ inputValue: input }) => {
-            if (input !== '') return 'No results, please try again';
+            if (input !== '') {
+              return 'No results, please try again';
+            }
             return '';
           }}
           isSchoolSearch={isSchoolSearch}

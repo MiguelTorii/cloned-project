@@ -63,13 +63,15 @@ const CreateChatChannelInput = ({
   // ONE_TOUCH_SEND_CHAT
 
   useEffect(() => {
-    if (users.length > 1 && chatType === 'single') setChatType('group');
-    else if (users.length <= 1 && chatType === 'group') setChatType('single');
+    if (users.length > 1 && chatType === 'single') {
+      setChatType('group');
+    } else if (users.length <= 1 && chatType === 'group') {
+      setChatType('single');
+    }
   }, [users, chatType]);
 
   const isShow = useMemo(
-    () =>
-      permission && permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS),
+    () => permission && permission.includes(PERMISSIONS.RENAME_GROUP_CHAT_ACCESS),
     [permission]
   );
 
@@ -107,8 +109,12 @@ const CreateChatChannelInput = ({
         };
       });
       const ordered = options.sort((a, b) => {
-        if (a.relationship && !b.relationship) return -1;
-        if (!a.relationship && b.relationship) return 1;
+        if (a.relationship && !b.relationship) {
+          return -1;
+        }
+        if (!a.relationship && b.relationship) {
+          return 1;
+        }
         return 0;
       });
       return {
@@ -168,8 +174,9 @@ const CreateChatChannelInput = ({
   ]);
 
   const handleSubmit = useCallback(async () => {
-    if (users.length === 0) setError(true);
-    else {
+    if (users.length === 0) {
+      setError(true);
+    } else {
       setError(false);
       await onSubmit({ chatType, name, type, selectedUsers: users });
       setName('');
@@ -233,9 +240,7 @@ const CreateChatChannelInput = ({
             variant="outlined"
             onChange={handleGroupNameChange}
             value={channelName}
-            helperText={`${
-              100 - (channelName?.length || 0)
-            } characters remaining`}
+            helperText={`${100 - (channelName?.length || 0)} characters remaining`}
             FormHelperTextProps={{
               className: classes.helperText
             }}
@@ -252,17 +257,8 @@ const CreateChatChannelInput = ({
           />
         )}
 
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-          width={1}
-        >
-          <Button
-            className={classes.cancelBtn}
-            color="primary"
-            onClick={onClosePopover}
-          >
+        <Box display="flex" alignItems="center" justifyContent="flex-end" width={1}>
+          <Button className={classes.cancelBtn} color="primary" onClick={onClosePopover}>
             Cancel
           </Button>
           <Button

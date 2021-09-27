@@ -30,7 +30,9 @@ const ClassQuestions = ({ classId }) => {
   const [shareData, setShareData] = useState(null);
 
   const classData = useMemo(() => {
-    if (!classId) return null;
+    if (!classId) {
+      return null;
+    }
     return myClasses.find((item) => item.classId === classId);
   }, [myClasses, classId]);
 
@@ -64,7 +66,9 @@ const ClassQuestions = ({ classId }) => {
       );
       setFeedList((data) =>
         data.map((item) => {
-          if (item.feedId !== feedId) return item;
+          if (item.feedId !== feedId) {
+            return item;
+          }
           return {
             ...item,
             bookmarked: !bookmarked
@@ -90,9 +94,7 @@ const ClassQuestions = ({ classId }) => {
   const handleDeleteClose = useCallback(
     ({ deleted }) => {
       if (deleted) {
-        setFeedList((data) =>
-          data.filter((item) => item.feedId !== deleteData.feedId)
-        );
+        setFeedList((data) => data.filter((item) => item.feedId !== deleteData.feedId));
       }
       setDeleteData(null);
     },
@@ -151,9 +153,7 @@ const ClassQuestions = ({ classId }) => {
       return;
     }
 
-    const queryString = cypher(
-      `${classData.classId}:${classData.section?.[0].sectionId}`
-    );
+    const queryString = cypher(`${classData.classId}:${classData.section?.[0].sectionId}`);
     dispatch(push(`/feed?class=${queryString}`));
   }, [dispatch, classData]);
 
@@ -175,13 +175,11 @@ const ClassQuestions = ({ classId }) => {
           No questions yet
         </Typography>
         <Typography variant="body2" paragraph>
-          When a question gets asked in this class, they’ll show up here. Click
-          the button below to ask a question in this class!
+          When a question gets asked in this class, they’ll show up here. Click the button below to
+          ask a question in this class!
         </Typography>
         <Box display="flex" justifyContent="center">
-          <GradientButton onClick={handleAskQuestion}>
-            Ask a Question
-          </GradientButton>
+          <GradientButton onClick={handleAskQuestion}>Ask a Question</GradientButton>
         </Box>
       </>
     );
@@ -192,11 +190,7 @@ const ClassQuestions = ({ classId }) => {
       <Grid container direction="column" spacing={3}>
         {feedList.map((item) => (
           <Grid item key={item.feedId}>
-            <Paper
-              elevation={0}
-              square={false}
-              className={classes.feedContainer}
-            >
+            <Paper elevation={0} square={false} className={classes.feedContainer}>
               <FeedItem
                 expertMode={isExpertMode}
                 userId={me.userId}

@@ -55,19 +55,11 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
       return;
     }
 
-    if (
-      name === 'openColor' &&
-      this.colorAnchorEl &&
-      this.colorAnchorEl.contains(event.target)
-    ) {
+    if (name === 'openColor' && this.colorAnchorEl && this.colorAnchorEl.contains(event.target)) {
       return;
     }
 
-    if (
-      name === 'openErase' &&
-      this.eraseAnchorEl &&
-      this.eraseAnchorEl.contains(event.target)
-    ) {
+    if (name === 'openErase' && this.eraseAnchorEl && this.eraseAnchorEl.contains(event.target)) {
       return;
     }
 
@@ -131,9 +123,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
             {({ TransitionProps }) => (
               <Grow {...TransitionProps} id="pencil-list-grow">
                 <Paper className={classes.menu}>
-                  <ClickAwayListener
-                    onClickAway={this.handleClose('openPencil')}
-                  >
+                  <ClickAwayListener onClickAway={this.handleClose('openPencil')}>
                     <div className={classes.menuList}>
                       {[
                         { className: classes.iconXS, size: 1 },
@@ -180,32 +170,23 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
             {({ TransitionProps }) => (
               <Grow {...TransitionProps} id="color-list-grow">
                 <Paper className={classes.menu}>
-                  <ClickAwayListener
-                    onClickAway={this.handleClose('openColor')}
-                  >
+                  <ClickAwayListener onClickAway={this.handleClose('openColor')}>
                     <div className={classes.menuList}>
-                      {[
-                        'black',
-                        'green',
-                        'red',
-                        'blue',
-                        'yellow',
-                        'purple',
-                        'pink',
-                        'brown'
-                      ].map((item) => (
-                        <ButtonBase
-                          key={item}
-                          color="primary"
-                          className={cx(classes.button)}
-                          onClick={this.handleColorChange(item)}
-                        >
-                          <span
-                            className={classes.colorLabel}
-                            style={{ backgroundColor: item }}
-                          />
-                        </ButtonBase>
-                      ))}
+                      {['black', 'green', 'red', 'blue', 'yellow', 'purple', 'pink', 'brown'].map(
+                        (item) => (
+                          <ButtonBase
+                            key={item}
+                            color="primary"
+                            className={cx(classes.button)}
+                            onClick={this.handleColorChange(item)}
+                          >
+                            <span
+                              className={classes.colorLabel}
+                              style={{ backgroundColor: item }}
+                            />
+                          </ButtonBase>
+                        )
+                      )}
                     </div>
                   </ClickAwayListener>
                 </Paper>
@@ -235,9 +216,7 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
             {({ TransitionProps }) => (
               <Grow {...TransitionProps} id="erase-list-grow">
                 <Paper className={classes.menu}>
-                  <ClickAwayListener
-                    onClickAway={this.handleClose('openErase')}
-                  >
+                  <ClickAwayListener onClickAway={this.handleClose('openErase')}>
                     <div className={classes.menuList}>
                       {[
                         { className: classes.iconXS, size: 2 },

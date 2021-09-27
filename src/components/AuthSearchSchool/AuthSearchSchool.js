@@ -47,9 +47,7 @@ class AuthSearchSchool extends React.PureComponent<Props> {
             />
           </div>
           <Typography variant="subtitle1" align="center">
-            {
-              "By searching for and selecting your school, I agree to CircleIn's  "
-            }
+            {"By searching for and selecting your school, I agree to CircleIn's  "}
             <Link href="/terms-of-use" component={MyLink}>
               Terms of Service and Privacy Policy
             </Link>

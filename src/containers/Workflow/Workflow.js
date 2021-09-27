@@ -1,12 +1,6 @@
 // @flow
 
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  useReducer
-} from 'react';
+import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import * as notificationsActions from 'actions/notifications';
@@ -17,13 +11,7 @@ import WorkflowList from 'components/Workflow/WorkflowList';
 import CalendarView from 'components/Workflow/CalendarView';
 import Paper from '@material-ui/core/Paper';
 import update from 'immutability-helper';
-import {
-  createTodo,
-  updateTodo,
-  archiveTodo,
-  updateTodosOrdering,
-  getTodos
-} from 'api/workflow';
+import { createTodo, updateTodo, archiveTodo, updateTodosOrdering, getTodos } from 'api/workflow';
 import type { UserState } from 'reducers/user';
 import type { State as StoreState } from 'types/state';
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
@@ -167,8 +155,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [listView, setListView] = useState(false);
   const [calendarView, setCalendarView] = useState(false);
   const [tips, setTips] = useState(false);
-  const [currentCalendarView, setCurrentCalendarView] =
-    useState('dayGridMonth');
+  const [currentCalendarView, setCurrentCalendarView] = useState('dayGridMonth');
 
   const openTips = useCallback(() => setTips(true), []);
   const closeTips = useCallback(() => setTips(false), []);
@@ -190,9 +177,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     if (res) {
       dispatch({ type: 'INIT', tasks: res });
     } else {
-      enqueueSnackbar(
-        createSnackbar('Failed to initialize', classes.snackbar, 'error')
-      );
+      enqueueSnackbar(createSnackbar('Failed to initialize', classes.snackbar, 'error'));
     }
   }, [classes.snackbar, enqueueSnackbar]);
 
@@ -203,7 +188,9 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const archiveTask = useCallback(
     async (task) => {
       const res = await archiveTodo({ id: task.id });
-      if (res?.id) dispatch({ type: 'ARCHIVE_TASK', index: task.index });
+      if (res?.id) {
+        dispatch({ type: 'ARCHIVE_TASK', index: task.index });
+      }
     },
     [dispatch]
   );
@@ -244,7 +231,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
           ...task,
           categoryId: dragCategoryId.current
         });
-        if (res?.points)
+        if (res?.points) {
           enqueueSnackbar(
             createSnackbar(
               `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
@@ -252,6 +239,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
               'success'
             )
           );
+        }
       }
       dispatch({ type: 'DRAG_UPDATE', dragId });
     },
@@ -259,7 +247,9 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   );
 
   useEffect(() => {
-    if (dragId !== prevDragId && dragId === null) reorder();
+    if (dragId !== prevDragId && dragId === null) {
+      reorder();
+    }
     setPrevDragId(dragId);
   }, [dragId, prevDragId, reorder]);
 
@@ -267,10 +257,11 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
     try {
       const classList = {};
       userClasses.classList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0)
+        if (cl.section && cl.section.length > 0) {
           cl.section.forEach((s) => {
             classList[s.sectionId] = cl;
           });
+        }
       });
       setClassList(classList);
     } finally {
@@ -289,15 +280,15 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
   useEffect(() => {
     const invalidOrder = tasks.find((t) => t.order === -1);
-    if (invalidOrder) reorder();
+    if (invalidOrder) {
+      reorder();
+    }
   }, [reorder, tasks]);
 
   const handleAddTask = useCallback(
     async ({ title, categoryId, date, sectionId, description }) => {
       if (!title) {
-        enqueueSnackbar(
-          createSnackbar('Task name is empty', classes.snackbar, 'error')
-        );
+        enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'));
         return;
       }
       try {
@@ -326,7 +317,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
 
           handleExpand(1)(true);
 
-          if (res?.points)
+          if (res?.points) {
             enqueueSnackbar(
               createSnackbar(
                 `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
@@ -334,11 +325,10 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
                 'success'
               )
             );
+          }
         }
       } catch (e) {
-        enqueueSnackbar(
-          createSnackbar('Failed to add task', classes.snackbar, 'error')
-        );
+        enqueueSnackbar(createSnackbar('Failed to add task', classes.snackbar, 'error'));
       }
     },
     [dispatch, handleExpand, enqueueSnackbar, classes, firstName]
@@ -358,9 +348,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       reminder
     }) => {
       if (!title) {
-        enqueueSnackbar(
-          createSnackbar('Task name is empty', classes.snackbar, 'error')
-        );
+        enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'));
         return;
       }
       if (id === -1) {
@@ -374,8 +362,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
         });
       } else {
         const task = tasks[index];
-        const newCategory =
-          status === 2 && task.status !== status ? 4 : categoryId;
+        const newCategory = status === 2 && task.status !== status ? 4 : categoryId;
 
         const res = await updateTodo({
           id,
@@ -401,7 +388,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             firstNotificationSeconds: reminder || 0,
             images
           });
-          if (res?.points)
+          if (res?.points) {
             enqueueSnackbar(
               createSnackbar(
                 `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
@@ -409,10 +396,9 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
                 'success'
               )
             );
+          }
         } else {
-          enqueueSnackbar(
-            createSnackbar('Failed to update task', classes.snackbar, 'error')
-          );
+          enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'));
         }
       }
     },
@@ -442,28 +428,14 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
         setCurrentCalendarView
       }}
     >
-      <Grid
-        container
-        direction="column"
-        spacing={0}
-        className={classes.container}
-      >
+      <Grid container direction="column" spacing={0} className={classes.container}>
         <ErrorBoundary>
           <Tips open={tips} close={closeTips} />
           <Box display="flex" alignItems="center">
-            <Typography
-              component="span"
-              color="textPrimary"
-              className={classes.title}
-            >
+            <Typography component="span" color="textPrimary" className={classes.title}>
               Workflow
             </Typography>
-            <IconButton
-              onClick={init}
-              color="primary"
-              aria-label="refresh"
-              component="span"
-            >
+            <IconButton onClick={init} color="primary" aria-label="refresh" component="span">
               <RefreshIcon />
             </IconButton>
           </Box>
@@ -490,11 +462,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
               Calendar View
             </Button>
             <div className={classes.divider}>|</div>
-            <Button
-              color="default"
-              onClick={openTips}
-              className={classes.button}
-            >
+            <Button color="default" onClick={openTips} className={classes.button}>
               Tips & Tricks
             </Button>
           </Grid>
@@ -509,10 +477,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             </Paper>
           )}
           {!calendarView && (
-            <Paper
-              elevation={0}
-              className={cx(classes.bodyList, !listView && classes.bodyBoard)}
-            >
+            <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
               <WorkflowList />
             </Paper>
           )}
@@ -534,7 +499,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Workflow));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Workflow));

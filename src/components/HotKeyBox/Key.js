@@ -6,11 +6,7 @@ import useStyles from './styles';
 const Key = ({ keyText }) => {
   const classes = useStyles();
 
-  return (
-    <span className={classes.key}>
-      {keyText}
-    </span>
-  );
+  return <span className={classes.key}>{keyText}</span>;
 };
 
 Key.propTypes = {

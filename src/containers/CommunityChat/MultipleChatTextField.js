@@ -19,12 +19,7 @@ type Props = {
   setInput: Function
 };
 
-const MultipleChatTextField = ({
-  setMessage,
-  message,
-  input,
-  setInput
-}: Props) => {
+const MultipleChatTextField = ({ setMessage, message, input, setInput }: Props) => {
   const classes = useStyles();
   const [image, setImage] = useState(null);
   const [isHover, setIsHover] = useState(false);

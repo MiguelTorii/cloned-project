@@ -14,10 +14,7 @@ const defaultState = {
   }
 };
 
-export default (
-  state: OnboardingState = defaultState,
-  action: any
-): OnboardingState => {
+export default (state: OnboardingState = defaultState, action: any): OnboardingState => {
   switch (action.type) {
     case onboardingActions.GET_ONBOARDING_LIST_SUCCESS:
       return update(state, {

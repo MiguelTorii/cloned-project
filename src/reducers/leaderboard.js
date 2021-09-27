@@ -112,42 +112,43 @@ const defaultState = {
   }
 };
 
-export default (
-  state: LeaderBoardState = defaultState,
-  action: Action
-): LeaderBoardState => {
+export default (state: LeaderBoardState = defaultState, action: Action): LeaderBoardState => {
   switch (action.type) {
     case leaderboardActions.UPDATE_LEADERBOARD_REQUEST:
-      if (action && action.payload && action.payload.leaderboards)
+      if (action && action.payload && action.payload.leaderboards) {
         return update(state, {
           data: {
             general: { $set: action.payload.leaderboards }
           }
         });
+      }
       return state;
     case leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST:
-      if (action && action.payload && action.payload.grandInfo)
+      if (action && action.payload && action.payload.grandInfo) {
         return update(state, {
           data: {
             grandDialog: { $set: action.payload.grandInfo }
           }
         });
+      }
       return state;
     case leaderboardActions.UPDATE_LEADERBOARD_GRAND_REQUEST:
-      if (action && action.payload && action.payload.leaderboards)
+      if (action && action.payload && action.payload.leaderboards) {
         return update(state, {
           data: {
             grand: { $set: action.payload.leaderboards }
           }
         });
+      }
       return state;
     case leaderboardActions.UPDATE_LEADERBOARD_TUESDAY_REQUEST:
-      if (action && action.payload && action.payload.leaderboards)
+      if (action && action.payload && action.payload.leaderboards) {
         return update(state, {
           data: {
             tuesday: { $set: action.payload.leaderboards }
           }
         });
+      }
       return state;
     case rootActions.CLEAR_STATE:
       return defaultState;

@@ -44,9 +44,7 @@ const ShareLinkWidget = ({ classes, shareLink }: Props) => {
             arrow: classes.arrow
           }}
         >
-          <GradientButton className={classes.copyLink}>
-            Copy Link
-          </GradientButton>
+          <GradientButton className={classes.copyLink}>Copy Link</GradientButton>
         </Tooltip>
       </CopyToClipboard>
     </div>

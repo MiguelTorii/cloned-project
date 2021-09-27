@@ -10,8 +10,7 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: 36,
     '&:disabled': {
       background: theme.circleIn.palette.primaryii222,
-      boxShadow:
-        '0px 4px 20px rgba(0, 0, 0, 0.25), inset 2px 2px 2px rgba(34, 34, 34, 0.24)',
+      boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25), inset 2px 2px 2px rgba(34, 34, 34, 0.24)',
       color: 'white'
     },
     '&:hover, &:active, &:visited': {

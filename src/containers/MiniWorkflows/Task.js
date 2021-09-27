@@ -7,16 +7,14 @@ import IconCalendar from '@material-ui/icons/CalendarToday';
 
 import useStyles from './styles';
 
-const Task = ({
-  title,
-  dueDate,
-  sectionId
-}) => {
+const Task = ({ title, dueDate, sectionId }) => {
   const classes = useStyles();
   const classList = useSelector((state) => state.user.userClasses.classList);
 
   const dueDateText = useMemo(() => {
-    if (!dueDate) return null;
+    if (!dueDate) {
+      return null;
+    }
     return moment(dueDate).format('MMM DD H:MM A');
   }, [dueDate]);
 
@@ -25,17 +23,27 @@ const Task = ({
     const due = moment(dueDate);
     const diffHours = moment.duration(now.diff(due)).as('hours');
 
-    if (now >= due) return '#EB6E69';
-    if (diffHours < 48) return '#FFE195';
+    if (now >= due) {
+      return '#EB6E69';
+    }
+    if (diffHours < 48) {
+      return '#FFE195';
+    }
 
     return '#BFBFC1';
   }, []);
 
   const classData = useMemo(() => {
-    if (!sectionId) return null;
-    const matchedClass = classList.find((item) => item.section.map((section) => section.section.sectionId).includes(sectionId));
+    if (!sectionId) {
+      return null;
+    }
+    const matchedClass = classList.find((item) =>
+      item.section.map((section) => section.section.sectionId).includes(sectionId)
+    );
 
-    if (!matchedClass) return null;
+    if (!matchedClass) {
+      return null;
+    }
 
     return {
       className: matchedClass.courseDisplayName,
@@ -45,9 +53,7 @@ const Task = ({
 
   return (
     <Paper className={classes.taskContainer} elevation={0} square={false}>
-      <Typography>
-        {title}
-      </Typography>
+      <Typography>{title}</Typography>
       {dueDateText && (
         <Box display="flex" alignItems="center" mt={1.5}>
           <Box mr={0.5}>

@@ -19,37 +19,30 @@ type Props = {
 };
 
 const PointsHistoryDetails = ({ profile, onGoBack, isMyProfile }: Props) => (
-    <div>
-      <Link
-        component="button"
-        color="inherit"
-        variant="body1"
-        onClick={onGoBack}
-      >
-        <Box display="flex" alignItems="center" mb={3}>
-          <ChevronLeft />
-          {isMyProfile
-            ? 'Back to Profile'
-            : `${profile.firstName} ${profile.lastName}'s Profile`}
-        </Box>
-      </Link>
-      <Grid container spacing={3}>
-        <Grid item xs={12} lg={12}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Header profile={profile} />
-            </Grid>
-            <Grid item xs={12}>
-              <PointsHistory
-                userId={profile.userId}
-                isMyProfile={isMyProfile}
-                displayName={profile.firstName}
-              />
-            </Grid>
+  <div>
+    <Link component="button" color="inherit" variant="body1" onClick={onGoBack}>
+      <Box display="flex" alignItems="center" mb={3}>
+        <ChevronLeft />
+        {isMyProfile ? 'Back to Profile' : `${profile.firstName} ${profile.lastName}'s Profile`}
+      </Box>
+    </Link>
+    <Grid container spacing={3}>
+      <Grid item xs={12} lg={12}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Header profile={profile} />
+          </Grid>
+          <Grid item xs={12}>
+            <PointsHistory
+              userId={profile.userId}
+              isMyProfile={isMyProfile}
+              displayName={profile.firstName}
+            />
           </Grid>
         </Grid>
       </Grid>
-    </div>
-  );
+    </Grid>
+  </div>
+);
 
 export default withRoot(PointsHistoryDetails);

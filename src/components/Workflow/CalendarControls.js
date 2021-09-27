@@ -68,18 +68,10 @@ const CalendarControls = ({
   return (
     <Grid className={classes.container} container justifyContent="space-between">
       <Grid item xs={4}>
-        <IconButton
-          aria-label="previous"
-          className={classes.iconButton}
-          onClick={previous}
-        >
+        <IconButton aria-label="previous" className={classes.iconButton} onClick={previous}>
           <ArrowBackIosIcon />
         </IconButton>
-        <IconButton
-          aria-label="next"
-          className={classes.iconButton}
-          onClick={next}
-        >
+        <IconButton aria-label="next" className={classes.iconButton} onClick={next}>
           <ArrowForwardIosIcon />
         </IconButton>
         <Button

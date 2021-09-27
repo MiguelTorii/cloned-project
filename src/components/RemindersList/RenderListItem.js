@@ -64,11 +64,7 @@ class RemindersListItem extends React.PureComponent<Props, State> {
         <ListItem button onClick={this.handleClick}>
           <ListItemText primary={title} />
 
-          <Badge
-            badgeContent={left}
-            className={classes.margin}
-            color="secondary"
-          >
+          <Badge badgeContent={left} className={classes.margin} color="secondary">
             {open ? <ExpandLess /> : <ExpandMore />}
           </Badge>
         </ListItem>
@@ -86,11 +82,7 @@ class RemindersListItem extends React.PureComponent<Props, State> {
                   })}
                 >
                   <ListItemIcon>
-                    <Checkbox
-                      checked={item.status === 2}
-                      tabIndex={-1}
-                      disableRipple
-                    />
+                    <Checkbox checked={item.status === 2} tabIndex={-1} disableRipple />
                   </ListItemIcon>
                   <ListItemIcon>
                     <LabelIcon className={cx(this.renderClass(item.label))} />

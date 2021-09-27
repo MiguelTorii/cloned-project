@@ -58,8 +58,9 @@ class SignIn extends React.Component<Props, State> {
       this.setState({ loading: true });
       const { password } = this.state;
       const success = await changePassword({ email, password, resetToken });
-      if (success) this.handleSignIn();
-      else {
+      if (success) {
+        this.handleSignIn();
+      } else {
         updateError({
           title: 'Error Reseting Password',
           body: "We couldn't process your request, please try again"
@@ -134,7 +135,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(SignIn));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));

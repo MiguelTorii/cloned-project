@@ -6,9 +6,7 @@ import { getToken } from './utils';
 
 export const fetchSchools = async ({ stateId }: { stateId: number }) => {
   try {
-    const result = await axios.get(
-      `${API_ROUTES.FETCH_SCHOOLS}?state_id=${stateId}`
-    );
+    const result = await axios.get(`${API_ROUTES.FETCH_SCHOOLS}?state_id=${stateId}`);
     const { data = {} } = result;
     const { schools } = data;
     return schools;
@@ -27,8 +25,7 @@ export const sendCode = async ({ email }: { email: string }) => {
     return data;
   } catch (err) {
     const errorMessage =
-      (err.response && err.response.data && err.response.data.message) ||
-      'Error occurred';
+      (err.response && err.response.data && err.response.data.message) || 'Error occurred';
 
     return {
       error: errorMessage
@@ -36,13 +33,7 @@ export const sendCode = async ({ email }: { email: string }) => {
   }
 };
 
-export const verifyCode = async ({
-  email,
-  code
-}: {
-  email: string,
-  code: string
-}) => {
+export const verifyCode = async ({ email, code }: { email: string, code: string }) => {
   try {
     const result = await axios.post(API_ROUTES.VERIFY_EMAIL, {
       email,

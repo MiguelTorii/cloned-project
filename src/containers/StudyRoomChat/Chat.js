@@ -1,12 +1,6 @@
 // @flow
 
-import React, {
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-  useState
-} from 'react';
+import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -99,13 +93,7 @@ type Props = {
   showNotification: Function
 };
 
-const StudyRoomChat = ({
-  members,
-  user,
-  channel,
-  classes,
-  showNotification
-}: Props) => {
+const StudyRoomChat = ({ members, user, channel, classes, showNotification }: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -127,7 +115,9 @@ const StudyRoomChat = ({
 
   const onTyping = useCallback(() => {
     const twilioChannel = get(channel, 'twilioChannel');
-    if (!twilioChannel) return;
+    if (!twilioChannel) {
+      return;
+    }
     try {
       twilioChannel.typing();
     } catch (err) {
@@ -137,7 +127,9 @@ const StudyRoomChat = ({
 
   const getRole = useCallback(
     (userId) => {
-      if (!members[userId]) return null;
+      if (!members[userId]) {
+        return null;
+      }
       const { role } = members[userId];
       return role;
     },
@@ -166,7 +158,9 @@ const StudyRoomChat = ({
   const onSendMessage = useCallback(
     async (message, files) => {
       setScroll(true);
-      if (!channel) return;
+      if (!channel) {
+        return;
+      }
 
       logEvent({
         event: 'Chat- Send Message',
@@ -219,8 +213,7 @@ const StudyRoomChat = ({
 
         if (
           twilioChannel &&
-          (!twilioChannel._events.typingStarted ||
-            twilioChannel._events.typingStarted.length === 0)
+          (!twilioChannel._events.typingStarted || twilioChannel._events.typingStarted.length === 0)
         ) {
           twilioChannel.on('typingStarted', (member) => {
             member.getUser().then((user) => {
@@ -237,17 +230,16 @@ const StudyRoomChat = ({
       } catch (e) {}
     };
 
-    if (channel) init();
+    if (channel) {
+      init();
+    }
   }, [channel, handleScrollToBottom]);
 
   const handleImageClick = useCallback((src) => {
     setImages([{ src }]);
   }, []);
 
-  const isMemberOnline = useCallback(
-    (userId) => members[userId]?.isOnline,
-    [members]
-  );
+  const isMemberOnline = useCallback((userId) => members[userId]?.isOnline, [members]);
 
   const renderMessage = useCallback(
     (item) => {
@@ -323,7 +315,9 @@ const StudyRoomChat = ({
   const onSendInput = useCallback(
     async (file) => {
       setLoading(true);
-      if (!channel) return;
+      if (!channel) {
+        return;
+      }
 
       try {
         const result = await getPresignedURL({
@@ -373,7 +367,9 @@ const StudyRoomChat = ({
   const handleImageClose = useCallback(() => setImages([]), []);
 
   const uploadFile = useCallback(() => {
-    if (fileInput.current) fileInput.current.click();
+    if (fileInput.current) {
+      fileInput.current.click();
+    }
   }, []);
 
   const onClose = useCallback(
@@ -415,9 +411,7 @@ const StudyRoomChat = ({
       {channel && (
         <div className={classes.typing}>
           <Typography className={classes.typingText} variant="subtitle1">
-            {typing && typing.channel === channel.sid
-              ? `${typing.friendlyName} is typing ...`
-              : ''}
+            {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
           </Typography>
         </div>
       )}
@@ -457,7 +451,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(StudyRoomChat));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(StudyRoomChat));

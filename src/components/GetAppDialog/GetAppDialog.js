@@ -33,10 +33,9 @@ const GetAppDialog = ({ open, onClose }: Props) => {
             <b>Message Instantly.</b>
           </Typography>
           <Typography className={classes.description}>
-            From quick questions on-the-go, messages between you and your group
-            members, to checking reminders while you’re out - the mobile
-            CircleIn app let’s you be the best student you can be, anywhere you
-            go.
+            From quick questions on-the-go, messages between you and your group members, to checking
+            reminders while you’re out - the mobile CircleIn app let’s you be the best student you
+            can be, anywhere you go.
           </Typography>
           <Typography className={classes.bold}>
             <b>Download the App</b>

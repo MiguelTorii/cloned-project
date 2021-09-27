@@ -91,14 +91,12 @@ const Flashcard = ({
   `;
 
   const getRectangleCenter = (rectangle) => ({
-      x: rectangle.left + (rectangle.right - rectangle.left) / 2,
-      y: rectangle.top + (rectangle.bottom - rectangle.top) / 2
-    });
+    x: rectangle.left + (rectangle.right - rectangle.left) / 2,
+    y: rectangle.top + (rectangle.bottom - rectangle.top) / 2
+  });
 
   const calculateOffset = () => {
-    const sourceCenter = getRectangleCenter(
-      refCard.current.getBoundingClientRect()
-    );
+    const sourceCenter = getRectangleCenter(refCard.current.getBoundingClientRect());
 
     return {
       x: Math.ceil(destinationCenter.x - sourceCenter.x),
@@ -116,7 +114,9 @@ const Flashcard = ({
   };
 
   const Animation = ({ children }) => {
-    if (!isAnimating) return children;
+    if (!isAnimating) {
+      return children;
+    }
 
     const { x, y } = calculateOffset();
 
@@ -199,9 +199,7 @@ const Flashcard = ({
         </CardActions>
       ) : (
         <CardActions className={classes.actions}>
-          <div className={classes.label}>
-            Select the difficulty level to view the next card
-          </div>
+          <div className={classes.label}>Select the difficulty level to view the next card</div>
           <div className={classes.buttons}>
             <Tooltip
               arrow
@@ -213,8 +211,7 @@ const Flashcard = ({
               placement="top"
               title={
                 <p className={classes.tooltipLabel}>
-                  Select <b>Didn't Remember</b> if you weren't able to remember
-                  the answer
+                  Select <b>Didn't Remember</b> if you weren't able to remember the answer
                 </p>
               }
             >
@@ -237,8 +234,8 @@ const Flashcard = ({
               placement="top"
               title={
                 <p className={classes.tooltipLabel}>
-                  Select <b>Almost Had It</b> if you were close to answering the
-                  correct answer or had difficulty answering it
+                  Select <b>Almost Had It</b> if you were close to answering the correct answer or
+                  had difficulty answering it
                 </p>
               }
             >

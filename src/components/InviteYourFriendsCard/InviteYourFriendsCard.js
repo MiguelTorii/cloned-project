@@ -26,7 +26,7 @@ class InviteYourFriendsCard extends React.PureComponent<Props, State> {
   render() {
     const { classes, data, onCopy, isLoading } = this.props;
 
-    if (isLoading)
+    if (isLoading) {
       return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
@@ -34,6 +34,7 @@ class InviteYourFriendsCard extends React.PureComponent<Props, State> {
           </div>
         </Paper>
       );
+    }
 
     return (
       <Paper className={classes.root} elevation={1}>
@@ -51,12 +52,7 @@ class InviteYourFriendsCard extends React.PureComponent<Props, State> {
             </Typography>
           </div>
           <CopyToClipboard text={data.referralCode} onCopy={onCopy}>
-            <Button
-              variant="contained"
-              color="primary"
-              autoFocus
-              className={classes.button}
-            >
+            <Button variant="contained" color="primary" autoFocus className={classes.button}>
               Share
             </Button>
           </CopyToClipboard>

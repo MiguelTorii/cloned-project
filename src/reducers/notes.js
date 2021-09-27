@@ -39,10 +39,7 @@ const defaultState = {
   }
 };
 
-export default (
-  state: NotesState = defaultState,
-  action: Action
-): NotesState => {
+export default (state: NotesState = defaultState, action: Action): NotesState => {
   switch (action.type) {
     case notesActions.RESET_QUICKNOTE:
       return update(state, {

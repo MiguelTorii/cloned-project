@@ -125,9 +125,7 @@ const RemoveStudentDialog = ({
         )}
         <List dense className={classes.listRoot}>
           {members
-            .filter((member) =>
-              `${member.firstname} ${member.lastname}`.includes(search)
-            )
+            .filter((member) => `${member.firstname} ${member.lastname}`.includes(search))
             .map((m) => {
               const fullName = `${m.firstname} ${m.lastname}`;
               return (
@@ -151,15 +149,11 @@ const RemoveStudentDialog = ({
                   </ListItemAvatar>
                   {fullName} {m.role && <RoleBadge text={m.role} />}
                   <ListItemSecondaryAction>
-                    {!isCommunityChat &&
-                      removedUserIds.includes(Number(m.userId)) && (
-                        <Button
-                          onClick={() => handleUndo(m.userId)}
-                          className={classes.undo}
-                        >
-                          <UndoIcon className={classes.spacing} /> Undo
-                        </Button>
-                      )}
+                    {!isCommunityChat && removedUserIds.includes(Number(m.userId)) && (
+                      <Button onClick={() => handleUndo(m.userId)} className={classes.undo}>
+                        <UndoIcon className={classes.spacing} /> Undo
+                      </Button>
+                    )}
                     <Button
                       onClick={() => removeMember(m)}
                       className={cx(
@@ -197,9 +191,8 @@ const RemoveStudentDialog = ({
         cancelTitle="Cancel"
       >
         <Typography variant="subtitle1">
-          Are you sure you want to remove{' '}
-          <b>{`${user?.firstname} ${user?.lastname}`}</b>? They will be removed
-          from the chat and will no longer have access to it.
+          Are you sure you want to remove <b>{`${user?.firstname} ${user?.lastname}`}</b>? They will
+          be removed from the chat and will no longer have access to it.
         </Typography>
       </Dialog>
     </>

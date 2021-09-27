@@ -48,18 +48,15 @@ class Notifications extends React.PureComponent<Props, State> {
 
     const handleClick = (e) => {
       onClick(e);
-      if (onNotificationClose) onNotificationClose();
+      if (onNotificationClose) {
+        onNotificationClose();
+      }
     };
 
     const open = Boolean(anchorEl);
     const notificationPaper = (
       <Paper className={classes.root}>
-        <Tabs
-          value={tab}
-          indicatorColor="primary"
-          textColor="primary"
-          onChange={onTabChange}
-        >
+        <Tabs value={tab} indicatorColor="primary" textColor="primary" onChange={onTabChange}>
           <Tab
             className={classes.notificationTab}
             classes={{
@@ -97,11 +94,7 @@ class Notifications extends React.PureComponent<Props, State> {
         </Tabs>
         <List className={classes.root}>
           {notifications.map((item) => (
-            <NotificationItem
-              key={item.id}
-              notification={item}
-              onClick={handleClick}
-            />
+            <NotificationItem key={item.id} notification={item} onClick={handleClick} />
           ))}
         </List>
         {notifications.length === 0 && (
@@ -131,7 +124,9 @@ class Notifications extends React.PureComponent<Props, State> {
         {notificationPaper}
       </Popover>
     );
-    if (isPage) return notificationPaper;
+    if (isPage) {
+      return notificationPaper;
+    }
     return popper;
   }
 }

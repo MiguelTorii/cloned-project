@@ -14,7 +14,9 @@ const RemoveChat = ({ channel, handleRemoveChannel }) => {
   const handleRemoveOpen = useCallback(() => setRemoveChat(true), []);
 
   const handleRemoveSubmit = useCallback(async () => {
-    if (channel) await handleRemoveChannel({ sid: channel.sid });
+    if (channel) {
+      await handleRemoveChannel({ sid: channel.sid });
+    }
     handleRemoveClose();
   }, [handleRemoveChannel, channel, handleRemoveClose]);
 

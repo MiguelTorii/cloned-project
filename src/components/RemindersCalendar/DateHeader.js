@@ -28,10 +28,7 @@ class DateHeader extends React.PureComponent<Props, State> {
 
     if (!isOffRange) {
       return (
-        <Typography
-          variant="subtitle1"
-          color={sameday ? 'textSecondary' : 'textPrimary'}
-        >
+        <Typography variant="subtitle1" color={sameday ? 'textSecondary' : 'textPrimary'}>
           {label}
         </Typography>
       );
@@ -39,10 +36,7 @@ class DateHeader extends React.PureComponent<Props, State> {
 
     return (
       <main className={classes.main}>
-        <Typography
-          variant="subtitle1"
-          color={isOffRange ? 'textSecondary' : 'textPrimary'}
-        >
+        <Typography variant="subtitle1" color={isOffRange ? 'textSecondary' : 'textPrimary'}>
           <Link href="#" onClick={onDrillDown}>
             {label}
           </Link>

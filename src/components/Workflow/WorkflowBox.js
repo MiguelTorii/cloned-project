@@ -22,8 +22,7 @@ const getHeight = (text) => {
 };
 
 const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
-  const { expanded, listView, handleExpand, updateCategory } =
-    useContext(WorkflowContext);
+  const { expanded, listView, handleExpand, updateCategory } = useContext(WorkflowContext);
   const classes = useStyles();
   const [, drop] = useDrop({
     accept: 'task',
@@ -40,10 +39,7 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
     }
   });
 
-  const isExpanded = useMemo(
-    () => expanded[categoryId - 1],
-    [categoryId, expanded]
-  );
+  const isExpanded = useMemo(() => expanded[categoryId - 1], [categoryId, expanded]);
   const onExpand = useCallback(
     () => handleExpand(categoryId)(!isExpanded),
     [handleExpand, categoryId, isExpanded]
@@ -56,14 +52,21 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
     return (
       <List className={classes.list} style={height}>
         {tasks.map((t, i) => {
-          if (listView && i !== 0) space += 32;
-          else {
+          if (listView && i !== 0) {
+            space += 32;
+          } else {
             space = nextSpace;
             const titleHeight = getHeight(t.title);
 
-            if (titleHeight <= 25) nextSpace += 100;
-            if (titleHeight <= 50 && titleHeight > 25) nextSpace += 120;
-            if (titleHeight > 50) nextSpace += 150;
+            if (titleHeight <= 25) {
+              nextSpace += 100;
+            }
+            if (titleHeight <= 50 && titleHeight > 25) {
+              nextSpace += 120;
+            }
+            if (titleHeight > 50) {
+              nextSpace += 150;
+            }
           }
           return (
             <Motion
@@ -104,7 +107,7 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
 
   return useMemo(
     () =>
-      (listView ? (
+      listView ? (
         <WorkflowListBox
           list={renderList}
           drop={drop}
@@ -123,7 +126,7 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
           categoryId={categoryId}
           tasks={tasks}
         />
-      )),
+      ),
     [
       bgcolor,
       buttonColor,

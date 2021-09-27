@@ -114,13 +114,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
       isQuestion,
       ownName
     } = this.props;
-    const {
-      studyCircle,
-      isThanksLoading,
-      isStudyCircleLoading,
-      loading,
-      circle
-    } = this.state;
+    const { studyCircle, isThanksLoading, isStudyCircleLoading, loading, circle } = this.state;
 
     return (
       <Fragment>

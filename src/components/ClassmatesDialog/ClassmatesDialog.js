@@ -32,42 +32,37 @@ const ClassmatesDialog = ({
   const [campaign, setCampaign] = useState(null);
 
   const title = useMemo(
-    () =>
-      (meetingInvite
-        ? 'Invite To Study Room'
-        : expertMode
-        ? 'Students'
-        : 'Classmates'),
+    () => (meetingInvite ? 'Invite To Study Room' : expertMode ? 'Students' : 'Classmates'),
     [expertMode, meetingInvite]
   );
 
   useEffect(() => {
     const initClassmates = async () => {
       const { classId, sectionId } = decypherClass();
-      if (!sectionId && !classId) return;
+      if (!sectionId && !classId) {
+        return;
+      }
       const res = await getClassmates({
         sectionId,
         classId
       });
       if (res) {
-        const classmates = res.filter(
-          (r) => Number(r.userId) !== Number(userId)
-        );
+        const classmates = res.filter((r) => Number(r.userId) !== Number(userId));
         setClassmates(classmates);
       }
     };
 
     const initStudents = async () => {
       const { classId, sectionId } = decypherClass();
-      if (!sectionId && !classId) return;
+      if (!sectionId && !classId) {
+        return;
+      }
       const res = await getClassmates({
         sectionId,
         classId
       });
       if (res) {
-        const classmates = res.filter(
-          (classmate) => Number(classmate.userId) !== Number(userId)
-        );
+        const classmates = res.filter((classmate) => Number(classmate.userId) !== Number(userId));
         setClassmates(classmates);
       }
     };
@@ -81,9 +76,7 @@ const ClassmatesDialog = ({
             classId: selectedClass.classId
           });
           classmates.forEach((classmate) => {
-            const classes = students[classmate.userId]
-              ? students[classmate.userId].classes
-              : [];
+            const classes = students[classmate.userId] ? students[classmate.userId].classes : [];
             students[classmate.userId] = {
               ...classmate,
               classes: [...classes, selectedClass]
@@ -93,17 +86,18 @@ const ClassmatesDialog = ({
       );
 
       const res = Object.values(students);
-      const classmates = res.filter(
-        (classmate) => Number(classmate.userId) !== Number(userId)
-      );
+      const classmates = res.filter((classmate) => Number(classmate.userId) !== Number(userId));
       setClassmates(classmates);
     };
 
     const init = async () => {
       if (selectedClasses.length > 0) {
         initSelectedClassesClassmates();
-      } else if (state === 'classmate') initClassmates();
-      else initStudents();
+      } else if (state === 'classmate') {
+        initClassmates();
+      } else {
+        initStudents();
+      }
 
       const aCampaign = await getCampaign({ campaignId: 9 });
       setCampaign(aCampaign);
@@ -112,20 +106,19 @@ const ClassmatesDialog = ({
       setReferralProgram(res);
     };
 
-    if (state && !searchKey) init();
-  }, [
-    searchKey,
-    selectedClasses,
-    selectedClasses.length,
-    state,
-    userClasses,
-    userId
-  ]);
+    if (state && !searchKey) {
+      init();
+    }
+  }, [searchKey, selectedClasses, selectedClasses.length, state, userClasses, userId]);
 
-  if (!campaign) return null;
+  if (!campaign) {
+    return null;
+  }
 
   const Invite = () => {
-    if (!referralProgram || !referralProgram.is_visible) return null;
+    if (!referralProgram || !referralProgram.is_visible) {
+      return null;
+    }
 
     const { code, img_url: imageUrl, title, subtitle } = referralProgram;
 
@@ -154,8 +147,7 @@ const ClassmatesDialog = ({
     );
   };
 
-  const videoEnabled =
-    campaign.variation_key && campaign.variation_key !== 'hidden';
+  const videoEnabled = campaign.variation_key && campaign.variation_key !== 'hidden';
 
   const handleChange = (e) => {
     const currentClassMates = [...classmates];
@@ -184,9 +176,7 @@ const ClassmatesDialog = ({
         open={Boolean(state)}
         title={title}
       >
-        {!meetingInvite && (
-          <div className={classes.courseDisplayName}>{courseDisplayName}</div>
-        )}
+        {!meetingInvite && <div className={classes.courseDisplayName}>{courseDisplayName}</div>}
         <FormControl classes={{ root: classes.searchInput }} fullWidth>
           <Input
             id="search-classmates"
@@ -201,9 +191,7 @@ const ClassmatesDialog = ({
             <Classmate
               meetingInvite={meetingInvite}
               courseDisplayName={courseDisplayName}
-              videoEnabled={
-                meetingInvite ? videoEnabled : videoEnabled && !expertMode
-              }
+              videoEnabled={meetingInvite ? videoEnabled : videoEnabled && !expertMode}
               key={c.userId}
               classmate={c}
             />

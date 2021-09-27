@@ -48,12 +48,7 @@ const FeedPage = ({ classes, location }: Props) => {
             </Grid>
           </Hidden>
           <Grid item xs={12} lg={9} className={classes.item}>
-            <Feed
-              feedId={feedId}
-              classId={classId}
-              sectionId={sectionId}
-              from={from}
-            />
+            <Feed feedId={feedId} classId={classId} sectionId={sectionId} from={from} />
           </Grid>
           <Grid item xs={12} lg={3} className={classes.resources} ref={gridRef}>
             <Grid container direction="column" spacing={2}>

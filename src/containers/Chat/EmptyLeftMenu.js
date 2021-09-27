@@ -72,8 +72,7 @@ const EmptyLeftMenu = ({ isLoading, emptyChannels }) => {
               root: classes.message
             }}
           >
-            Once you send a message about class or a problem, all of your
-            messages will be here
+            Once you send a message about class or a problem, all of your messages will be here
           </Typography>
           {isLoading && (
             <div className={classes.loading}>

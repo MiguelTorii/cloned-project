@@ -20,13 +20,7 @@ type Props = {
   selectedChannel: Object
 };
 
-const InitialAlert = ({
-  local,
-  channel,
-  userId,
-  isCommunityChat,
-  selectedChannel
-}: Props) => {
+const InitialAlert = ({ local, channel, userId, isCommunityChat, selectedChannel }: Props) => {
   const classes = useStyles();
   const [isOneToOne, setIsOneToOne] = useState(true);
   const [name, setName] = useState('');
@@ -53,8 +47,7 @@ const InitialAlert = ({
   const initials = useMemo(() => getInitials(name), [name]);
 
   return isCommunityChat ? (
-    local[channel?.sid]?.twilioChannel?.channelState
-      ?.lastConsumedMessageIndex === null ? (
+    local[channel?.sid]?.twilioChannel?.channelState?.lastConsumedMessageIndex === null ? (
       <Box
         className={classes.root}
         display="flex"
@@ -67,10 +60,9 @@ const InitialAlert = ({
           Welcome To #{selectedChannel?.chat_name}
         </Typography>
         <Typography className={classes.initialAlert} variant="subtitle2">
-          Gasp...you’re the first one here! Start this chat by sending a message
-          below to light the way for your classmates! It feels good to connect
-          with others no matter where you are. Who knows, you might make a
-          friend!
+          Gasp...you’re the first one here! Start this chat by sending a message below to light the
+          way for your classmates! It feels good to connect with others no matter where you are. Who
+          knows, you might make a friend!
         </Typography>
       </Box>
     ) : (
@@ -79,10 +71,7 @@ const InitialAlert = ({
         <Typography className={classes.members} variant="h5">
           #{selectedChannel?.chat_name}
         </Typography>
-        <Typography
-          className={classes.initialAlertDescription}
-          variant="subtitle2"
-        >
+        <Typography className={classes.initialAlertDescription} variant="subtitle2">
           This is the beginning of your chat with
           {isOneToOne ? name : ' your group.'}
         </Typography>
@@ -96,10 +85,7 @@ const InitialAlert = ({
       <Typography className={classes.members} variant="h5">
         {local[channel.sid].members.length === 2 ? `You and ${name}` : name}
       </Typography>
-      <Typography
-        className={classes.initialAlertDescription}
-        variant="subtitle2"
-      >
+      <Typography className={classes.initialAlertDescription} variant="subtitle2">
         This is the beginning of your chat with
         {isOneToOne ? ` ${name}` : ' your group.'}
       </Typography>

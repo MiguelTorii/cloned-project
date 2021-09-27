@@ -15,16 +15,17 @@ export const getNotifications = async ({
   try {
     const token = await getToken();
     let type = '';
-    if (tab === 1) type = 'recommended=true';
-    if (tab === 2) type = 'announcement=true';
-    const result = await axios.get(
-      `${API_ROUTES.NOTIFICATIONS}/${userId}?${type}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    if (tab === 1) {
+      type = 'recommended=true';
+    }
+    if (tab === 2) {
+      type = 'announcement=true';
+    }
+    const result = await axios.get(`${API_ROUTES.NOTIFICATIONS}/${userId}?${type}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data } = result;
 
     const notifications = (data.notifications || []).map((item) => ({
@@ -51,29 +52,22 @@ export const getNotifications = async ({
 
     return { notifications, unreadCount };
   } catch (err) {
-    if (err.response && err.response.status === 401)
+    if (err.response && err.response.status === 401) {
       window.location.href = '/auth';
+    }
     return { notifications: [], unreadCount: 0 };
   }
 };
 
-export const setNotificationsRead = async ({
-  userId
-}: {
-  userId: string
-}): Promise<Object> => {
+export const setNotificationsRead = async ({ userId }: { userId: string }): Promise<Object> => {
   try {
     const token = await getToken();
 
-    const result = await axios.post(
-      `${API_ROUTES.NOTIFICATIONS}/${userId}/read/`,
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.NOTIFICATIONS}/${userId}/read/`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     return data;
@@ -92,14 +86,11 @@ export const getNotification = async ({
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.NOTIFICATIONS}/${userId}/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.NOTIFICATIONS}/${userId}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data } = result;
     return {
       title: String((data.title: string) || ''),

@@ -84,7 +84,9 @@ class PostTips extends React.PureComponent<Props, State> {
   render() {
     const { classes, type, width } = this.props;
 
-    if (['sm'].includes(width)) return null;
+    if (['sm'].includes(width)) {
+      return null;
+    }
 
     return (
       <main className={classes.main}>

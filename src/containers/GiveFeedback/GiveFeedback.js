@@ -30,13 +30,18 @@ const GiveFeedback = ({ open, onClose, origin }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (!open) setFeedback('');
+    if (!open) {
+      setFeedback('');
+    }
   }, [open]);
 
   const sendFeedback = useCallback(async () => {
     const res = await sendFeedbackAPI({ feedback, origin });
-    if (res?.success) onClose();
-    else setError('Failed to send Feedback');
+    if (res?.success) {
+      onClose();
+    } else {
+      setError('Failed to send Feedback');
+    }
   }, [feedback, onClose, origin]);
 
   return (
@@ -52,9 +57,8 @@ const GiveFeedback = ({ open, onClose, origin }: Props) => {
     >
       <Grid container className={classes.container}>
         <Typography className={classes.body}>
-          How do you think we can make CircleIn better for you? Have an idea
-          that you'd like us to work on? Just enter it here and include your
-          email so we can thank you!
+          How do you think we can make CircleIn better for you? Have an idea that you'd like us to
+          work on? Just enter it here and include your email so we can thank you!
         </Typography>
         <TextField
           fullWidth

@@ -21,13 +21,7 @@ type Props = {
   n: number
 };
 
-const Notification = ({
-  dueDate,
-  editNotification,
-  deleteNotification,
-  index,
-  n
-}: Props) => {
+const Notification = ({ dueDate, editNotification, deleteNotification, index, n }: Props) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   // const [currentDate, setCurrentDate] = useState(n.value || '')

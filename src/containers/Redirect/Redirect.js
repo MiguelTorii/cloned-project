@@ -3,25 +3,16 @@
 
 import React from 'react';
 import { isAndroid, isIOS, isBrowser, osVersion } from 'react-device-detect';
-import {
-  Link as RouterLink,
-  Redirect as RouterRedirect
-} from 'react-router-dom';
+import { Link as RouterLink, Redirect as RouterRedirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 // $FlowIgnore
 import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
-import {
-  IOS_REDIRECT_URI,
-  IOS_13_REDIRECT_URI,
-  ANDROID_REDIRECT_URI
-} from '../../constants/app';
+import { IOS_REDIRECT_URI, IOS_13_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
 
-const MyLink = ({ to, ...props }) => (
-  <RouterLink to={to} {...props} target="_top" />
-);
+const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} target="_top" />;
 
 const styles = (theme) => ({
   root: {
@@ -93,7 +84,9 @@ class Redirect extends React.PureComponent<Props, State> {
   render() {
     const { classes, nonce } = this.props;
 
-    if (isBrowser) return <RouterRedirect to={`/canvas/${nonce}`} />;
+    if (isBrowser) {
+      return <RouterRedirect to={`/canvas/${nonce}`} />;
+    }
     // console.log()
     return (
       <div className={classes.root}>
@@ -106,9 +99,7 @@ class Redirect extends React.PureComponent<Props, State> {
               rel="noopener noreferrer"
               target="_blank"
               href={`${
-                osVersion.startsWith('13')
-                  ? IOS_13_REDIRECT_URI
-                  : IOS_REDIRECT_URI
+                osVersion.startsWith('13') ? IOS_13_REDIRECT_URI : IOS_REDIRECT_URI
               }?nonce=${nonce}`}
             >
               <Button variant="contained" color="primary">
@@ -117,10 +108,7 @@ class Redirect extends React.PureComponent<Props, State> {
             </a>
           )}
           {isAndroid && (
-            <Link
-              className={classes.button}
-              href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}
-            >
+            <Link className={classes.button} href={`${ANDROID_REDIRECT_URI}?nonce=${nonce}`}>
               <Button
                 variant="contained"
                 color="primary"

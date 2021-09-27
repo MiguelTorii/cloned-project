@@ -45,14 +45,17 @@ const ClassMultiSelect = ({
   const classes = useStyles();
 
   const options = useMemo(() => {
-    if (externalOptions) return externalOptions;
+    if (externalOptions) {
+      return externalOptions;
+    }
     try {
       const classList = {};
       user.userClasses.classList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
           cl.section.forEach((s) => {
             classList[s.sectionId] = cl;
           });
+        }
       });
       return Object.keys(classList).map((sectionId) => ({
         ...classList[sectionId],
@@ -98,8 +101,7 @@ const ClassMultiSelect = ({
         disableClearable={noEmpty}
         openOnFocus
         getOptionSelected={(option, value) =>
-          value.classId === option.classId &&
-          value.sectionId === option.sectionId
+          value.classId === option.classId && value.sectionId === option.sectionId
         }
         limitTags={2}
         id="tags-filled"
@@ -107,9 +109,7 @@ const ClassMultiSelect = ({
         value={selected}
         options={[{ className: 'All Classes', value: 'all' }, ...options]}
         defaultValue={[]}
-        getOptionLabel={(o) =>
-          `${o.section ? `${o.section[0].section}-` : ''} ${o.className}`
-        }
+        getOptionLabel={(o) => `${o.section ? `${o.section[0].section}-` : ''} ${o.className}`}
         disableCloseOnSelect
         renderOption={(option, { selected }) => (
           <>
@@ -121,15 +121,15 @@ const ClassMultiSelect = ({
                 checked={selected}
               />
             )}
-            {`${
-              schoolId === '119' && option.section
-                ? `${option.section[0].section}-`
-                : ''
-            } ${option.className}`}
+            {`${schoolId === '119' && option.section ? `${option.section[0].section}-` : ''} ${
+              option.className
+            }`}
           </>
         )}
         renderTags={(value, getTagProps) => {
-          if (allSelected) return allLabel || 'All Classes Selected';
+          if (allSelected) {
+            return allLabel || 'All Classes Selected';
+          }
           return value.map(
             (option, index) =>
               option && (

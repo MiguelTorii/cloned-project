@@ -64,8 +64,12 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
   handleSubmit = () => {
     const { onSubmit } = this.props;
     const { value, selected, selectedDate } = this.state;
-    if (value.trim() === '') return;
-    if (!selectedDate._isValid) return;
+    if (value.trim() === '') {
+      return;
+    }
+    if (!selectedDate._isValid) {
+      return;
+    }
     onSubmit({
       title: value,
       dueDate: selectedDate.valueOf(),
@@ -76,8 +80,7 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, loading } = this.props;
-    const { value, selectedDate, school, personal, other, selected } =
-      this.state;
+    const { value, selectedDate, school, personal, other, selected } = this.state;
     return (
       <Paper className={classes.header} elevation={1}>
         <TextField
@@ -154,9 +157,7 @@ class RemindersAddNew extends React.PureComponent<Props, State> {
           >
             Add
           </Button>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </div>
       </Paper>
     );

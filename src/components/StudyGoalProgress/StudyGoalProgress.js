@@ -6,20 +6,13 @@ import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import useStyles from './styles';
 
-const StudyGoalProgress = ({
-  title,
-  content,
-  value,
-  total
-}) => {
+const StudyGoalProgress = ({ title, content, value, total }) => {
   const classes = useStyles();
 
   return (
     <Grid container spacing={1} direction="column" alignItems="center">
       <Grid item>
-        <Typography className={classes.title}>
-          {title}
-        </Typography>
+        <Typography className={classes.title}>{title}</Typography>
       </Grid>
       <Grid item>
         <Box position="relative" display="inline-flex">
@@ -31,11 +24,7 @@ const StudyGoalProgress = ({
             color="inherit"
             className={classes.progressBorder}
           />
-          <Box
-            top={0}
-            left={0}
-            position="absolute"
-          >
+          <Box top={0} left={0} position="absolute">
             <CircularProgress
               variant="determinate"
               value={_.min([(value * 100) / total, 100])}

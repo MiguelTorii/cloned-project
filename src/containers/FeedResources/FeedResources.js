@@ -65,13 +65,7 @@ type Props = {
   onboardingListVisible: boolean
 };
 
-const FeedResources = ({
-  gridRef,
-  width,
-  classes,
-  user,
-  onboardingListVisible
-}: Props) => {
+const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }: Props) => {
   const {
     syncData: { display, smallLogo, resourcesBody, resourcesTitle }
   } = user;
@@ -101,7 +95,9 @@ const FeedResources = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [gridRef]);
 
-  if (['xs', 'sm'].includes(width)) return null;
+  if (['xs', 'sm'].includes(width)) {
+    return null;
+  }
 
   let top;
 
@@ -129,9 +125,7 @@ const FeedResources = ({
         <Paper className={classes.paper}>
           <Grid item>
             <div className={classes.imgContainer}>
-              {smallLogo && (
-                <img alt="logo" className={classes.img} src={smallLogo} />
-              )}
+              {smallLogo && <img alt="logo" className={classes.img} src={smallLogo} />}
             </div>
           </Grid>
           <Typography className={classes.title}>{resourcesTitle}</Typography>

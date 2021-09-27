@@ -63,27 +63,30 @@ const MessageQuill = ({
     []
   );
 
-  const uploadFile = useCallback(async (file) => {
-    const { type, name, size } = file;
+  const uploadFile = useCallback(
+    async (file) => {
+      const { type, name, size } = file;
 
-    if (size < FILE_LIMIT_SIZE) {
-      const result = await uploadMedia(userId, 1, file);
-      const { readUrl } = result;
-      const anyFile = {
-        type,
-        name,
-        url: readUrl,
-        size
-      };
+      if (size < FILE_LIMIT_SIZE) {
+        const result = await uploadMedia(userId, 1, file);
+        const { readUrl } = result;
+        const anyFile = {
+          type,
+          name,
+          url: readUrl,
+          size
+        };
 
-      setFiles([...files, anyFile]);
-    } else {
-      showNotification({
-        message: 'Upload File size is over 40 MB',
-        variant: 'warning'
-      });
-    }
-  }, [setFiles, showNotification, classes, files]);
+        setFiles([...files, anyFile]);
+      } else {
+        showNotification({
+          message: 'Upload File size is over 40 MB',
+          variant: 'warning'
+        });
+      }
+    },
+    [setFiles, showNotification, classes, files]
+  );
 
   const imageHandler = useCallback(
     async (imageDataUrl, type, imageData) => {
@@ -124,9 +127,7 @@ const MessageQuill = ({
     },
     scrollingContainer: 'editor',
     formats,
-    placeholder: isCommunityChat
-      ? 'Send a message to channel'
-      : 'Send a message',
+    placeholder: isCommunityChat ? 'Send a message to channel' : 'Send a message',
     preserveWhitespace: true
   });
 
@@ -135,7 +136,9 @@ const MessageQuill = ({
   }
 
   useEffect(() => {
-    if (quill) quill.focus();
+    if (quill) {
+      quill.focus();
+    }
   }, [focusMessageBox, quill]);
 
   useEffect(() => {
@@ -144,13 +147,9 @@ const MessageQuill = ({
       quill.on('text-change', () => {
         if (quill.getSelection(true)) {
           onChange(quill.container.firstChild.innerHTML);
-          if (
-            quill.container.firstChild.innerHTML.length >
-            quill.getSelection(true).index
-          ) {
+          if (quill.container.firstChild.innerHTML.length > quill.getSelection(true).index) {
             quill.setSelection(
-              quill.getSelection(true).index +
-                quill.container.firstChild.innerHTML.length
+              quill.getSelection(true).index + quill.container.firstChild.innerHTML.length
             );
           }
           const currentFocusPosition = quill.getSelection(true).index;
@@ -161,10 +160,7 @@ const MessageQuill = ({
           const currentEditorWidth = quill.container.firstChild.clientWidth;
           if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
             if (!quill.container.firstChild.innerHTML.includes('<p>\n</p>')) {
-              quill.insertText(
-                quill.container.firstChild.innerHTML.length.index + 1,
-                '\n'
-              );
+              quill.insertText(quill.container.firstChild.innerHTML.length.index + 1, '\n');
             }
           }
 
@@ -292,22 +288,13 @@ const MessageQuill = ({
       {files.length > 0 && (
         <div className={classes.files}>
           {files.map((file) => (
-            <AttachFile
-              key={file.url}
-              file={file}
-              onClose={() => onClose(file)}
-              smallChat
-            />
+            <AttachFile key={file.url} file={file} onClose={() => onClose(file)} smallChat />
           ))}
         </div>
       )}
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
-        <Typography
-          component="p"
-          variant="subtitle1"
-          className={classes.errorMessage}
-        >
+        <Typography component="p" variant="subtitle1" className={classes.errorMessage}>
           We couldn't send your message for some reason. 😥
         </Typography>
       </div>

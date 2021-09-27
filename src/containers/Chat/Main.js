@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useMemo,
-  useCallback,
-  useRef,
-  useState,
-  useEffect
-} from 'react';
+import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { processMessages, fetchAvatars, getAvatar } from 'utils/chat';
@@ -120,13 +113,12 @@ const Main = ({
   const [campaign, setCampaign] = useState(null);
   const memberKeys = useMemo(() => Object.keys(members), [members]);
   const otherUser = useMemo(() => {
-    if (memberKeys.length !== 2) return null;
+    if (memberKeys.length !== 2) {
+      return null;
+    }
     return members[memberKeys.find((key) => key !== user.data.userId)];
   }, [memberKeys, members, user.data.userId]);
-  const localChannel = useMemo(
-    () => channel && local[channel.sid],
-    [channel, local]
-  );
+  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
 
   const {
     expertMode,
@@ -186,10 +178,7 @@ const Main = ({
         setHasMore(!(chatData.items.length < 10));
         handleScrollToBottom();
 
-        if (
-          !channel._events.typingStarted ||
-          channel._events.typingStarted.length === 0
-        ) {
+        if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
           channel.on('typingStarted', (member) => {
             member.getUser().then((user) => {
               const { state } = user;
@@ -205,7 +194,9 @@ const Main = ({
       } catch (e) {}
     };
 
-    if (channel) init();
+    if (channel) {
+      init();
+    }
     // eslint-disable-next-line
   }, [channel, channel?.channelState?.dateUpdated]);
 
@@ -248,7 +239,9 @@ const Main = ({
 
   const getRole = useCallback(
     (userId) => {
-      if (!members[userId]) return null;
+      if (!members[userId]) {
+        return null;
+      }
       const { role } = members[userId];
       return role;
     },
@@ -313,7 +306,9 @@ const Main = ({
   const onSendMessage = useCallback(
     async (message) => {
       setScroll(true);
-      if (!channel) return;
+      if (!channel) {
+        return;
+      }
 
       logEvent({
         event: 'Chat- Send Message',
@@ -350,7 +345,9 @@ const Main = ({
   );
 
   const onTyping = useCallback(() => {
-    if (!channel) return;
+    if (!channel) {
+      return;
+    }
     try {
       channel.typing();
     } catch (err) {
@@ -361,7 +358,9 @@ const Main = ({
   const onSendInput = useCallback(
     async (file) => {
       setLoading(true);
-      if (!channel) return;
+      if (!channel) {
+        return;
+      }
 
       try {
         const result = await getPresignedURL({
@@ -418,8 +417,7 @@ const Main = ({
   }, [channel]);
 
   const videoEnabled = useMemo(
-    () =>
-      campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
+    () => campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
     [campaign]
   );
 
@@ -429,9 +427,7 @@ const Main = ({
         {newChannel && <CreateChatChannelInput onOpenChannel={onOpenChannel} />}
         {channel && (
           <Grid container justifyContent="space-between">
-            <Typography className={classes.headerTitle}>
-              {localChannel?.title}
-            </Typography>
+            <Typography className={classes.headerTitle}>{localChannel?.title}</Typography>
             {(otherUser?.registered || memberKeys.length > 2) && videoEnabled && (
               <Button
                 variant="contained"
@@ -480,9 +476,7 @@ const Main = ({
       {channel && (
         <div className={classes.typing}>
           <Typography className={classes.typingText} variant="subtitle1">
-            {typing && typing.channel === channel.sid
-              ? `${typing.friendlyName} is typing ...`
-              : ''}
+            {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
           </Typography>
         </div>
       )}

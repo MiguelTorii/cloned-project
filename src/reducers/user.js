@@ -4,12 +4,7 @@
  */
 import update from 'immutability-helper';
 import store from 'store';
-import {
-  signInActions,
-  signUpActions,
-  userActions,
-  rootActions
-} from '../constants/action-types';
+import { signInActions, signUpActions, userActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { User, Announcement, FeedItem } from '../types/models';
 import { normalizeArray } from '../utils/helpers';
@@ -256,7 +251,9 @@ export default (state: UserState = defaultState, action: Action): UserState => {
       });
     }
     case userActions.BOOKMARK_FLASHCARDS: {
-      if (!state.flashcards.ids.includes(action.meta.feedId)) return state;
+      if (!state.flashcards.ids.includes(action.meta.feedId)) {
+        return state;
+      }
       return update(state, {
         flashcards: {
           byId: {

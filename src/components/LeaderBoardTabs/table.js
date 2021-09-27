@@ -63,19 +63,11 @@ const StudentTable = ({
 
   return (
     <div className={classes.root}>
-      <InfiniteScroll
-        loadMore={handleLoadMore}
-        hasMore={hasMore}
-        initialLoad={false}
-      >
+      <InfiniteScroll loadMore={handleLoadMore} hasMore={hasMore} initialLoad={false}>
         <Table className={classes.table}>
           <TableHead>
             <StyledTableRow>
-              <TableCell
-                className={classes.tdHeader}
-                padding="none"
-                align="center"
-              ></TableCell>
+              <TableCell className={classes.tdHeader} padding="none" align="center"></TableCell>
               <TableCell className={classes.tdHeader} align="left">
                 Student
               </TableCell>
@@ -90,16 +82,9 @@ const StudentTable = ({
                 hover
                 key={s.userId}
                 onClick={() => pushTo(`/profile/${s.userId}`)}
-                className={cx(
-                  classes.tr,
-                  userId === s.userId ? classes.trHighlight : ''
-                )}
+                className={cx(classes.tr, userId === s.userId ? classes.trHighlight : '')}
               >
-                <TableCell
-                  padding="none"
-                  className={classes.tdnp}
-                  align="center"
-                >
+                <TableCell padding="none" className={classes.tdnp} align="center">
                   {s.position}
                 </TableCell>
                 <TableCell className={classes.td} align="left">

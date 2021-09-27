@@ -89,12 +89,7 @@ const SelectSchool = ({
       return false;
     }
 
-    const {
-      lmsTypeId,
-      launchType,
-      redirect_message: redirectMessage,
-      connection
-    } = school;
+    const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
 
     if (school.studentLive === 0) {
       setDeeplinkLoading(false);
@@ -177,7 +172,9 @@ const SelectSchool = ({
 
   // Deep link to specific school
   useEffect(() => {
-    if (isDeepLink && school?.id) onClick();
+    if (isDeepLink && school?.id) {
+      onClick();
+    }
   }, [school, isDeepLink, onClick]);
 
   const loginAsExternal = useCallback(() => {
@@ -217,34 +214,20 @@ const SelectSchool = ({
         disabled={!school?.id || loading}
         color="primary"
       >
-        {loading ? (
-          <CircularProgress size={20} color="secondary" />
-        ) : (
-          'Select School'
-        )}
+        {loading ? <CircularProgress size={20} color="secondary" /> : 'Select School'}
       </Button>
 
-      <Button
-        onClick={loginAsExternal}
-        className={classes.externalUser}
-        color="primary"
-      >
+      <Button onClick={loginAsExternal} className={classes.externalUser} color="primary">
         Login as an external user
       </Button>
 
       <Typography variant="subtitle1" className={classes.link} align="center">
         {"By searching for and selecting your school, I agree to CircleIn's  "}
-        <Link
-          href="https://s3.amazonaws.com/myqvo/terms_of_use.pdf"
-          target="_blank"
-        >
+        <Link href="https://s3.amazonaws.com/myqvo/terms_of_use.pdf" target="_blank">
           Terms of Service
         </Link>
         {' and '}
-        <Link
-          href="https://s3.amazonaws.com/myqvo/privacy_policy.pdf"
-          target="_blank"
-        >
+        <Link href="https://s3.amazonaws.com/myqvo/privacy_policy.pdf" target="_blank">
           Privacy Policy
         </Link>
       </Typography>

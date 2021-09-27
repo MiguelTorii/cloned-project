@@ -2,11 +2,7 @@
 
 import React from 'react';
 import cx from 'classnames';
-import {
-  ValidatorForm,
-  TextValidator,
-  SelectValidator
-} from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -113,11 +109,7 @@ class ProfileSetup extends React.PureComponent<Props, State> {
         onSubmit={this.handleSubmit}
         className={cx(classes.form, hide && classes.hide)}
       >
-        <FormControl
-          variant="outlined"
-          fullWidth
-          className={classes.formControl}
-        >
+        <FormControl variant="outlined" fullWidth className={classes.formControl}>
           <SelectValidator
             value={state}
             name="state"
@@ -256,18 +248,10 @@ class ProfileSetup extends React.PureComponent<Props, State> {
           </Button>
         </div>
         <div className={classes.wrapper}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={loading}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" disabled={loading}>
             Submit
           </Button>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </div>
       </ValidatorForm>
     );

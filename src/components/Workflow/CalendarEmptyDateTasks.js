@@ -14,10 +14,7 @@ const CalendarEmptyDateTasks = ({ tasksEmptyDate, onOpenEdit }) => {
   const buttonRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const onOpen = useCallback(
-    () => setAnchorEl(anchorEl ? null : buttonRef.current),
-    [anchorEl]
-  );
+  const onOpen = useCallback(() => setAnchorEl(anchorEl ? null : buttonRef.current), [anchorEl]);
 
   const onDrag = useCallback((ref) => {
     if (ref) {
@@ -37,12 +34,7 @@ const CalendarEmptyDateTasks = ({ tasksEmptyDate, onOpenEdit }) => {
 
   return (
     <div>
-      <Popper
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        placement="right-end"
-        transition
-      >
+      <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="right-end" transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={100}>
             <Paper className={classes.popper}>

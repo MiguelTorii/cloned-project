@@ -116,8 +116,9 @@ const CreateFlashcards = ({
   }, [flashcards, setDebounceState, summary, title]);
 
   useEffect(() => {
-    if (!isEdit && (title || summary || flashcards.length > 0))
+    if (!isEdit && (title || summary || flashcards.length > 0)) {
       store.set('FLASHCARDS_CACHE', debounceState);
+    }
   }, [debounceState, flashcards.length, isEdit, summary, title]);
 
   useEffect(() => {
@@ -142,9 +143,7 @@ const CreateFlashcards = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost
-          ? `?class=${cypher(`${classId}:${sectionId}`)}`
-          : '';
+        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);
@@ -154,7 +153,9 @@ const CreateFlashcards = ({
   );
 
   const loadData = useCallback(async () => {
-    if (!flashcardId) return null;
+    if (!flashcardId) {
+      return null;
+    }
     const res = await api.getFlashcards({
       userId,
       flashcardId
@@ -310,7 +311,9 @@ const CreateFlashcards = ({
       let hasError = false;
       if (canBatchPost && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') {
+            hasError = true;
+          }
         });
         if (hasError || resClasses.length === 0) {
           setLoading(false);
@@ -382,16 +385,23 @@ const CreateFlashcards = ({
 
   const handleSubmit = useCallback(() => {
     setChanged(false);
-    if (flashcardId) updateFlashcards();
-    else createFlashcards();
+    if (flashcardId) {
+      updateFlashcards();
+    } else {
+      createFlashcards();
+    }
   }, [updateFlashcards, createFlashcards, flashcardId]);
 
   const handleTextChange = useCallback(
     (name) => (event) => {
       setChanged(true);
       const v = event.target.value;
-      if (name === 'title') setTitle(v);
-      if (name === 'summary') setSummary(v);
+      if (name === 'title') {
+        setTitle(v);
+      }
+      if (name === 'summary') {
+        setSummary(v);
+      }
     },
     []
   );
@@ -399,13 +409,14 @@ const CreateFlashcards = ({
   const handleClassChange = useCallback(
     ({ classId, sectionId }: { classId: number, sectionId: number }) => {
       const selected = userClasses.classList.find((c) => c.classId === classId);
-      if (selected)
+      if (selected) {
         setClassList([
           {
             ...selected,
             sectionId
           }
         ]);
+      }
       setSectionId(sectionId);
       setClassId(classId);
     },
@@ -507,7 +518,9 @@ const CreateFlashcards = ({
           }
         }
       });
-      if (!end) handleAddNew();
+      if (!end) {
+        handleAddNew();
+      }
     },
     [classes, enqueueSnackbar, handleAddNew, flashcards]
   );
@@ -531,7 +544,9 @@ const CreateFlashcards = ({
   };
 
   useEffect(() => {
-    if (changed) window.addEventListener('beforeunload', onUnload);
+    if (changed) {
+      window.addEventListener('beforeunload', onUnload);
+    }
     return () => {
       window.removeEventListener('beforeunload', onUnload);
     };
@@ -599,10 +614,7 @@ const CreateFlashcards = ({
                   placement="right"
                   text="In Expert Mode, you can post the same thing in more than one class! 🙌"
                 >
-                  <ClassMultiSelect
-                    selected={classList}
-                    onSelect={handleClasses}
-                  />
+                  <ClassMultiSelect selected={classList} onSelect={handleClasses} />
                 </Tooltip>
               ) : (
                 <ClassesSelector

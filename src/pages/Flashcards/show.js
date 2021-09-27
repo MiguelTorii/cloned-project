@@ -31,7 +31,7 @@ const FlashcardsShowPage = () => {
       <Layout>
         <Grid container justifyContent="center">
           <Grid item xs={11} lg={10}>
-            { renderBody() }
+            {renderBody()}
           </Grid>
         </Grid>
       </Layout>

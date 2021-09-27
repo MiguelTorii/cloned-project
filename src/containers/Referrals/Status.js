@@ -37,7 +37,9 @@ const Status = ({ classes }: { classes: Object }) => {
     init();
   }, []);
 
-  if (!referralStatus) return <div>Loading...</div>;
+  if (!referralStatus) {
+    return <div>Loading...</div>;
+  }
 
   const { subtitle, users } = referralStatus;
 
@@ -45,11 +47,11 @@ const Status = ({ classes }: { classes: Object }) => {
     <div className={classes.body}>
       <Typography className={classes.subtitle}>
         {subtitle.split('\n').map((item) => (
-            <span key={Math.random()}>
-              {item}
-              <br />
-            </span>
-          ))}
+          <span key={Math.random()}>
+            {item}
+            <br />
+          </span>
+        ))}
       </Typography>
       {users.map((user, index) => (
         <div className={classes.row}>

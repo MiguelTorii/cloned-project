@@ -2,302 +2,171 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'airbnb',
-    // 'prettier',
+    'prettier',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended'
   ],
   plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
   rules: {
-    // 'prettier/prettier': 'warn',
-    'object-curly-spacing': 2,
-    'react/jsx-filename-extension': [
-      1,
-      {
-        extensions: ['.js', '.jsx']
-      }
-    ],
-    'react/prop-types': 0,
-    'no-underscore-dangle': 0,
-
-    // TODO turn this back on
-    // 'import/imports-first': ['error', 'absolute-first'],
-
-    'react/no-unescaped-entities': 0,
-
-    // TODO turn this back on
-    // got null in chat/RightMenu.js
-    // need to resolve
-    // indent: ['error', 2],
+    'prettier/prettier': 'error',
     'indent': 'off',
-
-    // TODO turn this back on
-    'react/no-unused-state': 'off',
-
-    // TODO turn this back on
-    'react/no-did-update-set-state': 'off',
-
-    // TODO turn this back on
-    'react/jsx-curly-newline': 'off',
-
-    // TODO turn this back on
-    'react/destructuring-assignment': 'off',
-
-    // TODO turn this back on
-    'react/jsx-indent': 'off',
-
-    // TODO turn this back on
-    'react/static-property-placement': 'off',
-
-    // TODO turn this back on
-    'react/no-access-state-in-setstate': 'off',
-
-    // TODO turn this back on
-    'react/require-default-props': 'off',
-
-    // TODO turn this back on
-    'react/jsx-closing-tag-location': 'off',
-
-    // TODO turn this back on
-    'jsx-a11y/no-noninteractive-element-interactions': 'off',
-
-    'no-unused-expressions': 'error',
-    'no-undef': 'error',
+    'no-multiple-empty-lines': 'error',
+    curly: ["error", "all"],
     'brace-style': 'error',
     'no-nested-ternary': 'error',
-
-    // TODO turn this back on
-    'no-restricted-syntax': 'off',
-
-    // TODO turn this back on
-    'import/no-cycle': 'off',
-
+    'function-call-argument-newline': ['error', 'consistent'],
+    'object-curly-spacing': 'error',
+    'prefer-rest-params': 'error',
+    'arrow-body-style': ['error', 'as-needed'],
+    'no-unused-expressions': 'error',
+    'no-undef': 'error',
+    'prefer-const': 'error',
+    'one-var': ['error', 'never'],
+    'no-extra-boolean-cast': 'error',
     'no-mixed-operators': 'error',
     'jsx-quotes': 'error',
+    'no-trailing-spaces': 'error',
+    'no-return-assign': 'error',
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+    semi: 'error',
+    'eol-last': 'error',
+    'no-floating-decimal': 'error',
+    'dot-notation': 'error',
+    'comma-dangle': ['error', 'never'],
+    'object-curly-newline': ['error', { consistent: true }],
+    'quote-props': ['error', 'as-needed'],
+    quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
+    'no-tabs': 'error',
+    'spaced-comment': 'error',
+    'no-else-return': 'error',
+    'space-infix-ops': 'error',
 
-    // TODO turn this back on
-    'import/no-mutable-exports': 'off',
-
-    'no-multiple-empty-lines': 'error',
-
-    // TODO turn this back on
-    'react/button-has-type': 'off',
-
-    // TODO turn this back on
-    'react/no-array-index-key': 'off',
-
-    // TODO turn this back on
-    'react/default-props-match-prop-types': 'off',
-
-    'import/order': 'error',
-
-    // TODO turn this back on
-    'react/jsx-closing-bracket-location': 'off',
-
-    'import/no-duplicates': 'error',
-
-    // TODO turn this back on
-    'no-console': 'off',
-
-    // TODO turn this back on
-    'curly': 'off',
-
-    // TODO turn this back on
-    'react/forbid-prop-types': 'off',
-
-    // TODO turn this back on
-    'jsx-a11y/no-static-element-interactions': 'off',
-
-    // TODO turn this back on
-    'jsx-a11y/click-events-have-key-events': 'off',
-
-    // TODO turn this back on
-    'react/no-deprecated': 'off',
-
-    // TODO turn this back on
-    'react/sort-comp': 'off',
-
-    // TODO turn this back on
-    'no-empty': 'off',
-
-    // TODO turn this back on
-    'jsx-a11y/anchor-is-valid': 'off',
-
-    // TODO turn this back on
+    // I turned these off because I don't have a strong preference
+    // for any particular variation of these rules
+    'nonblock-statement-body-position': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'operator-linebreak': 'off',
     'function-paren-newline': 'off',
 
-    // TODO turn this back on
-    'react/jsx-wrap-multilines': 'off',
-
-    // TODO turn this back on
-    'react/display-name': 'off',
-
-    // TODO turn this back on
+    // TODO turn these standard eslint rules back on
+    'no-restricted-syntax': 'off',
+    'object-shorthand': 'off',
+    'no-console': 'off',
+    'no-empty': 'off',
     'func-names': 'off',
-
-    // TODO turn this back on
     'wrap-iife': 'off',
+    'no-shadow': 'off',
+    'no-underscore-dangle': 'off',
+    'no-param-reassign': 'off',
+    'no-restricted-properties': 'off',
+    'no-useless-escape': 'off',
+    'prefer-arrow-callback': 'off',
+    'consistent-return': 'off',
+    'no-useless-catch': 'off',
+    'no-unused-vars': 'off',
+    'no-confusing-arrow': 'off',
 
-    // TODO turn this back on
-    'react/jsx-key': 'off',
-
-    // TODO turn this back on
-    'nonblock-statement-body-position': 'off',
-
-    // TODO turn this back on
-    'react/jsx-props-no-spreading': 'off',
-
-    'arrow-body-style': ['error', 'as-needed'],
+    // TODO turn this back on with exceptions for API
+    camelcase: 'off',
 
     // TODO turn this back on
     // 'max-len': ['error', 120],
     'max-len': 'off',
 
-    'comma-dangle': ['error', 'never'],
-
-    // TODO turn this back on
-    'implicit-arrow-linebreak': 'off',
-
-    // TODO turn this back on
-    'consistent-return': 'off',
-
-    'object-curly-newline': ["error", { "consistent": true }],
-
-    // TODO turn this back on
-    'import/no-named-as-default': 'off',
-
-    // TODO turn this back on
-    'no-useless-catch': 'off',
-
-    // TODO turn this back on
-    'operator-linebreak': 'off',
-
-    // TODO turn this back on
-    'no-unused-vars': 'off',
-
-    // TODO turn this back on with exceptions for API
-    'camelcase': 'off',
-
-    // TODO turn this back on
-    'no-else-return': 'off',
-
-    'quote-props': ["error", "as-needed"],
-    'quotes': ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
-
-    'no-tabs': 'error',
-    'spaced-comment': 'error',
-
-    // TODO turn this back on
-    'react/jsx-fragments': 'off',
-
-    // TODO turn this back on
-    'space-infix-ops': 'off',
-
-    'no-extra-boolean-cast': 'error',
-
-    // TODO turn this back on
-    'object-shorthand': 'off',
-
-    'prefer-const': 'error',
-    'one-var': ['error', 'never'],
-
-    // TODO turn this back on
-    'react/jsx-boolean-value': 'off',
-
-    // TODO turn this back on
-    'react/self-closing-comp': 'off',
-
-    // TODO turn this back on
-    'no-useless-escape': 'off',
-
-    // TODO turn this back on
-    'import/first': 'off',
-
-    // TODO turn this back on
-    'prefer-arrow-callback': 'off',
-
-    // TODO turn this back on
-    'react/jsx-curly-brace-presence': 'off',
-
-    'semi': 'error',
-    'eol-last': 'error',
-    'no-floating-decimal': 'error',
-    'dot-notation': 'error',
-
-    // TODO turn this back on
-    'react/jsx-tag-spacing': 'off',
-
-    'no-return-assign': 'error',
-    'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
-
-    // TODO turn this back on
-    'no-param-reassign': 'off',
-
-    // TODO turn this back on
-    'no-restricted-properties': 'off',
-
-    'no-confusing-arrow': 'error',
-
-    // TODO turn this back on
-    'react/state-in-constructor': 'off',
-
-    // TODO turn this back on
-    'react/jsx-one-expression-per-line': 'off',
-
-    // TODO turn this back on
-    'react/no-unused-prop-types': 'off',
-
-    // TODO turn this back on
-    // got null in chat/RightMenu.js
-    // need to resolve
-    // 'template-curly-spacing': ['error', 'always'],
-    'template-curly-spacing': 'off',
-
+    'import/no-duplicates': 'error',
+    'import/order': 'error',
     'import/extensions': ['error', 'never', { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }],
     'import/newline-after-import': 'error',
 
-    'import/no-unresolved': 0,
+    // TODO turn the 'import' rules back on
+    'import/first': 'off',
+    'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
-    'no-trailing-spaces': 2,
+    // 'import/imports-first': ['error', 'absolute-first'],
+    'import/no-cycle': 'off',
+    'import/no-mutable-exports': 'off',
+    'import/no-named-as-default': 'off',
+
+    'react/jsx-filename-extension': [
+      'error',
+      {
+        extensions: ['.js', '.jsx']
+      }
+    ],
+
+    // TODO turn the 'react' rules back on
+    'react/no-unescaped-entities': 'off',
+    'react/no-unused-state': 'off',
+    'react/no-did-update-set-state': 'off',
+    'react/jsx-curly-newline': 'off',
+    'react/destructuring-assignment': 'off',
+    'react/jsx-indent': 'off',
+    'react/static-property-placement': 'off',
+    'react/no-access-state-in-setstate': 'off',
+    'react/require-default-props': 'off',
+    'react/jsx-closing-tag-location': 'off',
+    'react/button-has-type': 'off',
+    'react/no-array-index-key': 'off',
+    'react/default-props-match-prop-types': 'off',
+    'react/jsx-closing-bracket-location': 'off',
+    'react/forbid-prop-types': 'off',
+    'react/no-deprecated': 'off',
+    'react/sort-comp': 'off',
+    'react/jsx-wrap-multilines': 'off',
+    'react/display-name': 'off',
+    'react/jsx-key': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-fragments': 'off',
+    'react/jsx-boolean-value': 'off',
+    'react/self-closing-comp': 'off',
+    'react/jsx-curly-brace-presence': 'off',
+    'react/jsx-tag-spacing': 'off',
+    'react/state-in-constructor': 'off',
+    'react/jsx-one-expression-per-line': 'off',
+    'react/no-unused-prop-types': 'off',
+
+    // TODO turn this on once we can use typescript to generate the prop types
+    'react/prop-types': 'off',
+
+    // TODO turn these 'react-hooks' rules back on
     'react-hooks/exhaustive-deps': 'off',
     'react-hooks/rules-of-hooks': 'error',
-    'no-shadow': 0,
 
-    'flowtype/boolean-style': [2, 'boolean'],
-    'flowtype/define-flow-type': 1,
-    'flowtype/delimiter-dangle': [2, 'never'],
-    'flowtype/generic-spacing': [2, 'never'],
-    'flowtype/no-mixed': 2,
+    // TODO turn these 'jsx-a11y' rules back on
+    'jsx-a11y/no-noninteractive-element-interactions': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
 
-    // TODO turn this back on (or switch to TS)
-    // 'flowtype/no-primitive-constructor-types': 2,
+    // TODO remove all 'flowtype' rules (with a switch to TS)
+    'flowtype/boolean-style': ['error', 'boolean'],
+    'flowtype/define-flow-type': 'error',
+    'flowtype/delimiter-dangle': ['error', 'never'],
+    'flowtype/generic-spacing': ['error', 'never'],
+    'flowtype/no-mixed': 'error',
     'flowtype/no-primitive-constructor-types': 'off',
-
-    'flowtype/no-types-missing-file-annotation': 2,
-    'flowtype/no-weak-types': 0,
-    'flowtype/object-type-delimiter': [2, 'comma'],
-    'flowtype/require-parameter-type': 0,
-    'flowtype/require-readonly-react-props': 0,
+    'flowtype/no-types-missing-file-annotation': 'error',
+    'flowtype/no-weak-types': 'off',
+    'flowtype/object-type-delimiter': ['error', 'comma'],
+    'flowtype/require-parameter-type': 'off',
+    'flowtype/require-readonly-react-props': 'off',
     'flowtype/require-return-type': [
-      0,
+      'off',
       'always',
       {
         annotateUndefined: 'never'
       }
     ],
-    'flowtype/require-valid-file-annotation': 2,
-    'flowtype/semi': [2, 'always'],
-
-    // TODO turn this back on
-    // 'flowtype/space-after-type-colon': [2, 'always'],
+    'flowtype/require-valid-file-annotation': 'error',
+    'flowtype/semi': ['error', 'always'],
     'flowtype/space-after-type-colon': 'off',
-
-    'flowtype/space-before-generic-bracket': [2, 'never'],
-    'flowtype/space-before-type-colon': [2, 'never'],
-    'flowtype/type-id-match': [0, '^([A-Z][a-z0-9]+)+Type$'],
-    'flowtype/union-intersection-spacing': [2, 'always'],
-    'flowtype/use-flow-type': 1,
-    'flowtype/valid-syntax': 1
+    'flowtype/space-before-generic-bracket': ['error', 'never'],
+    'flowtype/space-before-type-colon': ['error', 'never'],
+    'flowtype/type-id-match': ['off', '^([A-Z][a-z0-9]+)+Type$'],
+    'flowtype/union-intersection-spacing': ['error', 'always'],
+    'flowtype/use-flow-type': 'error',
+    'flowtype/valid-syntax': 'error'
   },
   settings: {
     flowtype: {
@@ -322,5 +191,5 @@ module.exports = {
     Node: true,
     Image: true
   },
-  parser: 'babel-eslint'
+  parser: '@babel/eslint-parser'
 };

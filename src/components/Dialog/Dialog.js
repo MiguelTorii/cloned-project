@@ -102,15 +102,10 @@ const Dialog = ({
     >
       {showHeader && (
         <div className={classes.headerContainer}>
-          {showBackIcon && (
-            <ArrowBackIosIcon className={classes.backIcon} onClick={onCancel} />
-          )}
+          {showBackIcon && <ArrowBackIosIcon className={classes.backIcon} onClick={onCancel} />}
           {title &&
             (typeof title === 'string' ? (
-              <div
-                className={cx(headerTitleClass, classes.title)}
-                id="circle-in-dialog-title"
-              >
+              <div className={cx(headerTitleClass, classes.title)} id="circle-in-dialog-title">
                 {title}
               </div>
             ) : (

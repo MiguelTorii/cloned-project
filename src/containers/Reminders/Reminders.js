@@ -15,12 +15,7 @@ import type { State as StoreState } from '../../types/state';
 import type { ToDos } from '../../types/models';
 import RemidersList from '../../components/RemindersList/RemindersList';
 import RemindersCalendar from '../../components/RemindersCalendar/RemindersCalendar';
-import {
-  getReminders,
-  createReminder,
-  updateReminder,
-  deleteReminder
-} from '../../api/reminders';
+import { getReminders, createReminder, updateReminder, deleteReminder } from '../../api/reminders';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
@@ -61,13 +56,12 @@ class Reminders extends React.PureComponent<Props, State> {
     if (
       this.handleFetchReminders.cancel &&
       typeof this.handleFetchReminders.cancel === 'function'
-    )
+    ) {
       this.handleFetchReminders.cancel();
-    if (
-      this.handleUpdateDB.cancel &&
-      typeof this.handleUpdateDB.cancel === 'function'
-    )
+    }
+    if (this.handleUpdateDB.cancel && typeof this.handleUpdateDB.cancel === 'function') {
       this.handleUpdateDB.cancel();
+    }
   };
 
   handlePoints = (res) => {
@@ -193,7 +187,9 @@ class Reminders extends React.PureComponent<Props, State> {
     this.setState({ loading: true });
     try {
       const res = await createReminder({ userId, title, label, dueDate });
-      if (onboardingListVisible) getOnboardingList();
+      if (onboardingListVisible) {
+        getOnboardingList();
+      }
       this.handlePoints(res);
       await this.handleFetchReminders();
     } finally {
@@ -212,9 +208,12 @@ class Reminders extends React.PureComponent<Props, State> {
     } = this.props;
     const { list, loading, reminders } = this.state;
 
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
+    if (isLoading) {
+      return <CircularProgress size={12} />;
+    }
+    if (userId === '' || error) {
       return 'Oops, there was an error loading your data, please try again.';
+    }
 
     return (
       <div className={classes.root}>
@@ -259,7 +258,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Reminders));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Reminders));

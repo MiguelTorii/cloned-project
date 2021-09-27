@@ -87,25 +87,22 @@ const URIS = {
 };
 
 const getIconURL = (extension) => {
-  if (URIS[extension]) return URIS[extension];
+  if (URIS[extension]) {
+    return URIS[extension];
+  }
   return URIS['other-default'];
 };
 
 const getFileContent = (extension) => {
-  if (fileContent[extension]) return fileContent[extension];
+  if (fileContent[extension]) {
+    return fileContent[extension];
+  }
   return fileContent['other-default'];
 };
 
 const getFileExtension = (filename) => filename.split('.').pop();
 
-const FileUploadContainer = ({
-  classes,
-  name,
-  size,
-  url,
-  width,
-  smallChat = false
-}) => {
+const FileUploadContainer = ({ classes, name, size, url, width, smallChat = false }) => {
   const [isDownload, setDownload] = useState(false);
   const [percentage, setPercentage] = useState(0);
 
@@ -126,9 +123,7 @@ const FileUploadContainer = ({
       method: 'GET',
       responseType: 'blob',
       onDownloadProgress(progressEvent) {
-        const progress = Math.round(
-          (progressEvent.loaded / progressEvent.total) * 100
-        );
+        const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
         setPercentage(progress);
       }
     }).then((response) => {
@@ -162,30 +157,19 @@ const FileUploadContainer = ({
         onMouseLeave={onMouseLeaveHandler}
         onClick={() => downloadFile(name)}
       >
-        <div
-          className={cx(smallChat ? classes.smallFileIcon : classes.fileIcon)}
-        >
+        <div className={cx(smallChat ? classes.smallFileIcon : classes.fileIcon)}>
           <img src={iconUrl} alt={iconUrl} />
         </div>
         <div className={classes.infoContainer}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <div className={cx(smallChat ? classes.fileName : classes.name)}>
               {truncate(
                 name,
-                smallChat
-                  ? SMALL_CHAT_FILE_NAME_TRANCATE_LIMIT
-                  : BIG_CHAT_FILE_NAME_TRANCATE_LIMIT
+                smallChat ? SMALL_CHAT_FILE_NAME_TRANCATE_LIMIT : BIG_CHAT_FILE_NAME_TRANCATE_LIMIT
               )}
             </div>
             {(width === 'xs' || smallChat) && isDownload && (
-              <DownloadIcon
-                onClick={() => downloadFile(name)}
-                className={classes.downloadIcon}
-              />
+              <DownloadIcon onClick={() => downloadFile(name)} className={classes.downloadIcon} />
             )}
           </Box>
           {smallChat ||
@@ -208,10 +192,7 @@ const FileUploadContainer = ({
             ))}
           {percentage > 0 && (
             <div className={classes.progressBar}>
-              <div
-                className={classes.content}
-                style={{ width: `${(percentage / 100) * 80}px` }}
-              />
+              <div className={classes.content} style={{ width: `${(percentage / 100) * 80}px` }} />
             </div>
           )}
         </div>

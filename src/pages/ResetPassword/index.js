@@ -48,8 +48,9 @@ class ResetPasswordPage extends React.Component<ProvidedProps & Props, State> {
     } = this.props;
     const values = queryString.parse(search);
     const { email = '', reset_token: resetToken = '' } = values;
-    if (email === '' || resetToken === '')
+    if (email === '' || resetToken === '') {
       this.setState({ redirect: '/login' });
+    }
     this.setState({ email: email.replace(' ', '+'), resetToken });
   };
 
@@ -60,12 +61,13 @@ class ResetPasswordPage extends React.Component<ProvidedProps & Props, State> {
       return <Redirect to={redirect} />;
     }
 
-    if (email === '' || resetToken === '')
+    if (email === '' || resetToken === '') {
       return (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
       );
+    }
 
     return (
       <main className={classes.main}>

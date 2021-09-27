@@ -23,12 +23,7 @@ import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
-import {
-  createBatchPhotoNote,
-  getNotes,
-  updatePhotoNote,
-  createPhotoNote
-} from '../../api/posts';
+import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import { logEventLocally } from '../../api/analytics';
 import UploadImages from '../UploadImages/UploadImages';
@@ -213,9 +208,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost()
-        ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : '';
+      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);
@@ -278,7 +271,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
       noteId
     } = this.props;
     try {
-      if (!noteId) return;
+      if (!noteId) {
+        return;
+      }
       this.setState({ isEdit: true });
       const photoNote = await getNotes({
         userId,
@@ -385,7 +380,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
         let hasError = false;
         if (this.canBatchPost() && resClasses) {
           resClasses.forEach((r) => {
-            if (r.status !== 'Success') hasError = true;
+            if (r.status !== 'Success') {
+              hasError = true;
+            }
           });
           if (hasError || resClasses.length === 0) {
             setIsPosting(false);
@@ -522,8 +519,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
   handleSubmit = (event) => {
     event.preventDefault();
     const { noteId } = this.props;
-    if (noteId) this.updateNotes();
-    else this.createNotes();
+    if (noteId) {
+      this.updateNotes();
+    } else {
+      this.createNotes();
+    }
   };
 
   handleTextChange = (name) => (event) => {
@@ -558,18 +558,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleClassChange = ({
-    classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => {
+  handleClassChange = ({ classId, sectionId }: { classId: number, sectionId: number }) => {
     const { user } = this.props;
-    const selected = user.userClasses.classList.find(
-      (c) => c.classId === classId
-    );
-    if (selected) this.setState({ classList: [selected] });
+    const selected = user.userClasses.classList.find((c) => c.classId === classId);
+    if (selected) {
+      this.setState({ classList: [selected] });
+    }
     this.setState({ classId, sectionId });
   };
 
@@ -583,15 +577,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { summary } = this.state;
 
-    if (Number(this.getLeftCharts(summary)) <= 0) return null;
-    if (this.canBatchPost()) return <div />;
+    if (Number(this.getLeftCharts(summary)) <= 0) {
+      return null;
+    }
+    if (this.canBatchPost()) {
+      return <div />;
+    }
 
     return (
-      <Typography
-        variant="subtitle1"
-        align="left"
-        className={classes.errorMessage}
-      >
+      <Typography variant="subtitle1" align="left" className={classes.errorMessage}>
         You must type 50 characters or more in the summary to post these notes.
       </Typography>
     );
@@ -668,10 +662,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 />
               </Grid>
               <Grid item xs={12} md={12} className={classes.quillGrid}>
-                <ToolbarTooltip
-                  toolbar={questionToolbar}
-                  toolbarClass={classes.toolbarClass}
-                />
+                <ToolbarTooltip toolbar={questionToolbar} toolbarClass={classes.toolbarClass} />
                 <RichTextEditor
                   setEditor={this.setEditor}
                   placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too."

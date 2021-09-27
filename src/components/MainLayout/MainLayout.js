@@ -52,8 +52,9 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => {
       '/create/question',
       '/create/flashcards'
     ].includes(window.location.pathname)
-  )
+  ) {
     document.title = 'CircleIn';
+  }
   return <RouterLink to={link} {...props} ref={ref} />;
 });
 
@@ -230,8 +231,11 @@ const MainLayout = ({
   }, []);
 
   const handleOpenHowEarnPoints = useCallback(() => {
-    if (!expertMode) window.open('https://support.circleinapp.com/', '_blank');
-    else window.open('https://tutors.circleinapp.com/home', '_blank');
+    if (!expertMode) {
+      window.open('https://support.circleinapp.com/', '_blank');
+    } else {
+      window.open('https://tutors.circleinapp.com/home', '_blank');
+    }
     // if (helpLink) {
     // window.open(helpLink, '_blank')
     // } else {
@@ -267,14 +271,8 @@ const MainLayout = ({
   }, [dispatch]);
 
   const isMenuOpen = useMemo(() => Boolean(anchorEl), [anchorEl]);
-  const isMobileMenuOpen = useMemo(
-    () => Boolean(mobileMoreAnchorEl),
-    [mobileMoreAnchorEl]
-  );
-  const isCreatePostMenuOpen = useMemo(
-    () => Boolean(createPostAnchorEl),
-    [createPostAnchorEl]
-  );
+  const isMobileMenuOpen = useMemo(() => Boolean(mobileMoreAnchorEl), [mobileMoreAnchorEl]);
+  const isCreatePostMenuOpen = useMemo(() => Boolean(createPostAnchorEl), [createPostAnchorEl]);
 
   const renderMenu = useMemo(
     () => (
@@ -346,12 +344,7 @@ const MainLayout = ({
         handleCreatePostMenuClose={handleCreatePostMenuClose}
       />
     ),
-    [
-      createPostAnchorEl,
-      handleCreatePostMenuClose,
-      isCreatePostMenuOpen,
-      search
-    ]
+    [createPostAnchorEl, handleCreatePostMenuClose, isCreatePostMenuOpen, search]
   );
 
   const appBarHeight = useMemo(
@@ -421,12 +414,7 @@ const MainLayout = ({
 
   return (
     <>
-      <div
-        className={clsx(
-          classes.root,
-          pathname.indexOf('/chat') === -1 && classes.marginChat
-        )}
-      >
+      <div className={clsx(classes.root, pathname.indexOf('/chat') === -1 && classes.marginChat)}>
         <UserDialog />
         <AppBar
           position="fixed"
@@ -450,11 +438,7 @@ const MainLayout = ({
             <Link href="/home" component={MyLink} link="/home">
               <img src={logo} alt="Logo" className={classes.logo} />
             </Link>
-            {expertMode && (
-              <Typography className={classes.expertChip}>
-                EXPERT MODE
-              </Typography>
-            )}
+            {expertMode && <Typography className={classes.expertChip}>EXPERT MODE</Typography>}
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton onClick={handleGoHome}>
@@ -476,11 +460,7 @@ const MainLayout = ({
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton
-                color="inherit"
-                onClick={handleOpenWidget}
-                aria-haspopup="true"
-              >
+              <IconButton color="inherit" onClick={handleOpenWidget} aria-haspopup="true">
                 <HelpIcon />
               </IconButton>
               <IconButton
@@ -496,11 +476,7 @@ const MainLayout = ({
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>
-              <IconButton
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
+              <IconButton aria-haspopup="true" onClick={handleMobileMenuOpen} color="inherit">
                 <MoreIcon />
               </IconButton>
             </div>
@@ -554,24 +530,14 @@ const MainLayout = ({
       </div>
       <GetAppDialog open={openGetApp} onClose={handleCloseGetApp} />
       <GetStudentJob open={openStudentJobs} onClose={handleCloseStudentJobs} />
-      <GiveFeedback
-        origin="Side Menu"
-        open={openFeedback}
-        onClose={handleCloseFeedback}
-      />
-      <HowDoIEarnPoints
-        open={openHowEarnPoints}
-        onClose={handleCloseHowEarnPoints}
-      />
+      <GiveFeedback origin="Side Menu" open={openFeedback} onClose={handleCloseFeedback} />
+      <HowDoIEarnPoints open={openHowEarnPoints} onClose={handleCloseHowEarnPoints} />
       <Dialog
         open={openUseCases}
         onCancel={handleCloseUseCases}
         title="How to use CircleIn for Studying"
       >
-        <UseCases
-          onRedirect={handleCloseUseCases}
-          landingPageCampaign={landingPageCampaign}
-        />
+        <UseCases onRedirect={handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
       </Dialog>
     </>
   );

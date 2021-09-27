@@ -26,8 +26,7 @@ const StartupModal = ({ open, onClose, onStart }) => {
           Make all the cards disappear like magic!
         </Typography>
         <Typography align="center" paragraph>
-          Click and drag the corresponding cards onto each other to make them
-          disappear.
+          Click and drag the corresponding cards onto each other to make them disappear.
         </Typography>
         <Box display="flex" justifyContent="center">
           <GradientButton onClick={onStart}>

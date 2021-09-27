@@ -28,9 +28,7 @@ const Dustbin = ({ accept, lastDroppedItem, onDrop }) => {
 
   return (
     <div ref={handleDrop()} style={{ ...style, backgroundColor }}>
-      {lastDroppedItem && (
-        <img alt="alt" src={lastDroppedItem.ic} style={imgStyle} />
-      )}
+      {lastDroppedItem && <img alt="alt" src={lastDroppedItem.ic} style={imgStyle} />}
     </div>
   );
 };

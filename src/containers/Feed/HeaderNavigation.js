@@ -101,10 +101,11 @@ const HeaderNavigation = ({
       currentClassList = classList.filter((cl) => cl.isCurrent);
     }
     currentClassList.forEach((cl) => {
-      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+      if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
         cl.section.forEach((s) => {
           newClassList[s.sectionId] = cl;
         });
+      }
     });
 
     return Object.keys(newClassList).map((sectionId) => ({
@@ -119,8 +120,7 @@ const HeaderNavigation = ({
   );
 
   const allLabel = useMemo(
-    () =>
-      (isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`),
+    () => (isPastFilter ? `${firstName}'s Past Classes` : `${firstName}'s Classes`),
     [firstName, isPastFilter]
   );
 
@@ -160,15 +160,14 @@ const HeaderNavigation = ({
       });
     } else if (query.class) {
       const { classId } = decypherClass(query.class);
-      const currentClass = classList.filter(
-        (userClass) => userClass.classId === Number(classId)
-      );
+      const currentClass = classList.filter((userClass) => userClass.classId === Number(classId));
       const newClass = {};
       currentClass.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
           cl.section.forEach((s) => {
             newClass[s.sectionId] = cl;
           });
+        }
       });
 
       const currentSelectedClass = Object.keys(newClass).map((sectionId) => ({
@@ -176,7 +175,9 @@ const HeaderNavigation = ({
         sectionId: Number(sectionId)
       }));
       handleFilters(currentSelectedClass);
-    } else handleFilters(options);
+    } else {
+      handleFilters(options);
+    }
   }, [classList, handleFilters, options, search, setSelectedClasses, state]);
 
   const onSelect = useCallback(
@@ -214,9 +215,7 @@ const HeaderNavigation = ({
         const newSearch = queryString.stringify({
           ...rest,
           ...extras,
-          class: cypher(
-            `${selectedClasses[0].classId}:${selectedClasses[0].sectionId}`
-          )
+          class: cypher(`${selectedClasses[0].classId}:${selectedClasses[0].sectionId}`)
         });
         push({
           pathname: path,
@@ -246,10 +245,7 @@ const HeaderNavigation = ({
           variant="standard"
           allLabel={allLabel}
           containerStyle={classes.classSelector}
-          textFieldStyle={cx(
-            classes.classTextField,
-            allSelected && classes.allClasses
-          )}
+          textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
           placeholder={!options.length ? 'Select Classes...' : ''}
           externalOptions={options}
           selected={selectedClasses}
@@ -257,11 +253,7 @@ const HeaderNavigation = ({
           onSelect={onSelect}
         />
         {isPastFilter && !allSelected && (
-          <Typography
-            variant="h5"
-            display="inline"
-            className={classes.pastClassLabel}
-          >
+          <Typography variant="h5" display="inline" className={classes.pastClassLabel}>
             (Past Class)
           </Typography>
         )}
@@ -289,9 +281,7 @@ const HeaderNavigation = ({
         </Button>
         <>
           <span> | </span>
-          <Button
-            onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')}
-          >
+          <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')}>
             <Tooltip
               id={9057}
               placement="right"

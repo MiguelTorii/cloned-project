@@ -89,11 +89,7 @@ const CommunityMenu = ({
           }}
         >
           {isDirectChat ? (
-            <StyledBadge
-              max={99}
-              badgeContent={unreadMessageCount}
-              color="secondary"
-            >
+            <StyledBadge max={99} badgeContent={unreadMessageCount} color="secondary">
               <ListItemIcon classes={{ root: classes.itemContent }}>
                 <Chat />
               </ListItemIcon>
@@ -102,9 +98,7 @@ const CommunityMenu = ({
             <StyledBadge
               max={99}
               classes={{
-                badge: unreadMessages
-                  ? classes.unreadMessageCount
-                  : classes.emptyUnreadMessage
+                badge: unreadMessages ? classes.unreadMessageCount : classes.emptyUnreadMessage
               }}
               badgeContent={unreadMessages}
               color="secondary"

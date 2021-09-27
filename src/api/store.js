@@ -5,11 +5,7 @@ import { API_ROUTES } from '../constants/routes';
 import type { Rewards } from '../types/models';
 import { getToken } from './utils';
 
-export const getRewards = async ({
-  userId
-}: {
-  userId: string
-}): Promise<Rewards> => {
+export const getRewards = async ({ userId }: { userId: string }): Promise<Rewards> => {
   try {
     const token = await getToken();
 

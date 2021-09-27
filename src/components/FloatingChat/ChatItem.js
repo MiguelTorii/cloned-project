@@ -73,11 +73,8 @@ class ChatItem extends React.PureComponent<Props, State> {
 
   handleRemoveSubmit = async () => {
     this.setState({ openRemove: false });
-    const { channels, channel, setCurrentChannel, onDelete, local } =
-      this.props;
-    const findAnotherDefaultChannel = channels.find(
-      (channelEntry) => channelEntry !== channel.sid
-    );
+    const { channels, channel, setCurrentChannel, onDelete, local } = this.props;
+    const findAnotherDefaultChannel = channels.find((channelEntry) => channelEntry !== channel.sid);
 
     if (findAnotherDefaultChannel) {
       await setCurrentChannel(local[findAnotherDefaultChannel].twilioChannel);
@@ -143,19 +140,11 @@ class ChatItem extends React.PureComponent<Props, State> {
             <Badge color="secondary" badgeContent={unread}>
               <span />
             </Badge>
-            <div
-              className={cx(
-                classes.header,
-                unread && classes.notificationHeader
-              )}
-            >
+            <div className={cx(classes.header, unread && classes.notificationHeader)}>
               <ButtonBase className={classes.headerTitle} onClick={onOpen}>
                 <Typography
                   variant="h6"
-                  className={cx(
-                    classes.title,
-                    open && expanded && classes.titleExpanded
-                  )}
+                  className={cx(classes.title, open && expanded && classes.titleExpanded)}
                   noWrap
                 >
                   {!newChannel ? title : 'New Chat'}
@@ -171,10 +160,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                     )}
                   </ButtonBase>
                   {!newChannel && videoEnabled && (
-                    <ButtonBase
-                      className={classes.iconButton}
-                      onClick={onStartVideoCall}
-                    >
+                    <ButtonBase className={classes.iconButton} onClick={onStartVideoCall}>
                       <VideoCameraIcon className={classes.icon} />
                     </ButtonBase>
                   )}
@@ -185,9 +171,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                       aria-haspopup="true"
                       onClick={this.handleClick}
                     >
-                      <SettingsIcon
-                        className={cx(classes.icon, classes.settingIcon)}
-                      />
+                      <SettingsIcon className={cx(classes.icon, classes.settingIcon)} />
                     </ButtonBase>
                   )}
                   {!newChannel ? (
@@ -195,10 +179,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                       <RemoveIcon className={classes.icon} />
                     </ButtonBase>
                   ) : (
-                    <ButtonBase
-                      className={classes.iconButton}
-                      onClick={onClose}
-                    >
+                    <ButtonBase className={classes.iconButton} onClick={onClose}>
                       <ClearIcon className={classes.icon} />
                     </ButtonBase>
                   )}

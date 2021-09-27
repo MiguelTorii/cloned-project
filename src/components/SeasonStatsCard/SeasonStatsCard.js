@@ -21,7 +21,7 @@ class SeasonStatsCard extends React.PureComponent<Props, State> {
   render() {
     const { classes, data, isLoading } = this.props;
 
-    if (isLoading)
+    if (isLoading) {
       return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
@@ -29,6 +29,7 @@ class SeasonStatsCard extends React.PureComponent<Props, State> {
           </div>
         </Paper>
       );
+    }
 
     const options = [
       { label: 'Thanks', value: data.thanks },

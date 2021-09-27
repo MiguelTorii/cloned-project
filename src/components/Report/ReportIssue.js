@@ -54,7 +54,9 @@ const ReportIssue = ({
       const { report_reasons = [] } = await getReasons(2);
       setReasonList(report_reasons);
     };
-    if (open) loadData();
+    if (open) {
+      loadData();
+    }
   }, [open]);
 
   const handleSubmit = useCallback(async () => {
@@ -131,15 +133,8 @@ const ReportIssue = ({
       )}
       {!reported && (
         <>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            className={classes.selectForm}
-          >
-            <InputLabel
-              className={classes.InputLabel}
-              id="reporter-select-label"
-            >
+          <FormControl fullWidth variant="outlined" className={classes.selectForm}>
+            <InputLabel className={classes.InputLabel} id="reporter-select-label">
               Who are you reporting?
             </InputLabel>
             <Select
@@ -162,11 +157,7 @@ const ReportIssue = ({
               renderValue={(selected) => (
                 <div className={classes.chipWrapper}>
                   {selected.map((value) => (
-                    <Chip
-                      className={classes.chip}
-                      key={value}
-                      label={ownerName}
-                    />
+                    <Chip className={classes.chip} key={value} label={ownerName} />
                   ))}
                 </div>
               )}
@@ -176,11 +167,7 @@ const ReportIssue = ({
             </FormHelperText>
           </FormControl>
 
-          <FormControl
-            fullWidth
-            variant="outlined"
-            className={classes.selectForm}
-          >
+          <FormControl fullWidth variant="outlined" className={classes.selectForm}>
             <InputLabel className={classes.InputLabel} id="reason-select-label">
               What happened?
             </InputLabel>
@@ -210,17 +197,12 @@ const ReportIssue = ({
           </FormControl>
 
           <Typography variant="body1" className={classes.noteText}>
-            The safety and well-being of all of our CircleIn users is important
-            to us. By pressing "Submit" on this report, you authorize CircleIn
-            to access the data to investigate the situation. You may be
-            contacted for further information.
+            The safety and well-being of all of our CircleIn users is important to us. By pressing
+            "Submit" on this report, you authorize CircleIn to access the data to investigate the
+            situation. You may be contacted for further information.
           </Typography>
 
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <Button
               variant="contained"
               color="primary"
@@ -244,10 +226,9 @@ const ReportIssue = ({
       {reported && (
         <>
           <Typography variant="body1" className={classes.finalNote}>
-            Thank you for submitting your report. We take reports very
-            seriously. We want you to have a sefe experience and we're sorry
-            you're experiencing some issues. We many contact you soon if we have
-            furthur questions about this incident. For additional support please
+            Thank you for submitting your report. We take reports very seriously. We want you to
+            have a sefe experience and we're sorry you're experiencing some issues. We many contact
+            you soon if we have furthur questions about this incident. For additional support please
             email us at &nbsp;
             <a className={classes.email} href="mailto:support@circleinapp.com">
               support@circleinapp.com
@@ -281,7 +262,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(withSnackbar(ReportIssue)));
+export default connect(mapStateToProps, null)(withStyles(styles)(withSnackbar(ReportIssue)));

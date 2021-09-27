@@ -54,7 +54,9 @@ class RequestClass extends React.PureComponent<Props, State> {
     const classes = ['class1', 'class2', 'class3', 'class4', 'class5'];
     const results = [];
     classes.forEach((item) => {
-      if (state[item].trim() !== '') results.push(state[item]);
+      if (state[item].trim() !== '') {
+        results.push(state[item]);
+      }
     });
     if (results.length > 0) {
       logEvent({
@@ -81,8 +83,8 @@ class RequestClass extends React.PureComponent<Props, State> {
     return (
       <Fragment>
         <Typography paragraph>
-          We are adding more classes soon. Please enter the class you are
-          attempting to access below. Add up to five classes.
+          We are adding more classes soon. Please enter the class you are attempting to access
+          below. Add up to five classes.
         </Typography>
         <Typography variant="h6">Class Name</Typography>
         <form className={classes.container} noValidate autoComplete="off">
@@ -132,18 +134,18 @@ class RequestClass extends React.PureComponent<Props, State> {
   };
 
   renderThanks = () => (
-      <Fragment>
-        <Typography paragraph>
-          We will contact you when your classes become available.
-        </Typography>
-      </Fragment>
-    );
+    <Fragment>
+      <Typography paragraph>We will contact you when your classes become available.</Typography>
+    </Fragment>
+  );
 
   render() {
     const { classes, open } = this.props;
     const { submited } = this.state;
 
-    if (!open) return null;
+    if (!open) {
+      return null;
+    }
 
     return (
       <ErrorBoundary>

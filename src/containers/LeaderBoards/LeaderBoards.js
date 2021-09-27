@@ -43,7 +43,9 @@ const LeaderBoards = ({
   const getCourseDisplayName = () => {
     if (classId && classList) {
       const c = classList.find((cl) => cl.classId === Number(classId));
-      if (c) return c.courseDisplayName;
+      if (c) {
+        return c.courseDisplayName;
+      }
     }
     return '';
   };
@@ -56,9 +58,7 @@ const LeaderBoards = ({
   return (
     <Grid xs={12} item>
       <Typography color="textPrimary" className={classes.title}>
-        {courseDisplayName
-          ? `${courseDisplayName} Leaderboards`
-          : 'Leaderboards'}
+        {courseDisplayName ? `${courseDisplayName} Leaderboards` : 'Leaderboards'}
       </Typography>
       <LeaderBoardTabs
         userId={userId}
@@ -93,7 +93,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(LeaderBoards));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LeaderBoards));

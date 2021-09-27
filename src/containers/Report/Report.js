@@ -61,7 +61,9 @@ class Report extends React.PureComponent<Props, State> {
   radioGroupRef: ?Object;
 
   handleEntering = () => {
-    if (this.radioGroupRef) this.radioGroupRef.focus();
+    if (this.radioGroupRef) {
+      this.radioGroupRef.focus();
+    }
   };
 
   handleChange = (event, value) => {
@@ -111,9 +113,12 @@ class Report extends React.PureComponent<Props, State> {
       onClose
     } = this.props;
     const { reasonId, description, loading } = this.state;
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
+    if (isLoading) {
+      return <CircularProgress size={12} />;
+    }
+    if (userId === '' || error) {
       return 'Oops, there was an error loading your data, please try again.';
+    }
 
     return (
       <ErrorBoundary>
@@ -128,9 +133,7 @@ class Report extends React.PureComponent<Props, State> {
           showCancel
           title="Report"
         >
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
           <RadioGroup
             ref={(ref) => {
               this.radioGroupRef = ref;
@@ -146,12 +149,7 @@ class Report extends React.PureComponent<Props, State> {
               control={<Radio />}
               label="Inappropriate"
             />
-            <FormControlLabel
-              value="2"
-              disabled={loading}
-              control={<Radio />}
-              label="Irrelevant"
-            />
+            <FormControlLabel value="2" disabled={loading} control={<Radio />} label="Irrelevant" />
             <FormControlLabel
               value="3"
               disabled={loading}

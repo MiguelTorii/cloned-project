@@ -50,9 +50,7 @@ const ContentCard = ({
           <img src={image} alt="Flashcard" className={classes.contentImage} />
         </Box>
       )}
-      {extractText && (
-        <Typography className={classes.contentText}>{extractText}</Typography>
-      )}
+      {extractText && <Typography className={classes.contentText}>{extractText}</Typography>}
     </Box>
   );
 };

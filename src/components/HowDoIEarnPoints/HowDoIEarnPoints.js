@@ -16,12 +16,7 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
   render() {
     const { classes, open, onClose } = this.props;
     return (
-      <Dialog
-        className={classes.dialog}
-        open={open}
-        onCancel={onClose}
-        title="CircleIn"
-      >
+      <Dialog className={classes.dialog} open={open} onCancel={onClose} title="CircleIn">
         <Typography id="video-points-description" color="textPrimary" paragraph>
           If you need help, have any questions or have a great idea, email us at
           support@circleinapp.com

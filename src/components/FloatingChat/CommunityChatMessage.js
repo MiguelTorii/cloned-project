@@ -99,12 +99,12 @@ const ChatMessage = ({
 
   const linkify = (text) => {
     // eslint-disable-next-line
-    const urlRegex =
-      /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/gi;
+    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/gi;
     return text.replace(urlRegex, (url) => {
       const urlIndex = text.indexOf(url);
-      if (text.substr(urlIndex - 5, urlIndex - 1).indexOf('src') === -1)
+      if (text.substr(urlIndex - 5, urlIndex - 1).indexOf('src') === -1) {
         return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`;
+      }
       return url;
     });
   };
@@ -223,12 +223,7 @@ const ChatMessage = ({
       return (
         <div className={classes.bodyWrapper}>
           <ButtonBase onClick={handleImageClick(imageKey)}>
-            <img
-              className={classes.image}
-              src={imageKey}
-              alt="chat"
-              onLoad={onImageLoaded}
-            />
+            <img className={classes.image} src={imageKey} alt="chat" onLoad={onImageLoaded} />
           </ButtonBase>
         </div>
       );
@@ -239,11 +234,7 @@ const ChatMessage = ({
         <div className={classes.bodyWrapper}>
           <Card className={classes.videoAlertRoot}>
             <CardContent classes={{ root: classes.cardContent }}>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-              >
+              <Typography className={classes.title} color="textSecondary" gutterBottom>
                 <b>{firstName}</b> started a Study Room 🎉
               </Typography>
               <Avatar alt={name} src={avatar}>
@@ -288,10 +279,7 @@ const ChatMessage = ({
                 component={MyLink}
                 href={`/profile/${userId || ''}`}
               >
-                <OnlineBadge
-                  isOnline={isOnline}
-                  bgColorPath="circleIn.palette.feedBackground"
-                >
+                <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
                   <Avatar alt={name} src={avatar}>
                     {initials}
                   </Avatar>
@@ -313,10 +301,7 @@ const ChatMessage = ({
                     </Link>
                   </Typography>
                   {role && <RoleBadge text={role} />}
-                  <Typography
-                    className={cx(classes.createdAt)}
-                    variant="caption"
-                  >
+                  <Typography className={cx(classes.createdAt)} variant="caption">
                     {date} at {message.createdAt}
                   </Typography>
                 </Box>
@@ -348,18 +333,12 @@ const ChatMessage = ({
                       <Typography variant="inherit">View Profile</Typography>
                     </MenuItem>
                     {isGroupChannl && (
-                      <MenuItem
-                        onClick={handleOpenBlockMemberModal(userId, name)}
-                      >
+                      <MenuItem onClick={handleOpenBlockMemberModal(userId, name)}>
                         <Typography variant="inherit">Block Member</Typography>
                       </MenuItem>
                     )}
                     <MenuItem onClick={handleOpenReport}>
-                      <Typography
-                        variant="inherit"
-                        className={classes.report}
-                        noWrap
-                      >
+                      <Typography variant="inherit" className={classes.report} noWrap>
                         Report Issue
                       </Typography>
                     </MenuItem>
@@ -379,11 +358,7 @@ const ChatMessage = ({
         </ListItem>
       ))}
 
-      <StudyRoomReport
-        profiles={profiles}
-        open={openReport}
-        handleClose={handleCloseReport}
-      />
+      <StudyRoomReport profiles={profiles} open={openReport} handleClose={handleCloseReport} />
 
       <BlockMemberModal
         closeModal={handleCloseBlockMemberModal}

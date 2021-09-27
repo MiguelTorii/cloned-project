@@ -22,13 +22,7 @@ type Props = {
   onSave: Function
 };
 
-const AvatarEditor = ({
-  originalImage,
-  open,
-  title,
-  onCancel,
-  onSave
-}: Props) => {
+const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) => {
   const classes = useStyles();
   const [image, setImage] = useState(null); // image can be URL or File.
   const [scale, setScale] = useState(1.0);
@@ -137,8 +131,7 @@ const AvatarEditor = ({
         <Toolbar disabledActions={disabledActions} onAction={onAction} />
       </Box>
       <Grid container justifyContent="space-between">
-        <Grid item>
-        </Grid>
+        <Grid item></Grid>
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>
@@ -147,12 +140,7 @@ const AvatarEditor = ({
               </TransparentButton>
             </Grid>
             <Grid item>
-              <GradientButton
-                compact
-                loading={isSaving}
-                disabled={isSaving}
-                onClick={handleSave}
-              >
+              <GradientButton compact loading={isSaving} disabled={isSaving} onClick={handleSave}>
                 Save
               </GradientButton>
             </Grid>

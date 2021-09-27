@@ -21,8 +21,7 @@ const useStyles = makeStyles({
       width: 8,
       height: 8,
       borderRadius: '50%',
-      backgroundImage:
-        'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+      backgroundImage: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
       content: '""'
     }
   }

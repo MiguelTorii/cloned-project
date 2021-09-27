@@ -58,7 +58,9 @@ const FirstTime = ({ updateError }) => {
     (field) => (e) => {
       if (e?.target) {
         const { value } = e.target;
-        if (field === 'email') setEmail(value);
+        if (field === 'email') {
+          setEmail(value);
+        }
       }
     },
     []
@@ -90,16 +92,11 @@ const FirstTime = ({ updateError }) => {
     [email, updateError]
   );
 
-  if (step === 'email')
+  if (step === 'email') {
     return (
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
-          <Typography
-            component="h1"
-            variant="h5"
-            align="center"
-            className={classes.title}
-          >
+          <Typography component="h1" variant="h5" align="center" className={classes.title}>
             Activate your Account
           </Typography>
           <Typography align="center" className={classes.subtext}>
@@ -129,11 +126,7 @@ const FirstTime = ({ updateError }) => {
             onClick={onSubmitEmail}
             color="primary"
           >
-            {loading ? (
-              <CircularProgress size={20} color="secondary" />
-            ) : (
-              'Set password'
-            )}
+            {loading ? <CircularProgress size={20} color="secondary" /> : 'Set password'}
           </Button>
           <Typography align="center" className={classes.endtext}>
             We’ll send an email to set your password!
@@ -141,6 +134,7 @@ const FirstTime = ({ updateError }) => {
         </form>
       </div>
     );
+  }
 
   return (
     <div className={classes.container}>

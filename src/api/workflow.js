@@ -121,11 +121,7 @@ export const updateTodo = async ({
   }
 };
 
-export const updateTodosOrdering = async ({
-  ordering
-}: {
-  ordering: array
-}) => {
+export const updateTodosOrdering = async ({ ordering }: { ordering: array }) => {
   try {
     const token = await getToken();
 

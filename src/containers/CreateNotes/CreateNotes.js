@@ -135,9 +135,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost()
-        ? `?class=${cypher(`${classId}:${sectionId}`)}`
-        : '';
+      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);
@@ -159,7 +157,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
       noteId
     } = this.props;
     try {
-      if (!noteId) return;
+      if (!noteId) {
+        return;
+      }
       this.setState({ isEdit: true });
       const photoNote = await getNotes({
         userId,
@@ -230,7 +230,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
       let hasError = false;
       if (this.canBatchPost() && resClasses) {
         resClasses.forEach((r) => {
-          if (r.status !== 'Success') hasError = true;
+          if (r.status !== 'Success') {
+            hasError = true;
+          }
         });
         if (hasError || resClasses.length === 0) {
           this.setState({
@@ -259,10 +261,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
         type: 'Created'
       });
 
-      if (
-        (points > 0 && !this.canBatchPost()) ||
-        (this.canBatchPost() && !hasError)
-      ) {
+      if ((points > 0 && !this.canBatchPost()) || (this.canBatchPost() && !hasError)) {
         const { enqueueSnackbar, classes } = this.props;
         enqueueSnackbar({
           notification: {
@@ -352,7 +351,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
         let hasError = false;
         if (this.canBatchPost() && resClasses) {
           resClasses.forEach((r) => {
-            if (r.status !== 'Success') hasError = true;
+            if (r.status !== 'Success') {
+              hasError = true;
+            }
           });
           if (hasError || resClasses.length === 0) {
             this.setState({
@@ -393,20 +394,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush('/feed');
         }, 3000);
       } catch (err) {
-        if (err.message === 'no images')
+        if (err.message === 'no images') {
           this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Error',
             errorBody: 'You must add at least 1 image'
           });
-        else
+        } else {
           this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Unknown Error',
             errorBody: 'Please try again'
           });
+        }
       }
     }
   };
@@ -460,20 +462,21 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.handlePush(`/notes/${noteId}`);
         }, 3000);
       } catch (err) {
-        if (err.message === 'no images')
+        if (err.message === 'no images') {
           this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Error',
             errorBody: 'You must add at least 1 image'
           });
-        else
+        } else {
           this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Unknown Error',
             errorBody: 'Please try again'
           });
+        }
       }
     }
   };
@@ -482,9 +485,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
     event.preventDefault();
     const { noteId } = this.props;
     const { url } = this.state;
-    if (url) this.createSharelink();
-    if (noteId) this.updateNotes();
-    else this.createNotes();
+    if (url) {
+      this.createSharelink();
+    }
+    if (noteId) {
+      this.updateNotes();
+    } else {
+      this.createNotes();
+    }
   };
 
   handleTextChange = (name) => (event) => {
@@ -506,18 +514,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  handleClassChange = ({
-    classId,
-    sectionId
-  }: {
-    classId: number,
-    sectionId: number
-  }) => {
+  handleClassChange = ({ classId, sectionId }: { classId: number, sectionId: number }) => {
     const { user } = this.props;
-    const selected = user.userClasses.classList.find(
-      (c) => c.classId === classId
-    );
-    if (selected) this.setState({ classList: [selected] });
+    const selected = user.userClasses.classList.find((c) => c.classId === classId);
+    if (selected) {
+      this.setState({ classList: [selected] });
+    }
     this.setState({ classId, sectionId });
   };
 
@@ -533,17 +535,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   getLeftCharts = (field) =>
     // help ? 50 - help.length : 50;
-     (50 - field.length >= 0 ? 50 - field.length : 0)
-  ;
+    50 - field.length >= 0 ? 50 - field.length : 0;
 
   imageChange = () => {
     this.setState({ changed: true });
 
-    if (
-      this.uploadImages &&
-      this.uploadImages.state &&
-      this.uploadImages.state.images
-    ) {
+    if (this.uploadImages && this.uploadImages.state && this.uploadImages.state.images) {
       this.setState({ hasImages: this.uploadImages.state.images.length > 0 });
     }
   };
@@ -552,15 +549,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { summary } = this.state;
 
-    if (Number(this.getLeftCharts(summary)) <= 0) return null;
-    if (this.canBatchPost()) return <div />;
+    if (Number(this.getLeftCharts(summary)) <= 0) {
+      return null;
+    }
+    if (this.canBatchPost()) {
+      return <div />;
+    }
 
     return (
-      <Typography
-        variant="subtitle1"
-        align="left"
-        className={classes.errorMessage}
-      >
+      <Typography variant="subtitle1" align="left" className={classes.errorMessage}>
         You must type 50 characters or more in the summary to post these notes.
       </Typography>
     );
@@ -633,9 +630,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
               {notSm && (
                 <Grid item md={2}>
-                  <Typography variant="subtitle1">
-                    Description of notes
-                  </Typography>
+                  <Typography variant="subtitle1">Description of notes</Typography>
                 </Grid>
               )}
               <Grid item xs={12} md={10}>
@@ -690,10 +685,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                     placement="right"
                     text="In Expert Mode, you can post the same thing in more than one class! 🙌"
                   >
-                    <ClassMultiSelect
-                      selected={classList}
-                      onSelect={this.handleClasses}
-                    />
+                    <ClassMultiSelect selected={classList} onSelect={this.handleClasses} />
                   </Tooltip>
                 ) : (
                   <ClassesSelector
@@ -707,22 +699,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
               </Grid>
 
               {notSm && <Grid item md={2} />}
-              <Grid
-                container
-                item
-                xs={12}
-                md={10}
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid container item xs={12} md={10} justifyContent="center" alignItems="center">
                 <Grid item xs={2} md={2}>
                   <Divider light />
                 </Grid>
                 <Grid item xs={7} md={7}>
-                  <Typography
-                    className={classes.divisorTitle}
-                    variant="subtitle1"
-                  >
+                  <Typography className={classes.divisorTitle} variant="subtitle1">
                     Choose how to share notes
                   </Typography>
                 </Grid>
@@ -733,20 +715,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
               {notSm && !hasImages && (
                 <Grid item xs={12} md={2}>
-                  <Typography variant="subtitle1">
-                    Link to Google Docs
-                  </Typography>
+                  <Typography variant="subtitle1">Link to Google Docs</Typography>
                 </Grid>
               )}
               {!hasImages && (
                 <Grid item xs={12} md={10}>
                   <OutlinedTextValidator
                     onChange={this.handleTextChange}
-                    label={
-                      !notSm
-                        ? 'Link to Google Docs (public link)'
-                        : 'Public link'
-                    }
+                    label={!notSm ? 'Link to Google Docs (public link)' : 'Public link'}
                     name="url"
                     variant={notSm ? null : 'standard'}
                     value={url}

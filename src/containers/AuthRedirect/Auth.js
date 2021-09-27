@@ -143,9 +143,7 @@ const Auth = ({
   search,
   pathname
 }: Props) => {
-  const [screen, setScreen] = useState(
-    pathname === '/reset_password' ? 'newPassword' : 'school'
-  );
+  const [screen, setScreen] = useState(pathname === '/reset_password' ? 'newPassword' : 'school');
   const [school, setSchool] = useState(auth.data?.school);
   const [isLoginAsExternalUser, setLoginAsExternalUser] = useState(false);
   const [email, setEmail] = useState('');
@@ -207,27 +205,14 @@ const Auth = ({
         );
       case 'signup':
         return (
-          <SignUp
-            school={school}
-            updateError={updateError}
-            setScreen={setScreen}
-            signUp={signUp}
-          />
+          <SignUp school={school} updateError={updateError} setScreen={setScreen} signUp={signUp} />
         );
       case 'firstTime':
         return <FirstTime setScreen={setScreen} updateError={updateError} />;
       case 'forgotPassword':
-        return (
-          <ForgotPassword setScreen={setScreen} updateError={updateError} />
-        );
+        return <ForgotPassword setScreen={setScreen} updateError={updateError} />;
       case 'newPassword':
-        return (
-          <NewPassword
-            updateError={updateError}
-            signIn={signIn}
-            search={search}
-          />
-        );
+        return <NewPassword updateError={updateError} signIn={signIn} search={search} />;
       default:
         return (
           <SelectSchool
@@ -255,25 +240,26 @@ const Auth = ({
   ]);
 
   const goBack = useCallback(() => {
-    if (isDeepLink) setSchool({});
+    if (isDeepLink) {
+      setSchool({});
+    }
     if (screen === 'login') {
       setLoginAsExternalUser(false);
       setScreen('school');
     }
-    if (screen === 'signup') setScreen('role');
-    if (screen === 'forgotPassword') setScreen('login');
-    if (screen === 'firstTime') setScreen('login');
+    if (screen === 'signup') {
+      setScreen('role');
+    }
+    if (screen === 'forgotPassword') {
+      setScreen('login');
+    }
+    if (screen === 'firstTime') {
+      setScreen('login');
+    }
   }, [screen, isDeepLink]);
 
   const isPhone = useMemo(
-    () =>
-      [
-        'login',
-        'signup',
-        'forgotPassword',
-        'firstTime',
-        'newPassword'
-      ].includes(screen),
+    () => ['login', 'signup', 'forgotPassword', 'firstTime', 'newPassword'].includes(screen),
     [screen]
   );
 
@@ -345,17 +331,13 @@ const Auth = ({
         className={classes.container}
       >
         <Grid item xs={12} md={6} className={classes.imgContainer}>
-          <LoadImg
-            url={isPhone ? CircleInPhone : authImage}
-            className={classes.img}
-          />
+          <LoadImg url={isPhone ? CircleInPhone : authImage} className={classes.img} />
           <Typography
             color="textPrimary"
             className={cx(isPhone && classes.imgPhone, classes.imgText)}
           >
-            CircleIn is an all-in-one studying app to connect with classmates
-            instantly, take notes, make flashcards and organize all your
-            schoolwork and win gift cards for studying!
+            CircleIn is an all-in-one studying app to connect with classmates instantly, take notes,
+            make flashcards and organize all your schoolwork and win gift cards for studying!
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -422,6 +404,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default memo(
-  connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Auth))
-);
+export default memo(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Auth)));

@@ -21,16 +21,19 @@ class SelectedRewards extends React.PureComponent<Props> {
     const { classes, slots, loading } = this.props;
     const newItems = items.map((item, index) => {
       const slot = slots.find((o) => o.slot === index);
-      if (slot) return { ...item, ...slot };
+      if (slot) {
+        return { ...item, ...slot };
+      }
       return item;
     });
 
-    if (loading)
+    if (loading) {
       return (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
       );
+    }
 
     return (
       <div className={classes.root}>
@@ -40,15 +43,8 @@ class SelectedRewards extends React.PureComponent<Props> {
             {!item.displayName ? (
               <Typography variant="subtitle1">Select a reward below</Typography>
             ) : (
-              <Paper
-                className={classes.card}
-                style={{ backgroundColor: item.bgColor }}
-              >
-                <img
-                  src={item.imageUrl}
-                  alt={item.displayName}
-                  className={classes.image}
-                />
+              <Paper className={classes.card} style={{ backgroundColor: item.bgColor }}>
+                <img src={item.imageUrl} alt={item.displayName} className={classes.image} />
               </Paper>
             )}
           </div>

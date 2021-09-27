@@ -115,9 +115,7 @@ const ClassCard = ({
         //     <MoreVertIcon />
         //   </IconButton>
         // }
-        title={
-          <Typography className={classes.title}>{courseDisplayName}</Typography>
-        }
+        title={<Typography className={classes.title}>{courseDisplayName}</Typography>}
       />
       <CardContent className={classes.content}>
         <Typography>{sectionDisplayName}</Typography>

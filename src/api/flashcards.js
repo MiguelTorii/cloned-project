@@ -13,7 +13,7 @@ export const apiInitializeMatchGame = async (flashcardId) =>
   // return {
   //   match_game_id: 1
   // };
-   callApi({
+  callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match`,
     method: 'POST'
   });
@@ -28,13 +28,9 @@ export const apiInitializeMatchGame = async (flashcardId) =>
  *   logged: boolean
  * }
  */
-export const apiSaveMatchGameRecords = async (
-  flashcardId,
-  matchGameId,
-  matches
-) =>
+export const apiSaveMatchGameRecords = async (flashcardId, matchGameId, matches) =>
   // return { success: true }
-   callApi({
+  callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}`,
     method: 'POST',
     data: {
@@ -53,13 +49,8 @@ export const apiSaveMatchGameRecords = async (
  *   ended: boolean
  * }
  */
-export const apiEndMatchGame = async (
-  flashcardId,
-  matchGameId,
-  startTime,
-  endTime,
-  duration
-) => callApi({
+export const apiEndMatchGame = async (flashcardId, matchGameId, startTime, endTime, duration) =>
+  callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}/end`,
     method: 'POST',
     data: {
@@ -79,7 +70,8 @@ export const apiEndMatchGame = async (
  *   }
  * }
  */
-export const apiGetMatchStats = async (flashcardId) => callApi({
+export const apiGetMatchStats = async (flashcardId) =>
+  callApi({
     url: `${API_URL_V1_1}/deck/${flashcardId}/match/stats`,
     method: 'GET'
   });

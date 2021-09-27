@@ -42,7 +42,9 @@ const CTA = ({ classes }: { classes: Object }) => {
     init();
   }, []);
 
-  if (!referralProgram || !referralProgram.is_visible) return null;
+  if (!referralProgram || !referralProgram.is_visible) {
+    return null;
+  }
 
   const {
     code,
@@ -59,11 +61,11 @@ const CTA = ({ classes }: { classes: Object }) => {
       <Typography className={classes.title}>{ctaTitle}</Typography>
       <Typography className={classes.text}>
         {ctaBody.split('\n').map((item) => (
-            <span key={Math.random()}>
-              {item}
-              <br />
-            </span>
-          ))}
+          <span key={Math.random()}>
+            {item}
+            <br />
+          </span>
+        ))}
       </Typography>
       <Button
         className={classes.button}

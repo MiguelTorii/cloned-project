@@ -109,15 +109,7 @@ const Chat = ({
 }: Props) => {
   const {
     isLoading,
-    data: {
-      client,
-      channels,
-      newMessage,
-      local,
-      newChannel,
-      mainMessage,
-      currentChannel
-    }
+    data: { client, channels, newMessage, local, newChannel, mainMessage, currentChannel }
   } = chat;
   const {
     data: { userId, schoolId, permission, firstName, lastName }
@@ -133,10 +125,7 @@ const Chat = ({
     setCurrentChannel(null);
   }, [handleNewChannel, setCurrentChannel]);
 
-  const clearCurrentChannel = useCallback(
-    () => setCurrentChannel(null),
-    [setCurrentChannel]
-  );
+  const clearCurrentChannel = useCallback(() => setCurrentChannel(null), [setCurrentChannel]);
 
   const onOpenChannel = useCallback(
     ({ channel }) => {
@@ -166,16 +155,13 @@ const Chat = ({
 
   useEffect(() => {
     const channelList = Object.keys(local)
-      .filter(
-        (l) =>
-          local[l].sid &&
-          !local[l].twilioChannel.channelState?.attributes?.community_id
-      )
+      .filter((l) => local[l].sid && !local[l].twilioChannel.channelState?.attributes?.community_id)
       .sort((a, b) => {
-        if (local[a].lastMessage.message === '') return 0;
+        if (local[a].lastMessage.message === '') {
+          return 0;
+        }
         return (
-          moment(local[b].lastMessage.date).valueOf() -
-          moment(local[a].lastMessage.date).valueOf()
+          moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
         );
       });
     setChannelList(channelList);
@@ -185,12 +171,18 @@ const Chat = ({
     if (width !== prevWidth) {
       if (['xs'].includes(width)) {
         setRightSpace(0);
-        if (currentChannel) setLeftSpace(0);
-        else setLeftSpace(curSize);
+        if (currentChannel) {
+          setLeftSpace(0);
+        } else {
+          setLeftSpace(curSize);
+        }
       } else {
         setLeftSpace(curSize);
-        if (currentChannel) setRightSpace(3);
-        else setRightSpace(0);
+        if (currentChannel) {
+          setRightSpace(3);
+        } else {
+          setRightSpace(0);
+        }
       }
     }
 
@@ -198,8 +190,12 @@ const Chat = ({
   }, [prevWidth, width, curSize, currentChannel]);
 
   useEffect(() => {
-    if (currentChannel && width !== 'xs') setRightSpace(3);
-    if (!currentChannel) setRightSpace(0);
+    if (currentChannel && width !== 'xs') {
+      setRightSpace(3);
+    }
+    if (!currentChannel) {
+      setRightSpace(0);
+    }
   }, [currentChannel, width]);
 
   const handleBlock = useCallback(
@@ -231,11 +227,11 @@ const Chat = ({
 
   const renderIcon = useCallback(
     (d) =>
-      (d ? (
+      d ? (
         <ArrowBackIcon className={classes.icon} />
       ) : (
         <ArrowForwardIcon className={classes.icon} />
-      )),
+      ),
     [classes.icon]
   );
 
@@ -253,9 +249,7 @@ const Chat = ({
       {currentChannel && (
         <IconButton
           className={cx(
-            rightSpace !== 0
-              ? classes.rightDrawerOpen
-              : classes.rightDrawerClose,
+            rightSpace !== 0 ? classes.rightDrawerOpen : classes.rightDrawerClose,
             classes.iconButton
           )}
           onClick={onCollapseRight}
@@ -263,11 +257,7 @@ const Chat = ({
           {renderIcon(rightSpace === 0)}
         </IconButton>
       )}
-      <Grid
-        item
-        xs={leftSpace || 1}
-        className={leftSpace !== 0 ? classes.left : classes.hidden}
-      >
+      <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left : classes.hidden}>
         <LeftMenu
           channels={channels}
           channelList={channelList}
@@ -298,16 +288,13 @@ const Chat = ({
           onOpenChannel={onOpenChannel}
           user={user}
           onSend={() => {
-            if (onboardingListVisible)
+            if (onboardingListVisible) {
               setTimeout(() => getOnboardingList(), 1000);
+            }
           }}
         />
       </Grid>
-      <Grid
-        item
-        xs={rightSpace || 1}
-        className={rightSpace !== 0 ? classes.right : classes.hidden}
-      >
+      <Grid item xs={rightSpace || 1} className={rightSpace !== 0 ? classes.right : classes.hidden}>
         <RightMenu
           handleRemoveChannel={handleRemove}
           handleBlock={handleBlock}

@@ -43,12 +43,7 @@ const SelectedImage = ({
         )}
       </div>
       {open && (
-        <Lightbox
-          backdropClosesModal
-          images={[{ src: image }]}
-          isOpen
-          onClose={onCloseImage}
-        />
+        <Lightbox backdropClosesModal images={[{ src: image }]} isOpen onClose={onCloseImage} />
       )}
     </div>
   );

@@ -69,28 +69,14 @@ const FlashcardList = ({
           )}
         </div>
         <Grid item xs={4} className={classes.question}>
-          {questionImage && (
-            <SelectedImage image={questionImage} imageStyle={imageStyle} />
-          )}
-          <div
-            className={clsx(
-              questionImage && classes.hasImage,
-              classes.markdownContainer
-            )}
-          >
+          {questionImage && <SelectedImage image={questionImage} imageStyle={imageStyle} />}
+          <div className={clsx(questionImage && classes.hasImage, classes.markdownContainer)}>
             <CustomQuill value={question} readOnly />
           </div>
         </Grid>
         <Grid item xs={8} className={classes.answer}>
-          {answerImage && (
-            <SelectedImage image={answerImage} imageStyle={imageStyle} />
-          )}
-          <div
-            className={clsx(
-              answerImage && classes.hasImage,
-              classes.markdownContainer
-            )}
-          >
+          {answerImage && <SelectedImage image={answerImage} imageStyle={imageStyle} />}
+          <div className={clsx(answerImage && classes.hasImage, classes.markdownContainer)}>
             <CustomQuill value={answer} readOnly />
           </div>
         </Grid>

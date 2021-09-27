@@ -23,10 +23,7 @@ import SlideUp from 'components/Transition/SlideUp';
 import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
 import { isApiCalling, getPastClassIds } from 'utils/helpers';
 import { userActions } from 'constants/action-types';
-import {
-  getFlashcards,
-  confirmTooltip as confirmTooltipAction
-} from 'actions/user';
+import { getFlashcards, confirmTooltip as confirmTooltipAction } from 'actions/user';
 import useStyles from './styles';
 
 const Filters = {
@@ -72,9 +69,7 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }) => {
 
   const decksToShow = useMemo(() => {
     const result = decks.ids.map((id) => decks.byId[id]);
-    const myDecks = result.filter(
-      (item) => !pastClassIds.includes(item.class_id)
-    );
+    const myDecks = result.filter((item) => !pastClassIds.includes(item.class_id));
     if (currentFilter === 'bookmarked') {
       return result.filter((item) => item.bookmarked);
     }

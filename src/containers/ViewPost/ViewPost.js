@@ -74,7 +74,9 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
   }, [postId]);
 
   const handleBookmark = async () => {
-    if (!post) return;
+    if (!post) {
+      return;
+    }
     const { feedId, bookmarked } = post;
     try {
       setPost({ ...post, bookmarked: !bookmarked });
@@ -97,12 +99,13 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
     setDeletePost(false);
   };
 
-  if (!post)
+  if (!post) {
     return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+  }
 
   const {
     feedId,
@@ -190,19 +193,10 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Report
-              open={report}
-              ownerId={ownerId}
-              objectId={feedId}
-              onClose={handleReportClose}
-            />
+            <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <DeletePost
-              open={deletePost}
-              feedId={feedId}
-              onClose={handleDeleteClose}
-            />
+            <DeletePost open={deletePost} feedId={feedId} onClose={handleDeleteClose} />
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
@@ -224,7 +218,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ViewPost));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewPost));

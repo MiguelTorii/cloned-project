@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useRef,
-  useEffect,
-  useState,
-  useCallback
-} from 'react';
+import React, { useContext, useRef, useEffect, useState, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -19,13 +13,8 @@ import WorkflowContext from 'containers/Workflow/WorkflowContext';
 import { useStyles } from '../_styles/Workflow/CalendarView';
 
 const CalendarView = () => {
-  const {
-    tasks,
-    archiveTask,
-    setCurrentCalendarView,
-    updateItem,
-    currentCalendarView
-  } = useContext(WorkflowContext);
+  const { tasks, archiveTask, setCurrentCalendarView, updateItem, currentCalendarView } =
+    useContext(WorkflowContext);
   const classes = useStyles();
   const [calendarTasks, setCalendarTasks] = useState([]);
   const [currentTask, setCurrentTask] = useState(null);
@@ -63,9 +52,7 @@ const CalendarView = () => {
   useEffect(() => {
     const calendarTasks = tasks.map((t, index) => {
       const date =
-        typeof t.date.getMonth === 'function'
-          ? t.date
-          : new Date(`${t.date.replace(' ', 'T')}Z`);
+        typeof t.date.getMonth === 'function' ? t.date : new Date(`${t.date.replace(' ', 'T')}Z`);
 
       return {
         ...t,
@@ -101,7 +88,9 @@ const CalendarView = () => {
 
   const onViewChange = useCallback(
     (e) => {
-      if (e?.view?.type) setCurrentCalendarView(e?.view?.type);
+      if (e?.view?.type) {
+        setCurrentCalendarView(e?.view?.type);
+      }
     },
     [setCurrentCalendarView]
   );
@@ -110,9 +99,7 @@ const CalendarView = () => {
     async (e) => {
       if (e?.dateStr && e?.draggedEl?.dataset?.event) {
         const task = JSON.parse(e?.draggedEl?.dataset?.event);
-        const date = new Date(
-          e.dateStr.includes('T') ? e.dateStr : `${e.dateStr} 12:00:00`
-        );
+        const date = new Date(e.dateStr.includes('T') ? e.dateStr : `${e.dateStr} 12:00:00`);
         await updateItem({ ...task, date });
       }
     },
@@ -140,7 +127,9 @@ const CalendarView = () => {
         setTimeout(() => setDoubleClick(null), 1000);
       }
 
-      if (doubleClick === dateStr) addTask();
+      if (doubleClick === dateStr) {
+        addTask();
+      }
     },
     [addTask, doubleClick]
   );

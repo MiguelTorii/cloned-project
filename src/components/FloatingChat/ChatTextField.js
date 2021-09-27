@@ -76,7 +76,9 @@ class ChatTextField extends React.PureComponent<Props, State> {
   };
 
   handleOpenInputFile = () => {
-    if (this.fileInput) this.fileInput.click();
+    if (this.fileInput) {
+      this.fileInput.click();
+    }
   };
 
   handleKeyDown = (event) => {
@@ -173,11 +175,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
             <CircularProgress />
           </Box>
         ) : (
-          <form
-            autoComplete="off"
-            className={classes.form}
-            onSubmit={this.handleSubmit}
-          >
+          <form autoComplete="off" className={classes.form} onSubmit={this.handleSubmit}>
             {!hideImage && (
               <IconButton
                 onClick={this.handleOpenInputFile}
@@ -224,9 +222,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
               />
             </div>
             <EmojiSelector onSelect={this.handleSelect} isFloatChat />
-            {message && (
-              <Divider light className={classes.divider} />
-            )}
+            {message && <Divider light className={classes.divider} />}
             {message && (
               <Tooltip
                 arrow
@@ -251,12 +247,7 @@ class ChatTextField extends React.PureComponent<Props, State> {
         {files.length > 0 && (
           <div className={classes.files}>
             {files.map((file) => (
-              <AttachFile
-                key={file.url}
-                smallChat
-                file={file}
-                onClose={() => this.onClose(file)}
-              />
+              <AttachFile key={file.url} smallChat file={file} onClose={() => this.onClose(file)} />
             ))}
           </div>
         )}
@@ -275,7 +266,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ChatTextField));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ChatTextField));

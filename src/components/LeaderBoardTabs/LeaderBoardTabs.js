@@ -20,12 +20,7 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      {...other}
-    >
+    <Typography component="div" role="tabpanel" hidden={value !== index} {...other}>
       {value === index && <Box p={1}>{children}</Box>}
     </Typography>
   );
@@ -70,12 +65,7 @@ const LeaderBoardTabs = ({
     updateTuesdayLeaderboard(sectionId);
     updateGrandLeaderboards(sectionId);
     updateLeaderboardGrandInfo();
-  }, [
-    sectionId,
-    updateGrandLeaderboards,
-    updateTuesdayLeaderboard,
-    updateLeaderboardGrandInfo
-  ]);
+  }, [sectionId, updateGrandLeaderboards, updateTuesdayLeaderboard, updateLeaderboardGrandInfo]);
 
   useEffect(() => {
     try {
@@ -129,18 +119,17 @@ const LeaderBoardTabs = ({
       borderRadius: 16
     };
 
-    if (window.innerWidth > 400)
+    if (window.innerWidth > 400) {
       return (
         <div style={containerStyle}>
           {prizeImgs.map((img) => (
             <LoadImg key={img} url={img} style={imgStyle} />
           ))}
           {selectedTab === 'tuesday' &&
-            [...Array(3 - prizeImgs.length)].map(() => (
-              <div key={uuidv4()} style={placeholder} />
-            ))}
+            [...Array(3 - prizeImgs.length)].map(() => <div key={uuidv4()} style={placeholder} />)}
         </div>
       );
+    }
     return null;
   };
 
@@ -212,11 +201,7 @@ const LeaderBoardTabs = ({
             <div style={{ display: 'flex' }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ marginBottom: 12 }}>
-                  <LoadImg
-                    key={prizeImgs[0]}
-                    url={prizeImgs[0]}
-                    style={imgStyle}
-                  />
+                  <LoadImg key={prizeImgs[0]} url={prizeImgs[0]} style={imgStyle} />
                 </div>
                 <div>
                   <Button
@@ -242,9 +227,7 @@ const LeaderBoardTabs = ({
                     <div className={classes.label}>{numberOfWinners}</div>
                   </div>
                   <div style={{ maxWidth: 250 }}>
-                    <div className={classes.highlight}>
-                      Eligibility Requirements*
-                    </div>
+                    <div className={classes.highlight}>Eligibility Requirements*</div>
                     <div className={classes.labelSmall}>
                       {leaderboard.data.general.grand.eligibility || ''}
                     </div>
@@ -278,9 +261,7 @@ const LeaderBoardTabs = ({
             <Button
               variant="outlined"
               color="primary"
-              onClick={
-                selectedTab === 'grand' ? handleOpenDialog : navigateToStore
-              }
+              onClick={selectedTab === 'grand' ? handleOpenDialog : navigateToStore}
               className={classes.button}
             >
               {rewardButtonText}

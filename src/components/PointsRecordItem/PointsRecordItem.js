@@ -20,14 +20,14 @@ type Props = {
 const PointsRecordItem = ({ data }: Props) => {
   const classes = useStyles();
   const durationText = useMemo(() => {
-    const minutes = moment
-      .duration(moment().diff(moment.utc(data.date)))
-      .asMinutes();
+    const minutes = moment.duration(moment().diff(moment.utc(data.date))).asMinutes();
 
-    if (minutes < 60)
+    if (minutes < 60) {
       return moment.duration(-minutes, 'minutes').humanize(true);
-    if (minutes < 60 * 24)
+    }
+    if (minutes < 60 * 24) {
       return moment.duration(-minutes / 60, 'hours').humanize(true);
+    }
     return moment.duration(-minutes / 1440, 'days').humanize(true);
   }, [data]);
 
@@ -35,11 +35,7 @@ const PointsRecordItem = ({ data }: Props) => {
     <Paper className={classes.root}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center">
-          <LoadImg
-            url={data.points_icon_url}
-            loadingSize={IMAGE_SIZE}
-            className={classes.image}
-          />
+          <LoadImg url={data.points_icon_url} loadingSize={IMAGE_SIZE} className={classes.image} />
           <div>
             <Typography>{data.points_title}</Typography>
             <Typography variant="body1">{durationText}</Typography>

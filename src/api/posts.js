@@ -14,12 +14,7 @@ import type {
 } from '../types/models';
 import { API_ROUTES } from '../constants/routes';
 import { logEvent } from './analytics';
-import {
-  getToken,
-  postToCamelCase,
-  commentsToCamelCase,
-  postResponseToCamelCase
-} from './utils';
+import { getToken, postToCamelCase, commentsToCamelCase, postResponseToCamelCase } from './utils';
 import callApi from './api_base';
 
 export const createBatchFlashcards = async ({
@@ -702,14 +697,11 @@ export const getNotes = async ({
 }): Promise<PhotoNote> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.PHOTO_NOTE}/${noteId}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.PHOTO_NOTE}/${noteId}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     const post = postToCamelCase(data);
@@ -736,18 +728,14 @@ export const getPost = async ({
 }): Promise<Question> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.POST}/${postId}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.POST}/${postId}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
-    const { feedPostV2UserInfo, generalPostSpecificInfo, postCharacteristics } =
-      data;
+    const { feedPostV2UserInfo, generalPostSpecificInfo, postCharacteristics } = data;
     const post = postToCamelCase({
       ...feedPostV2UserInfo,
       ...generalPostSpecificInfo,
@@ -769,14 +757,11 @@ export const getQuestion = async ({
 }): Promise<Question> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.QUESTION}/${questionId}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.QUESTION}/${questionId}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     const question = postToCamelCase(data);
@@ -796,14 +781,11 @@ export const getFlashcards = async ({
 }): Promise<Flashcards> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.FLASHCARDS}/${flashcardId}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.FLASHCARDS}/${flashcardId}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
 
@@ -826,14 +808,11 @@ export const getShareLink = async ({
 }): Promise<ShareLink> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.SHARELINK}/${sharelinkId}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.SHARELINK}/${sharelinkId}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
 
@@ -921,13 +900,7 @@ export const createComment = async ({
   }
 };
 
-export const createShareURL = async ({
-  userId,
-  feedId
-}: {
-  userId: string,
-  feedId: number
-}) => {
+export const createShareURL = async ({ userId, feedId }: { userId: string, feedId: number }) => {
   try {
     const token = await getToken();
 
@@ -1130,12 +1103,14 @@ export const thankComment = async ({
   }
 };
 
-export const getReasons = async (reportTypeId: number) => callApi({
+export const getReasons = async (reportTypeId: number) =>
+  callApi({
     url: `${API_ROUTES.REPORT_REASONS}/${reportTypeId}`,
     method: 'GET'
   });
 
-export const updateComment = async (commentId, comment) => callApi({
+export const updateComment = async (commentId, comment) =>
+  callApi({
     url: `${API_ROUTES.COMMENT}/${commentId}`,
     method: 'PUT',
     data: { comment }
@@ -1197,14 +1172,11 @@ export const bookmark = async ({
     const token = await getToken();
 
     if (remove) {
-      const result = await axios.delete(
-        `${API_ROUTES.FEED}/${feedId}/bookmark?user_id=${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+      const result = await axios.delete(`${API_ROUTES.FEED}/${feedId}/bookmark?user_id=${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      });
 
       const { data } = result;
       return data;
@@ -1230,24 +1202,15 @@ export const bookmark = async ({
   }
 };
 
-export const deletePost = async ({
-  feedId,
-  userId
-}: {
-  feedId: number,
-  userId: string
-}) => {
+export const deletePost = async ({ feedId, userId }: { feedId: number, userId: string }) => {
   try {
     const token = await getToken();
 
-    const result = await axios.delete(
-      `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.delete(`${API_ROUTES.FEED}/${feedId}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data } = result;
     return data;
@@ -1267,14 +1230,11 @@ export const getPostMetadata = async ({
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.FEED}/${feedId}/info?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.FEED}/${feedId}/info?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const { data = {} } = result;
     const recommendedPosts = (data.recommended_posts || []).map((item) => ({
@@ -1405,14 +1365,11 @@ export const deleteComment = async ({
   try {
     const token = await getToken();
 
-    const result = await axios.delete(
-      `${API_ROUTES.COMMENT}/${id}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.delete(`${API_ROUTES.COMMENT}/${id}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data } = result;
     return data;
   } catch (err) {

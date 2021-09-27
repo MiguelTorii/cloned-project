@@ -25,12 +25,11 @@ const MyLink = React.forwardRef(({ link, ...props }, ref) => (
 
 const RightMenu = ({ local, channel, isCommunityChat }) => {
   const classes = useStyles();
-  const localChannel = useMemo(
-    () => channel && local[channel.sid],
-    [channel, local]
-  );
+  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
 
-  if (!channel || !localChannel) return null;
+  if (!channel || !localChannel) {
+    return null;
+  }
 
   return (
     <Box display="flex" flexDirection="column" className={classes.container}>
@@ -107,10 +106,7 @@ const RightMenu = ({ local, channel, isCommunityChat }) => {
       </Grid>
       {!isCommunityChat && (
         <Box padding={2}>
-          <ShareLinkWidget
-            shareLink={localChannel.shareLink}
-            headerText="Share an invite link"
-          />
+          <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" />
         </Box>
       )}
     </Box>

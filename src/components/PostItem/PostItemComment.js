@@ -207,8 +207,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
       replyCommentId,
       isCurrent
     } = this.props;
-    const { showAddComment, open, report, moreAnchorEl, isEditing } =
-      this.state;
+    const { showAddComment, open, report, moreAnchorEl, isEditing } = this.state;
     const isMenuOpen = Boolean(moreAnchorEl);
     const date = moment(created);
     const name = `${firstName} ${lastName}`;
@@ -233,11 +232,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
         {isQuestion && !isOwn && isOwner && !hasBestAnswer && !accepted && (
           <MenuItem onClick={this.handleOpenBestAnswer}>
             <ListItemIcon color="inherit">
-              <img
-                src={IconBadge}
-                className={classes.badgeIcon}
-                alt="best answer badge"
-              />
+              <img src={IconBadge} className={classes.badgeIcon} alt="best answer badge" />
             </ListItemIcon>
             <ListItemText inset primary="Mark as Best Answer" />
           </MenuItem>
@@ -274,23 +269,14 @@ class PostItemComment extends React.PureComponent<Props, State> {
           <div className={classes.header}>
             <Box display="flex" alignItems="center">
               <Typography component="p" variant="subtitle2" noWrap>
-                <Link
-                  component={MyLink}
-                  href={`/profile/${ownerId}`}
-                  className={classes.link}
-                >
+                <Link component={MyLink} href={`/profile/${ownerId}`} className={classes.link}>
                   {name}
                 </Link>
               </Typography>
               {roleId !== 1 && <RoleBadge />}
             </Box>
             &nbsp; • &nbsp;
-            <Typography
-              component="p"
-              variant="caption"
-              noWrap
-              className={classes.created}
-            >
+            <Typography component="p" variant="caption" noWrap className={classes.created}>
               {fromNow}
             </Typography>
             {/* It shows a badge if the answer is set as the best answer. */}
@@ -359,23 +345,10 @@ class PostItemComment extends React.PureComponent<Props, State> {
             ) : (
               renderComment()
             )}
-            <div
-              className={cx(
-                classes.actions,
-                isQuestion && !isOwn && classes.bestAnswer
-              )}
-            >
+            <div className={cx(classes.actions, isQuestion && !isOwn && classes.bestAnswer)}>
               {isOwn ? (
-                <Typography
-                  component="p"
-                  variant="subtitle2"
-                  className={classes.thanks}
-                >
-                  <img
-                    src={thanksSvg}
-                    className={classes.actionIcon}
-                    alt="thanks"
-                  />
+                <Typography component="p" variant="subtitle2" className={classes.thanks}>
+                  <img src={thanksSvg} className={classes.actionIcon} alt="thanks" />
                   <strong>{thanksCount}</strong>
                 </Typography>
               ) : (
@@ -383,26 +356,16 @@ class PostItemComment extends React.PureComponent<Props, State> {
                   <div className={classes.actionIcon}>
                     {thanked ? <ThankedIcon /> : <ThanksIcon />}
                   </div>
-                  <strong
-                    className={cx(thanked ? classes.thanked : classes.thanks)}
-                  >
+                  <strong className={cx(thanked ? classes.thanked : classes.thanks)}>
                     {thanksCount}
                   </strong>
                 </IconButton>
               )}
 
               {isCurrent() && (
-                <Typography
-                  component="p"
-                  variant="subtitle2"
-                  className={classes.thanks}
-                >
+                <Typography component="p" variant="subtitle2" className={classes.thanks}>
                   <IconButton onClick={this.handleShowAddComment}>
-                    <img
-                      src={commentSvg}
-                      className={classes.actionIcon}
-                      alt="thanks"
-                    />
+                    <img src={commentSvg} className={classes.actionIcon} alt="thanks" />
                   </IconButton>
                 </Typography>
               )}
@@ -410,10 +373,7 @@ class PostItemComment extends React.PureComponent<Props, State> {
               {isEditing && (
                 <Typography variant="subtitle2">
                   Press Esc to&nbsp;
-                  <Link
-                    component="button"
-                    onClick={this.handleCancelEditComment}
-                  >
+                  <Link component="button" onClick={this.handleCancelEditComment}>
                     Cancel
                   </Link>
                 </Typography>

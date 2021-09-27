@@ -123,62 +123,55 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
           >
             <List className={classes.list}>
               {members.map((member) => (
-                  <ListItem key={member.userId} role={undefined} dense>
-                    <ListItemAvatar>
-                      <OnlineBadge
-                        isOnline={member.isOnline}
-                        bgColorPath="circleIn.palette.feedBackground"
+                <ListItem key={member.userId} role={undefined} dense>
+                  <ListItemAvatar>
+                    <OnlineBadge
+                      isOnline={member.isOnline}
+                      bgColorPath="circleIn.palette.feedBackground"
+                    >
+                      <Avatar
+                        alt={`${member.firstName} ${member.lastName}`}
+                        src={member.profileImageUrl}
                       >
-                        <Avatar
-                          alt={`${member.firstName} ${member.lastName}`}
-                          src={member.profileImageUrl}
+                        {getInitials(`${member.firstName} ${member.lastName}`)}
+                      </Avatar>
+                    </OnlineBadge>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      Number(userId) === Number(member.userId) ? (
+                        <Box display="flex">me &nbsp; {member.role && <RoleBadge />}</Box>
+                      ) : (
+                        <Box display="flex">
+                          {`${member.firstName} ${member.lastName}`} &nbsp;{' '}
+                          {member.roleId !== 1 && <RoleBadge />}
+                        </Box>
+                      )
+                    }
+                  />
+                  {Number(userId) !== Number(member.userId) && (
+                    <ListItemSecondaryAction>
+                      <div className={classes.wrapper}>
+                        <Button
+                          onClick={this.handleOpenConfirm({
+                            blockedUserId: member.userId,
+                            name: `${member.firstName} ${member.lastName}`
+                          })}
+                          disabled={loading}
+                          color="secondary"
+                          aria-label="Block"
+                          variant="contained"
                         >
-                          {getInitials(
-                            `${member.firstName} ${member.lastName}`
-                          )}
-                        </Avatar>
-                      </OnlineBadge>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        Number(userId) === Number(member.userId) ? (
-                          <Box display="flex">
-                            me &nbsp; {member.role && <RoleBadge />}
-                          </Box>
-                        ) : (
-                          <Box display="flex">
-                            {`${member.firstName} ${member.lastName}`} &nbsp;{' '}
-                            {member.roleId !== 1 && <RoleBadge />}
-                          </Box>
-                        )
-                      }
-                    />
-                    {Number(userId) !== Number(member.userId) && (
-                      <ListItemSecondaryAction>
-                        <div className={classes.wrapper}>
-                          <Button
-                            onClick={this.handleOpenConfirm({
-                              blockedUserId: member.userId,
-                              name: `${member.firstName} ${member.lastName}`
-                            })}
-                            disabled={loading}
-                            color="secondary"
-                            aria-label="Block"
-                            variant="contained"
-                          >
-                            Block
-                          </Button>
-                          {loading && (
-                            <CircularProgress
-                              size={24}
-                              className={classes.buttonProgress}
-                            />
-                          )}
-                        </div>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                ))}
+                          Block
+                        </Button>
+                        {loading && (
+                          <CircularProgress size={24} className={classes.buttonProgress} />
+                        )}
+                      </div>
+                    </ListItemSecondaryAction>
+                  )}
+                </ListItem>
+              ))}
             </List>
           </Dialog>
         </ErrorBoundary>

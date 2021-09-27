@@ -2,10 +2,7 @@
 
 import React from 'react';
 import moment from 'moment';
-import {
-  ValidatorForm,
-  SelectValidator
-} from 'react-material-ui-form-validator';
+import { ValidatorForm, SelectValidator } from 'react-material-ui-form-validator';
 import { DateTimePicker } from 'material-ui-pickers';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -64,8 +61,7 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const { purpose, classId, sectionId, meeting, selectedDate, help } =
-      this.state;
+    const { purpose, classId, sectionId, meeting, selectedDate, help } = this.state;
     onSubmit({ purpose, classId, sectionId, meeting, selectedDate, help });
   };
 
@@ -93,19 +89,13 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
         title="Congratulations!"
       >
         <div className={classes.content}>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
           <Typography id="video-points-description" color="textPrimary">
-            Nice Job! You've unlocked points for today's video study session.
-            Fill out the fields below to receive your points
+            Nice Job! You've unlocked points for today's video study session. Fill out the fields
+            below to receive your points
           </Typography>
           <ValidatorForm onSubmit={this.handleSubmit} className={classes.form}>
-            <FormControl
-              variant="outlined"
-              fullWidth
-              className={classes.formControl}
-            >
+            <FormControl variant="outlined" fullWidth className={classes.formControl}>
               <SelectValidator
                 disabled={loading}
                 value={purpose}
@@ -124,13 +114,8 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
                 <MenuItem value="5">Fun</MenuItem>
               </SelectValidator>
             </FormControl>
-            {(Number(purpose) === 1 ||
-              Number(purpose) === 2 ||
-              Number(purpose) === 3) && (
-              <ClassesSelector
-                disabled={loading}
-                onChange={this.handleClassesChange}
-              />
+            {(Number(purpose) === 1 || Number(purpose) === 2 || Number(purpose) === 3) && (
+              <ClassesSelector disabled={loading} onChange={this.handleClassesChange} />
             )}
             <Typography color="textPrimary">
               Do you want to schedule another meeting for the next 7 days?

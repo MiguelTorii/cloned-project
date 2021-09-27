@@ -36,8 +36,7 @@ export default () => {
   function enableMathQuillFormulaAuthoring(quill, options) {
     options = options || {};
 
-    const historyCacheKey =
-    options.historyCacheKey || '__mathquill4quill_historylist_cache__';
+    const historyCacheKey = options.historyCacheKey || '__mathquill4quill_historylist_cache__';
     const historySize = options.historySize || 10;
     const displayHistory = options.displayHistory || false;
 
@@ -88,7 +87,9 @@ export default () => {
           historyList.splice(index, 1);
         }
         historyList.unshift(item);
-        if (historyList.length > historySize) historyList.pop();
+        if (historyList.length > historySize) {
+          historyList.pop();
+        }
         try {
           localStorage.setItem(historyCacheKey, JSON.stringify(historyList));
         } catch (e) {
@@ -113,8 +114,7 @@ export default () => {
 
     function newMathquillInput() {
       const autofocus = options.autofocus == null ? true : options.autofocus;
-      const mathQuillConfig =
-        options.mathQuillConfig != null ? options.mathQuillConfig : {};
+      const mathQuillConfig = options.mathQuillConfig != null ? options.mathQuillConfig : {};
       const cacheKey = options.cacheKey || '__mathquill4quill_cache__';
       let mqInput = null;
       let mqField = null;
@@ -129,8 +129,7 @@ export default () => {
       }
 
       function syncMathquillToQuill(latexInput, saveButton) {
-        const handlers =
-          mathQuillConfig.handlers == null ? {} : mathQuillConfig.handlers;
+        const handlers = mathQuillConfig.handlers == null ? {} : mathQuillConfig.handlers;
         mathQuillConfig.handlers = {
           ...handlers,
           edit() {
@@ -143,10 +142,7 @@ export default () => {
           }
         };
 
-        mqField = MathQuill.getInterface(2).MathField(
-          mqInput,
-          mathQuillConfig
-        );
+        mqField = MathQuill.getInterface(2).MathField(mqInput, mathQuillConfig);
 
         const cachedLatex = getCacheItem(cacheKey);
         if (cachedLatex) {
@@ -303,11 +299,7 @@ export default () => {
       function fixToolTipHeight() {
         const tooltip = getTooltip();
 
-        if (
-          tooltip.getBoundingClientRect().top -
-            quill.container.getBoundingClientRect().top <
-          0
-        ) {
+        if (tooltip.getBoundingClientRect().top - quill.container.getBoundingClientRect().top < 0) {
           tooltip.style.top = '0px';
         }
       }

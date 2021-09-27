@@ -1,13 +1,6 @@
 // @flow
 
-import React, {
-  useMemo,
-  useRef,
-  Fragment,
-  useState,
-  useEffect,
-  useCallback
-} from 'react';
+import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { withStyles } from '@material-ui/core/styles';
 // import Fab from '@material-ui/core/Fab';
@@ -62,7 +55,9 @@ const FlashcardEditor = ({
   const [focus, setFocus] = useState('question');
 
   useEffect(() => {
-    if (isNew) setOpen(true);
+    if (isNew) {
+      setOpen(true);
+    }
   }, [isNew]);
 
   const handleDelete = useCallback(() => {
@@ -91,8 +86,11 @@ const FlashcardEditor = ({
 
   const handleTextChange = useCallback(
     (name) => (v) => {
-      if (name === 'question') setCurQuestion(v.replace('\t', ''));
-      else setCurAnswer(v.replace('\t', ''));
+      if (name === 'question') {
+        setCurQuestion(v.replace('\t', ''));
+      } else {
+        setCurAnswer(v.replace('\t', ''));
+      }
     },
     []
   );
@@ -139,28 +137,21 @@ const FlashcardEditor = ({
         handleClose();
       }
     }
-  }, [
-    curQuestionImage,
-    curAnswerImage,
-    curQuestion,
-    curAnswer,
-    id,
-    handleClose,
-    onSubmit
-  ]);
+  }, [curQuestionImage, curAnswerImage, curQuestion, curAnswer, id, handleClose, onSubmit]);
 
   const handleImage = useCallback(
     (name) => (url) => {
-      if (name === 'question') setCurQuestionImage(url);
-      else setCurAnswerImage(url);
+      if (name === 'question') {
+        setCurQuestionImage(url);
+      } else {
+        setCurAnswerImage(url);
+      }
     },
     []
   );
 
   const enabled = useMemo(
-    () =>
-      (strip(curQuestion) || curQuestionImage) &&
-      (strip(curAnswer) || curAnswerImage),
+    () => (strip(curQuestion) || curQuestionImage) && (strip(curAnswer) || curAnswerImage),
     [curQuestion, curQuestionImage, curAnswer, curAnswerImage]
   );
 
@@ -199,7 +190,9 @@ const FlashcardEditor = ({
           }
         };
         setTimeout(() => {
-          if (questionEditor) questionEditor.focus();
+          if (questionEditor) {
+            questionEditor.focus();
+          }
         }, 100);
       } catch (e) {}
     }
@@ -213,8 +206,11 @@ const FlashcardEditor = ({
           if (k.code === 'Tab') {
             k.preventDefault();
             k.stopPropagation();
-            if (okRef && okRef.disabled) questionEditor.focus();
-            else okRef.focus();
+            if (okRef && okRef.disabled) {
+              questionEditor.focus();
+            } else {
+              okRef.focus();
+            }
           }
         };
         answerEditor.getEditor().root.onfocus = () => {
@@ -275,9 +271,7 @@ const FlashcardEditor = ({
                 xs={12}
                 className={clsx(
                   classes.richEditor,
-                  ['sm', 'xs'].includes(width)
-                    ? classes.smallRichEditor
-                    : classes.bigRichEditor,
+                  ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
                   curQuestionImage && classes.imageEditor,
                   focus !== 'question' && classes.noFocus
                 )}
@@ -309,9 +303,7 @@ const FlashcardEditor = ({
                 xs={12}
                 className={clsx(
                   classes.richEditor,
-                  ['sm', 'xs'].includes(width)
-                    ? classes.smallRichEditor
-                    : classes.bigRichEditor,
+                  ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
                   curAnswerImage && classes.imageEditor,
                   focus !== 'answer' && classes.noFocus
                 )}

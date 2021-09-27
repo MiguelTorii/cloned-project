@@ -51,7 +51,9 @@ export const signLMSUser = async ({
     });
     const { data = {} } = result;
 
-    if (data?.redirect_url) window.location = data.redirect_url;
+    if (data?.redirect_url) {
+      window.location = data.redirect_url;
+    }
     return userToCamelCase(data);
   } catch (err) {
     console.log(err);
@@ -59,11 +61,7 @@ export const signLMSUser = async ({
   }
 };
 
-export const checkCanvasUser = async ({
-  nonce
-}: {
-  nonce: string
-}): Promise<Object> => {
+export const checkCanvasUser = async ({ nonce }: { nonce: string }): Promise<Object> => {
   try {
     const result = await axios.post(API_ROUTES.CANVAS_LOGIN, {
       nonce
@@ -77,11 +75,7 @@ export const checkCanvasUser = async ({
 };
 
 // LTI
-export const checkLMSUser = async ({
-  nonce
-}: {
-  nonce: string
-}): Promise<Object> => {
+export const checkLMSUser = async ({ nonce }: { nonce: string }): Promise<Object> => {
   try {
     const result = await axios.post(API_ROUTES.LMS_LOGIN, {
       nonce

@@ -54,26 +54,26 @@ type Props = {
 };
 
 const Empty = ({ classes, logo, body }: Props) => (
-    <Paper className={classes.paper}>
-      <Grid item>
-        <div className={classes.imgContainer}>
-          {logo && <img alt="logo" className={classes.img} src={logo} />}
-        </div>
-      </Grid>
-      <Grid
-        container
-        className={classes.textContainer}
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-      >
-        {body.split('\n').map((line) => (
-          <Typography key={line} className={classes.text}>
-            <Linkify properties={{ target: '_blank' }}>{line}</Linkify>
-          </Typography>
-        ))}
-      </Grid>
-    </Paper>
-  );
+  <Paper className={classes.paper}>
+    <Grid item>
+      <div className={classes.imgContainer}>
+        {logo && <img alt="logo" className={classes.img} src={logo} />}
+      </div>
+    </Grid>
+    <Grid
+      container
+      className={classes.textContainer}
+      alignItems="center"
+      justifyContent="center"
+      spacing={2}
+    >
+      {body.split('\n').map((line) => (
+        <Typography key={line} className={classes.text}>
+          <Linkify properties={{ target: '_blank' }}>{line}</Linkify>
+        </Typography>
+      ))}
+    </Grid>
+  </Paper>
+);
 
 export default withStyles(styles)(Empty);

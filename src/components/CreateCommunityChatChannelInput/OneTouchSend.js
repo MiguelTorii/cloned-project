@@ -47,10 +47,7 @@ const CreateChatChannelInput = ({
     ),
     [onOpenChannel, setIsOpen]
   );
-  const oneTouchSend = useCallback(
-    () => <SendClass onClosePopover={onClosePopover} />,
-    []
-  );
+  const oneTouchSend = useCallback(() => <SendClass onClosePopover={onClosePopover} />, []);
 
   return (
     <>
@@ -61,10 +58,7 @@ const CreateChatChannelInput = ({
         <CloseIcon className={classes.closeIcon} onClick={onClosePopover} />
       </div>
 
-      <MuiTabs
-        firstTab={() => sendStudent()}
-        secondTab={() => oneTouchSend()}
-      />
+      <MuiTabs firstTab={() => sendStudent()} secondTab={() => oneTouchSend()} />
     </>
   );
 };

@@ -32,11 +32,7 @@ export const updateSchool =
     dispatch(setSchool({ school }));
   };
 
-const setReferralData = ({
-  referralData
-}: {
-  referralData: ReferralData
-}): Action => ({
+const setReferralData = ({ referralData }: { referralData: ReferralData }): Action => ({
   type: authActions.UPDATE_REFERRAL_DATA,
   payload: {
     referralData

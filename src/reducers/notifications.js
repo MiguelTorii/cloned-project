@@ -13,10 +13,7 @@ const defaultState = {
   items: []
 };
 
-export default (
-  state: NotificationsState = defaultState,
-  action: Action
-): NotificationsState => {
+export default (state: NotificationsState = defaultState, action: Action): NotificationsState => {
   switch (action.type) {
     case notificationsActions.ENQUEUE_SNACKBAR_REQUEST:
       return {
@@ -27,18 +24,16 @@ export default (
       return {
         ...state,
         items: state.items.map((notification) =>
-          (action.payload.dismissAll || notification.key === action.payload.key
+          action.payload.dismissAll || notification.key === action.payload.key
             ? { ...notification, dismissed: true }
-            : { ...notification })
+            : { ...notification }
         )
       };
 
     case notificationsActions.REMOVE_SNACKBAR_REQUEST:
       return {
         ...state,
-        items: state.items.filter(
-          (notification) => notification.key !== action.payload.key
-        )
+        items: state.items.filter((notification) => notification.key !== action.payload.key)
       };
     case rootActions.CLEAR_STATE:
       return defaultState;

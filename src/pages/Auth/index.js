@@ -13,10 +13,10 @@ type Props = {
 };
 
 const AuthPage = ({ classes }: Props) => (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Auth />
-    </main>
-  );
+  <main className={classes.main}>
+    <CssBaseline />
+    <Auth />
+  </main>
+);
 
 export default withRoot(withStyles(styles)(AuthPage));

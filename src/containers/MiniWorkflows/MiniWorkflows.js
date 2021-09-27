@@ -48,7 +48,7 @@ const MiniWorkflows = () => {
     if (tasks.length === 0) {
       return (
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <img className={classes.emptyImage} src={ImgEmptyTask} alt="no upcoming tasks"/>
+          <img className={classes.emptyImage} src={ImgEmptyTask} alt="no upcoming tasks" />
           <Typography align="center" paragraph>
             No tasks yet
           </Typography>
@@ -81,11 +81,7 @@ const MiniWorkflows = () => {
   };
 
   return (
-    <Paper
-      className={classes.root}
-      elevation={0}
-      square={false}
-    >
+    <Paper className={classes.root} elevation={0} square={false}>
       <Typography className={classes.title} variant="h6" paragraph>
         🗓 Your Upcoming Tasks
       </Typography>

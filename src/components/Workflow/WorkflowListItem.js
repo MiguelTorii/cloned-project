@@ -18,16 +18,22 @@ import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../_styles/Workflow/WorkflowListItem';
 
 const getTitle = (downMd, downSm, downXs, title) => {
-  if (downXs) return title;
-  if (downSm) return title.substr(0, 45);
-  if (downMd) return title.substr(0, 75);
+  if (downXs) {
+    return title;
+  }
+  if (downSm) {
+    return title.substr(0, 45);
+  }
+  if (downMd) {
+    return title.substr(0, 75);
+  }
   return title;
 };
 
 const getStyles = (hide) => ({
-    opacity: hide ? 0 : 1,
-    height: hide ? 0 : ''
-  });
+  opacity: hide ? 0 : 1,
+  height: hide ? 0 : ''
+});
 
 const noOp = () => {};
 
@@ -69,22 +75,14 @@ const WorkflowListItem = ({
             <Button className={classes.detailsButton} onClick={onOpen}>
               Details
             </Button>
-            <IconButton
-              onClick={openConfirmArchive}
-              className={classes.iconButton}
-            >
+            <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
               <DeleteIcon />
             </IconButton>
           </Grid>
         </Grid>
         <Grid item xs={2} md={2} className={classes.itemDetails}>
           {task.date && (
-            <Typography
-              variant="caption"
-              className={classes.dateText}
-              display="block"
-              gutterBottom
-            >
+            <Typography variant="caption" className={classes.dateText} display="block" gutterBottom>
               {date}
             </Typography>
           )}

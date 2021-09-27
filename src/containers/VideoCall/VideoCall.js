@@ -97,19 +97,16 @@ class VideoCall extends React.Component<Props, State> {
 
   initialDevices = async () => {
     try {
-      if (navigator && navigator.mediaDevices)
-        navigator.mediaDevices.ondevicechange =
-          this.handleUpdateDeviceSelectionOptions;
-      const deviceSelectionOptions =
-        (await this.handleUpdateDeviceSelectionOptions()) || {};
+      if (navigator && navigator.mediaDevices) {
+        navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
+      }
+      const deviceSelectionOptions = (await this.handleUpdateDeviceSelectionOptions()) || {};
       for (const kind of ['audioinput', 'audiooutput', 'videoinput']) {
         const kindDeviceInfos = deviceSelectionOptions[kind] || [];
         const devices = [];
         kindDeviceInfos.forEach((kindDeviceInfo) => {
           const { deviceId } = kindDeviceInfo;
-          const label =
-            kindDeviceInfo.label ||
-            `Device [ id: ${deviceId.substr(0, 5)}... ]`;
+          const label = kindDeviceInfo.label || `Device [ id: ${deviceId.substr(0, 5)}... ]`;
           devices.push({ label, value: deviceId });
         });
         this.setState({
@@ -137,16 +134,15 @@ class VideoCall extends React.Component<Props, State> {
     }
   };
 
-  handleUpdateDeviceSelectionOptions = () => (
-      navigator &&
-      navigator.mediaDevices &&
-      navigator.mediaDevices
-        .getUserMedia({ audio: true, video: true })
-        .then(utils.getDeviceSelectionOptions)
-        .catch((err) => {
-          throw err;
-        })
-    );
+  handleUpdateDeviceSelectionOptions = () =>
+    navigator &&
+    navigator.mediaDevices &&
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then(utils.getDeviceSelectionOptions)
+      .catch((err) => {
+        throw err;
+      });
 
   handleUpdateDeviceSelection = async (kind, deviceId) => {
     this.setState({ [`selected${kind}`]: deviceId });
@@ -220,7 +216,9 @@ class VideoCall extends React.Component<Props, State> {
         selectedvideoinput: videoinput
       });
       client.on('tokenAboutToExpire', async () => {
-        if (!this.mounted) return;
+        if (!this.mounted) {
+          return;
+        }
         const newToken = await renewTwilioToken({
           userId
         });
@@ -325,12 +323,13 @@ class VideoCall extends React.Component<Props, State> {
       }
     } = this.props;
     const { loading, errorDialog, errorTitle, errorBody } = this.state;
-    if (userId === '')
+    if (userId === '') {
       return (
         <div className={classes.loading}>
           <CircularProgress />
         </div>
       );
+    }
 
     return (
       <div className={classes.root}>
@@ -369,7 +368,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(VideoCall));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(VideoCall));

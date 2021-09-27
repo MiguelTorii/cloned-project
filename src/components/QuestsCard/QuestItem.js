@@ -57,34 +57,19 @@ class QuestItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      classes,
-      iconUrl,
-      pointsAvailable,
-      task,
-      action,
-      isCurrent,
-      isHidden,
-      status
-    } = this.props;
+    const { classes, iconUrl, pointsAvailable, task, action, isCurrent, isHidden, status } =
+      this.props;
 
     return (
       <ButtonBase
-        className={cx(
-          classes.root,
-          isCurrent && classes.current,
-          isHidden && classes.hiden
-        )}
+        className={cx(classes.root, isCurrent && classes.current, isHidden && classes.hiden)}
         disabled={!isCurrent}
         component={MyLink}
         href={this.renderQuestLink(action)}
         // elevation={1}
       >
         <div className={classes.header}>
-          <Typography
-            variant={isCurrent ? 'subtitle2' : 'caption'}
-            className={classes.headerTitle}
-          >
+          <Typography variant={isCurrent ? 'subtitle2' : 'caption'} className={classes.headerTitle}>
             {`${pointsAvailable.toLocaleString()} points`}
           </Typography>
           {/* <IconButton aria-label="Remove" className={classes.removeButton}>
@@ -97,12 +82,7 @@ class QuestItem extends React.PureComponent<Props, State> {
         >
           {task}
         </Typography>
-        <div
-          className={cx(
-            classes.imageWrapper,
-            !isCurrent && classes.imageWrapperSmall
-          )}
-        >
+        <div className={cx(classes.imageWrapper, !isCurrent && classes.imageWrapperSmall)}>
           <img
             src={iconUrl}
             alt="Quest"
@@ -111,10 +91,7 @@ class QuestItem extends React.PureComponent<Props, State> {
         </div>
         {status === 'complete' && (
           <div className={classes.completed}>
-            <CheckCircleIcon
-              className={classes.completedIcon}
-              fontSize="small"
-            />
+            <CheckCircleIcon className={classes.completedIcon} fontSize="small" />
           </div>
         )}
       </ButtonBase>

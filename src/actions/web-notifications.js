@@ -9,13 +9,7 @@ const requestUpdateTitle = (): Action => ({
   type: webNotificationsActions.UPDATE_TITLE_REQUEST
 });
 
-const setTitle = ({
-  title,
-  body
-}: {
-  title: string,
-  body: string
-}): Action => ({
+const setTitle = ({ title, body }: { title: string, body: string }): Action => ({
   type: webNotificationsActions.UPDATE_TITLE_SUCCESS,
   payload: {
     title,

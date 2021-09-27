@@ -1,12 +1,11 @@
 import { makeStyles } from '@material-ui/core';
 
 export default makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   monthBox: {
     width: 135,
     height: 32,
-    paddingTop: theme.spacing(1/2),
+    paddingTop: theme.spacing(1 / 2),
     borderRadius: '10px 10px 0 0',
     background: theme.circleIn.palette.primaryii222
   },

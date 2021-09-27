@@ -56,14 +56,7 @@ type Props = {
   push: Function
 };
 
-const ViewFlashcards = ({
-  classes,
-  user,
-  flashcardId,
-  push,
-  router,
-  pop
-}: Props) => {
+const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props) => {
   const [flashcards, setFlashcards] = useState(null);
   const [report, setReport] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
@@ -107,7 +100,9 @@ const ViewFlashcards = ({
   }, [flashcardId]);
 
   const handleBookmark = async () => {
-    if (!flashcards) return;
+    if (!flashcards) {
+      return;
+    }
     const { feedId, bookmarked } = flashcards;
     try {
       setFlashcards({ ...flashcards, bookmarked: !bookmarked });
@@ -131,12 +126,10 @@ const ViewFlashcards = ({
   };
 
   const flashcardView = useMemo(() => {
-    const sorted =
-      flashcards && flashcards.deck.sort((a, b) => b.hardCount - a.hardCount);
-    if (sorted)
+    const sorted = flashcards && flashcards.deck.sort((a, b) => b.hardCount - a.hardCount);
+    if (sorted) {
       return sorted.map((d, k) => {
-        const renderDivisor =
-          k > 0 && sorted[k - 1].hardCount > 0 && d.hardCount === 0;
+        const renderDivisor = k > 0 && sorted[k - 1].hardCount > 0 && d.hardCount === 0;
         return (
           <div key={d.id}>
             {renderDivisor && <Divider light className={classes.divider} />}
@@ -151,15 +144,17 @@ const ViewFlashcards = ({
           </div>
         );
       });
+    }
     return null;
   }, [flashcards, classes]);
 
-  if (!flashcards)
+  if (!flashcards) {
     return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+  }
 
   const {
     feedId,
@@ -266,19 +261,10 @@ const ViewFlashcards = ({
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <Report
-              open={report}
-              ownerId={ownerId}
-              objectId={feedId}
-              onClose={handleReportClose}
-            />
+            <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <DeletePost
-              open={deletePost}
-              feedId={feedId}
-              onClose={handleDeleteClose}
-            />
+            <DeletePost open={deletePost} feedId={feedId} onClose={handleDeleteClose} />
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
@@ -300,7 +286,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ViewFlashcards));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewFlashcards));

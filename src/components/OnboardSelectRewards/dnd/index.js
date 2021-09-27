@@ -32,9 +32,7 @@ const Container = ({ saveReward }) => {
     (index, item) => {
       const { name } = item;
       saveReward(name, index);
-      setDroppedBoxNames(
-        update(droppedBoxNames, name ? { $push: [name] } : { $push: [] })
-      );
+      setDroppedBoxNames(update(droppedBoxNames, name ? { $push: [name] } : { $push: [] }));
       setDustbins(
         update(dustbins, {
           [index]: {
@@ -73,13 +71,7 @@ const Container = ({ saveReward }) => {
 
       <div style={optionsStyle}>
         {boxes.map(({ ic, name, type }) => (
-          <Box
-            name={name}
-            ic={ic}
-            type={type}
-            isDropped={isDropped(name)}
-            key={name}
-          />
+          <Box name={name} ic={ic} type={type} isDropped={isDropped(name)} key={name} />
         ))}
       </div>
     </div>

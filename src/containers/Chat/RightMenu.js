@@ -30,7 +30,9 @@ import { PERMISSIONS } from 'constants/common';
 import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
 
-const MyLink = React.forwardRef(({ link, ...props }, ref) => <RouterLink to={link} {...props} ref={ref} />);
+const MyLink = React.forwardRef(({ link, ...props }, ref) => (
+  <RouterLink to={link} {...props} ref={ref} />
+));
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -155,10 +157,7 @@ const RightMenu = ({
   const [groupImage, setGroupImage] = useState(null);
   const [initials, setInitials] = useState('');
   const [otherUser, setOtherUser] = useState(null);
-  const localChannel = useMemo(
-    () => channel && local[channel.sid],
-    [channel, local]
-  );
+  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const [isSavingGroupPhoto, setIsSavingGroupPhoto] = useState(false);
 
@@ -167,10 +166,7 @@ const RightMenu = ({
       setInitials('');
       setOtherUser(null);
       setGroupImage(null);
-      if (
-        localChannel?.members?.length &&
-        localChannel?.members?.length === 2
-      ) {
+      if (localChannel?.members?.length && localChannel?.members?.length === 2) {
         localChannel.members.forEach((u) => {
           if (Number(u.userId) !== Number(userId)) {
             setOtherUser(u);
@@ -190,16 +186,17 @@ const RightMenu = ({
   const handleSaveAvatar = (imageData: Blob) => {
     setIsEditingAvatar(false);
     setIsSavingGroupPhoto(true);
-    dispatch(
-      handleUpdateGroupPhoto(channel.sid, imageData, () =>
-        setIsSavingGroupPhoto(false)
-      )
-    );
+    dispatch(handleUpdateGroupPhoto(channel.sid, imageData, () => setIsSavingGroupPhoto(false)));
   };
 
-  const isStudent = useMemo(() => !permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS), [permission]);
+  const isStudent = useMemo(
+    () => !permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS),
+    [permission]
+  );
 
-  if (!channel || !localChannel) return null;
+  if (!channel || !localChannel) {
+    return null;
+  }
 
   return (
     <Grid
@@ -238,15 +235,9 @@ const RightMenu = ({
             root: classes.infoContainer
           }}
         >
-          <Typography className={classes.title}>
-            {localChannel && localChannel.title}
-          </Typography>
+          <Typography className={classes.title}>{localChannel && localChannel.title}</Typography>
           <Box position="relative">
-            <Avatar
-              src={groupImage}
-              alt="group-image"
-              className={classes.avatar}
-            >
+            <Avatar src={groupImage} alt="group-image" className={classes.avatar}>
               {initials || <GroupIcon />}
             </Avatar>
             {permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS) && (
@@ -260,10 +251,7 @@ const RightMenu = ({
               </Button>
             )}
             {isSavingGroupPhoto && (
-              <CircularProgress
-                color="secondary"
-                className={classes.savingPhoto}
-              />
+              <CircularProgress color="secondary" className={classes.savingPhoto} />
             )}
           </Box>
         </Grid>
@@ -288,9 +276,7 @@ const RightMenu = ({
                 expanded: classes.expandedRotate
               }}
             >
-              <Typography className={classes.usersTitle}>
-                In this chat...
-              </Typography>
+              <Typography className={classes.usersTitle}>In this chat...</Typography>
               <Typography className={classes.usersCount}>
                 {localChannel && localChannel.members.length}
               </Typography>
@@ -339,22 +325,12 @@ const RightMenu = ({
           members={local[channel.sid].members}
           schoolId={schoolId}
         />
-        <BlockUser
-          userId={userId}
-          otherUser={otherUser}
-          handleBlock={handleBlock}
-        />
-        <RemoveChat
-          handleRemoveChannel={handleRemoveChannel}
-          channel={channel}
-        />
+        <BlockUser userId={userId} otherUser={otherUser} handleBlock={handleBlock} />
+        <RemoveChat handleRemoveChannel={handleRemoveChannel} channel={channel} />
       </div>
 
       <div className={classes.fixedFooter}>
-        <ShareLinkWidget
-          shareLink={localChannel.shareLink}
-          headerText="Share an invite link"
-        />
+        <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" />
       </div>
 
       <AvatarEditor

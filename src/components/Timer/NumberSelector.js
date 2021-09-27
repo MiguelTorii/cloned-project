@@ -8,10 +8,14 @@ import useStyles from './styles';
 const NumberSelector = ({ value, limit, onChange }) => {
   const classes = useStyles();
 
-  const options = useMemo(() => [...new Array(limit + 1).keys()].map((index) => ({
-      text: twoDigitsNumber(index),
-      value: index + 1
-    })), [limit]);
+  const options = useMemo(
+    () =>
+      [...new Array(limit + 1).keys()].map((index) => ({
+        text: twoDigitsNumber(index),
+        value: index + 1
+      })),
+    [limit]
+  );
 
   return (
     <Select

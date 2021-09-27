@@ -23,8 +23,7 @@ type State = {};
 
 class ShareDialog extends React.PureComponent<Props, State> {
   render() {
-    const { classes, open, link, isLoading, onLinkCopied, onClose } =
-      this.props;
+    const { classes, open, link, isLoading, onLinkCopied, onClose } = this.props;
     return (
       <Dialog
         ariaDescribedBy="share-dialog-description"
@@ -32,11 +31,7 @@ class ShareDialog extends React.PureComponent<Props, State> {
         open={open}
         title="Share this Post"
       >
-        <Typography
-          variant="h6"
-          id="share-dialog-description"
-          color="textPrimary"
-        >
+        <Typography variant="h6" id="share-dialog-description" color="textPrimary">
           Copy this link and send it to your classmates.
         </Typography>
         <div className={classes.content}>

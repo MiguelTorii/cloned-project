@@ -44,7 +44,9 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
 
   const handleClick = useCallback(() => {
     setIsPlaying(!isPlaying);
-    if (!player.current) return;
+    if (!player.current) {
+      return;
+    }
     if (!isPlaying) {
       player.current.play();
     } else {
@@ -186,58 +188,49 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     textRows,
     title
   }) => (
-      <div className={classes.step}>
-        <div className={classes.actionPanel}>
-          <AppLogo className={classes.logo} />
-          <div className={classes.title}>{title}</div>
-          <div className={classes.textRows}>
-            {textRows.map((textRow) => (
-              <div key={Math.random()} className={classes.textRow}>
-                {textRow}
-              </div>
-            ))}
-          </div>
-          <div className={classes.actionPanelComponent}>
-            {ActionComponent && <ActionComponent />}
-          </div>
-          <div>
-            <Button
-              color="primary"
-              label={<span className={classes.buttonLabel}></span>}
-              disabled={buttonDisabled}
-              className={classes.button}
-              classes={{ label: classes.buttonLabel }}
-              onClick={handleButtonClick}
-              variant="contained"
-            >
-              {buttonText}
-            </Button>
-          </div>
-          <div className={classes.sildeButtons}>
-            {activeStep > 0 && (
-              <div className={classes.backButton}>
-                <Button color="primary" onClick={goBack}>
-                  <ArrowBackIosIcon className={classes.backIcon} />
-                  <u>BACK</u>
-                </Button>
-              </div>
-            )}
-            {STEPS.map((step, index) => {
-              const sharpClass = activeStep >= index ? classes.shape : '';
-              return (
-                <div
-                  key={step.id}
-                  className={cx(sharpClass, classes.shapeCircle)}
-                />
-              );
-            })}
-          </div>
+    <div className={classes.step}>
+      <div className={classes.actionPanel}>
+        <AppLogo className={classes.logo} />
+        <div className={classes.title}>{title}</div>
+        <div className={classes.textRows}>
+          {textRows.map((textRow) => (
+            <div key={Math.random()} className={classes.textRow}>
+              {textRow}
+            </div>
+          ))}
         </div>
-        <div className={classes.demoPanel}>
-          {DemoComponent && <DemoComponent />}
+        <div className={classes.actionPanelComponent}>{ActionComponent && <ActionComponent />}</div>
+        <div>
+          <Button
+            color="primary"
+            label={<span className={classes.buttonLabel}></span>}
+            disabled={buttonDisabled}
+            className={classes.button}
+            classes={{ label: classes.buttonLabel }}
+            onClick={handleButtonClick}
+            variant="contained"
+          >
+            {buttonText}
+          </Button>
+        </div>
+        <div className={classes.sildeButtons}>
+          {activeStep > 0 && (
+            <div className={classes.backButton}>
+              <Button color="primary" onClick={goBack}>
+                <ArrowBackIosIcon className={classes.backIcon} />
+                <u>BACK</u>
+              </Button>
+            </div>
+          )}
+          {STEPS.map((step, index) => {
+            const sharpClass = activeStep >= index ? classes.shape : '';
+            return <div key={step.id} className={cx(sharpClass, classes.shapeCircle)} />;
+          })}
         </div>
       </div>
-    );
+      <div className={classes.demoPanel}>{DemoComponent && <DemoComponent />}</div>
+    </div>
+  );
 
   const currentStep = STEPS[activeStep];
 

@@ -80,19 +80,13 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
     } = this.props;
     const { hover } = this.state;
     const initials = `${
-      firstName !== ''
-        ? firstName === 'You'
-          ? 'You'
-          : firstName.charAt(0)
-        : ''
+      firstName !== '' ? (firstName === 'You' ? 'You' : firstName.charAt(0)) : ''
     }${lastName !== '' ? lastName.charAt(0) : ''}`;
 
     const isScreenShare = !!(
-      ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 &&
-      sharingTrackIds.length
+      ['speaker-view', 'side-by-side'].indexOf(viewMode) > -1 && sharingTrackIds.length
     );
-    const activeBorder =
-      highlight && isScreenShare ? { border: '4px solid #03A9F4' } : {};
+    const activeBorder = highlight && isScreenShare ? { border: '4px solid #03A9F4' } : {};
 
     return (
       <Box
@@ -130,11 +124,7 @@ class ThumbnailItem extends React.PureComponent<Props, State> {
         </div>
         <div
           className={cx(
-            !isMic
-              ? classes.mic
-              : hover && (firstName || lastName)
-              ? classes.mic
-              : classes.hide
+            !isMic ? classes.mic : hover && (firstName || lastName) ? classes.mic : classes.hide
           )}
         >
           {!isMic && <Mute className={classes.icon} />}

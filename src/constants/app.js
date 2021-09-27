@@ -23,8 +23,7 @@ export const ALGOLIA_API_KEY =
     ? 'c31cce53b626fbf3bfbcdb702424db4a'
     : 'c31cce53b626fbf3bfbcdb702424db4a';
 
-export const ALGOLIA_INDEX =
-  process.env.REACT_APP_STAGE === 'production' ? 'dev_tags' : 'dev_tags';
+export const ALGOLIA_INDEX = process.env.REACT_APP_STAGE === 'production' ? 'dev_tags' : 'dev_tags';
 
 export const REDIRECT_URI =
   // eslint-disable-next-line no-nested-ternary
@@ -35,19 +34,15 @@ export const REDIRECT_URI =
     : 'https://dev-app2.circleinapp.com/oauth';
 
 export const GOOGLE_ANALYTICS =
-  process.env.REACT_APP_STAGE === 'production'
-    ? 'UA-124636271-1'
-    : 'UA-124026444-1';
+  process.env.REACT_APP_STAGE === 'production' ? 'UA-124636271-1' : 'UA-124026444-1';
 
-export const SENTRY =
-  'https://300ac9c2204b4d1eb492ca7bbf75f052@sentry.io/1263172';
+export const SENTRY = 'https://300ac9c2204b4d1eb492ca7bbf75f052@sentry.io/1263172';
 
 export const HOTJAR_ID = 1763746;
 
 export const HOTJAR_SV = 6;
 
-export const ENV =
-  process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
+export const ENV = process.env.REACT_APP_STAGE === 'production' ? 'prod' : 'dev';
 
 export const IOS_REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'

@@ -66,27 +66,39 @@ const Home = ({ campaign, classes, user }) => {
     }
 
     async function hideWidget() {
-      if (userId) window.FreshworksWidget('hide', 'launcher');
-      else window.FreshworksWidget('show', 'launcher');
+      if (userId) {
+        window.FreshworksWidget('hide', 'launcher');
+      } else {
+        window.FreshworksWidget('show', 'launcher');
+      }
     }
 
     loadWidget();
     hideWidget();
   }, [widgetId, widgetUrl, status, userId]);
 
-  if (isLoadingCampaign || (isLoading && !userId))
+  if (isLoadingCampaign || (isLoading && !userId)) {
     return (
       <div className={classes.loading}>
         <CircularProgress />
       </div>
     );
+  }
 
-  if (!userId) return <AuthRedirect />;
+  if (!userId) {
+    return <AuthRedirect />;
+  }
 
-  if (expertMode) return <Feed />;
+  if (expertMode) {
+    return <Feed />;
+  }
 
-  if (!campaign.newClassExperience) return <Feed />;
-  if (!campaign.landingPageCampaign) return <Classes />;
+  if (!campaign.newClassExperience) {
+    return <Feed />;
+  }
+  if (!campaign.landingPageCampaign) {
+    return <Classes />;
+  }
   if (campaign.chatLanding) {
     return <Redirect to="/chat" />;
   }

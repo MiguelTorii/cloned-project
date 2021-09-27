@@ -93,7 +93,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(OAuthRedirect));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(OAuthRedirect));

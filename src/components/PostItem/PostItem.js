@@ -83,13 +83,7 @@ const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
         });
       } catch (err) {}
     };
-  }, [
-    feedId,
-    getElapsedTime,
-    getLastActiveTime,
-    getRemainingTime,
-    isFlashcard
-  ]);
+  }, [feedId, getElapsedTime, getLastActiveTime, getRemainingTime, isFlashcard]);
 
   return (
     <div className={classes.container}>
@@ -111,9 +105,7 @@ const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
         <Hidden mdDown>
           <Grid item xs={12} lg={3}>
             <Box pt={2}>
-              {from === POST_SOURCE.RECOMMENDATION && (
-                <RecommendationsFeedback feedId={feedId} />
-              )}
+              {from === POST_SOURCE.RECOMMENDATION && <RecommendationsFeedback feedId={feedId} />}
               <Recommendations />
             </Box>
           </Grid>

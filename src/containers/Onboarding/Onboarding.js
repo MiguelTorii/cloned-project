@@ -152,9 +152,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
     <div>
       <div style={{ display: 'flex' }}>
         <FormControl className={classes.formControl}>
-          <InputLabel id="select-preference-label">
-            How do you prefer to study?
-          </InputLabel>
+          <InputLabel id="select-preference-label">How do you prefer to study?</InputLabel>
           <Select
             id="select-preference"
             labelId="select-preference-label"
@@ -167,9 +165,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
           </Select>
         </FormControl>
         <FormControl className={classes.formControl}>
-          <InputLabel id="select-test-label">
-            How do you study for tests?
-          </InputLabel>
+          <InputLabel id="select-test-label">How do you study for tests?</InputLabel>
           <Select
             id="select-test"
             labelId="select-test-label"
@@ -181,18 +177,14 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
           >
             <MenuItem value="Read and highlight">Read and highlight</MenuItem>
             <MenuItem value="Read and take notes">Read and take notes</MenuItem>
-            <MenuItem value="Read and make flash cards">
-              Read and make flash cards
-            </MenuItem>
+            <MenuItem value="Read and make flash cards">Read and make flash cards</MenuItem>
             <MenuItem value="None">None</MenuItem>
           </Select>
         </FormControl>
       </div>
       <div style={{ display: 'flex' }}>
         <FormControl className={classes.formControl}>
-          <InputLabel id="select-frequency-label">
-            How often do you study each week?
-          </InputLabel>
+          <InputLabel id="select-frequency-label">How often do you study each week?</InputLabel>
           <Select
             id="select-frequency"
             labelId="select-frequency-label"
@@ -261,8 +253,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         className={classes.img}
       />
       <Typography component="div" className={classes.subtitle}>
-        And <b>gift cards</b> to your favorite places and services with over 30
-        options!
+        And <b>gift cards</b> to your favorite places and services with over 30 options!
       </Typography>
       <div style={{ textAlign: 'center', margin: '16px 0px' }}>
         <img src={giftCards} alt="Gift cards" />
@@ -300,8 +291,8 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         <img src={addClasses} alt="Add classes" />
       </div>
       <Typography component="div" className={classes.subtitle}>
-        You’ll also receive an email from one of our CircleIn Studying
-        Specialists soon. Happy studying!
+        You’ll also receive an email from one of our CircleIn Studying Specialists soon. Happy
+        studying!
       </Typography>
       <div className={classes.buttons}>
         <Button

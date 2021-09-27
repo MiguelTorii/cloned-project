@@ -135,9 +135,7 @@ class Controls extends React.PureComponent<Props, State> {
               color={!isSharing ? 'primary' : 'default'}
               aria-label="share-screen"
               className={classes.fab}
-              disabled={
-                !isScreenSharingSupported || isSharingData || !isConnected
-              }
+              disabled={!isScreenSharingSupported || isSharingData || !isConnected}
               onClick={shareScreen}
             >
               {!isSharing ? <ScreenShareIcon /> : <StopScreenShareIcon />}

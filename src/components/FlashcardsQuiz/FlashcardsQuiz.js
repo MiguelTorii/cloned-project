@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useRef
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import IconSchool from '@material-ui/icons/School';
@@ -14,12 +8,7 @@ import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
 import Slide from '@material-ui/core/Slide';
 import clsx from 'clsx';
-import {
-  arrElemToId,
-  englishIdFromNumber,
-  extractTextFromHtml,
-  shuffleArray
-} from 'utils/helpers';
+import { arrElemToId, englishIdFromNumber, extractTextFromHtml, shuffleArray } from 'utils/helpers';
 import update from 'immutability-helper';
 import Grid from '@material-ui/core/Grid';
 import { Select } from '@material-ui/core';
@@ -82,11 +71,10 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } =
-    useIdleTimer({
-      timeout,
-      onActive: handleOnActive
-    });
+  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } = useIdleTimer({
+    timeout,
+    onActive: handleOnActive
+  });
 
   useEffect(() => {
     remaining.current = getRemainingTime();
@@ -112,20 +100,28 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   }, [elapsed, totalIdleTime, remaining, lastActive]);
 
   // Memos
-  const dropdownOptions = useMemo(() => [...new Array(quizData.match.qIds.length).keys()].map((id) => ({
-      value: id + 1,
-      text: String.fromCharCode('A'.charCodeAt(0) + id)
-    })), [quizData]);
+  const dropdownOptions = useMemo(
+    () =>
+      [...new Array(quizData.match.qIds.length).keys()].map((id) => ({
+        value: id + 1,
+        text: String.fromCharCode('A'.charCodeAt(0) + id)
+      })),
+    [quizData]
+  );
 
   const unansweredCount = useMemo(() => {
     let result = 0;
 
     for (let i = quizData.match.qIds.length - 1; i >= 0; i -= 1) {
-      if (matchSelections[i] === undefined) result += 1;
+      if (matchSelections[i] === undefined) {
+        result += 1;
+      }
     }
 
     for (let i = quizData.choice.length - 1; i >= 0; i -= 1) {
-      if (choiceSelections[quizData.choice[i].qId] === undefined) result += 1;
+      if (choiceSelections[quizData.choice[i].qId] === undefined) {
+        result += 1;
+      }
     }
 
     return result;
@@ -133,27 +129,20 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   // Callbacks
   const initQuizData = useCallback((count) => {
-    if (count < 1)
+    if (count < 1) {
       throw new Error('Number of cards should be greater than zero');
+    }
 
-    const matchCount = _.min([
-      _.max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]),
-      count
-    ]);
+    const matchCount = _.min([_.max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]), count]);
 
     const arrIdx = [...new Array(matchCount).keys()];
     const arr1 = shuffleArray(arrIdx);
     const arr2 = shuffleArray(arrIdx);
 
-    const choiceCount = _.min([
-      _.max([PROBLEM_COUNT_THRESHOLD, Math.floor(count / 2)]),
-      count
-    ]);
+    const choiceCount = _.min([_.max([PROBLEM_COUNT_THRESHOLD, Math.floor(count / 2)]), count]);
     const optionCount = _.min([choiceCount, MULTIPLE_CHOICE_OPTIONS_COUNT]);
     const choiceData = [];
-    const arrChoiceIdx = [...new Array(choiceCount).keys()].map(
-      (i) => i + count - choiceCount
-    );
+    const arrChoiceIdx = [...new Array(choiceCount).keys()].map((i) => i + count - choiceCount);
     const arr3 = shuffleArray(arrChoiceIdx);
 
     for (let i = 0; i < choiceCount; i += 1) {
@@ -257,20 +246,9 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
   // Rendering Helpers
   const renderSidebar = () => (
-    <Box
-      className={clsx(
-        classes.sidebar,
-        !isExpanded && classes.unExpandedSidebar
-      )}
-    >
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box mb={3}>
-        <Link
-          component="button"
-          onClick={handleBack}
-          color="inherit"
-          variant="h5"
-          underline="none"
-        >
+        <Link component="button" onClick={handleBack} color="inherit" variant="h5" underline="none">
           <IconBack className={classes.iconMiddle} /> Back
         </Link>
       </Box>
@@ -293,7 +271,9 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   );
 
   const renderImageIcon = (imageUrl) => {
-    if (!imageUrl) return null;
+    if (!imageUrl) {
+      return null;
+    }
 
     return (
       <img
@@ -336,9 +316,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
               classes={{
                 disabled: classes.textWhite
               }}
-              onChange={(event) =>
-                handleMatchSelectAnswer(id, event.target.value)
-              }
+              onChange={(event) => handleMatchSelectAnswer(id, event.target.value)}
               value={matchSelections[id] || ''}
               disabled={isValidated}
             >
@@ -391,28 +369,16 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
               <Box key={id} display="flex" alignItems="center" mb={1}>
                 <div className={classes.checkIconContainer}>
                   {isValidated && item.qId === id - 1 && (
-                    <img
-                      src={ImageCorrect}
-                      alt="Correct Icon"
-                      className={classes.checkImage}
-                    />
+                    <img src={ImageCorrect} alt="Correct Icon" className={classes.checkImage} />
                   )}
-                  {isValidated &&
-                    choiceSelections[item.qId] === id &&
-                    item.qId !== id - 1 && (
-                      <img
-                        src={ImageWrong}
-                        alt="Wrong Icon"
-                        className={classes.checkImage}
-                      />
-                    )}
+                  {isValidated && choiceSelections[item.qId] === id && item.qId !== id - 1 && (
+                    <img src={ImageWrong} alt="Wrong Icon" className={classes.checkImage} />
+                  )}
                 </div>
                 <Box
                   flexGrow={1}
                   className={clsx(
-                    isValidated &&
-                      item.qId === id - 1 &&
-                      classes.correctBackground,
+                    isValidated && item.qId === id - 1 && classes.correctBackground,
                     isValidated &&
                       choiceSelections[item.qId] === id &&
                       item.qId !== id - 1 &&
@@ -447,9 +413,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
     <div className={classes.contentBox}>
       <div className={clsx(classes.sectionTitle, classes.firstSection)}>
         <Typography variant="h6">Matching</Typography>
-        <Typography>
-          Match the questions on the left with the answers on the right.
-        </Typography>
+        <Typography>Match the questions on the left with the answers on the right.</Typography>
       </div>
       <div className={classes.matchContainer}>{renderMatching()}</div>
       <div className={classes.sectionTitle}>
@@ -470,8 +434,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
             {unansweredCount > 0 && (
               <Box ml={3}>
                 <Typography color="error">
-                  {unansweredCount} unanswered questions. Answer all questions
-                  to submit.
+                  {unansweredCount} unanswered questions. Answer all questions to submit.
                 </Typography>
               </Box>
             )}
@@ -493,11 +456,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
       </Slide>
       <Box className={clsx(classes.mainContent, isExpanded && 'expanded')}>
         <Box display="flex" justifyContent="flex-end" mb={2}>
-          <Button
-            startIcon={<IconClose />}
-            className={classes.actionButton}
-            onClick={handleBack}
-          >
+          <Button startIcon={<IconClose />} className={classes.actionButton} onClick={handleBack}>
             Exit Mode
           </Button>
         </Box>

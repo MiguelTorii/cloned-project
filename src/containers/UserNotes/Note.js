@@ -55,25 +55,16 @@ const Note = ({ noteData }) => {
       onMouseLeave={handleMouseLeave}
       className={classes.itemContainer}
     >
-      <ListItem
-        button
-        className={classes.listItem}
-        onClick={handleEditNote}
-      >
+      <ListItem button className={classes.listItem} onClick={handleEditNote}>
         <ListItemText
           primary={noteData.title}
           classes={{
             primary: classes.listPrimary
           }}
         />
-
       </ListItem>
       {hovered && (
-        <IconButton
-          aria-label="delete"
-          className={classes.delete}
-          onClick={handleDeleteNote}
-        >
+        <IconButton aria-label="delete" className={classes.delete} onClick={handleDeleteNote}>
           <DeleteIcon fontSize="small" />
         </IconButton>
       )}

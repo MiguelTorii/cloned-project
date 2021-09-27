@@ -93,14 +93,11 @@ export const getClassmates = async ({
 }): Promise<Array<Object>> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.CLASSES}/${classId}/${sectionId}/members`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.CLASSES}/${classId}/${sectionId}/members`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const {
       data: { members }
@@ -119,21 +116,14 @@ export const getClassmates = async ({
   }
 };
 
-export const renewTwilioToken = async ({
-  userId
-}: {
-  userId: string
-}): Promise<string> => {
+export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<string> => {
   try {
     const token = await getToken();
-    const result = await axios.get(
-      `${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
     const { accessToken = '' } = data;
     return accessToken;
@@ -322,11 +312,7 @@ export const blockChatUser = async ({
   }
 };
 
-export const getGroupMembers = async ({
-  chatId
-}: {
-  chatId: string
-}): Promise<Array<ChatUser>> => {
+export const getGroupMembers = async ({ chatId }: { chatId: string }): Promise<Array<ChatUser>> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.CHAT}/${chatId}/members`, {

@@ -102,10 +102,15 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
       onClose
     } = this.props;
     const { loading, blockedUsers } = this.state;
-    if (!open) return null;
-    if (isLoading) return <CircularProgress size={12} />;
-    if (userId === '' || error)
+    if (!open) {
+      return null;
+    }
+    if (isLoading) {
+      return <CircularProgress size={12} />;
+    }
+    if (userId === '' || error) {
       return 'Oops, there was an error loading your data, please try again.';
+    }
 
     return (
       <ErrorBoundary>
@@ -118,10 +123,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
         >
           {loading && <CircularProgress size={12} />}
           {!loading && blockedUsers.length === 0 && (
-            <Typography
-              color="textPrimary"
-              id="blocked-users-dialog-description"
-            >
+            <Typography color="textPrimary" id="blocked-users-dialog-description">
               You don't have blocked users
             </Typography>
           )}
@@ -158,7 +160,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(BlockedUsersManager));
+export default connect(mapStateToProps, null)(withStyles(styles)(BlockedUsersManager));

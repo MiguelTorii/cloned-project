@@ -89,14 +89,7 @@ const styles = (theme) => ({
   }
 });
 
-const CreatePostLayout = ({
-  classes,
-  user,
-  postId,
-  questionId,
-  noteId,
-  sharelinkId
-}) => {
+const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelinkId }) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [value, setValue] = useState(0);
   const [classId, setClassId] = useState(0);
@@ -105,12 +98,15 @@ const CreatePostLayout = ({
   const [images, setImages] = useState([]);
   const location = useLocation();
 
-  useEffect(() => () => {
+  useEffect(
+    () => () => {
       localStorage.removeItem('postSt');
       localStorage.removeItem('question');
       localStorage.removeItem('note');
       localStorage.removeItem('shareLink');
-    }, []);
+    },
+    []
+  );
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
@@ -163,15 +159,16 @@ const CreatePostLayout = ({
       const newClassList = {};
       const currentClassList = classList.filter((cl) => cl.isCurrent);
       currentClassList.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor)
+        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
           cl.section.forEach((s) => {
             newClassList[s.sectionId] = cl;
           });
+        }
       });
       return Object.keys(newClassList).map((sectionId) => ({
-          ...newClassList[sectionId],
-          sectionId: Number(sectionId)
-        }));
+        ...newClassList[sectionId],
+        sectionId: Number(sectionId)
+      }));
     } finally {
       /* NONE */
     }
@@ -212,19 +209,10 @@ const CreatePostLayout = ({
           paper: classes.dialogPaper
         }}
       >
-        <img
-          src={postingImage}
-          alt="Posting"
-          className={classes.postingImage}
-        />
+        <img src={postingImage} alt="Posting" className={classes.postingImage} />
         <div className={classes.label}>Posting...</div>
       </Dialog>
-      <Grid
-        justifyContent="flex-start"
-        className={classes.container}
-        container
-        spacing={2}
-      >
+      <Grid justifyContent="flex-start" className={classes.container} container spacing={2}>
         <Grid item xs={12} md={9} display="flex">
           <div className={classes.title}>
             <Typography component="h1" variant="h4" color="textPrimary">
@@ -256,12 +244,7 @@ const CreatePostLayout = ({
         <Grid item xs={12} lg={9} display="flex">
           <div className={classes.paperRoot}>
             <Appbar value={value} handleChange={handleChange} />
-            <TabPanel
-              key="create-post"
-              value={value}
-              index={0}
-              {...a11yProps(0)}
-            >
+            <TabPanel key="create-post" value={value} index={0} {...a11yProps(0)}>
               <CreatePostSt
                 classList={selectedClasses}
                 classId={classId}
@@ -271,12 +254,7 @@ const CreatePostLayout = ({
                 setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
-            <TabPanel
-              key="create-question"
-              value={value}
-              index={1}
-              {...a11yProps(1)}
-            >
+            <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)}>
               <CreateQuestion
                 classList={selectedClasses}
                 currentSelectedClassId={classId}
@@ -286,12 +264,7 @@ const CreatePostLayout = ({
                 setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
-            <TabPanel
-              key="share-note"
-              value={value}
-              index={2}
-              {...a11yProps(2)}
-            >
+            <TabPanel key="share-note" value={value} index={2} {...a11yProps(2)}>
               <CreateNotes
                 classList={selectedClasses}
                 currentTag={value}
@@ -303,12 +276,7 @@ const CreatePostLayout = ({
                 setIsPosting={(val) => setIsPosting(val)}
               />
             </TabPanel>
-            <TabPanel
-              key="share-resources"
-              value={value}
-              index={3}
-              {...a11yProps(3)}
-            >
+            <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)}>
               <CreateShareLink
                 classList={selectedClasses}
                 currentTag={value}
@@ -322,11 +290,7 @@ const CreatePostLayout = ({
         <Grid item xs={12} lg={3} display="flex">
           <div className={classes.paperRoot}>
             <div className={classes.circleinPostListTitle}>
-              <LoadImg
-                url={circleinLogo}
-                className={classes.circleinLogo}
-                alt="Posting..."
-              />
+              <LoadImg url={circleinLogo} className={classes.circleinLogo} alt="Posting..." />
               <Typography variant="subtitle1" color="textPrimary">
                 <b>Etiquette for CircleIn Posts</b>
               </Typography>
@@ -388,7 +352,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(CreatePostLayout));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CreatePostLayout));

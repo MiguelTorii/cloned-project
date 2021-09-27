@@ -22,20 +22,13 @@ const Student = ({ student, you }) => {
     marginLeft: 10
   };
 
-  const fallback = (
-    <div style={imageStyle}>{`${firstName[0]}${lastName[0]}`}</div>
-  );
+  const fallback = <div style={imageStyle}>{`${firstName[0]}${lastName[0]}`}</div>;
 
   const fullName = you ? 'You' : `${firstName} ${lastName}`;
 
   return (
     <div style={container}>
-      <LoadImg
-        style={imageStyle}
-        url={profileImg}
-        loadgingSize={12}
-        fallback={fallback}
-      />
+      <LoadImg style={imageStyle} url={profileImg} loadgingSize={12} fallback={fallback} />
       <div style={name}>{fullName}</div>
     </div>
   );

@@ -47,10 +47,7 @@ const FlashcardsDeck = ({ data }: Props) => {
     [data, classList]
   );
 
-  const deckLink = useMemo(
-    () => `${APP_ROOT_PATH}/flashcards/${data.post_id}`,
-    [data]
-  );
+  const deckLink = useMemo(() => `${APP_ROOT_PATH}/flashcards/${data.post_id}`, [data]);
 
   const shareLinkModalTitle = useMemo(
     () => (
@@ -58,8 +55,8 @@ const FlashcardsDeck = ({ data }: Props) => {
         <span role="img" aria-label="Two hands">
           🙌
         </span>
-        &nbsp; You’re awesome for helping your peers! Ready to share a link to
-        your <b>{data.title}</b> deck?
+        &nbsp; You’re awesome for helping your peers! Ready to share a link to your{' '}
+        <b>{data.title}</b> deck?
       </Typography>
     ),
     [data]
@@ -83,14 +80,8 @@ const FlashcardsDeck = ({ data }: Props) => {
     dispatch(deleteFlashcard(me.userId, data.feed_id));
   }, [me, data, dispatch]);
 
-  const handleOpenDeleteModal = useCallback(
-    () => setIsDeleteModalOpen(true),
-    []
-  );
-  const handleCloseDeleteModal = useCallback(
-    () => setIsDeleteModalOpen(false),
-    []
-  );
+  const handleOpenDeleteModal = useCallback(() => setIsDeleteModalOpen(true), []);
+  const handleCloseDeleteModal = useCallback(() => setIsDeleteModalOpen(false), []);
 
   const handleCloseShareLinkModal = useCallback(() => {
     setIsShareLinkModalOpen(false);
@@ -104,10 +95,7 @@ const FlashcardsDeck = ({ data }: Props) => {
   // Rendering
   return (
     <div
-      className={cx(
-        classes.root,
-        search.includes('past') && classes.pastClassRoot
-      )}
+      className={cx(classes.root, search.includes('past') && classes.pastClassRoot)}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -169,8 +157,8 @@ const FlashcardsDeck = ({ data }: Props) => {
           onCancel={handleCloseDeleteModal}
         >
           <Typography variant="h6">
-            Are you sure you want to delete this flashcard deck? If you delete
-            this deck, it will deleted from your created decks.
+            Are you sure you want to delete this flashcard deck? If you delete this deck, it will
+            deleted from your created decks.
           </Typography>
           <Box mt={3} display="flex" justifyContent="flex-end">
             <Button onClick={handleCloseDeleteModal}>Cancel</Button>

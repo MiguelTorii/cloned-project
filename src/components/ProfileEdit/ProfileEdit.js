@@ -130,10 +130,7 @@ class ProfileEdit extends React.PureComponent<Props, State> {
       >
         <div className={classes.form}>
           <FormControl fullWidth margin="normal">
-            <InputLabel
-              htmlFor="studyGroupPreference"
-              classes={{ shrink: classes.shrink }}
-            >
+            <InputLabel htmlFor="studyGroupPreference" classes={{ shrink: classes.shrink }}>
               Do you prefer to study in groups or individually?
             </InputLabel>
             <Select
@@ -150,10 +147,7 @@ class ProfileEdit extends React.PureComponent<Props, State> {
             </Select>
           </FormControl>
           <FormControl fullWidth margin="normal">
-            <InputLabel
-              htmlFor="studyLocationPreference"
-              classes={{ shrink: classes.shrink }}
-            >
+            <InputLabel htmlFor="studyLocationPreference" classes={{ shrink: classes.shrink }}>
               Do you prefer to study in person or virtually?
             </InputLabel>
             <Select
@@ -170,10 +164,7 @@ class ProfileEdit extends React.PureComponent<Props, State> {
             </Select>
           </FormControl>
           <FormControl fullWidth margin="normal">
-            <InputLabel
-              htmlFor="subjectsPreference"
-              classes={{ shrink: classes.shrink }}
-            >
+            <InputLabel htmlFor="subjectsPreference" classes={{ shrink: classes.shrink }}>
               Do you enjoy getting involved in helping classmates?
             </InputLabel>
             <Select

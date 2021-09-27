@@ -78,12 +78,7 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      style={{ overflow: 'auto' }}
-      {...other}
-    >
+    <div role="tabpanel" hidden={value !== index} style={{ overflow: 'auto' }} {...other}>
       {value === index && <Box>{children}</Box>}
     </div>
   );
@@ -142,7 +137,9 @@ const StudyRoomChat = ({
   const [tabs, setTabs] = useState(1);
 
   useEffect(() => {
-    if (typeof selectedTab === 'number') setTabs(selectedTab);
+    if (typeof selectedTab === 'number') {
+      setTabs(selectedTab);
+    }
   }, [selectedTab]);
   const channelId = useMemo(() => {
     const pathname = get(router, 'location.pathname');
@@ -217,14 +214,13 @@ const StudyRoomChat = ({
   );
 
   const memberListOnVideo = useMemo(
-    () =>
-      Object.keys(members).filter(
-        (member) => participantsIdList.indexOf(member) > -1
-      ),
+    () => Object.keys(members).filter((member) => participantsIdList.indexOf(member) > -1),
     [members, participantsIdList]
   );
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
   return (
     <ErrorBoundary>
       <ClickAwayListener onClickAway={handleClose}>
@@ -286,7 +282,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(StudyRoomChat));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(StudyRoomChat));

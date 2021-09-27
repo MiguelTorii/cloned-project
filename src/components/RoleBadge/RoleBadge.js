@@ -7,21 +7,21 @@ import { ReactComponent as BadgeVector } from 'assets/svg/badge_vector.svg';
 import styles from '../_styles/RoleBadge';
 
 const RoleBadge = ({ text, classes }) => (
-    <Chip
-      size="small"
-      color="primary"
-      icon={<BadgeVector />}
-      label={text}
-      classes={{
-        root: text ? classes.root : classes.vectorBadgeRoot,
-        label: !text && classes.label,
-        labelSmall: classes.labelSmall,
-        sizeSmall: classes.sizeSmall,
-        colorPrimary: classes.userRoleColor,
-        iconSmall: !text && classes.iconSmall
-      }}
-    />
-  );
+  <Chip
+    size="small"
+    color="primary"
+    icon={<BadgeVector />}
+    label={text}
+    classes={{
+      root: text ? classes.root : classes.vectorBadgeRoot,
+      label: !text && classes.label,
+      labelSmall: classes.labelSmall,
+      sizeSmall: classes.sizeSmall,
+      colorPrimary: classes.userRoleColor,
+      iconSmall: !text && classes.iconSmall
+    }}
+  />
+);
 
 RoleBadge.propTypes = {
   classes: Proptypes.object.isRequired

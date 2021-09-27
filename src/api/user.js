@@ -18,13 +18,11 @@ import type {
 import { getToken } from './utils';
 import callApi from './api_base';
 
-export const getUserProfile = async ({
-  userId
-}: {
-  userId: string
-}): Promise<Profile> => {
+export const getUserProfile = async ({ userId }: { userId: string }): Promise<Profile> => {
   try {
-    if (!userId) throw new Error('No userId specified');
+    if (!userId) {
+      throw new Error('No userId specified');
+    }
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.USER}/${userId}/profile`, {
       headers: {
@@ -36,10 +34,7 @@ export const getUserProfile = async ({
     const { user_profile = {}, about = [], user_statistics = [] } = data;
 
     const userProfile = {
-      userId:
-        user_profile.user_id === 0
-          ? '0'
-          : String((user_profile.user_id: string) || ''),
+      userId: user_profile.user_id === 0 ? '0' : String((user_profile.user_id: string) || ''),
       firstName: String((user_profile.first_name: string) || ''),
       lastName: String((user_profile.last_name: string) || ''),
       grade: Number((user_profile.grade: number) || 0),
@@ -59,9 +54,7 @@ export const getUserProfile = async ({
     const userStatistics = user_statistics.map((stats) => ({
       seasonId: Number((stats.season_id: number) || 0),
       bestAnswers: Number((stats.best_answers: number) || 0),
-      communityServiceHours: Number(
-        (stats.community_service_hours: number) || 0
-      ),
+      communityServiceHours: Number((stats.community_service_hours: number) || 0),
       currentSeason: Boolean((stats.current_season: boolean) || false),
       name: String((stats.name: string) || ''),
       points: Number((stats.points: number) || 0),
@@ -147,7 +140,9 @@ export const searchUsers = async ({
 const getClassesCache = () => {
   try {
     const { result, expires } = JSON.parse(store.get('CLASSES_CACHE'));
-    if (moment().valueOf() > expires) return null;
+    if (moment().valueOf() > expires) {
+      return null;
+    }
     return result;
   } catch (e) {
     return null;
@@ -186,7 +181,9 @@ export const getUserClasses = async ({
         }
       );
       setClassesCache(result);
-    } else result = cache;
+    } else {
+      result = cache;
+    }
 
     const {
       data: { classes = [], permissions = {}, empty_state: empty = {} }
@@ -196,12 +193,8 @@ export const getUserClasses = async ({
       className: String((userClass.course_display_name: string) || ''),
       classId: Number((userClass.class_id: number) || 0),
       permissions: {
-        canLeave: Boolean(
-          ((userClass.permissions || {}).can_leave: boolean) || false
-        ),
-        canCreate: Boolean(
-          ((userClass.permissions || {}).can_create: boolean) || false
-        )
+        canLeave: Boolean(((userClass.permissions || {}).can_leave: boolean) || false),
+        canCreate: Boolean(((userClass.permissions || {}).can_create: boolean) || false)
       },
       section: (userClass.section || []).map((item) => ({
         firstName: String((item.first_name: string) || ''),
@@ -210,18 +203,14 @@ export const getUserClasses = async ({
         sectionId: Number((item.section_id: number) || 0),
         subject: String((item.subject: string) || ''),
         sectionDisplayName: String((item.section_display_name: string) || ''),
-        instructorDisplayName: String(
-          (item.instructor_display_name: string) || ''
-        )
+        instructorDisplayName: String((item.instructor_display_name: string) || '')
       })),
       subjectId: Number((userClass.subject_id: number) || 0),
       courseDisplayName: String((userClass.course_display_name: string) || ''),
       class: String((userClass.class: string) || ''),
       bgColor: String(userClass.bg_color || ''),
       didInviteClassmates: Boolean(userClass.did_invite_classmates || false),
-      didHideFeedEmptyState: Boolean(
-        userClass.did_hide_feed_empty_state || false
-      ),
+      didHideFeedEmptyState: Boolean(userClass.did_hide_feed_empty_state || false),
       isCurrent: Boolean(userClass.is_current || false)
     }));
 
@@ -309,21 +298,14 @@ export const getAvailableSubjects = async (): Array => {
   }
 };
 
-export const getAvailableSubjectsClasses = async ({
-  subjectId
-}: {
-  subjectId: number
-}): Array => {
+export const getAvailableSubjectsClasses = async ({ subjectId }: { subjectId: number }): Array => {
   try {
     const token = await getToken();
-    const result: Object = await axios.get(
-      `${API_ROUTES.SUBJECTS}/${subjectId}/classes`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result: Object = await axios.get(`${API_ROUTES.SUBJECTS}/${subjectId}/classes`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const {
       data: { classes = [] }
@@ -335,21 +317,14 @@ export const getAvailableSubjectsClasses = async ({
   }
 };
 
-export const getAvailableClassesSections = async ({
-  classId
-}: {
-  classId: number
-}): Array => {
+export const getAvailableClassesSections = async ({ classId }: { classId: number }): Array => {
   try {
     const token = await getToken();
-    const result: Object = await axios.get(
-      `${API_ROUTES.SECTIONS}?class_id=${classId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result: Object = await axios.get(`${API_ROUTES.SECTIONS}?class_id=${classId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
     const {
       data: { sections = [] }
@@ -428,22 +403,15 @@ export const joinClass = async ({
   }
 };
 
-export const getBlockedUsers = async ({
-  userId
-}: {
-  userId: string
-}): Promise<BlockedUsers> => {
+export const getBlockedUsers = async ({ userId }: { userId: string }): Promise<BlockedUsers> => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.GET_BLOCKED_USERS}?user_id=${userId}&token=NA`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.GET_BLOCKED_USERS}?user_id=${userId}&token=NA`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
     const { users = [] } = data;
     return users.map((item) => ({
@@ -516,22 +484,15 @@ export const unblockUser = async ({
   }
 };
 
-export const getStudyCircle = async ({
-  userId
-}: {
-  userId: string
-}): Promise<StudyCircle> => {
+export const getStudyCircle = async ({ userId }: { userId: string }): Promise<StudyCircle> => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.STUDY_CIRCLE}/${userId}?study_circle_type_id=1`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.STUDY_CIRCLE}/${userId}?study_circle_type_id=1`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
     return (data.study_circle || []).map((item) => ({
       firstName: String((item.first_name: string) || ''),
@@ -545,11 +506,7 @@ export const getStudyCircle = async ({
   }
 };
 
-export const getUserStats = async ({
-  userId
-}: {
-  userId: string
-}): Promise<UserStats> => {
+export const getUserStats = async ({ userId }: { userId: string }): Promise<UserStats> => {
   try {
     const token = await getToken();
 
@@ -560,15 +517,11 @@ export const getUserStats = async ({
     });
     const { data = {} } = result;
     return {
-      communityServiceHours: Number(
-        (data.user_community_service_hours: number) || 0
-      ),
+      communityServiceHours: Number((data.user_community_service_hours: number) || 0),
       reach: Number((data.user_reach: number) || 0),
       scholarshipPoints: Number((data.user_scholarship_points: number) || 0),
       weeklyNotesGoal: Number((data.weekly_notes_goal: number) || 0),
-      weeklyNotesGoalProgress: Number(
-        (data.weekly_notes_goal_progress: number) || 0
-      )
+      weeklyNotesGoalProgress: Number((data.weekly_notes_goal_progress: number) || 0)
     };
   } catch (err) {
     return {
@@ -717,8 +670,7 @@ export const getQuests = async (): Promise<QuestsCard> => {
           attributes: {
             feedFilter: {
               classId: Number(
-                ((((item.action || {}).attributes || {}).feedFilter || {})
-                  .classId: number) || 0
+                ((((item.action || {}).attributes || {}).feedFilter || {}).classId: number) || 0
               )
             }
           }
@@ -848,11 +800,7 @@ export const confirmTooltip = async (tooltipId: number) => {
   }
 };
 
-export const getSync = async ({
-  userId
-}: {
-  userId: string
-}): Promise<Object> => {
+export const getSync = async ({ userId }: { userId: string }): Promise<Object> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SYNC}/${userId}`, {
@@ -929,10 +877,7 @@ export const apiGetExpertMode = async (userId: string): Promise<object> => {
   }
 };
 
-export const apiSetExpertMode = async (
-  userId: string,
-  expert_mode: string
-): Promise<object> => {
+export const apiSetExpertMode = async (userId: string, expert_mode: string): Promise<object> => {
   try {
     const token = await getToken();
     const result = await axios.post(
@@ -951,10 +896,8 @@ export const apiSetExpertMode = async (
   }
 };
 
-export const apiGetPointsHistory = async (
-  userId: string,
-  params: object
-): Promise<object> => callApi({
+export const apiGetPointsHistory = async (userId: string, params: object): Promise<object> =>
+  callApi({
     url: `${API_ROUTES.USER}/${userId}/points_history`,
     params
   });

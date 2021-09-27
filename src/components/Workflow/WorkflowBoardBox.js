@@ -7,14 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import WorkflowContext from 'containers/Workflow/WorkflowContext';
 import { useStyles } from '../_styles/Workflow/WorkflowBoardBox';
 
-const WorkflowBoardBox = ({
-  buttonColor,
-  bgcolor,
-  categoryId,
-  drop,
-  name,
-  list
-}) => {
+const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list }) => {
   const { handleAddTask, announcementData } = useContext(WorkflowContext);
   const classes = useStyles();
   const [showNew, setShowNew] = useState(false);
@@ -37,7 +30,9 @@ const WorkflowBoardBox = ({
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (e.key === 'Enter') handleNew();
+      if (e.key === 'Enter') {
+        handleNew();
+      }
     },
     [handleNew]
   );
@@ -46,9 +41,7 @@ const WorkflowBoardBox = ({
     () => (
       <div className={classes.inputContainer}>
         {!newInputValue && (
-          <Typography className={classes.placeholder}>
-            Enter a title for this task
-          </Typography>
+          <Typography className={classes.placeholder}>Enter a title for this task</Typography>
         )}
         <TextField
           fullWidth
@@ -68,8 +61,7 @@ const WorkflowBoardBox = ({
   );
 
   const containerStyle = useMemo(
-    () =>
-      (announcementData ? classes.containerAnnouncement : classes.listContainer),
+    () => (announcementData ? classes.containerAnnouncement : classes.listContainer),
     [announcementData, classes.containerAnnouncement, classes.listContainer]
   );
 
@@ -81,12 +73,7 @@ const WorkflowBoardBox = ({
         style={{ backgroundColor: bgcolor }}
         id={`board-${name}`}
       >
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          direction="column"
-        >
+        <Grid container justifyContent="space-between" alignItems="center" direction="column">
           <Grid item className={classes.headerItem}>
             <Typography className={classes.title}>{name}</Typography>
           </Grid>
@@ -103,11 +90,7 @@ const WorkflowBoardBox = ({
         <Grid container className={containerStyle}>
           <div className={classes.newContainer}>
             {showNew && (
-              <WorkflowBoardCard
-                newInput={newInput}
-                handleNew={handleNew}
-                closeNew={closeNew}
-              />
+              <WorkflowBoardCard newInput={newInput} handleNew={handleNew} closeNew={closeNew} />
             )}
           </div>
           {list}

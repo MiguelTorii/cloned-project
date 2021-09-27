@@ -13,14 +13,9 @@ type Props = {
 };
 
 const GetAppDialog = ({ open, onClose }: Props) => (
-    <Dialog maxWidth="md" onCancel={onClose} open={Boolean(open)}>
-      <PdfComponent
-        url={studentJobPdf}
-        height="100%"
-        width="100%"
-        radius={10}
-      />
-    </Dialog>
-  );
+  <Dialog maxWidth="md" onCancel={onClose} open={Boolean(open)}>
+    <PdfComponent url={studentJobPdf} height="100%" width="100%" radius={10} />
+  </Dialog>
+);
 
 export default GetAppDialog;

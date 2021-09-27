@@ -117,10 +117,18 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     if (typeId === 3) {
       onEdit();
     }
-    if (typeId === 4) pushTo(`/edit/notes/${String(postId)}`);
-    if (typeId === 5) pushTo(`/edit/sharelink/${String(postId)}`);
-    if (typeId === 6) pushTo(`/edit/question/${String(postId)}`);
-    if (typeId === 8) pushTo(`/edit/post/${String(postId)}`);
+    if (typeId === 4) {
+      pushTo(`/edit/notes/${String(postId)}`);
+    }
+    if (typeId === 5) {
+      pushTo(`/edit/sharelink/${String(postId)}`);
+    }
+    if (typeId === 6) {
+      pushTo(`/edit/question/${String(postId)}`);
+    }
+    if (typeId === 8) {
+      pushTo(`/edit/post/${String(postId)}`);
+    }
   };
 
   handleSummaryMoreOrLess = () => {
@@ -247,16 +255,10 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           onClick={this.handleGoBack}
         >
           <ArrowBackIosRoundedIcon />
-          <Typography className={classes.feedTypo}>
-            {navigationTitle}
-          </Typography>
+          <Typography className={classes.feedTypo}>{navigationTitle}</Typography>
         </Grid>
         <div className={classes.root}>
-          <Link
-            className={classes.avatar}
-            component={MyLink}
-            href={`/profile/${userId}`}
-          >
+          <Link className={classes.avatar} component={MyLink} href={`/profile/${userId}`}>
             <HoverPopup userId={userId}>
               <Avatar src={userProfileUrl} className={classes.bigAvatar}>
                 {initials}
@@ -266,11 +268,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           <div className={classes.userInfo}>
             <Box display="flex" alignItems="center">
               <Typography component="p" variant="h6" noWrap>
-                <Link
-                  component={MyLink}
-                  href={`/profile/${userId}`}
-                  className={classes.link}
-                >
+                <Link component={MyLink} href={`/profile/${userId}`} className={classes.link}>
                   {name}
                 </Link>
               </Typography>
@@ -301,9 +299,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         </Typography>
         {!isMarkdown ? (
           <Typography className={classes.body} component="p" variant="h6">
-            {showShortSummary
-              ? _.truncate(body, { length: BODY_LENGTH_THRESHOLD })
-              : body}
+            {showShortSummary ? _.truncate(body, { length: BODY_LENGTH_THRESHOLD }) : body}
             {body.length > BODY_LENGTH_THRESHOLD && (
               <Link
                 className={classes.moreLessLink}
@@ -330,7 +326,4 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(PostItemHeader));
+export default connect(mapStateToProps, null)(withStyles(styles)(PostItemHeader));

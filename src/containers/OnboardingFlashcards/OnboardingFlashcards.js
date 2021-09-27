@@ -32,10 +32,7 @@ const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (
-      !!viewedTooltips?.length &&
-      viewedTooltips.indexOf(FLASHCARDS_ONBOARDING_ID) === -1
-    ) {
+    if (!!viewedTooltips?.length && viewedTooltips.indexOf(FLASHCARDS_ONBOARDING_ID) === -1) {
       setOpen(true);
     }
   }, [viewedTooltips]);
@@ -92,7 +89,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRoot(OnboardingFlashcards));
+export default connect(mapStateToProps, mapDispatchToProps)(withRoot(OnboardingFlashcards));

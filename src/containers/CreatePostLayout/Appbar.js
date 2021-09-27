@@ -35,8 +35,7 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(0, 1.25, 0, 0)
   },
   hover: {
-    background:
-      'linear-gradient(180deg, #383838 0%, #383838 49.48%, #222222 100%), #3A3B3B'
+    background: 'linear-gradient(180deg, #383838 0%, #383838 49.48%, #222222 100%), #3A3B3B'
   },
   tabsContainer: {
     borderBottom: `1px solid ${theme.circleIn.palette.modalBackground}`,
@@ -120,11 +119,7 @@ const AppbarComponent = ({ classes, value, handleChange }) => {
           label="Write a Post"
           style={{ animation: animations.fadeIn }}
           className={clsx(
-            hoverIdx === 0 && [
-              classes.hoverPost,
-              classes.hover,
-              classes.selectedPost
-            ]
+            hoverIdx === 0 && [classes.hoverPost, classes.hover, classes.selectedPost]
           )}
           onMouseEnter={() => setHoverIdx(0)}
           onMouseLeave={() => setHoverIdx(null)}
@@ -145,11 +140,7 @@ const AppbarComponent = ({ classes, value, handleChange }) => {
           label="Ask a question"
           style={{ animation: animations.fadeIn }}
           className={clsx(
-            hoverIdx === 1 && [
-              classes.hoverQuestion,
-              classes.hover,
-              classes.selectedQuestion
-            ]
+            hoverIdx === 1 && [classes.hoverQuestion, classes.hover, classes.selectedQuestion]
           )}
           onMouseEnter={() => setHoverIdx(1)}
           onMouseLeave={() => setHoverIdx(null)}
@@ -170,11 +161,7 @@ const AppbarComponent = ({ classes, value, handleChange }) => {
           label="Share Notes"
           style={{ animation: animations.fadeIn }}
           className={clsx(
-            hoverIdx === 2 && [
-              classes.hoverNotes,
-              classes.hover,
-              classes.selectedNote
-            ]
+            hoverIdx === 2 && [classes.hoverNotes, classes.hover, classes.selectedNote]
           )}
           onMouseEnter={() => setHoverIdx(2)}
           onMouseLeave={() => setHoverIdx(null)}
@@ -194,11 +181,7 @@ const AppbarComponent = ({ classes, value, handleChange }) => {
           label="Share a resource"
           style={{ animation: animations.fadeIn }}
           className={clsx(
-            hoverIdx === 3 && [
-              classes.hoverResource,
-              classes.hover,
-              classes.selectedResource
-            ]
+            hoverIdx === 3 && [classes.hoverResource, classes.hover, classes.selectedResource]
           )}
           onMouseEnter={() => setHoverIdx(3)}
           onMouseLeave={() => setHoverIdx(null)}

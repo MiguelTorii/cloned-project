@@ -154,16 +154,14 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
 
           await signUp({
             grade,
-            school:
-              (referralData && referralData.schoolId) || (school && school.id),
+            school: (referralData && referralData.schoolId) || (school && school.id),
             firstName,
             lastName,
             password,
             email,
             phone: '',
             segment: type,
-            referralCode:
-              (referralData && referralData.code) || (data && data.code)
+            referralCode: (referralData && referralData.code) || (data && data.code)
           });
         } catch (err) {
           const { updateError } = this.props;
@@ -217,9 +215,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
 
       return (
         <div className={classes.header}>
-          <Typography className={classes.title}>
-            {`${name} is inviting you to CircleIn`}
-          </Typography>
+          <Typography className={classes.title}>{`${name} is inviting you to CircleIn`}</Typography>
           <Typography variant="h6">{school}</Typography>
           <Typography>Sign Up below and verify your account</Typography>
         </div>
@@ -247,7 +243,9 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
     const { error, errorMessage, isLoading } = user;
     const { title, body } = errorMessage;
 
-    if (!school && !referralData) return <Redirect to="/auth" />;
+    if (!school && !referralData) {
+      return <Redirect to="/auth" />;
+    }
     const { emailDomain, emailRestriction } = school;
 
     return (
@@ -258,10 +256,7 @@ class SignUp extends React.Component<ProvidedProps & Props, State> {
             <ErrorBoundary>
               <SignUpForm onChangeSchool={this.handleChangeSchool}>
                 {this.renderHeader()}
-                <TypeSelect
-                  onTypeChange={this.handleTypeChange}
-                  hide={Boolean(type !== '')}
-                />
+                <TypeSelect onTypeChange={this.handleTypeChange} hide={Boolean(type !== '')} />
                 <AccountForm
                   type={type}
                   loading={isLoading || loading}

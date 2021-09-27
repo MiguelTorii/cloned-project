@@ -19,14 +19,7 @@ export const gradeName = (segment, grade = 1) => {
   }
   return `${grade}${addSuffix(grade)} Grade`;
 };
-export const ranks = [
-  'Bronze',
-  'Silver',
-  'Gold',
-  'Platinum',
-  'Diamond',
-  'Master'
-];
+export const ranks = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Master'];
 
 export const workflowCategories = [
   {

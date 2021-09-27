@@ -20,40 +20,42 @@ const Notifier = () => {
   };
 
   useEffect(() => {
-    notifications.forEach(
-      ({ nextPath, key, message, options = {}, dismissed = false }) => {
-        if (dismissed) {
-          // dismiss snackbar using notistack
-          closeSnackbar(key);
-          return;
-        }
-
-        // display only on correct screen after navigation
-        if (nextPath && pathname && pathname !== nextPath) return;
-
-        // do nothing if snackbar is already displayed
-        if (displayed.includes(key)) return;
-
-        // display snackbar using notistack
-        enqueueSnackbar(message, {
-          key,
-          ...options,
-          onClose: (event, reason, myKey) => {
-            if (options.onClose) {
-              options.onClose(event, reason, myKey);
-            }
-          },
-          onExited: (event, myKey) => {
-            // removen this snackbar from redux store
-            dispatch(removeSnackbar({ key: myKey }));
-            removeDisplayed(myKey);
-          }
-        });
-
-        // keep track of snackbars that we've displayed
-        storeDisplayed(key);
+    notifications.forEach(({ nextPath, key, message, options = {}, dismissed = false }) => {
+      if (dismissed) {
+        // dismiss snackbar using notistack
+        closeSnackbar(key);
+        return;
       }
-    );
+
+      // display only on correct screen after navigation
+      if (nextPath && pathname && pathname !== nextPath) {
+        return;
+      }
+
+      // do nothing if snackbar is already displayed
+      if (displayed.includes(key)) {
+        return;
+      }
+
+      // display snackbar using notistack
+      enqueueSnackbar(message, {
+        key,
+        ...options,
+        onClose: (event, reason, myKey) => {
+          if (options.onClose) {
+            options.onClose(event, reason, myKey);
+          }
+        },
+        onExited: (event, myKey) => {
+          // removen this snackbar from redux store
+          dispatch(removeSnackbar({ key: myKey }));
+          removeDisplayed(myKey);
+        }
+      });
+
+      // keep track of snackbars that we've displayed
+      storeDisplayed(key);
+    });
     // eslint-disable-next-line
   }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
 

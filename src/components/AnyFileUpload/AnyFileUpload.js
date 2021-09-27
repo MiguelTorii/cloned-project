@@ -33,30 +33,24 @@ const AnyFileUpload = ({
     const fileHtml = files.map((file, index) => {
       const { readUrl, fileName, fileType } = file;
       if (fileType && fileType.includes('image')) {
-        return <div
-          className={classes.bodyWrapper}
-          key={readUrl}
-        >
-           <ButtonBase
-             onClick={() => onImageClick(readUrl)}
-          >
-            <img
-              className={classes.image}
-              src={readUrl}
-              alt="chat"
-              onLoad={onImageLoaded}
-            />
-          </ButtonBase>
-        </div>;
+        return (
+          <div className={classes.bodyWrapper} key={readUrl}>
+            <ButtonBase onClick={() => onImageClick(readUrl)}>
+              <img className={classes.image} src={readUrl} alt="chat" onLoad={onImageLoaded} />
+            </ButtonBase>
+          </div>
+        );
       }
 
-      return <FileUpload
-        key={readUrl}
-        name={fileName}
-        size={bytesToSize(file.fileSize)}
-        url={readUrl}
-        smallChat={smallChat}
-      />;
+      return (
+        <FileUpload
+          key={readUrl}
+          name={fileName}
+          size={bytesToSize(file.fileSize)}
+          url={readUrl}
+          smallChat={smallChat}
+        />
+      );
     });
 
     return renderMessage(message, fileHtml);

@@ -90,9 +90,7 @@ function Control({ selectProps, innerProps, innerRef, children }) {
         ),
         inputProps: {
           autoFocus,
-          className: searchClassmate
-            ? classes.addClassmateInput
-            : classes.input,
+          className: searchClassmate ? classes.addClassmateInput : classes.input,
           inputRef: innerRef,
           children: children[0],
           ...innerProps
@@ -104,14 +102,7 @@ function Control({ selectProps, innerProps, innerRef, children }) {
   );
 }
 
-function Option({
-  innerRef,
-  innerProps,
-  isFocused,
-  isSelected,
-  children,
-  data
-}) {
+function Option({ innerRef, innerProps, isFocused, isSelected, children, data }) {
   const {
     avatar = '',
     initials = '',
@@ -121,7 +112,7 @@ function Option({
     isOnline = false
   } = data || {};
 
-  if (!noAvatar && (avatar !== '' || initials !== '' || school !== ''))
+  if (!noAvatar && (avatar !== '' || initials !== '' || school !== '')) {
     return (
       <ListItem
         alignItems="flex-start"
@@ -133,10 +124,7 @@ function Option({
         {...innerProps}
       >
         <ListItemAvatar>
-          <OnlineBadge
-            isOnline={isOnline}
-            bgColorPath="circleIn.palette.feedBackground"
-          >
+          <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
             <Avatar alt={initials} src={avatar}>
               {initials}
             </Avatar>
@@ -149,6 +137,7 @@ function Option({
         />
       </ListItem>
     );
+  }
   return (
     <MenuItem
       buttonRef={innerRef}
@@ -170,9 +159,7 @@ function Placeholder({ selectProps, innerProps, children }) {
   return (
     <Typography
       color={isDisabled ? 'textSecondary' : 'textPrimary'}
-      className={
-        searchClassmate ? classes.addClassmatePlaceholder : classes.placeholder
-      }
+      className={searchClassmate ? classes.addClassmatePlaceholder : classes.placeholder}
       {...innerProps}
     >
       {children}
@@ -186,11 +173,7 @@ function ValueContainer({ selectProps, children }) {
 
 function SingleValue({ selectProps, innerProps, children }) {
   return (
-    <Typography
-      color="textPrimary"
-      className={selectProps.classes.singleValue}
-      {...innerProps}
-    >
+    <Typography color="textPrimary" className={selectProps.classes.singleValue} {...innerProps}>
       {children}
     </Typography>
   );
@@ -199,7 +182,7 @@ function SingleValue({ selectProps, innerProps, children }) {
 function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   const { avatar = '', initials = '' } = data || {};
   const { classes, searchClassmate } = selectProps;
-  if (avatar !== '' || initials !== '')
+  if (avatar !== '' || initials !== '') {
     return (
       <Chip
         avatar={
@@ -211,22 +194,16 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
         }
         tabIndex={-1}
         label={children}
-        className={cx(
-          searchClassmate ? classes.addClassmateChip : classes.chip,
-          {
-            [classes.chipFocused]: isFocused
-          }
-        )}
+        className={cx(searchClassmate ? classes.addClassmateChip : classes.chip, {
+          [classes.chipFocused]: isFocused
+        })}
         onDelete={removeProps.onClick}
         deleteIcon={
-          searchClassmate ? (
-            <ClearIcon {...removeProps} />
-          ) : (
-            <CancelIcon {...removeProps} />
-          )
+          searchClassmate ? <ClearIcon {...removeProps} /> : <CancelIcon {...removeProps} />
         }
       />
     );
+  }
   return (
     <Chip
       tabIndex={-1}
@@ -236,11 +213,7 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
       })}
       onDelete={removeProps.onClick}
       deleteIcon={
-        searchClassmate ? (
-          <ClearIcon {...removeProps} />
-        ) : (
-          <CancelIcon {...removeProps} />
-        )
+        searchClassmate ? <ClearIcon {...removeProps} /> : <CancelIcon {...removeProps} />
       }
     />
   );
@@ -255,7 +228,9 @@ function Menu({ selectProps, children, innerProps }) {
     searchClassmate,
     classes
   } = selectProps;
-  if (options.length === 0 && inputValue === '') return null;
+  if (options.length === 0 && inputValue === '') {
+    return null;
+  }
   return (
     <Paper
       square
@@ -379,7 +354,9 @@ const AutoComplete = ({
           isDisabled={isDisabled}
           cacheUniq={cacheUniq}
           noOptionsMessage={({ inputValue: input }) => {
-            if (input !== '') return 'No results, please try again';
+            if (input !== '') {
+              return 'No results, please try again';
+            }
             return '';
           }}
           isSchoolSearch={isSchoolSearch}

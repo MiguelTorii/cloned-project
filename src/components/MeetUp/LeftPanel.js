@@ -65,10 +65,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
     return (
       <Fragment>
         <div className={classes.root}>
-          <Paper
-            className={cx(classes.paper, !thumbnails && classes.paperHide)}
-            elevation={1}
-          >
+          <Paper className={cx(classes.paper, !thumbnails && classes.paperHide)} elevation={1}>
             {/* <div> */}
             {/* <ButtonBase */}
             {/* className={classes.iconButton} */}
@@ -110,17 +107,10 @@ class LeftPanel extends React.PureComponent<Props, State> {
             {/* /> */}
           </BottomNavigation>
           <Divider />
-          <div
-            className={cx(
-              classes.section,
-              type !== 'participants' && classes.hide
-            )}
-          >
+          <div className={cx(classes.section, type !== 'participants' && classes.hide)}>
             {thumbnails}
           </div>
-          <div className={cx(classes.section, type !== 'chat' && classes.hide)}>
-            {chat}
-          </div>
+          <div className={cx(classes.section, type !== 'chat' && classes.hide)}>{chat}</div>
         </Drawer>
       </Fragment>
     );

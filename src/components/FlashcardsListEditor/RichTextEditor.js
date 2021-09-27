@@ -34,12 +34,10 @@ const RichTextEditor = ({
     disabled: readOnly,
     onDropAccepted: (files) => {
       setIsUploadingImage(true);
-      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0]).then(
-        ({ readUrl }) => {
-          onChangeImageUrl(readUrl);
-          setIsUploadingImage(false);
-        }
-      );
+      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0]).then(({ readUrl }) => {
+        onChangeImageUrl(readUrl);
+        setIsUploadingImage(false);
+      });
     }
   });
 
@@ -104,30 +102,22 @@ const RichTextEditor = ({
     }
 
     if (imageUrl) {
-      return (
-        <img src={imageUrl} alt="Flashcards" className={classes.thumbnail} />
-      );
+      return <img src={imageUrl} alt="Flashcards" className={classes.thumbnail} />;
     }
 
-    if (readOnly) return null;
+    if (readOnly) {
+      return null;
+    }
 
     return <IconImage className={classes.imageIcon} />;
   };
 
   return (
     <div
-      className={clsx(
-        classes.textEditorContainer,
-        active && 'active',
-        readOnly && 'read-only'
-      )}
+      className={clsx(classes.textEditorContainer, active && 'active', readOnly && 'read-only')}
       onMouseDown={handleFocus}
     >
-      {!readOnly && (
-        <div className={clsx(classes.editorLabel, active && 'active')}>
-          {label}
-        </div>
-      )}
+      {!readOnly && <div className={clsx(classes.editorLabel, active && 'active')}>{label}</div>}
       <div className={classes.textEditor}>
         <ReactQuill
           ref={handleSetRef}

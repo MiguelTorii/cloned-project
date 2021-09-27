@@ -5,12 +5,12 @@ import Layout from '../../containers/Layout/Layout';
 import FlashcardsNew from '../../containers/FlashcardsNew/FlashcardsNew';
 
 const FlashcardsNewPage = () => (
-    <main>
-      <CssBaseline />
-      <Layout>
-        <FlashcardsNew />
-      </Layout>
-    </main>
-  );
+  <main>
+    <CssBaseline />
+    <Layout>
+      <FlashcardsNew />
+    </Layout>
+  </main>
+);
 
 export default withRoot(FlashcardsNewPage);

@@ -2,13 +2,7 @@ import React, { memo, useMemo } from 'react';
 import WorkflowBoardCard from 'components/Workflow/WorkflowBoardCard';
 import moment from 'moment';
 
-const WorkflowBoardItem = ({
-  task,
-  classList,
-  openConfirmArchive,
-  onOpen,
-  showDetails
-}) => {
+const WorkflowBoardItem = ({ task, classList, openConfirmArchive, onOpen, showDetails }) => {
   const date = useMemo(() => {
     if (task.date) {
       if (typeof task.date.getMonth === 'function') {
@@ -18,10 +12,7 @@ const WorkflowBoardItem = ({
     }
     return '';
   }, [task.date]);
-  const selectedClass = useMemo(
-    () => classList[task.sectionId],
-    [classList, task.sectionId]
-  );
+  const selectedClass = useMemo(() => classList[task.sectionId], [classList, task.sectionId]);
 
   return useMemo(
     () => (

@@ -152,12 +152,10 @@ class ChatMessageDate extends React.PureComponent<Props> {
 
   linkify = (text: string) => {
     // eslint-disable-next-line
-    const urlRegex =
-      /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
     return text.replace(
       urlRegex,
-      (url) =>
-        `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`
+      (url) => `<a target="_blank" rel="noopener noreferrer" href="${url}">${url}</a>`
     );
   };
 
@@ -190,12 +188,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
           return (
             <div className={classes.bodyWrapper} key={readUrl}>
               <ButtonBase onClick={() => onImageClick(readUrl)}>
-                <img
-                  className={classes.image}
-                  src={readUrl}
-                  alt="chat"
-                  onLoad={onImageLoaded}
-                />
+                <img className={classes.image} src={readUrl} alt="chat" onLoad={onImageLoaded} />
               </ButtonBase>
             </div>
           );
@@ -216,11 +209,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
           <div className={cx(classes.bodyWrapper)}>
             {message && (
               <Typography
-                className={cx(
-                  classes.body,
-                  isOwn && classes.right,
-                  'ql-editor'
-                )}
+                className={cx(classes.body, isOwn && classes.right, 'ql-editor')}
                 dangerouslySetInnerHTML={{
                   __html: this.renderHtmlWithImage(message)
                 }}
@@ -329,33 +318,18 @@ class ChatMessageDate extends React.PureComponent<Props> {
   };
 
   render() {
-    const {
-      role,
-      classes,
-      userId,
-      name,
-      avatar,
-      isOwn,
-      isUserOnline,
-      messageList
-    } = this.props;
+    const { role, classes, userId, name, avatar, isOwn, isUserOnline, messageList } = this.props;
     const initials = getInitials(name);
 
     return (
-      <ListItem
-        alignItems="flex-start"
-        className={cx(classes.root, isOwn && classes.justifyEnd)}
-      >
+      <ListItem alignItems="flex-start" className={cx(classes.root, isOwn && classes.justifyEnd)}>
         {!isOwn && (
           <ListItemAvatar
             className={classes.avatarLink}
             component={MyLink}
             href={`/profile/${userId || ''}`}
           >
-            <OnlineBadge
-              isOnline={isUserOnline}
-              bgColorPath="circleIn.palette.feedBackground"
-            >
+            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
               <Avatar alt={name} src={avatar}>
                 {initials}
               </Avatar>
@@ -365,11 +339,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>
           {!isOwn && (
             <Typography variant="caption" className={classes.name}>
-              <Link
-                className={classes.link}
-                component={MyLink}
-                href={`/profile/${userId || ''}`}
-              >
+              <Link className={classes.link} component={MyLink} href={`/profile/${userId || ''}`}>
                 {name}
               </Link>
               {role && role !== MEMBER_ROLES.STUDENT && <RoleBadge text={role} />}

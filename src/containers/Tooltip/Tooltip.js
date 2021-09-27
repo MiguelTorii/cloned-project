@@ -1,12 +1,6 @@
 // @flow
 
-import React, {
-  useMemo,
-  useEffect,
-  useCallback,
-  useRef,
-  useState
-} from 'react';
+import React, { useMemo, useEffect, useCallback, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -249,15 +243,13 @@ const Tooltip = ({
           result = viewedTooltips.includes(CHAT);
           break;
         case NEW_POST:
-          result =
-            viewedTooltips.includes(CHAT) && pathname.indexOf('/feed') === 0;
+          result = viewedTooltips.includes(CHAT) && pathname.indexOf('/feed') === 0;
           break;
         case BOOKMARKS:
           result = viewedTooltips.includes(CHAT);
           break;
         case THANKS:
-          result =
-            viewedTooltips.includes(CHAT) && viewedTooltips.includes(BOOKMARKS);
+          result = viewedTooltips.includes(CHAT) && viewedTooltips.includes(BOOKMARKS);
           break;
         case FLASHCARD_BOTTOM:
           result = viewedTooltips.includes(FLASHCARD_TOP);
@@ -293,15 +285,7 @@ const Tooltip = ({
     } else {
       setOpen(false);
     }
-  }, [
-    id,
-    delay,
-    dialogVisible,
-    hidden,
-    pathname,
-    viewedTooltips,
-    viewedOnboarding
-  ]);
+  }, [id, delay, dialogVisible, hidden, pathname, viewedTooltips, viewedOnboarding]);
 
   const onClick = (e) => {
     e.stopPropagation();
@@ -331,14 +315,8 @@ const Tooltip = ({
       arrow
       classes={{
         popper: overDialog,
-        arrow:
-          variant === 'secondary'
-            ? classes.secondaryArrow
-            : classes.primaryArrow,
-        tooltip:
-          variant === 'secondary'
-            ? classes.secondaryTooltip
-            : classes.primaryTooltip
+        arrow: variant === 'secondary' ? classes.secondaryArrow : classes.primaryArrow,
+        tooltip: variant === 'secondary' ? classes.secondaryTooltip : classes.primaryTooltip
       }}
       PopperProps={{ disablePortal: true }}
       open={open}
@@ -348,11 +326,7 @@ const Tooltip = ({
       title={
         <div className={classes.tooltipContent}>
           <div className={classes.close}>
-            <CloseIcon
-              fontSize="small"
-              onClick={(e) => onClick(e)}
-              style={{ cursor: 'pointer' }}
-            />
+            <CloseIcon fontSize="small" onClick={(e) => onClick(e)} style={{ cursor: 'pointer' }} />
           </div>
           <div>
             <Typography variant="subtitle1" className={classes.text}>
@@ -360,12 +334,7 @@ const Tooltip = ({
             </Typography>
             <Box display="flex">
               {totalSteps > 0 && (
-                <Box
-                  display="flex"
-                  position="absolute"
-                  right="45%"
-                  bottom="8px"
-                >
+                <Box display="flex" position="absolute" right="45%" bottom="8px">
                   <TooltipStep completed />
                   {[...Array(completedSteps)].map(() => (
                     <TooltipStep
@@ -374,17 +343,11 @@ const Tooltip = ({
                     />
                   ))}
                   {[...Array(totalSteps - completedSteps)].map(() => (
-                    <TooltipStep
-                      key={cryptoRandomString({ length: 10, type: 'base64' })}
-                    />
+                    <TooltipStep key={cryptoRandomString({ length: 10, type: 'base64' })} />
                   ))}
                 </Box>
               )}
-              <Button
-                className={classes.button}
-                variant="outlined"
-                onClick={(e) => onClick(e)}
-              >
+              <Button className={classes.button} variant="outlined" onClick={(e) => onClick(e)}>
                 {okButton}
               </Button>
             </Box>

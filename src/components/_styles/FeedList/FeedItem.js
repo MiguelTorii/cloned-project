@@ -5,8 +5,7 @@ export default makeStyles((theme) => ({
   root: {
     borderRadius: 0,
     backgroundColor: theme.circleIn.palette.feedBackground,
-    marginTop: (props) =>
-      (props.showSimple ? theme.spacing(1) : theme.spacing(3))
+    marginTop: (props) => (props.showSimple ? theme.spacing(1) : theme.spacing(3))
   },
   media: {
     height: 10
@@ -188,9 +187,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: (props) => (props.showSimple ? 6 : 12),
     background: (props) =>
-      (props.showSimple
-        ? '#EFC448'
-        : 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)'),
+      props.showSimple ? '#EFC448' : 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     borderRadius: '10px 10px 0 0'
   },
   flashcardTitle: {

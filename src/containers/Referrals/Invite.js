@@ -101,11 +101,11 @@ const Invite = ({
         <Typography className={classes.title}>{title}</Typography>
         <Typography className={classes.subtitle}>
           {subtitle.split('\n').map((item) => (
-              <span key={Math.random()}>
-                {item}
-                <br />
-              </span>
-            ))}
+            <span key={Math.random()}>
+              {item}
+              <br />
+            </span>
+          ))}
         </Typography>
         <CopyToClipboard text={link} onCopy={handleLinkCopied}>
           <div className={classes.coupon}>

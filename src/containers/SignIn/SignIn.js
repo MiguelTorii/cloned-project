@@ -92,10 +92,15 @@ class SignIn extends React.Component<Props, State> {
     const { isVerified, email, password } = this.state;
     if (!isVerified) {
       const exists = await signInApi.verifyEmail({ email });
-      if (exists) this.setState({ isVerified: true });
-      else pushTo(`/signup?email=${encodeURIComponent(email)}`);
+      if (exists) {
+        this.setState({ isVerified: true });
+      } else {
+        pushTo(`/signup?email=${encodeURIComponent(email)}`);
+      }
     } else {
-      if (!school) return;
+      if (!school) {
+        return;
+      }
       const { id } = school;
       signIn({ email, password, schoolId: id });
     }
@@ -123,7 +128,9 @@ class SignIn extends React.Component<Props, State> {
     const { error, errorMessage, isLoading } = user;
     const { title, body, showSignup } = errorMessage;
 
-    if (!school) return <Redirect to="/auth" />;
+    if (!school) {
+      return <Redirect to="/auth" />;
+    }
 
     return (
       <main className={classes.main}>
@@ -173,7 +180,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(SignIn));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));

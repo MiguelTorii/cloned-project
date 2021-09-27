@@ -47,14 +47,7 @@ type Props = {
   push: Function
 };
 
-const ViewShareLink = ({
-  router,
-  pop,
-  classes,
-  user,
-  sharelinkId,
-  push
-}: Props) => {
+const ViewShareLink = ({ router, pop, classes, user, sharelinkId, push }: Props) => {
   const [shareLink, setShareLink] = useState(null);
   const [report, setReport] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
@@ -82,7 +75,9 @@ const ViewShareLink = ({
   }, [sharelinkId]);
 
   const handleBookmark = async () => {
-    if (!shareLink) return;
+    if (!shareLink) {
+      return;
+    }
     const { feedId, bookmarked } = shareLink;
     try {
       setShareLink({ ...shareLink, bookmarked: !bookmarked });
@@ -105,12 +100,13 @@ const ViewShareLink = ({
     setDeletePost(false);
   };
 
-  if (!shareLink)
+  if (!shareLink) {
     return (
       <div className={classes.loader}>
         <CircularProgress />
       </div>
     );
+  }
 
   const {
     feedId,
@@ -199,19 +195,10 @@ const ViewShareLink = ({
           </ErrorBoundary>
 
           <ErrorBoundary>
-            <Report
-              open={report}
-              ownerId={ownerId}
-              objectId={feedId}
-              onClose={handleReportClose}
-            />
+            <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <DeletePost
-              open={deletePost}
-              feedId={feedId}
-              onClose={handleDeleteClose}
-            />
+            <DeletePost open={deletePost} feedId={feedId} onClose={handleDeleteClose} />
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
@@ -233,7 +220,4 @@ const mapDispatchToProps = (dispatch: *): {} =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ViewShareLink));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewShareLink));

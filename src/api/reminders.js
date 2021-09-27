@@ -6,22 +6,15 @@ import type { ToDos } from '../types/models';
 import { logEvent } from './analytics';
 import { getToken } from './utils';
 
-export const getReminders = async ({
-  userId
-}: {
-  userId: string
-}): Promise<ToDos> => {
+export const getReminders = async ({ userId }: { userId: string }): Promise<ToDos> => {
   try {
     const token = await getToken();
 
-    const result = await axios.get(
-      `${API_ROUTES.USER}/${userId}/todo?token=NA`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.USER}/${userId}/todo?token=NA`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const { data = {} } = result;
     const { todos = [] } = data;
 
@@ -121,13 +114,7 @@ export const updateReminder = async ({
   }
 };
 
-export const deleteReminder = async ({
-  userId,
-  id
-}: {
-  userId: string,
-  id: number
-}) => {
+export const deleteReminder = async ({ userId, id }: { userId: string, id: number }) => {
   try {
     const token = await getToken();
 

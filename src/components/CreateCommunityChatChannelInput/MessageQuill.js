@@ -73,13 +73,9 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
       quill.on('text-change', () => {
         if (quill.getSelection(true)) {
           onChange(quill.container.firstChild.innerHTML);
-          if (
-            quill.container.firstChild.innerHTML.length >
-            quill.getSelection(true).index
-          ) {
+          if (quill.container.firstChild.innerHTML.length > quill.getSelection(true).index) {
             quill.setSelection(
-              quill.getSelection(true).index +
-                quill.container.firstChild.innerHTML.length
+              quill.getSelection(true).index + quill.container.firstChild.innerHTML.length
             );
           }
           const currentFocusPosition = quill.getSelection(true).index;
@@ -90,10 +86,7 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
           const currentEditorWidth = quill.container.firstChild.clientWidth;
           if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
             if (!quill.container.firstChild.innerHTML.includes('<p>\n</p>')) {
-              quill.insertText(
-                quill.container.firstChild.innerHTML.length.index + 1,
-                '\n'
-              );
+              quill.insertText(quill.container.firstChild.innerHTML.length.index + 1, '\n');
             }
           }
 

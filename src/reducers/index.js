@@ -1,14 +1,7 @@
 // @flow
 
 import { combineReducers } from 'redux';
-import {
-  connectRouter,
-  go,
-  goBack,
-  goForward,
-  push,
-  replace
-} from 'connected-react-router';
+import { connectRouter, go, goBack, goForward, push, replace } from 'connected-react-router';
 
 import type { BrowserHistory } from 'history';
 import user from './user';

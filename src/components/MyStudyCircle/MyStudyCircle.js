@@ -44,25 +44,23 @@ class MyStudyCircle extends React.PureComponent<Props> {
   renderContent = () => {
     const { classes, isLoading, circle } = this.props;
 
-    if (isLoading) return <CircularProgress />;
+    if (isLoading) {
+      return <CircularProgress />;
+    }
 
-    if (circle.length === 0)
+    if (circle.length === 0) {
       return (
         <div className={classes.empty}>
           <Typography variant="h6" paragraph align="center">
-            You haven’t added anyone to your study circle yet! Check back here
-            once you’ve added students.
+            You haven’t added anyone to your study circle yet! Check back here once you’ve added
+            students.
           </Typography>
-          <Button
-            component={MyLink}
-            href="/"
-            variant="outlined"
-            color="primary"
-          >
+          <Button component={MyLink} href="/" variant="outlined" color="primary">
             Go to Study
           </Button>
         </div>
       );
+    }
 
     return (
       <List dense className={classes.list}>

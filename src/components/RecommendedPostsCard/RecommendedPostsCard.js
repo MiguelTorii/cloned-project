@@ -46,7 +46,7 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
       }
     ];
 
-    if (isLoading)
+    if (isLoading) {
       return (
         <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
@@ -54,6 +54,7 @@ class RecommendedPostsCard extends React.PureComponent<Props, State> {
           </div>
         </Paper>
       );
+    }
 
     return (
       <Paper className={classes.root} elevation={1}>

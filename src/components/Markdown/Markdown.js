@@ -18,14 +18,10 @@ const options = {
       component: (props) => <Typography gutterBottom variant="h3" {...props} />
     },
     h4: {
-      component: (props) => (
-        <Typography gutterBottom variant="h4" paragraph {...props} />
-      )
+      component: (props) => <Typography gutterBottom variant="h4" paragraph {...props} />
     },
     p: {
-      component: (props) => (
-        <Typography component="div" variant="h6" paragraph {...props} />
-      )
+      component: (props) => <Typography component="div" variant="h6" paragraph {...props} />
     },
     li: {
       component: withStyles(styles)(({ classes, ...props }) => (

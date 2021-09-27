@@ -29,10 +29,7 @@ const defaultState = {
   showSupportCenter: false
 };
 
-export default (
-  state: CampaignState = defaultState,
-  action: Action
-): CampaignState => {
+export default (state: CampaignState = defaultState, action: Action): CampaignState => {
   switch (action.type) {
     case campaignActions.GET_CAMPAIGN:
       return update(state, {

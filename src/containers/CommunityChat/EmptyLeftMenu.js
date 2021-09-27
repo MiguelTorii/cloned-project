@@ -13,11 +13,7 @@ type Props = {
   handleCreateNewChannel: Function
 };
 
-const EmptyLeftMenu = ({
-  isLoading,
-  emptyChannels,
-  handleCreateNewChannel
-}: Props) => {
+const EmptyLeftMenu = ({ isLoading, emptyChannels, handleCreateNewChannel }: Props) => {
   const classes = useStyles();
 
   return (

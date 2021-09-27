@@ -18,8 +18,8 @@ class OpenApp extends React.PureComponent<Props> {
     return (
       <div className={classes.root}>
         <Typography variant="h4" align="center" paragraph>
-          Video calls are not supported in this platform, please download the
-          app to access all features
+          Video calls are not supported in this platform, please download the app to access all
+          features
         </Typography>
         <ButtonBase className={classes.button}>
           <img className={classes.img} alt="App Store" src={appStore} />

@@ -3,11 +3,7 @@
 
 import React from 'react';
 import cx from 'classnames';
-import {
-  ValidatorForm,
-  TextValidator,
-  SelectValidator
-} from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
 // import { DatePicker } from 'material-ui-pickers';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
@@ -63,11 +59,9 @@ class AccountForm extends React.PureComponent<Props, State> {
       if (emailRestriction) {
         let match = false;
         for (const domain of emailDomain) {
-          if (
-            value &&
-            (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`))
-          )
+          if (value && (value.endsWith(`.${domain}`) || value.endsWith(`@${domain}`))) {
             match = true;
+          }
         }
         return match;
       }
@@ -81,8 +75,7 @@ class AccountForm extends React.PureComponent<Props, State> {
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const { firstName, lastName, email, confirmPassword, password, grade } =
-      this.state;
+    const { firstName, lastName, email, confirmPassword, password, grade } = this.state;
     const data = {
       action: 'Account',
       data: {
@@ -99,8 +92,7 @@ class AccountForm extends React.PureComponent<Props, State> {
 
   render() {
     const { classes, type, hide, loading, emailDomain } = this.props;
-    const { firstName, lastName, email, confirmPassword, password, grade } =
-      this.state;
+    const { firstName, lastName, email, confirmPassword, password, grade } = this.state;
     return (
       <ValidatorForm
         onSubmit={this.handleSubmit}
@@ -179,11 +171,7 @@ class AccountForm extends React.PureComponent<Props, State> {
           validators={['required', 'isPasswordMatch']}
           errorMessages={['Password is required', "Passwords don't match"]}
         />
-        <FormControl
-          variant="outlined"
-          fullWidth
-          className={classes.formControl}
-        >
+        <FormControl variant="outlined" fullWidth className={classes.formControl}>
           <SelectValidator
             value={grade}
             name="grade"
@@ -202,18 +190,10 @@ class AccountForm extends React.PureComponent<Props, State> {
           </SelectValidator>
         </FormControl>
         <div className={classes.wrapper}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={loading}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" disabled={loading}>
             Submit
           </Button>
-          {loading && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </div>
       </ValidatorForm>
     );
