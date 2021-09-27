@@ -190,7 +190,11 @@ const FileUploadContainer = ({
           </Box>
           {smallChat ||
             (width !== 'xs' && (
-              <Box display="flex" alignItems="center">
+              <Box
+                display="flex"
+                alignItems="center"
+                className={classes.fileInfo}
+              >
                 <Typography variant="body2" component="div">
                   {size} {getFileContent(extension)}
                 </Typography>

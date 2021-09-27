@@ -12,7 +12,7 @@ export default (theme) => ({
     padding: theme.spacing(1.5),
     [theme.breakpoints.down('sm')]: {
       maxWidth: 320,
-      minWidth: 280,
+      minWidth: 240,
       height: 55,
       padding: theme.spacing()
     }
@@ -128,5 +128,8 @@ export default (theme) => ({
   },
   downloadIcon: {
     marginLeft: theme.spacing(1)
+  },
+  fileInfo: {
+    minHeight: 24
   }
 });
