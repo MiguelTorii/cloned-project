@@ -130,6 +130,6 @@ export default (theme) => ({
     marginLeft: theme.spacing(1)
   },
   fileInfo: {
-    minHeight: 24
+    height: 24
   }
 });
