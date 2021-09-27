@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     width: 70,
-    height: '100%'
+    height: '100%',
+    overflow: 'auto',
+    position: 'relative',
+    boxSizing: 'border-box'
   },
   directChat: {
     width: 'calc(100% - 70px)',
@@ -50,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
   left: {
     backgroundColor: theme.circleIn.palette.navbarBackgroundColor,
     border: `1px solid ${theme.circleIn.palette.navbarBorderColor}`,
+    height: '100%',
+    overflow: 'auto',
+    position: 'relative',
     boxSizing: 'border-box'
   },
   loading: {

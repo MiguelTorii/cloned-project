@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
       margin: 0
     }
   },
+  emptyChatImg: {
+    width: 255
+  },
   messageLoadingRoot: {
     height: 'calc(100% - 24px)',
     flexGrow: 1,
