@@ -6,6 +6,7 @@ import type { Node } from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
@@ -70,8 +71,8 @@ class CreatePostForm extends React.PureComponent<Props, State> {
             <Paper className={classes.paper}>{children}</Paper>
             <Grid container alignItems="center">
               <Grid className={classes.mt3} item xs={12} sm={6}>
-                {currentTag === 1 ? (
-                  <>
+                {currentTag === 1 && (
+                  <Box mb={2}>
                     <FormControlLabel
                       className={classes.anonymousActive}
                       control={
@@ -89,16 +90,15 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                       Your classmates cannot see who asked the question, but this post can still be
                       flagged for academic dishonesty.
                     </Typography>
-                  </>
-                ) : (
-                  <Button
-                    onClick={this.showBreakDownDialog}
-                    color="primary"
-                    className={classes.breakdown}
-                  >
-                    🏆 &nbsp;<u>Points Breakdown</u>
-                  </Button>
+                  </Box>
                 )}
+                <Button
+                  onClick={this.showBreakDownDialog}
+                  color="primary"
+                  className={classes.breakdown}
+                >
+                  🏆 &nbsp;<u>Points Breakdown</u>
+                </Button>
               </Grid>
               <Grid className={classes.mt3} item xs={12} sm={6}>
                 <div className={classes.actions}>
