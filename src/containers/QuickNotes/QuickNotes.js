@@ -23,6 +23,7 @@ import * as notificationsActions from 'actions/notifications';
 import EditorToolbar, { modules, formats } from 'containers/QuickNotes/QuickNoteToolbar';
 import Tooltip from 'containers/Tooltip/Tooltip';
 import { Picker } from 'emoji-mart';
+import { ReactComponent as IconNote } from 'assets/svg/note.svg';
 import useStyles from './_styles/style';
 import { isMac } from '../../utils/helpers';
 
@@ -262,7 +263,7 @@ const QuickNotes = ({
   return (
     <Grid container>
       <IconButton ref={noteRef} onClick={handleClick}>
-        <QuickNoteIcon />
+        <IconNote />
       </IconButton>
       <Popover
         open={Boolean(anchorEl)}

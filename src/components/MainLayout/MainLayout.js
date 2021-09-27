@@ -32,6 +32,8 @@ import GetAppDialog from 'components/GetAppDialog/GetAppDialog';
 import GetStudentJob from 'components/GetStudentJob/GetAppDialog';
 import QuickNotes from 'containers/QuickNotes/QuickNotes';
 import { ReactComponent as HomeIcon } from 'assets/svg/home-inactive.svg';
+import { ReactComponent as IconChat } from 'assets/svg/chat.svg';
+import { ReactComponent as IconHome } from 'assets/svg/home.svg';
 import logo from '../../assets/svg/circlein_logo.svg';
 import './currentRoute.css';
 import UseCases from '../UseCases/UseCases';
@@ -442,11 +444,11 @@ const MainLayout = ({
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton onClick={handleGoHome}>
-                <HomeIcon />
+                <IconHome />
               </IconButton>
               <IconButton color="inherit" component={MyLink} link="/chat">
                 <Badge badgeContent={unreadMessages} color="secondary">
-                  <ChatIcon />
+                  <IconChat />
                 </Badge>
               </IconButton>
               <QuickNotes />
