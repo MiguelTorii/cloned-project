@@ -245,10 +245,7 @@ const HeaderNavigation = ({
           variant="standard"
           allLabel={allLabel}
           containerStyle={classes.classSelector}
-          textFieldStyle={cx(
-            classes.classTextField,
-            allSelected && classes.allClasses
-          )}
+          textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
           placeholder={!options.length ? 'Select Classes...' : ''}
           externalOptions={options}
           selected={selectedClasses}

@@ -74,9 +74,7 @@ const PostCreationHeader = () => {
                 className={classes.postAnyButton}
                 onClick={() => handleGotoPostCreate()}
               >
-                <Hidden smDown>
-                  Create a new post, offer support or share useful links!
-                </Hidden>
+                <Hidden smDown>Create a new post, offer support or share useful links!</Hidden>
                 <Hidden mdUp>Create a new post</Hidden>
               </Button>
             </Tooltip>
