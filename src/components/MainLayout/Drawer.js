@@ -132,7 +132,6 @@ const Drawer = ({
           }}
         />
       </ListItem>
-      // </Tooltip>
     ),
     [
       MyLink,
@@ -236,7 +235,7 @@ const Drawer = ({
         {newNotesScreen && (
           <DrawerItem
             OnIcon={<NotesIconOn />}
-            primaryText="Notes"
+            primaryText="My Notes"
             pathname={pathname}
             component={MyLink}
             link="/notes"
@@ -360,7 +359,7 @@ const Drawer = ({
         {newNotesScreen && (
           <DrawerItem
             OnIcon={<NotesIconOn />}
-            primaryText="Notes"
+            primaryText="My Notes"
             pathname={pathname}
             component={MyLink}
             link="/notes"
