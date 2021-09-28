@@ -14,6 +14,7 @@ type Props = {
   imageUrl: string,
   displayName: string,
   isSelected: boolean,
+  rewardCount: number,
   onClick: Function
 };
 
@@ -40,7 +41,8 @@ class AvailableRewardsItem extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, rewardId, bgColor, imageUrl, displayName, isSelected } = this.props;
+    const { classes, rewardId, bgColor, imageUrl, displayName, isSelected, rewardCount } =
+      this.props;
     const { hover } = this.state;
     return (
       <Paper
@@ -63,12 +65,16 @@ class AvailableRewardsItem extends React.PureComponent<Props, State> {
             <Button color="primary" className={classes.button} onClick={this.handleClick(0)}>
               Move to first slot
             </Button>
-            <Button color="primary" className={classes.button} onClick={this.handleClick(1)}>
-              Move to second slot
-            </Button>
-            <Button color="primary" className={classes.button} onClick={this.handleClick(2)}>
-              Move to third slot
-            </Button>
+            {rewardCount > 1 && (
+              <Button color="primary" className={classes.button} onClick={this.handleClick(1)}>
+                Move to second slot
+              </Button>
+            )}
+            {rewardCount > 2 && (
+              <Button color="primary" className={classes.button} onClick={this.handleClick(2)}>
+                Move to third slot
+              </Button>
+            )}
           </div>
         )}
       </Paper>

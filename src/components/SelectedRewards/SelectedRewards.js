@@ -13,19 +13,22 @@ const items = [{ key: 1 }, { key: 2 }, { key: 3 }];
 type Props = {
   classes: Object,
   slots: Array<Slot>,
+  rewardsCount: number,
   loading: boolean
 };
 
 class SelectedRewards extends React.PureComponent<Props> {
   render() {
-    const { classes, slots, loading } = this.props;
-    const newItems = items.map((item, index) => {
-      const slot = slots.find((o) => o.slot === index);
-      if (slot) {
-        return { ...item, ...slot };
-      }
-      return item;
-    });
+    const { classes, slots, rewardsCount, loading } = this.props;
+    const newItems = items
+      .map((item, index) => {
+        const slot = slots.find((o) => o.slot === index);
+        if (slot) {
+          return { ...item, ...slot };
+        }
+        return item;
+      })
+      .filter((item) => item.key <= rewardsCount);
 
     if (loading) {
       return (

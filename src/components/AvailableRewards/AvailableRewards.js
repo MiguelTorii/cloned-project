@@ -35,6 +35,7 @@ class AvailableRewards extends React.PureComponent<Props> {
             imageUrl={item.imageUrl}
             displayName={item.displayName}
             isSelected={item.isSelected}
+            rewardCount={rewards.length}
             onClick={onClick}
           />
         ))}

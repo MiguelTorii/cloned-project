@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
+import lodash from 'lodash';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { AvailableReward, Slot } from '../../types/models';
@@ -73,6 +74,7 @@ class Store extends React.PureComponent<Props, State> {
       }
       try {
         const { availableRewards, slots } = await getRewards({ userId });
+
         if (this.mounted) {
           this.setState({ availableRewards, slots });
         }
@@ -111,7 +113,11 @@ class Store extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <StoreLayout>
           <ErrorBoundary>
-            <SelectedRewards slots={slots} loading={loading} />
+            <SelectedRewards
+              slots={slots}
+              loading={loading}
+              rewardsCount={availableRewards.length}
+            />
           </ErrorBoundary>
           <Divider light className={classes.divider} />
           <ErrorBoundary>
