@@ -447,7 +447,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           >
             <Grid container alignItems="center">
               <Grid item xs={12} sm={12} md={2}>
-                <Typography variant="subtitle1">What's the title of your resource?</Typography>
+                <Typography variant="subtitle1">What&apos;s the title of your resource?</Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={10}>
                 <OutlinedTextValidator

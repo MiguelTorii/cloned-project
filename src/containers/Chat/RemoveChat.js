@@ -75,7 +75,7 @@ const RemoveChat = ({ channel, handleRemoveChannel }) => {
           Are you sure you want to delete this chat?
           <br />
           <br />
-          Deleting this chat can't be undone
+          Deleting this chat can&apos;t be undone
         </Typography>
       </Dialog>
     </Grid>

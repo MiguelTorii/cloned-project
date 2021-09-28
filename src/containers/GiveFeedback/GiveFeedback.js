@@ -57,8 +57,8 @@ const GiveFeedback = ({ open, onClose, origin }: Props) => {
     >
       <Grid container className={classes.container}>
         <Typography className={classes.body}>
-          How do you think we can make CircleIn better for you? Have an idea that you'd like us to
-          work on? Just enter it here and include your email so we can thank you!
+          How do you think we can make CircleIn better for you? Have an idea that you&apos;d like us
+          to work on? Just enter it here and include your email so we can thank you!
         </Typography>
         <TextField
           fullWidth

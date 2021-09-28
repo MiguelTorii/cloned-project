@@ -211,7 +211,7 @@ const Flashcard = ({
               placement="top"
               title={
                 <p className={classes.tooltipLabel}>
-                  Select <b>Didn't Remember</b> if you weren't able to remember the answer
+                  Select <b>Didn&apos;t Remember</b> if you weren&apos;t able to remember the answer
                 </p>
               }
             >
@@ -221,7 +221,7 @@ const Flashcard = ({
                 onClick={() => handleAnswer('difficult')}
                 variant="contained"
               >
-                Didn't Remember
+                Didn&apos;t Remember
               </Button>
             </Tooltip>
             <Tooltip

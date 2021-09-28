@@ -91,8 +91,8 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
         <div className={classes.content}>
           {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
           <Typography id="video-points-description" color="textPrimary">
-            Nice Job! You've unlocked points for today's video study session. Fill out the fields
-            below to receive your points
+            Nice Job! You&apos;ve unlocked points for today&apos;s video study session. Fill out the
+            fields below to receive your points
           </Typography>
           <ValidatorForm onSubmit={this.handleSubmit} className={classes.form}>
             <FormControl variant="outlined" fullWidth className={classes.formControl}>

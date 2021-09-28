@@ -86,10 +86,10 @@ const RecommendationsFeedback = ({ feedId }) => {
         {ratingIndex === 3 && !gaveMore && (
           <Box display="flex" justifyContent="space-between">
             <TransparentButton compact onClick={() => handleNotUsefulFeedback('Irrelevant')}>
-              It's irrelevant
+              It&apos;s irrelevant
             </TransparentButton>
             <TransparentButton compact onClick={() => handleNotUsefulFeedback('Spam')}>
-              It's spam
+              It&apos;s spam
             </TransparentButton>
           </Box>
         )}

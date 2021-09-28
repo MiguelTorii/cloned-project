@@ -295,7 +295,7 @@ const MessageQuill = ({
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
         <Typography component="p" variant="subtitle1" className={classes.errorMessage}>
-          We couldn't send your message for some reason. 😥
+          We couldn&apos;t send your message for some reason. 😥
         </Typography>
       </div>
     </div>

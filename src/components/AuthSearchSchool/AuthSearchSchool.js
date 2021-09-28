@@ -30,7 +30,7 @@ class AuthSearchSchool extends React.PureComponent<Props> {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5" align="center">
-            Enter your school's name
+            Enter your school&apos;s name
           </Typography>
           <div className={classes.schools}>
             <AutoComplete

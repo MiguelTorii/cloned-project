@@ -26,7 +26,7 @@ import styles from '../_styles/AutoComplete';
 
 const Link = (props) => (
   <a href="https://www.circleinapp.com/waitlist" {...props}>
-    Can't find your school? Click Here
+    Can&apos;t find your school? Click Here
   </a>
 );
 

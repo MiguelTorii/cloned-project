@@ -217,7 +217,7 @@ class Preview extends React.Component<Props, State> {
             onClick={onJoin}
             disabled={error}
           >
-            LET'S GO!{' '}
+            LET&apos;S GO!{' '}
             <span className={classes.tada} role="img" aria-label="tada">
               {' '}
               🎉

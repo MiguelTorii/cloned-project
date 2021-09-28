@@ -50,7 +50,7 @@ class ErrorBoundary extends React.Component<Props, State> {
       return (
         <div className={classes.root}>
           <Typography variant="subtitle1" paragraph>
-            We're sorry — something went wrong.
+            We&apos;re sorry — something went wrong.
           </Typography>
           <Typography variant="subtitle1" paragraph>
             Our team has been notified
