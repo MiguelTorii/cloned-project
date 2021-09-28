@@ -285,8 +285,8 @@ const ReportIssue = ({
         <>
           <Typography variant="body1" className={classes.finalNote}>
             Thank you for submitting your report. We take reports very seriously. We want you to
-            have a safe experience and we&apos;re sorry you&apos;re experiencing some issues. We
-            many contact you soon if we have further questions about this incident. For additional
+            have a safe experience and we&apos;re sorry you&apos;re experiencing some issues. We may
+            contact you soon if we have further questions about this incident. For additional
             support please email us at &nbsp;
             <a className={classes.email} href="mailto:support@circleinapp.com">
               support@circleinapp.com
