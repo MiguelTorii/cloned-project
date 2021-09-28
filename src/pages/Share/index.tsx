@@ -1,14 +1,14 @@
-import React from "react";
-import { Redirect } from "react-router";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import { getPostInfo } from "../../api/posts";
-import { logEvent } from "../../api/analytics";
+import React from 'react';
+import { Redirect } from 'react-router';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import { getPostInfo } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
 
-const styles = theme => ({
+const styles = (theme) => ({
   progress: {
     display: 'flex',
     alignItems: 'center',
@@ -35,22 +35,18 @@ class SharePage extends React.PureComponent<Props, State> {
     redirect: '',
     error: false
   };
+
   componentDidMount = async () => {
     const {
       match: {
-        params: {
-          code
-        }
+        params: { code }
       }
     } = this.props;
 
     try {
       const {
         typeId,
-        postInfo: {
-          postId,
-          feedId
-        }
+        postInfo: { postId, feedId }
       } = await getPostInfo({
         hid: code
       });
@@ -98,13 +94,8 @@ class SharePage extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      redirect,
-      error
-    } = this.state;
+    const { classes } = this.props;
+    const { redirect, error } = this.state;
 
     if (redirect !== '') {
       return <Redirect to={redirect} />;
@@ -114,16 +105,17 @@ class SharePage extends React.PureComponent<Props, State> {
       return <Redirect to="/" />;
     }
 
-    return <main>
+    return (
+      <main>
         <CssBaseline />
         <Layout>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
         </Layout>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withRoot(withStyles(styles)(SharePage));
+export default withRoot(withStyles(styles as any)(SharePage));

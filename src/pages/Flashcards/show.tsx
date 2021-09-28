@@ -1,17 +1,17 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import LoadingSpin from "components/LoadingSpin/LoadingSpin";
-import Flashcards from "pages/View/Flashcards";
-import { useSelector } from "react-redux";
-import { isApiCalling } from "utils/helpers";
-import { campaignActions } from "constants/action-types";
-import { Grid } from "@material-ui/core";
-import withRoot from "../../withRoot";
-import FlashcardsShow from "../../containers/FlashcardsShow/FlashcardsShow";
-import Layout from "../../containers/Layout/Layout";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { useSelector } from 'react-redux';
+import { Grid } from '@material-ui/core';
+import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
+import Flashcards from '../View/Flashcards';
+import { isApiCalling } from '../../utils/helpers';
+import { campaignActions } from '../../constants/action-types';
+import withRoot from '../../withRoot';
+import FlashcardsShow from '../../containers/FlashcardsShow/FlashcardsShow';
+import Layout from '../../containers/Layout/Layout';
 
 const FlashcardsShowPage = () => {
-  const isNewVersion = useSelector(state => state.campaign.newFlashcardsExperience);
+  const isNewVersion = useSelector((state) => (state as any).campaign.newFlashcardsExperience);
   const isLoading = useSelector(isApiCalling(campaignActions.GET_FLASHCARDS_CAMPAIGN));
 
   const renderBody = () => {
@@ -26,7 +26,8 @@ const FlashcardsShowPage = () => {
     return <FlashcardsShow />;
   };
 
-  return <main>
+  return (
+    <main>
       <Layout>
         <Grid container justifyContent="center">
           <Grid item xs={11} lg={10}>
@@ -34,7 +35,8 @@ const FlashcardsShowPage = () => {
           </Grid>
         </Grid>
       </Layout>
-    </main>;
+    </main>
+  );
 };
 
 export default FlashcardsShowPage;

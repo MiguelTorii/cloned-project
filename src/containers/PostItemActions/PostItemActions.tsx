@@ -1,11 +1,17 @@
-import React, { Fragment } from "react";
-import PostActions from "../../components/PostItem/PostItemActions";
-import StudyCircleDialog from "../../components/StudyCircleDialog/StudyCircleDialog";
-import { updateThanks, addToStudyCircle, removeFromStudyCircle, updatePostView } from "../../api/posts";
-import { getStudyCircle } from "../../api/user";
-import type { StudyCircle } from "../../types/models";
-import { logEvent } from "../../api/analytics";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React, { Fragment } from 'react';
+import PostActions from '../../components/PostItem/PostItemActions';
+import StudyCircleDialog from '../../components/StudyCircleDialog/StudyCircleDialog';
+import {
+  updateThanks,
+  addToStudyCircle,
+  removeFromStudyCircle,
+  updatePostView
+} from '../../api/posts';
+import { getStudyCircle } from '../../api/user';
+import type { StudyCircle } from '../../types/models';
+import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
 type Props = {
   userId: string;
   feedId: number;
@@ -21,8 +27,10 @@ type Props = {
   viewCount: number;
   isQuestion?: boolean;
   ownName: string;
+  isPost?: boolean;
   onReload: (...args: Array<any>) => any;
 };
+
 type State = {
   open: boolean;
   studyCircle: boolean;
@@ -36,32 +44,26 @@ class PostItemActions extends React.PureComponent<Props, State> {
   static defaultProps = {
     isQuestion: false
   };
-  state = {
+
+  state: any = {
     studyCircle: false,
     isThanksLoading: false,
     isStudyCircleLoading: false,
     loading: false,
     circle: []
   };
+
   componentDidMount = () => {
-    const {
-      userId,
-      postId,
-      typeId
-    } = this.props;
+    const { userId, postId, typeId } = this.props;
     updatePostView({
       userId,
       postId,
       typeId
     });
   };
+
   handleThanks = async () => {
-    const {
-      userId,
-      postId,
-      typeId,
-      onReload
-    } = this.props;
+    const { userId, postId, typeId, onReload } = this.props;
 
     try {
       this.setState({
@@ -79,14 +81,9 @@ class PostItemActions extends React.PureComponent<Props, State> {
       onReload();
     }
   };
+
   handleStudyCircle = async () => {
-    const {
-      userId,
-      ownerId,
-      feedId,
-      inStudyCircle,
-      onReload
-    } = this.props;
+    const { userId, ownerId, feedId, inStudyCircle, onReload } = this.props;
 
     try {
       this.setState({
@@ -136,6 +133,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
       onReload();
     }
   };
+
   handleStudyCircleClose = () => {
     this.setState({
       studyCircle: false
@@ -156,23 +154,39 @@ class PostItemActions extends React.PureComponent<Props, State> {
       isQuestion,
       ownName
     } = this.props;
-    const {
-      studyCircle,
-      isThanksLoading,
-      isStudyCircleLoading,
-      loading,
-      circle
-    } = this.state;
-    return <Fragment>
+    const { studyCircle, isThanksLoading, isStudyCircleLoading, loading, circle } = this.state;
+    return (
+      <Fragment>
         <ErrorBoundary>
-          <PostActions thanked={thanked} isOwner={Boolean(Number(userId) === Number(ownerId))} inStudyCircle={inStudyCircle} questionsCount={questionsCount} thanksCount={thanksCount} viewCount={viewCount} isThanksLoading={isThanksLoading} isStudyCircleLoading={isStudyCircleLoading} noThanks={userId === ownerId} isQuestion={isQuestion} onThanks={this.handleThanks} onStudyCircle={this.handleStudyCircle} />
+          <PostActions
+            thanked={thanked}
+            isOwner={Boolean(Number(userId) === Number(ownerId))}
+            inStudyCircle={inStudyCircle}
+            questionsCount={questionsCount}
+            thanksCount={thanksCount}
+            viewCount={viewCount}
+            isThanksLoading={isThanksLoading}
+            isStudyCircleLoading={isStudyCircleLoading}
+            noThanks={userId === ownerId}
+            isQuestion={isQuestion}
+            onThanks={this.handleThanks}
+            onStudyCircle={this.handleStudyCircle}
+          />
         </ErrorBoundary>
         <ErrorBoundary>
-          <StudyCircleDialog open={studyCircle} name={name} loading={loading} userProfileUrl={userProfileUrl} circle={circle} ownName={ownName} onClose={this.handleStudyCircleClose} />
+          <StudyCircleDialog
+            open={studyCircle}
+            name={name}
+            loading={loading}
+            userProfileUrl={userProfileUrl}
+            circle={circle}
+            ownName={ownName}
+            onClose={this.handleStudyCircleClose}
+          />
         </ErrorBoundary>
-      </Fragment>;
+      </Fragment>
+    );
   }
-
 }
 
 export default PostItemActions;

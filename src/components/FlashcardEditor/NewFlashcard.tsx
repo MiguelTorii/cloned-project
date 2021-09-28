@@ -1,10 +1,11 @@
-import React from "react";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
-import AddIcon from "@material-ui/icons/Add";
-import { styles } from "../_styles/FlashcardEditor/NewFlashcard";
+import React from 'react';
+import cx from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
+import { styles } from '../_styles/FlashcardEditor/NewFlashcard';
+
 type Props = {
   classes: Record<string, any>;
   loading: boolean;
@@ -14,20 +15,20 @@ type Props = {
 
 class NewFlashcard extends React.PureComponent<Props> {
   render() {
-    const {
-      classes,
-      loading,
-      error,
-      onClick
-    } = this.props;
-    return <ButtonBase disabled={loading} className={cx(classes.root, error && classes.error)} onClick={onClick}>
+    const { classes, loading, error, onClick } = this.props;
+    return (
+      <ButtonBase
+        disabled={loading}
+        className={cx(classes.root, error && classes.error)}
+        onClick={onClick}
+      >
         <AddIcon />
         <Typography variant="h6">
           {error ? 'You have to at least add 1 Flashcard' : 'Add New'}
         </Typography>
-      </ButtonBase>;
+      </ButtonBase>
+    );
   }
-
 }
 
-export default withStyles(styles)(NewFlashcard);
+export default withStyles(styles as any)(NewFlashcard);

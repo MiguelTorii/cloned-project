@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
-// import type { ToDos } from '../types/models';
 import { getToken } from './utils';
+
 export const checkVideoSession = async ({ userId }: { userId: string }): Promise<boolean> => {
   try {
     const token = await getToken();
@@ -22,8 +22,8 @@ export const setVideoInitiator = async ({
   userId,
   sid
 }: {
-  userId: string,
-  sid: string
+  userId: string;
+  sid: string;
 }): Promise<boolean> => {
   try {
     const token = await getToken();
@@ -58,15 +58,15 @@ export const postVideoPoints = async ({
   classId,
   sectionId
 }: {
-  userId: string,
-  sid: string,
-  length: number,
-  purposeId: number,
-  scheduledTime: number,
-  openAnswer: string,
-  participants: Array<number>,
-  classId: number,
-  sectionId?: number
+  userId: string;
+  sid: string;
+  length: number;
+  purposeId: number;
+  scheduledTime: any;
+  openAnswer: string;
+  participants: Array<number>;
+  classId: number;
+  sectionId?: number;
 }): Promise<boolean> => {
   try {
     const token = await getToken();

@@ -1,66 +1,71 @@
 import update from 'immutability-helper';
 import { leaderboardActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
+
 export type StudentType = {
-  position: number,
-  score: string,
-  firstName: string,
-  lastName: string,
-  userId: number,
-  profileImage: string
+  position: number;
+  score: string;
+  firstName: string;
+  lastName: string;
+  userId: string;
+  profileImage: string;
 };
+
 export type PrizeSlots = {
-  slot: number,
-  company: string,
-  name: string,
-  logo: string,
-  thumbnail: string
+  slot: number;
+  company: string;
+  name: string;
+  logo: string;
+  thumbnail: string;
 };
+
 export type LeaderBoardStudents = {
-  position: number,
-  score: string,
-  firstName: string,
-  lastName: string,
-  userId: number,
-  profileImg: string
+  position: number;
+  score: string;
+  firstName: string;
+  lastName: string;
+  userId: string;
+  profileImg: string;
 };
+
 export type LeaderBoardState = {
   data: {
     general: {
       tuesday: {
         timeLeft: {
-          time: string,
-          label: string
-        },
-        slots: Array<PrizeSlots>,
-        currentMonthPointsDisplayName: string
-      },
+          time: string;
+          label: string;
+        };
+        slots: Array<PrizeSlots>;
+        currentMonthPointsDisplayName: string;
+      };
       grand: {
         timeLeft: {
-          time: string,
-          label: string
-        },
-        logo: string,
-        text: string
-      }
-    },
+          time: string;
+          label: string;
+        };
+        logo: string;
+        text: string;
+      };
+    };
     tuesday: {
-      boardName: string,
-      scoreLabel: string,
-      students: Array<LeaderBoardStudents>
-    },
+      boardName: string;
+      scoreLabel: string;
+      students: Array<LeaderBoardStudents>;
+    };
     grand: {
-      boardName: string,
-      scoreLabel: string,
-      students: Array<LeaderBoardStudents>
-    },
+      boardName: string;
+      scoreLabel: string;
+      students: Array<LeaderBoardStudents>;
+    };
     grandDialog: {
-      logoUrl: string,
-      description: string,
-      text: string
-    }
-  }
+      logoUrl: string;
+      description: string;
+      text: string;
+    };
+  };
 };
+
 const defaultState = {
   data: {
     general: {

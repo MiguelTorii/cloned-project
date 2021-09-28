@@ -1,4 +1,5 @@
 import { gutterStyle } from '../Gutter';
+
 export const styles = (theme) => ({
   container: {
     maxHeight: 'inherit',

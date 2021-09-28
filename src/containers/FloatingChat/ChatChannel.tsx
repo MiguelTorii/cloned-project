@@ -1,31 +1,35 @@
-import React, { Fragment } from "react";
-import uuidv4 from "uuid/v4";
-import axios from "axios";
-import cx from "classnames";
-import Lightbox from "react-images";
-import { withSnackbar } from "notistack";
-import InfiniteScroll from "react-infinite-scroller";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { getTitle, fetchAvatars, processMessages, getAvatar, getFileAttributes } from "utils/chat";
-// import FormControl from '@material-ui/core/FormControl';
-// import Input from '@material-ui/core/Input';
-import CreateChatChannelInput from "components/CreateChatChannelInput/CreateChatChannelInput";
-import { getCampaign } from "api/campaign";
-import { sendMessage } from "api/chat";
-import type { UserState } from "../../reducers/user";
-import ChatItem from "../../components/FloatingChat/ChatItem";
-import ChatMessage from "../../components/FloatingChat/FloatChatMessage";
-import ChatMessageDate from "../../components/FloatingChat/ChatMessageDate";
-import ChatTextField from "../../components/FloatingChat/ChatTextField";
-import ChatChannelViewMembers from "./ChatChannelViewMembers";
-import ChatChannelAddMembers from "./ChatChannelAddMembers";
-import { getPresignedURL } from "../../api/media";
-import { logEvent } from "../../api/analytics";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React, { Fragment } from 'react';
+import uuidv4 from 'uuid/v4';
+import axios from 'axios';
+import cx from 'classnames';
+import Lightbox from 'react-images';
+import { withSnackbar } from 'notistack';
+import InfiniteScroll from 'react-infinite-scroller';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {
+  getTitle,
+  fetchAvatars,
+  processMessages,
+  getAvatar,
+  getFileAttributes
+} from '../../utils/chat';
+import CreateChatChannelInput from '../../components/CreateChatChannelInput/CreateChatChannelInput';
+import { getCampaign } from '../../api/campaign';
+import { sendMessage } from '../../api/chat';
+import type { UserState } from '../../reducers/user';
+import ChatItem from '../../components/FloatingChat/ChatItem';
+import ChatMessage from '../../components/FloatingChat/FloatChatMessage';
+import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
+import ChatTextField from '../../components/FloatingChat/ChatTextField';
+import ChatChannelViewMembers from './ChatChannelViewMembers';
+import ChatChannelAddMembers from './ChatChannelAddMembers';
+import { getPresignedURL } from '../../api/media';
+import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   list: {
     overflowY: 'auto',
     flex: 1,
@@ -47,7 +51,6 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   typingText: {
-    // color: 'black'
     marginLeft: theme.spacing()
   },
   progress: {
@@ -71,23 +74,27 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  channels: Array;
-  channel: Record<string, any>;
-  localChannel: Record<string, any>;
-  getMembers: (...args: Array<any>) => any;
-  onClose: (...args: Array<any>) => any;
-  onBlock: (...args: Array<any>) => any;
-  onRemove: (...args: Array<any>) => any;
-  newChannel: boolean;
-  handleChannelCreated: (...args: Array<any>) => any;
-  onSend: (...args: Array<any>) => any;
-  push: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  user?: UserState;
+  channels?: Array<any>;
+  channel?: Record<string, any>;
+  localChannel?: Record<string, any>;
+  getMembers?: (...args: Array<any>) => any;
+  onClose?: (...args: Array<any>) => any;
+  onBlock?: (...args: Array<any>) => any;
+  onRemove?: (...args: Array<any>) => any;
+  newChannel?: boolean;
+  handleChannelCreated?: (...args: Array<any>) => any;
+  onSend?: (...args: Array<any>) => any;
+  push?: (...args: Array<any>) => any;
+  setCurrentCommunityId?: any;
+  setCurrentChannel?: any;
+  local?: any;
 };
+
 type State = {
   title: string;
-  paginator: Record<string, any>;
+  paginator: any;
   messages: Array<Record<string, any>>;
   hasMore: boolean;
   profileURLs: Array<Record<string, any>>;
@@ -103,6 +110,8 @@ type State = {
   expanded: boolean;
   count: number;
   addMembers: boolean;
+  videoEnabled?: boolean;
+  createMessage?: any;
 };
 
 class ChatChannel extends React.PureComponent<Props, State> {
@@ -122,22 +131,26 @@ class ChatChannel extends React.PureComponent<Props, State> {
     expanded: false,
     count: 0,
     createMessage: null,
-    addMembers: false
+    addMembers: false,
+    videoEnabled: false
   };
+
   mounted: boolean;
+
   // eslint-disable-next-line no-undef
   end: HTMLDivElement | null | undefined;
+
   // eslint-disable-next-line no-undef
   scrollParentRef: HTMLDivElement | null | undefined;
-  getTypingMemberName = id => {
+
+  getTypingMemberName = (id) => {
     const {
-      localChannel: {
-        members
-      }
+      localChannel: { members }
     } = this.props;
-    const currentMember = members.filter(member => member.userId === id);
+    const currentMember = members.filter((member) => member.userId === id);
     return `${currentMember[0].firstname} ${currentMember[0].lastname}`;
   };
+
   componentDidMount = async () => {
     this.mounted = true;
 
@@ -146,9 +159,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         channel,
         localChannel,
         user: {
-          data: {
-            userId
-          }
+          data: { userId }
         }
       } = this.props;
 
@@ -164,9 +175,12 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
 
       try {
-        const [paginator, campaign] = await Promise.all([channel.getMessages(10), getCampaign({
-          campaignId: 9
-        })]);
+        const [paginator, campaign] = await Promise.all([
+          channel.getMessages(10),
+          getCampaign({
+            campaignId: 9
+          })
+        ]);
 
         if (paginator) {
           this.setState({
@@ -189,23 +203,19 @@ class ChatChannel extends React.PureComponent<Props, State> {
         console.log(err);
       }
 
-      channel.on('messageAdded', message => {
+      channel.on('messageAdded', (message) => {
         if (!this.mounted) {
           return;
         }
 
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           messages: [...prevState.messages, message]
         }));
-        const {
-          open
-        } = this.state;
-        const {
-          channel
-        } = message;
+        const { open } = this.state;
+        const { channel } = message;
 
         if (!open) {
-          this.setState(prevState => ({
+          this.setState((prevState) => ({
             unread: prevState.unread + 1
           }));
         } else {
@@ -216,7 +226,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
         this.handleScrollToBottom();
       });
-      channel.on('typingStarted', member => {
+      channel.on('typingStarted', (member) => {
         if (!this.mounted) {
           return;
         }
@@ -247,29 +257,25 @@ class ChatChannel extends React.PureComponent<Props, State> {
       console.log(err);
     }
   };
+
   componentDidUpdate = () => {
     if (this.mounted && this.end) {
       this.handleScrollToBottom();
     }
   };
+
   componentWillUnmount = () => {
     this.mounted = false;
   };
+
   handleClose = () => {
-    const {
-      channel,
-      onClose
-    } = this.props;
+    const { channel, onClose } = this.props;
     onClose(channel.sid);
   };
+
   handleChatOpen = () => {
-    const {
-      open
-    } = this.state;
-    const {
-      channel,
-      setCurrentCommunityId
-    } = this.props;
+    const { open } = this.state;
+    const { channel, setCurrentCommunityId } = this.props;
     setCurrentCommunityId('chat');
 
     if (open) {
@@ -290,17 +296,17 @@ class ChatChannel extends React.PureComponent<Props, State> {
       unread: 0
     });
   };
-  handleClearCreateMessage = () => this.setState({
-    createMessage: null
-  });
+
+  handleClearCreateMessage = () =>
+    this.setState({
+      createMessage: null
+    });
+
   handleSendMessage = async (message, files) => {
     const {
       channel,
       user: {
-        data: {
-          firstName,
-          lastName
-        }
+        data: { firstName, lastName }
       },
       onSend
     } = this.props;
@@ -316,9 +322,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     this.setState({
       loading: true
     });
-    const {
-      newChannel
-    } = this.props;
+    const { newChannel } = this.props;
 
     try {
       if (!newChannel) {
@@ -334,9 +338,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
             'Channel SID': channel.sid
           }
         });
-        this.setState(({
-          count
-        }) => ({
+        this.setState(({ count }) => ({
           count: count + 1
         }));
         onSend();
@@ -356,16 +358,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
     }
   };
-  handleSendInput = async file => {
+
+  handleSendInput = async (file) => {
     const {
       channel,
       newChannel,
       user: {
-        data: {
-          userId,
-          firstName,
-          lastName
-        }
+        data: { userId, firstName, lastName }
       },
       onSend
     } = this.props;
@@ -384,10 +383,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         type: 4,
         mediaType: file.type
       });
-      const {
-        readUrl,
-        url
-      } = result;
+      const { readUrl, url } = result;
       await axios.put(url, file, {
         headers: {
           'Content-Type': file.type
@@ -412,9 +408,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           'Channel SID': channel.sid
         }
       });
-      this.setState(({
-        count
-      }) => ({
+      this.setState(({ count }) => ({
         count: count + 1
       }));
       onSend();
@@ -426,18 +420,18 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
     }
   };
+
   handleImageLoaded = () => {
     this.handleScrollToBottom();
   };
+
   handleLoadMore = () => {
-    const {
-      paginator
-    } = this.state;
+    const { paginator } = this.state;
 
     try {
-      if (paginator.hasPrevPage) {
-        paginator.prevPage().then(result => {
-          this.setState(prevState => ({
+      if ((paginator as any).hasPrevPage) {
+        (paginator as any).prevPage().then((result) => {
+          this.setState((prevState) => ({
             messages: [...result.items, ...prevState.messages],
             paginator: result,
             hasMore: !(!result.hasPrevPage || result.items.length < 10),
@@ -449,10 +443,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
       console.log(err);
     }
   };
+
   handleTyping = () => {
-    const {
-      channel
-    } = this.props;
+    const { channel } = this.props;
 
     try {
       channel.typing();
@@ -460,37 +453,25 @@ class ChatChannel extends React.PureComponent<Props, State> {
       console.log(err);
     }
   };
+
   handleScrollToBottom = () => {
-    const {
-      scroll
-    } = this.state;
+    const { scroll } = this.state;
 
     try {
       if (scroll && this.end) {
         this.end.scrollIntoView({
-          behavior: 'instant'
+          behavior: 'auto'
         });
       }
     } catch (err) {
       console.log(err);
     }
   };
+
   handleDelete = () => {
-    const {
-      channel,
-      // user: {
-      //   data: { userId }
-      // },
-      onRemove
-    } = this.props;
+    const { channel, onRemove } = this.props;
 
     try {
-      // const { state } = channel;
-      // const { attributes = {} } = state;
-      // const { users = [] } = attributes;
-      // const newUsers = users.filter(
-      //   o => o.userId.toString() !== userId.toString()
-      // );
       onRemove({
         sid: channel.sid
       });
@@ -498,10 +479,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
       console.log(err);
     }
   };
+
   handleStartVideoCall = () => {
-    const {
-      channel
-    } = this.props;
+    const { channel } = this.props;
     logEvent({
       event: 'Video- Start Video',
       props: {
@@ -511,61 +491,63 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
   };
+
   handleViewMembers = () => {
     this.setState({
       viewMembers: true
     });
   };
+
   handleCloseViewMembers = () => {
     this.setState({
       viewMembers: false
     });
   };
+
   handleOpenAddMembers = () => {
     this.setState({
       addMembers: true
     });
     this.handleCloseViewMembers();
   };
+
   handleCloseAddMembers = () => {
     this.setState({
       addMembers: false
     });
   };
-  handleImageClick = src => {
+
+  handleImageClick = (src) => {
     this.setState({
-      images: [{
-        src
-      }]
+      images: [
+        {
+          src
+        }
+      ]
     });
   };
+
   handleImageClose = () => {
     this.setState({
       images: []
     });
   };
+
   handleExpand = () => {
-    this.setState(({
-      expanded
-    }) => ({
+    this.setState(({ expanded }) => ({
       expanded: !expanded
     }));
   };
-  isMemberOnline = userId => {
-    const {
-      localChannel
-    } = this.props;
-    const {
-      members = []
-    } = localChannel;
-    const found = members.find(member => member.userId === userId);
+
+  isMemberOnline = (userId) => {
+    const { localChannel } = this.props;
+    const { members = [] } = localChannel;
+    const found = members.find((member) => member.userId === userId);
     return found?.isOnline;
   };
+
   renderMessage = (item, profileURLs) => {
-    const {
-      id,
-      type
-    } = item;
+    const { id, type } = item;
 
     try {
       switch (type) {
@@ -574,18 +556,36 @@ class ChatChannel extends React.PureComponent<Props, State> {
 
         case 'message':
         case 'own':
-          return <ChatMessage key={id} userId={item.author} isUserOnline={this.isMemberOnline(item.author)} name={item.name} messageList={item.messageList} avatar={getAvatar({
-            id: item.author,
-            profileURLs
-          })} onImageLoaded={this.handleImageLoaded} onStartVideoCall={this.handleStartVideoCall} onImageClick={this.handleImageClick} />;
+          return (
+            <ChatMessage
+              key={id}
+              userId={item.author}
+              isUserOnline={this.isMemberOnline(item.author)}
+              name={item.name}
+              messageList={item.messageList}
+              avatar={getAvatar({
+                id: item.author,
+                profileURLs
+              })}
+              onImageLoaded={this.handleImageLoaded}
+              onStartVideoCall={this.handleStartVideoCall}
+              onImageClick={this.handleImageClick}
+            />
+          );
 
         case 'end':
-          return <div key={uuidv4()} style={{
-            float: 'left',
-            clear: 'both'
-          }} ref={el => {
-            this.end = el;
-          }} />;
+          return (
+            <div
+              key={uuidv4()}
+              style={{
+                float: 'left',
+                clear: 'both'
+              }}
+              ref={(el) => {
+                this.end = el;
+              }}
+            />
+          );
 
         default:
           return null;
@@ -600,9 +600,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       },
       local,
       channels,
@@ -611,9 +609,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       channel: {
         sid,
         channelState: {
-          attributes: {
-            groupType = ''
-          }
+          attributes: { groupType = '' }
         }
       },
       onBlock,
@@ -642,40 +638,111 @@ class ChatChannel extends React.PureComponent<Props, State> {
       items: messages,
       userId
     });
-    return <>
+    return (
+      <>
         <ErrorBoundary>
-          <ChatItem title={title} open={open} unread={unread} setCurrentCommunityId={setCurrentCommunityId} isGroup={groupType !== ''} expanded={expanded} channels={channels} local={local} onOpen={this.handleChatOpen} onClose={this.handleClose} onDelete={this.handleDelete} newChannel={newChannel} channel={channel} setCurrentChannel={setCurrentChannel} onStartVideoCall={this.handleStartVideoCall} onViewMembers={this.handleViewMembers} onExpand={this.handleExpand} videoEnabled={videoEnabled} push={push}>
-            <div className={cx(classes.list, typing !== '' && classes.listTyping, expanded && classes.listExpanded, expanded && typing !== '' && classes.listTypingExpanded)} ref={node => {
-            this.scrollParentRef = node;
-          }}>
-              {newChannel && <CreateChatChannelInput isFloatChat createMessage={createMessage} onOpenChannel={handleChannelCreated} handleClearCreateMessage={this.handleClearCreateMessage} />}
-              <InfiniteScroll threshold={50} pageStart={0} loadMore={this.handleLoadMore} hasMore={hasMore} useWindow={false} initialLoad={false} isReverse getScrollParent={() => this.scrollParentRef}>
-                {messageItems.map(item => this.renderMessage(item, profileURLs))}
-                {loading && <div className={classes.progress}>
+          <ChatItem
+            title={title}
+            open={open}
+            unread={unread}
+            setCurrentCommunityId={setCurrentCommunityId}
+            isGroup={groupType !== ''}
+            expanded={expanded}
+            channels={channels}
+            local={local}
+            onOpen={this.handleChatOpen}
+            onClose={this.handleClose}
+            onDelete={this.handleDelete}
+            newChannel={newChannel}
+            channel={channel}
+            setCurrentChannel={setCurrentChannel}
+            onStartVideoCall={this.handleStartVideoCall}
+            onViewMembers={this.handleViewMembers}
+            onExpand={this.handleExpand}
+            videoEnabled={videoEnabled}
+            push={push}
+          >
+            <div
+              className={cx(
+                classes.list,
+                typing !== '' && classes.listTyping,
+                expanded && classes.listExpanded,
+                expanded && typing !== '' && classes.listTypingExpanded
+              )}
+              ref={(node) => {
+                this.scrollParentRef = node;
+              }}
+            >
+              {newChannel && (
+                <CreateChatChannelInput
+                  isFloatChat
+                  createMessage={createMessage}
+                  onOpenChannel={handleChannelCreated}
+                  handleClearCreateMessage={this.handleClearCreateMessage}
+                />
+              )}
+              <InfiniteScroll
+                threshold={50}
+                pageStart={0}
+                loadMore={this.handleLoadMore}
+                hasMore={hasMore}
+                useWindow={false}
+                initialLoad={false}
+                isReverse
+                getScrollParent={() => this.scrollParentRef}
+              >
+                {messageItems.map((item) => this.renderMessage(item, profileURLs))}
+                {loading && (
+                  <div className={classes.progress}>
                     <CircularProgress size={20} />
-                  </div>}
+                  </div>
+                )}
               </InfiniteScroll>
             </div>
-            {typing !== '' && <div className={classes.typing}>
+            {typing !== '' && (
+              <div className={classes.typing}>
                 <Typography className={classes.typingText} variant="subtitle1">
                   {`${typing} is typing ...`}
                 </Typography>
-              </div>}
-            <ChatTextField userId={userId} expanded={expanded} onSendMessage={this.handleSendMessage} onSendInput={this.handleSendInput} onTyping={this.handleTyping} />
+              </div>
+            )}
+            <ChatTextField
+              userId={userId}
+              expanded={expanded}
+              onSendMessage={this.handleSendMessage}
+              onSendInput={this.handleSendInput}
+              onTyping={this.handleTyping}
+            />
           </ChatItem>
         </ErrorBoundary>
         <ErrorBoundary>
-          <ChatChannelViewMembers open={viewMembers} userId={userId} chatId={sid} onClose={this.handleCloseViewMembers} onBlock={onBlock} onAddMember={this.handleOpenAddMembers} />
+          <ChatChannelViewMembers
+            open={viewMembers}
+            userId={userId}
+            chatId={sid}
+            onClose={this.handleCloseViewMembers}
+            onBlock={onBlock}
+            onAddMember={this.handleOpenAddMembers}
+          />
         </ErrorBoundary>
         <ErrorBoundary>
-          <ChatChannelAddMembers chatId={sid} open={addMembers} onClose={this.handleCloseAddMembers} />
+          <ChatChannelAddMembers
+            chatId={sid}
+            open={addMembers}
+            onClose={this.handleCloseAddMembers}
+          />
         </ErrorBoundary>
         <ErrorBoundary>
-          <Lightbox images={images} currentImage={0} isOpen={images.length > 0} onClose={this.handleImageClose} />
+          <Lightbox
+            images={images}
+            currentImage={0}
+            isOpen={images.length > 0}
+            onClose={this.handleImageClose}
+          />
         </ErrorBoundary>
-      </>;
+      </>
+    );
   }
-
 }
 
-export default withStyles(styles)(withSnackbar(ChatChannel));
+export default withStyles(styles as any)(withSnackbar(ChatChannel as any) as any);

@@ -1,13 +1,13 @@
-import React, { useMemo, useEffect } from "react";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import { connect } from "react-redux";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import queryString from "query-string";
-import type { State as StoreState } from "../../types/state";
-import { signLMSUser } from "../../api/lms";
-import * as signInActions from "../../actions/sign-in";
+import React, { useMemo, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import queryString from 'query-string';
+import type { State as StoreState } from '../../types/state';
+import { signLMSUser } from '../../api/lms';
+import * as signInActions from '../../actions/sign-in';
 
 const styles = () => ({
   main: {
@@ -19,33 +19,25 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  // user: UserState,
+  classes?: Record<string, any>;
   search: string;
-  updateUser: (...args: Array<any>) => any;
-  pushTo: (...args: Array<any>) => any;
+  updateUser?: (...args: Array<any>) => any;
+  pushTo?: (...args: Array<any>) => any;
 };
-const origin = window.location.origin.includes('dev') ? 'https://insights-dev.circleinapp.com/oauth' : 'https://insights.circleinapp.com/oauth';
+const origin = window.location.origin.includes('dev')
+  ? 'https://insights-dev.circleinapp.com/oauth'
+  : 'https://insights.circleinapp.com/oauth';
 
-const OAuthRedirect = ({
-  search,
-  classes,
-  updateUser,
-  pushTo
-}: // user
-Props) => {
-  const {
-    state,
-    code
-  } = useMemo(() => queryString.parse(search), [search]);
+const OAuthRedirect = ({ search, classes, updateUser, pushTo }: Props) => {
+  const { state, code } = useMemo(() => queryString.parse(search), [search]);
   useEffect(() => {
     const init = async () => {
       try {
-        const res = Buffer.from(state, 'hex').toString('utf8');
+        const res = Buffer.from(state as any, 'hex').toString('utf8');
         const jRes = JSON.parse(res);
         const grantType = 'authorization_code';
         const user = await signLMSUser({
-          code,
+          code: code as string,
           grantType,
           dashboard: Boolean(jRes.dashboard),
           clientId: jRes.client_id,
@@ -74,20 +66,27 @@ Props) => {
 
     init();
   }, [code, pushTo, state, updateUser]);
-  return <main className={classes.main}>
+  return (
+    <main className={classes.main}>
       <CircularProgress />
-    </main>;
+    </main>
+  );
 };
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  updateUser: signInActions.updateUser,
-  pushTo: push
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      updateUser: signInActions.updateUser,
+      pushTo: push
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(OAuthRedirect));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(OAuthRedirect));

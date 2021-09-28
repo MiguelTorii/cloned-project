@@ -1,19 +1,19 @@
-import React from "react";
-import { connect } from "react-redux";
-import debounce from "lodash/debounce";
-import { withStyles } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
-import lodash from "lodash";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import type { AvailableReward, Slot } from "../../types/models";
-import { getRewards, updateRewards } from "../../api/store";
-import StoreLayout from "../../components/StoreLayout/StoreLayout";
-import SelectedRewards from "../../components/SelectedRewards/SelectedRewards";
-import AvailableRewards from "../../components/AvailableRewards/AvailableRewards";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import { connect } from 'react-redux';
+import debounce from 'lodash/debounce';
+import { withStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+import lodash from 'lodash';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import type { AvailableReward, Slot } from '../../types/models';
+import { getRewards, updateRewards } from '../../api/store';
+import StoreLayout from '../../components/StoreLayout/StoreLayout';
+import SelectedRewards from '../../components/SelectedRewards/SelectedRewards';
+import AvailableRewards from '../../components/AvailableRewards/AvailableRewards';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   divider: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
@@ -21,8 +21,8 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
+  classes?: Record<string, any>;
+  user?: UserState;
 };
 type State = {
   availableRewards: Array<AvailableReward>;
@@ -36,7 +36,9 @@ class Store extends React.PureComponent<Props, State> {
     slots: [],
     loading: false
   };
+
   mounted: boolean;
+
   componentDidMount = () => {
     window.addEventListener('offline', () => {
       if (this.handleFetchRewards.cancel && typeof this.handleFetchRewards.cancel === 'function') {
@@ -50,6 +52,7 @@ class Store extends React.PureComponent<Props, State> {
     this.handleFetchRewards = debounce(this.handleFetchRewards, 250);
     this.handleFetchRewards();
   };
+
   componentWillUnmount = () => {
     this.mounted = false;
 
@@ -57,12 +60,11 @@ class Store extends React.PureComponent<Props, State> {
       this.handleFetchRewards.cancel();
     }
   };
-  handleFetchRewards = async () => {
+
+  handleFetchRewards: any = async () => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
 
@@ -74,10 +76,7 @@ class Store extends React.PureComponent<Props, State> {
       }
 
       try {
-        const {
-          availableRewards,
-          slots
-        } = await getRewards({
+        const { availableRewards, slots } = await getRewards({
           userId
         });
 
@@ -98,21 +97,14 @@ class Store extends React.PureComponent<Props, State> {
       this.handleFetchRewards();
     }
   };
-  handleSelection = async ({
-    rewardId,
-    slot
-  }: {
-    rewardId: number;
-    slot: number;
-  }) => {
+
+  handleSelection = async ({ rewardId, slot }: { rewardId: number; slot: number }) => {
     this.setState({
       loading: true
     });
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
 
@@ -131,33 +123,34 @@ class Store extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      availableRewards,
-      slots,
-      loading
-    } = this.state;
-    return <div className={classes.root}>
+    const { classes } = this.props;
+    const { availableRewards, slots, loading } = this.state;
+    return (
+      <div className={classes.root}>
         <StoreLayout>
           <ErrorBoundary>
-            <SelectedRewards slots={slots} loading={loading} rewardsCount={availableRewards.length} />
+            <SelectedRewards
+              slots={slots}
+              loading={loading}
+              rewardsCount={availableRewards.length}
+            />
           </ErrorBoundary>
           <Divider light className={classes.divider} />
           <ErrorBoundary>
-            <AvailableRewards rewards={availableRewards} loading={loading} onClick={this.handleSelection} />
+            <AvailableRewards
+              rewards={availableRewards}
+              loading={loading}
+              onClick={this.handleSelection}
+            />
           </ErrorBoundary>
         </StoreLayout>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Store));
+export default connect<{}, {}, Props>(mapStateToProps, null)(withStyles(styles as any)(Store));

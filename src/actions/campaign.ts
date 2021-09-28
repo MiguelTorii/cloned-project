@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns';
-import { CAMPAIGN_IDS } from 'constants/app';
+import { LANDING_PAGE_CAMPAIGN } from '../constants/campaigns';
+import { CAMPAIGN_IDS } from '../constants/app';
 import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { getCampaign } from '../api/campaign';
@@ -10,8 +10,8 @@ const requestGetCampaign = ({
   campaign,
   active
 }: {
-  campaign: string,
-  active: boolean
+  campaign: string;
+  active: boolean;
 }): Action => ({
   type: campaignActions.GET_CAMPAIGN,
   payload: {
@@ -21,7 +21,7 @@ const requestGetCampaign = ({
 });
 
 export const requestCampaign =
-  ({ campaignId, reset }: { reset: boolean, campaignId: string }) =>
+  ({ campaignId, reset }: { reset: boolean; campaignId: number }) =>
   async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
     const { campaign } = getState();
 

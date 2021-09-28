@@ -1,23 +1,23 @@
-import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { push } from "connected-react-router";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import SignInForm from "../../components/SignInForm/SignInForm";
-import SimpleErrorDialog from "../../components/SimpleErrorDialog/SimpleErrorDialog";
-import type { State as StoreState } from "../../types/state";
-import type { UserState } from "../../reducers/user";
-import type { AuthState } from "../../reducers/auth";
-import * as signInActions from "../../actions/sign-in";
-import * as authActions from "../../actions/auth";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import loginBackground from "../../assets/img/login-background.png";
-import * as signInApi from "../../api/sign-in";
-import { ReactComponent as AppLogo } from "../../assets/svg/circlein_logo.svg";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { push } from 'connected-react-router';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import SignInForm from '../../components/SignInForm/SignInForm';
+import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import type { AuthState } from '../../reducers/auth';
+import * as signInActions from '../../actions/sign-in';
+import * as authActions from '../../actions/auth';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import loginBackground from '../../assets/img/login-background.png';
+import * as signInApi from '../../api/sign-in';
+import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
-const styles = theme => ({
+const styles = (theme) => ({
   main: {
     minHeight: '100vh',
     backgroundImage: `url(${loginBackground})`,
@@ -41,13 +41,13 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  auth: AuthState;
-  signIn: (...args: Array<any>) => any;
-  clearError: (...args: Array<any>) => any;
-  updateSchool: (...args: Array<any>) => any;
-  pushTo: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  user?: UserState;
+  auth?: AuthState;
+  signIn?: (...args: Array<any>) => any;
+  clearError?: (...args: Array<any>) => any;
+  updateSchool?: (...args: Array<any>) => any;
+  pushTo?: (...args: Array<any>) => any;
 };
 type State = {
   email: string;
@@ -61,10 +61,9 @@ class SignIn extends React.Component<Props, State> {
     password: '',
     isVerified: false
   };
+
   handleChange = (field: string) => (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      target
-    } = event;
+    const { target } = event;
 
     // eslint-disable-next-line no-undef
     if (!(target instanceof HTMLInputElement)) {
@@ -73,23 +72,18 @@ class SignIn extends React.Component<Props, State> {
 
     this.setState({
       [field]: target.value
-    });
+    } as any);
   };
+
   handleSubmit = async () => {
     const {
       auth: {
-        data: {
-          school
-        }
+        data: { school }
       },
       signIn,
       pushTo
     } = this.props;
-    const {
-      isVerified,
-      email,
-      password
-    } = this.state;
+    const { isVerified, email, password } = this.state;
 
     if (!isVerified) {
       const exists = await signInApi.verifyEmail({
@@ -108,9 +102,7 @@ class SignIn extends React.Component<Props, State> {
         return;
       }
 
-      const {
-        id
-      } = school;
+      const { id } = school;
       signIn({
         email,
         password,
@@ -118,16 +110,14 @@ class SignIn extends React.Component<Props, State> {
       });
     }
   };
+
   handleErrorDialogClose = () => {
-    const {
-      clearError
-    } = this.props;
+    const { clearError } = this.props;
     clearError();
   };
+
   handleChangeSchool = () => {
-    const {
-      updateSchool
-    } = this.props;
+    const { updateSchool } = this.props;
     updateSchool({
       school: null
     });
@@ -138,64 +128,71 @@ class SignIn extends React.Component<Props, State> {
       classes,
       user,
       auth: {
-        data: {
-          school
-        }
+        data: { school }
       }
     } = this.props;
-    const {
-      email,
-      password,
-      isVerified
-    } = this.state;
-    const {
-      error,
-      errorMessage,
-      isLoading
-    } = user;
-    const {
-      title,
-      body,
-      showSignup
-    } = errorMessage;
+    const { email, password, isVerified } = this.state;
+    const { error, errorMessage, isLoading } = user;
+    const { title, body, showSignup } = errorMessage;
 
     if (!school) {
       return <Redirect to="/auth" />;
     }
 
-    return <main className={classes.main}>
+    return (
+      <main className={classes.main}>
         <Grid container justifyContent="space-around">
           <Grid item xs={12} lg={6} className={classes.grid}>
-            <AppLogo style={{
-            maxHeight: 100,
-            maxWidth: 200
-          }} />
+            <AppLogo
+              style={{
+                maxHeight: 100,
+                maxWidth: 200
+              }}
+            />
             <ErrorBoundary>
-              <SignInForm email={email} password={password} isVerified={isVerified} loading={isLoading} handleChange={this.handleChange} handleSubmit={this.handleSubmit} onChangeSchool={this.handleChangeSchool} />
+              <SignInForm
+                email={email}
+                password={password}
+                isVerified={isVerified}
+                loading={isLoading}
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+                onChangeSchool={this.handleChangeSchool}
+              />
             </ErrorBoundary>
           </Grid>
         </Grid>
         <ErrorBoundary>
-          <SimpleErrorDialog open={error} title={title} body={body} showSignup={showSignup} handleClose={this.handleErrorDialogClose} />
+          <SimpleErrorDialog
+            open={error}
+            title={title}
+            body={body}
+            showSignup={showSignup}
+            handleClose={this.handleErrorDialogClose}
+          />
         </ErrorBoundary>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user,
-  auth
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, auth }: StoreState): {} => ({
   user,
   auth
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  signIn: signInActions.signIn,
-  clearError: signInActions.clearSignInError,
-  updateSchool: authActions.updateSchool,
-  pushTo: push
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      signIn: signInActions.signIn,
+      clearError: signInActions.clearSignInError,
+      updateSchool: authActions.updateSchool,
+      pushTo: push
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(SignIn));

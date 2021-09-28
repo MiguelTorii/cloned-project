@@ -1,9 +1,18 @@
-import axios from "axios";
-import store from "store";
-import decode from "jwt-decode";
-import moment from "moment";
-import { API_ROUTES } from "../constants/routes";
-import type { Post, Comments, User, UpdateProfile, Feed, PostResponse } from "../types/models";
+import axios from 'axios';
+import store from 'store';
+import decode from 'jwt-decode';
+import moment from 'moment';
+import { API_ROUTES } from '../constants/routes';
+import type { Post, Comments, User, FeedItem, PostResponse } from '../types/models';
+import { APIPost } from './models/APIPost';
+import { APIPostResponse } from './models/APIPostResponse';
+import { APIComments } from './models/APIComments';
+import { APIComment } from './models/APIComment';
+import { APIUser } from './models/APIUser';
+import { APIFeedItem } from './models/APIFeedItem';
+import { APIFlashcard } from './models/APIFlashcard';
+import { APINote } from './models/APINote';
+
 export const getToken = async (): Promise<string> => {
   try {
     const token = store.get('TOKEN');
@@ -13,9 +22,7 @@ export const getToken = async (): Promise<string> => {
 
     if (token) {
       const decoded = decode(token);
-      const {
-        exp
-      } = decoded;
+      const { exp } = decoded;
       const date = moment().add(2, 'minutes');
 
       if (exp > Number(date.format('X'))) {
@@ -32,14 +39,9 @@ export const getToken = async (): Promise<string> => {
       token: refreshToken,
       segment
     });
-    const {
-      data = {}
-    } = result;
+    const { data = {} } = result;
     // eslint-disable-next-line camelcase
-    const {
-      jwt_token = '',
-      refresh_token = ''
-    } = data;
+    const { jwt_token = '', refresh_token = '' } = data;
     store.set('TOKEN', jwt_token);
     store.set('REFRESH_TOKEN', refresh_token);
     // eslint-disable-next-line camelcase
@@ -49,179 +51,187 @@ export const getToken = async (): Promise<string> => {
     return '';
   }
 };
+
 export const onboardingToCamelCase = (onboarding: Record<string, any>) => ({
   checklist: onboarding.checklist || [],
-  visible: Boolean(onboarding.visible)
+  visible: onboarding.visible
 });
-export const postToCamelCase = (post: Record<string, any>): Post => ({
-  body: String((post.body as string) || ''),
-  summary: String((post.summary as string) || ''),
-  bookmarked: Boolean(post.bookmarked),
-  classId: Number((post.class_id as number) || 0),
-  sectionId: Number(post.section_id || 0),
-  courseDisplayName: String((post.course_display_name as string) || ''),
-  classroomName: String((post.classroom_name as string) || ''),
-  created: String((post.created as string) || ''),
-  feedId: Number((post.feed_id as number) || 0),
-  grade: Number((post.grade as number) || 0),
-  inStudyCircle: Boolean(post.in_study_circle),
-  name: String((post.name as string) || ''),
-  postId: Number((post.post_id as number) || 0),
+
+export const postToCamelCase = (post: APIPost): Post => ({
+  body: post.body || '',
+  summary: post.summary || '',
+  bookmarked: post.bookmarked,
+  classId: post.class_id || 0,
+  sectionId: post.section_id || 0,
+  courseDisplayName: post.course_display_name || '',
+  classroomName: post.classroom_name || '',
+  created: post.created || '',
+  feedId: post.feed_id || 0,
+  grade: post.grade || 0,
+  inStudyCircle: post.in_study_circle,
+  name: post.name || '',
+  postId: post.post_id || 0,
   postInfo: {
-    date: String((post.post_info.date as string) || ''),
-    feedId: Number((post.post_info.feed_id as number) || 0),
-    postId: Number((post.post_info.post_id as number) || 0),
-    questionsCount: Number((post.post_info.questions_count as number) || 0),
-    thanksCount: Number((post.post_info.thanks_count as number) || 0),
-    userId: post.post_info.user_id === 0 ? '0' : String((post.post_info.user_id as string) || ''),
-    viewCount: Number((post.post_info.view_count as number) || 0)
+    date: post.post_info.date || '',
+    feedId: post.post_info.feed_id || 0,
+    postId: post.post_info.post_id || 0,
+    questionsCount: post.post_info.questions_count || 0,
+    thanksCount: post.post_info.thanks_count || 0,
+    userId: String(post.post_info.user_id),
+    viewCount: post.post_info.view_count || 0
   },
-  rank: Number((post.rank as number) || 0),
-  reports: Number((post.reports as number) || 0),
-  roleId: Number((post.role_id as number) || 0),
-  role: String((post.role as string) || ''),
-  school: String((post.school as string) || ''),
-  subject: String((post.subject as string) || ''),
-  thanked: Boolean(post.thanked),
-  bestAnswer: Boolean(post.best_answer),
-  title: String((post.title as string) || ''),
-  content: String((post.content as string) || ''),
-  typeId: Number((post.type_id as number) || 0),
-  userId: String((post.user_id as string) || ''),
-  userProfileUrl: String((post.user_profile_url as string) || ''),
-  readOnly: Boolean(post.read_only)
+  rank: post.rank || 0,
+  reports: post.reports || 0,
+  roleId: post.role_id || 0,
+  role: post.role || '',
+  school: post.school || '',
+  subject: post.subject || '',
+  thanked: post.thanked,
+  bestAnswer: post.best_answer,
+  title: post.title || '',
+  content: post.content || '',
+  typeId: post.type_id || 0,
+  userId: post.user_id || '',
+  userProfileUrl: post.user_profile_url || '',
+  readOnly: post.read_only
 });
-export const postResponseToCamelCase = (response: Record<string, any>): PostResponse => ({
+
+export const postResponseToCamelCase = (response: APIPostResponse): PostResponse => ({
   classes: response.classes || [],
-  communityServiceHours: Number((response.community_service_hours as number) || 0),
-  linkId: Number((response.link_id as number) || 0),
-  linksLeft: Number((response.links_left as number) || 0),
-  points: Number((response.points as number) || 0),
-  postId: Number((response.post_id as number) || 0),
-  postsLeft: Number((response.posts_left as number) || 0),
-  questionId: Number((response.question_id as number) || 0),
-  questionsLeft: Number((response.questions_left as number) || 0),
-  isFirstNote: Boolean(response.is_first_note),
-  notesLeft: Number((response.notes_left as number) || 0),
-  photoNoteId: Number((response.photo_note_id as number) || 0),
-  decksLeft: Number((response.decks_left as number) || 0),
-  fcId: Number((response.fc_id as number) || 0),
+  communityServiceHours: response.community_service_hours || 0,
+  linkId: response.link_id || 0,
+  linksLeft: response.links_left || 0,
+  points: response.points || 0,
+  postId: response.post_id || 0,
+  postsLeft: response.posts_left || 0,
+  questionId: response.question_id || 0,
+  questionsLeft: response.questions_left || 0,
+  isFirstNote: response.is_first_note,
+  notesLeft: response.notes_left || 0,
+  photoNoteId: response.photo_note_id || 0,
+  decksLeft: response.decks_left || 0,
+  fcId: response.fc_id || 0,
   user: {
-    firstName: String(((response.user || {}).first_name as string) || ''),
-    hours: Number(((response.user || {}).hours as number) || 0),
-    joined: String(((response.user || {}).joined as string) || ''),
-    lastName: String(((response.user || {}).last_name as string) || ''),
-    profileImageUrl: String(((response.user || {}).profile_image_url as string) || ''),
-    rank: Number(((response.user || {}).number as number) || 0),
-    scholarshipPoints: Number(((response.user || {}).scholarship_points as number) || 0),
-    schoolId: Number(((response.user || {}).school_id as number) || 0),
-    state: String(((response.user || {}).state as string) || ''),
-    userId: String(((response.user || {}).user_id as string) || '')
+    firstName: (response.user || {}).first_name || '',
+    hours: (response.user || {}).hours || 0,
+    joined: (response.user || {}).joined || '',
+    lastName: (response.user || {}).last_name || '',
+    profileImageUrl: (response.user || {}).profile_image_url || '',
+    rank: response.user.rank || 0,
+    scholarshipPoints: (response.user || {}).scholarship_points || 0,
+    schoolId: (response.user || {}).school_id || 0,
+    state: (response.user || {}).state || '',
+    userId: (response.user || {}).user_id || ''
   }
 });
-export const commentsToCamelCase = (comments: Record<string, any>): Comments => ({
-  parentCommentsCount: Number((comments.parent_comments_count as number) || 0),
-  comments: (comments.comments || []).map(item => ({
-    accepted: Boolean(item.accepted),
-    comment: String((item.comment as string) || ''),
-    created: String((item.created as string) || ''),
-    id: Number((item.id as number) || 0),
-    parentCommentId: Number((item.parent_comment_id as number) || 0),
-    reportsCount: Number((item.reports_count as number) || 0),
-    rootCommentId: Number((item.root_comment_id as number) || 0),
-    thanked: Boolean(item.thanked),
-    thanksCount: Number((item.thanks_count as number) || 0),
+
+export const commentsToCamelCase = (comments: APIComments): Comments => ({
+  parentCommentsCount: comments.parent_comments_count || 0,
+  comments: comments.comments.map((item: APIComment) => ({
+    accepted: item.accepted,
+    comment: item.comment || '',
+    created: item.created || '',
+    id: item.id || 0,
+    parentCommentId: item.parent_comment_id || 0,
+    reportsCount: item.reports_count || 0,
+    rootCommentId: item.root_comment_id || 0,
+    thanked: item.thanked,
+    thanksCount: item.thanks_count || 0,
     user: {
-      userId: String((item.user.user_id as string) || ''),
-      firstName: String((item.user.first_name as string) || ''),
-      lastName: String((item.user.last_name as string) || ''),
-      profileImageUrl: String((item.user.profile_image_url as string) || ''),
-      hours: Number((item.user.hours as number) || 0),
-      joined: String((item.user.joined as string) || ''),
-      rank: Number((item.user.rank as number) || 0),
-      role: String((item.user.role as string) || ''),
-      roleId: Number((item.user.role_id as number) || 0),
-      scholarshipPoints: Number((item.user.scholarship_points as number) || 0),
-      schoolId: Number((item.user.school_id as number) || 0),
-      state: String((item.user.state as string) || ''),
-      isOnline: Boolean(item.user.is_online)
+      userId: item.user.user_id || '',
+      firstName: item.user.first_name || '',
+      lastName: item.user.last_name || '',
+      profileImageUrl: item.user.profile_image_url || '',
+      hours: item.user.hours || 0,
+      joined: item.user.joined || '',
+      rank: item.user.rank || 0,
+      role: item.user.role || '',
+      roleId: item.user.role_id || 0,
+      scholarshipPoints: item.user.scholarship_points || 0,
+      schoolId: item.user.school_id || 0,
+      state: item.user.state || '',
+      isOnline: item.user.is_online
     }
   }))
 });
-export const userToCamelCase = (user: Record<string, any>): User => ({
-  permission: (user.permission as array) || [],
-  nonce: (user.nonce as string) || '',
-  userId: (user.user_id as string) || '',
-  email: (user.email as string) || '',
-  firstName: (user.first_name as string) || '',
-  lastName: (user.last_name as string) || '',
-  school: (user.school as string) || '',
-  schoolId: (user.school_id as number) || 0,
-  segment: (user.segment as string) || '',
-  twilioToken: (user.twilio_token as string) || '',
-  canvasUser: Boolean(user.canvas_user),
-  grade: (user.grade_id as number) || 0,
-  jwtToken: (user.jwt_token as string) || '',
-  refreshToken: (user.refresh_token as string) || '',
-  profileImage: (user.profile_image_url as string) || '',
-  rank: (user.rank as number) || 0,
-  referralCode: (user.referral_code as string) || '',
-  updateProfile: (user.update_profile as Array<UpdateProfile>) || [],
-  lmsTypeId: (user.lms_type_id as number) || -1,
-  lmsUser: Boolean(user.lms_user)
+
+export const userToCamelCase = (user: APIUser): User => ({
+  permission: user.permission,
+  nonce: user.nonce || '',
+  userId: user.user_id || '',
+  email: user.email || '',
+  firstName: user.first_name || '',
+  lastName: user.last_name || '',
+  school: user.school || '',
+  schoolId: user.school_id || 0,
+  segment: user.segment || '',
+  twilioToken: user.twilio_token || '',
+  canvasUser: user.canvas_user,
+  grade: user.grade_id || 0,
+  jwtToken: user.jwt_token || '',
+  refreshToken: user.refresh_token || '',
+  profileImage: user.profile_image_url || '',
+  rank: user.rank || 0,
+  referralCode: user.referral_code || '',
+  updateProfile: user.update_profile,
+  lmsTypeId: user.lms_type_id || -1,
+  lmsUser: user.lms_user
 });
-export const feedToCamelCase = (posts: Array<Record<string, any>>): Feed => posts.map(item => ({
-  userId: item.user_id === 0 ? '0' : String((item.user_id as string) || ''),
-  numberOfNotes: Number((item.pages_notes as number) || 0),
-  bestAnswer: Boolean(item.best_answer),
-  typeId: Number((item.type_id as number) || 0),
-  feedId: Number((item.feed_id as number) || 0),
-  postId: Number((item.post_id as number) || 0),
-  roleId: Number((item.role_id as number) || 1),
-  role: String((item.role as string) || ''),
-  courseDisplayName: String((item.course_display_name as string) || ''),
-  bookmarked: Boolean(item.bookmarked),
-  deck: (item.deck || []).map(d => ({
-    answer: String((d.answer as string) || ''),
-    answerImageUrl: String((d.answer_image_url as string) || ''),
-    id: Number((d.id as number) || 0),
-    question: String((d.question as string) || ''),
-    questionImageUrl: String((d.question_image_url as string) || '')
-  })),
-  notes: (item.notes || []).map(n => ({
-    fullNoteUrl: String((n.full_note_url as string) || ''),
-    note: String((n.note as string) || ''),
-    noteUrl: String((n.note_url as string) || '')
-  })),
-  uri: String((item.uri as string) || ''),
-  noteUrl: String((item.note_url as string) || ''),
-  name: String((item.name as string) || ''),
-  created: String((item.created as string) || ''),
-  userProfileUrl: String((item.user_profile_url as string) || ''),
-  rank: Number((item.rank as number) || 0),
-  classId: Number((item.class_id as number) || 0),
-  classroomName: String((item.classroom_name as string) || ''),
-  subject: String((item.subject as string) || ''),
-  title: String((item.title as string) || ''),
-  body: String((item.body as string) || ''),
-  readOnly: Boolean(item.read_only),
-  thanked: Boolean(item.thanked),
-  isOnline: Boolean(item.is_online),
-  tags: (item.tags || []).map(tag => ({
-    description: String((tag.description as string) || ''),
-    id: Number((tag.id as number) || 0),
-    name: String((tag.name as string) || '')
-  })),
-  postInfo: {
-    date: String((item.post_info.date as string) || ''),
-    feedId: Number((item.post_info.feed_id as number) || 0),
-    postId: Number((item.post_info.post_id as number) || 0),
-    questionsCount: Number((item.post_info.questions_count as number) || 0),
-    thanksCount: Number((item.post_info.thanks_count as number) || 0),
-    userId: String((item.post_info.user_id as string) || ''),
-    viewCount: Number((item.post_info.view_count as number) || 0)
-  }
-}));
+
+export const feedToCamelCase = (posts: APIFeedItem[]): FeedItem[] =>
+  posts.map((item: APIFeedItem) => ({
+    userId: String(item.user_id),
+    numberOfNotes: item.pages_notes || 0,
+    bestAnswer: item.best_answer,
+    typeId: item.type_id || 0,
+    feedId: item.feed_id || 0,
+    postId: item.post_id || 0,
+    roleId: item.role_id || 1,
+    role: item.role || '',
+    courseDisplayName: item.course_display_name || '',
+    bookmarked: item.bookmarked,
+    deck: item.deck.map((d: APIFlashcard) => ({
+      answer: d.answer || '',
+      answerImageUrl: d.answer_image_url || '',
+      id: d.id,
+      question: d.question || '',
+      questionImageUrl: d.question_image_url || ''
+    })),
+    notes: item.notes.map((n: APINote) => ({
+      fullNoteUrl: n.full_note_url || '',
+      note: n.note || '',
+      noteUrl: n.note_url || ''
+    })),
+    uri: item.uri || '',
+    noteUrl: item.note_url || '',
+    name: item.name || '',
+    created: item.created || '',
+    userProfileUrl: item.user_profile_url || '',
+    rank: item.rank || 0,
+    classId: item.class_id || 0,
+    classroomName: item.classroom_name || '',
+    subject: item.subject || '',
+    title: item.title || '',
+    body: item.body || '',
+    readOnly: item.read_only,
+    thanked: item.thanked,
+    isOnline: item.is_online,
+    tags: item.tags.map((tag) => ({
+      description: tag.description || '',
+      id: tag.id || 0,
+      name: tag.name || ''
+    })),
+    postInfo: {
+      date: item.post_info.date || '',
+      feedId: item.post_info.feed_id || 0,
+      postId: item.post_info.post_id || 0,
+      questionsCount: item.post_info.questions_count || 0,
+      thanksCount: item.post_info.thanks_count || 0,
+      userId: item.post_info.user_id || '',
+      viewCount: item.post_info.view_count || 0
+    }
+  }));
+
 export const generateFeedURL = ({
   userId,
   schoolId,
@@ -272,9 +282,7 @@ export const generateFeedURL = ({
   // eslint-disable-next-line no-restricted-syntax
   for (const userClass of userClasses) {
     try {
-      const {
-        sectionId
-      } = JSON.parse(userClass);
+      const { sectionId } = JSON.parse(userClass);
       queryString = `${queryString}&section_id=${sectionId}`;
     } catch (err) {
       console.log(err);

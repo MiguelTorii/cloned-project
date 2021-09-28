@@ -1,11 +1,12 @@
 import { makeStyles } from '@material-ui/core';
-export const useStyles = makeStyles((theme) => ({
+
+export const useStyles = makeStyles((theme: any) => ({
   root: {
     borderRadius: 200,
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     backgroundColor: theme.circleIn.palette.primaryii222,
     padding: theme.spacing(3 / 4, 3),
-    minWidth: (props) => (props.compact ? undefined : 160),
+    minWidth: (props: any) => (props.compact ? undefined : 160),
     minHeight: 36,
     '&:disabled': {
       background: theme.circleIn.palette.primaryii222,

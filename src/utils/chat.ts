@@ -6,8 +6,9 @@
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 import parse from 'html-react-parser';
-import type { ChatMessages } from '../../types/models';
-export const getTitle = (channel: Record<string, any>, userId: string, members: array) => {
+import type { ChatMessages } from '../types/models';
+
+export const getTitle = (channel: Record<string, any>, userId: string, members: any[]) => {
   try {
     const {
       state,
@@ -55,10 +56,16 @@ export const getSubTitle = (message: Record<string, any>, userId: string) => {
 
   return `${firstName} ${lastName}: ${body}`;
 };
+
+interface AvatarData {
+  identity: string;
+  profileImageUrl: string;
+}
+
 export const fetchAvatars = async (channel: Record<string, any>) => {
   try {
     const { members = [] } = channel;
-    const result = [];
+    const result: AvatarData[] = [];
 
     for (const member of members) {
       const user = await member[1].getUserDescriptor();
@@ -93,8 +100,8 @@ export const getAvatar = ({
   id,
   profileURLs
 }: {
-  id: string,
-  profileURLs: Array<Record<string, any>>
+  id: string;
+  profileURLs: Array<Record<string, any>>;
 }) => {
   const item = profileURLs.find((user) => Number(user.identity) === Number(id));
   return item ? item.profileImageUrl : '';
@@ -103,8 +110,8 @@ export const processMessages = ({
   items,
   userId
 }: {
-  items: Array<Record<string, any>>,
-  userId: string
+  items: Array<Record<string, any>>;
+  userId: string;
 }) => {
   try {
     const data: ChatMessages = [];
@@ -247,7 +254,7 @@ export const getFileAttributes = (files) =>
     file_extension: getFileExtension(file.name),
     file_read_url: file.url
   }));
-export const getInitials = (name: string = '') => {
+export const getInitials = (name = '') => {
   const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
   if (initials.length < 3) {

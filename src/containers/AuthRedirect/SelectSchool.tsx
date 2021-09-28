@@ -1,14 +1,15 @@
-import React, { memo, useState, useCallback, useEffect } from "react";
-import AutoComplete from "components/AutoComplete/AutoComplete";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import { searchSchools } from "api/sign-in";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, GONDOR_URL } from "constants/app";
-import auth0 from "auth0-js";
-import Link from "@material-ui/core/Link";
-const useStyles = makeStyles(theme => ({
+import React, { memo, useState, useCallback, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import auth0 from 'auth0-js';
+import Link from '@material-ui/core/Link';
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, GONDOR_URL } from '../../constants/app';
+import { searchSchools } from '../../api/sign-in';
+import AutoComplete from '../../components/AutoComplete/AutoComplete';
+
+const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
     alignItems: 'center',
@@ -45,17 +46,17 @@ const SelectSchool = ({
   setLoginAsExternalUser,
   setDeeplinkLoading
 }) => {
-  const classes = useStyles();
+  const classes: any = useStyles();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const onLoad = useCallback(async value => {
+  const onLoad = useCallback(async (value) => {
     setError(false);
 
     if (value.trim().length > 1) {
       const schools = await searchSchools({
         query: value
       });
-      const options = schools.map(school => ({
+      const options = schools.map((school) => ({
         value: school.clientId,
         label: school.school,
         noAvatar: true,
@@ -72,11 +73,14 @@ const SelectSchool = ({
       hasMore: false
     };
   }, []);
-  const onChange = useCallback(value => {
-    updateSchool({
-      school: value
-    });
-  }, [updateSchool]);
+  const onChange = useCallback(
+    (value) => {
+      updateSchool({
+        school: value
+      });
+    },
+    [updateSchool]
+  );
   const onClick = useCallback(() => {
     setLoading(true);
 
@@ -85,12 +89,7 @@ const SelectSchool = ({
       return false;
     }
 
-    const {
-      lmsTypeId,
-      launchType,
-      redirect_message: redirectMessage,
-      connection
-    } = school;
+    const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = school;
 
     if (school.studentLive === 0) {
       setDeeplinkLoading(false);
@@ -177,18 +176,37 @@ const SelectSchool = ({
     setLoginAsExternalUser(true);
     setScreen('login');
   }, [setLoginAsExternalUser, setScreen]);
-  const onSubmit = useCallback(e => {
-    e.preventDefault();
-    onClick();
-  }, [onClick]);
-  return <div className={classes.container}>
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      onClick();
+    },
+    [onClick]
+  );
+  return (
+    <div className={classes.container}>
       <Typography component="h1" variant="h5" align="center">
         Find your school
       </Typography>
       <form onSubmit={onSubmit} className={classes.schools}>
-        <AutoComplete inputValue="" label="" placeholder="Search your school/college" error={error} values={school} errorText="You must select an option" isSchoolSearch onChange={onChange} onLoadOptions={onLoad} />
+        <AutoComplete
+          inputValue=""
+          label=""
+          placeholder="Search your school/college"
+          error={error}
+          values={school}
+          errorText="You must select an option"
+          isSchoolSearch
+          onChange={onChange}
+          onLoadOptions={onLoad}
+        />
       </form>
-      <Button variant="contained" onClick={onClick} disabled={!school?.id || loading} color="primary">
+      <Button
+        variant="contained"
+        onClick={onClick}
+        disabled={!school?.id || loading}
+        color="primary"
+      >
         {loading ? <CircularProgress size={20} color="secondary" /> : 'Select School'}
       </Button>
 
@@ -206,7 +224,8 @@ const SelectSchool = ({
           Privacy Policy
         </Link>
       </Typography>
-    </div>;
+    </div>
+  );
 };
 
 export default memo(SelectSchool);

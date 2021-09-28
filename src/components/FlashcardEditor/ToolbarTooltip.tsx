@@ -1,7 +1,9 @@
-import React, { useCallback, useReducer, useEffect } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import { useStyles } from "../_styles/FlashcardEditor/ToolbarTooltip";
+import React, { useCallback, useReducer, useEffect } from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
+import { useStyles } from '../_styles/FlashcardEditor/ToolbarTooltip';
+
 const ctrl = window.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl';
+
 const initialState = {
   header: {
     text: 'Font Style',
@@ -84,48 +86,37 @@ const initialState = {
 };
 
 function reducer(state, action) {
-  const {
-    type,
-    params
-  } = action;
+  const { type, params } = action;
 
   switch (type) {
     case 'ADD_ELEMENT':
-      return { ...state,
-        [params.name]: { ...state[params.name],
-          el: params.element
-        }
-      };
+      return { ...state, [params.name]: { ...state[params.name], el: params.element } };
 
     case 'SHOW':
-      return { ...state,
-        [params.name]: { ...state[params.name],
-          open: true
-        }
-      };
+      return { ...state, [params.name]: { ...state[params.name], open: true } };
 
     case 'HIDE':
-      return { ...state,
-        [params.name]: { ...state[params.name],
-          open: false
-        }
-      };
+      return { ...state, [params.name]: { ...state[params.name], open: false } };
 
     default:
       return state;
   }
 }
 
-const ToolbarTooltip = ({
-  toolbar
-}) => {
+type Props = {
+  toolbar?: any;
+  toolbarClass?: any;
+};
+
+const ToolbarTooltip = ({ toolbar, toolbarClass }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const classes = useStyles();
+  const classes: any = useStyles();
   useEffect(() => {
     if (toolbar) {
       toolbar.controls.forEach(([n, el], k) => {
         let name = n;
-        const element = name === 'header' ? el.parentElement.firstElementChild.firstElementChild : el;
+        const element =
+          name === 'header' ? el.parentElement.firstElementChild.firstElementChild : el;
 
         if (name === 'list') {
           name = k === 6 ? 'ordered' : 'unordered';
@@ -135,19 +126,21 @@ const ToolbarTooltip = ({
           name = k === 8 ? 'tab' : 'untab';
         }
 
-        element.onmouseenter = () => dispatch({
-          type: 'SHOW',
-          params: {
-            name
-          }
-        });
+        element.onmouseenter = () =>
+          dispatch({
+            type: 'SHOW',
+            params: {
+              name
+            }
+          });
 
-        element.onmouseleave = () => dispatch({
-          type: 'HIDE',
-          params: {
-            name
-          }
-        });
+        element.onmouseleave = () =>
+          dispatch({
+            type: 'HIDE',
+            params: {
+              name
+            }
+          });
 
         dispatch({
           type: 'ADD_ELEMENT',
@@ -159,28 +152,43 @@ const ToolbarTooltip = ({
       });
     }
   }, [toolbar, dispatch]);
-  const renderTooltip = useCallback((text, shortcut) => <div className={classes.tooltipContainer}>
+  const renderTooltip = useCallback(
+    (text, shortcut) => (
+      <div className={classes.tooltipContainer}>
         <div>{text}</div>
         <div>{shortcut}</div>
-      </div>, [classes]);
-  return <div>
-      {Object.keys(state).map(k => {
-      if (!state[k].el) {
-        return null;
-      }
+      </div>
+    ),
+    [classes]
+  );
+  return (
+    <div>
+      {Object.keys(state).map((k) => {
+        if (!state[k].el) {
+          return null;
+        }
 
-      return <Tooltip key={k} title={renderTooltip(state[k].text, state[k].shortcut)} classes={{
-        tooltip: classes.tooltip,
-        popper: classes.popper
-      }} arrow PopperProps={{
-        anchorEl: state[k].el,
-        placement: 'top',
-        open: state[k].open
-      }}>
+        return (
+          <Tooltip
+            key={k}
+            title={renderTooltip(state[k].text, state[k].shortcut)}
+            classes={{
+              tooltip: classes.tooltip,
+              popper: classes.popper
+            }}
+            arrow
+            PopperProps={{
+              anchorEl: state[k].el,
+              placement: 'top',
+              open: state[k].open
+            }}
+          >
             <div />
-          </Tooltip>;
-    })}
-    </div>;
+          </Tooltip>
+        );
+      })}
+    </div>
+  );
 };
 
 export default ToolbarTooltip;

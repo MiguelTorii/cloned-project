@@ -1,9 +1,10 @@
-import moment from "moment";
-import _ from "lodash";
-import qs from "query-string";
-import { TIME_ZONE } from "../constants/app";
+import moment from 'moment';
+import _ from 'lodash';
+import qs from 'query-string';
+import { TIME_ZONE } from '../constants/app';
+
 export const getPointsText = (points: number) => Math.floor(points).toLocaleString();
-export const momentWithTimezone = (date: string = undefined) => moment(date).tz(TIME_ZONE);
+export const momentWithTimezone = (date: string) => moment(date).tz(TIME_ZONE);
 export const isApiCalling = (type) => (state) => _.get(state.api[type], 'inProgress', false);
 export const getPastClassIds = (classList) =>
   classList
@@ -19,7 +20,7 @@ export const setIntervalWithFirstCall = (func: (...args: Array<any>) => any, del
   func();
   return setInterval(func, delay);
 };
-export const normalizeArray = (array: Array<any>, idField: string = 'id') => {
+export const normalizeArray = (array: any[], idField = 'id') => {
   const result = {};
   array.forEach((item) => {
     result[item[idField]] = item;
@@ -29,7 +30,7 @@ export const normalizeArray = (array: Array<any>, idField: string = 'id') => {
     ids: array.map((item) => item[idField])
   };
 };
-export const shuffleArray = (array) => {
+export const shuffleArray = (array: any[]) => {
   const result = [...array];
 
   for (let i = result.length - 1; i > 0; i--) {
@@ -42,8 +43,8 @@ export const shuffleArray = (array) => {
   return result;
 };
 export const truncate = (str, n) => (str.length > n ? `${str.substr(0, n - 1)}...` : str);
-export const arrElemToId = (array) => {
-  const result = [];
+export const arrElemToId = (array: string[]) => {
+  const result: string[] = [];
   array.forEach((elem, id) => {
     result[elem] = id;
   });
@@ -59,16 +60,16 @@ export const extractTextFromHtml = (html) => {
   const result = tempDivElement.textContent || tempDivElement.innerText || '';
   return _.trim(result);
 };
-export const englishIdFromNumber = (number) => {
-  if (number === 0) {
+export const englishIdFromNumber = (aNumber: number) => {
+  if (aNumber === 0) {
     return 'A';
   }
 
-  const rem = [];
+  const rem: number[] = [];
 
-  while (number) {
-    rem.push(number % 26);
-    number = Math.floor(number / 26);
+  while (aNumber) {
+    rem.push(aNumber % 26);
+    aNumber = Math.floor(aNumber / 26);
   }
 
   return rem
@@ -76,8 +77,8 @@ export const englishIdFromNumber = (number) => {
     .map((id) => String.fromCharCode(65 + id))
     .join('');
 };
-export const twoDigitsNumber = (number) =>
-  number.toLocaleString('en-Us', {
+export const twoDigitsNumber = (aNumber) =>
+  aNumber.toLocaleString('en-Us', {
     minimumIntegerDigits: 2,
     useGrouping: false
   });
@@ -112,6 +113,6 @@ export const checkPath = (path, urls) => {
     return false;
   }
 
-  return urls.findIndex(url => path.startsWith(url)) >= 0;
+  return urls.findIndex((url) => path.startsWith(url)) >= 0;
 };
 export const buildPath = (rootPath, params) => `${rootPath}?${qs.stringify(params)}`;

@@ -1,26 +1,31 @@
-// import update from 'immutability-helper';
 import update from 'immutability-helper';
 import { campaignActions } from '../constants/action-types';
 import type { Action } from '../types/action';
+
 export type CampaignState = {
-  newClassExperience: boolean,
-  newFlashcardsExperience: boolean,
-  chatLanding: boolean,
-  showScholarshipTracker: boolean,
-  showSupportCenter: boolean
+  chatLanding: boolean;
+  landingPageCampaign: any;
+  newFlashcardsExperience: boolean;
+  newNotesScreen: any;
+  showScholarshipTracker: boolean;
+  showSupportCenter: boolean;
+  newClassExperience: boolean;
 };
+
 const VARIATION_KEY = {
   HIDDEN: 'hidden'
 };
+
 const defaultState = {
-  newClassExperience: null,
+  chatLanding: false,
+  landingPageCampaign: null,
   newFlashcardsExperience: true,
   newNotesScreen: null,
-  landingPageCampaign: null,
-  chatLanding: false,
   showScholarshipTracker: false,
-  showSupportCenter: false
+  showSupportCenter: false,
+  newClassExperience: false
 };
+
 export default (state: CampaignState = defaultState, action: Action): CampaignState => {
   switch (action.type) {
     case campaignActions.GET_CAMPAIGN:

@@ -1,9 +1,9 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import StartVideo from "../../containers/StartVideo/StartVideo";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import StartVideo from '../../containers/StartVideo/StartVideo';
 
 const styles = () => ({});
 
@@ -15,17 +15,16 @@ class StartVideoPage extends React.Component<Props> {
   componentDidMount = () => {};
 
   render() {
-    const {
-      classes
-    } = this.props;
-    return <main className={classes.main}>
+    const { classes } = this.props;
+    return (
+      <main className={classes.main}>
         <CssBaseline />
         <Layout>
           <StartVideo />
         </Layout>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withRoot(withStyles(styles)(StartVideoPage));
+export default withRoot(withStyles(styles as any)(StartVideoPage));

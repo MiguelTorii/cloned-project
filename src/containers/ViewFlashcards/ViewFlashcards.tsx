@@ -1,26 +1,26 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { goBack, push as routePush } from "connected-react-router";
-import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import FlashcardDetail from "components/FlashcardDetail/FlashcardList";
-import Divider from "@material-ui/core/Divider";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import { getFlashcards, bookmark } from "../../api/posts";
-import { logEvent } from "../../api/analytics";
-import PostItem from "../../components/PostItem/PostItem";
-import PostItemHeader from "../../components/PostItem/PostItemHeader";
-import FlashcardManager from "../../components/FlashcardManager/FlashcardManager";
-import PostItemActions from "../PostItemActions/PostItemActions";
-import PostComments from "../PostComments/ViewNotes";
-import PostTags from "../PostTags/PostTags";
-import Report from "../Report/Report";
-import DeletePost from "../DeletePost/DeletePost";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React, { useMemo, useState, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { goBack, push as routePush } from 'connected-react-router';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Divider from '@material-ui/core/Divider';
+import FlashcardList from '../../components/FlashcardDetail/FlashcardList';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import { getFlashcards, bookmark } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
+import PostItem from '../../components/PostItem/PostItem';
+import PostItemHeader from '../../components/PostItem/PostItemHeader';
+import FlashcardManager from '../../components/FlashcardManager/FlashcardManager';
+import PostItemActions from '../PostItemActions/PostItemActions';
+import PostComments from '../PostComments/ViewNotes';
+import PostTags from '../PostTags/PostTags';
+import Report from '../Report/Report';
+import DeletePost from '../DeletePost/DeletePost';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -46,45 +46,31 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
+  classes?: Record<string, any>;
+  user?: UserState;
   flashcardId: number;
-  router: Record<string, any>;
-  pop: (...args: Array<any>) => any;
-  push: (...args: Array<any>) => any;
+  router?: Record<string, any>;
+  pop?: (...args: Array<any>) => any;
+  push?: (...args: Array<any>) => any;
 };
 
-const ViewFlashcards = ({
-  classes,
-  user,
-  flashcardId,
-  push,
-  router,
-  pop
-}: Props) => {
+const ViewFlashcards = ({ classes, user, flashcardId, push, router, pop }: Props) => {
   const [flashcards, setFlashcards] = useState(null);
   const [report, setReport] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
   const {
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
   } = user;
 
   const loadData = async () => {
     // eslint-disable-next-line
-    const {
-      deck = [],
-      ...flashcards
-    } = await getFlashcards({
+    const { deck = [], ...flashcards } = await getFlashcards({
       userId,
       flashcardId
     });
-    setFlashcards({ ...flashcards,
-      deck: deck.map(item => ({
+    setFlashcards({
+      ...flashcards,
+      deck: deck.map((item: any) => ({
         question: item.question,
         answer: item.answer,
         hardCount: item.marked_hard_count,
@@ -94,9 +80,7 @@ const ViewFlashcards = ({
       }))
     });
     const {
-      postInfo: {
-        feedId
-      }
+      postInfo: { feedId }
     } = flashcards;
     logEvent({
       event: 'Feed- View Flashcards',
@@ -115,24 +99,17 @@ const ViewFlashcards = ({
       return;
     }
 
-    const {
-      feedId,
-      bookmarked
-    } = flashcards;
+    const { feedId, bookmarked } = flashcards;
 
     try {
-      setFlashcards({ ...flashcards,
-        bookmarked: !bookmarked
-      });
+      setFlashcards({ ...flashcards, bookmarked: !bookmarked });
       await bookmark({
         feedId,
         userId,
         remove: bookmarked
       });
     } catch (err) {
-      setFlashcards({ ...flashcards,
-        bookmarked
-      });
+      setFlashcards({ ...flashcards, bookmarked });
     }
   };
 
@@ -142,9 +119,7 @@ const ViewFlashcards = ({
 
   const handleDelete = () => setDeletePost(true);
 
-  const handleDeleteClose = ({
-    deleted
-  }) => {
+  const handleDeleteClose = ({ deleted }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
@@ -158,10 +133,19 @@ const ViewFlashcards = ({
     if (sorted) {
       return sorted.map((d, k) => {
         const renderDivisor = k > 0 && sorted[k - 1].hardCount > 0 && d.hardCount === 0;
-        return <div key={d.id}>
+        return (
+          <div key={d.id}>
             {renderDivisor && <Divider light className={classes.divider} />}
-            <FlashcardDetail id={d.id} question={d.question} answer={d.answer} hardCount={d.hardCount} questionImage={d.questionImage} answerImage={d.answerImage} />
-          </div>;
+            <FlashcardList
+              id={d.id}
+              question={d.question}
+              answer={d.answer}
+              hardCount={d.hardCount}
+              questionImage={d.questionImage}
+              answerImage={d.answerImage}
+            />
+          </div>
+        );
       });
     }
 
@@ -169,9 +153,11 @@ const ViewFlashcards = ({
   }, [flashcards, classes]);
 
   if (!flashcards) {
-    return <div className={classes.loader}>
+    return (
+      <div className={classes.loader}>
         <CircularProgress />
-      </div>;
+      </div>
+    );
   }
 
   const {
@@ -190,72 +176,79 @@ const ViewFlashcards = ({
     thanked,
     inStudyCircle,
     deck,
-    postInfo: {
-      userId: ownerId,
-      questionsCount,
-      thanksCount,
-      viewCount
-    },
+    postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
     readOnly,
     bookmarked
   } = flashcards;
-  return <div className={classes.root}>
+  return (
+    <div className={classes.root}>
       <ErrorBoundary>
         <PostItem feedId={feedId}>
           <ErrorBoundary>
-            <PostItemHeader hideShare feedId={feedId} classId={classId} currentUserId={userId} router={router} pop={pop} userId={ownerId} name={name} userProfileUrl={userProfileUrl} classroomName={courseDisplayName} created={created} pushTo={push} postId={postId} typeId={typeId} body={summary} title={title} bookmarked={bookmarked} roleId={roleId} role={role} onBookmark={handleBookmark} onReport={handleReport} onDelete={handleDelete} />
+            <PostItemHeader
+              hideShare
+              feedId={feedId}
+              classId={classId}
+              currentUserId={userId}
+              router={router}
+              pop={pop}
+              userId={ownerId}
+              name={name}
+              userProfileUrl={userProfileUrl}
+              classroomName={courseDisplayName}
+              created={created}
+              pushTo={push}
+              postId={postId}
+              typeId={typeId}
+              body={summary}
+              title={title}
+              bookmarked={bookmarked}
+              roleId={roleId}
+              role={role}
+              onBookmark={handleBookmark}
+              onReport={handleReport}
+              onDelete={handleDelete}
+            />
           </ErrorBoundary>
           <ErrorBoundary>
-            <FlashcardManager feedId={feedId} title={title} loadData={loadData} flashcards={deck} postId={postId} />
+            <FlashcardManager
+              feedId={feedId}
+              title={title}
+              loadData={loadData}
+              flashcards={deck}
+              postId={postId}
+            />
           </ErrorBoundary>
-          {
-          /* <ErrorBoundary> */
-        }
-          {
-          /* <div className={classes.flashcards}> */
-        }
-          {
-          /* {// $FlowIgnore */
-        }
-          {
-          /* deck.map(({ id, question, answer }, index) => ( */
-        }
-          {
-          /* <Flashcard */
-        }
-          {
-          /* key={id} */
-        }
-          {
-          /* index={index + 1} */
-        }
-          {
-          /* question={question} */
-        }
-          {
-          /* answer={answer} */
-        }
-          {
-          /* /> */
-        }
-          {
-          /* ))} */
-        }
-          {
-          /* </div> */
-        }
-          {
-          /* </ErrorBoundary> */
-        }
           <ErrorBoundary>{flashcardView}</ErrorBoundary>
           <ErrorBoundary>
             <PostTags userId={userId} feedId={feedId} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PostItemActions userId={userId} ownerId={ownerId} feedId={feedId} postId={postId} typeId={typeId} name={name} userProfileUrl={profileImage} thanked={thanked} inStudyCircle={inStudyCircle} questionsCount={questionsCount} thanksCount={thanksCount} viewCount={viewCount} ownName={`${myFirstName} ${myLastName}`} onReload={loadData} />
+            <PostItemActions
+              userId={userId}
+              ownerId={ownerId}
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              name={name}
+              userProfileUrl={profileImage}
+              thanked={thanked}
+              inStudyCircle={inStudyCircle}
+              questionsCount={questionsCount}
+              thanksCount={thanksCount}
+              viewCount={viewCount}
+              ownName={`${myFirstName} ${myLastName}`}
+              onReload={loadData}
+            />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PostComments feedId={feedId} postId={postId} typeId={typeId} classId={classId} readOnly={readOnly} />
+            <PostComments
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              classId={classId}
+              readOnly={readOnly}
+            />
           </ErrorBoundary>
           <ErrorBoundary>
             <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
@@ -265,20 +258,25 @@ const ViewFlashcards = ({
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  user,
-  router
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
   router
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  push: routePush,
-  pop: goBack
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      push: routePush,
+      pop: goBack
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewFlashcards));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(ViewFlashcards));

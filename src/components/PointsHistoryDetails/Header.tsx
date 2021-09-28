@@ -1,28 +1,31 @@
-import React from "react";
-import { Grid, Typography, Paper, useMediaQuery } from "@material-ui/core";
-import clsx from "clsx";
-import { useTheme } from "@material-ui/core/styles";
-import { getInitials } from "utils/chat";
-import type { UserProfile } from "../../types/models";
-import withRoot from "../../withRoot";
-import Avatar from "../Avatar/Avatar";
-import { getPointsText } from "../../utils/helpers";
-import { useStyles } from "../_styles/PointsHistoryDetails/Header";
+import React from 'react';
+import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
+import clsx from 'clsx';
+import { useTheme } from '@material-ui/core/styles';
+import { getInitials } from '../../utils/chat';
+import type { UserProfile } from '../../types/models';
+import withRoot from '../../withRoot';
+import Avatar from '../Avatar/Avatar';
+import { getPointsText } from '../../utils/helpers';
+import { useStyles } from '../_styles/PointsHistoryDetails/Header';
+
 type Props = {
   profile: UserProfile;
 };
 
-const Header = ({
-  profile
-}: Props) => {
-  const classes = useStyles();
+const Header = ({ profile }: Props) => {
+  const classes: any = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  return <Paper className={classes.root}>
+  return (
+    <Paper className={classes.root}>
       <Grid container spacing={2} className={classes.mainContainer} alignItems="center">
         <Grid item xs={12} md={6} wrap="nowrap" container spacing={2} alignItems="center">
           <Grid item>
-            <Avatar src={profile.userProfileUrl} defaultText={getInitials(`${profile.firstName} ${profile.lastName}`)} />
+            <Avatar
+              src={profile.userProfileUrl}
+              defaultText={getInitials(`${profile.firstName} ${profile.lastName}`)}
+            />
           </Grid>
           <Grid item container direction="column" spacing={isMobile ? 0 : 1}>
             <Grid item>
@@ -44,7 +47,8 @@ const Header = ({
           </Grid>
         </Grid>
       </Grid>
-    </Paper>;
+    </Paper>
+  );
 };
 
 export default withRoot(Header);

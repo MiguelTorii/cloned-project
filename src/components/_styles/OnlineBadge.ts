@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+
 export default (theme) => {
   const greenRingColor = theme.circleIn.palette.onlineBadgetColor;
   const grayRingColor = '#5F6165';

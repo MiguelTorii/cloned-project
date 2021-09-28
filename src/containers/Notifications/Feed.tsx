@@ -1,31 +1,35 @@
-import React from "react";
-import type { Node } from "react";
-import debounce from "lodash/debounce";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
-import type { State as StoreState } from "../../types/state";
-import type { Notification as NotificationState } from "../../types/models";
-import type { UserState } from "../../reducers/user";
-import Notifications from "../../components/Notifications/Notifications";
-import CustomNotification from "../../components/Notifications/CustomNotification";
-import { getNotifications, postPing, setNotificationsRead, getNotification } from "../../api/notifications";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import debounce from 'lodash/debounce';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import type { State as StoreState } from '../../types/state';
+import type { Notification as NotificationState } from '../../types/models';
+import type { UserState } from '../../reducers/user';
+import Notifications from '../../components/Notifications/Notifications';
+import CustomNotification from '../../components/Notifications/CustomNotification';
+import {
+  getNotifications,
+  postPing,
+  setNotificationsRead,
+  getNotification
+} from '../../api/notifications';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = () => ({
   root: {}
 });
 
 type ProvidedProps = {
-  classes: Record<string, any>;
+  classes?: Record<string, any>;
 };
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  anchorEl: Node;
-  onClose: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  user?: UserState;
+  anchorEl?: React.ReactNode;
+  onClose?: (...args: Array<any>) => any;
   onUpdateUnreadCount?: (...args: Array<any>) => any;
   isPage?: boolean;
-  onClick: (...args: Array<any>) => any;
+  onClick?: (...args: Array<any>) => any;
 };
 type State = {
   notifications: Array<NotificationState>;
@@ -37,10 +41,12 @@ type State = {
 
 class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   mounted: boolean;
+
   static defaultProps = {
     isPage: false,
     onUpdateUnreadCount: () => {}
   };
+
   state = {
     notifications: [],
     tab: 0,
@@ -48,16 +54,26 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     details: '',
     loading: true
   };
+
   componentDidMount = async () => {
     this.mounted = true;
 
-    if (this.handleDebouncePing.cancel && typeof this.handleDebouncePing.cancel === 'function') {
-      this.handleDebouncePing.cancel();
+    // TODO this looks like a bug because `this.handleDebouncePing` is not a promise
+    // but if we call it, it returns a promise, so maybe there was an intention to call it here?
+    // More investigation is necessary, using any for now.
+    if (
+      (this.handleDebouncePing as any).cancel &&
+      typeof (this.handleDebouncePing as any).cancel === 'function'
+    ) {
+      (this.handleDebouncePing as any).cancel();
     }
 
     window.addEventListener('offline', () => {
-      if (this.handleDebounceFetchNotifications.cancel && typeof this.handleDebounceFetchNotifications.cancel === 'function') {
-        this.handleDebounceFetchNotifications.cancel();
+      if (
+        (this.handleDebounceFetchNotifications as any).cancel &&
+        typeof (this.handleDebounceFetchNotifications as any).cancel === 'function'
+      ) {
+        (this.handleDebounceFetchNotifications as any).cancel();
       }
     });
     window.addEventListener('online', () => {
@@ -71,20 +87,21 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
     this.handleDebounceFetchNotifications();
     this.handleDebouncePing();
   };
-  componentDidUpdate = prevProps => {
+
+  componentDidUpdate = (prevProps) => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       },
       anchorEl
     } = this.props;
-    const {
-      anchorEl: prevAnchorEl
-    } = prevProps;
+    const { anchorEl: prevAnchorEl } = prevProps;
 
-    if (anchorEl !== prevAnchorEl && Boolean(anchorEl) === true && Boolean(prevAnchorEl) === false) {
+    if (
+      anchorEl !== prevAnchorEl &&
+      Boolean(anchorEl) === true &&
+      Boolean(prevAnchorEl) === false
+    ) {
       try {
         setNotificationsRead({
           userId
@@ -94,17 +111,28 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       }
     }
   };
+
   componentWillUnmount = () => {
     this.mounted = false;
 
-    if (this.handleDebouncePing.cancel && typeof this.handleDebouncePing.cancel === 'function') {
-      this.handleDebouncePing.cancel();
+    // TODO this looks like a bug because `this.handleDebouncePing` is not a promise
+    // but if we call it, it returns a promise, so maybe there was an intention to call it here?
+    // More investigation is necessary, using any for now.
+    if (
+      (this.handleDebouncePing as any).cancel &&
+      typeof (this.handleDebouncePing as any).cancel === 'function'
+    ) {
+      (this.handleDebouncePing as any).cancel();
     }
 
-    if (this.handleDebounceFetchNotifications.cancel && typeof this.handleDebounceFetchNotifications.cancel === 'function') {
-      this.handleDebounceFetchNotifications.cancel();
+    if (
+      (this.handleDebounceFetchNotifications as any).cancel &&
+      typeof (this.handleDebounceFetchNotifications as any).cancel === 'function'
+    ) {
+      (this.handleDebounceFetchNotifications as any).cancel();
     }
   };
+
   handleDebouncePing = async () => {
     try {
       await this.handlePing();
@@ -114,6 +142,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       }
     }
   };
+
   handleDebounceFetchNotifications = async () => {
     try {
       await this.handleFetchNotifications();
@@ -123,32 +152,27 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       }
     }
   };
+
   handlePing = async () => {
     await postPing();
   };
+
   handleFetchNotifications = async () => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       },
       onUpdateUnreadCount
     } = this.props;
 
     if (userId !== '') {
-      const {
-        tab
-      } = this.state;
+      const { tab } = this.state;
       this.setState({
         loading: true
       });
 
       try {
-        const {
-          notifications,
-          unreadCount
-        } = await getNotifications({
+        const { notifications, unreadCount } = await getNotifications({
           userId,
           tab
         });
@@ -167,10 +191,9 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       }
     }
   };
+
   handleTabChange = async (event, tab) => {
-    const {
-      tab: currentTab
-    } = this.state;
+    const { tab: currentTab } = this.state;
 
     if (currentTab !== tab) {
       await this.setState(() => ({
@@ -180,6 +203,7 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
       this.handleFetchNotifications();
     }
   };
+
   handleClick = async ({
     entityType,
     typeId,
@@ -193,12 +217,9 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   }) => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       },
-      onClick // onClose
-
+      onClick
     } = this.props;
 
     if (entityType !== 8000) {
@@ -208,20 +229,17 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
         entityType
       });
     } else {
-      const {
-        title,
-        details
-      } = await getNotification({
+      const { title, details } = await getNotification({
         userId,
         id
       });
-      // onClose();
       this.setState({
         title,
         details
       });
     }
   };
+
   handleCloseCustomNotification = () => {
     this.setState({
       title: '',
@@ -230,33 +248,35 @@ class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   };
 
   render() {
-    const {
-      classes,
-      isPage,
-      anchorEl,
-      onClose
-    } = this.props;
-    const {
-      notifications,
-      tab,
-      title,
-      details,
-      loading
-    } = this.state;
-    return <div className={classes.root}>
+    const { classes, isPage, anchorEl, onClose } = this.props;
+    const { notifications, tab, title, details, loading } = this.state;
+    return (
+      <div className={classes.root}>
         <ErrorBoundary>
-          <Notifications notifications={notifications} tab={tab} loading={loading} anchorEl={anchorEl} isPage={isPage} onNotificationClose={onClose} onTabChange={this.handleTabChange} onClick={this.handleClick} />
-          <CustomNotification open={title !== ''} title={title} details={details} onClose={this.handleCloseCustomNotification} />
+          <Notifications
+            notifications={notifications}
+            tab={tab}
+            loading={loading}
+            anchorEl={anchorEl}
+            isPage={isPage}
+            onNotificationClose={onClose}
+            onTabChange={this.handleTabChange}
+            onClick={this.handleClick}
+          />
+          <CustomNotification
+            open={title !== ''}
+            title={title}
+            details={details}
+            onClose={this.handleCloseCustomNotification}
+          />
         </ErrorBoundary>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Feed));
+export default connect<{}, {}, Props>(mapStateToProps, null)(withStyles(styles as any)(Feed));

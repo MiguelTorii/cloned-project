@@ -1,27 +1,27 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import { withRouter } from "react-router";
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import { processClasses } from "containers/ClassesSelector/utils";
-import ToolbarTooltip from "components/FlashcardEditor/ToolbarTooltip";
-import CreatePostForm from "components/CreatePostForm/CreatePostForm";
-import OutlinedTextValidator from "components/OutlinedTextValidator/OutlinedTextValidator";
-import SimpleErrorDialog from "components/SimpleErrorDialog/SimpleErrorDialog";
-import { cypher } from "utils/crypto";
-import RichTextEditor from "containers/RichTextEditor/RichTextEditor";
-import type { State as StoreState } from "../../types/state";
-import type { UserState } from "../../reducers/user";
-import * as api from "../../api/posts";
-import { logEvent, logEventLocally } from "../../api/analytics";
-import * as notificationsActions from "../../actions/notifications";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import type { CampaignState } from "../../reducers/campaign";
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import { withRouter } from 'react-router';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import { processClasses } from '../ClassesSelector/utils';
+import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
+import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
+import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
+import { cypher } from '../../utils/crypto';
+import RichTextEditor from '../RichTextEditor/RichTextEditor';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import * as api from '../../api/posts';
+import { logEvent, logEventLocally } from '../../api/analytics';
+import * as notificationsActions from '../../actions/notifications';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import type { CampaignState } from '../../reducers/campaign';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -68,18 +68,21 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  campaign: CampaignState;
-  pushTo: (...args: Array<any>) => any;
-  questionId: number;
-  location: {
+  classes?: Record<string, any>;
+  currentTag?: any;
+  user?: UserState;
+  campaign?: CampaignState;
+  pushTo?: (...args: Array<any>) => any;
+  questionId?: number;
+  location?: {
     search: string;
     pathname: string;
   };
-  enqueueSnackbar: (...args: Array<any>) => any;
-  setIsPosting: (...args: Array<any>) => any;
-  classList: Array;
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  setIsPosting?: (...args: Array<any>) => any;
+  classList?: Array<any>;
+  classId?: number;
+  sectionId?: number;
 };
 
 const CreateQuestion = ({
@@ -87,11 +90,7 @@ const CreateQuestion = ({
   currentTag,
   user: {
     expertMode,
-    data: {
-      permission,
-      segment,
-      userId
-    },
+    data: { permission, segment, userId },
     userClasses
   },
   campaign,
@@ -132,15 +131,21 @@ const CreateQuestion = ({
       }
     }
   }, []);
-  const canBatchPost = useMemo(() => expertMode && permission.includes('one_touch_send_posts'), [expertMode, permission]);
-  const handlePush = useCallback(path => {
-    if (campaign.newClassExperience) {
-      const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
-      pushTo(`${path}${search}`);
-    } else {
-      pushTo(path);
-    }
-  }, [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]);
+  const canBatchPost = useMemo(
+    () => expertMode && permission.includes('one_touch_send_posts'),
+    [expertMode, permission]
+  );
+  const handlePush = useCallback(
+    (path) => {
+      if (campaign.newClassExperience) {
+        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+        pushTo(`${path}${search}`);
+      } else {
+        pushTo(path);
+      }
+    },
+    [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]
+  );
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({
       userId,
@@ -150,22 +155,14 @@ const CreateQuestion = ({
       classes: userClasses.classList,
       segment
     });
-    const {
-      sectionId
-    } = JSON.parse(uc[0].value);
-    const {
-      body,
-      title,
-      classId
-    } = question;
+    const { sectionId } = JSON.parse(uc[0].value);
+    const { body, title, classId } = question;
     setBody(body);
     setTitle(title);
     setClassId(classId);
     setSectionId(sectionId);
     const {
-      postInfo: {
-        feedId
-      }
+      postInfo: { feedId }
     } = question;
     logEvent({
       event: 'Feed- Edit Question',
@@ -179,9 +176,6 @@ const CreateQuestion = ({
       loadData();
     }
 
-    // const { classId, sectionId } = decypherClass()
-    // setClassId(Number(classId))
-    // setSectionId(Number(sectionId))
     logEvent({
       event: 'Home- Start Ask Question',
       props: {}
@@ -237,7 +231,17 @@ const CreateQuestion = ({
       setErrorTitle('Unknown Error');
       setErrorDialog(true);
     }
-  }, [body, classId, classes.stackbar, enqueueSnackbar, handlePush, questionId, sectionId, title, userId]);
+  }, [
+    body,
+    classId,
+    classes.stackbar,
+    enqueueSnackbar,
+    handlePush,
+    questionId,
+    sectionId,
+    title,
+    userId
+  ]);
   const createQuestion = useCallback(async () => {
     setLoading(true);
 
@@ -261,28 +265,28 @@ const CreateQuestion = ({
       setIsPosting(true);
       const {
         points,
-        user: {
-          firstName
-        },
+        user: { firstName },
         classes: resClasses,
         questionId
-      } = canBatchPost ? await api.createBatchQuestion({
-        userId,
-        title,
-        sectionIds: classList.map(c => c.sectionId),
-        body
-      }) : await api.createQuestion({
-        userId,
-        title,
-        body,
-        anonymous: anonymousActive,
-        classId,
-        sectionId
-      });
+      } = canBatchPost
+        ? await api.createBatchQuestion({
+            userId,
+            title,
+            sectionIds: classList.map((c) => c.sectionId),
+            body
+          })
+        : await api.createQuestion({
+            userId,
+            title,
+            body,
+            anonymous: anonymousActive,
+            classId,
+            sectionId
+          });
       let hasError = false;
 
       if (canBatchPost && resClasses) {
-        resClasses.forEach(r => {
+        resClasses.forEach((r: any) => {
           if (r.status !== 'Success') {
             hasError = true;
           }
@@ -300,14 +304,16 @@ const CreateQuestion = ({
 
       logEventLocally({
         category: 'Question',
-        objectId: questionId,
+        objectId: String(questionId),
         type: 'Created'
       });
 
       if (points > 0 || canBatchPost) {
         enqueueSnackbar({
           notification: {
-            message: !canBatchPost ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!` : 'All posts were created successfully',
+            message: !canBatchPost
+              ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+              : 'All posts were created successfully',
             nextPath: '/feed',
             options: {
               variant: 'success',
@@ -335,34 +341,53 @@ const CreateQuestion = ({
       setErrorTitle('Unknown Error');
       setErrorDialog(true);
     }
-  }, [anonymousActive, body, setIsPosting, canBatchPost, classId, classList, classes.stackbar, enqueueSnackbar, handlePush, sectionId, title, userId]);
-  const handleSubmit = useCallback(event => {
-    event.preventDefault();
+  }, [
+    anonymousActive,
+    body,
+    setIsPosting,
+    canBatchPost,
+    classId,
+    classList,
+    classes.stackbar,
+    enqueueSnackbar,
+    handlePush,
+    sectionId,
+    title,
+    userId
+  ]);
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (questionId) {
-      updateQuestion();
-    } else {
-      createQuestion();
-    }
-  }, [createQuestion, questionId, updateQuestion]);
-  const handleTextChange = useCallback(() => event => {
-    setChanged(true);
-    setTitle(event.target.value);
+      if (questionId) {
+        updateQuestion();
+      } else {
+        createQuestion();
+      }
+    },
+    [createQuestion, questionId, updateQuestion]
+  );
+  const handleTextChange = useCallback(
+    () => (event) => {
+      setChanged(true);
+      setTitle(event.target.value);
 
-    if (localStorage.getItem('question')) {
-      const currentQuestion = JSON.parse(localStorage.getItem('question'));
-      currentQuestion.title = event.target.value;
-      currentQuestion.changed = true;
-      localStorage.setItem('question', JSON.stringify(currentQuestion));
-    } else {
-      const question = {
-        title: event.target.value,
-        changed: true
-      };
-      localStorage.setItem('question', JSON.stringify(question));
-    }
-  }, []);
-  const handleRTEChange = useCallback(value => {
+      if (localStorage.getItem('question')) {
+        const currentQuestion = JSON.parse(localStorage.getItem('question'));
+        currentQuestion.title = event.target.value;
+        currentQuestion.changed = true;
+        localStorage.setItem('question', JSON.stringify(currentQuestion));
+      } else {
+        const question = {
+          title: event.target.value,
+          changed: true
+        };
+        localStorage.setItem('question', JSON.stringify(question));
+      }
+    },
+    []
+  );
+  const handleRTEChange = useCallback((value) => {
     setChanged(true);
     setBody(value);
 
@@ -385,39 +410,73 @@ const CreateQuestion = ({
     setErrorBody('');
   }, []);
   const toggleAnonymousActive = useCallback(() => {
-    setAnonymousActive(a => !a);
+    setAnonymousActive((a) => !a);
   }, []);
-  return <div className={classes.root}>
+  return (
+    <div className={classes.root}>
       <ErrorBoundary>
-        <CreatePostForm currentTag={currentTag} loading={loading} changed={changed} anonymousActive={anonymousActive} toggleAnonymousActive={toggleAnonymousActive} handleSubmit={handleSubmit} buttonLabel={questionId ? 'Save' : 'Post! 🚀'}>
+        <CreatePostForm
+          currentTag={currentTag}
+          loading={loading}
+          changed={changed}
+          anonymousActive={anonymousActive}
+          toggleAnonymousActive={toggleAnonymousActive}
+          handleSubmit={handleSubmit}
+          buttonLabel={questionId ? 'Save' : 'Post! 🚀'}
+        >
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12}>
-              <OutlinedTextValidator label="Ask a Question*" labelClass={classes.labelClass} inputClass={classes.textValidator} placeholder="Ask your main question(s) here..." onChange={handleTextChange} name="title" value={title} validators={['required']} errorMessages={['Title is required']} />
+              <OutlinedTextValidator
+                label="Ask a Question*"
+                labelClass={classes.labelClass}
+                inputClass={classes.textValidator}
+                placeholder="Ask your main question(s) here..."
+                onChange={handleTextChange}
+                name="title"
+                value={title}
+                validators={['required']}
+                errorMessages={['Title is required']}
+              />
             </Grid>
             <Grid item xs={12} sm={12} className={classes.quillGrid}>
               <ToolbarTooltip toolbar={questionToolbar} toolbarClass={classes.toolbarClass} />
-              <RichTextEditor setEditor={setEditor} placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too." value={body} onChange={handleRTEChange} />
+              <RichTextEditor
+                setEditor={setEditor}
+                placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too."
+                value={body}
+                onChange={handleRTEChange}
+              />
             </Grid>
           </Grid>
         </CreatePostForm>
       </ErrorBoundary>
       <ErrorBoundary>
-        <SimpleErrorDialog open={errorDialog} title={errorTitle} body={errorBody} handleClose={handleErrorDialogClose} />
+        <SimpleErrorDialog
+          open={errorDialog}
+          title={errorTitle}
+          body={errorBody}
+          handleClose={handleErrorDialogClose}
+        />
       </ErrorBoundary>
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  user,
-  campaign
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
   user,
   campaign
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  pushTo: push,
-  enqueueSnackbar: notificationsActions.enqueueSnackbar
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      pushTo: push,
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(CreateQuestion)));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(withRouter(CreateQuestion)));

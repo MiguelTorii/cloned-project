@@ -1,5 +1,6 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core";
+import React from 'react';
+import { makeStyles } from '@material-ui/core';
+
 const useStyles = makeStyles({
   root: {
     display: 'flex'
@@ -19,21 +20,23 @@ const useStyles = makeStyles({
     backgroundColor: 'white'
   }
 });
+
 type Props = {
-  step: number;
-  totalSteps: number;
+  step?: number;
+  totalSteps?: number;
 };
 
-const Ellipses = ({
-  step,
-  totalSteps
-}: Props) => {
-  const classes = useStyles();
-  return <div className={classes.root}>
-      {[...Array(totalSteps).keys()].map(index => <div key={index} className={classes.ellipse}>
+const Ellipses = ({ step, totalSteps }: Props) => {
+  const classes: any = useStyles();
+  return (
+    <div className={classes.root}>
+      {[...(Array(totalSteps) as any).keys()].map((index) => (
+        <div key={index} className={classes.ellipse}>
           {index >= step && <div className={classes.whiteEllipse} />}
-        </div>)}
-    </div>;
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Ellipses;

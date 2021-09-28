@@ -1,24 +1,23 @@
-import React from "react";
-import Dialog from "components/Dialog/Dialog";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import getappqrcode from "assets/img/getappqrcode.png";
-import getappandroid from "assets/img/getappandroid.png";
-import getappios from "assets/img/getappios.png";
-import getappphone from "assets/img/getappphone.png";
-import LoadImg from "components/LoadImg/LoadImg";
-import { useStyles } from "../_styles/GetAppDialog";
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Dialog from '../Dialog/Dialog';
+import getappqrcode from '../../assets/img/getappqrcode.png';
+import getappandroid from '../../assets/img/getappandroid.png';
+import getappios from '../../assets/img/getappios.png';
+import getappphone from '../../assets/img/getappphone.png';
+import LoadImg from '../LoadImg/LoadImg';
+import { useStyles } from '../_styles/GetAppDialog';
+
 type Props = {
   open: boolean;
   onClose: (...args: Array<any>) => any;
 };
 
-const GetAppDialog = ({
-  open,
-  onClose
-}: Props) => {
-  const classes = useStyles();
-  return <Dialog fullWidth maxWidth="md" onCancel={onClose} open={Boolean(open)}>
+const GetAppDialog = ({ open, onClose }: Props) => {
+  const classes: any = useStyles();
+  return (
+    <Dialog fullWidth maxWidth="md" onCancel={onClose} open={Boolean(open)}>
       <Grid container className={classes.container}>
         <Grid item xs={12} md={6} className={classes.imageContainer}>
           <LoadImg url={getappphone} className={classes.imagePhone} />
@@ -51,7 +50,8 @@ const GetAppDialog = ({
           <LoadImg url={getappqrcode} className={classes.qr} />
         </Grid>
       </Grid>
-    </Dialog>;
+    </Dialog>
+  );
 };
 
 export default GetAppDialog;

@@ -1,5 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-export default makeStyles((theme) => ({
+
+export default makeStyles((theme: any) => ({
   root: {
     height: 225,
     borderRadius: '10px 10px 12px 12px',

@@ -1,50 +1,51 @@
-import React, { useCallback, useEffect, useMemo, useState, useRef } from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import IconSchool from "@material-ui/icons/School";
-import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
-import IconLeft from "@material-ui/icons/ArrowBack";
-import IconRight from "@material-ui/icons/ArrowForward";
-import Slide from "@material-ui/core/Slide";
-import clsx from "clsx";
-import { arrElemToId, englishIdFromNumber, extractTextFromHtml, shuffleArray } from "utils/helpers";
-import update from "immutability-helper";
-import Grid from "@material-ui/core/Grid";
-import { Select } from "@material-ui/core";
-import MenuItem from "@material-ui/core/MenuItem";
-import _ from "lodash";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import ChoiceRadio from "components/FlashcardsQuiz/ChoiceRadio";
-import GradientButton from "components/Basic/Buttons/GradientButton";
-import IconCheck from "@material-ui/icons/Check";
-import ImageCorrect from "assets/svg/answer-correct.svg";
-import ImageWrong from "assets/svg/answer-wrong.svg";
-import IconRetry from "@material-ui/icons/Replay";
-import Timer, { TIMER_STATUS } from "components/Timer/Timer";
-import Link from "@material-ui/core/Link";
-import IconBack from "@material-ui/icons/ChevronLeft";
-import ImageDialog from "components/ImageDialog/ImageDialog";
-import { TIMEOUT } from "constants/common";
-import { useIdleTimer } from "react-idle-timer";
-import { logEvent } from "api/analytics";
-import { differenceInMilliseconds } from "date-fns";
-import { INTERVAL } from "constants/app";
-import Button from "@material-ui/core/Button";
-import IconClose from "@material-ui/icons/Close";
-import useStyles from "./styles";
-import withRoot from "../../withRoot";
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import Typography from '@material-ui/core/Typography';
+import IconSchool from '@material-ui/icons/School';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import IconLeft from '@material-ui/icons/ArrowBack';
+import IconRight from '@material-ui/icons/ArrowForward';
+import Slide from '@material-ui/core/Slide';
+import clsx from 'clsx';
+import update from 'immutability-helper';
+import Grid from '@material-ui/core/Grid';
+import { Select } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import _ from 'lodash';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconCheck from '@material-ui/icons/Check';
+import IconRetry from '@material-ui/icons/Replay';
+import Link from '@material-ui/core/Link';
+import IconBack from '@material-ui/icons/ChevronLeft';
+import { useIdleTimer } from 'react-idle-timer';
+import { differenceInMilliseconds } from 'date-fns';
+import Button from '@material-ui/core/Button';
+import IconClose from '@material-ui/icons/Close';
+import ChoiceRadio from './ChoiceRadio';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import ImageCorrect from '../../assets/svg/answer-correct.svg';
+import ImageWrong from '../../assets/svg/answer-wrong.svg';
+import Timer, { TIMER_STATUS } from '../Timer/Timer';
+import ImageDialog from '../ImageDialog/ImageDialog';
+import { TIMEOUT } from '../../constants/common';
+import { logEvent } from '../../api/analytics';
+import { INTERVAL } from '../../constants/app';
+import {
+  arrElemToId,
+  englishIdFromNumber,
+  extractTextFromHtml,
+  shuffleArray
+} from '../../utils/helpers';
+import useStyles from './styles';
+import withRoot from '../../withRoot';
+
 const PROBLEM_COUNT_THRESHOLD = 3;
 const MULTIPLE_CHOICE_OPTIONS_COUNT = 4;
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
 
-const FlashcardsQuiz = ({
-  cards,
-  flashcardId,
-  onClose
-}) => {
-  const classes = useStyles();
+const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
+  const classes: any = useStyles();
   const [isExpanded, setIsExpanded] = useState(true);
   const [quizData, setQuizData] = useState({
     match: {
@@ -65,7 +66,7 @@ const FlashcardsQuiz = ({
   const elapsed = useRef(0);
   const totalIdleTime = useRef(0);
   const remaining = useRef(timeout);
-  const lastActive = useRef(+new Date());
+  const lastActive: any = useRef(+new Date());
   const timer = useRef(null);
 
   const handleOnActive = () => {
@@ -73,12 +74,7 @@ const FlashcardsQuiz = ({
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const {
-    getRemainingTime,
-    getLastActiveTime,
-    getElapsedTime,
-    reset
-  } = useIdleTimer({
+  const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } = useIdleTimer({
     timeout,
     onActive: handleOnActive
   });
@@ -102,10 +98,14 @@ const FlashcardsQuiz = ({
     lastActive.current = new Date();
   }, [elapsed, totalIdleTime, remaining, lastActive]);
   // Memos
-  const dropdownOptions = useMemo(() => [...new Array(quizData.match.qIds.length).keys()].map(id => ({
-    value: id + 1,
-    text: String.fromCharCode('A'.charCodeAt(0) + id)
-  })), [quizData]);
+  const dropdownOptions = useMemo(
+    () =>
+      [...(new Array(quizData.match.qIds.length) as any).keys()].map((id) => ({
+        value: id + 1,
+        text: String.fromCharCode('A'.charCodeAt(0) + id)
+      })),
+    [quizData]
+  );
   const unansweredCount = useMemo(() => {
     let result = 0;
 
@@ -124,14 +124,14 @@ const FlashcardsQuiz = ({
     return result;
   }, [choiceSelections, matchSelections, quizData]);
   // Callbacks
-  const initQuizData = useCallback(count => {
+  const initQuizData = useCallback((count) => {
     if (count < 1) {
       throw new Error('Number of cards should be greater than zero');
     }
 
     const matchCount = _.min([_.max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]), count]);
 
-    const arrIdx = [...new Array(matchCount).keys()];
+    const arrIdx = [...(new Array(matchCount) as any).keys()];
     const arr1 = shuffleArray(arrIdx);
     const arr2 = shuffleArray(arrIdx);
 
@@ -140,7 +140,9 @@ const FlashcardsQuiz = ({
     const optionCount = _.min([choiceCount, MULTIPLE_CHOICE_OPTIONS_COUNT]);
 
     const choiceData = [];
-    const arrChoiceIdx = [...new Array(choiceCount).keys()].map(i => i + count - choiceCount);
+    const arrChoiceIdx = [...(new Array(choiceCount) as any).keys()].map(
+      (i) => i + count - choiceCount
+    );
     const arr3 = shuffleArray(arrChoiceIdx);
 
     for (let i = 0; i < choiceCount; i += 1) {
@@ -151,29 +153,31 @@ const FlashcardsQuiz = ({
       optionsArr.push(arr3[i]);
       choiceData.push({
         qId: arr3[i],
-        options: shuffleArray(optionsArr).map(id => id + 1)
+        options: shuffleArray(optionsArr).map((id) => id + 1)
       });
     }
 
-    setQuizData(data => update(data, {
-      match: {
-        qIds: {
-          $set: arr1
+    setQuizData((data) =>
+      update(data, {
+        match: {
+          qIds: {
+            $set: arr1
+          },
+          qPositions: {
+            $set: arrElemToId(arr1)
+          },
+          aIds: {
+            $set: arr2
+          },
+          aPositions: {
+            $set: arrElemToId(arr2)
+          }
         },
-        qPositions: {
-          $set: arrElemToId(arr1)
-        },
-        aIds: {
-          $set: arr2
-        },
-        aPositions: {
-          $set: arrElemToId(arr2)
+        choice: {
+          $set: choiceData
         }
-      },
-      choice: {
-        $set: choiceData
-      }
-    }));
+      })
+    );
     setMatchSelections([]);
     setChoiceSelections([]);
   }, []);
@@ -186,18 +190,22 @@ const FlashcardsQuiz = ({
     setIsExpanded(!isExpanded);
   }, [isExpanded]);
   const handleMatchSelectAnswer = useCallback((id, value) => {
-    setMatchSelections(data => update(data, {
-      [id]: {
-        $set: value
-      }
-    }));
+    setMatchSelections((data) =>
+      update(data, {
+        [id]: {
+          $set: value
+        }
+      })
+    );
   }, []);
   const handleChoiceSelectAnswer = useCallback((id, value) => {
-    setChoiceSelections(data => update(data, {
-      [id]: {
-        $set: value
-      }
-    }));
+    setChoiceSelections((data) =>
+      update(data, {
+        [id]: {
+          $set: value
+        }
+      })
+    );
   }, []);
   const handleCheckAnswers = useCallback(() => {
     setIsValidated(true);
@@ -238,7 +246,8 @@ const FlashcardsQuiz = ({
   }, []);
 
   // Rendering Helpers
-  const renderSidebar = () => <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
+  const renderSidebar = () => (
+    <Box className={clsx(classes.sidebar, !isExpanded && classes.unExpandedSidebar)}>
       <Box mb={3}>
         <Link component="button" onClick={handleBack} color="inherit" variant="h5" underline="none">
           <IconBack className={classes.iconMiddle} /> Back
@@ -253,78 +262,156 @@ const FlashcardsQuiz = ({
       <Box mt={4}>
         <Timer defaultStatus={timerStatus} />
       </Box>
-      <IconButton className={clsx(classes.sidebarButton, classes.expandButton)} onClick={handleExpand}>
+      <IconButton
+        className={clsx(classes.sidebarButton, classes.expandButton)}
+        onClick={handleExpand}
+      >
         {isExpanded ? <IconLeft /> : <IconRight />}
       </IconButton>
-    </Box>;
+    </Box>
+  );
 
-  const renderImageIcon = imageUrl => {
+  const renderImageIcon = (imageUrl) => {
     if (!imageUrl) {
       return null;
     }
 
-    return <img src={imageUrl} className={classes.iconImage} alt="Flashcard Thumbnail" onClick={event => handleViewImage(event, imageUrl)} />;
+    return (
+      <img
+        src={imageUrl}
+        className={classes.iconImage}
+        alt="Flashcard Thumbnail"
+        onClick={(event) => handleViewImage(event, imageUrl)}
+      />
+    );
   };
 
-  const renderMatching = () => <Grid container spacing={2}>
+  const renderMatching = () => (
+    <Grid container spacing={2}>
       <Grid item xs={12} lg={6}>
-        {quizData.match.qIds.map((id, index) => <Box display="flex" alignItems="center" key={id} mb={2}>
+        {quizData.match.qIds.map((id, index) => (
+          <Box display="flex" alignItems="center" key={id} mb={2}>
             <div className={classes.checkIconContainer}>
-              {isValidated && <img className={classes.checkImage} src={matchSelections[id] - 1 !== quizData.match.aPositions[id] ? ImageWrong : ImageCorrect} alt="Check Answer Icon" />}
+              {isValidated && (
+                <img
+                  className={classes.checkImage}
+                  src={
+                    matchSelections[id] - 1 !== quizData.match.aPositions[id]
+                      ? ImageWrong
+                      : ImageCorrect
+                  }
+                  alt="Check Answer Icon"
+                />
+              )}
             </div>
-            <Select className={clsx(classes.matchQuestionSelect, isValidated && matchSelections[id] - 1 === quizData.match.aPositions[id] && classes.correctBackground, isValidated && matchSelections[id] - 1 !== quizData.match.aPositions[id] && classes.wrongBackground)} classes={{
-          disabled: classes.textWhite
-        }} onChange={event => handleMatchSelectAnswer(id, event.target.value)} value={matchSelections[id] || ''} disabled={isValidated}>
-              {dropdownOptions.map(item => <MenuItem key={item.value} value={item.value}>
+            <Select
+              className={clsx(
+                classes.matchQuestionSelect,
+                isValidated &&
+                  matchSelections[id] - 1 === quizData.match.aPositions[id] &&
+                  classes.correctBackground,
+                isValidated &&
+                  matchSelections[id] - 1 !== quizData.match.aPositions[id] &&
+                  classes.wrongBackground
+              )}
+              classes={{
+                disabled: classes.textWhite
+              }}
+              onChange={(event) => handleMatchSelectAnswer(id, event.target.value)}
+              value={matchSelections[id] || ''}
+              disabled={isValidated}
+            >
+              {dropdownOptions.map((item) => (
+                <MenuItem key={item.value} value={item.value}>
                   {item.text}
-                </MenuItem>)}
+                </MenuItem>
+              ))}
             </Select>
             <Typography className={classes.matchQuestionText}>
               <b>{index + 1}.&nbsp;</b>
               {renderImageIcon(cards[id].questionImage)}
               {extractTextFromHtml(cards[id].question)}
             </Typography>
-          </Box>)}
+          </Box>
+        ))}
       </Grid>
       <Grid item xs={12} lg={6}>
-        {quizData.match.aIds.map((id, index) => <Box key={id} mb={2}>
+        {quizData.match.aIds.map((id, index) => (
+          <Box key={id} mb={2}>
             <Typography>
               <b>{englishIdFromNumber(index)}.&nbsp;</b>
               {renderImageIcon(cards[id].answerImage)}
               {extractTextFromHtml(cards[id].answer)}
             </Typography>
-          </Box>)}
+          </Box>
+        ))}
       </Grid>
-    </Grid>;
+    </Grid>
+  );
 
-  const renderMultipleChoice = () => <Grid container direction="column" spacing={2}>
-      {quizData.choice.map((item, index) => <Grid item key={item.qId}>
+  const renderMultipleChoice = () => (
+    <Grid container direction="column" spacing={2}>
+      {quizData.choice.map((item, index) => (
+        <Grid item key={item.qId}>
           <Typography paragraph>
             <b>
               {index + 1}. {renderImageIcon(cards[item.qId].questionImage)}{' '}
               {extractTextFromHtml(cards[item.qId].question)}
             </b>
           </Typography>
-          <RadioGroup onChange={event => handleChoiceSelectAnswer(item.qId, parseInt(event.target.value, 10))} value={choiceSelections[item.qId] || ''} name={`question-${item.qId}`}>
-            {item.options.map(id => <Box key={id} display="flex" alignItems="center" mb={1}>
+          <RadioGroup
+            onChange={(event) =>
+              handleChoiceSelectAnswer(item.qId, parseInt(event.target.value, 10))
+            }
+            value={choiceSelections[item.qId] || ''}
+            name={`question-${item.qId}`}
+          >
+            {item.options.map((id) => (
+              <Box key={id} display="flex" alignItems="center" mb={1}>
                 <div className={classes.checkIconContainer}>
-                  {isValidated && item.qId === id - 1 && <img src={ImageCorrect} alt="Correct Icon" className={classes.checkImage} />}
-                  {isValidated && choiceSelections[item.qId] === id && item.qId !== id - 1 && <img src={ImageWrong} alt="Wrong Icon" className={classes.checkImage} />}
+                  {isValidated && item.qId === id - 1 && (
+                    <img src={ImageCorrect} alt="Correct Icon" className={classes.checkImage} />
+                  )}
+                  {isValidated && choiceSelections[item.qId] === id && item.qId !== id - 1 && (
+                    <img src={ImageWrong} alt="Wrong Icon" className={classes.checkImage} />
+                  )}
                 </div>
-                <Box flexGrow={1} className={clsx(isValidated && item.qId === id - 1 && classes.correctBackground, isValidated && choiceSelections[item.qId] === id && item.qId !== id - 1 && classes.wrongBackground)}>
-                  <FormControlLabel value={id} control={<ChoiceRadio />} label={<>
+                <Box
+                  flexGrow={1}
+                  className={clsx(
+                    isValidated && item.qId === id - 1 && classes.correctBackground,
+                    isValidated &&
+                      choiceSelections[item.qId] === id &&
+                      item.qId !== id - 1 &&
+                      classes.wrongBackground
+                  )}
+                >
+                  <FormControlLabel
+                    value={id}
+                    control={<ChoiceRadio />}
+                    label={
+                      <>
                         {renderImageIcon(cards[id - 1].answerImage)}
                         {extractTextFromHtml(cards[id - 1].answer)}
-                      </>} disabled={isValidated} className={classes.choiceRadio} classes={{
-              disabled: classes.textWhite
-            }} />
+                      </>
+                    }
+                    disabled={isValidated}
+                    className={classes.choiceRadio}
+                    classes={{
+                      disabled: classes.textWhite
+                    }}
+                  />
                 </Box>
-              </Box>)}
+              </Box>
+            ))}
           </RadioGroup>
-        </Grid>)}
-    </Grid>;
+        </Grid>
+      ))}
+    </Grid>
+  );
 
-  const renderContent = () => <div className={classes.contentBox}>
+  const renderContent = () => (
+    <div className={classes.contentBox}>
       <div className={clsx(classes.sectionTitle, classes.firstSection)}>
         <Typography variant="h6">Matching</Typography>
         <Typography>Match the questions on the left with the answers on the right.</Typography>
@@ -336,23 +423,35 @@ const FlashcardsQuiz = ({
       </div>
       <div className={classes.choiceContainer}>{renderMultipleChoice()}</div>
       <Box pl={4} mt={3} display="flex" alignItems="center">
-        {!isValidated && <>
-            <GradientButton startIcon={<IconCheck />} onClick={handleCheckAnswers} disabled={unansweredCount > 0}>
+        {!isValidated && (
+          <>
+            <GradientButton
+              startIcon={<IconCheck />}
+              onClick={handleCheckAnswers}
+              disabled={unansweredCount > 0}
+            >
               Check Your Answers
             </GradientButton>
-            {unansweredCount > 0 && <Box ml={3}>
+            {unansweredCount > 0 && (
+              <Box ml={3}>
                 <Typography color="error">
                   {unansweredCount} unanswered questions. Answer all questions to submit.
                 </Typography>
-              </Box>}
-          </>}
-        {isValidated && <GradientButton startIcon={<IconRetry />} onClick={handleRetryQuiz}>
+              </Box>
+            )}
+          </>
+        )}
+        {isValidated && (
+          <GradientButton startIcon={<IconRetry />} onClick={handleRetryQuiz}>
             Try Again
-          </GradientButton>}
+          </GradientButton>
+        )}
       </Box>
-    </div>;
+    </div>
+  );
 
-  return <Box position="relative">
+  return (
+    <Box position="relative">
       <Slide in={isExpanded} direction="right">
         {renderSidebar()}
       </Slide>
@@ -364,15 +463,15 @@ const FlashcardsQuiz = ({
         </Box>
         {renderContent()}
       </Box>
-      <ImageDialog open={isImageModalOpen} imageUrl={previewImage} onClose={handleCloseImageModal} />
-    </Box>;
+      <ImageDialog
+        open={isImageModalOpen}
+        imageUrl={previewImage}
+        onClose={handleCloseImageModal}
+      />
+    </Box>
+  );
 };
 
-FlashcardsQuiz.propTypes = {
-  flashcardId: PropTypes.number.isRequired,
-  cards: PropTypes.arrayOf.isRequired,
-  onClose: PropTypes.func
-};
 FlashcardsQuiz.defaultProps = {
   onClose: () => {}
 };

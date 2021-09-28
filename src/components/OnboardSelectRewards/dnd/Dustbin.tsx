@@ -1,5 +1,6 @@
-import React from "react";
-import { useDrop } from "react-dnd";
+import React from 'react';
+import { useDrop } from 'react-dnd';
+
 const style = {
   height: 50,
   width: 51,
@@ -8,18 +9,11 @@ const style = {
   borderRadius: 5
 };
 
-const Dustbin = ({
-  accept,
-  lastDroppedItem,
-  onDrop
-}) => {
-  const [{
-    isOver,
-    canDrop
-  }, drop] = useDrop({
+const Dustbin = ({ accept, lastDroppedItem, onDrop }) => {
+  const [{ isOver, canDrop }, drop] = useDrop({
     accept,
     drop: onDrop,
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: !lastDroppedItem
     })
@@ -31,17 +25,17 @@ const Dustbin = ({
     backgroundColor = 'darkgreen';
   }
 
-  const handleDrop = () => canDrop ? drop : null;
+  const handleDrop = () => (canDrop ? drop : null);
 
   const imgStyle = {
     height: 50,
     width: 50
   };
-  return <div ref={handleDrop()} style={{ ...style,
-    backgroundColor
-  }}>
+  return (
+    <div ref={handleDrop()} style={{ ...style, backgroundColor }}>
       {lastDroppedItem && <img alt="alt" src={lastDroppedItem.ic} style={imgStyle} />}
-    </div>;
+    </div>
+  );
 };
 
 export default Dustbin;

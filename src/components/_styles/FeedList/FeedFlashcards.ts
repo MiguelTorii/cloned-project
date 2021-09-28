@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-export const useStyles = makeStyles((theme) => ({
+
+export const useStyles = makeStyles((theme: any) => ({
   flashCardPreview: {
     position: 'relative',
     backgroundColor: theme.circleIn.palette.flashcardBackground,

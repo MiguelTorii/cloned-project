@@ -1,34 +1,30 @@
 /* eslint-disable import/prefer-default-export */
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import type { ToDos } from "../types/models";
-import { logEvent } from "./analytics";
-import { getToken } from "./utils";
-export const getReminders = async ({
-  userId
-}: {
-  userId: string;
-}): Promise<ToDos> => {
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import type { ToDo } from '../types/models';
+import { logEvent } from './analytics';
+import { getToken } from './utils';
+import { APIToDo } from './models/APIToDo';
+
+export const getReminders = async ({ userId }: { userId: string }): Promise<ToDo[]> => {
   try {
     const token = await getToken();
-    const result = await axios.get(`${API_ROUTES.USER}/${userId}/todo?token=NA`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result: { data: { todos: APIToDo[] } } = await axios.get(
+      `${API_ROUTES.USER}/${userId}/todo?token=NA`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data = {}
-    } = result;
-    const {
-      todos = []
-    } = data;
-    return todos.map(item => ({
-      due: Number((item.due as number) || 0),
-      dueDate: Number((item.due_date as number) || 0),
-      id: Number((item.id as number) || 0),
-      label: Number((item.label as number) || 0),
-      status: Number((item.status as number) || 0),
-      title: String((item.title as string) || '')
+    );
+    const { todos } = result.data;
+    return todos.map((item: APIToDo) => ({
+      due: item.due || 0,
+      dueDate: item.due_date || 0,
+      id: item.id || 0,
+      label: item.label || 0,
+      status: item.status || 0,
+      title: item.title || ''
     }));
   } catch (err) {
     console.log(err);
@@ -50,20 +46,22 @@ export const createReminder = async ({
 }) => {
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.USER}/${userId}/todo`, {
-      title,
-      label,
-      due_date: dueDate,
-      token: 'NA',
-      status
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/todo`,
+      {
+        title,
+        label,
+        due_date: dueDate,
+        token: 'NA',
+        status
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data
-    } = result;
+    );
+    const { data } = result;
 
     try {
       logEvent({
@@ -93,44 +91,42 @@ export const updateReminder = async ({
 }) => {
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.USER}/${userId}/todo/${id}/status`, {
-      user_id: Number(userId),
-      token: 'NA',
-      status
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/todo/${id}/status`,
+      {
+        user_id: Number(userId),
+        token: 'NA',
+        status
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data
-    } = result;
+    );
+    const { data } = result;
     return data;
   } catch (err) {
     console.log(err);
     return {};
   }
 };
-export const deleteReminder = async ({
-  userId,
-  id
-}: {
-  userId: string;
-  id: number;
-}) => {
+export const deleteReminder = async ({ userId, id }: { userId: string; id: number }) => {
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.USER}/${userId}/todo/${id}/destroy`, {
-      user_id: Number(userId),
-      token: 'NA'
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.USER}/${userId}/todo/${id}/destroy`,
+      {
+        user_id: Number(userId),
+        token: 'NA'
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data
-    } = result;
+    );
+    const { data } = result;
     return data;
   } catch (err) {
     console.log(err);

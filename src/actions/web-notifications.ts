@@ -7,7 +7,7 @@ const requestUpdateTitle = (): Action => ({
   type: webNotificationsActions.UPDATE_TITLE_REQUEST
 });
 
-const setTitle = ({ title, body }: { title: string, body: string }): Action => ({
+const setTitle = ({ title, body }: { title: string; body: string }): Action => ({
   type: webNotificationsActions.UPDATE_TITLE_SUCCESS,
   payload: {
     title,
@@ -16,7 +16,7 @@ const setTitle = ({ title, body }: { title: string, body: string }): Action => (
 });
 
 export const updateTitle =
-  ({ title, body }: { title: string, body: string }) =>
+  ({ title, body }: { title: string; body: string }) =>
   async (dispatch: Dispatch) => {
     dispatch(requestUpdateTitle());
     dispatch(

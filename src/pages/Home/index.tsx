@@ -1,16 +1,17 @@
-import React from "react";
-import { Box, Grid, Hidden } from "@material-ui/core";
-import Layout from "../../containers/Layout/Layout";
-import withRoot from "../../withRoot";
-import HomeGreetings from "../../containers/HomeGreetings/HomeGreetings";
-import WeeklyGoals from "../../containers/WeeklyGoals/WeeklyGoals";
-import ClassmateQuestions from "../../containers/ClassmateQuestions/ClassmateQuestions";
-import useStyles from "./styles";
-import MiniWorkflows from "../../containers/MiniWorkflows/MiniWorkflows";
+import React from 'react';
+import { Box, Grid, Hidden } from '@material-ui/core';
+import Layout from '../../containers/Layout/Layout';
+import withRoot from '../../withRoot';
+import HomeGreetings from '../../containers/HomeGreetings/HomeGreetings';
+import WeeklyGoals from '../../containers/WeeklyGoals/WeeklyGoals';
+import ClassmateQuestions from '../../containers/ClassmateQuestions/ClassmateQuestions';
+import useStyles from './styles';
+import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 
 const Home = () => {
-  const classes = useStyles();
-  return <main>
+  const classes: any = useStyles();
+  return (
+    <main>
       <Layout>
         <Box p={3}>
           <Grid container className={classes.root} spacing={3}>
@@ -28,14 +29,15 @@ const Home = () => {
               </Grid>
             </Grid>
             <Hidden mdDown>
-              <Grid item xs={0} lg={4} xl={3}>
+              <Grid item lg={4} xl={3}>
                 <MiniWorkflows />
               </Grid>
             </Hidden>
           </Grid>
         </Box>
       </Layout>
-    </main>;
+    </main>
+  );
 };
 
 export default withRoot(Home);

@@ -1,26 +1,31 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React from "react";
-import type { Node } from "react";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import CustomSwitch from "components/MainLayout/Switch";
-import Grid from "@material-ui/core/Grid";
-import Dialog from "../Dialog/Dialog";
-import { styles } from "../_styles/CreatePostForm";
+import React from 'react';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import CustomSwitch from '../MainLayout/Switch';
+import Dialog from '../Dialog/Dialog';
+import { styles } from '../_styles/CreatePostForm';
+
 type Props = {
-  classes: Record<string, any>;
-  children: Node;
-  loading: boolean;
-  errorMessage: string | null | undefined;
-  changed: boolean;
-  buttonLabel: string;
-  handleSubmit: (...args: Array<any>) => any;
+  currentTag?: any;
+  title?: string;
+  subtitle?: string;
+  classes?: Record<string, any>;
+  children?: React.ReactNode;
+  loading?: boolean;
+  errorMessage?: any;
+  changed?: boolean;
+  buttonLabel?: string;
+  toggleAnonymousActive?: any;
+  anonymousActive?: any;
+  handleSubmit?: (...args: Array<any>) => any;
 };
 type State = {};
 
@@ -28,22 +33,21 @@ class CreatePostForm extends React.PureComponent<Props, State> {
   state = {
     open: false
   };
+
   showBreakDownDialog = () => {
     this.setState({
       open: true
     });
   };
+
   onClose = () => {
     this.setState({
       open: false
     });
   };
+
   getButtonLabel = () => {
-    const {
-      loading,
-      changed,
-      buttonLabel
-    } = this.props;
+    const { loading, changed, buttonLabel } = this.props;
 
     if (loading || !changed) {
       return 'Post';
@@ -65,36 +69,65 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       errorMessage,
       handleSubmit
     } = this.props;
-    const {
-      open
-    } = this.state;
-    return <>
+    const { open } = this.state;
+    return (
+      <>
         <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
           <main className={classes.main}>
             <Paper className={classes.paper}>{children}</Paper>
             <Grid container alignItems="center">
               <Grid className={classes.mt3} item xs={12} sm={6}>
-                {currentTag === 1 && <Box mb={2}>
-                    <FormControlLabel className={classes.anonymousActive} control={<CustomSwitch checked={anonymousActive} onChange={toggleAnonymousActive} name="anonymous" />} label={anonymousActive ? 'This post is anonymous!' : 'Make this post anonymous! 👀'} />
+                {currentTag === 1 && (
+                  <Box mb={2}>
+                    <FormControlLabel
+                      className={classes.anonymousActive}
+                      control={
+                        <CustomSwitch
+                          checked={anonymousActive}
+                          onChange={toggleAnonymousActive}
+                          name="anonymous"
+                        />
+                      }
+                      label={
+                        anonymousActive ? 'This post is anonymous!' : 'Make this post anonymous! 👀'
+                      }
+                    />
                     <Typography className={classes.anonymouslyExplanation}>
                       Your classmates cannot see who asked the question, but this post can still be
                       flagged for academic dishonesty.
                     </Typography>
-                  </Box>}
-                <Button onClick={this.showBreakDownDialog} color="primary" className={classes.breakdown}>
+                  </Box>
+                )}
+                <Button
+                  onClick={this.showBreakDownDialog}
+                  color="primary"
+                  className={classes.breakdown}
+                >
                   🏆 &nbsp;<u>Points Breakdown</u>
                 </Button>
               </Grid>
               <Grid className={classes.mt3} item xs={12} sm={6}>
                 <div className={classes.actions}>
                   <div className={classes.wrapper}>
-                    <Button type="submit" variant="contained" color="primary" fullWidth disabled={Boolean(loading || !changed)} classes={{
-                    root: classes.submit,
-                    disabled: classes.disabled
-                  }} id="post-submit-btn">
-                      {loading ? <div className={classes.divProgress}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      disabled={Boolean(loading || !changed)}
+                      classes={{
+                        root: classes.submit,
+                        disabled: classes.disabled
+                      }}
+                      id="post-submit-btn"
+                    >
+                      {loading ? (
+                        <div className={classes.divProgress}>
                           <CircularProgress size={24} className={classes.buttonProgress} />
-                        </div> : this.getButtonLabel()}
+                        </div>
+                      ) : (
+                        this.getButtonLabel()
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -105,7 +138,14 @@ class CreatePostForm extends React.PureComponent<Props, State> {
             </Grid>
           </main>
         </ValidatorForm>
-        <Dialog className={classes.dialog} contentClassName={classes.contentClassName} okTitle="Ok" onCancel={this.onClose} open={open} title="🏆 Points Breakdown">
+        <Dialog
+          className={classes.dialog}
+          contentClassName={classes.contentClassName}
+          okTitle="Ok"
+          onCancel={this.onClose}
+          open={open}
+          title="🏆 Points Breakdown"
+        >
           <div className={classes.childContent}>
             <div className={classes.pointItems}>
               <div className={classes.itemMark}>
@@ -141,9 +181,9 @@ class CreatePostForm extends React.PureComponent<Props, State> {
             </div>
           </div>
         </Dialog>
-      </>;
+      </>
+    );
   }
-
 }
 
-export default withStyles(styles)(CreatePostForm);
+export default withStyles(styles as any)(CreatePostForm);

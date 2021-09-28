@@ -2,6 +2,7 @@ import axios from 'axios';
 import { API_ROUTES } from '../constants/routes';
 import { callApi } from './api_base';
 import { getToken } from './utils';
+
 export const getCommunities = async () => {
   try {
     const token = await getToken();

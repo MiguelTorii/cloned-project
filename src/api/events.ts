@@ -10,34 +10,31 @@ const createEvent = async ({
   recommendationType,
   ...rest
 }: {
-  category: string,
-  objectId: string,
-  type: string
-}): void => {
+  category: string;
+  objectId: string;
+  type: string;
+  recommendationType: any;
+}): Promise<void> => {
   if (reduxStore.getState().user.isMasquerading) {
     return;
   }
 
-  try {
-    const token = await getToken();
-    axios.post(
-      `${API_ROUTES.EVENTS}`,
-      {
-        category,
-        object_id: objectId.toString(),
-        recommendation_type: recommendationType,
-        type,
-        ...rest
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+  const token = await getToken();
+  axios.post(
+    `${API_ROUTES.EVENTS}`,
+    {
+      category,
+      object_id: objectId.toString(),
+      recommendation_type: recommendationType,
+      type,
+      ...rest
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
-  } catch (err) {
-    console.log(err);
-  }
+    }
+  );
 };
 
 export default createEvent;

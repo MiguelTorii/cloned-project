@@ -1,4 +1,5 @@
 import { dialogStyle } from './Dialog';
+
 export const styles = (theme) => ({
   dialog: { ...dialogStyle, maxWidth: 700 },
   image: {

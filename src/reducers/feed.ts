@@ -1,20 +1,20 @@
-import update from "immutability-helper";
-import { rootActions, feedActions } from "../constants/action-types";
-import type { Action } from "../types/action";
-import type { Feed } from "../types/models";
-import { POST_WRITER } from "../constants/common";
-import { FEEDS_PER_PAGE } from "../constants/app";
-import { feedToCamelCase } from "../api/utils";
+import update from 'immutability-helper';
+import { rootActions, feedActions } from '../constants/action-types';
+import type { Action } from '../types/action';
+import type { FeedItem } from '../types/models';
+import { POST_WRITER } from '../constants/common';
+import { FEEDS_PER_PAGE } from '../constants/app';
+import { feedToCamelCase } from '../api/utils';
+
 export type FeedState = {
-  isLoading: boolean,
   data: {
-    items: Feed;
+    items: FeedItem[];
     hasMore: boolean;
     lastIndex: number;
     filters: {
       userClasses: Array<string>;
-      index: number;
-      limit: number;
+      index?: number;
+      limit?: number;
       postTypes: Array<string>;
       from: string;
       bookmark: boolean;
@@ -26,15 +26,17 @@ export type FeedState = {
   };
   error: boolean;
   errorMessage: {
-    title: string,
-    body: string
-  },
+    title: string;
+    body: string;
+  };
+  isLoading: boolean;
   scrollData: {
     position: number;
-    classId: string;
+    classId: number;
   };
   lastClickedPostScrollPosition: number;
 };
+
 const defaultState = {
   data: {
     items: [],
@@ -52,18 +54,19 @@ const defaultState = {
       pastFilter: false
     }
   },
-  isLoading: false,
   error: false,
   errorMessage: {
     title: '',
     body: ''
   },
+  isLoading: false,
   lastClickedPostScrollPosition: null,
   scrollData: {
     position: null,
     classId: -1
   }
 };
+
 export default (state: FeedState = defaultState, action: Action): FeedState => {
   switch (action.type) {
     case feedActions.SEARCH_FEED_REQUEST:
@@ -83,11 +86,9 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
     case feedActions.FETCH_FEED_SUCCESS:
       return update(state, {
         data: {
-          // $FlowFixMe
           items: {
             $push: action.payload.feed
           },
-          // $FlowFixMe
           hasMore: {
             $set: action.payload.hasMore
           }
@@ -103,7 +104,6 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
     case feedActions.SEARCH_FEED_SUCCESS:
       return update(state, {
         data: {
-          // $FlowFixMe
           items: {
             $set: action.payload.feed
           }
@@ -122,11 +122,9 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
           $set: true
         },
         errorMessage: {
-          // $FlowFixMe
           title: {
             $set: action.payload.title
           },
-          // $FlowFixMe
           body: {
             $set: action.payload.body
           }
@@ -154,15 +152,11 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
         data: {
           items: {
             $apply: (b) => {
-              const index = b.findIndex(
-                // $FlowFixMe
-                (item) => item.feedId === action.payload.feedId
-              );
+              const index = b.findIndex((item) => item.feedId === action.payload.feedId);
 
               if (index > -1) {
                 return update(b, {
                   [index]: {
-                    // $FlowFixMe
                     bookmarked: {
                       $set: !action.payload.bookmarked
                     }
@@ -180,7 +174,6 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
       return update(state, {
         data: {
           filters: {
-            // $FlowFixMe
             [action.payload.field]: {
               $set: action.payload.value
             }
@@ -207,7 +200,6 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
       return update(state, {
         data: {
           filters: {
-            // $FlowFixMe
             limit: {
               $set: action.payload.limit
             }
@@ -238,65 +230,57 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
         }
       });
 
-    case feedActions.UPDATE_FILTER_FIELDS:
-      {
-        return update(state, {
-          data: {
-            filters: filterData => ({
-              ...filterData,
-              ...action.payload
-            })
-          }
-        });
-      }
-
-    case feedActions.FETCH_FEED:
-      {
-        const posts = action.payload.posts || [];
-        return update(state, {
-          data: {
-            items: {
-              $push: feedToCamelCase(posts)
-            },
-            hasMore: {
-              $set: posts.length >= FEEDS_PER_PAGE
-            },
-            lastIndex: data => data + posts.length
-          }
-        });
-      }
-
-    case feedActions.DELETE_FEED:
-      {
-        return update(state, {
-          data: {
-            items: data => data.filter(feed => feed.feedId !== action.payload.feedId)
-          }
-        });
-      }
-
-    case feedActions.BOOKMARK_FEED:
-      {
-        const {
-          feedId,
-          bookmarked
-        } = action.meta;
-        const {
-          bookmark: filterBookmark
-        } = state.data.filters;
-
-        // If only bookmarked posts show up and the bookmark was removed from the post, it should be removed from the list.
-        if (filterBookmark && !bookmarked) {
-          return update(state, {
-            data: {
-              items: data => data.filter(feed => feed.feedId !== feedId)
-            }
-          });
+    case feedActions.UPDATE_FILTER_FIELDS: {
+      return update(state, {
+        data: {
+          filters: (filterData) => ({
+            ...filterData,
+            ...action.payload
+          })
         }
+      });
+    }
 
+    case feedActions.FETCH_FEED: {
+      const posts = action.payload.posts || [];
+      return update(state, {
+        data: {
+          items: {
+            $push: feedToCamelCase(posts)
+          },
+          hasMore: {
+            $set: posts.length >= FEEDS_PER_PAGE
+          },
+          lastIndex: (data) => data + posts.length
+        }
+      });
+    }
+
+    case feedActions.DELETE_FEED: {
+      return update(state, {
+        data: {
+          items: (data) => data.filter((feed) => feed.feedId !== action.payload.feedId)
+        }
+      });
+    }
+
+    case feedActions.BOOKMARK_FEED: {
+      const { feedId, bookmarked } = action.meta;
+      const { bookmark: filterBookmark } = state.data.filters;
+
+      // If only bookmarked posts show up and the bookmark was removed from the post, it should be removed from the list.
+      if (filterBookmark && !bookmarked) {
         return update(state, {
           data: {
-            items: data => data.map(feed => {
+            items: (data) => data.filter((feed) => feed.feedId !== feedId)
+          }
+        });
+      }
+
+      return update(state, {
+        data: {
+          items: (data) =>
+            data.map((feed) => {
               if (feed.feedId !== feedId) {
                 return feed;
               }
@@ -306,9 +290,9 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
                 bookmarked: bookmarked
               };
             })
-          }
-        });
-      }
+        }
+      });
+    }
 
     case rootActions.CLEAR_STATE:
       return defaultState;

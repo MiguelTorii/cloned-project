@@ -1,24 +1,21 @@
-import React, { useMemo } from "react";
-import { Avatar as MuiAvatar } from "@material-ui/core";
-import withRoot from "../../withRoot";
-import { useStyles } from "../_styles/Avatar";
+import React, { useMemo } from 'react';
+import { Avatar as MuiAvatar } from '@material-ui/core';
+import withRoot from '../../withRoot';
+import { useStyles } from '../_styles/Avatar';
+
 export const DEFAULT_AVATAR_SIZE = {
   desktop: 124,
   mobile: 60
 };
+
 type Props = {
-  src: string;
+  src: any;
   initialText?: string;
   desktopSize?: number;
   mobileSize?: number;
 };
 
-const Avatar = ({
-  src,
-  initialText,
-  mobileSize,
-  desktopSize
-}: Props) => {
+const Avatar = ({ src, initialText, mobileSize, desktopSize }: Props) => {
   const classes = useStyles({
     mobileSize,
     desktopSize
@@ -30,9 +27,11 @@ const Avatar = ({
 
     return src;
   }, [src]);
-  return <MuiAvatar src={avatarUrl} className={classes.avatar}>
+  return (
+    <MuiAvatar src={avatarUrl} className={classes.avatar}>
       {initialText}
-    </MuiAvatar>;
+    </MuiAvatar>
+  );
 };
 
 Avatar.defaultProps = {

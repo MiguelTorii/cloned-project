@@ -1,24 +1,28 @@
-import React, { useState, useCallback, useEffect } from "react";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import CommentQuill from "./CommentQuill";
-import SkeletonLoad from "./SkeletonLoad";
-import styles from "../_styles/PostItem/PostItemAddComment";
+import React, { useState, useCallback, useEffect } from 'react';
+import cx from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import CommentQuill from './CommentQuill';
+import SkeletonLoad from './SkeletonLoad';
+import styles from '../_styles/PostItem/PostItemAddComment';
+
 type Props = {
-  classes: Record<string, any>;
-  feedId: string;
-  userId: string;
-  isPastClassFlashcard: boolean;
-  isReply: boolean;
-  rte: boolean;
-  readOnly: boolean;
-  isQuestion: boolean;
-  defaultValue: string;
-  toolbarPrefix: string;
-  onPostComment: (...args: Array<any>) => any;
-  onCancelComment: (...args: Array<any>) => any;
-  onEscape: (...args: Array<any>) => any;
+  commentId?: number;
+  classes?: Record<string, any>;
+  feedId?: number;
+  userId?: string;
+  isPastClassFlashcard?: boolean;
+  isReply?: boolean;
+  rte?: boolean;
+  readOnly?: boolean;
+  isQuestion?: boolean;
+  defaultValue?: string;
+  toolbarPrefix?: string;
+  profileImageUrl?: string;
+  name?: string;
+  onPostComment?: (...args: Array<any>) => any;
+  onCancelComment?: (...args: Array<any>) => any;
+  onEscape?: (...args: Array<any>) => any;
 };
 
 const PostItemAddComment = ({
@@ -35,7 +39,9 @@ const PostItemAddComment = ({
   feedId,
   userId,
   toolbarPrefix,
-  defaultValue
+  defaultValue,
+  profileImageUrl,
+  name
 }: Props) => {
   const [value, setValue] = useState('');
   const [showError, setShowError] = useState(false);
@@ -43,49 +49,85 @@ const PostItemAddComment = ({
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
-  const handleChange = useCallback(event => {
+  const handleChange = useCallback((event) => {
     setValue(event.target.value);
   }, []);
-  const handleRTEChange = useCallback(updatedValue => {
+  const handleRTEChange = useCallback((updatedValue) => {
     if (updatedValue.trim() === '<p><br></p>') {
       setValue('');
     } else {
       setValue(updatedValue);
     }
   }, []);
-  const handleClick = useCallback(quill => async () => {
-    setIsLoading(true);
+  const handleClick = useCallback(
+    (quill) => async () => {
+      setIsLoading(true);
 
-    if (value.trim() === '' || !value) {
-      setShowError(true);
-    } else {
-      await onPostComment({
-        comment: value
-      });
-      setValue('');
+      if (value.trim() === '' || !value) {
+        setShowError(true);
+      } else {
+        await onPostComment({
+          comment: value
+        });
+        setValue('');
 
-      if (quill) {
-        quill.setText('');
+        if (quill) {
+          quill.setText('');
+        }
+
+        if (onCancelComment) {
+          onCancelComment();
+        }
       }
 
-      if (onCancelComment) {
-        onCancelComment();
+      setIsLoading(false);
+    },
+    [onCancelComment, onPostComment, value]
+  );
+  const handleKeyUp = useCallback(
+    (event) => {
+      if (event.key === 'Escape') {
+        onEscape();
       }
-    }
-
-    setIsLoading(false);
-  }, [onCancelComment, onPostComment, value]);
-  const handleKeyUp = useCallback(event => {
-    if (event.key === 'Escape') {
-      onEscape();
-    }
-  }, [onEscape]);
-  return <div className={cx(classes.container, isReply && classes.reply)}>
+    },
+    [onEscape]
+  );
+  return (
+    <div className={cx(classes.container, isReply && classes.reply)}>
       <div aria-hidden="true" className={classes.body} onKeyUp={handleKeyUp}>
-        {rte && !readOnly ? <CommentQuill value={value} isPastClassFlashcard={isPastClassFlashcard} userId={userId} onChange={handleRTEChange} feedId={isReply ? commentId : feedId} toolbarPrefix={toolbarPrefix} setValue={setValue} handleClick={handleClick} showError={showError} /> : <TextField id="outlined-bare" placeholder={isQuestion ? 'Have an answer or a comment? Enter it here' : 'Have a question or a comment? Enter it here'} value={value} margin="normal" variant="outlined" className={classes.textField} fullWidth disabled={readOnly} onChange={handleChange} />}
+        {rte && !readOnly ? (
+          <CommentQuill
+            value={value}
+            isPastClassFlashcard={isPastClassFlashcard}
+            userId={userId}
+            onChange={handleRTEChange}
+            feedId={isReply ? commentId : feedId}
+            toolbarPrefix={toolbarPrefix}
+            setValue={setValue}
+            handleClick={handleClick}
+            showError={showError}
+          />
+        ) : (
+          <TextField
+            id="outlined-bare"
+            placeholder={
+              isQuestion
+                ? 'Have an answer or a comment? Enter it here'
+                : 'Have a question or a comment? Enter it here'
+            }
+            value={value}
+            margin="normal"
+            variant="outlined"
+            className={classes.textField}
+            fullWidth
+            disabled={readOnly}
+            onChange={handleChange}
+          />
+        )}
       </div>
       {isLoading && <SkeletonLoad />}
-    </div>;
+    </div>
+  );
 };
 
-export default withStyles(styles)(PostItemAddComment);
+export default withStyles(styles as any)(PostItemAddComment);

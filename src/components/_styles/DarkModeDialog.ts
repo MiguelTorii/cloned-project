@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-export const useStyles = makeStyles((theme) => ({
+
+export const useStyles = makeStyles((theme: any) => ({
   list: {
     margin: theme.spacing(2, 0),
     '& span': {

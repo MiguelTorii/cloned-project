@@ -1,41 +1,39 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useMemo, useRef } from "react";
-import type { Node } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { differenceInMilliseconds } from "date-fns";
-import { useIdleTimer } from "react-idle-timer";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import Hidden from "@material-ui/core/Hidden";
-import { TIMEOUT } from "constants/common";
-import { Grid } from "@material-ui/core";
-import { useLocation } from "react-router";
-import Box from "@material-ui/core/Box";
-import { logEvent } from "../../api/analytics";
-import { styles } from "../_styles/PostItem";
-import Recommendations from "../../containers/Recommendations/Recommendations";
-import RecommendationsFeedback from "../RecommendationsFeedback/RecommendationsFeedback";
-import { POST_SOURCE } from "../../constants/app";
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { differenceInMilliseconds } from 'date-fns';
+import { useIdleTimer } from 'react-idle-timer';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import Hidden from '@material-ui/core/Hidden';
+import { Grid } from '@material-ui/core';
+import { useLocation } from 'react-router';
+import Box from '@material-ui/core/Box';
+import { TIMEOUT } from '../../constants/common';
+import { logEvent } from '../../api/analytics';
+import { styles } from '../_styles/PostItem';
+import Recommendations from '../../containers/Recommendations/Recommendations';
+import RecommendationsFeedback from '../RecommendationsFeedback/RecommendationsFeedback';
+import { POST_SOURCE } from '../../constants/app';
+
 const timeout = TIMEOUT.POST_ITEM;
-const MyLink = React.forwardRef(({
-  href,
-  ...props
-}, ref) => // eslint-disable-next-line react/destructuring-assignment
-<RouterLink to={`/feed?id=${props.feedid}`} {...props} ref={ref} />);
+const MyLink = React.forwardRef<any, any>(
+  (
+    { href, ...props },
+    ref // eslint-disable-next-line react/destructuring-assignment
+  ) => <RouterLink to={`/feed?id=${(props as any).feedid}`} {...props} ref={ref} />
+);
+
 type Props = {
   classes: Record<string, any>;
-  children: Node;
+  children: React.ReactNode;
   feedId: number;
+  isFlashcard?: boolean;
 };
 
-const PostItem = ({
-  classes,
-  children,
-  feedId,
-  isFlashcard
-}: Props) => {
+const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
   const elapsed = useRef(0);
   const totalIdleTime = useRef(0);
   const remaining = useRef(timeout);
@@ -51,11 +49,7 @@ const PostItem = ({
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
 
-  const {
-    getRemainingTime,
-    getLastActiveTime,
-    getElapsedTime
-  } = useIdleTimer({
+  const { getRemainingTime, getLastActiveTime, getElapsedTime } = useIdleTimer({
     timeout,
     onActive: handleOnActive
   });
@@ -86,7 +80,8 @@ const PostItem = ({
       } catch (err) {}
     };
   }, [feedId, getElapsedTime, getLastActiveTime, getRemainingTime, isFlashcard]);
-  return <div className={classes.container}>
+  return (
+    <div className={classes.container}>
       <Hidden smUp implementation="css">
         <div className={classes.actions}>
           <Typography className={classes.link}>
@@ -111,7 +106,8 @@ const PostItem = ({
           </Grid>
         </Hidden>
       </Grid>
-    </div>;
+    </div>
+  );
 };
 
-export default withStyles(styles)(PostItem);
+export default withStyles(styles as any)(PostItem);

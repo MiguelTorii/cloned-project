@@ -1,17 +1,28 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState, useMemo } from "react";
-import { getClassmates } from "api/chat";
-import { getReferralProgram } from "api/referral";
-import { getCampaign } from "api/campaign";
-import List from "@material-ui/core/List";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import SearchIcon from "@material-ui/icons/Search";
-import Dialog from "components/Dialog/Dialog";
-import ReferralInvite from "containers/Referrals/Invite";
-import Classmate from "components/ClassmatesDialog/Classmate";
-import { decypherClass } from "utils/crypto";
-import { useStyles } from "../_styles/ClassmatesDialog/index";
+import React, { useEffect, useState, useMemo } from 'react';
+import List from '@material-ui/core/List';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import SearchIcon from '@material-ui/icons/Search';
+import { getCampaign } from '../../api/campaign';
+import { getReferralProgram } from '../../api/referral';
+import { getClassmates } from '../../api/chat';
+import Dialog from '../Dialog/Dialog';
+import ReferralInvite from '../../containers/Referrals/Invite';
+import Classmate from './Classmate';
+import { decypherClass } from '../../utils/crypto';
+import { useStyles } from '../_styles/ClassmatesDialog/index';
+
+type Props = {
+  meetingInvite?: boolean;
+  userId?: any;
+  userClasses?: any;
+  expertMode?: any;
+  close?: any;
+  state?: any;
+  courseDisplayName?: any;
+  selectedClasses?: any;
+};
 
 const ClassmatesDialog = ({
   meetingInvite = false,
@@ -22,20 +33,21 @@ const ClassmatesDialog = ({
   state,
   courseDisplayName,
   selectedClasses
-}) => {
-  const classes = useStyles();
+}: Props) => {
+  const classes: any = useStyles();
   const [classmates, setClassmates] = useState([]);
   const [searchKey, setSearchKey] = useState('');
   const [inviteVisible, setInviteVisible] = useState(false);
   const [referralProgram, setReferralProgram] = useState(null);
   const [campaign, setCampaign] = useState(null);
-  const title = useMemo(() => meetingInvite ? 'Invite To Study Room' : expertMode ? 'Students' : 'Classmates', [expertMode, meetingInvite]);
+  const title = useMemo(
+    () => (meetingInvite ? 'Invite To Study Room' : expertMode ? 'Students' : 'Classmates'),
+    [expertMode, meetingInvite]
+  );
+
   useEffect(() => {
     const initClassmates = async () => {
-      const {
-        classId,
-        sectionId
-      } = decypherClass();
+      const { classId, sectionId } = decypherClass();
 
       if (!sectionId && !classId) {
         return;
@@ -47,16 +59,13 @@ const ClassmatesDialog = ({
       });
 
       if (res) {
-        const classmates = res.filter(r => Number(r.userId) !== Number(userId));
+        const classmates = res.filter((r) => Number(r.userId) !== Number(userId));
         setClassmates(classmates);
       }
     };
 
     const initStudents = async () => {
-      const {
-        classId,
-        sectionId
-      } = decypherClass();
+      const { classId, sectionId } = decypherClass();
 
       if (!sectionId && !classId) {
         return;
@@ -68,27 +77,29 @@ const ClassmatesDialog = ({
       });
 
       if (res) {
-        const classmates = res.filter(classmate => Number(classmate.userId) !== Number(userId));
+        const classmates = res.filter((classmate) => Number(classmate.userId) !== Number(userId));
         setClassmates(classmates);
       }
     };
 
     const initSelectedClassesClassmates = async () => {
       const students = {};
-      await Promise.all(selectedClasses.map(async selectedClass => {
-        const classmates = await getClassmates({
-          sectionId: selectedClass.sectionId,
-          classId: selectedClass.classId
-        });
-        classmates.forEach(classmate => {
-          const classes = students[classmate.userId] ? students[classmate.userId].classes : [];
-          students[classmate.userId] = { ...classmate,
-            classes: [...classes, selectedClass]
-          };
-        });
-      }));
+      await Promise.all(
+        selectedClasses.map(async (selectedClass) => {
+          const classmates = await getClassmates({
+            sectionId: selectedClass.sectionId,
+            classId: selectedClass.classId
+          });
+          classmates.forEach((classmate) => {
+            const classes = students[classmate.userId] ? students[classmate.userId].classes : [];
+            students[classmate.userId] = { ...classmate, classes: [...classes, selectedClass] };
+          });
+        })
+      );
       const res = Object.values(students);
-      const classmates = res.filter(classmate => Number(classmate.userId) !== Number(userId));
+      const classmates = res.filter(
+        (classmate: any) => Number(classmate.userId) !== Number(userId)
+      );
       setClassmates(classmates);
     };
 
@@ -123,39 +134,48 @@ const ClassmatesDialog = ({
       return null;
     }
 
-    const {
-      code,
-      img_url: imageUrl,
-      title,
-      subtitle
-    } = referralProgram;
-    return <div>
+    const { code, img_url: imageUrl, title, subtitle } = referralProgram;
+    return (
+      <div>
         <div className={classes.text}>
           {"Don't see "}
           {expertMode ? 'students' : 'your classmates'}?
-          <div className={classes.link} onClick={() => {
-          setInviteVisible(true);
-        }} onKeyPress={() => setInviteVisible(true)} role="button" tabIndex="0">
+          <div
+            className={classes.link}
+            onClick={() => {
+              setInviteVisible(true);
+            }}
+            onKeyPress={() => setInviteVisible(true)}
+            role="button"
+            tabIndex={0}
+          >
             Invite them and earn your first gift
           </div>
         </div>
-        <ReferralInvite onHide={() => setInviteVisible(false)} referralData={{
-        code,
-        imageUrl,
-        subtitle,
-        title
-      }} visible={inviteVisible} />
-      </div>;
+        <ReferralInvite
+          onHide={() => setInviteVisible(false)}
+          referralData={{
+            code,
+            imageUrl,
+            subtitle,
+            title
+          }}
+          visible={inviteVisible}
+        />
+      </div>
+    );
   };
 
   const videoEnabled = campaign.variation_key && campaign.variation_key !== 'hidden';
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const currentClassMates = [...classmates];
     setSearchKey(e.target.value);
 
     if (e.target.value) {
-      const filterClassmates = currentClassMates.filter(classmate => `${classmate.firstName} ${classmate.lastName}`.includes(e.target.value));
+      const filterClassmates = currentClassMates.filter((classmate) =>
+        `${classmate.firstName} ${classmate.lastName}`.includes(e.target.value)
+      );
       setClassmates(filterClassmates);
     }
   };
@@ -165,20 +185,47 @@ const ClassmatesDialog = ({
     close();
   };
 
-  return <div>
-      <Dialog className={classes.dialog} onCancel={handleCloseModal} maxWidth="md" fullWidth contentClassName={classes.contentClassName} open={Boolean(state)} title={title}>
+  return (
+    <div>
+      <Dialog
+        className={classes.dialog}
+        onCancel={handleCloseModal}
+        maxWidth="md"
+        fullWidth
+        contentClassName={classes.contentClassName}
+        open={Boolean(state)}
+        title={title}
+      >
         {!meetingInvite && <div className={classes.courseDisplayName}>{courseDisplayName}</div>}
-        <FormControl classes={{
-        root: classes.searchInput
-      }} fullWidth>
-          <Input id="search-classmates" placeholder="Search for classmates" value={searchKey} onChange={handleChange} startAdornment={<SearchIcon position="start" />} />
+        <FormControl
+          classes={{
+            root: classes.searchInput
+          }}
+          fullWidth
+        >
+          <Input
+            id="search-classmates"
+            placeholder="Search for classmates"
+            value={searchKey}
+            onChange={handleChange}
+            startAdornment={<SearchIcon />}
+          />
         </FormControl>
         <List className={classes.list}>
-          {classmates.map(c => <Classmate meetingInvite={meetingInvite} courseDisplayName={courseDisplayName} videoEnabled={meetingInvite ? videoEnabled : videoEnabled && !expertMode} key={c.userId} classmate={c} />)}
+          {classmates.map((c) => (
+            <Classmate
+              meetingInvite={meetingInvite}
+              courseDisplayName={courseDisplayName}
+              videoEnabled={meetingInvite ? videoEnabled : videoEnabled && !expertMode}
+              key={c.userId}
+              classmate={c}
+            />
+          ))}
           <Invite />
         </List>
       </Dialog>
-    </div>;
+    </div>
+  );
 };
 
 export default ClassmatesDialog;

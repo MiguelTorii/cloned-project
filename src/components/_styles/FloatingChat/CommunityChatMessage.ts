@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { gutterStyle } from '../Gutter';
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles((theme: any) => ({
   root: {
     padding: theme.spacing(1, 6),
     [theme.breakpoints.down('sm')]: {

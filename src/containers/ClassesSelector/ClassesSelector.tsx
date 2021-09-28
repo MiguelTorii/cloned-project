@@ -1,18 +1,18 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { SelectValidator } from "react-material-ui-form-validator";
-import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
-import AddRemoveClasses from "components/AddRemoveClasses/AddRemoveClasses";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import { processClasses } from "./utils";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import RequestClass from "../RequestClass/RequestClass";
+import React, { useCallback, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { SelectValidator } from 'react-material-ui-form-validator';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import { processClasses } from './utils';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import RequestClass from '../RequestClass/RequestClass';
 
-const styles = theme => ({
+const styles = (theme) => ({
   formControl: {
     width: '100%'
   },
@@ -25,16 +25,22 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  onChange: (...args: Array<any>) => any;
-  classId: number | null | undefined;
-  label: string | null | undefined;
-  variant: string | null | undefined;
-  sectionId: number | null | undefined;
-  location: {
+  classes?: Record<string, any>;
+  user?: UserState;
+  onChange?: (...args: Array<any>) => any;
+  classId?: number | null | undefined;
+  label?: string | null | undefined;
+  variant?: string | null | undefined;
+  sectionId?: number | null | undefined;
+  location?: {
     pathname: string;
   };
+  router?: {
+    location: {
+      pathname: string;
+    };
+  };
+  disabled?: boolean;
 };
 
 const ClassesSelector = ({
@@ -42,22 +48,14 @@ const ClassesSelector = ({
   user: {
     isLoading,
     error,
-    data: {
-      segment,
-      userId
-    },
-    userClasses: {
-      classList,
-      canAddClasses
-    }
+    data: { segment, userId },
+    userClasses: { classList, canAddClasses }
   },
   onChange,
   classId,
   label,
   router: {
-    location: {
-      pathname
-    }
+    location: { pathname }
   },
   variant,
   sectionId
@@ -69,10 +67,12 @@ const ClassesSelector = ({
   const [openRequestClass, setOpenRequestClass] = useState(false);
   useEffect(() => {
     if (classId && sectionId) {
-      setValue(JSON.stringify({
-        classId,
-        sectionId
-      }));
+      setValue(
+        JSON.stringify({
+          classId,
+          sectionId
+        })
+      );
     }
   }, [classId, sectionId]);
   const handleLoadClasses = useCallback(async () => {
@@ -84,10 +84,12 @@ const ClassesSelector = ({
       setUserClasses(userClasses);
 
       if (classId && sectionId) {
-        setValue(JSON.stringify({
-          classId,
-          sectionId
-        }));
+        setValue(
+          JSON.stringify({
+            classId,
+            sectionId
+          })
+        );
       }
     } catch (err) {
       console.log(err);
@@ -104,33 +106,31 @@ const ClassesSelector = ({
 
     init();
   }, [handleLoadClasses, pathname]);
-  const handleChange = useCallback(event => {
-    const {
-      value
-    } = event.target;
+  const handleChange = useCallback(
+    (event) => {
+      const { value } = event.target;
 
-    if (value === 'new') {
-      setOpen(true);
-      return;
-    }
+      if (value === 'new') {
+        setOpen(true);
+        return;
+      }
 
-    try {
-      setValue(value);
-      const {
-        classId,
-        sectionId
-      } = JSON.parse(value);
-      onChange({
-        classId,
-        sectionId
-      });
-    } catch (err) {
-      onChange({
-        classId: 0,
-        sectionId: null
-      });
-    }
-  }, [onChange]);
+      try {
+        setValue(value);
+        const { classId, sectionId } = JSON.parse(value);
+        onChange({
+          classId,
+          sectionId
+        });
+      } catch (err) {
+        onChange({
+          classId: 0,
+          sectionId: null
+        });
+      }
+    },
+    [onChange]
+  );
   const handleCloseManageClasses = useCallback(async () => {
     setOpen(false);
     await handleLoadClasses();
@@ -151,37 +151,58 @@ const ClassesSelector = ({
     return 'Oops, there was an error loading your data, please try again.';
   }
 
-  return <>
+  return (
+    <>
       <ErrorBoundary>
         <div className={classes.root}>
           <FormControl variant="outlined" fullWidth>
-            <SelectValidator className={classes.formControl} value={value} name="userClasses" disabled={isEdit} onChange={handleChange} variant={variant || 'outlined'} multiple label={label} validators={['required']} errorMessages={['User Classes is required']}>
+            <SelectValidator
+              className={classes.formControl}
+              value={value}
+              name="userClasses"
+              disabled={isEdit}
+              onChange={handleChange}
+              variant={variant || 'outlined'}
+              multiple
+              label={label}
+              validators={['required']}
+              errorMessages={['User Classes is required']}
+            >
               <MenuItem value="" />
-              {userClasses.map(userClass => <MenuItem key={userClass.value} value={userClass.value}>
+              {userClasses.map((userClass) => (
+                <MenuItem key={userClass.value} value={userClass.value}>
                   {userClass.label}
-                </MenuItem>)}
-              {canAddClasses && <MenuItem value="new" className={classes.newClass}>
+                </MenuItem>
+              ))}
+              {canAddClasses && (
+                <MenuItem value="new" className={classes.newClass}>
                   Add Classes
-                </MenuItem>}
+                </MenuItem>
+              )}
             </SelectValidator>
           </FormControl>
         </div>
       </ErrorBoundary>
       <ErrorBoundary>
-        <AddRemoveClasses open={open} onClose={handleCloseManageClasses} onOpenRequestClass={handleOpenRequestClass} />
+        <AddRemoveClasses
+          open={open}
+          onClose={handleCloseManageClasses}
+          onOpenRequestClass={handleOpenRequestClass}
+        />
       </ErrorBoundary>
       <ErrorBoundary>
         <RequestClass open={openRequestClass} onClose={handleCloseRequestClass} />
       </ErrorBoundary>
-    </>;
+    </>
+  );
 };
 
-const mapStateToProps = ({
-  user,
-  router
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
   router
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(ClassesSelector));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  null
+)(withStyles(styles as any)(ClassesSelector as any));

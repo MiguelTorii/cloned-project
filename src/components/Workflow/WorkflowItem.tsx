@@ -1,39 +1,30 @@
-import React, { memo, useContext, useRef, useState, useCallback, useMemo } from "react";
-import Typography from "@material-ui/core/Typography";
-import WorkflowEdit from "components/Workflow/WorkflowEdit";
-import { useDrag, useDrop } from "react-dnd";
-import { getEmptyImage } from "react-dnd-html5-backend";
-import cx from "classnames";
-import { isMobile } from "react-device-detect";
-import Dialog from "components/Dialog/Dialog";
-import WorkflowListItem from "components/Workflow/WorkflowListItem";
-import WorkflowBoardItem from "components/Workflow/WorkflowBoardItem";
-import WorkflowContext from "containers/Workflow/WorkflowContext";
-import { useStyles } from "../_styles/Workflow/WorkflowItem";
+import React, { memo, useContext, useRef, useState, useCallback, useMemo } from 'react';
+import Typography from '@material-ui/core/Typography';
+import { useDrag, useDrop } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
+import cx from 'classnames';
+import { isMobile } from 'react-device-detect';
+import WorkflowEdit from './WorkflowEdit';
+import Dialog from '../Dialog/Dialog';
+import WorkflowListItem from './WorkflowListItem';
+import WorkflowBoardItem from './WorkflowBoardItem';
+import WorkflowContext from '../../containers/Workflow/WorkflowContext';
+import { useStyles } from '../_styles/Workflow/WorkflowItem';
+
 type Props = {
   task: Record<string, any>;
   index: number;
 };
 
-const WorkflowItem = ({
-  index,
-  task
-}: Props) => {
-  const {
-    updateItem,
-    archiveTask,
-    listView,
-    onDrag,
-    dragId,
-    moveTask,
-    classList
-  } = useContext(WorkflowContext);
+const WorkflowItem = ({ index, task }: Props) => {
+  const { updateItem, archiveTask, listView, onDrag, dragId, moveTask, classList } =
+    useContext(WorkflowContext);
   const taskRef = useRef(null);
   const [showDetails, setShowDetails] = useState(false);
   const [, drop] = useDrop({
     accept: 'task',
 
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!taskRef.current) {
         return;
       }
@@ -62,11 +53,8 @@ const WorkflowItem = ({
       // eslint-disable-next-line
       item.index = hoverIndex;
     }
-
   });
-  const [{
-    isDragging
-  }, drag, preview] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     item: {
       type: 'task',
       index,
@@ -89,7 +77,7 @@ const WorkflowItem = ({
       return true;
     },
 
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging()
     })
   });
@@ -100,7 +88,7 @@ const WorkflowItem = ({
     });
   }
 
-  const classes = useStyles();
+  const classes: any = useStyles();
   const hiddenClass = dragId === task.id ? classes.hidden : '';
   const [open, setOpen] = useState(false);
   const onOpen = useCallback(() => {
@@ -116,10 +104,7 @@ const WorkflowItem = ({
   const onMouseLeave = useCallback(() => setShowDetails(false), []);
   drag(drop(taskRef));
   const handleComplete = useCallback(() => {
-    const {
-      status,
-      ...other
-    } = task;
+    const { status, ...other } = task;
     updateItem({
       status: status === 1 ? 2 : 1,
       ...other
@@ -136,14 +121,83 @@ const WorkflowItem = ({
     closeConfirmArchive();
     onClose();
   }, [task, archiveTask, closeConfirmArchive, onClose]);
-  const itemWidth = useMemo(() => listView ? classes.listItem : classes.cardItem, [classes.cardItem, classes.listItem, listView]);
-  return useMemo(() => <div ref={taskRef} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} className={cx(classes.root, hiddenClass, itemWidth)}>
-        <Dialog className={classes.dialog} onCancel={closeConfirmArchive} open={confirmArchive} onOk={archive} showActions title="Are you sure you want to delete?" okTitle="Delete" showCancel>
+  const itemWidth = useMemo(
+    () => (listView ? classes.listItem : classes.cardItem),
+    [classes.cardItem, classes.listItem, listView]
+  );
+  return useMemo(
+    () => (
+      <div
+        ref={taskRef}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        className={cx(classes.root, hiddenClass, itemWidth)}
+      >
+        <Dialog
+          className={classes.dialog}
+          onCancel={closeConfirmArchive}
+          open={confirmArchive}
+          onOk={archive}
+          showActions
+          title="Are you sure you want to delete?"
+          okTitle="Delete"
+          showCancel
+        >
           <Typography className={classes.archiveTitle}>{task.title}</Typography>
         </Dialog>
-        <WorkflowEdit task={task} onClose={onClose} openConfirmArchive={openConfirmArchive} open={open} />
-        {listView ? <WorkflowListItem task={task} classList={classList} openConfirmArchive={openConfirmArchive} onOpen={onOpen} showDetails={showDetails} isDragging={isDragging} handleComplete={handleComplete} drag={drag} /> : <WorkflowBoardItem task={task} classList={classList} openConfirmArchive={openConfirmArchive} onOpen={onOpen} showDetails={showDetails} drag={drag} />}
-      </div>, [archive, classList, classes.archiveTitle, classes.dialog, classes.root, closeConfirmArchive, confirmArchive, drag, handleComplete, hiddenClass, isDragging, itemWidth, listView, onClose, onMouseEnter, onMouseLeave, onOpen, open, openConfirmArchive, showDetails, task]);
+        <WorkflowEdit
+          task={task}
+          onClose={onClose}
+          openConfirmArchive={openConfirmArchive}
+          open={open}
+        />
+        {listView ? (
+          <WorkflowListItem
+            task={task}
+            classList={classList}
+            openConfirmArchive={openConfirmArchive}
+            onOpen={onOpen}
+            showDetails={showDetails}
+            isDragging={isDragging}
+            handleComplete={handleComplete}
+            drag={drag}
+          />
+        ) : (
+          <WorkflowBoardItem
+            task={task}
+            classList={classList}
+            openConfirmArchive={openConfirmArchive}
+            onOpen={onOpen}
+            showDetails={showDetails}
+            drag={drag}
+          />
+        )}
+      </div>
+    ),
+    [
+      archive,
+      classList,
+      classes.archiveTitle,
+      classes.dialog,
+      classes.root,
+      closeConfirmArchive,
+      confirmArchive,
+      drag,
+      handleComplete,
+      hiddenClass,
+      isDragging,
+      itemWidth,
+      listView,
+      onClose,
+      onMouseEnter,
+      onMouseLeave,
+      onOpen,
+      open,
+      openConfirmArchive,
+      showDetails,
+      task
+    ]
+  );
 };
 
 export default memo(WorkflowItem);

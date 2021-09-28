@@ -1,33 +1,32 @@
-import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from "react";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import { withStyles } from "@material-ui/core/styles";
-// import Fab from '@material-ui/core/Fab';
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-// import TextFieldsIcon from '@material-ui/icons/TextFields';
-// import InsertPhotoIcon from '@material-ui/icons/InsertPhoto';
-import RichTextEditor from "containers/RichTextEditor/RichTextEditor";
-import withWidth from "@material-ui/core/withWidth";
-import clsx from "clsx";
-import SelectedImage from "components/SelectedImage/SelectedImage";
-import FlashcardDetail from "components/FlashcardDetail/FlashcardList";
-import ToolbarTooltip from "components/FlashcardEditor/ToolbarTooltip";
-import Dialog from "../Dialog/Dialog";
-import { styles } from "../_styles/FlashcardEditor/index";
+import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from 'react';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import withWidth from '@material-ui/core/withWidth';
+import clsx from 'clsx';
+import RichTextEditor from '../../containers/RichTextEditor/RichTextEditor';
+import SelectedImage from '../SelectedImage/SelectedImage';
+import FlashcardDetail from '../FlashcardDetail/FlashcardList';
+import ToolbarTooltip from './ToolbarTooltip';
+import Dialog from '../Dialog/Dialog';
+import { styles } from '../_styles/FlashcardEditor/index';
 
-const strip = s => s.replace(/<[^>]*>?/gm, '').trim();
+const strip = (s) => s.replace(/<[^>]*>?/gm, '').trim();
 
 type Props = {
-  classes: Record<string, any>;
-  id: string;
-  question: string;
-  answer: string;
-  onDelete: (...args: Array<any>) => any;
-  onSubmit: (...args: Array<any>) => any;
-  isNew: boolean;
-  width: string;
-  questionImage: string;
-  answerImage: string;
+  classes?: Record<string, any>;
+  id?: string;
+  question?: string;
+  answer?: string;
+  onDelete?: (...args: Array<any>) => any;
+  onSubmit?: (...args: Array<any>) => any;
+  isNew?: boolean;
+  width?: string;
+  questionImage?: string;
+  answerImage?: string;
+  index?: any;
+  loading?: any;
 };
 
 const FlashcardEditor = ({
@@ -40,7 +39,9 @@ const FlashcardEditor = ({
   onDelete,
   onSubmit,
   isNew,
-  width
+  width,
+  index,
+  loading
 }: Props) => {
   const myRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -75,15 +76,21 @@ const FlashcardEditor = ({
       handleClose();
     }
   }, [id, onDelete, handleClose, question, answer, questionImage, answerImage]);
-  const handleTextChange = useCallback(name => v => {
-    if (name === 'question') {
-      setCurQuestion(v.replace('\t', ''));
-    } else {
-      setCurAnswer(v.replace('\t', ''));
-    }
-  }, []);
+  const handleTextChange = useCallback(
+    (name) => (v) => {
+      if (name === 'question') {
+        setCurQuestion(v.replace('\t', ''));
+      } else {
+        setCurAnswer(v.replace('\t', ''));
+      }
+    },
+    []
+  );
   const handleDone = useCallback(() => {
-    if (strip(curQuestion) === '' && !curQuestionImage || strip(curAnswer) === '' && !curAnswerImage) {
+    if (
+      (strip(curQuestion) === '' && !curQuestionImage) ||
+      (strip(curAnswer) === '' && !curAnswerImage)
+    ) {
       onDelete(id);
     } else {
       onSubmit({
@@ -97,7 +104,16 @@ const FlashcardEditor = ({
     }
 
     handleClose();
-  }, [curQuestionImage, curAnswerImage, curQuestion, curAnswer, id, handleClose, onSubmit, onDelete]);
+  }, [
+    curQuestionImage,
+    curAnswerImage,
+    curQuestion,
+    curAnswer,
+    id,
+    handleClose,
+    onSubmit,
+    onDelete
+  ]);
   const handleSubmit = useCallback(async () => {
     if (myRef.current) {
       const result = await myRef.current.isFormValid(false);
@@ -114,19 +130,28 @@ const FlashcardEditor = ({
       }
     }
   }, [curQuestionImage, curAnswerImage, curQuestion, curAnswer, id, handleClose, onSubmit]);
-  const handleImage = useCallback(name => url => {
-    if (name === 'question') {
-      setCurQuestionImage(url);
-    } else {
-      setCurAnswerImage(url);
-    }
-  }, []);
-  const enabled = useMemo(() => (strip(curQuestion) || curQuestionImage) && (strip(curAnswer) || curAnswerImage), [curQuestion, curQuestionImage, curAnswer, curAnswerImage]);
-  const imageStyle = useMemo(() => ({
-    borderRadius: 8,
-    maxHeight: 100,
-    maxWidth: 100
-  }), []);
+  const handleImage = useCallback(
+    (name) => (url) => {
+      if (name === 'question') {
+        setCurQuestionImage(url);
+      } else {
+        setCurAnswerImage(url);
+      }
+    },
+    []
+  );
+  const enabled = useMemo(
+    () => (strip(curQuestion) || curQuestionImage) && (strip(curAnswer) || curAnswerImage),
+    [curQuestion, curQuestionImage, curAnswer, curAnswerImage]
+  );
+  const imageStyle = useMemo(
+    () => ({
+      borderRadius: 8,
+      maxHeight: 100,
+      maxWidth: 100
+    }),
+    []
+  );
   const deleteQuestionImage = useCallback(() => setCurQuestionImage(null), []);
   const deleteAnswerImage = useCallback(() => setCurAnswerImage(null), []);
   const onFocusQuestion = useCallback(() => setFocus('question'), []);
@@ -145,7 +170,7 @@ const FlashcardEditor = ({
           onFocusQuestion();
         };
 
-        questionEditor.getEditor().root.onkeydown = k => {
+        questionEditor.getEditor().root.onkeydown = (k) => {
           if (k.code === 'Tab' && answerEditor) {
             k.preventDefault();
             k.stopPropagation();
@@ -166,7 +191,7 @@ const FlashcardEditor = ({
       try {
         setAnswerToolbar(answerEditor.getEditor().theme.modules.toolbar);
 
-        answerEditor.getEditor().root.onkeydown = k => {
+        answerEditor.getEditor().root.onkeydown = (k) => {
           if (k.code === 'Tab') {
             k.preventDefault();
             k.stopPropagation();
@@ -187,7 +212,7 @@ const FlashcardEditor = ({
   }, [answerEditor, onFocusAnswer, okRef, questionEditor]);
   useEffect(() => {
     if (okRef) {
-      okRef.onkeydown = k => {
+      okRef.onkeydown = (k) => {
         if (k.code === 'Tab' && questionEditor) {
           k.preventDefault();
           k.stopPropagation();
@@ -196,35 +221,105 @@ const FlashcardEditor = ({
       };
     }
   }, [questionEditor, okRef]);
-  return <Fragment>
+  return (
+    <Fragment>
       <ToolbarTooltip toolbar={questionToolbar} />
       <ToolbarTooltip toolbar={answerToolbar} />
-      <FlashcardDetail id={id} question={question} answer={answer} questionImage={questionImage} answerImage={answerImage} handleDelete={handleDelete} handleOpen={handleOpen} />
-      <Dialog setOkRef={setOkRef} className={classes.dialog} title="Create Flashcards" okTitle="Save" secondaryOkTitle="Review Cards" disableOk={!enabled} disableActions={loadingImage} onCancel={handleCancel} onOk={handleSubmit} onSecondaryOk={handleDone} open={open} showActions showCancel>
+      <FlashcardDetail
+        id={id}
+        question={question}
+        answer={answer}
+        questionImage={questionImage}
+        answerImage={answerImage}
+        handleDelete={handleDelete}
+        handleOpen={handleOpen}
+      />
+      <Dialog
+        setOkRef={setOkRef}
+        className={classes.dialog}
+        title="Create Flashcards"
+        okTitle="Save"
+        secondaryOkTitle="Review Cards"
+        disableOk={!enabled}
+        disableActions={loadingImage}
+        onCancel={handleCancel}
+        onOk={handleSubmit}
+        onSecondaryOk={handleDone}
+        open={open}
+        showActions
+        showCancel
+      >
         <ValidatorForm onSubmit={handleSubmit} ref={myRef}>
           <Grid container alignItems="center">
             <Grid item xs={2}>
               <Typography variant="subtitle1">Question</Typography>
             </Grid>
             <Grid container alignItems="center" item xs={10}>
-              <Grid item xs={12} className={clsx(classes.richEditor, ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor, curQuestionImage && classes.imageEditor, focus !== 'question' && classes.noFocus)}>
-                {curQuestionImage && <SelectedImage image={curQuestionImage} imageStyle={imageStyle} handleRemoveImg={deleteQuestionImage} />}
-                <RichTextEditor setEditor={setQuestionEditor} placeholder="" setLoadingImage={setLoadingImage} value={curQuestion} fileType={6} onChange={handleTextChange('question')} handleImage={handleImage('question')} />
+              <Grid
+                item
+                xs={12}
+                className={clsx(
+                  classes.richEditor,
+                  ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
+                  curQuestionImage && classes.imageEditor,
+                  focus !== 'question' && classes.noFocus
+                )}
+              >
+                {curQuestionImage && (
+                  <SelectedImage
+                    image={curQuestionImage}
+                    imageStyle={imageStyle}
+                    handleRemoveImg={deleteQuestionImage}
+                  />
+                )}
+                <RichTextEditor
+                  setEditor={setQuestionEditor}
+                  placeholder=""
+                  setLoadingImage={setLoadingImage}
+                  value={curQuestion}
+                  fileType={6}
+                  onChange={handleTextChange('question')}
+                  handleImage={handleImage('question')}
+                />
               </Grid>
             </Grid>
             <Grid item xs={2}>
               <Typography variant="subtitle1">Answer</Typography>
             </Grid>
             <Grid container alignItems="center" item xs={10}>
-              <Grid item xs={12} className={clsx(classes.richEditor, ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor, curAnswerImage && classes.imageEditor, focus !== 'answer' && classes.noFocus)}>
-                {curAnswerImage && <SelectedImage image={curAnswerImage} handleRemoveImg={deleteAnswerImage} imageStyle={imageStyle} />}
-                <RichTextEditor placeholder="" setEditor={setAnswerEditor} value={curAnswer} setLoadingImage={setLoadingImage} fileType={6} onChange={handleTextChange('answer')} handleImage={handleImage('answer')} />
+              <Grid
+                item
+                xs={12}
+                className={clsx(
+                  classes.richEditor,
+                  ['sm', 'xs'].includes(width) ? classes.smallRichEditor : classes.bigRichEditor,
+                  curAnswerImage && classes.imageEditor,
+                  focus !== 'answer' && classes.noFocus
+                )}
+              >
+                {curAnswerImage && (
+                  <SelectedImage
+                    image={curAnswerImage}
+                    handleRemoveImg={deleteAnswerImage}
+                    imageStyle={imageStyle}
+                  />
+                )}
+                <RichTextEditor
+                  placeholder=""
+                  setEditor={setAnswerEditor}
+                  value={curAnswer}
+                  setLoadingImage={setLoadingImage}
+                  fileType={6}
+                  onChange={handleTextChange('answer')}
+                  handleImage={handleImage('answer')}
+                />
               </Grid>
             </Grid>
           </Grid>
         </ValidatorForm>
       </Dialog>
-    </Fragment>;
+    </Fragment>
+  );
 };
 
-export default React.memo(withStyles(styles)(withWidth()(FlashcardEditor)));
+export default React.memo(withStyles(styles as any)(withWidth()(FlashcardEditor)));

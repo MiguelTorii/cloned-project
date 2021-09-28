@@ -1,14 +1,14 @@
-import React from "react";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import { signLMSUser } from "../../api/lms";
-import * as signInActions from "../../actions/sign-in";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import { signLMSUser } from '../../api/lms';
+import * as signInActions from '../../actions/sign-in';
 
 const styles = () => ({
   main: {
@@ -20,22 +20,18 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  code: string;
-  state: string;
-  updateUser: (...args: Array<any>) => any;
-  pushTo: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  user?: UserState;
+  code?: string;
+  state?: string;
+  search?: string;
+  updateUser?: (...args: Array<any>) => any;
+  pushTo?: (...args: Array<any>) => any;
 };
 
 class OAuth extends React.Component<Props> {
   componentDidMount = async () => {
-    const {
-      code,
-      state,
-      updateUser,
-      pushTo
-    } = this.props;
+    const { code, state, search, updateUser, pushTo } = this.props;
 
     try {
       const res = Buffer.from(state, 'hex').toString('utf8');
@@ -60,9 +56,7 @@ class OAuth extends React.Component<Props> {
     const {
       classes,
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
 
@@ -70,22 +64,28 @@ class OAuth extends React.Component<Props> {
       return <Redirect to="/" />;
     }
 
-    return <main className={classes.main}>
+    return (
+      <main className={classes.main}>
         <CircularProgress />
-      </main>;
+      </main>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  updateUser: signInActions.updateUser,
-  pushTo: push
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      updateUser: signInActions.updateUser,
+      pushTo: push
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(OAuth));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(OAuth));

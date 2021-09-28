@@ -1,11 +1,11 @@
-import React from "react";
-import queryString from "query-string";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import Profile from "../../containers/Profile/Profile";
+import React from 'react';
+import queryString from 'query-string';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import Profile from '../../containers/Profile/Profile';
 
 const styles = () => ({
   item: {
@@ -26,9 +26,11 @@ type Props = {
     };
   };
 };
+
 type State = {
   userId: string;
   edit: boolean;
+  source: any;
 };
 
 class ProfilePage extends React.Component<Props, State> {
@@ -37,17 +39,14 @@ class ProfilePage extends React.Component<Props, State> {
     source: null,
     edit: false
   };
+
   componentDidMount = () => {
     const {
       match: {
-        params: {
-          userId = ''
-        }
+        params: { userId = '' }
       },
       history: {
-        location: {
-          search = {}
-        }
+        location: { search = '' }
       }
     } = this.props;
     const query = queryString.parse(search);
@@ -59,32 +58,24 @@ class ProfilePage extends React.Component<Props, State> {
       });
     }
 
-    const {
-      edit = false
-    } = query;
+    const { edit = false } = query;
     this.setState({
-      edit
+      edit: edit as boolean
     });
   };
 
   getSnapshotBeforeUpdate = (prevProps) => {
     const {
       match: {
-        params: {
-          userId = ''
-        }
+        params: { userId = '' }
       },
       history: {
-        location: {
-          search
-        }
+        location: { search }
       }
     } = this.props;
     const {
       match: {
-        params: {
-          userId: prevUserId
-        }
+        params: { userId: prevUserId }
       }
     } = prevProps;
 
@@ -98,15 +89,10 @@ class ProfilePage extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      userId,
-      edit,
-      source
-    } = this.state;
-    return <main>
+    const { classes } = this.props;
+    const { userId, edit, source } = this.state;
+    return (
+      <main>
         <CssBaseline />
         <Layout>
           <Grid container spacing={0}>
@@ -115,9 +101,9 @@ class ProfilePage extends React.Component<Props, State> {
             </Grid>
           </Grid>
         </Layout>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withRoot(withStyles(styles)(ProfilePage));
+export default withRoot(withStyles(styles as any)(ProfilePage));

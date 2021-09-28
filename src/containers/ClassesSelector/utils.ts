@@ -2,12 +2,13 @@
 
 /* eslint-disable import/prefer-default-export */
 import type { UserClass, SelectType } from '../../types/models';
+
 export const processClasses = ({
   classes,
   segment
 }: {
-  classes: Array<UserClass>,
-  segment: string
+  classes: Array<UserClass>;
+  segment?: string;
 }): Array<SelectType> => {
   if (segment === 'K12') {
     return classes

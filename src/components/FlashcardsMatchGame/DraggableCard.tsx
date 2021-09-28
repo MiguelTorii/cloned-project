@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Box from "@material-ui/core/Box";
-import { useDrag, useDrop } from "react-dnd";
-import { DRAG_TYPE_CARD } from "components/FlashcardsMatchGame/reducer";
-import ContentCard from "./ContentCard";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
+import { useDrag, useDrop } from 'react-dnd';
+import { DRAG_TYPE_CARD } from './reducer';
+import ContentCard from './ContentCard';
 
 const DraggableCard = ({
   image,
@@ -17,9 +17,7 @@ const DraggableCard = ({
   onCorrectDrop,
   onIncorrectDrop
 }) => {
-  const [{
-    isDragging
-  }, dragRef] = useDrag({
+  const [{ isDragging }, dragRef] = useDrag({
     item: {
       cardId,
       index,
@@ -27,30 +25,40 @@ const DraggableCard = ({
       text,
       type: DRAG_TYPE_CARD
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })
   });
-  const [{
-    isOver
-  }, dropRef] = useDrop({
+  const [{ isOver }, dropRef] = useDrop({
     accept: DRAG_TYPE_CARD,
-    drop: item => {
+    drop: (item: any) => {
       if (item.cardId === cardId) {
         onCorrectDrop(item.index, index);
       } else {
         onIncorrectDrop(item.index, index);
       }
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: !!monitor.isOver()
     })
   });
   // Effects
   // Render
-  return <Box ref={dropRef}>
-      <ContentCard dragRef={dragRef} isDragging={isDragging} isOver={isOver} image={image} text={text} x={x} y={y} hasCorrectAnimation={hasCorrectAnimation} hasIncorrectAnimation={hasIncorrectAnimation} />
-    </Box>;
+  return (
+    <Box {...({ ref: dropRef } as any)}>
+      <ContentCard
+        dragRef={dragRef}
+        isDragging={isDragging}
+        isOver={isOver}
+        image={image}
+        text={text}
+        x={x}
+        y={y}
+        hasCorrectAnimation={hasCorrectAnimation}
+        hasIncorrectAnimation={hasIncorrectAnimation}
+      />
+    </Box>
+  );
 };
 
 DraggableCard.propTypes = {

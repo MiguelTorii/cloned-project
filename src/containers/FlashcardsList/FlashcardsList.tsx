@@ -1,26 +1,28 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { bindActionCreators } from "redux";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { push } from "connected-react-router";
-import { useLocation } from "react-router";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Chip from "@material-ui/core/Chip";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import withRoot from "withRoot";
-import OnboardingFlashcards from "containers/OnboardingFlashcards/OnboardingFlashcards";
-import GradientButton from "components/Basic/Buttons/GradientButton";
-import FiltersBar from "components/FiltersBar/FiltersBar";
-import FlashcardsDeck from "components/FlashcardsDeck/FlashcardsDeck";
-import Dialog from "components/Dialog/Dialog";
-import FlashcardsDeckCreator from "components/FlashcardsDeckManager/FlashcardsDeckCreator";
-import SlideUp from "components/Transition/SlideUp";
-import ImgEmptyState from "assets/svg/empty_flashcards.svg";
-import { isApiCalling, getPastClassIds } from "utils/helpers";
-import { userActions } from "constants/action-types";
-import { getFlashcards, confirmTooltip as confirmTooltipAction } from "actions/user";
-import useStyles from "./styles";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
+import { useLocation } from 'react-router';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withRoot from '../../withRoot';
+import OnboardingFlashcards from '../OnboardingFlashcards/OnboardingFlashcards';
+import GradientButton from '../../components/Basic/Buttons/GradientButton';
+import FiltersBar from '../../components/FiltersBar/FiltersBar';
+import FlashcardsDeck from '../../components/FlashcardsDeck/FlashcardsDeck';
+import Dialog from '../../components/Dialog/Dialog';
+import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
+import SlideUp from '../../components/Transition/SlideUp';
+import ImgEmptyState from '../../assets/svg/empty_flashcards.svg';
+import { isApiCalling, getPastClassIds } from '../../utils/helpers';
+import { userActions } from '../../constants/action-types';
+import { getFlashcards, confirmTooltip as confirmTooltipAction } from '../../actions/user';
+import useStyles from './styles';
+import type { State as StoreState } from '../../types/state';
+
 const Filters = {
   mine: {
     text: 'My Decks'
@@ -33,46 +35,54 @@ const Filters = {
   }
 };
 
-const FlashcardsList = ({
-  viewedTooltips,
-  confirmTooltip
-}) => {
+type Props = {
+  viewedTooltips?: any;
+  confirmTooltip?: any;
+};
+
+const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
   // Hooks
-  const classes = useStyles();
+  const classes: any = useStyles();
   const dispatch = useDispatch();
-  const me = useSelector(state => state.user.data);
-  const decks = useSelector(state => state.user.flashcards);
+  const me = useSelector((state) => (state as any).user.data);
+  const decks = useSelector((state) => (state as any).user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
-  const pastClasses = useSelector(state => state.user.userClasses.pastClasses);
+  const pastClasses = useSelector((state) => (state as any).user.userClasses.pastClasses);
   const location = useLocation();
   // Internal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const pastClassIds = useMemo(() => getPastClassIds(pastClasses), [pastClasses]);
   // Memos
-  const arrFilters = useMemo(() => Object.keys(Filters).map(key => ({
-    value: key,
-    text: Filters[key].text
-  })), []);
+  const arrFilters = useMemo(
+    () =>
+      Object.keys(Filters).map((key) => ({
+        value: key,
+        text: Filters[key].text
+      })),
+    []
+  );
   const currentFilter = useMemo(() => {
     const query = new URLSearchParams(location.search);
     return query.get('filter') || 'mine';
   }, [location]);
   const decksToShow = useMemo(() => {
-    const result = decks.ids.map(id => decks.byId[id]);
-    const myDecks = result.filter(item => !pastClassIds.includes(item.class_id));
+    const result = decks.ids.map((id) => decks.byId[id]);
+    const myDecks = result.filter((item) => !pastClassIds.includes(item.class_id));
 
     if (currentFilter === 'bookmarked') {
-      return result.filter(item => item.bookmarked);
+      return result.filter((item) => item.bookmarked);
     }
 
     if (currentFilter === 'past') {
-      return result.filter(item => pastClassIds.includes(item.class_id));
+      return result.filter((item) => pastClassIds.includes(item.class_id));
     }
 
     return myDecks;
   }, [decks, currentFilter, pastClassIds]);
   // Callbacks
-  const renderEmptyState = useCallback(() => <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
+  const renderEmptyState = useCallback(
+    () => (
+      <Box display="flex" flexDirection="column" alignItems="center" mt={3}>
         <img src={ImgEmptyState} alt="No flashcards" />
         <Box mt={3} fontSize={24}>
           {currentFilter === 'mine' && 'No flashcard decks yet.'}
@@ -80,25 +90,36 @@ const FlashcardsList = ({
           {currentFilter === 'past' && 'No decks from any past classes yet.'}
         </Box>
         <Box mt={1} fontSize={16} className={classes.emptyContent}>
-          {currentFilter === 'mine' && 'Level up your studying by creating your first flashcard deck!'}
-          {currentFilter === 'bookmarked' && 'Start creating your own deck or check out your class feed to start bookmarking!'}
-          {currentFilter === 'past' && 'Flashcard decks that you created for past classes or classes that have ended will appear here.'}
+          {currentFilter === 'mine' &&
+            'Level up your studying by creating your first flashcard deck!'}
+          {currentFilter === 'bookmarked' &&
+            'Start creating your own deck or check out your class feed to start bookmarking!'}
+          {currentFilter === 'past' &&
+            'Flashcard decks that you created for past classes or classes that have ended will appear here.'}
         </Box>
-      </Box>, [currentFilter, classes]);
+      </Box>
+    ),
+    [currentFilter, classes]
+  );
   const handleCreate = useCallback(() => {
-    // history.push('/flashcards/new');
     setIsCreateModalOpen(true);
   }, [setIsCreateModalOpen]);
   const handleCloseCreateModal = useCallback(() => {
     setIsCreateModalOpen(false);
   }, [setIsCreateModalOpen]);
-  const handleSelectFilter = useCallback(filter => {
-    dispatch(push(`/flashcards?filter=${filter}`));
-  }, [dispatch]);
+  const handleSelectFilter = useCallback(
+    (filter) => {
+      dispatch(push(`/flashcards?filter=${filter}`));
+    },
+    [dispatch]
+  );
   const updateOnboarding = useCallback(async () => {
     await confirmTooltip(8453);
   }, [confirmTooltip]);
-  const onboardingOpen = useMemo(() => Boolean(viewedTooltips && !viewedTooltips.includes(8453)), [viewedTooltips]);
+  const onboardingOpen = useMemo(
+    () => Boolean(viewedTooltips && !viewedTooltips.includes(8453)),
+    [viewedTooltips]
+  );
   // Effects
   useEffect(() => {
     switch (currentFilter) {
@@ -122,29 +143,38 @@ const FlashcardsList = ({
   // Helpers for rendering
   const renderContent = () => {
     if (isLoadingDecks) {
-      return <Box display="flex" justifyContent="center">
+      return (
+        <Box display="flex" justifyContent="center">
           <CircularProgress />
-        </Box>;
+        </Box>
+      );
     }
 
     if (decksToShow.length === 0) {
       return renderEmptyState();
     }
 
-    return <Grid container spacing={3}>
-        {decksToShow.map(deck => <Grid item key={deck.feed_id} xs={12} md={6} lg={4} xl={3}>
+    return (
+      <Grid container spacing={3}>
+        {decksToShow.map((deck) => (
+          <Grid item key={deck.feed_id} xs={12} md={6} lg={4} xl={3}>
             <FlashcardsDeck data={deck} />
-          </Grid>)}
-      </Grid>;
+          </Grid>
+        ))}
+      </Grid>
+    );
   };
 
   // Rendering
-  return <div className={classes.container}>
-      <OnboardingFlashcards userId={me.userId} updateOnboarding={updateOnboarding} open={onboardingOpen} />
+  return (
+    <div className={classes.container}>
+      <OnboardingFlashcards
+        userId={me.userId}
+        updateOnboarding={updateOnboarding}
+        open={onboardingOpen}
+      />
 
-      {
-      /* Title Section */
-    }
+      {/* Title Section */}
       <Grid container justifyContent="flex-start" alignItems="center" spacing={3}>
         <Grid item>
           <Typography variant="h5">Flashcards</Typography>
@@ -155,35 +185,41 @@ const FlashcardsList = ({
       </Grid>
       <Chip className={classes.betaTag} label="BETA" />
 
-      {
-      /* Deck Filter */
-    }
+      {/* Deck Filter */}
       <Box mt={4}>
-        <FiltersBar data={arrFilters} activeValue={currentFilter} onSelectItem={handleSelectFilter} />
+        <FiltersBar
+          data={arrFilters}
+          activeValue={currentFilter}
+          onSelectItem={handleSelectFilter}
+        />
       </Box>
 
-      {
-      /* Render decks */
-    }
+      {/* Render decks */}
       <Box mt={3}>{renderContent()}</Box>
 
-      {
-      /* Render Deck Creation Dialog */
-    }
-      <Dialog fullScreen open={isCreateModalOpen} onCancel={handleCloseCreateModal} TransitionComponent={SlideUp}>
+      {/* Render Deck Creation Dialog */}
+      <Dialog
+        fullScreen
+        open={isCreateModalOpen}
+        onCancel={handleCloseCreateModal}
+        TransitionComponent={SlideUp}
+      >
         <FlashcardsDeckCreator />
       </Dialog>
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  user
-}) => ({
+const mapStateToProps = ({ user }: StoreState) => ({
   viewedTooltips: user.syncData.viewedTooltips
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  confirmTooltip: confirmTooltipAction
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      confirmTooltip: confirmTooltipAction
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlashcardsList);
+export default connect<{}, {}, Props>(mapStateToProps, mapDispatchToProps)(FlashcardsList);

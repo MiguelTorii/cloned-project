@@ -1,18 +1,19 @@
-import React from "react";
-import { Paper, Typography } from "@material-ui/core";
-import withRoot from "../../withRoot";
-import { useStyles } from "../_styles/PointsHistoryDetails/StudyStats";
+import React from 'react';
+import { Paper, Typography } from '@material-ui/core';
+import withRoot from '../../withRoot';
+import { useStyles } from '../_styles/PointsHistoryDetails/StudyStats';
+
 type Props = {
-  userId: number;
+  userId: string;
 };
 
-const StudyStats = ({
-  userId
-}: Props) => {
-  const classes = useStyles();
-  return <Paper className={classes.root}>
+const StudyStats = ({ userId }: Props) => {
+  const classes: any = useStyles();
+  return (
+    <Paper className={classes.root}>
       <Typography variant="h6">Total Study Stats</Typography>
-    </Paper>;
+    </Paper>
+  );
 };
 
 export default withRoot(StudyStats);

@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import React from "react";
-import update from "immutability-helper";
-import cx from "classnames";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import ClearIcon from "@material-ui/icons/Clear";
-import { withStyles } from "@material-ui/core/styles";
-import { styles } from "../_styles/MeetUp/Whiteboard";
+import React, { RefObject } from 'react';
+import update from 'immutability-helper';
+import cx from 'classnames';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import ClearIcon from '@material-ui/icons/Clear';
+import { withStyles } from '@material-ui/core/styles';
+import { styles } from '../_styles/MeetUp/Whiteboard';
+
 type Props = {
   classes: Record<string, any>;
   userId: string;
@@ -20,6 +21,7 @@ type Props = {
   eraser: boolean;
   sendDataMessage: (...args: Array<any>) => any;
 };
+
 type State = {
   current: Record<string, any>;
   drawing: boolean;
@@ -39,7 +41,13 @@ type State = {
 };
 
 class Index extends React.Component<Props, State> {
-  state = {
+  canvas: RefObject<any>;
+
+  canvasTemp: RefObject<any>;
+
+  input: Record<string, any>;
+
+  state: State = {
     current: {
       x: 0,
       y: 0
@@ -54,15 +62,10 @@ class Index extends React.Component<Props, State> {
     inputValue: '',
     participants: []
   };
-  canvas: Record<string, any>;
-  canvasTemp: Record<string, any>;
-  input: Record<string, any>;
 
   constructor(props) {
     super(props);
-    // $FlowIgnore
     this.canvas = React.createRef();
-    // $FlowIgnore
     this.canvasTemp = React.createRef();
     window.addEventListener('resize', this.handleResize, false);
   }
@@ -82,13 +85,8 @@ class Index extends React.Component<Props, State> {
     if (isText) {
       this.input.focus();
     } else if (prevProps.isText && !isText) {
-      const {
-        color
-      } = this.props;
-      const {
-        inputValue,
-        inputPos
-      } = this.state;
+      const { color } = this.props;
+      const { inputValue, inputPos } = this.state;
 
       if (inputValue.trim() !== '') {
         this.drawText(inputValue, color, inputPos.left, inputPos.top, true);
@@ -100,9 +98,7 @@ class Index extends React.Component<Props, State> {
 
     if (drawData !== prevProps.drawData && drawData !== '') {
       const data = JSON.parse(drawData);
-      const {
-        type = ''
-      } = data;
+      const { type = '' } = data;
 
       if (type === 'drawing') {
         this.handleDrawingEvent(data);
@@ -120,34 +116,19 @@ class Index extends React.Component<Props, State> {
       });
     }
   };
-  // componentWillReceiveProps = prevProps => {
-  //   const { drawData, isText } = this.props;
-  //   console.log(isText)
-  //   if (drawData !== prevProps.drawData && drawData !== '') {
-  //     const data = JSON.parse(drawData);
-  //     const { type = '' } = data;
-  //     if (type === 'drawing') this.handleDrawingEvent(data);
-  //     else if (type === 'texting') this.handleTextingEvent(data);
-  //     else if (type === 'cursor') this.handleCursorEvent(data);
-  //   }
-  //   if (!isText) {
-  //     console.log('hide')
-  //     this.setState({ showInput: false, inputValue: '' });
-  //   }
-  // };
+
   componentWillUnmount = () => {
     window.removeEventListener('resize', this.handleResize, false);
   };
-  handleMouseDown = e => {
-    const {
-      isText
-    } = this.props;
+
+  handleMouseDown = (e) => {
+    const { isText } = this.props;
 
     if (isText) {
       return;
     }
 
-    const current = {};
+    const current: any = {};
     current.x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
     current.y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
     this.setState({
@@ -155,24 +136,16 @@ class Index extends React.Component<Props, State> {
       current
     });
   };
-  handleMouseUp = e => {
-    const {
-      isText
-    } = this.props;
+
+  handleMouseUp = (e) => {
+    const { isText } = this.props;
 
     if (isText) {
       return;
     }
 
-    const {
-      lineWidth,
-      color,
-      eraser
-    } = this.props;
-    const {
-      drawing,
-      current
-    } = this.state;
+    const { lineWidth, color, eraser } = this.props;
+    const { drawing, current } = this.state;
 
     if (!drawing) {
       return;
@@ -181,35 +154,44 @@ class Index extends React.Component<Props, State> {
     this.setState({
       drawing: false
     });
-    this.drawLine(current.x, current.y, e.clientX || (e.touches ? e.touches[0].clientX : 0), e.clientY || (e.touches ? e.touches[0].clientY : 0), lineWidth, eraser ? 'white' : color, true);
+    this.drawLine(
+      current.x,
+      current.y,
+      e.clientX || (e.touches ? e.touches[0].clientX : 0),
+      e.clientY || (e.touches ? e.touches[0].clientY : 0),
+      lineWidth,
+      eraser ? 'white' : color,
+      true
+    );
   };
-  handleMouseMove = e => {
-    this.handleCursor( // $FlowIgnore
-    e.clientX || (e.touches ? e.touches[0].clientX : 0), // $FlowIgnore
-    e.clientY || (e.touches ? e.touches[0].clientY : 0));
-    const {
-      isText
-    } = this.props;
+
+  handleMouseMove = (e) => {
+    this.handleCursor(
+      e.clientX || (e.touches ? e.touches[0].clientX : 0),
+      e.clientY || (e.touches ? e.touches[0].clientY : 0)
+    );
+    const { isText } = this.props;
 
     if (isText) {
       return;
     }
 
-    const {
-      lineWidth,
-      color,
-      eraser
-    } = this.props;
-    const {
-      drawing,
-      current
-    } = this.state;
+    const { lineWidth, color, eraser } = this.props;
+    const { drawing, current } = this.state;
 
     if (!drawing) {
       return;
     }
 
-    this.drawLine(current.x, current.y, e.clientX || (e.touches ? e.touches[0].clientX : 0), e.clientY || (e.touches ? e.touches[0].clientY : 0), lineWidth, eraser ? 'white' : color, true);
+    this.drawLine(
+      current.x,
+      current.y,
+      e.clientX || (e.touches ? e.touches[0].clientX : 0),
+      e.clientY || (e.touches ? e.touches[0].clientY : 0),
+      lineWidth,
+      eraser ? 'white' : color,
+      true
+    );
     this.setState({
       current: {
         x: e.clientX || (e.touches ? e.touches[0].clientX : 0),
@@ -217,20 +199,13 @@ class Index extends React.Component<Props, State> {
       }
     });
   };
-  handleClick = e => {
-    const {
-      isText
-    } = this.props;
+
+  handleClick = (e) => {
+    const { isText } = this.props;
 
     if (isText) {
-      const {
-        color
-      } = this.props;
-      const {
-        showInput,
-        inputValue,
-        inputPos
-      } = this.state;
+      const { color } = this.props;
+      const { showInput, inputValue, inputPos } = this.state;
 
       if (inputValue.trim() !== '' && showInput === true) {
         this.drawText(inputValue, color, inputPos.left, inputPos.top, true);
@@ -250,22 +225,17 @@ class Index extends React.Component<Props, State> {
       }));
     }
   };
-  handleChange = event => {
+
+  handleChange = (event) => {
     this.setState({
       inputValue: event.target.value
     });
   };
-  handleKeyDown = event => {
-    const {
-      key = ''
-    } = event;
-    const {
-      color
-    } = this.props;
-    const {
-      inputValue,
-      inputPos
-    } = this.state;
+
+  handleKeyDown = (event) => {
+    const { key = '' } = event;
+    const { color } = this.props;
+    const { inputValue, inputPos } = this.state;
 
     if (key === 'Enter') {
       this.drawText(inputValue, color, inputPos.left, inputPos.top, true);
@@ -275,6 +245,7 @@ class Index extends React.Component<Props, State> {
       });
     }
   };
+
   handleResize = () => {
     this.canvasTemp.current.width = this.canvas.current.width;
     this.canvasTemp.current.height = this.canvas.current.height;
@@ -285,12 +256,9 @@ class Index extends React.Component<Props, State> {
     const ctx = this.canvas.current.getContext('2d');
     ctx.drawImage(this.canvasTemp.current, 0, 0);
   };
+
   handleCursor = (x, y) => {
-    const {
-      userId,
-      name,
-      sendDataMessage
-    } = this.props;
+    const { userId, name, sendDataMessage } = this.props;
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
     const data = {
@@ -302,12 +270,10 @@ class Index extends React.Component<Props, State> {
     };
     sendDataMessage(JSON.stringify(data));
   };
+
   drawLine = (x0, y0, x1, y1, lineWidth, color, emit) => {
-    // const { context } = this.state;
     const context = this.canvas.current.getContext('2d');
-    const {
-      sendDataMessage
-    } = this.props;
+    const { sendDataMessage } = this.props;
 
     if (!context) {
       return null;
@@ -321,7 +287,6 @@ class Index extends React.Component<Props, State> {
     context.moveTo(x0, y0);
     context.lineTo(x1, y1);
     context.stroke();
-    // context.closePath();
     this.setState({
       context
     });
@@ -344,13 +309,10 @@ class Index extends React.Component<Props, State> {
     sendDataMessage(JSON.stringify(data));
     return null;
   };
+
   drawText = (text, color, x, y, emit) => {
-    const {
-      sendDataMessage
-    } = this.props;
-    const {
-      context
-    } = this.state;
+    const { sendDataMessage } = this.props;
+    const { context } = this.state;
 
     if (!context) {
       return null;
@@ -379,6 +341,7 @@ class Index extends React.Component<Props, State> {
     sendDataMessage(JSON.stringify(data));
     return null;
   };
+
   throttle = (callback, delay) => {
     let previousCall = new Date().getTime();
     // eslint-disable-next-line func-names
@@ -388,34 +351,39 @@ class Index extends React.Component<Props, State> {
       if (time - previousCall >= delay) {
         previousCall = time;
         // eslint-disable-next-line prefer-rest-params
-        callback(...arguments);
+        callback(...(arguments as any));
       }
     };
   };
-  handleDrawingEvent = data => {
+
+  handleDrawingEvent = (data) => {
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
-    this.drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.lineWidth, data.color);
+    this.drawLine(
+      data.x0 * w,
+      data.y0 * h,
+      data.x1 * w,
+      data.y1 * h,
+      data.lineWidth,
+      data.color,
+      null
+    );
   };
-  handleTextingEvent = data => {
+
+  handleTextingEvent = (data) => {
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
-    this.drawText(data.text, data.color, data.x * w, data.y * h);
+    this.drawText(data.text, data.color, data.x * w, data.y * h, null);
   };
-  handleCursorEvent = data => {
-    const {
-      userId,
-      name,
-      x,
-      y
-    } = data;
+
+  handleCursorEvent = (data) => {
+    const { userId, name, x, y } = data;
     const w = this.canvas.current.width;
     const h = this.canvas.current.height;
     const newState = update(this.state, {
       participants: {
-        $apply: b => {
-          // console.log(b);
-          const index = b.findIndex(item => item.userId === userId);
+        $apply: (b) => {
+          const index = b.findIndex((item) => item.userId === userId);
 
           if (index > -1) {
             return update(b, {
@@ -430,17 +398,21 @@ class Index extends React.Component<Props, State> {
             });
           }
 
-          return [...b, {
-            userId,
-            name,
-            x: x * w,
-            y: y * h
-          }];
+          return [
+            ...b,
+            {
+              userId,
+              name,
+              x: x * w,
+              y: y * h
+            }
+          ];
         }
       }
     });
     this.setState(newState);
   };
+
   handleCancelInput = () => {
     this.setState({
       showInput: false
@@ -448,42 +420,68 @@ class Index extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      showInput,
-      inputPos,
-      inputValue,
-      participants
-    } = this.state;
-    return <div className={classes.main}>
-        <canvas ref={this.canvas} className={classes.root} onClick={this.handleClick} onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp} onMouseOut={this.handleMouseUp} onMouseMove={this.throttle(this.handleMouseMove, 10)} />
-        <canvas ref={this.canvasTemp} style={{
-        display: 'none'
-      }} />
-        <div className={cx(classes.inputWrapper, showInput && classes.showInput)} style={{ ...inputPos
-      }}>
-          <OutlinedInput inputRef={input => {
-          this.input = input;
-        }} className={classes.input} placeholder="Add your text" labelWidth={0} multiline value={inputValue} onChange={this.handleChange} onKeyDown={this.handleKeyDown} />
+    const { classes } = this.props;
+    const { showInput, inputPos, inputValue, participants } = this.state;
+    return (
+      <div className={classes.main}>
+        <canvas
+          ref={this.canvas}
+          className={classes.root}
+          onClick={this.handleClick}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseOut={this.handleMouseUp}
+          onMouseMove={this.throttle(this.handleMouseMove, 10)}
+        />
+        <canvas
+          ref={this.canvasTemp}
+          style={{
+            display: 'none'
+          }}
+        />
+        <div
+          className={cx(classes.inputWrapper, showInput && classes.showInput)}
+          style={{ ...inputPos }}
+        >
+          <OutlinedInput
+            inputRef={(input) => {
+              this.input = input;
+            }}
+            className={classes.input}
+            placeholder="Add your text"
+            labelWidth={0}
+            multiline
+            value={inputValue}
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+          />
           <Paper className={classes.inputOptions}>
-            <ButtonBase color="primary" className={cx(classes.button)} onClick={this.handleCancelInput}>
+            <ButtonBase
+              color="primary"
+              className={cx(classes.button)}
+              onClick={this.handleCancelInput}
+            >
               <ClearIcon />
             </ButtonBase>
           </Paper>
         </div>
-        {participants.map(item => <Typography key={item.userId} className={classes.participant} style={{
-        position: 'absolute',
-        top: item.y,
-        left: item.x,
-        color: 'black'
-      }}>
+        {participants.map((item) => (
+          <Typography
+            key={item.userId}
+            className={classes.participant}
+            style={{
+              position: 'absolute',
+              top: item.y,
+              left: item.x,
+              color: 'black'
+            }}
+          >
             {item.name}
-          </Typography>)}
-      </div>;
+          </Typography>
+        ))}
+      </div>
+    );
   }
-
 }
 
-export default withStyles(styles)(Index);
+export default withStyles(styles as any)(Index);

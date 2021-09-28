@@ -1,4 +1,5 @@
 import { dialogStyle } from './Dialog';
+
 export default (theme) => ({
   validatorForm: {
     flex: 1,

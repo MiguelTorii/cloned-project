@@ -1,17 +1,17 @@
-import React, { useState, useCallback, useRef } from "react";
-import { makeStyles } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
-import CardMedia from "@material-ui/core/CardMedia";
-import amplitude from "amplitude-js";
-import { StudyRoomOnboardingStepData } from "../../types/models";
-import withRoot from "../../withRoot";
-import ActionButton from "./ActionButton";
-import Ellipses from "./Ellipses";
-import TransparentButton from "./TransparentButton";
-import StartPlay from "../../assets/svg/video_play.svg";
-// import LoadImg from '../../components/LoadImg';
-const useStyles = makeStyles(theme => ({
+import React, { useState, useCallback, useRef } from 'react';
+import { makeStyles } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import amplitude from 'amplitude-js';
+import { StudyRoomOnboardingStepData } from '../../types/models';
+import withRoot from '../../withRoot';
+import ActionButton from './ActionButton';
+import Ellipses from './Ellipses';
+import TransparentButton from './TransparentButton';
+import StartPlay from '../../assets/svg/video_play.svg';
+
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
@@ -158,13 +158,15 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer'
   }
 }));
+
 type Props = {
-  data: StudyRoomOnboardingStepData;
-  step: number;
-  totalSteps: number;
-  onAction: (...args: Array<any>) => any;
-  onBackAction: (...args: Array<any>) => any;
-  onClose: (...args: Array<any>) => any;
+  data?: StudyRoomOnboardingStepData;
+  step?: number;
+  totalSteps?: number;
+  userId?: string;
+  onAction?: (...args: Array<any>) => any;
+  onBackAction?: (...args: Array<any>) => any;
+  onClose?: (...args: Array<any>) => any;
 };
 
 const OnboardingStep = ({
@@ -178,7 +180,7 @@ const OnboardingStep = ({
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const player = useRef(null);
-  const classes = useStyles();
+  const classes: any = useStyles();
   const handleBack = useCallback(() => {
     if (step === 1) {
       onClose();
@@ -201,19 +203,43 @@ const OnboardingStep = ({
       player.current.play();
     }
   }, [isPlaying]);
-  return <div className={classes.root} style={{
-    background: step === 1 && 'black'
-  }}>
+  return (
+    <div
+      className={classes.root}
+      style={{
+        background: step === 1 && 'black'
+      }}
+    >
       {step !== 1 && <CloseIcon className={classes.closeIcon} onClick={onClose} />}
-      {step === 1 ? <div className={classes.mediaContainer}>
-          <CardMedia component="video" className={classes.mediaPlayer} image="https://media.circleinapp.com/img/onboarding/CircleIn_Flashcard_Onboarding.webm" controls={isPlaying} ref={player} style={{
-        display: isPlaying ? 'block' : 'none'
-      }} />
-          {!isPlaying && <img src={data.imageUrl} alt="Step One" className={classes.firstStepImage} />}
-          {!isPlaying && <img src={StartPlay} className={classes.startPlay} alt="Video Play Icon" onClick={handleClick} />}
-        </div> : <div className={classes.imageContainer}>
+      {step === 1 ? (
+        <div className={classes.mediaContainer}>
+          <CardMedia
+            component="video"
+            className={classes.mediaPlayer}
+            image="https://media.circleinapp.com/img/onboarding/CircleIn_Flashcard_Onboarding.webm"
+            controls={isPlaying}
+            ref={player}
+            style={{
+              display: isPlaying ? 'block' : 'none'
+            }}
+          />
+          {!isPlaying && (
+            <img src={data.imageUrl} alt="Step One" className={classes.firstStepImage} />
+          )}
+          {!isPlaying && (
+            <img
+              src={StartPlay}
+              className={classes.startPlay}
+              alt="Video Play Icon"
+              onClick={handleClick}
+            />
+          )}
+        </div>
+      ) : (
+        <div className={classes.imageContainer}>
           <img src={data.imageUrl} alt="Study Room Onboarding" />
-        </div>}
+        </div>
+      )}
       <div className={classes.mainContainer}>
         <div>
           <div className={classes.ellipseContainer}>
@@ -235,7 +261,8 @@ const OnboardingStep = ({
           <ActionButton onClick={() => onAction()}>{data.actionText}</ActionButton>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default withRoot(OnboardingStep);

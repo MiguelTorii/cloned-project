@@ -1,21 +1,20 @@
-import React, { useMemo } from "react";
-import Paper from "@material-ui/core/Paper";
-import { Box } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import moment from "moment";
-import LoadImg from "../LoadImg/LoadImg";
-import type { PointsHistoryItem } from "../../types/models";
-import withRoot from "../../withRoot";
-import { useStyles } from "../_styles/PointsRecordItem";
+import React, { useMemo } from 'react';
+import Paper from '@material-ui/core/Paper';
+import { Box } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import moment from 'moment';
+import LoadImg from '../LoadImg/LoadImg';
+import type { PointsHistoryItem } from '../../types/models';
+import withRoot from '../../withRoot';
+import { useStyles } from '../_styles/PointsRecordItem';
+
 const IMAGE_SIZE = 32;
 type Props = {
   data: PointsHistoryItem;
 };
 
-const PointsRecordItem = ({
-  data
-}: Props) => {
-  const classes = useStyles();
+const PointsRecordItem = ({ data }: Props) => {
+  const classes: any = useStyles();
   const durationText = useMemo(() => {
     const minutes = moment.duration(moment().diff(moment.utc(data.date))).asMinutes();
 
@@ -29,7 +28,8 @@ const PointsRecordItem = ({
 
     return moment.duration(-minutes / 1440, 'days').humanize(true);
   }, [data]);
-  return <Paper className={classes.root}>
+  return (
+    <Paper className={classes.root}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center">
           <LoadImg url={data.points_icon_url} loadingSize={IMAGE_SIZE} className={classes.image} />
@@ -42,7 +42,8 @@ const PointsRecordItem = ({
           {data.points.toString().toUpperCase()} <br /> Points
         </Typography>
       </Box>
-    </Paper>;
+    </Paper>
+  );
 };
 
 export default withRoot(PointsRecordItem);

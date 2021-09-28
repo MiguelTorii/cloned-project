@@ -1,8 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import type { Notifications, CustomNotification } from "../types/models";
-import { getToken } from "./utils";
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import type { Notifications, CustomNotification } from '../types/models';
+import { getToken } from './utils';
+import { APINotifications } from './models/APINotifications';
+import { APINotification } from './models/APINotification';
+
 export const getNotifications = async ({
   userId,
   tab
@@ -22,39 +25,40 @@ export const getNotifications = async ({
       type = 'announcement=true';
     }
 
-    const result = await axios.get(`${API_ROUTES.NOTIFICATIONS}/${userId}?${type}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result: { data: APINotifications } = await axios.get(
+      `${API_ROUTES.NOTIFICATIONS}/${userId}?${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data
-    } = result;
-    const notifications = (data.notifications || []).map(item => ({
-      actorFirstName: String((item.actor_first_name as string) || ''),
-      actorId: String((item.actor_id as string) || ''),
-      actorLastName: String((item.actor_last_name as string) || ''),
-      createdOn: String((item.created_on as string) || ''),
-      entityId: Number((item.entity_id as number) || 0),
-      entityType: Number((item.entity_type as number) || 0),
-      feedPostTitle: String((item.feed_post_title as string) || ''),
-      fileName: String((item.file_name as string) || ''),
-      fullNoteUrl: String((item.full_note_url as string) || ''),
-      id: Number((item.id as number) || 0),
-      noteUrl: String((item.note_url as string) || ''),
-      notificationText: String((item.notification_text as string) || ''),
-      postId: Number((item.post_id as number) || 0),
-      postTypeId: Number((item.post_type_id as number) || 0),
-      deckSize: Number((item.deck_size as number) || 0),
-      profileImageUrl: String((item.profile_image_url as string) || ''),
-      state: Number((item.state as number) || 0)
+    );
+    const { data } = result;
+    const notifications = data.notifications.map((item: APINotification) => ({
+      actorFirstName: item.actor_first_name || '',
+      actorId: item.actor_id || '',
+      actorLastName: item.actor_last_name || '',
+      createdOn: item.created_on || '',
+      entityId: item.entity_id || 0,
+      entityType: item.entity_type || 0,
+      feedPostTitle: item.feed_post_title || '',
+      fileName: item.file_name || '',
+      fullNoteUrl: item.full_note_url || '',
+      id: item.id || 0,
+      noteUrl: item.note_url || '',
+      notificationText: item.notification_text || '',
+      postId: item.post_id || 0,
+      postTypeId: item.post_type_id || 0,
+      deckSize: item.deck_size || 0,
+      profileImageUrl: item.profile_image_url || '',
+      state: item.state || 0
     }));
-    const unreadCount = Number((data.unread_count as number) || 0);
+    const unreadCount = data.unread_count || 0;
     return {
       notifications,
       unreadCount
     };
-  } catch (err) {
+  } catch (err: any) {
     if (err.response && err.response.status === 401) {
       window.location.href = '/auth';
     }
@@ -77,9 +81,7 @@ export const setNotificationsRead = async ({
         Authorization: `Bearer ${token}`
       }
     });
-    const {
-      data
-    } = result;
+    const { data } = result;
     return data;
   } catch (err) {
     return {};
@@ -99,14 +101,12 @@ export const getNotification = async ({
         Authorization: `Bearer ${token}`
       }
     });
-    const {
-      data
-    } = result;
+    const { data } = result;
     return {
-      title: String((data.title as string) || ''),
-      body: String((data.body as string) || ''),
-      details: String((data.details as string) || ''),
-      created: String((data.created as string) || '')
+      title: data.title || '',
+      body: data.body || '',
+      details: data.details || '',
+      created: data.created || ''
     };
   } catch (err) {
     console.log(err);
@@ -121,11 +121,15 @@ export const getNotification = async ({
 export const postPing = async (): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
-    await axios.post(`${API_ROUTES.PING}`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    await axios.post(
+      `${API_ROUTES.PING}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     return {};
   } catch (err) {
     console.log(err);

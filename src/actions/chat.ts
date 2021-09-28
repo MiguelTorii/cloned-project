@@ -1,5 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 import uuidv4 from 'uuid/v4';
+import Chat from 'twilio-chat';
+import update from 'immutability-helper';
+import { push } from 'connected-react-router';
+import moment from 'moment';
 import {
   getGroupMembers,
   getShareLink,
@@ -9,16 +13,12 @@ import {
   renewTwilioToken,
   leaveChat,
   blockChatUser,
-  createChannel
-} from 'api/chat';
-import Chat from 'twilio-chat';
-import update from 'immutability-helper';
-import { push } from 'connected-react-router';
-import moment from 'moment';
+  createChannel,
+  apiUpdateChat
+} from '../api/chat';
 import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import { apiUpdateChat } from '../api/chat';
 import { uploadMedia } from './user';
 
 const getAvailableSlots = (width) => {
@@ -44,11 +44,11 @@ const requestStartChannelWithEntity = ({
   entityVideo,
   entityUuid
 }: {
-  entityId: string,
-  entityFirstName: string,
-  entityLastName: string,
-  entityVideo: boolean,
-  entityUuid: string
+  entityId: number;
+  entityFirstName: string;
+  entityLastName: string;
+  entityVideo: boolean;
+  entityUuid: string;
 }): Action => ({
   type: chatActions.START_CHANNEL_WITH_ENTITY_REQUEST,
   payload: {
@@ -89,8 +89,8 @@ const initChannels = ({
   channels,
   local
 }: {
-  channels: array,
-  local: Record<string, any>
+  channels: any[];
+  local: Record<string, any>;
 }): Action => ({
   type: chatActions.INIT_CHANNELS_CHAT,
   payload: {
@@ -110,8 +110,8 @@ const updateChannel = ({
   channel,
   unread
 }: {
-  channel: Record<string, any>,
-  unread: number
+  channel: Record<string, any>;
+  unread: number;
 }): Action => ({
   type: chatActions.UPDATE_CHANNEL_CHAT,
   payload: {
@@ -124,8 +124,8 @@ const updateShareLink = ({
   shareLink,
   channelId
 }: {
-  channelId: number,
-  shareLink: string
+  channelId: number;
+  shareLink: string;
 }): Action => ({
   type: chatActions.UPDATE_SHARE_LINK_CHAT,
   payload: {
@@ -138,8 +138,8 @@ const updateMembers = ({
   members,
   channelId
 }: {
-  channelId: number,
-  members: Record<string, any>
+  channelId: number;
+  members: Record<string, any>;
 }): Action => ({
   type: chatActions.UPDATE_MEMBERS_CHAT,
   payload: {
@@ -161,10 +161,10 @@ const addChannel = ({
   channel,
   unread
 }: {
-  channel: Record<string, any>,
-  unread: number,
-  userId: string,
-  members: array
+  channel: Record<string, any>;
+  unread?: number;
+  userId?: string;
+  members: any[];
 }): Action => ({
   type: chatActions.ADD_CHANNEL_CHAT,
   payload: {
@@ -190,7 +190,7 @@ const shutdown = (): Action => ({
   type: chatActions.SHUTDOWN_CHAT
 });
 
-const setOpenChannels = ({ openChannels }: { openChannels: array }) => ({
+const setOpenChannels = ({ openChannels }: { openChannels: any[] }) => ({
   type: chatActions.SET_OPEN_CHANNELS,
   payload: {
     openChannels
@@ -204,7 +204,11 @@ const muteChannelLocal = ({ sid }: { sid: string }) => ({
   }
 });
 
-const setCurrentChannelAction = ({ currentChannel }: { currentChannel: Record<string, any> }) => ({
+const setCurrentChannelAction = ({
+  currentChannel
+}: {
+  currentChannel: Record<string, any> | null;
+}) => ({
   type: chatActions.SET_CURRENT_CHANNEL,
   payload: {
     currentChannel
@@ -228,7 +232,7 @@ const setCurrentCommunityAction = ({ channel }: { channel: Record<string, any> }
 const setCurrentCommunityChannelAction = ({
   currentChannel
 }: {
-  currentChannel: Record<string, any>
+  currentChannel: Record<string, any>;
 }) => ({
   type: chatActions.SET_CURRENT_COMMUNITY_CHANNEL,
   payload: {
@@ -254,8 +258,8 @@ const createNewChannel = ({
   newChannel,
   openChannels
 }: {
-  newChannel: boolean,
-  openChannels: array
+  newChannel: boolean;
+  openChannels: any[];
 }) => ({
   type: chatActions.CREATE_NEW_CHANNEL,
   payload: {
@@ -271,7 +275,7 @@ const setMainMessageAction = ({ mainMessage }: { mainMessage: string }) => ({
   }
 });
 
-const setCommunitiesAction = ({ communities }: { communities: Array }) => ({
+const setCommunitiesAction = ({ communities }: { communities: any[] }) => ({
   type: chatActions.SET_COMMUNITIES,
   payload: {
     communities
@@ -281,7 +285,7 @@ const setCommunitiesAction = ({ communities }: { communities: Array }) => ({
 export const setCommunityChannelsAction = ({
   communityChannels
 }: {
-  communityChannels: Array
+  communityChannels: Array<any>;
 }) => ({
   type: chatActions.SET_COMMUNITY_CHANNELS,
   payload: {
@@ -338,7 +342,7 @@ export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
   }
 };
 export const setCurrentChannelSid = (selectedChannelId) => async (dispatch: Dispatch) => {
-  if (setCurrentChannelSid) {
+  if (selectedChannelId) {
     dispatch(
       setCurrentChannelSidAction({
         selectedChannelId
@@ -478,7 +482,7 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
       Object.keys(currentLocal).length > 0 &&
       !localStorage.getItem('currentDMChannel')
     ) {
-      let channelList = [];
+      let channelList: string[] = [];
       channelList = Object.keys(local).filter((l) => !local[l].lastMessage.message);
       const recentMessageChannels = Object.keys(local).filter((l) => local[l].lastMessage.message);
 
@@ -504,7 +508,7 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
       const lastChannelId = localStorage.getItem('currentDMChannel');
       dispatch(
         setCurrentChannelSidAction({
-          selectedChannelId: lastChannelId
+          selectedChannelId: lastChannelId || ''
         })
       );
       dispatch(setCurrentChannel(currentLocal?.[lastChannelId]?.twilioChannel));
@@ -528,11 +532,11 @@ export const openChannelWithEntity =
     entityVideo,
     fullscreen = false
   }: {
-    entityId: string,
-    entityFirstName: string,
-    entityLastName: string,
-    entityVideo: boolean,
-    fullscreen: boolean
+    entityId: number;
+    entityFirstName: string;
+    entityLastName: string;
+    entityVideo: boolean;
+    fullscreen: boolean;
   }) =>
   async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
     if (!fullscreen) {
@@ -677,7 +681,7 @@ export const handleInitChat =
       );
       await initLocalChannels(dispatch, local);
 
-      if (client._eventsCount === 0) {
+      if ((client as any)._eventsCount === 0) {
         client.on('channelJoined', async (channel) => {
           const { sid } = channel;
           setTimeout(async () => {
@@ -777,7 +781,7 @@ export const handleShutdownChat =
         client.removeAllListeners();
         channels.forEach((c) => {
           c.removeAllListeners();
-        }); // client.shutdown();
+        });
       } catch (err) {}
     }
 
@@ -792,32 +796,28 @@ export const handleUpdateGroupPhoto =
       }
     } = getState();
 
-    try {
-      const result = await uploadMedia(userId, 5, image);
-      const { readUrl, mediaId } = result;
-      await apiUpdateChat(channelSid, {
-        chat_id: channelSid,
-        thumbnail: mediaId
-      });
-      dispatch(
-        updateChannelAttributes(channelSid, {
-          thumbnail: readUrl
-        })
-      );
+    const result = await uploadMedia(userId, 5, image);
+    const { readUrl, mediaId } = result;
+    await apiUpdateChat(channelSid, {
+      chat_id: channelSid,
+      thumbnail: mediaId
+    });
+    dispatch(
+      updateChannelAttributes(channelSid, {
+        thumbnail: readUrl
+      })
+    );
 
-      if (callback) {
-        callback();
-      }
-    } catch (err) {}
+    if (callback) {
+      callback();
+    }
   };
 export const handleBlockUser =
   ({ blockedUserId }) =>
   async () => {
-    try {
-      await blockChatUser({
-        blockedUserId
-      });
-    } catch (err) {}
+    await blockChatUser({
+      blockedUserId
+    });
   };
 export const handleMuteChannel =
   ({ sid }) =>
@@ -921,35 +921,33 @@ export const updateOpenChannels =
       }
     } = getState();
 
-    try {
-      const availableSlots = getAvailableSlots(window.innerWidth);
+    const availableSlots = getAvailableSlots(window.innerWidth);
 
-      if (availableSlots === 0) {
-        return;
-      }
+    if (availableSlots === 0) {
+      return;
+    }
 
-      if (availableSlots === 0) {
-        dispatch(
-          setOpenChannels({
-            openChannels: []
-          })
-        );
-      }
-
-      const newState = update(openChannels, {
-        $apply: (b) => {
-          const newB = update(b, {
-            $splice: [[availableSlots]]
-          });
-          return [...newB];
-        }
-      });
+    if (availableSlots === 0) {
       dispatch(
         setOpenChannels({
-          openChannels: newState
+          openChannels: []
         })
       );
-    } catch (err) {}
+    }
+
+    const newState = update(openChannels, {
+      $apply: (b) => {
+        const newB = update(b, {
+          $splice: [[availableSlots]]
+        });
+        return [...newB];
+      }
+    });
+    dispatch(
+      setOpenChannels({
+        openChannels: newState
+      })
+    );
   };
 export const handleChannelClose =
   (sid: string) => async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {

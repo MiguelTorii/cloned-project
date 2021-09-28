@@ -1,18 +1,18 @@
-import React, { useRef } from "react";
-import queryString from "query-string";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import withWidth from "@material-ui/core/withWidth";
-import { withRouter } from "react-router";
-import FeedResources from "containers/FeedResources/FeedResources";
-import { decypherClass } from "utils/crypto";
-import { Hidden } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import Feed from "../../containers/Feed/Feed";
-import Recommendations from "../../containers/Recommendations/Recommendations";
+import React, { useRef } from 'react';
+import queryString from 'query-string';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import withWidth from '@material-ui/core/withWidth';
+import { withRouter } from 'react-router';
+import { Hidden } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import FeedResources from '../../containers/FeedResources/FeedResources';
+import { decypherClass } from '../../utils/crypto';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import Feed from '../../containers/Feed/Feed';
+import Recommendations from '../../containers/Recommendations/Recommendations';
 
 const styles = () => ({
   item: {
@@ -28,20 +28,12 @@ type Props = {
   };
 };
 
-const FeedPage = ({
-  classes,
-  location
-}: Props) => {
-  const {
-    feedId,
-    from
-  } = queryString.parse(location.search);
+const FeedPage = ({ classes, location }: Props) => {
+  const { feedId, from } = queryString.parse(location.search);
   const gridRef = useRef(null);
-  const {
-    classId,
-    sectionId
-  } = decypherClass();
-  return <main>
+  const { classId, sectionId } = decypherClass();
+  return (
+    <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={2}>
@@ -53,7 +45,12 @@ const FeedPage = ({
             </Grid>
           </Hidden>
           <Grid item xs={12} lg={9} className={classes.item}>
-            <Feed feedId={feedId} classId={classId} sectionId={sectionId} from={from} />
+            <Feed
+              feedId={Number(feedId)}
+              classId={classId}
+              sectionId={sectionId}
+              from={String(from)}
+            />
           </Grid>
           <Grid item xs={12} lg={3} className={classes.resources} ref={gridRef}>
             <Grid container direction="column" spacing={2}>
@@ -64,7 +61,8 @@ const FeedPage = ({
           </Grid>
         </Grid>
       </Layout>
-    </main>;
+    </main>
+  );
 };
 
-export default withRoot(withStyles(styles)(withWidth()(withRouter(FeedPage))));
+export default withRoot(withStyles(styles as any)(withWidth()(withRouter(FeedPage))));

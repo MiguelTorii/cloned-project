@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import useStyles from "components/FlashcardsMatchGame/styles";
-import { extractTextFromHtml } from "utils/helpers";
-import withRoot from "withRoot";
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import useStyles from './styles';
+import { extractTextFromHtml } from '../../utils/helpers';
+import withRoot from '../../withRoot';
 
 const ContentCard = ({
   dragRef,
@@ -18,18 +18,39 @@ const ContentCard = ({
   isDragging,
   isOver
 }) => {
-  const classes = useStyles();
+  const classes: any = useStyles();
   // Memo
   const extractText = useMemo(() => extractTextFromHtml(text), [text]);
-  return <Box ref={dragRef} display="flex" alignItems="center" className={clsx(classes.contentCard, (isDragging || isOver) && 'hover', isDragging && 'dragging', hasCorrectAnimation && 'correct', hasIncorrectAnimation && 'incorrect')} style={{
-    left: x,
-    top: y
-  }}>
-      {image && <Box display="flex" justifyContent="center" alignItems="center" className={classes.imageContainer}>
+  return (
+    <Box
+      {...({ ref: dragRef } as any)}
+      display="flex"
+      alignItems="center"
+      className={clsx(
+        classes.contentCard,
+        (isDragging || isOver) && 'hover',
+        isDragging && 'dragging',
+        hasCorrectAnimation && 'correct',
+        hasIncorrectAnimation && 'incorrect'
+      )}
+      style={{
+        left: x,
+        top: y
+      }}
+    >
+      {image && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          className={classes.imageContainer}
+        >
           <img src={image} alt="Flashcard" className={classes.contentImage} />
-        </Box>}
+        </Box>
+      )}
       {extractText && <Typography className={classes.contentText}>{extractText}</Typography>}
-    </Box>;
+    </Box>
+  );
 };
 
 ContentCard.propTypes = {

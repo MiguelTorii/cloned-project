@@ -1,7 +1,7 @@
-import React from "react";
-import * as Sentry from "@sentry/browser";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+import * as Sentry from '@sentry/browser';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = () => ({});
 
@@ -37,7 +37,11 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   skip = (error: Error) => {
-    if (JSON.stringify(error).includes('transition is invalid while previous transition is still in progress')) {
+    if (
+      JSON.stringify(error).includes(
+        'transition is invalid while previous transition is still in progress'
+      )
+    ) {
       return true;
     }
 
@@ -45,28 +49,24 @@ class ErrorBoundary extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      classes,
-      children
-    } = this.props;
-    const {
-      hasError
-    } = this.state;
+    const { classes, children } = this.props;
+    const { hasError } = this.state;
 
     if (hasError) {
-      return <div className={classes.root}>
+      return (
+        <div className={classes.root}>
           <Typography variant="subtitle1" paragraph>
             {"We're sorry — something went wrong."}
           </Typography>
           <Typography variant="subtitle1" paragraph>
             Our team has been notified
           </Typography>
-        </div>;
+        </div>
+      );
     }
 
     return children;
   }
-
 }
 
-export default withStyles(styles)(ErrorBoundary);
+export default withStyles(styles as any)(ErrorBoundary);

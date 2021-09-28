@@ -19,7 +19,7 @@ function getRadianAngle(degreeValue) {
  * @param {number} rotation - optional rotation parameter
  */
 export async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
-  const image = await createImage(imageSrc);
+  const image: any = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const maxSize = Math.max(image.width, image.height);
@@ -54,7 +54,7 @@ export async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
   });
 }
 export async function getRotatedImage(imageSrc, rotation = 0) {
-  const image = await createImage(imageSrc);
+  const image: any = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   const orientationChanged =

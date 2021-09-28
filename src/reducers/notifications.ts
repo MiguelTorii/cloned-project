@@ -1,11 +1,14 @@
 import { notificationsActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
+
 export type NotificationsState = {
-  items: Array<Record<string, any>>
+  items: Array<Record<string, any>>;
 };
+
 const defaultState = {
   items: []
 };
+
 export default (state: NotificationsState = defaultState, action: Action): NotificationsState => {
   switch (action.type) {
     case notificationsActions.ENQUEUE_SNACKBAR_REQUEST:

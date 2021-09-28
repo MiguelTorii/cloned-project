@@ -2,54 +2,76 @@ import update from 'immutability-helper';
 import store from 'store';
 import { signInActions, signUpActions, userActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { User, Announcement, FeedItem } from '../types/models';
+import type { User, Announcement, FeedItem, UserClass } from '../types/models';
 import { normalizeArray } from '../utils/helpers';
+
+export type UserClassList = {
+  classList: Array<UserClass> | null;
+  pastClasses?: Array<any>;
+  canAddClasses: boolean;
+  emptyState: EmptyState;
+};
+
+export type EmptyState = {
+  body: string;
+  logo: string;
+  visibility: boolean;
+};
+
 export type UserState = {
-  isLoading: boolean,
-  data: User,
-  error: boolean,
-  runningTour: boolean,
+  action: any;
+  announcementData: Announcement | null;
+  bannerHeight: number;
+  data: User;
+  dialogMessage: {
+    title: string;
+    body: string;
+  };
+  error: boolean;
+  errorMessage: {
+    action: any;
+    title: string;
+    body: string;
+    showSignup: boolean;
+  };
+  expertMode: boolean;
+  flashcards: {
+    byId: Record<string, FeedItem>;
+    ids: Array<number>;
+  };
+  isExpert: boolean;
+  isLoading: boolean;
+  isMasquerading: boolean;
+  runningTour: boolean;
+  syncData: {
+    display: boolean;
+    largeLogo: string;
+    smallLogo: string;
+    resourcesBody: string;
+    resourcesTitle: string;
+    viewedTooltips: Array<number>;
+    viewedOnboarding: boolean | null;
+    helpLink: string;
+  };
   userClasses: {
-    classList: Array<Record<string, any>> | null | undefined;
-    pastClasses: Array<Record<string, any>> | null | undefined;
+    classList: Array<UserClass> | null | undefined;
+    pastClasses?: Array<Record<string, any>> | null | undefined;
     canAddClasses: boolean;
     emptyState: {
-      visibility: boolean,
-      logo: string,
-      body: string
-    }
-  },
-  syncData: {
-    display: boolean,
-    largeLogo: string,
-    smallLogo: string,
-    resourcesBody: string,
-    resourcesTitle: string,
-    viewedTooltips: Array<number>,
-    viewedOnboarding: boolean,
-    helpLink: string
-  },
-  expertMode: boolean,
-  announcementData: Announcement,
-  bannerHeight: number,
-  errorMessage: {
-    title: string,
-    body: string,
-    acttion: boolean,
-    showSignup: boolean
-  },
-  dialogMessage: {
-    title: string,
-    body: string
-  },
-  flashcards: {
-    byId: Record<string, FeedItem>,
-    ids: Array<number>
-  }
+      body: string;
+      logo: string;
+      visibility: boolean;
+    };
+  };
 };
+
 const defaultState = {
+  action: null,
+  announcementData: null,
+  bannerHeight: 0,
   data: {
     userId: '',
+    nonce: '',
     email: '',
     firstName: '',
     lastName: '',
@@ -66,7 +88,8 @@ const defaultState = {
     referralCode: '',
     updateProfile: [],
     lmsTypeId: -1,
-    lmsUser: false
+    lmsUser: false,
+    permission: ''
   },
   isMasquerading: store.get('MASQUERADING') === true,
   userClasses: {
@@ -79,38 +102,37 @@ const defaultState = {
       logo: ''
     }
   },
+  expertMode: false,
+  isExpert: false,
+  runningTour: false,
+  isLoading: false,
+  error: false,
+  dialogMessage: {
+    title: '',
+    body: ''
+  },
+  errorMessage: {
+    action: false,
+    title: '',
+    body: '',
+    showSignup: false
+  },
+  flashcards: {
+    byId: {},
+    ids: []
+  },
   syncData: {
     display: false,
     largeLogo: '',
     smallLogo: '',
     resourcesBody: '',
     resourcesTitle: '',
-    viewedTooltips: null,
+    viewedTooltips: [],
     viewedOnboarding: null,
     helpLink: ''
-  },
-  bannerHeight: 0,
-  expertMode: false,
-  isExpert: false,
-  runningTour: false,
-  isLoading: false,
-  error: false,
-  announcementData: undefined,
-  dialogMessage: {
-    title: '',
-    body: ''
-  },
-  errorMessage: {
-    title: '',
-    body: '',
-    showSignup: false,
-    action: false
-  },
-  flashcards: {
-    byId: {},
-    ids: []
   }
 };
+
 export default (state: UserState = defaultState, action: Action): UserState => {
   switch (action.type) {
     case userActions.SET_BANNER_HEIGHT:
@@ -216,7 +238,6 @@ export default (state: UserState = defaultState, action: Action): UserState => {
 
     case userActions.UPDATE_TOUR:
       return update(state, {
-        // $FlowFixMe
         runningTour: {
           $set: action.payload.runningTour
         }

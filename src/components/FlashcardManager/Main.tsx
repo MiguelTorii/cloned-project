@@ -1,44 +1,50 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import cx from "classnames";
-import shuffle from "lodash/shuffle";
-import uuidv4 from "uuid/v4";
-import { withRouter } from "react-router";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide";
-import Dialog from "components/Dialog/Dialog";
-import Tooltip from "containers/Tooltip/Tooltip";
-import FlashcardQuiz from "components/FlashcardQuiz/FlashcardQuiz";
-import type { Flashcard } from "types/models";
-import { logEventLocally } from "api/analytics";
-import { updateVisibility as updateVisiblityAction } from "actions/dialog";
-import store from "store";
-import ShareIcon from "@material-ui/icons/Share";
-import SharePost from "containers/SharePost/SharePost";
-import FlashcardItem from "./Flashcard";
-import { styles } from "../_styles/FlashcardManager/Main";
-const Transition = React.forwardRef((props, ref) => <Slide ref={ref} direction="up" {...props} />);
+import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import cx from 'classnames';
+import shuffle from 'lodash/shuffle';
+import uuidv4 from 'uuid/v4';
+import { withRouter } from 'react-router';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import store from 'store';
+import ShareIcon from '@material-ui/icons/Share';
+import Dialog from '../Dialog/Dialog';
+import Tooltip from '../../containers/Tooltip/Tooltip';
+import FlashcardQuiz from '../FlashcardQuiz/FlashcardQuiz';
+import type { Flashcard } from '../../types/models';
+import { logEventLocally } from '../../api/analytics';
+import { updateVisibility as updateVisiblityAction } from '../../actions/dialog';
+import SharePost from '../../containers/SharePost/SharePost';
+import FlashcardItem from './Flashcard';
+import { styles } from '../_styles/FlashcardManager/Main';
+
+const Transition = React.forwardRef((props: any, ref) => (
+  <Slide ref={ref} direction="up" {...props} />
+));
 type Props = {
-  classes: Record<string, any>;
-  flashcards: Array<Flashcard & {
-    id: string;
-  }>;
-  match: {
+  classes?: Record<string, any>;
+  flashcards?: Array<
+    Flashcard & {
+      id: string;
+    }
+  >;
+  match?: {
     params: {
-      flashcardId: string;
+      flashcardId: number;
     };
   };
-  postId: number;
-  title: string;
-  loadData: (...args: Array<any>) => any;
-  updateVisibility: (...args: Array<any>) => any;
+  postId?: number;
+  feedId?: number;
+  title?: string;
+  loadData?: (...args: Array<any>) => any;
+  updateVisibility?: (...args: Array<any>) => any;
 };
 const initialDecks = {
   main: [],
@@ -50,9 +56,7 @@ const initialDecks = {
 const FlashcardManager = ({
   loadData,
   match: {
-    params: {
-      flashcardId
-    }
+    params: { flashcardId }
   },
   postId,
   feedId,
@@ -82,7 +86,7 @@ const FlashcardManager = ({
       medium: [],
       easy: []
     };
-    orgFlashcards.forEach(card => {
+    orgFlashcards.forEach((card) => {
       const deck = previousDecks ? previousDecks[String(card.id)] : 'main';
 
       if (deck) {
@@ -93,13 +97,14 @@ const FlashcardManager = ({
     });
     setDecks(current);
   }, [orgFlashcards, postId]);
-  const keyboardControl = useCallback(({
-    keyCode
-  }) => {
-    if (keyCode === 32) {
-      setFlipped(!flipped);
-    }
-  }, [flipped]);
+  const keyboardControl = useCallback(
+    ({ keyCode }) => {
+      if (keyCode === 32) {
+        setFlipped(!flipped);
+      }
+    },
+    [flipped]
+  );
   useEffect(() => {
     window.addEventListener('keydown', keyboardControl);
     return () => {
@@ -111,15 +116,13 @@ const FlashcardManager = ({
   const refScoreEasy = useRef(null);
 
   const resetState = () => {
-    setDecks({ ...initialDecks,
-      main: shuffle(orgFlashcards)
-    });
+    setDecks({ ...initialDecks, main: shuffle(orgFlashcards) });
     setCurrentDeckId('main');
     store.set(`flashcards${postId}`, '');
     setFlipped(false);
   };
 
-  const getRectangleCenter = rectangle => ({
+  const getRectangleCenter = (rectangle) => ({
     x: rectangle.left + Math.ceil((rectangle.right - rectangle.left) / 2),
     y: rectangle.top + Math.ceil((rectangle.bottom - rectangle.top) / 2)
   });
@@ -127,16 +130,16 @@ const FlashcardManager = ({
   useEffect(() => {
     const saveDeck = () => {
       const current = {};
-      decks.main.forEach(d => {
+      decks.main.forEach((d) => {
         current[d.id] = 'main';
       });
-      decks.difficult.forEach(d => {
+      decks.difficult.forEach((d) => {
         current[d.id] = 'difficult';
       });
-      decks.medium.forEach(d => {
+      decks.medium.forEach((d) => {
         current[d.id] = 'medium';
       });
-      decks.easy.forEach(d => {
+      decks.easy.forEach((d) => {
         current[d.id] = 'easy';
       });
       store.set(`flashcards${postId}`, JSON.stringify(current));
@@ -157,13 +160,13 @@ const FlashcardManager = ({
     updateVisibility(false);
   };
 
-  const handleDeckSwitch = deckId => {
+  const handleDeckSwitch = (deckId) => {
     setCurrentDeckId(deckId);
     setCurrentIndex(0);
     setFlipped(false);
   };
 
-  const handleAnimationStart = answer => {
+  const handleAnimationStart = (answer) => {
     let ref;
 
     if (answer === 'difficult') {
@@ -184,27 +187,23 @@ const FlashcardManager = ({
     difficult: 10
   };
 
-  const handleAnimationEnd = ({
-    answer,
-    id
-  }) => {
+  const handleAnimationEnd = ({ answer, id }) => {
     logEventLocally({
       category: 'Flashcard',
       flashcard_study_session_id: sessionId,
       flashcard_user_selected_difficulty: DIFFICULTY[answer],
       objectId: id,
       type: 'Rated'
-    });
+    } as any);
     setTimeout(() => {
       setIsAnimating(false);
       setFlipped(false);
 
       if (currentDeckId === 'main') {
-        setDecks({ ...decks,
-          [answer]: decks[answer].concat(decks.main.shift(0))
-        });
+        setDecks({ ...decks, [answer]: decks[answer].concat(decks.main.shift()) });
       } else if (currentDeckId !== answer) {
-        setDecks({ ...decks,
+        setDecks({
+          ...decks,
           [answer]: decks[answer].concat(decks[currentDeckId].splice(currentIndex, 1))
         });
       } else if (decks[currentDeckId][currentIndex + 1]) {
@@ -213,34 +212,52 @@ const FlashcardManager = ({
     }, 100);
   };
 
-  const ScoreBox = React.forwardRef(({
-    deckId,
-    title,
-    value
-  }, ref) => <div className={classes.scoreBox} onClick={() => handleDeckSwitch(deckId)} onKeyUp={() => handleDeckSwitch(deckId)} role="button" ref={ref} tabIndex="0">
+  const ScoreBox = React.forwardRef<any, any>(({ deckId, title, value }, ref) => (
+    <div
+      className={classes.scoreBox}
+      onClick={() => handleDeckSwitch(deckId)}
+      onKeyUp={() => handleDeckSwitch(deckId)}
+      role="button"
+      ref={ref}
+      tabIndex={0}
+    >
       <div className={cx(classes.score, deckId === currentDeckId ? classes.selected : '')}>
         {value}
       </div>
       <div className={classes.scoreLabel}>{title}</div>
-    </div>);
+    </div>
+  ));
   const currentDeck = decks[currentDeckId];
 
   const onShare = () => setOpenShare(true);
 
   const handleCloseShare = () => setOpenShare(false);
 
-  return <>
+  return (
+    <>
       <div className={classes.root}>
         <SharePost feedId={feedId} open={openShare} onClose={handleCloseShare} />
-        <div style={{
-        display: 'flex'
-      }}>
+        <div
+          style={{
+            display: 'flex'
+          }}
+        >
           <Tooltip id={2287} placement="bottom" text="New Study Mode experience is now available!">
-            <Button color="primary" className={classes.studyButton} variant="contained" onClick={handleOpen}>
+            <Button
+              color="primary"
+              className={classes.studyButton}
+              variant="contained"
+              onClick={handleOpen}
+            >
               Enter Study Mode
             </Button>
           </Tooltip>
-          <Button color="primary" className={classes.studyButton} variant="contained" onClick={() => setIsQuizOpen(true)}>
+          <Button
+            color="primary"
+            className={classes.studyButton}
+            variant="contained"
+            onClick={() => setIsQuizOpen(true)}
+          >
             Enter Learning Mode
           </Button>
         </div>
@@ -254,10 +271,12 @@ const FlashcardManager = ({
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <div style={{
-            display: 'flex',
-            alignItems: 'center'
-          }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
               <IconButton aria-label="Close" color="primary" onClick={handleClose}>
                 <CloseIcon />
               </IconButton>
@@ -266,10 +285,20 @@ const FlashcardManager = ({
               </Typography>
             </div>
             <div>
-              <Button className={classes.buttonReset} color="primary" variant="contained" onClick={() => setResetOpen(true)}>
+              <Button
+                className={classes.buttonReset}
+                color="primary"
+                variant="contained"
+                onClick={() => setResetOpen(true)}
+              >
                 Start Over
               </Button>
-              <Button className={classes.button} color="primary" variant="contained" onClick={handleClose}>
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="contained"
+                onClick={handleClose}
+              >
                 Done
               </Button>
             </div>
@@ -277,33 +306,79 @@ const FlashcardManager = ({
         </AppBar>
         <div className={classes.content}>
           <div className={classes.scores}>
-            <Tooltip id={5436} placement="right" text="Here's the total number of flashcards that need to be reviewed in this stack.">
+            <Tooltip
+              id={5436}
+              placement="right"
+              text="Here's the total number of flashcards that need to be reviewed in this stack."
+            >
               <ScoreBox deckId="main" title="Cards To Review" value={decks.main.length} />
             </Tooltip>
-            <ScoreBox deckId="difficult" ref={refScoreHard} title="Didn't Remember" value={decks.difficult.length} />
-            <Tooltip delay={1000} hidden={!showAnswerClicked} id={4212} placement="right" text="After you select the difficulty of the card, it gets moved into one of the three stacks.
-              Now you have the power to review what's most important for you to know.">
-              <ScoreBox deckId="medium" ref={refScoreMedium} title="Almost Had It" value={decks.medium.length} />
+            <ScoreBox
+              deckId="difficult"
+              ref={refScoreHard}
+              title="Didn't Remember"
+              value={decks.difficult.length}
+            />
+            <Tooltip
+              delay={1000}
+              hidden={!showAnswerClicked}
+              id={4212}
+              placement="right"
+              text="After you select the difficulty of the card, it gets moved into one of the three stacks.
+              Now you have the power to review what's most important for you to know."
+            >
+              <ScoreBox
+                deckId="medium"
+                ref={refScoreMedium}
+                title="Almost Had It"
+                value={decks.medium.length}
+              />
             </Tooltip>
             <ScoreBox deckId="easy" title="Correct!" ref={refScoreEasy} value={decks.easy.length} />
           </div>
-          {currentDeck.length > 0 && currentIndex !== currentDeck.length ? <FlashcardItem answer={currentDeck[currentIndex].answer} answerImage={currentDeck[currentIndex].answerImage} destinationCenter={destinationCenter} id={currentDeck[currentIndex].id} isAnimating={isAnimating} isFlipped={flipped} onAnimationEnd={handleAnimationEnd} onAnimationStart={handleAnimationStart} onShowAnswer={() => {
-          setFlipped(true);
-          setShowAnswerClicked(true);
-        }} onShowQuestion={() => setFlipped(false)} question={currentDeck[currentIndex].question} questionImage={currentDeck[currentIndex].questionImage} /> : <div className={classes.emptyState}>
+          {currentDeck.length > 0 && currentIndex !== currentDeck.length ? (
+            <FlashcardItem
+              answer={currentDeck[currentIndex].answer}
+              answerImage={currentDeck[currentIndex].answerImage}
+              destinationCenter={destinationCenter}
+              id={currentDeck[currentIndex].id}
+              isAnimating={isAnimating}
+              isFlipped={flipped}
+              onAnimationEnd={handleAnimationEnd}
+              onAnimationStart={handleAnimationStart}
+              onShowAnswer={() => {
+                setFlipped(true);
+                setShowAnswerClicked(true);
+              }}
+              onShowQuestion={() => setFlipped(false)}
+              question={currentDeck[currentIndex].question}
+              questionImage={currentDeck[currentIndex].questionImage}
+            />
+          ) : (
+            <div className={classes.emptyState}>
               {"You don't have any cards in this stack!"} <br />
               <br />
               Click a different stack on the left side to view more cards.
-            </div>}
+            </div>
+          )}
         </div>
       </Dialog>
-      <Dialog className={classes.dialogPaper} fullScreen ariaLabelledBy="quiz-dialog" open={isQuizOpen} onClose={() => setIsQuizOpen(false)} TransitionComponent={Transition}>
+      <Dialog
+        className={classes.dialogPaper}
+        fullScreen
+        ariaLabelledBy="quiz-dialog"
+        open={isQuizOpen}
+        onClose={() => setIsQuizOpen(false)}
+        TransitionComponent={Transition}
+      >
         <AppBar className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <div style={{
-            display: 'flex',
-            alignItems: 'center'
-          }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
               <IconButton aria-label="Close" color="primary" onClick={() => setIsQuizOpen(false)}>
                 <CloseIcon />
               </IconButton>
@@ -312,7 +387,12 @@ const FlashcardManager = ({
               </Typography>
             </div>
             <div>
-              <Button className={classes.button} color="primary" variant="contained" onClick={() => setIsQuizOpen(false)}>
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="contained"
+                onClick={() => setIsQuizOpen(false)}
+              >
                 Done
               </Button>
             </div>
@@ -322,19 +402,35 @@ const FlashcardManager = ({
           <FlashcardQuiz flashcardId={flashcardId} isOpen={isQuizOpen} />
         </div>
       </Dialog>
-      <Dialog okTitle="Yes" onCancel={() => {
-      setResetOpen(false);
-    }} onOk={() => {
-      setResetOpen(false);
-      resetState();
-    }} open={resetOpen} showActions showCancel title="Start Over">
+      <Dialog
+        okTitle="Yes"
+        onCancel={() => {
+          setResetOpen(false);
+        }}
+        onOk={() => {
+          setResetOpen(false);
+          resetState();
+        }}
+        open={resetOpen}
+        showActions
+        showCancel
+        title="Start Over"
+      >
         {"If you Start Over, then you'll reset your progress. Are you sure you want to restart?"}
       </Dialog>
-    </>;
+    </>
+  );
 };
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  updateVisibility: updateVisiblityAction
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      updateVisibility: updateVisiblityAction
+    },
+    dispatch
+  );
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(withRouter(FlashcardManager)));
+export default connect<{}, {}, Props>(
+  null,
+  mapDispatchToProps
+)(withStyles(styles as any)(withRouter(FlashcardManager)));

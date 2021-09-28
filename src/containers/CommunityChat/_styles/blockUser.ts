@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { dialogStyle } from 'components/Dialog/Dialog';
-const useStyles = makeStyles((theme) => ({
+import { dialogStyle } from '../../../components/Dialog/Dialog';
+
+const useStyles = makeStyles((theme: any) => ({
   dialog: { ...dialogStyle, width: 500, zIndex: 2100 },
   blockLabel: {
     color: theme.circleIn.palette.danger,

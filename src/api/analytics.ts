@@ -1,11 +1,11 @@
-import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from 'constants/app';
+import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from '../constants/app';
 import createEvent from './events';
 import { EventData } from '../types/models';
 
-const toEventData = (eventName: string, props: object): EventData => {
+const toEventData = (eventName: string, props: any): EventData => {
   const [category, eventType] = eventName.split('- ');
   let objectId = '';
-  const customProps = {};
+  const customProps: any = {};
 
   if (props.Length) {
     customProps.duration_ms = parseInt(props.Length, 10) * 1000;
@@ -65,7 +65,10 @@ const toEventData = (eventName: string, props: object): EventData => {
 
 export const logEventLocally = (eventData: EventData) => {
   try {
-    createEvent(eventData);
+    // TODO `EventData` type is incompatible with the createEvent function
+    // and its use of the `...rest`
+    // This needs to be tracked down and tested further -- use any for now.
+    createEvent(eventData as any);
   } catch (err) {
     console.log(err);
   }
@@ -73,11 +76,14 @@ export const logEventLocally = (eventData: EventData) => {
 
 const sendToCircleIn = (eventName: string, props: object) => {
   if (CIRCLEIN_EVENT_NAMES.includes(eventName)) {
-    createEvent(toEventData(eventName, props));
+    // TODO `EventData` type is incompatible with the createEvent function
+    // and its use of the `...rest`
+    // This needs to be tracked down and tested further -- use any for now.
+    createEvent(toEventData(eventName, props) as any);
   }
 };
 
-export const logEvent = ({ event, props }: { event: string, props: Record<string, any> }) => {
+export const logEvent = ({ event, props }: { event: string; props: Record<string, any> }) => {
   try {
     sendToCircleIn(event, props);
   } catch (err) {

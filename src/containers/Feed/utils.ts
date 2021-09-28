@@ -2,12 +2,13 @@
 
 /* eslint-disable import/prefer-default-export */
 import type { UserClass } from '../../types/models';
+
 export const processUserClasses = ({
   classes,
   segment
 }: {
-  classes: Array<UserClass>,
-  segment: string
+  classes: Array<UserClass>;
+  segment: string;
 }) => {
   if (segment === 'K12') {
     return classes.map((item) => ({

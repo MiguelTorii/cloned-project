@@ -1,4 +1,5 @@
 import { dialogStyle } from './Dialog';
+
 export const styles = (theme) => ({
   circleIn: {
     color: theme.circleIn.palette.action

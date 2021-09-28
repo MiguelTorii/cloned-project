@@ -1,16 +1,19 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import useStyles from "./styles";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import useStyles from './styles';
 
-const AddDeckButton = ({
-  onClick
-}) => {
-  const classes = useStyles();
-  return <Button classes={{
-    root: classes.addDeckButton
-  }} onClick={onClick}>
+const AddDeckButton = ({ onClick }) => {
+  const classes: any = useStyles();
+  return (
+    <Button
+      classes={{
+        root: classes.addDeckButton
+      }}
+      onClick={onClick}
+    >
       + ADD A NEW FLASHCARD
-    </Button>;
+    </Button>
+  );
 };
 
 export default AddDeckButton;

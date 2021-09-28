@@ -1,5 +1,5 @@
-import { callApi } from 'api/api_base';
-import { API_URL_V1_1 } from 'constants/routes';
+import { callApi } from './api_base';
+import { API_URL_V1_1 } from '../constants/routes';
 
 /**
  *

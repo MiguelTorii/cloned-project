@@ -1,11 +1,11 @@
-import React, { memo } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import Menu from "@material-ui/core/Menu";
-import Avatar from "@material-ui/core/Avatar";
-import ChatIcon from "@material-ui/icons/Chat";
+import React, { memo } from 'react';
+import MenuItem from '@material-ui/core/MenuItem';
+import Badge from '@material-ui/core/Badge';
+import IconButton from '@material-ui/core/IconButton';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import ChatIcon from '@material-ui/icons/Chat';
 
 const MobileMenu = ({
   mobileMoreAnchorEl,
@@ -20,21 +20,34 @@ const MobileMenu = ({
   handleProfileMenuOpen,
   initials,
   userProfileUrl
-}) => <Menu anchorEl={mobileMoreAnchorEl} anchorOrigin={{
-  vertical: 'top',
-  horizontal: 'right'
-}} transformOrigin={{
-  vertical: 'top',
-  horizontal: 'right'
-}} open={isMobileMenuOpen} onClose={handleMobileMenuClose}>
-    {width !== 'xs' && <MenuItem onClick={handleNotificationOpen} aria-haspopup="true" aria-owns={open ? 'notifications-popper' : undefined}>
+}) => (
+  <Menu
+    anchorEl={mobileMoreAnchorEl}
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'right'
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'right'
+    }}
+    open={isMobileMenuOpen}
+    onClose={handleMobileMenuClose}
+  >
+    {width !== 'xs' && (
+      <MenuItem
+        onClick={handleNotificationOpen}
+        aria-haspopup="true"
+        aria-owns={open ? 'notifications-popper' : undefined}
+      >
         <IconButton color="inherit">
           <Badge badgeContent={unreadCount} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>}
+      </MenuItem>
+    )}
     <MenuItem button component={MyLink} link="/chat">
       <IconButton color="inherit">
         <Badge badgeContent={unreadMessages} color="secondary">
@@ -49,6 +62,7 @@ const MobileMenu = ({
       </IconButton>
       <p>Account</p>
     </MenuItem>
-  </Menu>;
+  </Menu>
+);
 
 export default memo(MobileMenu);

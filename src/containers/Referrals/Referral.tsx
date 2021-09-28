@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { push as routerPush } from "connected-react-router";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import { withRouter } from "react-router";
-import { logEventLocally } from "api/analytics";
-import * as authActions from "actions/auth";
-import { searchSchools } from "api/sign-in";
-import { getReferralCodeInfo } from "api/referral";
-import loginBackground from "assets/img/login-background.png";
-import type { State as StoreState } from "types/state";
+import React, { useEffect, useState } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { push as routerPush } from 'connected-react-router';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'react-router';
+import { logEventLocally } from '../../api/analytics';
+import * as authActions from '../../actions/auth';
+import { searchSchools } from '../../api/sign-in';
+import { getReferralCodeInfo } from '../../api/referral';
+import loginBackground from '../../assets/img/login-background.png';
+import type { State as StoreState } from '../../types/state';
 
 const styles = () => ({
   main: {
@@ -29,17 +29,7 @@ const styles = () => ({
   }
 });
 
-const Referral = ({
-  classes,
-  push,
-  match: {
-    params: {
-      code
-    }
-  },
-  updateReferralData,
-  updateSchool
-}: {
+type Props = {
   classes: Record<string, any>;
   push: (...args: Array<any>) => any;
   match: {
@@ -49,7 +39,17 @@ const Referral = ({
   };
   updateReferralData: (...args: Array<any>) => any;
   updateSchool: (...args: Array<any>) => any;
-}) => {
+};
+
+const Referral = ({
+  classes,
+  push,
+  match: {
+    params: { code }
+  },
+  updateReferralData,
+  updateSchool
+}: Props) => {
   const [message, setMessage] = useState('');
   useEffect(() => {
     const init = async () => {
@@ -88,21 +88,28 @@ const Referral = ({
 
     init();
   });
-  return <div className={classes.main}>
+  return (
+    <div className={classes.main}>
       <Typography variant="h5">{message}</Typography>
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  auth
-}: StoreState): {} => ({
+const mapStateToProps = ({ auth }: StoreState): {} => ({
   auth
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  updateReferralData: authActions.updateReferralData,
-  updateSchool: authActions.updateSchool,
-  push: routerPush
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      updateReferralData: authActions.updateReferralData,
+      updateSchool: authActions.updateSchool,
+      push: routerPush
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Referral)));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withStyles(styles as any)(Referral)));

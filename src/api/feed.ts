@@ -1,17 +1,16 @@
-/* eslint-disable import/prefer-default-export */
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import type { Feed } from "../types/models";
-import { logEvent } from "./analytics";
-import { getToken, feedToCamelCase, generateFeedURL } from "./utils";
-import reduxStore from "../configureStore";
-import { callApi } from "./api_base";
-
 /**
  * - This should be deprecated.
  * - It will be replaced by `apiFetchFeeds`
  * - Jira Ticket: https://circleinapp.atlassian.net/browse/NCGNT-669
  */
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import type { FeedItem } from '../types/models';
+import { logEvent } from './analytics';
+import { getToken, feedToCamelCase, generateFeedURL } from './utils';
+import reduxStore from '../configureStore';
+import { callApi } from './api_base';
+
 export const fetchFeed = async ({
   userId,
   schoolId,
@@ -24,17 +23,17 @@ export const fetchFeed = async ({
   fromDate,
   toDate
 }: {
-  userId: string,
-  schoolId: number,
-  userClasses: Array<string>,
-  index: number,
-  limit: number,
-  postTypes: Array<string>,
-  from: string,
-  query: string,
-  fromDate: Record<string, any> | null | undefined,
-  toDate: Record<string, any> | null | undefined
-}): Promise<Feed> => {
+  userId: string;
+  schoolId: number;
+  userClasses: Array<string>;
+  index: number;
+  limit: number;
+  postTypes: Array<string>;
+  from?: string;
+  query: string;
+  fromDate?: Record<string, any> | null | undefined;
+  toDate?: Record<string, any> | null | undefined;
+}): Promise<FeedItem[]> => {
   const url = generateFeedURL({
     userId,
     schoolId,
@@ -96,7 +95,7 @@ export const fetchRecommendations = async (limit) => {
 export const saveQuizAnswers = async ({
   results
 }: {
-  results: array
+  results: any[];
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
@@ -124,7 +123,7 @@ export const saveQuizAnswers = async ({
 export const feedResources = async ({
   userId
 }: {
-  userId: string
+  userId: string;
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
@@ -155,11 +154,7 @@ export const feedResources = async ({
     return null;
   }
 };
-export const queryFeed = async ({
-  query
-}: {
-  query: string
-}): Promise<Array<Record<string, any>>> => {
+export const queryFeed = async ({ query }: { query: string }): Promise<FeedItem[]> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SEARCH}?query=${query}`, {
@@ -182,10 +177,10 @@ export const fetchFeedv2 = async ({
   sectionId,
   bookmarked = false
 }: {
-  userId: string,
-  sectionId: number,
-  bookmarked?: boolean
-}): Promise<Feed> => {
+  userId: string;
+  sectionId?: number;
+  bookmarked?: boolean;
+}): Promise<FeedItem[]> => {
   try {
     const filterSection = sectionId ? `&section_id=${sectionId}` : '';
     const token = await getToken();
@@ -215,9 +210,9 @@ export const postEvent = async ({
   category,
   type
 }: {
-  sectionId: number,
-  category: string,
-  type: string
+  sectionId: number;
+  category: string;
+  type: string;
 }): Promise<Array<Record<string, any>>> => {
   if (reduxStore.getState().user.isMasquerading) {
     return;
@@ -249,7 +244,7 @@ export const postEvent = async ({
 export const generateQuiz = async ({
   deckId
 }: {
-  deckId: number
+  deckId: number;
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
@@ -267,12 +262,14 @@ export const generateQuiz = async ({
 /**
  * Fetch feed data.
  */
-export const apiFetchFeeds = async (params, cancelToken) => callApi({
-  url: API_ROUTES.FEED_V1_1,
-  params,
-  cancelToken
-});
-export const apiDeleteFeed = async (userId, feedId) => callApi({
-  url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
-  method: 'DELETE'
-});
+export const apiFetchFeeds = async (params: any, cancelToken) =>
+  callApi({
+    url: API_ROUTES.FEED_V1_1,
+    params,
+    cancelToken
+  });
+export const apiDeleteFeed = async (userId, feedId) =>
+  callApi({
+    url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
+    method: 'DELETE'
+  });

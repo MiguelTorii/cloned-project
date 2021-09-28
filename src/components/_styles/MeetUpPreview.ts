@@ -1,5 +1,6 @@
 import { dialogStyle } from './Dialog';
 import { gutterStyle } from './Gutter';
+
 export const styles = (theme) => ({
   root: {
     minHeight: '100vh',

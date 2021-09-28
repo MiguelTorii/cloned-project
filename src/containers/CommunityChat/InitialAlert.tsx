@@ -1,21 +1,27 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useMemo } from "react";
-import cx from "classnames";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import GroupIcon from "@material-ui/icons/Group";
-import LoadImg from "components/LoadImg/LoadImg";
-import InitialCommunityImage from "assets/svg/community_first_time.svg";
-import { getInitials } from "utils/chat";
-import { ReactComponent as CommunityGroupIcon } from "assets/svg/community_chat_group.svg";
-import useStyles from "./_styles/initialAlert";
+import React, { useState, useEffect, useMemo } from 'react';
+import cx from 'classnames';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import GroupIcon from '@material-ui/icons/Group';
+import LoadImg from '../../components/LoadImg/LoadImg';
+import InitialCommunityImage from '../../assets/svg/community_first_time.svg';
+import { getInitials } from '../../utils/chat';
+import { ReactComponent as CommunityGroupIcon } from '../../assets/svg/community_chat_group.svg';
+import useStyles from './_styles/initialAlert';
+
 type Props = {
-  local: Array;
-  channel: Record<string, any>;
-  userId: string;
-  isCommunityChat: boolean;
-  selectedChannel: Record<string, any>;
+  local?: any;
+  channel?: Record<string, any>;
+  userId?: string;
+  isCommunityChat?: boolean;
+  selectedChannel?: Record<string, any>;
+  hasPermission?: boolean;
+  focusMessageBox: any;
+  setFocusMessageBox: any;
+  handleUpdateGroupName: any;
+  currentCommunity: any;
 };
 
 const InitialAlert = ({
@@ -23,16 +29,21 @@ const InitialAlert = ({
   channel,
   userId,
   isCommunityChat,
-  selectedChannel
+  selectedChannel,
+  hasPermission,
+  focusMessageBox,
+  setFocusMessageBox,
+  handleUpdateGroupName,
+  currentCommunity
 }: Props) => {
-  const classes = useStyles();
+  const classes: any = useStyles();
   const [isOneToOne, setIsOneToOne] = useState(true);
   const [name, setName] = useState('');
   const [thumbnail, setThumbnail] = useState('');
   useEffect(() => {
     if (channel && channel.members) {
       if (local[channel.sid].members.length === 2) {
-        local[channel.sid].members.forEach(member => {
+        local[channel.sid].members.forEach((member) => {
           if (Number(member.userId) !== Number(userId)) {
             setName(`${member.firstname} ${member.lastname}`);
             setThumbnail(member.image);
@@ -47,7 +58,15 @@ const InitialAlert = ({
     }
   }, [channel, local, userId]);
   const initials = useMemo(() => getInitials(name), [name]);
-  return isCommunityChat ? local[channel?.sid]?.twilioChannel?.channelState?.lastConsumedMessageIndex === null ? <Box className={classes.root} display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+  return isCommunityChat ? (
+    local[channel?.sid]?.twilioChannel?.channelState?.lastConsumedMessageIndex === null ? (
+      <Box
+        className={classes.root}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+      >
         <LoadImg url={InitialCommunityImage} />
         <Typography className={classes.members} variant="h5">
           Welcome To #{selectedChannel?.chat_name}
@@ -57,7 +76,9 @@ const InitialAlert = ({
           way for your classmates! It feels good to connect with others no matter where you are. Who
           knows, you might make a friend!
         </Typography>
-      </Box> : <Box className={classes.root}>
+      </Box>
+    ) : (
+      <Box className={classes.root}>
         <CommunityGroupIcon />
         <Typography className={classes.members} variant="h5">
           #{selectedChannel?.chat_name}
@@ -66,7 +87,10 @@ const InitialAlert = ({
           This is the beginning of your chat with
           {isOneToOne ? name : ' your group.'}
         </Typography>
-      </Box> : <Box className={classes.root}>
+      </Box>
+    )
+  ) : (
+    <Box className={classes.root}>
       <Avatar className={classes.avatarProfile} src={thumbnail}>
         {local[channel.sid].members.length > 2 ? <GroupIcon /> : initials}
       </Avatar>
@@ -77,7 +101,8 @@ const InitialAlert = ({
         This is the beginning of your chat with
         {isOneToOne ? ` ${name}` : ' your group.'}
       </Typography>
-    </Box>;
+    </Box>
+  );
 };
 
 export default InitialAlert;

@@ -1,15 +1,18 @@
 import update from 'immutability-helper';
-import { onboardingActions } from 'constants/action-types';
-import type { OnboardingList } from 'types/models';
+import { onboardingActions } from '../constants/action-types';
+import type { OnboardingList } from '../types/models';
+
 export type OnboardingState = {
-  onboardingList: OnboardingList
+  onboardingList: OnboardingList;
 };
+
 const defaultState = {
   onboardingList: {
     checklist: [],
     visible: false
   }
 };
+
 export default (state: OnboardingState = defaultState, action: any): OnboardingState => {
   switch (action.type) {
     case onboardingActions.GET_ONBOARDING_LIST_SUCCESS:

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog, { dialogStyle } from "components/Dialog/Dialog";
-import { setIntervalWithFirstCall } from "utils/helpers";
-import { INTERVAL } from "constants/app";
-import type { Announcement } from "types/models";
-import { makeStyles } from "@material-ui/core";
-import HourlyGiveawayPopup from "./HourlyGiveawayPopup";
-const useStyles = makeStyles(theme => ({
+import React, { useEffect, useState } from 'react';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core';
+import Dialog, { dialogStyle } from '../../../../components/Dialog/Dialog';
+import { setIntervalWithFirstCall } from '../../../../utils/helpers';
+import { INTERVAL } from '../../../../constants/app';
+import type { Announcement } from '../../../../types/models';
+import HourlyGiveawayPopup from './HourlyGiveawayPopup';
+
+const useStyles = makeStyles((theme) => ({
   hourlyBody: {
     alignItems: 'center',
     background: '#e9ecef',
@@ -51,18 +52,14 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 800,
     textAlign: 'center'
   },
-  dialog: { ...dialogStyle,
-    maxWidth: 750
-  }
+  dialog: { ...dialogStyle, maxWidth: 750 }
 }));
 type Props = {
   announcement: Announcement;
 };
 
-const HourlyGiveawayBanner = ({
-  announcement
-}: Props) => {
-  const classes = useStyles();
+const HourlyGiveawayBanner = ({ announcement }: Props) => {
+  const classes: any = useStyles();
   const [isActive, setIsActive] = useState(false);
   const [minutesRemaining, setMinutesRemaining] = useState(60 - new Date().getMinutes());
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,28 +71,49 @@ const HourlyGiveawayBanner = ({
     }, 1 * INTERVAL.MINUTE);
     return () => clearInterval(intervalId);
   }, []);
-  return <div className={classes.hourlyBody}>
+  return (
+    <div className={classes.hourlyBody}>
       <div className={classes.image}>
-        {isActive && <img src={announcement.imageUrl} alt="gift" style={{
-        maxHeight: 56
-      }} />}
+        {isActive && (
+          <img
+            src={announcement.imageUrl}
+            alt="gift"
+            style={{
+              maxHeight: 56
+            }}
+          />
+        )}
       </div>
       <div className={classes.content}>
         <div className={classes.title}>{isActive && announcement.title}</div>
         <div className={classes.text}>
-          {isActive ? announcement.subtitle.replace('{{time_left}}', minutesRemaining) : "Today's Hourly Giveaway has ended! Come back tomorrow for more prizes."}
+          {isActive
+            ? announcement.subtitle.replace('{{time_left}}', minutesRemaining as any)
+            : "Today's Hourly Giveaway has ended! Come back tomorrow for more prizes."}
         </div>
       </div>
-      <Button classes={{
-      root: classes.button,
-      label: classes.hourlyButtonLabel
-    }} color="primary" onClick={() => setDialogOpen(true)}>
+      <Button
+        classes={{
+          root: classes.button,
+          label: classes.hourlyButtonLabel
+        }}
+        color="primary"
+        onClick={() => setDialogOpen(true)}
+      >
         Learn More
       </Button>
-      <Dialog onCancel={() => setDialogOpen(false)} open={dialogOpen} contentClassName={classes.dialogContent} maxWidth="sm" className={classes.dialog} title={announcement.popupTitle}>
+      <Dialog
+        onCancel={() => setDialogOpen(false)}
+        open={dialogOpen}
+        contentClassName={classes.dialogContent}
+        maxWidth="sm"
+        className={classes.dialog}
+        title={announcement.popupTitle}
+      >
         <HourlyGiveawayPopup hourlyReward={announcement.hourlyReward} />
       </Dialog>
-    </div>;
+    </div>
+  );
 };
 
 export default HourlyGiveawayBanner;

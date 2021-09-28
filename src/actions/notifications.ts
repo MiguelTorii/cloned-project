@@ -42,6 +42,13 @@ export const showNotification = ({
   vertical = 'bottom',
   horizontal = 'left',
   autoHideDuration = 7000
+}: {
+  message: string;
+  nextPath?: string;
+  variant: string;
+  vertical?: string;
+  horizontal?: string;
+  autoHideDuration?: number;
 }) =>
   enqueueSnackbar({
     notification: {

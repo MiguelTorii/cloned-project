@@ -1,9 +1,10 @@
-import React from "react";
-import { connect } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import type { State as StoreState } from "types/state";
-import Typography from "@material-ui/core/Typography";
-const useStyles = makeStyles(theme => ({
+import React from 'react';
+import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import type { State as StoreState } from '../../types/state';
+
+const useStyles = makeStyles((theme) => ({
   background: {
     position: 'fixed',
     overflow: 'hidden',
@@ -25,29 +26,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserDialog = ({
-  user
-}) => {
+type Props = {
+  user?: any;
+};
+
+const UserDialog = ({ user }: Props) => {
   const {
-    dialogMessage: {
-      title
-    }
+    dialogMessage: { title }
   } = user;
-  const classes = useStyles();
+  const classes: any = useStyles();
 
   if (!title) {
     return null;
   }
 
-  return <div className={classes.background}>
+  return (
+    <div className={classes.background}>
       <Typography className={classes.text}>{title}</Typography>
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(mapStateToProps, null)(UserDialog);
+export default connect<{}, {}, Props>(mapStateToProps, null)(UserDialog);

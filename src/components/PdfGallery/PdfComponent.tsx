@@ -1,14 +1,16 @@
-import React, { memo } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import { Document, Page } from "react-pdf";
+import React, { memo } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import { Document, Page } from 'react-pdf';
 
-const PdfComponent = ({
-  url,
-  radius,
-  height,
-  width
-}) => {
+type Props = {
+  url?: any;
+  radius?: any;
+  height?: any;
+  width?: any;
+};
+
+const PdfComponent = ({ url, radius, height, width }: Props) => {
   const useStyles = makeStyles({
     canvas: {
       objectFit: 'cover',
@@ -22,17 +24,22 @@ const PdfComponent = ({
       }
     }
   });
-  const classes = useStyles();
+  const classes: any = useStyles();
 
-  const onDocumentLoadError = error => {
+  const onDocumentLoadError = (error) => {
     console.log(`Error while loading page! ${error.message}`);
   };
 
-  return <Document file={{
-    url
-  }} onLoadError={onDocumentLoadError}>
+  return (
+    <Document
+      file={{
+        url
+      }}
+      onLoadError={onDocumentLoadError}
+    >
       <Page pageNumber={1} className={classes.canvas} />
-    </Document>;
+    </Document>
+  );
 };
 
 PdfComponent.propTypes = {

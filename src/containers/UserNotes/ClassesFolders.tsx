@@ -1,10 +1,11 @@
-import React from "react";
-import List from "@material-ui/core/List";
-import { makeStyles } from "@material-ui/core/styles";
-import EmptyState from "components/FeedList/EmptyState";
-import EmptyPastClass from "assets/img/empty-past-class.png";
-import ClassNotes from "./ClassNotes";
-const useStyles = makeStyles(theme => ({
+import React from 'react';
+import List from '@material-ui/core/List';
+import { makeStyles } from '@material-ui/core/styles';
+import EmptyState from '../../components/FeedList/EmptyState';
+import EmptyPastClass from '../../assets/img/empty-past-class.png';
+import ClassNotes from './ClassNotes';
+
+const useStyles = makeStyles((theme) => ({
   listItemContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -47,35 +48,42 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ClassesFolders = ({
-  classList,
-  currentFilter
-}) => {
-  const classes = useStyles();
-  return <List className={classes.listRoot}>
-      {classList.map((cl, idx) => <ClassNotes key={cl.classId} arrayIndex={idx} classData={cl} />)}
-      {classList.length === 0 && <EmptyState imageUrl={EmptyPastClass}>
+const ClassesFolders = ({ classList, currentFilter }) => {
+  const classes: any = useStyles();
+  return (
+    <List className={classes.listRoot}>
+      {classList.map((cl, idx) => (
+        <ClassNotes key={cl.classId} arrayIndex={idx} classData={cl} />
+      ))}
+      {classList.length === 0 && (
+        <EmptyState imageUrl={EmptyPastClass}>
           <div className={classes.emptyStateContainer}>
             <div className={classes.emptyTitle}>
               {`This tab shows notes from “${currentFilter} classes”.`}
             </div>
             <div className={classes.emptyBody}>
-              {currentFilter === 'past' && <>
+              {currentFilter === 'past' && (
+                <>
                   You don’t have any past classes yet, but your notes will be saved here and ready
                   for you once you finish your current classes.&nbsp;
                   <span role="img" aria-label="Wink emoji">
                     😉
                   </span>
-                </>}
-              {currentFilter === 'current' && <>
+                </>
+              )}
+              {currentFilter === 'current' && (
+                <>
                   This tab shows notes from “current classes”. You haven’t been added to any classes
                   yet.If you’re currently enrolled in classes, please contact us at
                   support@circleinapp.com.
-                </>}
+                </>
+              )}
             </div>
           </div>
-        </EmptyState>}
-    </List>;
+        </EmptyState>
+      )}
+    </List>
+  );
 };
 
 export default ClassesFolders;

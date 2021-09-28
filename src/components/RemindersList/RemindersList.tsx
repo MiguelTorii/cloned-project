@@ -1,36 +1,28 @@
-import React from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Paper from "@material-ui/core/Paper";
-// import Button from '@material-ui/core/Button';
-import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import type { ToDos } from "../../types/models";
-import RemindersAddNew from "../RemindersAddNew/RemindersAddNew";
-import RemidersListItem from "./RenderListItem";
-import * as utils from "./utils";
-import { styles } from "../_styles/RemindersList/index";
+import React from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import type { ToDo } from '../../types/models';
+import RemindersAddNew from '../RemindersAddNew/RemindersAddNew';
+import RemidersListItem from './RenderListItem';
+import * as utils from './utils';
+import { styles } from '../_styles/RemindersList/index';
+
 type Props = {
-  classes: Record<string, any>;
-  reminders: ToDos;
-  loading: boolean;
-  // onSwitch: Function,
-  onSubmit: (...args: Array<any>) => any;
-  onUpdate: (...args: Array<any>) => any;
-  onDelete: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  reminders?: ToDo[];
+  loading?: boolean;
+  onSwitch?: Function;
+  onSubmit?: (...args: Array<any>) => any;
+  onUpdate?: (...args: Array<any>) => any;
+  onDelete?: (...args: Array<any>) => any;
 };
 type State = {};
 
 class RemindersList extends React.PureComponent<Props, State> {
   render() {
-    const {
-      classes,
-      reminders,
-      loading,
-      // onSwitch,
-      onSubmit,
-      onUpdate,
-      onDelete
-    } = this.props;
+    const { classes, reminders, loading, onSwitch, onSubmit, onUpdate, onDelete } = this.props;
     const overdueItems = utils.getOverdue(reminders) || [];
     const overdueLeft = utils.getLeftCount(overdueItems) || 0;
     const todayItems = utils.getToday(reminders) || [];
@@ -39,37 +31,53 @@ class RemindersList extends React.PureComponent<Props, State> {
     const tomorrowLeft = utils.getLeftCount(tomorrowItems) || 0;
     const upcomingItems = utils.getUpcoming(reminders) || [];
     const upcomingLeft = utils.getLeftCount(upcomingItems) || 0;
-    return <main className={classes.main}>
+    return (
+      <main className={classes.main}>
         <Paper elevation={2} className={classes.paper}>
           <div className={classes.header}>
             <Typography component="h1" variant="h5">
               Reminders
             </Typography>
-            {
-            /* <Button
-             color="primary"
-             className={classes.marginLeft}
-             onClick={onSwitch}
-            >
-             Switch to Calendar View
-            </Button> */
-          }
           </div>
           <div className={classes.content}>
             <RemindersAddNew loading={loading} onSubmit={onSubmit} />
             <Paper className={classes.listPaper} elevation={3}>
               <List component="nav" className={classes.list}>
-                <RemidersListItem items={overdueItems} title="Overdue" left={overdueLeft} onUpdate={onUpdate} onDelete={onDelete} />
-                <RemidersListItem items={todayItems} title="Today" left={todayLeft} onUpdate={onUpdate} onDelete={onDelete} />
-                <RemidersListItem items={tomorrowItems} title="Tomorrow" left={tomorrowLeft} onUpdate={onUpdate} onDelete={onDelete} />
-                <RemidersListItem items={upcomingItems} title="Upcoming" left={upcomingLeft} onUpdate={onUpdate} onDelete={onDelete} />
+                <RemidersListItem
+                  items={overdueItems}
+                  title="Overdue"
+                  left={overdueLeft}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
+                <RemidersListItem
+                  items={todayItems}
+                  title="Today"
+                  left={todayLeft}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
+                <RemidersListItem
+                  items={tomorrowItems}
+                  title="Tomorrow"
+                  left={tomorrowLeft}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
+                <RemidersListItem
+                  items={upcomingItems}
+                  title="Upcoming"
+                  left={upcomingLeft}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
               </List>
             </Paper>
           </div>
         </Paper>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withStyles(styles)(RemindersList);
+export default withStyles(styles as any)(RemindersList);

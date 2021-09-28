@@ -1,21 +1,30 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import LoadImg from "components/LoadImg/LoadImg";
-// import ExpertEmptyChat from 'assets/svg/expertCommunityEmptyChat.svg'
-import ExpertEmptyChat from "assets/svg/empty_chat.svg";
-import EmptyUnregistered from "assets/svg/emptyCommunityChatUnregistered.svg";
-import useStyles from "./_styles/emptyMain";
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import LoadImg from '../../components/LoadImg/LoadImg';
+import ExpertEmptyChat from '../../assets/svg/empty_chat.svg';
+import EmptyUnregistered from '../../assets/svg/emptyCommunityChatUnregistered.svg';
+import useStyles from './_styles/emptyMain';
 
-const EmptyMain = ({
-  newChannel,
-  otherUser,
-  expertMode
-}) => {
-  const classes = useStyles();
+type Props = {
+  newChannel: any;
+  otherUser: any;
+  expertMode: any;
+  noChannel: any;
+};
+
+const EmptyMain = ({ newChannel, otherUser, expertMode, noChannel }: Props) => {
+  const classes: any = useStyles();
 
   if (otherUser && !otherUser.registered && !newChannel) {
-    return <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" className={classes.unregisterContainer}>
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+        className={classes.unregisterContainer}
+      >
         <LoadImg url={EmptyUnregistered} />
         <Typography className={classes.expertTitle}>
           You don’t have any chats yet, but when you do,
@@ -29,12 +38,26 @@ const EmptyMain = ({
             😊
           </span>
         </Typography>
-      </Box>;
+      </Box>
+    );
   }
 
   if (expertMode) {
-    return <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column" className={classes.expertContainer}>
-        <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" className={classes.expertContainerText}>
+    return (
+      <Box
+        justifyContent="center"
+        alignItems="center"
+        display="flex"
+        flexDirection="column"
+        className={classes.expertContainer}
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+          className={classes.expertContainerText}
+        >
           <LoadImg url={ExpertEmptyChat} />
           <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
             <Typography className={classes.expertTitle}>
@@ -51,10 +74,12 @@ const EmptyMain = ({
             </Typography>
           </Box>
         </Box>
-      </Box>;
+      </Box>
+    );
   }
 
-  return <div className={classes.container}>
+  return (
+    <div className={classes.container}>
       <div className={classes.messageContainer}>
         <LoadImg url={ExpertEmptyChat} className={classes.emptyChatImg} />
         <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
@@ -70,7 +95,8 @@ const EmptyMain = ({
           </Typography>
         </Box>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default EmptyMain;

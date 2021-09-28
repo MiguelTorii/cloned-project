@@ -1,4 +1,5 @@
 import { dialogStyle } from '../Dialog';
+
 export const styles = (theme) => ({
   buttonReset: {
     marginRight: theme.spacing(),

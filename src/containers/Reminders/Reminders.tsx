@@ -1,22 +1,22 @@
-import React from "react";
-import update from "immutability-helper";
-import debounce from "lodash/debounce";
-import { connect } from "react-redux";
-import ReactCardFlip from "react-card-flip";
-import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import * as notificationsActions from "actions/notifications";
-import { bindActionCreators } from "redux";
-import * as OnboardingActions from "actions/onboarding";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import type { ToDos } from "../../types/models";
-import RemidersList from "../../components/RemindersList/RemindersList";
-import RemindersCalendar from "../../components/RemindersCalendar/RemindersCalendar";
-import { getReminders, createReminder, updateReminder, deleteReminder } from "../../api/reminders";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import update from 'immutability-helper';
+import debounce from 'lodash/debounce';
+import { connect } from 'react-redux';
+import ReactCardFlip from 'react-card-flip';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { bindActionCreators } from 'redux';
+import * as notificationsActions from '../../actions/notifications';
+import * as OnboardingActions from '../../actions/onboarding';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import type { ToDo } from '../../types/models';
+import RemindersList from '../../components/RemindersList/RemindersList';
+import RemindersCalendar from '../../components/RemindersCalendar/RemindersCalendar';
+import { getReminders, createReminder, updateReminder, deleteReminder } from '../../api/reminders';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -24,31 +24,38 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  enqueueSnackbar: (...args: Array<any>) => any;
-  user: UserState;
+  classes?: Record<string, any>;
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  user?: UserState;
+  getOnboardingList?: any;
+  onboardingListVisible?: any;
 };
 type State = {
   getOnboardingList: (...args: Array<any>) => any;
   list: boolean;
   loading: boolean;
   onboardingListVisible: boolean;
-  reminders: ToDos;
+  reminders: ToDo[];
 };
 
 class Reminders extends React.PureComponent<Props, State> {
-  state = {
+  state: any = {
     reminders: [],
     list: true,
     loading: false
   };
+
   componentDidMount = () => {
     this.handleFetchReminders = debounce(this.handleFetchReminders, 500);
     this.handleUpdateDB = debounce(this.handleUpdateDB, 500);
     this.handleFetchReminders();
   };
+
   componentWillUnmount = () => {
-    if (this.handleFetchReminders.cancel && typeof this.handleFetchReminders.cancel === 'function') {
+    if (
+      this.handleFetchReminders.cancel &&
+      typeof this.handleFetchReminders.cancel === 'function'
+    ) {
       this.handleFetchReminders.cancel();
     }
 
@@ -56,18 +63,14 @@ class Reminders extends React.PureComponent<Props, State> {
       this.handleUpdateDB.cancel();
     }
   };
-  handlePoints = res => {
+
+  handlePoints = (res) => {
     try {
       const {
         points,
-        user: {
-          first_name: firstName
-        }
+        user: { first_name: firstName }
       } = res;
-      const {
-        enqueueSnackbar,
-        classes
-      } = this.props;
+      const { enqueueSnackbar, classes } = this.props;
 
       if (points) {
         enqueueSnackbar({
@@ -89,15 +92,13 @@ class Reminders extends React.PureComponent<Props, State> {
           }
         });
       } // eslint-disable-next-line no-empty
-
     } catch (e) {}
   };
-  handleFetchReminders = async () => {
+
+  handleFetchReminders: any = async () => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
 
@@ -112,44 +113,40 @@ class Reminders extends React.PureComponent<Props, State> {
       this.handleFetchReminders();
     }
   };
-  handleUpdate = ({
-    id,
-    status
-  }) => () => {
-    const newState = update(this.state, {
-      reminders: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
 
-          if (index > -1) {
-            return update(b, {
-              [index]: {
-                status: {
-                  $set: status
+  handleUpdate =
+    ({ id, status }) =>
+    () => {
+      const newState = update(this.state, {
+        reminders: {
+          $apply: (b) => {
+            const index = b.findIndex((item) => item.id === id);
+
+            if (index > -1) {
+              return update(b, {
+                [index]: {
+                  status: {
+                    $set: status
+                  }
                 }
-              }
-            });
-          }
+              });
+            }
 
-          return b;
+            return b;
+          }
         }
-      }
-    });
-    this.setState(newState);
-    this.handleUpdateDB({
-      id,
-      status
-    });
-  };
-  handleUpdateDB = async ({
-    id,
-    status
-  }) => {
+      });
+      this.setState(newState);
+      this.handleUpdateDB({
+        id,
+        status
+      });
+    };
+
+  handleUpdateDB: any = async ({ id, status }) => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
     const res = await updateReminder({
@@ -159,11 +156,12 @@ class Reminders extends React.PureComponent<Props, State> {
     });
     this.handlePoints(res);
   };
-  handleDelete = id => () => {
+
+  handleDelete = (id) => () => {
     const newState = update(this.state, {
       reminders: {
-        $apply: b => {
-          const index = b.findIndex(item => item.id === id);
+        $apply: (b) => {
+          const index = b.findIndex((item) => item.id === id);
 
           if (index > -1) {
             return update(b, {
@@ -178,9 +176,7 @@ class Reminders extends React.PureComponent<Props, State> {
     this.setState(newState);
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
     deleteReminder({
@@ -188,13 +184,13 @@ class Reminders extends React.PureComponent<Props, State> {
       id
     });
   };
+
   handleSwitch = () => {
-    this.setState(({
-      list
-    }) => ({
+    this.setState(({ list }) => ({
       list: !list
     }));
   };
+
   handleSubmit = async ({
     title,
     dueDate,
@@ -206,9 +202,7 @@ class Reminders extends React.PureComponent<Props, State> {
   }) => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       },
       getOnboardingList,
       onboardingListVisible
@@ -244,16 +238,10 @@ class Reminders extends React.PureComponent<Props, State> {
       user: {
         isLoading,
         error,
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
-    const {
-      list,
-      loading,
-      reminders
-    } = this.state;
+    const { list, loading, reminders } = this.state;
 
     if (isLoading) {
       return <CircularProgress size={12} />;
@@ -263,31 +251,50 @@ class Reminders extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
     }
 
-    return <div className={classes.root}>
+    return (
+      <div className={classes.root}>
         <ReactCardFlip isFlipped={!list}>
           <ErrorBoundary key="front">
-            <RemidersList loading={loading} reminders={reminders} onSwitch={this.handleSwitch} onSubmit={this.handleSubmit} onUpdate={this.handleUpdate} onDelete={this.handleDelete} />
+            <RemindersList
+              loading={loading}
+              reminders={reminders}
+              onSwitch={this.handleSwitch}
+              onSubmit={this.handleSubmit}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
+            />
           </ErrorBoundary>
           <ErrorBoundary key="back">
-            <RemindersCalendar loading={loading} reminders={reminders} onSwitch={this.handleSwitch} onSubmit={this.handleSubmit} onUpdate={this.handleUpdate} onDelete={this.handleDelete} />
+            <RemindersCalendar
+              loading={loading}
+              reminders={reminders}
+              onSwitch={this.handleSwitch}
+              onSubmit={this.handleSubmit}
+              onUpdate={this.handleUpdate}
+              onDelete={this.handleDelete}
+            />
           </ErrorBoundary>
         </ReactCardFlip>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user,
-  onboarding
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, onboarding }: StoreState): {} => ({
   user,
   onboardingListVisible: onboarding.onboardingList.visible
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  enqueueSnackbar: notificationsActions.enqueueSnackbar,
-  getOnboardingList: OnboardingActions.getOnboardingList
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
+      getOnboardingList: OnboardingActions.getOnboardingList
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Reminders));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(Reminders));

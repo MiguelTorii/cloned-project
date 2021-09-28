@@ -1,10 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
+
 const text = {
   fontSize: 18,
   fontWeight: 'bold',
   letterSpacing: 1
 };
-export const useStyles = makeStyles((theme) => ({
+
+export const useStyles = makeStyles((theme: any): any => ({
   container: {
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: theme.spacing(),

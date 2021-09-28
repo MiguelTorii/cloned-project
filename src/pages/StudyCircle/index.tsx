@@ -1,9 +1,9 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import StudyCircle from "../../containers/StudyCircle/StudyCircle";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import StudyCircle from '../../containers/StudyCircle/StudyCircle';
 
 const styles = () => ({});
 
@@ -19,17 +19,16 @@ class StudyCirclePage extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
-    const {
-      classes
-    } = this.props;
-    return <main className={classes.main}>
+    const { classes } = this.props;
+    return (
+      <main className={classes.main}>
         <CssBaseline />
         <Layout>
           <StudyCircle />
         </Layout>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withRoot(withStyles(styles)(StudyCirclePage));
+export default withRoot(withStyles(styles as any)(StudyCirclePage));

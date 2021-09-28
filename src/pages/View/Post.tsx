@@ -1,10 +1,10 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import ViewPost from "../../containers/ViewPost/ViewPost";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import ViewPost from '../../containers/ViewPost/ViewPost';
 
 const styles = () => ({
   item: {
@@ -16,21 +16,17 @@ type Props = {
   classes: Record<string, any>;
   match: {
     params: {
-      postId: string;
+      postId: number;
     };
   };
 };
 
-const PostPage = ({
-  classes,
-  match
-}: Props) => {
+const PostPage = ({ classes, match }: Props) => {
   const {
-    params: {
-      postId
-    }
+    params: { postId }
   } = match;
-  return <main>
+  return (
+    <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={0}>
@@ -39,7 +35,8 @@ const PostPage = ({
           </Grid>
         </Grid>
       </Layout>
-    </main>;
+    </main>
+  );
 };
 
-export default withRoot(withStyles(styles)(PostPage));
+export default withRoot(withStyles(styles as any)(PostPage));

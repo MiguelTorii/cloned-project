@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { bindActionCreators } from "redux";
-import { connect, useSelector } from "react-redux";
-import { push as routePush } from "connected-react-router";
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import withWidth from "@material-ui/core/withWidth";
-import Linkify from "react-linkify";
-import ReferralCTA from "../Referrals/CTA";
-import type { State as StoreState } from "../../types/state";
-import type { UserState } from "../../reducers/user";
-import Recommendations from "../Recommendations/Recommendations";
+import React, { useState, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect, useSelector } from 'react-redux';
+import { push as routePush } from 'connected-react-router';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import Linkify from 'react-linkify';
+import ReferralCTA from '../Referrals/CTA';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import Recommendations from '../Recommendations/Recommendations';
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     marginTop: theme.spacing(),
     position: 'fixed',
@@ -56,35 +56,22 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  width: string;
+  classes?: Record<string, any>;
+  width?: string;
   gridRef: Record<string, any>;
-  user: UserState;
-  onboardingListVisible: boolean;
+  user?: UserState;
+  onboardingListVisible?: boolean;
 };
 
-const FeedResources = ({
-  gridRef,
-  width,
-  classes,
-  user,
-  onboardingListVisible
-}: Props) => {
+const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }: Props) => {
   const {
-    syncData: {
-      display,
-      smallLogo,
-      resourcesBody,
-      resourcesTitle
-    }
+    syncData: { display, smallLogo, resourcesBody, resourcesTitle }
   } = user;
   const [scrollYPos, setScrollYPos] = useState(0);
-  const bannerHeight = useSelector(state => state.user.bannerHeight);
+  const bannerHeight = useSelector((state) => (state as any).user.bannerHeight);
 
   const handleScroll = () => {
-    const {
-      scrollY
-    } = window;
+    const { scrollY } = window;
     setScrollYPos(scrollY);
   };
 
@@ -120,44 +107,62 @@ const FeedResources = ({
     top = -OFFSET;
   }
 
-  return <div className={classes.container} style={{
-    top,
-    width: widthParent,
-    height: `calc(100vh - ${bannerHeight + 90}px)`
-  }}>
+  return (
+    <div
+      className={classes.container}
+      style={{
+        top,
+        width: widthParent,
+        height: `calc(100vh - ${bannerHeight + 90}px)`
+      }}
+    >
       <div className={classes.content}></div>
-      {display && <Paper className={classes.paper}>
+      {display && (
+        <Paper className={classes.paper}>
           <Grid item>
             <div className={classes.imgContainer}>
               {smallLogo && <img alt="logo" className={classes.img} src={smallLogo} />}
             </div>
           </Grid>
           <Typography className={classes.title}>{resourcesTitle}</Typography>
-          <Typography className={classes.text} style={{
-        width: widthParent
-      }}>
-            <Linkify properties={{
-          target: '_blank'
-        }}>{resourcesBody}</Linkify>
+          <Typography
+            className={classes.text}
+            style={{
+              width: widthParent
+            }}
+          >
+            <Linkify
+              properties={{
+                target: '_blank'
+              }}
+            >
+              {resourcesBody}
+            </Linkify>
           </Typography>
-        </Paper>}
+        </Paper>
+      )}
       <Paper className={classes.paper}>
         <ReferralCTA />
       </Paper>
       <Recommendations />
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  user,
-  onboarding
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, onboarding }: StoreState): {} => ({
   user,
   onboardingListVisible: onboarding.onboardingList.visible
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  push: routePush
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      push: routePush
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()(FeedResources)));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(withWidth()(FeedResources)));

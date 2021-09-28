@@ -1,21 +1,22 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
-import Chat from "twilio-chat";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { decypherClass } from "utils/crypto";
-import StudyRoomImg from "assets/svg/video-chat-image.svg";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import StudyRoomInvite from "./StudyRoomInvite";
-import { renewTwilioToken, createChannel, addGroupMembers, getGroupMembers } from "../../api/chat";
-import { logEvent } from "../../api/analytics";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import styles from "./_styles/index";
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import Chat from 'twilio-chat';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { decypherClass } from '../../utils/crypto';
+import StudyRoomImg from '../../assets/svg/video-chat-image.svg';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import StudyRoomInvite from './StudyRoomInvite';
+import { renewTwilioToken, createChannel, addGroupMembers, getGroupMembers } from '../../api/chat';
+import { logEvent } from '../../api/analytics';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import styles from './_styles/index';
+
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
+  classes?: Record<string, any>;
+  user?: UserState;
 };
 type State = {
   isLoading: boolean;
@@ -27,10 +28,16 @@ type State = {
   errorBody: string;
   createChannel: string | null | undefined;
   online: boolean;
+  classId: number;
+  sectionId: number;
+  classList: any;
+  groupUsers: any;
+  inviteVisible: any;
 };
 
 class StartVideo extends React.PureComponent<Props, State> {
-  state = {
+  state: any = {
+    isLoading: false,
     channel: '',
     client: null,
     channels: [],
@@ -39,26 +46,21 @@ class StartVideo extends React.PureComponent<Props, State> {
     classList: [],
     groupUsers: []
   };
+
   mounted: boolean;
+
   componentDidMount = () => {
     this.mounted = true;
     const {
       user: {
-        userClasses: {
-          classList
-        },
-        data: {
-          userId
-        }
+        userClasses: { classList },
+        data: { userId }
       }
     } = this.props;
     this.setState({
       classList: [...classList]
     });
-    const {
-      classId,
-      sectionId
-    } = decypherClass();
+    const { classId, sectionId } = decypherClass();
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
       this.setState({
@@ -77,39 +79,37 @@ class StartVideo extends React.PureComponent<Props, State> {
       this.handleInitChat();
     }
   };
+
   componentDidUpdate = (prevProps, prevState) => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
     const {
       user: {
-        data: {
-          userId: prevUserId
-        }
+        data: { userId: prevUserId }
       }
     } = prevProps;
-    const {
-      online
-    } = this.state;
+    const { online } = this.state;
 
     if (prevUserId !== '' && userId === '') {
       this.handleShutdownChat();
-    } else if (prevUserId === '' && userId !== '' && online || userId !== '' && online && !prevState.online) {
+    } else if (
+      (prevUserId === '' && userId !== '' && online) ||
+      (userId !== '' && online && !prevState.online)
+    ) {
       this.handleInitChat();
     }
   };
+
   componentWillUnmount = () => {
     this.mounted = false;
     this.handleShutdownChat();
   };
+
   handleShutdownChat = () => {
-    const {
-      client
-    } = this.state;
+    const { client } = this.state;
 
     if (client) {
       client.shutdown();
@@ -122,12 +122,11 @@ class StartVideo extends React.PureComponent<Props, State> {
       });
     }
   };
+
   handleInitChat = async () => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
 
@@ -136,7 +135,7 @@ class StartVideo extends React.PureComponent<Props, State> {
         userId
       });
 
-      if (!accessToken || accessToken && accessToken === '') {
+      if (!accessToken || (accessToken && accessToken === '')) {
         this.handleInitChat();
         return;
       }
@@ -157,18 +156,18 @@ class StartVideo extends React.PureComponent<Props, State> {
         client,
         channels
       });
-    } finally {}
+    } finally {
+    }
   };
-  handleChange = event => {
+
+  handleChange = (event) => {
     this.setState({
       channel: event.target.value
     });
   };
+
   handleStart = () => {
-    const {
-      channel,
-      groupUsers
-    } = this.state;
+    const { channel, groupUsers } = this.state;
 
     if (groupUsers.length <= 1) {
       return;
@@ -183,29 +182,18 @@ class StartVideo extends React.PureComponent<Props, State> {
     const win = window.open(`/video-call/${channel}`, '_blank');
     win.focus();
   };
-  handleInvite = async ({
-    chatType,
-    name,
-    type,
-    selectedUsers,
-    startVideo = false
-  }) => {
-    const {
-      client,
-      channel
-    } = this.state;
+
+  handleInvite = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
+    const { client, channel } = this.state;
 
     try {
-      const users = selectedUsers.map(item => Number(item.userId));
+      const users = selectedUsers.map((item) => Number(item.userId));
       let chatId;
       let isNew = false;
 
       // Create New study room
       if (!channel) {
-        const {
-          chatId: newChatId,
-          isNewChat
-        } = await createChannel({
+        const { chatId: newChatId, isNewChat } = await createChannel({
           users,
           groupName: chatType === 'group' ? name : '',
           type: chatType === 'group' ? type : '',
@@ -232,31 +220,25 @@ class StartVideo extends React.PureComponent<Props, State> {
         });
         this.handleChannelUpdated({
           channel,
-          isNew: isNew,
-          startVideo
+          isNew: isNew
         });
       }
     } catch (e) {}
   };
-  handleChannelUpdated = ({
-    channel,
-    isNew
-  }: {
-    channel: Record<string, any>;
-    isNew: boolean;
-  }) => {
-    this.setState(({
-      channels
-    }) => ({
+
+  handleChannelUpdated = ({ channel, isNew }: { channel: Record<string, any>; isNew: boolean }) => {
+    this.setState(({ channels }) => ({
       channels: [channel, ...channels],
       channel: channel.sid
     }));
   };
+
   handleSetInviteVisible = () => {
     this.setState({
       inviteVisible: true
     });
   };
+
   handleClose = () => {
     this.setState({
       inviteVisible: false
@@ -267,17 +249,12 @@ class StartVideo extends React.PureComponent<Props, State> {
     const {
       classes,
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
-    const {
-      inviteVisible,
-      classList,
-      groupUsers
-    } = this.state;
-    return <Fragment>
+    const { inviteVisible, classList, groupUsers } = this.state;
+    return (
+      <Fragment>
         <ErrorBoundary>
           <div className={classes.root}>
             <div className={classes.row}>
@@ -307,16 +284,22 @@ class StartVideo extends React.PureComponent<Props, State> {
             </div>
           </div>
         </ErrorBoundary>
-        <StudyRoomInvite open={inviteVisible} userId={userId} groupUsers={groupUsers} classList={classList} handleClose={this.handleClose} handleInvite={this.handleInvite} handleStart={this.handleStart} />
-      </Fragment>;
+        <StudyRoomInvite
+          open={inviteVisible}
+          userId={userId}
+          groupUsers={groupUsers}
+          classList={classList}
+          handleClose={this.handleClose}
+          handleInvite={this.handleInvite}
+          handleStart={this.handleStart}
+        />
+      </Fragment>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(StartVideo));
+export default connect<{}, {}, Props>(mapStateToProps, null)(withStyles(styles as any)(StartVideo));

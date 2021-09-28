@@ -13,8 +13,8 @@ function useScript(src) {
 
     if (!script) {
       script = document.createElement('script');
-      script.src = src;
-      script.async = true;
+      (script as any).src = src;
+      (script as any).async = true;
       script.setAttribute('data-status', 'loading');
       document.body.appendChild(script);
 

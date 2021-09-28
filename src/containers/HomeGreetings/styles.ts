@@ -1,5 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-export default makeStyles((theme) => ({
+
+export default makeStyles((theme: any) => ({
   root: {
     padding: theme.spacing(2)
   },

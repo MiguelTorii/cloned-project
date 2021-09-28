@@ -1,11 +1,11 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import LoadImg from "components/LoadImg/LoadImg";
-import flashcards from "assets/svg/hourly_flashcards.svg";
-import links from "assets/svg/links.svg";
-import notes from "assets/svg/notes.svg";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import LoadImg from '../../../../components/LoadImg/LoadImg';
+import flashcards from '../../../../assets/svg/hourly_flashcards.svg';
+import links from '../../../../assets/svg/links.svg';
+import notes from '../../../../assets/svg/notes.svg';
 
-const styles = theme => ({
+const styles = (theme) => ({
   action: {
     alignItems: 'center',
     display: 'flex'
@@ -52,14 +52,12 @@ type Props = {
   hourlyReward: string;
 };
 
-const HourlyGiveawayPopup = ({
-  classes,
-  hourlyReward
-}: Props) => {
+const HourlyGiveawayPopup = ({ classes, hourlyReward }: Props) => {
   const imgStyle = {
     width: 30
   };
-  return <div className={classes.body}>
+  return (
+    <div className={classes.body}>
       <div className={classes.row}>
         <div className={classes.subtitle}>How do I qualify?</div>
         <div className={classes.text}>
@@ -94,7 +92,9 @@ const HourlyGiveawayPopup = ({
       <div className={classes.row}>
         <div className={classes.subtitle}>Can I win multiple times in a week?</div>
         <div className={classes.text}>
-          {"Yes. you can win each day, but don't spam CircleIn. If you have good notes you've taken from lectures in 4 different classes, that counts as 4 posts."}
+          {
+            "Yes. you can win each day, but don't spam CircleIn. If you have good notes you've taken from lectures in 4 different classes, that counts as 4 posts."
+          }
           <br />
           <br />
           If you are getting ready for upcoming tests in 3 different classes, creating 3 different
@@ -113,7 +113,12 @@ const HourlyGiveawayPopup = ({
         </div>
         <div className={classes.text}>
           Tell your classmates to go to
-          <a className={classes.link} rel="noopener noreferrer" target="_blank" href="https://CircleInApp.com">
+          <a
+            className={classes.link}
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://CircleInApp.com"
+          >
             {` CircleInApp.com `}
           </a>
           to join in. The more people who view what you post, and thank your posts, the larger the
@@ -139,7 +144,8 @@ const HourlyGiveawayPopup = ({
           anytime if you have thoughts, questions or new ideas.
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
-export default withStyles(styles)(HourlyGiveawayPopup);
+export default withStyles(styles as any)(HourlyGiveawayPopup);

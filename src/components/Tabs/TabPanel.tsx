@@ -1,24 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 function TabPanel(props) {
-  const {
-    children,
-    value,
-    index,
-    ...other
-  } = props;
-  return <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
-      {value === index && <Box>
+  const { children, value, index, ...other } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box>
           <Typography>{children}</Typography>
-        </Box>}
-    </div>;
+        </Box>
+      )}
+    </div>
+  );
 }
 
 TabPanel.propTypes = {
@@ -34,7 +39,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.circleIn.palette.appBar,
@@ -59,26 +64,34 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 160
   }
 }));
-export default function MuiTabs({
-  firstTab,
-  secondTab
-}) {
-  const classes = useStyles();
+export default function MuiTabs({ firstTab, secondTab }) {
+  const classes: any = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  return <div className={classes.root}>
+  return (
+    <div className={classes.root}>
       <AppBar position="static" className={classes.tabs}>
         <Tabs value={value} onChange={handleChange} aria-label="tabs">
-          <Tab className={classes.tab} classes={{
-          selected: classes.activeTab
-        }} label="Send to Students" {...a11yProps(0)} />
-          <Tab className={classes.tab} classes={{
-          selected: classes.activeTab
-        }} label="One-Touch Send to Classes" {...a11yProps(1)} />
+          <Tab
+            className={classes.tab}
+            classes={{
+              selected: classes.activeTab
+            }}
+            label="Send to Students"
+            {...a11yProps(0)}
+          />
+          <Tab
+            className={classes.tab}
+            classes={{
+              selected: classes.activeTab
+            }}
+            label="One-Touch Send to Classes"
+            {...a11yProps(1)}
+          />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -87,5 +100,6 @@ export default function MuiTabs({
       <TabPanel value={value} index={1}>
         {secondTab()}
       </TabPanel>
-    </div>;
+    </div>
+  );
 }

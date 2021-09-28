@@ -1,15 +1,17 @@
-import BaseAxios from "axios";
-import qs from "query-string";
-import { getToken } from "./utils";
+import BaseAxios from 'axios';
+import qs from 'query-string';
+import { getToken } from './utils';
+
 const axios = BaseAxios.create({
   timeout: 60000
 });
 
-axios.defaults.paramsSerializer = params => qs.stringify(params, {
-  skipNull: true
-});
+axios.defaults.paramsSerializer = (params) =>
+  qs.stringify(params, {
+    skipNull: true
+  });
 
-export const callApi = async apiConfig => {
+export const callApi = async (apiConfig) => {
   try {
     const headers = {
       Accept: 'application/json',

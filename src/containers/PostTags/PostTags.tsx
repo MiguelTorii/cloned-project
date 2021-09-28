@@ -1,12 +1,12 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Chip from "@material-ui/core/Chip";
-import type { Tag } from "../../types/models";
-import { getPostMetadata } from "../../api/posts";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Chip from '@material-ui/core/Chip';
+import type { Tag } from '../../types/models';
+import { getPostMetadata } from '../../api/posts';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -43,19 +43,15 @@ class PostTags extends React.PureComponent<Props, State> {
     tags: [],
     loading: false
   };
+
   componentDidMount = async () => {
-    const {
-      userId,
-      feedId
-    } = this.props;
+    const { userId, feedId } = this.props;
 
     try {
       this.setState({
         loading: true
       });
-      const {
-        tags
-      } = await getPostMetadata({
+      const { tags } = await getPostMetadata({
         userId,
         feedId
       });
@@ -70,29 +66,34 @@ class PostTags extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      tags,
-      loading
-    } = this.state;
+    const { classes } = this.props;
+    const { tags, loading } = this.state;
 
     if (loading) {
-      return <div className={classes.loader}>
+      return (
+        <div className={classes.loader}>
           <CircularProgress />
-        </div>;
+        </div>
+      );
     }
 
-    return <div className={classes.root}>
+    return (
+      <div className={classes.root}>
         <ErrorBoundary>
-          {tags.map(tag => <Chip key={tag.id} label={`#${tag.name}`} className={classes.chip} classes={{
-          label: classes.label
-        }} />)}
+          {tags.map((tag) => (
+            <Chip
+              key={tag.id}
+              label={`#${tag.name}`}
+              className={classes.chip}
+              classes={{
+                label: classes.label
+              }}
+            />
+          ))}
         </ErrorBoundary>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-export default withStyles(styles)(PostTags);
+export default withStyles(styles as any)(PostTags);

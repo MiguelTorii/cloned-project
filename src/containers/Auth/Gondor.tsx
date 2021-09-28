@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useLocation } from "react-router";
-import { samlLogin } from "../../actions/sign-in";
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router';
+import { samlLogin } from '../../actions/sign-in';
 
 const Gondor = () => {
   const dispatch = useDispatch();

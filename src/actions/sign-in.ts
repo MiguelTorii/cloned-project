@@ -1,12 +1,12 @@
 import { push } from 'connected-react-router';
 import store from 'store';
-import { LANDING_PAGE_CAMPAIGN } from 'constants/campaigns';
-import * as campaignActions from 'actions/campaign';
-import * as chatActions from 'actions/chat';
-import * as userActions from 'actions/user';
-import { sync } from 'actions/user';
-import { deepLinkCheck } from 'utils/helpers';
-import { PERMISSIONS } from 'constants/common';
+import { LANDING_PAGE_CAMPAIGN } from '../constants/campaigns';
+import * as campaignActions from './campaign';
+import * as chatActions from './chat';
+import * as userActions from './user';
+import { sync } from './user';
+import { deepLinkCheck } from '../utils/helpers';
+import { PERMISSIONS } from '../constants/common';
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
@@ -27,9 +27,9 @@ const setUser = ({
   expertMode,
   isExpert
 }: {
-  user: User,
-  isExpert: boolean,
-  expertMode: boolean
+  user: User;
+  isExpert: boolean;
+  expertMode: boolean;
 }): Action => ({
   type: signInActions.SIGN_IN_USER_SUCCESS,
   payload: {
@@ -45,10 +45,10 @@ const setError = ({
   action = '',
   showSignup = false
 }: {
-  title: string,
-  body: string,
-  action?: string,
-  showSignup?: boolean
+  title: string;
+  body: string;
+  action?: string;
+  showSignup?: boolean;
 }): Action => ({
   type: signInActions.SIGN_IN_USER_ERROR,
   payload: {
@@ -108,7 +108,7 @@ export const updateUser =
     );
   };
 export const signIn =
-  ({ email, password, schoolId }: { email: string, password: string, schoolId: number }) =>
+  ({ email, password, schoolId }: { email: string; password: string; schoolId: number }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(requestSignIn());
@@ -119,7 +119,7 @@ export const signIn =
         })
       );
       return dispatch(push('/'));
-    } catch (err) {
+    } catch (err: any) {
       const { response = {} } = err;
       const { data = {} } = response;
 
@@ -160,7 +160,7 @@ export const samlLogin =
           error: !user.jwtToken
         })
       );
-    } catch (err) {
+    } catch (err: any) {
       const { response = {} } = err;
       const { data = {} } = response;
 
@@ -185,10 +185,14 @@ export const samlLogin =
 export const clearSignInError = () => async (dispatch: Dispatch) => dispatch(clearError());
 export const checkUserSession =
   () => async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
-    try {
-      dispatch(requestUserCheck());
-      // $FlowFixMe
-      const user = await checkUser();
+    dispatch(requestUserCheck());
+
+    const token = store.get('REFRESH_TOKEN');
+    const userId = store.get('USER_ID');
+    const segment = store.get('SEGMENT');
+
+    if (token && userId && segment) {
+      const user = await checkUser(token, userId, segment);
 
       if (user.email) {
         dispatch(
@@ -198,15 +202,13 @@ export const checkUserSession =
         );
         return true;
       }
-
-      store.remove('TOKEN');
-      store.remove('REFRESH_TOKEN');
-      store.remove('USER_ID');
-      store.remove('SEGMENT');
-      await dispatch(clearError());
-    } catch (err) {
-      console.log(err);
     }
+
+    store.remove('TOKEN');
+    store.remove('REFRESH_TOKEN');
+    store.remove('USER_ID');
+    store.remove('SEGMENT');
+    await dispatch(clearError());
 
     const {
       router: {
@@ -249,7 +251,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
   }
 };
 export const updateError =
-  ({ title, body, action }: { title: string, body: string, action?: boolean }) =>
+  ({ title, body, action }: { title: string; body: string; action?: string }) =>
   async (dispatch: Dispatch) => {
     dispatch(
       setError({

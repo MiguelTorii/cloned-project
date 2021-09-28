@@ -1,23 +1,22 @@
-import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import auth0 from "auth0-js";
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from "constants/app";
-import type { State as StoreState } from "../../types/state";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import loginBackground from "../../assets/img/login-background.png";
-import AuthSearchSchool from "../../components/AuthSearchSchool/AuthSearchSchool";
-import { searchSchools } from "../../api/sign-in";
-import * as authActions from "../../actions/auth";
-import { REDIRECT_URI } from "../../constants/app";
-import Dialog from "../../components/Dialog/Dialog";
-import { ReactComponent as AppLogo } from "../../assets/svg/circlein_logo.svg";
+import React, { useCallback, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import auth0 from 'auth0-js';
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, REDIRECT_URI } from '../../constants/app';
+import type { State as StoreState } from '../../types/state';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import loginBackground from '../../assets/img/login-background.png';
+import AuthSearchSchool from '../../components/AuthSearchSchool/AuthSearchSchool';
+import { searchSchools } from '../../api/sign-in';
+import * as authActions from '../../actions/auth';
+import Dialog from '../../components/Dialog/Dialog';
+import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
 
-const styles = theme => ({
+const styles = (theme) => ({
   main: {
     minHeight: '100vh',
     backgroundImage: `url(${loginBackground})`,
@@ -41,83 +40,73 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  pushTo: (...args: Array<any>) => any;
-  updateSchool: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  pushTo?: (...args: Array<any>) => any;
+  updateSchool?: (...args: Array<any>) => any;
 };
 
-const Auth = ({
-  classes,
-  pushTo,
-  updateSchool
-}: Props) => {
+const Auth = ({ classes, pushTo, updateSchool }: Props) => {
   const [school] = useState(null);
   const [error] = useState(false);
   const [lti, setLit] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState(false);
-  const handleChange = useCallback(value => {
-    if (!value) {
-      return;
-    }
-
-    const {
-      lmsTypeId,
-      launchType,
-      redirect_message: redirectMessage,
-      connection
-    } = value;
-
-    if (launchType === 'lti') {
-      setLit(true);
-      setRedirectMessage(redirectMessage);
-    } else if (lmsTypeId === 0) {
-      const {
-        label,
-        value: selectValue,
-        ...school
-      } = value;
-      updateSchool({
-        school
-      });
-      pushTo('/login');
-    } else if (lmsTypeId === -1) {
-      window.location.replace('https://circleinapp.com/whitelist');
-    } else if (launchType === 'saml') {
-      const webAuth = new auth0.WebAuth({
-        domain: AUTH0_DOMAIN,
-        clientID: AUTH0_CLIENT_ID
-      });
-      webAuth.authorize({
-        audience: `https://${AUTH0_DOMAIN}/api/v2/`,
-        redirectUri: `${window.location.origin}/saml`,
-        connection,
-        responseType: 'token'
-      });
-    } else {
-      const responseType = 'code';
-      const obj = {
-        uri: value.uri,
-        lms_type_id: value.lmsTypeId,
-        response_type: responseType,
-        client_id: value.clientId,
-        redirect_uri: REDIRECT_URI
-      };
-      const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
-      let uri = `${value.authUri}?client_id=${value.clientId}&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
-
-      if (value.scope) {
-        uri = `${uri}&scope=${value.scope}`;
+  const handleChange = useCallback(
+    (value) => {
+      if (!value) {
+        return;
       }
 
-      window.location.replace(uri);
-    }
-  }, [pushTo, updateSchool]);
-  const handleLoadOptions = useCallback(async value => {
+      const { lmsTypeId, launchType, redirect_message: redirectMessage, connection } = value;
+
+      if (launchType === 'lti') {
+        setLit(true);
+        setRedirectMessage(redirectMessage);
+      } else if (lmsTypeId === 0) {
+        const { label, value: selectValue, ...school } = value;
+        updateSchool({
+          school
+        });
+        pushTo('/login');
+      } else if (lmsTypeId === -1) {
+        window.location.replace('https://circleinapp.com/whitelist');
+      } else if (launchType === 'saml') {
+        const webAuth = new auth0.WebAuth({
+          domain: AUTH0_DOMAIN,
+          clientID: AUTH0_CLIENT_ID
+        });
+        webAuth.authorize({
+          audience: `https://${AUTH0_DOMAIN}/api/v2/`,
+          redirectUri: `${window.location.origin}/saml`,
+          connection,
+          responseType: 'token'
+        });
+      } else {
+        const responseType = 'code';
+        const obj = {
+          uri: value.uri,
+          lms_type_id: value.lmsTypeId,
+          response_type: responseType,
+          client_id: value.clientId,
+          redirect_uri: REDIRECT_URI
+        };
+        const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
+        let uri = `${value.authUri}?client_id=${value.clientId}&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
+
+        if (value.scope) {
+          uri = `${uri}&scope=${value.scope}`;
+        }
+
+        window.location.replace(uri);
+      }
+    },
+    [pushTo, updateSchool]
+  );
+  const handleLoadOptions = useCallback(async (value) => {
     if (value.trim().length > 1) {
       const schools = await searchSchools({
         query: value
       });
-      const options = schools.map(school => ({
+      const options = schools.map((school) => ({
         value: school.clientId,
         label: school.school,
         noAvatar: true,
@@ -135,16 +124,24 @@ const Auth = ({
     };
   }, []);
   const handleClose = useCallback(() => setLit(false), []);
-  return <main className={classes.main}>
+  return (
+    <main className={classes.main}>
       <Grid container justifyContent="space-around">
         <Grid item xs={12} lg={6}>
           <div className={classes.grid}>
-            <AppLogo style={{
-            maxHeight: 100,
-            maxWidth: 200
-          }} />
+            <AppLogo
+              style={{
+                maxHeight: 100,
+                maxWidth: 200
+              }}
+            />
             <ErrorBoundary>
-              <AuthSearchSchool school={school} error={error} onChange={handleChange} onLoad={handleLoadOptions} />
+              <AuthSearchSchool
+                school={school}
+                error={error}
+                onChange={handleChange}
+                onLoad={handleLoadOptions}
+              />
             </ErrorBoundary>
           </div>
         </Grid>
@@ -154,20 +151,25 @@ const Auth = ({
           <Typography color="textPrimary">{redirectMessage}</Typography>
         </div>
       </Dialog>
-    </main>;
+    </main>
+  );
 };
 
-const mapStateToProps = ({
-  user,
-  auth
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, auth }: StoreState): {} => ({
   user,
   auth
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  updateSchool: authActions.updateSchool,
-  pushTo: push
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      updateSchool: authActions.updateSchool,
+      pushTo: push
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Auth));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(Auth));

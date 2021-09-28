@@ -1,9 +1,9 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import Reminders from "../../containers/Reminders/Reminders";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import Reminders from '../../containers/Reminders/Reminders';
 
 const styles = () => ({});
 
@@ -16,17 +16,16 @@ class RemindersPage extends React.Component<Props, State> {
   componentDidMount = () => {};
 
   render() {
-    const {
-      classes
-    } = this.props;
-    return <main className={classes.main}>
+    const { classes } = this.props;
+    return (
+      <main className={classes.main}>
         <CssBaseline />
         <Layout>
           <Reminders />
         </Layout>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withRoot(withStyles(styles)(RemindersPage));
+export default withRoot(withStyles(styles as any)(RemindersPage));

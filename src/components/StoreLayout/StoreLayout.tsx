@@ -1,21 +1,19 @@
-import React from "react";
-import type { Node } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import { styles } from "../_styles/StoreLayout";
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { styles } from '../_styles/StoreLayout';
+
 type Props = {
   classes: Record<string, any>;
-  children: Node;
+  children: React.ReactNode;
 };
 
 class StoreLayout extends React.PureComponent<Props> {
   render() {
-    const {
-      classes,
-      children
-    } = this.props;
-    return <div className={classes.container}>
+    const { classes, children } = this.props;
+    return (
+      <div className={classes.container}>
         <Paper className={classes.root} elevation={0}>
           <Typography variant="h3" paragraph>
             Welcome to the Rewards Store
@@ -31,9 +29,9 @@ class StoreLayout extends React.PureComponent<Props> {
           </Typography>
           {children}
         </Paper>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-export default withStyles(styles)(StoreLayout);
+export default withStyles(styles as any)(StoreLayout);

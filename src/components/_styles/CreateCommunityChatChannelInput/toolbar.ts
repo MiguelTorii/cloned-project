@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-export default makeStyles((theme) => ({
+
+export default makeStyles((theme: any) => ({
   toolbar: {
     textAlign: 'center',
     bottom: 0,

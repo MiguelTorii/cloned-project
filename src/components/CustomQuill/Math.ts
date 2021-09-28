@@ -1,7 +1,8 @@
 import { Quill } from 'react-quill';
+
 export default () => {
-  const { MathQuill } = window;
-  const { katex } = window;
+  const { MathQuill } = window as any;
+  const { katex } = window as any;
   const { localStorage } = window;
 
   function setCacheItem(key, value) {

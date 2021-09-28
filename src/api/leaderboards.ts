@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { callApi } from 'api/api_base';
+import { callApi } from './api_base';
 import { API_ROUTES } from '../constants/routes';
 import { getToken } from './utils';
+
 export const getLeaderboards = async () => {
   try {
     const token = await getToken();

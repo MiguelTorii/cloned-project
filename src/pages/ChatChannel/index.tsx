@@ -1,23 +1,24 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { getCampaign } from "api/campaign";
-import { withRouter } from "react-router";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import get from "lodash/get";
-import withRoot from "withRoot";
-import Layout from "containers/Layout/Layout";
-import Chat from "containers/Chat/Chat";
-import CommunityChat from "containers/CommunityChat/ChatPage";
-import * as notificationActions from "actions/notifications";
-import * as chatActions from "actions/chat";
-import { getChatIdFromHash } from "api/chat";
-import type { State as StoreState } from "types/state";
-import { SWITCH_CHAT_CAMPAIGN } from "constants/campaigns";
-const useStyles = makeStyles(theme => ({
+import React, { useEffect, useState, useCallback } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import get from 'lodash/get';
+import { getCampaign } from '../../api/campaign';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import Chat from '../../containers/Chat/Chat';
+import ChatPage from '../../containers/CommunityChat/ChatPage';
+import * as notificationActions from '../../actions/notifications';
+import * as chatActions from '../../actions/chat';
+import { getChatIdFromHash } from '../../api/chat';
+import type { State as StoreState } from '../../types/state';
+import { SWITCH_CHAT_CAMPAIGN } from '../../constants/campaigns';
+
+const useStyles = makeStyles((theme) => ({
   item: {
     display: 'flex'
   },
@@ -30,8 +31,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ChatChannelPage = props => {
-  const classes = useStyles();
+type Props = {
+  history?: string[];
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  setCurrentChannel?: (channel: any) => void;
+};
+
+const ChatChannelPage = (props: Props) => {
+  const classes: any = useStyles();
   const [chatId, setChatId] = useState('');
   const [campaign, setCampaign] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -78,27 +85,30 @@ const ChatChannelPage = props => {
   }, []);
   useEffect(() => {
     const channels = get(props, 'chat.data.channels', []);
-    const channel = channels.find(e => e.sid === chatId);
+    const channel = channels.find((e) => e.sid === chatId);
 
     if (!loaded && channel) {
       setLoaded(true);
       props.setCurrentChannel(channel);
     }
   }, [chatId, props, loaded]);
-  const renderChat = useCallback(() => campaign && !campaign.is_disabled ? <CommunityChat /> : <Chat />, [campaign]);
-  return <main>
+  const renderChat = useCallback(
+    () => (campaign && !campaign.is_disabled ? <ChatPage /> : <Chat />),
+    [campaign]
+  );
+  return (
+    <main>
       <CssBaseline />
       <Layout>
         <Grid container justifyContent="center" className={classes.container}>
           {loading ? <CircularProgress size={20} /> : renderChat()}
         </Grid>
       </Layout>
-    </main>;
+    </main>
+  );
 };
 
-const mapStateToProps = ({
-  chat
-}: StoreState): {} => ({
+const mapStateToProps = ({ chat }: StoreState): {} => ({
   chat
 });
 
@@ -106,4 +116,8 @@ const mapDispatchToProps = {
   setCurrentChannel: chatActions.setCurrentChannel,
   enqueueSnackbar: notificationActions.enqueueSnackbar
 };
-export default compose(connect(mapStateToProps, mapDispatchToProps), withRoot, withRouter)(ChatChannelPage);
+export default compose<typeof ChatChannelPage>(
+  connect<{}, {}, Props>(mapStateToProps, mapDispatchToProps),
+  withRoot,
+  withRouter
+)(ChatChannelPage);

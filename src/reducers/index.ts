@@ -13,6 +13,7 @@ import dialog from './dialog';
 import onboarding from './onboarding';
 import notes from './notes';
 import api from './api';
+
 const routerActions = {
   push: typeof push,
   replace: typeof replace,

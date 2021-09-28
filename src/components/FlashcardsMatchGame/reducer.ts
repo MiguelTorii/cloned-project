@@ -1,7 +1,8 @@
 import update from 'immutability-helper';
-import { shuffleArray } from 'utils/helpers';
 import _ from 'lodash';
 import moment from 'moment';
+import { shuffleArray } from '../../utils/helpers';
+
 // Action Types
 const INITIALIZE_GAME = 'INITIALIZE_GAME';
 const PLACE_MORE_CARDS = 'PLACE_MORE_CARDS';
@@ -143,7 +144,7 @@ const reducer = (state, action) => {
   switch (action.type) {
     case INITIALIZE_GAME: {
       const { matchGameId, cardsData, containerWidth, containerHeight } = action.payload;
-      const indexes = shuffleArray([...new Array(cardsData.length).keys()]);
+      const indexes = shuffleArray([...(new Array(cardsData.length) as any).keys()]);
       const cards = [];
       indexes.forEach((index) => {
         const card = cardsData[index];

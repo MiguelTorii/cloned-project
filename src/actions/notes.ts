@@ -1,17 +1,17 @@
-import { NotesType } from 'reducers/notes';
-import * as api from 'api/notes';
 import moment from 'moment';
-import { logEventLocally } from 'api/analytics';
+import { NotesType } from '../reducers/notes';
+import * as api from '../api/notes';
+import { logEventLocally } from '../api/analytics';
 import { notesActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 
-const updateNotes = ({ notes }: { notes: array<NotesType> }): Action => ({
+const updateNotes = ({ notes }: { notes: NotesType[] }): Action => ({
   type: notesActions.UPDATE_NOTES,
   notes
 });
 
-const addNote = ({ notes, quicknoteId }: { notes: NotesType, quicknote: number }): Action => ({
+const addNote = ({ notes, quicknoteId }: { notes: NotesType[]; quicknoteId: number }): Action => ({
   type: notesActions.ADD_NOTE,
   quicknoteId,
   notes
@@ -36,8 +36,8 @@ const setSectionIdAction = ({
   sectionId,
   classId
 }: {
-  sectionId: number,
-  classId: number
+  sectionId: number;
+  classId: number;
 }): Action => ({
   type: notesActions.SET_SECTION_ID,
   sectionId,
@@ -134,7 +134,7 @@ export const updateNote =
       if (res.success) {
         logEventLocally({
           category: 'Note',
-          objectId: note.id,
+          objectId: String(note.id),
           sectionId: note.sectionId,
           type: 'Updated'
         });
@@ -176,12 +176,17 @@ export const saveNoteAction =
     classId,
     quicknote
   }: {
-    note: NotesType,
-    classId: number,
-    sectionId: number,
-    quicknote: boolean
+    note: NotesType;
+    classId: number;
+    sectionId: number;
+    quicknote: boolean;
   }) =>
-  async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
+  async (
+    dispatch: Dispatch,
+    getState: (...args: Array<any>) => {
+      notes: { data: { notes: NotesType[]; sectionId: number } };
+    }
+  ) => {
     try {
       dispatch(
         loadingAction({
@@ -206,7 +211,13 @@ export const saveNoteAction =
           sectionId,
           type: 'Created'
         });
-        const newNote = { ...note, id: noteId, classId, sectionId, lastModified: new Date() };
+        const newNote: NotesType = {
+          ...note,
+          id: noteId,
+          classId,
+          sectionId,
+          lastModified: new Date()
+        };
 
         if (curSectionId === sectionId) {
           dispatch(
@@ -252,7 +263,7 @@ export const setCurrentNote =
       );
       logEventLocally({
         category: 'Note',
-        objectId: note.id,
+        objectId: String(note.id),
         sectionId: note.sectionId,
         type: 'Opened'
       });
@@ -265,7 +276,7 @@ export const setCurrentNote =
     }
   };
 export const setSectionId =
-  ({ sectionId, classId }: { sectionId: number, classId: number }) =>
+  ({ sectionId, classId }: { sectionId: number; classId: number }) =>
   async (dispatch: Dispatch) => {
     dispatch(
       setSectionIdAction({
@@ -315,12 +326,12 @@ export const deleteNoteAction =
     }
   };
 export const exitNoteTaker =
-  ({ category, objectId, type, sectoinId }) =>
+  ({ category, objectId, type, sectionId }) =>
   async () => {
     logEventLocally({
       category,
       objectId,
-      sectoinId,
+      sectionId,
       type
     });
   };

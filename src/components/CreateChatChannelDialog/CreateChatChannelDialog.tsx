@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import Typography from "@material-ui/core/Typography";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import CloseIcon from "@material-ui/icons/Close";
-import Dialog from "../Dialog/Dialog";
-import AutoComplete from "../AutoComplete/AutoComplete";
-import styles from "../_styles/CreateChatChannelDialog";
+import React, { useState, useEffect } from 'react';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '../Dialog/Dialog';
+import AutoComplete from '../AutoComplete/AutoComplete';
+import styles from '../_styles/CreateChatChannelDialog';
+
 type Props = {
-  classes: Record<string, any>;
-  isLoading: boolean;
-  onClose: (...args: Array<any>) => any;
-  onSubmit: (...args: Array<any>) => any;
-  onLoadOptions: (...args: Array<any>) => any;
-  members: Array;
-  title: string | null | undefined;
+  classes?: Record<string, any>;
+  isLoading?: boolean;
+  onClose?: (...args: Array<any>) => any;
+  onSubmit?: (...args: Array<any>) => any;
+  onLoadOptions?: (...args: Array<any>) => any;
+  members?: Array<any>;
+  title?: string | null | undefined;
+  okLabel?: string;
+  chatType?: any;
+  thumbnail?: any;
+  isVideo?: any;
+  onSendInput?: any;
 };
 
 const CreateChatChannelDialog = ({
@@ -26,7 +32,10 @@ const CreateChatChannelDialog = ({
   okLabel,
   members,
   chatType: chatTypeProp,
-  onLoadOptions
+  onLoadOptions,
+  thumbnail,
+  isVideo,
+  onSendInput
 }: Props) => {
   const [chatType, setChatType] = useState(chatTypeProp);
   const [name, setName] = useState('');
@@ -46,28 +55,30 @@ const CreateChatChannelDialog = ({
     setChatType(chatTypeProp);
   }, [chatTypeProp]);
 
-  const handleAutoComplete = values => {
+  const handleAutoComplete = (values) => {
     setUsers(values);
     setError(false);
   };
 
-  const handleLoadOptions = async query => {
+  const handleLoadOptions = async (query) => {
     const users = await onLoadOptions({
       query,
       from
     });
-    const currentGroupMemberIds = members.map(member => Number(member.userId));
-    const ordered = users.options.filter(option => !currentGroupMemberIds.includes(option.userId)).sort((a, b) => {
-      if (a.relationship && !b.relationship) {
-        return -1;
-      }
+    const currentGroupMemberIds = members.map((member) => Number(member.userId));
+    const ordered = users.options
+      .filter((option) => !currentGroupMemberIds.includes(option.userId))
+      .sort((a, b) => {
+        if (a.relationship && !b.relationship) {
+          return -1;
+        }
 
-      if (!a.relationship && b.relationship) {
-        return 1;
-      }
+        if (!a.relationship && b.relationship) {
+          return 1;
+        }
 
-      return 0;
-    });
+        return 0;
+      });
     return {
       options: ordered,
       hasMore: false
@@ -101,12 +112,29 @@ const CreateChatChannelDialog = ({
     onClose();
   };
 
-  return <Dialog className={classes.dialog} disableActions={isLoading} disableEscapeKeyDown={isLoading} open={Boolean(chatType)} onCancel={handleClose} onOk={handleSubmit} okTitle={okLabel || 'Create'} showHeader={false} contentClassName={classes.contentClassName} okButtonClass={classes.okButtonClass} showActions>
-      {isLoading && <CircularProgress style={{
-      position: 'fixed',
-      top: '50%',
-      left: '50%'
-    }} />}
+  return (
+    <Dialog
+      className={classes.dialog}
+      disableActions={isLoading}
+      disableEscapeKeyDown={isLoading}
+      open={Boolean(chatType)}
+      onCancel={handleClose}
+      onOk={handleSubmit}
+      okTitle={okLabel || 'Create'}
+      showHeader={false}
+      contentClassName={classes.contentClassName}
+      okButtonClass={classes.okButtonClass}
+      showActions
+    >
+      {isLoading && (
+        <CircularProgress
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%'
+          }}
+        />
+      )}
       <div className={classes.header}>
         <Typography className={classes.label} variant="h6">
           {title || 'Setup a Class Group Chat or Send a Direct Message'}
@@ -117,13 +145,29 @@ const CreateChatChannelDialog = ({
       <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
         <div className={classes.form}>
           <div>
-            <AutoComplete classes={{
-            root: classes.searchMember
-          }} values={users} relative inputValue={inputValue} searchClassmate placeholder="Search for classmates" error={error} errorText="You must select at least 1 classmate" cacheUniq={from} autoFocus isMulti isDisabled={isLoading} onChange={handleAutoComplete} onLoadOptions={handleLoadOptions} />
+            <AutoComplete
+              classes={{
+                root: classes.searchMember
+              }}
+              values={users}
+              relative
+              inputValue={inputValue}
+              searchClassmate
+              placeholder="Search for classmates"
+              error={error}
+              errorText="You must select at least 1 classmate"
+              cacheUniq={from}
+              autoFocus
+              isMulti
+              isDisabled={isLoading}
+              onChange={handleAutoComplete}
+              onLoadOptions={handleLoadOptions}
+            />
           </div>
         </div>
       </ValidatorForm>
-    </Dialog>;
+    </Dialog>
+  );
 };
 
-export default withStyles(styles)(CreateChatChannelDialog);
+export default withStyles(styles as any)(CreateChatChannelDialog);

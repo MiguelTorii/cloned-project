@@ -1,19 +1,24 @@
-import React, { memo, useEffect } from "react";
-import { withRouter } from "react-router";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { withResizeDetector } from "react-resize-detector";
-import * as userActions from "actions/user";
-import { Announcement } from "types/models";
-import { INTERVAL } from "../../constants/app";
-import HourlyGiveawayBanner from "./Components/HourlyGiveawayBanner/HourlyGiveawayBanner";
-import { setIntervalWithFirstCall } from "../../utils/helpers";
-import CommonBanner from "./Components/CommonBanner";
+import React, { memo, useEffect } from 'react';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withResizeDetector } from 'react-resize-detector';
+import * as userActions from '../../actions/user';
+import { Announcement } from '../../types/models';
+import { INTERVAL } from '../../constants/app';
+import HourlyGiveawayBanner from './Components/HourlyGiveawayBanner/HourlyGiveawayBanner';
+import { setIntervalWithFirstCall } from '../../utils/helpers';
+import CommonBanner from './Components/CommonBanner';
+import type { State as StoreState } from '../../types/state';
+
 type Props = {
-  announcement: Announcement;
-  setBannerHeight: (...args: Array<any>) => any;
-  getAnnouncement: (...args: Array<any>) => any;
-  height: number;
+  announcement?: Announcement;
+  getAnnouncement?: (...args: Array<any>) => any;
+  setBannerHeight?: any;
+  height?: number;
+  bannerHeight?: number;
+  expertMode?: any;
+  onLoaded?: any;
 };
 
 const Banner = ({
@@ -21,7 +26,9 @@ const Banner = ({
   announcement,
   getAnnouncement,
   setBannerHeight,
-  height
+  onLoaded,
+  height,
+  bannerHeight
 }: Props) => {
   useEffect(() => {
     const intervalID = setIntervalWithFirstCall(() => {
@@ -41,22 +48,29 @@ const Banner = ({
     return null;
   }
 
-  return announcement.endDate ? <CommonBanner announcement={announcement} /> : <HourlyGiveawayBanner announcement={announcement} />;
+  return announcement.endDate ? (
+    <CommonBanner announcement={announcement} />
+  ) : (
+    <HourlyGiveawayBanner announcement={announcement} />
+  );
 };
 
-const mapStateToProps = ({
-  user: {
-    announcementData,
-    expertMode
-  }
-}): {} => ({
+const mapStateToProps = ({ user: { announcementData, expertMode } }: StoreState): {} => ({
   announcement: announcementData,
   expertMode
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  getAnnouncement: userActions.getAnnouncement
-}, dispatch); // Banner.whyDidYouRender= true
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      getAnnouncement: userActions.getAnnouncement
+    },
+    dispatch
+  ); // Banner.whyDidYouRender= true
 
-
-export default memo(connect(mapStateToProps, mapDispatchToProps)(withRouter(withResizeDetector(Banner))));
+export default memo(
+  connect<{}, {}, Props>(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withRouter(withResizeDetector(Banner)))
+);

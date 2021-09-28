@@ -1,27 +1,33 @@
-import React, { useRef, useEffect, useState, useCallback, useReducer } from "react";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
-import * as notificationsActions from "actions/notifications";
-import { bindActionCreators } from "redux";
-import Grid from "@material-ui/core/Grid";
-import CreateWorkflow from "components/Workflow/CreateWorkflow";
-import WorkflowList from "components/Workflow/WorkflowList";
-import CalendarView from "components/Workflow/CalendarView";
-import Paper from "@material-ui/core/Paper";
-import update from "immutability-helper";
-import { createTodo, updateTodo, archiveTodo, updateTodosOrdering, getTodos } from "api/workflow";
-import type { UserState } from "reducers/user";
-import type { State as StoreState } from "types/state";
-import ErrorBoundary from "containers/ErrorBoundary/ErrorBoundary";
-import Typography from "@material-ui/core/Typography";
-import moment from "moment";
-import Button from "@material-ui/core/Button";
-import Tips from "components/Workflow/Tips";
-import cx from "classnames";
-import { WorkflowProvider } from "containers/Workflow/WorkflowContext";
-import RefreshIcon from "@material-ui/icons/Refresh";
-import IconButton from "@material-ui/core/IconButton";
-import Box from "@material-ui/core/Box";
+import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import { bindActionCreators } from 'redux';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import update from 'immutability-helper';
+import Typography from '@material-ui/core/Typography';
+import moment from 'moment';
+import Button from '@material-ui/core/Button';
+import cx from 'classnames';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
+import CreateWorkflow from '../../components/Workflow/CreateWorkflow';
+import WorkflowList from '../../components/Workflow/WorkflowList';
+import CalendarView from '../../components/Workflow/CalendarView';
+import {
+  createTodo,
+  updateTodo,
+  archiveTodo,
+  updateTodosOrdering,
+  getTodos
+} from '../../api/workflow';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Tips from '../../components/Workflow/Tips';
+import { WorkflowProvider } from './WorkflowContext';
+import * as notificationsActions from '../../actions/notifications';
 
 const createSnackbar = (message, style, variant) => ({
   notification: {
@@ -42,7 +48,7 @@ const createSnackbar = (message, style, variant) => ({
   }
 });
 
-const styles = theme => ({
+const styles = (theme) => ({
   title: {
     fontWeight: 700,
     fontSize: 28
@@ -75,15 +81,13 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  enqueueSnackbar: (...args: Array<any>) => any;
-  user: UserState;
+  classes?: Record<string, any>;
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  user?: UserState;
 };
 
 function reducer(state, action) {
-  const {
-    type
-  } = action;
+  const { type } = action;
 
   switch (type) {
     case 'INIT':
@@ -94,10 +98,7 @@ function reducer(state, action) {
       });
 
     case 'ADD_TASK':
-      return { ...state,
-        tasks: [{ ...action.task
-        }, ...state.tasks]
-      };
+      return { ...state, tasks: [{ ...action.task }, ...state.tasks] };
 
     case 'ARCHIVE_TASK':
       return update(state, {
@@ -109,22 +110,24 @@ function reducer(state, action) {
     case 'REORDER':
       return update(state, {
         tasks: {
-          $splice: [[action.dragIndex, 1], [action.hoverIndex, 0, action.dragTask]]
+          $splice: [
+            [action.dragIndex, 1],
+            [action.hoverIndex, 0, action.dragTask]
+          ]
         }
       });
 
-    case 'UPDATE_CATEGORY':
-      {
-        return update(state, {
-          tasks: {
-            [action.index]: {
-              categoryId: {
-                $set: action.categoryId
-              }
+    case 'UPDATE_CATEGORY': {
+      return update(state, {
+        tasks: {
+          [action.index]: {
+            categoryId: {
+              $set: action.categoryId
             }
           }
-        });
-      }
+        }
+      });
+    }
 
     case 'UPDATE_ITEM':
       return update(state, {
@@ -178,22 +181,12 @@ const initialState = {
   tasks: []
 };
 
-const Workflow = ({
-  user,
-  enqueueSnackbar,
-  classes
-}: Props) => {
+const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const {
-    tasks,
-    dragId
-  } = state;
+  const { tasks, dragId } = state;
   const [classList, setClassList] = useState({});
   const {
-    data: {
-      firstName,
-      userId
-    },
+    data: { firstName, userId },
     userClasses,
     announcementData
   } = user;
@@ -227,68 +220,87 @@ const Workflow = ({
   useEffect(() => {
     init();
   }, [init]);
-  const archiveTask = useCallback(async task => {
-    const res = await archiveTodo({
-      id: task.id
-    });
-
-    if (res?.id) {
-      dispatch({
-        type: 'ARCHIVE_TASK',
-        index: task.index
+  const archiveTask = useCallback(
+    async (task) => {
+      const res = await archiveTodo({
+        id: task.id
       });
-    }
-  }, [dispatch]);
-  const moveTask = useCallback((dragIndex, hoverIndex) => {
-    const dragTask = state.tasks[dragIndex];
-    dispatch({
-      type: 'REORDER',
-      dragIndex,
-      hoverIndex,
-      dragTask
-    });
-  }, [state, dispatch]);
+
+      if (res?.id) {
+        dispatch({
+          type: 'ARCHIVE_TASK',
+          index: task.index
+        });
+      }
+    },
+    [dispatch]
+  );
+  const moveTask = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragTask = state.tasks[dragIndex];
+      dispatch({
+        type: 'REORDER',
+        dragIndex,
+        hoverIndex,
+        dragTask
+      });
+    },
+    [state, dispatch]
+  );
   const dragCategoryId = useRef();
-  const updateCategory = useCallback(async (index, categoryId) => {
-    dragCategoryId.current = categoryId;
-    dispatch({
-      type: 'UPDATE_CATEGORY',
-      index,
-      categoryId
-    });
-  }, [dispatch]);
+  const updateCategory = useCallback(
+    async (index, categoryId) => {
+      dragCategoryId.current = categoryId;
+      dispatch({
+        type: 'UPDATE_CATEGORY',
+        index,
+        categoryId
+      });
+    },
+    [dispatch]
+  );
   const [prevDragId, setPrevDragId] = useState(null);
   const reorder = useCallback(async () => {
     let ordering = [];
     tasks.forEach((t, position) => {
       if (t.order !== position) {
-        ordering = [...ordering, {
-          id: t.id,
-          position
-        }];
+        ordering = [
+          ...ordering,
+          {
+            id: t.id,
+            position
+          }
+        ];
       }
     });
     await updateTodosOrdering({
       ordering
     });
   }, [tasks]);
-  const onDrag = useCallback(async dragId => {
-    if (dragId === null && prevDragId !== null && dragCategoryId?.current) {
-      const task = tasks.find(t => t.id === prevDragId);
-      const res = await updateTodo({ ...task,
-        categoryId: dragCategoryId.current
-      });
+  const onDrag = useCallback(
+    async (dragId) => {
+      if (dragId === null && prevDragId !== null && dragCategoryId?.current) {
+        const task = tasks.find((t) => t.id === prevDragId);
+        const res = await updateTodo({ ...task, categoryId: dragCategoryId.current });
 
-      if (res?.points) {
-        enqueueSnackbar(createSnackbar(`Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`, classes.snackbar, 'success'));
+        if (res?.points) {
+          enqueueSnackbar(
+            createSnackbar(
+              `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+              classes.snackbar,
+              'success'
+            )
+          );
+        }
       }
-    }
 
-    dispatch({
-      type: 'DRAG_UPDATE',
-      dragId
-    });
-  }, [prevDragId, tasks, enqueueSnackbar, firstName, classes.snackbar]);
+      dispatch({
+        type: 'DRAG_UPDATE',
+        dragId
+      });
+    },
+    [prevDragId, tasks, enqueueSnackbar, firstName, classes.snackbar]
+  );
   useEffect(() => {
     if (dragId !== prevDragId && dragId === null) {
       reorder();
@@ -299,9 +311,9 @@ const Workflow = ({
   useEffect(() => {
     try {
       const classList = {};
-      userClasses.classList.forEach(cl => {
+      userClasses.classList.forEach((cl) => {
         if (cl.section && cl.section.length > 0) {
-          cl.section.forEach(s => {
+          cl.section.forEach((s) => {
             classList[s.sectionId] = cl;
           });
         }
@@ -312,147 +324,167 @@ const Workflow = ({
     }
   }, [userClasses]);
   const [expanded, setExpanded] = useState([true, true, true, true]);
-  const handleExpand = useCallback(index => expand => {
-    setExpanded(update(expanded, {
-      [index - 1]: {
-        $set: expand
-      }
-    }));
-  }, [expanded]);
+  const handleExpand = useCallback(
+    (index) => (expand) => {
+      setExpanded(
+        update(expanded, {
+          [index - 1]: {
+            $set: expand
+          }
+        })
+      );
+    },
+    [expanded]
+  );
   useEffect(() => {
-    const invalidOrder = tasks.find(t => t.order === -1);
+    const invalidOrder = tasks.find((t) => t.order === -1);
 
     if (invalidOrder) {
       reorder();
     }
   }, [reorder, tasks]);
-  const handleAddTask = useCallback(async ({
-    title,
-    categoryId,
-    date,
-    sectionId,
-    description
-  }) => {
-    if (!title) {
-      enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'));
-      return;
-    }
-
-    try {
-      const res = await createTodo({
-        title,
-        categoryId,
-        sectionId,
-        date: date ? moment.utc(date).valueOf() : null,
-        description
-      });
-
-      if (res?.id) {
-        dispatch({
-          type: 'ADD_TASK',
-          task: {
-            title,
-            date: date || '',
-            categoryId: categoryId || 1,
-            sectionId: sectionId || '',
-            description: description || '',
-            order: -1,
-            id: res.id,
-            status: 1
-          }
-        });
-        handleExpand(1)(true);
-
-        if (res?.points) {
-          enqueueSnackbar(createSnackbar(`Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`, classes.snackbar, 'success'));
-        }
+  const handleAddTask = useCallback(
+    async ({ title, categoryId, date, sectionId, description }) => {
+      if (!title) {
+        enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'));
+        return;
       }
-    } catch (e) {
-      enqueueSnackbar(createSnackbar('Failed to add task', classes.snackbar, 'error'));
-    }
-  }, [dispatch, handleExpand, enqueueSnackbar, classes, firstName]);
-  const updateItem = useCallback(async ({
-    index,
-    title,
-    date,
-    categoryId,
-    description,
-    sectionId,
-    id,
-    status,
-    images,
-    reminder
-  }) => {
-    if (!title) {
-      enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'));
-      return;
-    }
 
-    if (id === -1) {
-      await handleAddTask({
-        title,
-        sectionId: Number(sectionId),
-        categoryId: Number(categoryId),
-        reminder,
-        description,
-        date
-      });
-    } else {
-      const task = tasks[index];
-      const newCategory = status === 2 && task.status !== status ? 4 : categoryId;
-      const res = await updateTodo({
-        id,
-        title,
-        sectionId: Number(sectionId),
-        categoryId: Number(newCategory),
-        description,
-        reminder,
-        date: moment.utc(date).valueOf(),
-        status
-      });
-
-      if (res?.id) {
-        dispatch({
-          type: 'UPDATE_ITEM',
-          index,
+      try {
+        const res = await createTodo({
           title,
-          date,
-          categoryId: newCategory,
-          description,
+          categoryId,
           sectionId,
-          status,
-          firstNotificationSeconds: reminder || 0,
-          images
+          date: date ? moment.utc(date).valueOf() : null,
+          description
         });
 
-        if (res?.points) {
-          enqueueSnackbar(createSnackbar(`Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`, classes.snackbar, 'success'));
+        if (res?.id) {
+          dispatch({
+            type: 'ADD_TASK',
+            task: {
+              title,
+              date: date || '',
+              categoryId: categoryId || 1,
+              sectionId: sectionId || '',
+              description: description || '',
+              order: -1,
+              id: res.id,
+              status: 1
+            }
+          });
+          handleExpand(1)(true);
+
+          if (res?.points) {
+            enqueueSnackbar(
+              createSnackbar(
+                `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+                classes.snackbar,
+                'success'
+              )
+            );
+          }
         }
-      } else {
-        enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'));
+      } catch (e) {
+        enqueueSnackbar(createSnackbar('Failed to add task', classes.snackbar, 'error'));
       }
-    }
-  }, [dispatch, enqueueSnackbar, classes, tasks, firstName, handleAddTask]);
-  return <WorkflowProvider value={{
-    enqueueSnackbar,
-    announcementData,
-    userId,
-    handleAddTask,
-    updateCategory,
-    listView,
-    moveTask,
-    classList,
-    canAddClasses: userClasses.canAddClasses,
-    tasks,
-    dragId,
-    onDrag,
-    expanded,
-    handleExpand,
-    updateItem,
-    archiveTask,
-    currentCalendarView,
-    setCurrentCalendarView
-  }}>
+    },
+    [dispatch, handleExpand, enqueueSnackbar, classes, firstName]
+  );
+  const updateItem = useCallback(
+    async ({
+      index,
+      title,
+      date,
+      categoryId,
+      description,
+      sectionId,
+      id,
+      status,
+      images,
+      reminder
+    }) => {
+      if (!title) {
+        enqueueSnackbar(createSnackbar('Task name is empty', classes.snackbar, 'error'));
+        return;
+      }
+
+      if (id === -1) {
+        await handleAddTask({
+          title,
+          sectionId: Number(sectionId),
+          categoryId: Number(categoryId),
+          reminder,
+          description,
+          date
+        });
+      } else {
+        const task = tasks[index];
+        const newCategory = status === 2 && task.status !== status ? 4 : categoryId;
+        const res = await updateTodo({
+          id,
+          title,
+          sectionId: Number(sectionId),
+          categoryId: Number(newCategory),
+          description,
+          reminder,
+          date: moment.utc(date).valueOf(),
+          status
+        });
+
+        if (res?.id) {
+          dispatch({
+            type: 'UPDATE_ITEM',
+            index,
+            title,
+            date,
+            categoryId: newCategory,
+            description,
+            sectionId,
+            status,
+            firstNotificationSeconds: reminder || 0,
+            images
+          });
+
+          if (res?.points) {
+            enqueueSnackbar(
+              createSnackbar(
+                `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
+                classes.snackbar,
+                'success'
+              )
+            );
+          }
+        } else {
+          enqueueSnackbar(createSnackbar('Failed to update task', classes.snackbar, 'error'));
+        }
+      }
+    },
+    [dispatch, enqueueSnackbar, classes, tasks, firstName, handleAddTask]
+  );
+  return (
+    <WorkflowProvider
+      value={{
+        enqueueSnackbar,
+        announcementData,
+        userId,
+        handleAddTask,
+        updateCategory,
+        listView,
+        moveTask,
+        classList,
+        canAddClasses: userClasses.canAddClasses,
+        tasks,
+        dragId,
+        onDrag,
+        expanded,
+        handleExpand,
+        updateItem,
+        archiveTask,
+        currentCalendarView,
+        setCurrentCalendarView
+      }}
+    >
       <Grid container direction="column" spacing={0} className={classes.container}>
         <ErrorBoundary>
           <Tips open={tips} close={closeTips} />
@@ -465,13 +497,25 @@ const Workflow = ({
             </IconButton>
           </Box>
           <Grid container alignItems="center">
-            <Button color={cx(!listView && !calendarView ? 'primary' : 'default')} className={classes.button} onClick={showBoardView}>
+            <Button
+              color={cx(!listView && !calendarView ? 'primary' : 'default') as any}
+              className={classes.button}
+              onClick={showBoardView}
+            >
               Board View
             </Button>
-            <Button color={cx(listView && !calendarView ? 'primary' : 'default')} onClick={showListView} className={classes.button}>
+            <Button
+              color={cx(listView && !calendarView ? 'primary' : 'default') as any}
+              onClick={showListView}
+              className={classes.button}
+            >
               List View
             </Button>
-            <Button color={cx(calendarView ? 'primary' : 'default')} onClick={showCalendarView} className={classes.button}>
+            <Button
+              color={cx(calendarView ? 'primary' : 'default') as any}
+              onClick={showCalendarView}
+              className={classes.button}
+            >
               Calendar View
             </Button>
             <div className={classes.divider}>|</div>
@@ -479,28 +523,40 @@ const Workflow = ({
               Tips & Tricks
             </Button>
           </Grid>
-          {calendarView && <Paper elevation={0} className={classes.bodyCalendar}>
+          {calendarView && (
+            <Paper elevation={0} className={classes.bodyCalendar}>
               <CalendarView />
-            </Paper>}
-          {listView && !calendarView && <Paper elevation={0} className={classes.body}>
+            </Paper>
+          )}
+          {listView && !calendarView && (
+            <Paper elevation={0} className={classes.body}>
               <CreateWorkflow handleAddTask={handleAddTask} />
-            </Paper>}
-          {!calendarView && <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
+            </Paper>
+          )}
+          {!calendarView && (
+            <Paper elevation={0} className={cx(classes.bodyList, !listView && classes.bodyBoard)}>
               <WorkflowList />
-            </Paper>}
+            </Paper>
+          )}
         </ErrorBoundary>
       </Grid>
-    </WorkflowProvider>;
+    </WorkflowProvider>
+  );
 };
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  enqueueSnackbar: notificationsActions.enqueueSnackbar
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Workflow));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(Workflow));

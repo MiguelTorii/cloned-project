@@ -1,9 +1,8 @@
-import React from "react";
-// import { bindActionCreators } from 'redux';
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
-import PostsList from "../../components/PostsList/PostsList";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import PostsList from '../../components/PostsList/PostsList';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = () => ({
   root: {
@@ -26,28 +25,15 @@ type State = {};
 
 class Feed extends React.PureComponent<ProvidedProps & Props, State> {
   render() {
-    const {
-      classes
-    } = this.props;
-    return <ErrorBoundary>
+    const { classes } = this.props;
+    return (
+      <ErrorBoundary>
         <div className={classes.root}>
           <PostsList />
         </div>
-      </ErrorBoundary>;
+      </ErrorBoundary>
+    );
   }
+}
 
-} // const mapStateToProps = ({ user, feed }: StoreState): {} => ({
-//   user,
-//   feed
-// });
-// const mapDispatchToProps = (dispatch: *): {} =>
-//   bindActionCreators(
-//     {
-//       fetchUserFeed: feedActions.fetchUserFeed,
-//       openShareDialog: shareActions.openShareDialog
-//     },
-//     dispatch
-//   );
-
-
-export default connect(null, null)(withStyles(styles)(Feed));
+export default connect<{}, {}, Props>(null, null)(withStyles(styles as any)(Feed));

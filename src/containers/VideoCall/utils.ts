@@ -23,7 +23,7 @@ export const getDeviceSelectionOptions = () =>
       return deviceSelectionOptions;
     }, {});
   });
-export const applyVideoInputDeviceSelection = (deviceId, video, room) =>
+export const applyVideoInputDeviceSelection = (deviceId, video, room?) =>
   Video.createLocalVideoTrack({
     deviceId: {
       exact: deviceId
@@ -42,7 +42,7 @@ export const applyVideoInputDeviceSelection = (deviceId, video, room) =>
       console.log('applyVideoInputDeviceSelection failed:', err);
       throw err;
     });
-export const applyAudioInputDeviceSelection = (deviceId, audio, room) =>
+export const applyAudioInputDeviceSelection = (deviceId, audio, room?) =>
   Video.createLocalAudioTrack({
     deviceId: {
       exact: deviceId // NOTE: on ios safari - it respects the deviceId only if its exact.
@@ -66,9 +66,6 @@ export const applyAudioOutputDeviceSelection = (deviceId, audio) =>
     ? audio.setSinkId(deviceId)
     : Promise.reject(new Error('This browser does not support setting an audio output device'));
 export const detachTrack = (track) => {
-  //   track.detach().forEach(detachedElement => {
-  //     detachedElement.remove();
-  //   });
   track.detach();
   track.stop();
 };

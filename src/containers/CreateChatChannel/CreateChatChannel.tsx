@@ -1,29 +1,29 @@
-import React from "react";
-import axios from "axios";
-// import some from 'lodash/some';
-import { connect } from "react-redux";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
-import { getInitials } from "utils/chat";
-import type { UserState } from "../../reducers/user";
-import type { ChatState } from "../../reducers/chat";
-import type { State as StoreState } from "../../types/state";
-import CreateChatChannelDialog from "../../components/CreateChatChannelDialog/CreateChatChannelDialog";
-import { // getBlockedUsers,
-searchUsers } from "../../api/user";
-import { getPresignedURL } from "../../api/media";
-import { createChannel } from "../../api/chat";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+import { getInitials } from '../../utils/chat';
+import type { UserState } from '../../reducers/user';
+import type { ChatState } from '../../reducers/chat';
+import type { State as StoreState } from '../../types/state';
+import CreateChatChannelDialog from '../../components/CreateChatChannelDialog/CreateChatChannelDialog';
+import { searchUsers } from '../../api/user';
+import { getPresignedURL } from '../../api/media';
+import { createChannel } from '../../api/chat';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
 type Props = {
-  user: UserState;
-  chat: ChatState;
-  type: string | null | undefined;
-  client: Record<string, any>;
-  // channels: Array<Object>,
+  user?: UserState;
+  chat?: ChatState;
+  type?: string | null | undefined;
+  client?: Record<string, any>;
   isVideo?: boolean;
-  onClose: (...args: Array<any>) => any;
-  onChannelCreated: (...args: Array<any>) => any;
-  title: string | null | undefined;
+  onClose?: (...args: Array<any>) => any;
+  onChannelCreated?: (...args: Array<any>) => any;
+  title?: string | null | undefined;
+  channels?: any;
 };
+
 type State = {
   thumbnail: string | null | undefined;
   isLoading: boolean;
@@ -33,48 +33,42 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   static defaultProps = {
     isVideo: false
   };
+
   state = {
     thumbnail: null,
     isLoading: false
   };
-  componentDidUpdate = prevProps => {
+
+  componentDidUpdate = (prevProps) => {
     const {
       chat: {
-        data: {
-          entityId,
-          entityFirstName,
-          entityLastName,
-          entityVideo,
-          entityUuid
-        }
+        data: { entityId, entityFirstName, entityLastName, entityVideo, entityUuid }
       }
     } = this.props;
     const {
       chat: {
-        data: {
-          entityUuid: prevEntityUuid
-        }
+        data: { entityUuid: prevEntityUuid }
       }
     } = prevProps;
 
-    if (entityId !== '' && entityUuid !== prevEntityUuid) {
+    if (entityId !== 0 && entityUuid !== prevEntityUuid) {
       this.handleSubmit({
         chatType: 'single',
         name: '',
         type: '',
-        selectedUsers: [{
-          userId: entityId,
-          firstName: entityFirstName,
-          lastName: entityLastName
-        }],
+        selectedUsers: [
+          {
+            userId: entityId,
+            firstName: entityFirstName,
+            lastName: entityLastName
+          }
+        ],
         startVideo: entityVideo
       });
     }
   };
-  handleLoadOptions = async ({
-    query,
-    from
-  }) => {
+
+  handleLoadOptions = async ({ query, from }) => {
     if (query.trim() === '' || query.trim().length < 3) {
       return {
         options: [],
@@ -84,10 +78,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
 
     const {
       user: {
-        data: {
-          userId,
-          schoolId
-        }
+        data: { userId, schoolId }
       }
     } = this.props;
     const users = await searchUsers({
@@ -95,7 +86,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       query,
       schoolId: from === 'school' ? Number(schoolId) : undefined
     });
-    const options = users.map(user => {
+    const options = users.map((user) => {
       const name = `${user.firstName} ${user.lastName}`;
       const initials = getInitials(name);
       return {
@@ -105,7 +96,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         grade: user.grade,
         avatar: user.profileImageUrl,
         initials,
-        userId: Number(user.userId),
+        userId: user.userId,
         firstName: user.firstName,
         lastName: user.lastName,
         relationship: user.relationship
@@ -116,12 +107,11 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       hasMore: false
     };
   };
-  handleUploadThumbnail = async file => {
+
+  handleUploadThumbnail = async (file) => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
     const result = await getPresignedURL({
@@ -129,10 +119,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       type: 4,
       mediaType: file.type
     });
-    const {
-      readUrl,
-      url
-    } = result;
+    const { readUrl, url } = result;
     await axios.put(url, file, {
       headers: {
         'Content-Type': file.type
@@ -142,34 +129,17 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       thumbnail: readUrl
     });
   };
-  handleSubmit = async ({
-    chatType,
-    name,
-    type,
-    selectedUsers,
-    startVideo = false
-  }) => {
-    const {
-      client,
-      // channels,
-      // user: {
-      //   data: { userId, firstName, lastName }
-      // },
-      onChannelCreated
-    } = this.props;
-    const {
-      thumbnail
-    } = this.state;
+
+  handleSubmit = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
+    const { client, onChannelCreated } = this.props;
+    const { thumbnail } = this.state;
     this.setState({
       isLoading: true
     });
 
     try {
-      const users = selectedUsers.map(item => Number(item.userId));
-      const {
-        chatId,
-        isNewChat
-      } = await createChannel({
+      const users = selectedUsers.map((item) => Number(item.userId));
+      const { chatId, isNewChat } = await createChannel({
         users,
         groupName: chatType === 'group' ? name : '',
         type: chatType === 'group' ? type : '',
@@ -194,73 +164,16 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         this.setState({
           isLoading: false
         });
-      } // const userList = selectedUsers.map(item => ({
-      //   userId: Number(item.userId),
-      //   firstName: item.firstName,
-      //   lastName: item.lastName
-      // }));
-      // userList.push({ userId: Number(userId), firstName, lastName });
-      // let exist = false;
-      // let channelFound = {};
-      // // eslint-disable-next-line no-restricted-syntax
-      // for (const item of channels) {
-      //   const { state = {} } = item;
-      //   const { attributes = {} } = state;
-      //   const { users = [] } = attributes;
-      //   if (users.length === userList.length) {
-      //     const count = users.reduce((prev, current) => {
-      //       if (some(userList, { userId: Number(current.userId) }))
-      //         return prev + 1;
-      //       return prev;
-      //     }, 0);
-      //     if (count === userList.length) {
-      //       channelFound = item;
-      //       exist = true;
-      //       break;
-      //     }
-      //   }
-      // }
-      // if (exist) {
-      //   onChannelCreated({ channel: channelFound, isNew: false, startVideo });
-      //   this.handleClose();
-      // } else {
-      //   const blockedBy = await getBlockedUsers({ userId });
-      //   const result = userList.filter(
-      //     user => !some(blockedBy, { user_id: user.userId })
-      //   );
-      //   if (result.length !== userList.length) {
-      //     this.handleClose();
-      //     return;
-      //   }
-      //   const channel = await client.createChannel({
-      //     friendlyName: name,
-      //     isPrivate: true,
-      //     attributes: {
-      //       friendlyName: chatType === 'group' ? name : '',
-      //       groupType: chatType === 'group' ? type : '',
-      //       thumbnail: chatType === 'group' ? thumbnail : '',
-      //       users: userList
-      //     }
-      //   });
-      //   // eslint-disable-next-line no-restricted-syntax
-      //   for (const user of userList) {
-      //     // eslint-disable-next-line no-await-in-loop
-      //     await channel.add(String(user.userId));
-      //   }
-      //   onChannelCreated({ channel, isNew: true, startVideo });
-      //   this.handleClose();
-      // }
-
+      }
     } finally {
       this.setState({
         isLoading: false
       });
     }
   };
+
   handleClose = () => {
-    const {
-      onClose
-    } = this.props;
+    const { onClose } = this.props;
     this.setState({
       thumbnail: null,
       isLoading: false
@@ -269,28 +182,29 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      isVideo,
-      type,
-      title
-    } = this.props;
-    const {
-      thumbnail,
-      isLoading
-    } = this.state;
-    return <ErrorBoundary>
-        <CreateChatChannelDialog chatType={type} thumbnail={thumbnail} isLoading={isLoading} isVideo={isVideo} onClose={this.handleClose} onSubmit={this.handleSubmit} onLoadOptions={this.handleLoadOptions} onSendInput={this.handleUploadThumbnail} title={title} />
-      </ErrorBoundary>;
+    const { isVideo, type, title } = this.props;
+    const { thumbnail, isLoading } = this.state;
+    return (
+      <ErrorBoundary>
+        <CreateChatChannelDialog
+          chatType={type}
+          thumbnail={thumbnail}
+          isLoading={isLoading}
+          isVideo={isVideo}
+          onClose={this.handleClose}
+          onSubmit={this.handleSubmit}
+          onLoadOptions={this.handleLoadOptions}
+          onSendInput={this.handleUploadThumbnail}
+          title={title}
+        />
+      </ErrorBoundary>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user,
-  chat
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, chat }: StoreState): {} => ({
   user,
   chat
 });
 
-export default connect(mapStateToProps, null)(withMobileDialog()(CreateChatChannel));
+export default connect<{}, {}, Props>(mapStateToProps, null)(withMobileDialog()(CreateChatChannel));

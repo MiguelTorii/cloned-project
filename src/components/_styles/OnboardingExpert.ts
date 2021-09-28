@@ -1,5 +1,6 @@
-import backgroundImg from 'assets/img/onboarding-background.png';
+import backgroundImg from '../../assets/img/onboarding-background.png';
 import { dialogStyle } from './Dialog';
+
 const centered = {
   alignItems: 'center',
   display: 'flex',
@@ -38,9 +39,7 @@ export const styles = (theme) => ({
   },
   step: {
     display: 'flex',
-    height: '100%',
-    // eslint-disable-next-line
-    height: '-webkit-fill-available'
+    height: '100%'
   },
   stepper: {
     alignItems: 'center',

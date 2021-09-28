@@ -1,10 +1,10 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import ViewQuestion from "../../containers/ViewQuestion/ViewQuestion";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import ViewQuestion from '../../containers/ViewQuestion/ViewQuestion';
 
 const styles = () => ({
   item: {
@@ -16,21 +16,17 @@ type Props = {
   classes: Record<string, any>;
   match: {
     params: {
-      questionId: string;
+      questionId: number;
     };
   };
 };
 
-const QuestionPage = ({
-  classes,
-  match
-}: Props) => {
+const QuestionPage = ({ classes, match }: Props) => {
   const {
-    params: {
-      questionId
-    }
+    params: { questionId }
   } = match;
-  return <main>
+  return (
+    <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={0}>
@@ -39,7 +35,8 @@ const QuestionPage = ({
           </Grid>
         </Grid>
       </Layout>
-    </main>;
+    </main>
+  );
 };
 
-export default withRoot(withStyles(styles)(QuestionPage));
+export default withRoot(withStyles(styles as any)(QuestionPage));

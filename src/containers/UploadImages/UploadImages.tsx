@@ -1,21 +1,21 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import axios from "axios";
-import fetch from "isomorphic-fetch";
-import update from "immutability-helper";
-import uuidv4 from "uuid/v4";
-import arrayMove from "array-move";
-import { withStyles } from "@material-ui/core/styles";
-import imageCompression from "browser-image-compression";
-import * as notificationsActions from "../../actions/notifications";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import UploadImagesForm from "../../components/UploadImagesForm/UploadImagesForm";
-import { getPresignedURLs } from "../../api/media";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import fetch from 'isomorphic-fetch';
+import update from 'immutability-helper';
+import uuidv4 from 'uuid/v4';
+import arrayMove from 'array-move';
+import { withStyles } from '@material-ui/core/styles';
+import imageCompression from 'browser-image-compression';
+import * as notificationsActions from '../../actions/notifications';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import UploadImagesForm from '../../components/UploadImagesForm/UploadImagesForm';
+import { getPresignedURLs } from '../../api/media';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing(2)
   },
@@ -31,21 +31,24 @@ type Image = {
   file: Record<string, any>;
   type: string;
 };
+
 type ImageUrl = {
   fullNoteUrl: string;
   note: string;
   noteUrl: string;
 };
+
 type Props = {
-  classes: Record<string, any>;
-  enqueueSnackbar: (...args: Array<any>) => any;
-  // eslint-disable-next-line
-  notes: Array<ImageUrl>;
-  imageChange: (...args: Array<any>) => any;
-  user: UserState;
+  classes?: Record<string, any>;
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  notes?: Array<ImageUrl>;
+  imageChange?: (...args: Array<any>) => any;
+  user?: UserState;
+  handleUpdateImages?: any;
+  images?: any;
 };
+
 type State = {
-  images: Array<Image>;
   firstLoad: boolean;
   loading: boolean;
   isDropzoneDisabled: boolean;
@@ -53,92 +56,79 @@ type State = {
 
 class UploadImages extends React.PureComponent<Props, State> {
   state = {
-    // images: [],
     firstLoad: true,
     loading: false,
     isDropzoneDisabled: false
   };
-  // componentDidMount() {
-  //   if (localStorage.getItem('note')) {
-  //     const note = JSON.parse(localStorage.getItem('note'))
-  //     if ('images' in note) {
-  //       this.setState({ images: note.images })
-  //     }
-  //   }
-  // }
-  componentWillReceiveProps = async nextProps => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
-    const {
-      firstLoad
-    } = this.state;
+
+  componentWillReceiveProps = async (nextProps) => {
+    const { handleUpdateImages, images } = this.props;
+    const { firstLoad } = this.state;
 
     if (!firstLoad) {
       return;
     }
 
-    const {
-      notes
-    } = nextProps;
-    notes.forEach(n => {
+    const { notes } = nextProps;
+    notes.forEach((n) => {
       const url = n.fullNoteUrl;
-      fetch(url).then(res => res.blob()).then(blob => {
-        const newImage = window.URL.createObjectURL(blob);
-        const {
-          note
-        } = n;
-        const {
-          type
-        } = blob;
-        const extension = this.getFileExtension(note);
-        this.setState({
-          firstLoad: false
+      fetch(url)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const newImage = window.URL.createObjectURL(blob);
+          const { note } = n;
+          const { type } = blob;
+          const extension = this.getFileExtension(note);
+          this.setState({
+            firstLoad: false
+          });
+          handleUpdateImages([
+            images,
+            {
+              image: newImage,
+              file: blob,
+              id: `${uuidv4()}.${extension}`,
+              loaded: true,
+              loading: false,
+              error: false,
+              type
+            }
+          ]);
         });
-        handleUpdateImages([images, {
-          image: newImage,
-          file: blob,
-          id: `${uuidv4()}.${extension}`,
-          loaded: true,
-          loading: false,
-          error: false,
-          type
-        }]);
-      });
     });
   };
+
   handleImageDelete = (id: string) => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
-    const index = images.findIndex(item => item.id === id);
+    const { handleUpdateImages, images } = this.props;
+    const index = images.findIndex((item) => item.id === id);
 
     if (index > -1) {
-      handleUpdateImages(update(images, {
-        $splice: [[index, 1]]
-      }));
+      handleUpdateImages(
+        update(images, {
+          $splice: [[index, 1]]
+        })
+      );
     }
   };
+
   handleImageSave = (id, newImage) => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
-    const index = images.findIndex(item => item.id === id);
+    const { handleUpdateImages, images } = this.props;
+    const index = images.findIndex((item) => item.id === id);
 
     if (index > -1) {
-      handleUpdateImages(update(images, {
-        [index]: {
-          image: {
-            $set: newImage
+      handleUpdateImages(
+        update(images, {
+          [index]: {
+            image: {
+              $set: newImage
+            }
           }
-        }
-      }));
+        })
+      );
     }
   };
-  compressImage = async file => {
+
+  compressImage = async (file) => {
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
@@ -146,59 +136,45 @@ class UploadImages extends React.PureComponent<Props, State> {
     };
     return imageCompression(file, options);
   };
-  handleDrop = acceptedFiles => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
+
+  handleDrop = (acceptedFiles) => {
+    const { handleUpdateImages, images } = this.props;
     const updatedImages = [...images];
-    acceptedFiles.forEach(async file => {
+    acceptedFiles.forEach(async (file) => {
       this.setState({
         loading: true
       });
-      const compressedFile = file.type === 'application/pdf' ? file : await this.compressImage(file);
+      const compressedFile =
+        file.type === 'application/pdf' ? file : await this.compressImage(file);
       const url = URL.createObjectURL(compressedFile);
-      const {
-        path,
-        type
-      } = file;
+      const { path, type } = file;
       const extension = this.getFileExtension(path);
-      fetch(url).then(res => res.blob()).then(blob => {
-        const newImage = window.URL.createObjectURL(blob);
-        updatedImages.push({
-          image: newImage,
-          file,
-          id: `${uuidv4()}.${extension}`,
-          loaded: false,
-          loading: false,
-          error: false,
-          type
+      fetch(url)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const newImage = window.URL.createObjectURL(blob);
+          updatedImages.push({
+            image: newImage,
+            file,
+            id: `${uuidv4()}.${extension}`,
+            loaded: false,
+            loading: false,
+            error: false,
+            type
+          });
+          handleUpdateImages([...updatedImages]);
+          this.setState({
+            loading: false
+          });
         });
-        handleUpdateImages([...updatedImages]);
-        this.setState({
-          loading: false
-        }); // const { images } = this.state
-        // if (localStorage.getItem('note')) {
-        //   const currentNote = JSON.parse(localStorage.getItem('note'))
-        //   currentNote.images = images
-        //   localStorage.setItem('note', JSON.stringify(currentNote))
-        // } else {
-        //   const note = {
-        //     images
-        //   }
-        //   localStorage.setItem('note', JSON.stringify(note));
-        // }
-      });
     });
   };
+
   handleDropRejected = () => {
     this.setState({
       loading: false
     });
-    const {
-      enqueueSnackbar,
-      classes
-    } = this.props;
+    const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar({
       notification: {
         message: `Only PDF, PNG, JPG and JPEG of maximum 40 MB size files are supported at this time`,
@@ -218,17 +194,14 @@ class UploadImages extends React.PureComponent<Props, State> {
       }
     });
   };
+
   handleUploadImages = async () => {
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
-    const {
-      images
-    } = this.props;
+    const { images } = this.props;
 
     if (images.length === 0) {
       throw new Error('no images');
@@ -239,41 +212,44 @@ class UploadImages extends React.PureComponent<Props, State> {
     }
 
     this.setImagesUploading();
-    const fileNames = images.map(image => image.id);
+    const fileNames = images.map((image) => image.id);
     const result = await getPresignedURLs({
       userId,
       type: 3,
       fileNames
     });
-    return axios.all(images.map(async item => {
-      const compress = item.file.type === 'application/pdf' ? item.file : await this.compressImage(item.file);
-      this.uploadImageRequest(result[item.id].url, compress, item.type);
-    })).then(axios.spread(() => {
-      this.setImagesUploaded();
-      return images;
-    })).catch(() => {
-      throw new Error('error uploading');
-    });
+    return axios
+      .all(
+        images.map(async (item) => {
+          const compress =
+            item.file.type === 'application/pdf' ? item.file : await this.compressImage(item.file);
+          this.uploadImageRequest(result[item.id].url, compress, item.type);
+        })
+      )
+      .then(
+        axios.spread(() => {
+          this.setImagesUploaded();
+          return images;
+        }) as any
+      )
+      .catch(() => {
+        throw new Error('error uploading');
+      });
   };
-  handleImageRetry = id => {
+
+  handleImageRetry = (id) => {
     console.log('retry: ', id);
   };
-  handleSortEnd = ({
-    oldIndex,
-    newIndex
-  }) => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
+
+  handleSortEnd = ({ oldIndex, newIndex }) => {
+    const { handleUpdateImages, images } = this.props;
     handleUpdateImages(arrayMove(images, oldIndex, newIndex));
   };
+
   setImagesUploading = () => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
-    const updatedImages = images.map(item => ({ ...item,
+    const { handleUpdateImages, images } = this.props;
+    const updatedImages = images.map((item) => ({
+      ...item,
       loading: true,
       loaded: false,
       error: false
@@ -283,12 +259,11 @@ class UploadImages extends React.PureComponent<Props, State> {
     });
     handleUpdateImages(updatedImages);
   };
+
   setImagesUploaded = () => {
-    const {
-      handleUpdateImages,
-      images
-    } = this.props;
-    const updatedImages = images.map(item => ({ ...item,
+    const { handleUpdateImages, images } = this.props;
+    const updatedImages = images.map((item) => ({
+      ...item,
       loading: false,
       loaded: true,
       error: false
@@ -300,41 +275,53 @@ class UploadImages extends React.PureComponent<Props, State> {
       });
     }, 4000);
   };
-  getFileExtension = filename => filename.split('.').pop();
-  uploadImageRequest = (url, image, type) => axios.put(url, image, {
-    headers: {
-      'Content-Type': type
-    }
-  });
+
+  getFileExtension = (filename) => filename.split('.').pop();
+
+  uploadImageRequest = (url, image, type) =>
+    axios.put(url, image, {
+      headers: {
+        'Content-Type': type
+      }
+    });
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      loading,
-      isDropzoneDisabled
-    } = this.state;
-    const {
-      images
-    } = this.props;
-    return <ErrorBoundary>
+    const { classes } = this.props;
+    const { loading, isDropzoneDisabled } = this.state;
+    const { images } = this.props;
+    return (
+      <ErrorBoundary>
         <div className={classes.root}>
-          <UploadImagesForm images={images} isDropzoneDisabled={isDropzoneDisabled} onImageDelete={this.handleImageDelete} onImageSave={this.handleImageSave} onImageRetry={this.handleImageRetry} onDrop={this.handleDrop} loading={loading} onDropRejected={this.handleDropRejected} onSortEnd={this.handleSortEnd} />
+          <UploadImagesForm
+            images={images}
+            isDropzoneDisabled={isDropzoneDisabled}
+            onImageDelete={this.handleImageDelete}
+            onImageSave={this.handleImageSave}
+            onImageRetry={this.handleImageRetry}
+            onDrop={this.handleDrop}
+            loading={loading}
+            onDropRejected={this.handleDropRejected}
+            onSortEnd={this.handleSortEnd}
+          />
         </div>
-      </ErrorBoundary>;
+      </ErrorBoundary>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  enqueueSnackbar: notificationsActions.enqueueSnackbar
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UploadImages));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(UploadImages));

@@ -1,4 +1,5 @@
 import { gutterStyle } from './Gutter';
+
 export default (theme) => ({
   root: {
     ...gutterStyle(theme),

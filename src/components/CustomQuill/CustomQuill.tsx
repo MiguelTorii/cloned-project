@@ -1,38 +1,53 @@
-import React from "react";
-import ReactQuill, { Quill } from "react-quill";
-import quillEmoji from "quill-emoji";
-import "react-quill/dist/quill.snow.css";
-import "quill-emoji/dist/quill-emoji.css";
-import withStyles from "@material-ui/core/styles/withStyles";
-import cx from "classnames";
-import "./quill.custom.css";
-import MathQuill from "./Math";
-import { styles } from "../_styles/CustomQuill";
-const {
-  EmojiBlot,
-  ShortNameEmoji,
-  ToolbarEmoji,
-  TextAreaEmoji
-} = quillEmoji;
-Quill.register({
-  'formats/emoji': EmojiBlot,
-  'modules/emoji-shortname': ShortNameEmoji,
-  'modules/emoji-toolbar': ToolbarEmoji,
-  'modules/emoji-textarea': TextAreaEmoji
-}, true);
+import React from 'react';
+import ReactQuill, { Quill } from 'react-quill';
+import quillEmoji from 'quill-emoji';
+import 'react-quill/dist/quill.snow.css';
+import 'quill-emoji/dist/quill-emoji.css';
+import withStyles from '@material-ui/core/styles/withStyles';
+import cx from 'classnames';
+import './quill.custom.css';
+import MathQuill from './Math';
+import { styles } from '../_styles/CustomQuill';
+
+const { EmojiBlot, ShortNameEmoji, ToolbarEmoji, TextAreaEmoji } = quillEmoji;
+Quill.register(
+  {
+    'formats/emoji': EmojiBlot,
+    'modules/emoji-shortname': ShortNameEmoji,
+    'modules/emoji-toolbar': ToolbarEmoji,
+    'modules/emoji-textarea': TextAreaEmoji
+  },
+  true
+);
 const modules = {
   formula: true,
-  toolbar: [[{
-    header: [1, 2, false]
-  }], ['bold', 'italic', 'underline', 'strike', 'blockquote'], [{
-    list: 'ordered'
-  }, {
-    list: 'bullet'
-  }, {
-    indent: '-1'
-  }, {
-    indent: '+1'
-  }], ['formula'], ['image'], ['link'], ['clean'], ['emoji']],
+  toolbar: [
+    [
+      {
+        header: [1, 2, false]
+      }
+    ],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      {
+        list: 'ordered'
+      },
+      {
+        list: 'bullet'
+      },
+      {
+        indent: '-1'
+      },
+      {
+        indent: '+1'
+      }
+    ],
+    ['formula'],
+    ['image'],
+    ['link'],
+    ['clean'],
+    ['emoji']
+  ],
   keyboard: {
     bindings: {
       tabToPost: {
@@ -51,14 +66,16 @@ const modules = {
     }
   },
   'emoji-toolbar': true,
-  // 'emoji-textarea': true,
   'emoji-shortname': true
 };
+
 type Props = {
-  placeholder: string;
-  value: string;
-  readOnly: boolean;
-  onChange: (...args: Array<any>) => any;
+  placeholder?: string;
+  value?: string;
+  readOnly?: boolean;
+  onChange?: (...args: Array<any>) => any;
+  classes?: any;
+  ref?: any;
 };
 
 class CustomQuill extends React.PureComponent<Props> {
@@ -68,24 +85,35 @@ class CustomQuill extends React.PureComponent<Props> {
     const enableMathQuillFormulaAuthoring = MathQuill();
     enableMathQuillFormulaAuthoring(this.editor.editor, {
       displayHistory: true,
-      operators: [['\\sqrt[n]{x}', '\\nthroot'], ['\\frac{x}{y}', '\\frac'], ['{a}^{b}', '^'], // eslint-disable-next-line
-      ['\\int', 'int'], ['n \\choose k', '\\choose']]
+      operators: [
+        ['\\sqrt[n]{x}', '\\nthroot'],
+        ['\\frac{x}{y}', '\\frac'],
+        ['{a}^{b}', '^'], // eslint-disable-next-line
+        ['\\int', 'int'],
+        ['n \\choose k', '\\choose']
+      ]
     });
   }
 
   render() {
-    const {
-      classes,
-      placeholder,
-      value,
-      onChange,
-      readOnly
-    } = this.props;
-    return <ReactQuill disabled className={cx(readOnly && classes.readOnly)} modules={modules} readOnly={readOnly} placeholder={placeholder} value={value} onChange={onChange} ref={element => {
-      this.editor = element;
-    }} />;
+    const { classes, placeholder, value, onChange, readOnly } = this.props;
+    return (
+      <ReactQuill
+        // eslint-disable-next-line
+        // @ts-ignore
+        disabled
+        className={cx(readOnly && classes.readOnly)}
+        modules={modules}
+        readOnly={readOnly}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        ref={(element) => {
+          this.editor = element;
+        }}
+      />
+    );
   }
-
 }
 
-export default withStyles(styles)(CustomQuill);
+export default withStyles(styles as any)(CustomQuill);

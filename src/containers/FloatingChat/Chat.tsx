@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import withWidth from "@material-ui/core/withWidth";
-import type { State as StoreState } from "../../types/state";
-import type { UserState } from "../../reducers/user";
-import FloatingChat from "./FloatingChat";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import withWidth from '@material-ui/core/withWidth';
+import type { State as StoreState } from '../../types/state';
+import type { UserState } from '../../reducers/user';
+import FloatingChat from './FloatingChat';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
 type Props = {
   width: string;
   user: UserState;
@@ -14,21 +15,16 @@ type Props = {
   };
 };
 
-const Chat = ({
-  user,
-  width,
-  location: {
-    pathname
-  }
-}: Props) => {
+const Chat = ({ user, width, location: { pathname } }: Props) => {
   const {
-    data: {
-      userId
-    }
+    data: { userId }
   } = user;
   useEffect(() => {
-    window.onunhandledrejection = e => {
-      if (e?.reason?.message && ["Can't connect to twilsock", 'Twilsock'].includes(e.reason.message)) {
+    window.onunhandledrejection = (e) => {
+      if (
+        e?.reason?.message &&
+        ["Can't connect to twilsock", 'Twilsock'].includes(e.reason.message)
+      ) {
         e.preventDefault();
       }
     };
@@ -45,10 +41,8 @@ const Chat = ({
   return <ErrorBoundary>{width !== 'xs' && <FloatingChat />}</ErrorBoundary>;
 };
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default withRouter(connect(mapStateToProps, null)(withWidth()(Chat)));
+export default withRouter(connect<{}, {}, Props>(mapStateToProps, null)(withWidth()(Chat)));

@@ -1,22 +1,22 @@
-import React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { withStyles } from "@material-ui/core/styles";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import type { StudyCircle as StudyCircleState } from "../../types/models";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import MyStudyCircle from "../../components/MyStudyCircle/MyStudyCircle";
-import { getStudyCircle } from "../../api/user";
-import { removeFromStudyCircle } from "../../api/posts";
-import * as chatActions from "../../actions/chat";
+import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { withStyles } from '@material-ui/core/styles';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import type { StudyCircle as StudyCircleState } from '../../types/models';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import MyStudyCircle from '../../components/MyStudyCircle/MyStudyCircle';
+import { getStudyCircle } from '../../api/user';
+import { removeFromStudyCircle } from '../../api/posts';
+import * as chatActions from '../../actions/chat';
 
 const styles = () => ({});
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
-  openChannelWithEntity: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  user?: UserState;
+  openChannelWithEntity?: (...args: Array<any>) => any;
 };
 type State = {
   isLoading: boolean;
@@ -28,14 +28,14 @@ class StudyCircle extends React.PureComponent<Props, State> {
     isLoading: true,
     circle: []
   };
+
   mounted: boolean;
+
   componentDidMount = async () => {
     this.mounted = true;
     const {
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
     const circle = await getStudyCircle({
@@ -46,13 +46,12 @@ class StudyCircle extends React.PureComponent<Props, State> {
       isLoading: false
     });
   };
-  handleRemove = async classmateId => {
+
+  handleRemove = async (classmateId) => {
     try {
       const {
         user: {
-          data: {
-            userId
-          }
+          data: { userId }
         }
       } = this.props;
       this.setState({
@@ -76,14 +75,9 @@ class StudyCircle extends React.PureComponent<Props, State> {
       });
     }
   };
-  handleStartChat = ({
-    userId,
-    firstName,
-    lastName
-  }) => {
-    const {
-      openChannelWithEntity
-    } = this.props;
+
+  handleStartChat = ({ userId, firstName, lastName }) => {
+    const { openChannelWithEntity } = this.props;
     this.setState({
       isLoading: true
     });
@@ -101,30 +95,36 @@ class StudyCircle extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      classes
-    } = this.props;
-    const {
-      circle,
-      isLoading
-    } = this.state;
-    return <div className={classes.root}>
+    const { classes } = this.props;
+    const { circle, isLoading } = this.state;
+    return (
+      <div className={classes.root}>
         <ErrorBoundary>
-          <MyStudyCircle isLoading={isLoading} circle={circle} onRemove={this.handleRemove} onStartChat={this.handleStartChat} />
+          <MyStudyCircle
+            isLoading={isLoading}
+            circle={circle}
+            onRemove={this.handleRemove}
+            onStartChat={this.handleStartChat}
+          />
         </ErrorBoundary>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  openChannelWithEntity: chatActions.openChannelWithEntity
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      openChannelWithEntity: chatActions.openChannelWithEntity
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(StudyCircle));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(StudyCircle));

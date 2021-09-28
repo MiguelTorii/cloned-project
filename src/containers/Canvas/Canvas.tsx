@@ -1,14 +1,12 @@
-import React from "react";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import { connect } from "react-redux";
-// import { Redirect } from 'react-router-dom';
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-// import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from "../../types/state";
-import { checkLMSUser } from "../../api/lms";
-import * as signInActions from "../../actions/sign-in";
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { State as StoreState } from '../../types/state';
+import { checkLMSUser } from '../../api/lms';
+import * as signInActions from '../../actions/sign-in';
 
 const styles = () => ({
   main: {
@@ -20,20 +18,15 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  // user: UserState,
+  classes?: Record<string, any>;
   nonce: string;
-  updateUser: (...args: Array<any>) => any;
-  pushTo: (...args: Array<any>) => any;
+  updateUser?: (...args: Array<any>) => any;
+  pushTo?: (...args: Array<any>) => any;
 };
 
 class Canvas extends React.Component<Props> {
   componentDidMount = async () => {
-    const {
-      nonce,
-      updateUser,
-      pushTo
-    } = this.props;
+    const { nonce, updateUser, pushTo } = this.props;
 
     try {
       const user = await checkLMSUser({
@@ -52,29 +45,30 @@ class Canvas extends React.Component<Props> {
   };
 
   render() {
-    const {
-      classes // user: {
-      // data: { userId }
-      // }
+    const { classes } = this.props;
 
-    } = this.props;
-    // if (userId !== '') return <Redirect to="/" />;
-    return <main className={classes.main}>
+    return (
+      <main className={classes.main}>
         <CircularProgress />
-      </main>;
+      </main>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  updateUser: signInActions.updateUser,
-  pushTo: push
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      updateUser: signInActions.updateUser,
+      pushTo: push
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Canvas));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(Canvas));

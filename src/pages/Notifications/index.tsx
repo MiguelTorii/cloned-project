@@ -1,9 +1,9 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import withRoot from "../../withRoot";
-import Layout from "../../containers/Layout/Layout";
-import Notifications from "../../containers/Notifications/Feed";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import withRoot from '../../withRoot';
+import Layout from '../../containers/Layout/Layout';
+import Notifications from '../../containers/Notifications/Feed';
 
 const styles = () => ({});
 
@@ -19,17 +19,16 @@ class NotificationsPage extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
-    const {
-      classes
-    } = this.props;
-    return <main className={classes.main}>
+    const { classes } = this.props;
+    return (
+      <main className={classes.main}>
         <CssBaseline />
         <Layout>
           <Notifications isPage />
         </Layout>
-      </main>;
+      </main>
+    );
   }
-
 }
 
-export default withRoot(withStyles(styles)(NotificationsPage));
+export default withRoot(withStyles(styles as any)(NotificationsPage));

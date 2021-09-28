@@ -1,33 +1,33 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 /* eslint-disable no-nested-ternary */
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import withWidth from "@material-ui/core/withWidth";
-import { processClasses } from "containers/ClassesSelector/utils";
-import { cypher } from "utils/crypto";
-import OutlinedTextValidator from "components/OutlinedTextValidator/OutlinedTextValidator";
-import SimpleErrorDialog from "components/SimpleErrorDialog/SimpleErrorDialog";
-import CreatePostForm from "components/CreatePostForm/CreatePostForm";
-import ToolbarTooltip from "components/FlashcardEditor/ToolbarTooltip";
-import RichTextEditor from "containers/RichTextEditor/RichTextEditor";
-import ErrorBoundary from "containers/ErrorBoundary/ErrorBoundary";
-import type { CampaignState } from "../../reducers/campaign";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import type { SelectType } from "../../types/models";
-import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from "../../api/posts";
-import * as notificationsActions from "../../actions/notifications";
-import { logEventLocally } from "../../api/analytics";
-import UploadImages from "../UploadImages/UploadImages";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import { processClasses } from '../ClassesSelector/utils';
+import { cypher } from '../../utils/crypto';
+import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
+import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
+import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
+import RichTextEditor from '../RichTextEditor/RichTextEditor';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import type { CampaignState } from '../../reducers/campaign';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import type { SelectType } from '../../types/models';
+import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from '../../api/posts';
+import * as notificationsActions from '../../actions/notifications';
+import { logEventLocally } from '../../api/analytics';
+import UploadImages from '../UploadImages/UploadImages';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -131,20 +131,24 @@ type ImageUrl = {
   note: string;
   noteUrl: string;
 };
+
 type Props = {
-  classes: Record<string, any>;
-  noteId: string;
-  user: UserState;
-  pushTo: (...args: Array<any>) => any;
-  campaign: CampaignState;
-  width: string;
-  enqueueSnackbar: (...args: Array<any>) => any;
-  handleUpdateImages: (...args: Array<any>) => any;
-  location: {
+  classes?: Record<string, any>;
+  noteId?: number;
+  user?: UserState;
+  pushTo?: (...args: Array<any>) => any;
+  campaign?: CampaignState;
+  width?: string;
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  handleUpdateImages?: (...args: Array<any>) => any;
+  location?: {
     search: string;
     pathname: string;
   };
+  setIsPosting: any;
+  images: any;
 };
+
 type State = {
   loading: boolean;
   title: string;
@@ -152,7 +156,6 @@ type State = {
   sectionId: number | null | undefined;
   summary: string;
   tags: Array<SelectType>;
-  tagsError: boolean;
   hasImages: boolean;
   errorDialog: boolean;
   notes: Array<ImageUrl>;
@@ -160,6 +163,10 @@ type State = {
   errorBody: string;
   changed: boolean | null | undefined;
   isEdit: boolean;
+  classList: any;
+  questionToolbar: any;
+  editor: any;
+  body: any;
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -174,10 +181,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
       sectionId: curretnSelectedSectoinId,
       classList
     } = props;
+
     this.state = {
       loading: false,
       title: '',
-      // tagsError: false,
       classId: currentSelectedClassId || 0,
       sectionId: curretnSelectedSectoinId || 0,
       summary: '',
@@ -191,20 +198,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
       questionToolbar: null,
       editor: null,
       body: null,
-      notes: [] // count: 50,
-
+      notes: [],
+      hasImages: false
     };
   }
 
-  handlePush = path => {
-    const {
-      pushTo,
-      campaign
-    } = this.props;
-    const {
-      sectionId,
-      classId
-    } = this.state;
+  handlePush = (path) => {
+    const { pushTo, campaign } = this.props;
+    const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
       const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
@@ -213,14 +214,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
       pushTo(path);
     }
   };
+
   componentDidMount = async () => {
     this.loadData();
-    const {
-      editor
-    } = this.state;
+    const { editor } = this.state;
 
-    // const { classId, sectionId } = decypherClass()
-    // this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
     if (localStorage.getItem('note')) {
       const note = JSON.parse(localStorage.getItem('note'));
 
@@ -249,11 +247,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
       });
     }
   };
-  handleRTEChange = value => {
+
+  handleRTEChange = (value) => {
     this.setState({
       body: value,
-      changed: true // count: Math.max(50 - value.length, 0)
-
+      changed: true
     });
 
     if (localStorage.getItem('note')) {
@@ -269,16 +267,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
       localStorage.setItem('note', JSON.stringify(note));
     }
   };
+
   loadData = async () => {
     const {
       user: {
-        data: {
-          userId,
-          segment
-        },
-        userClasses: {
-          classList: classes
-        }
+        data: { userId, segment },
+        userClasses: { classList: classes }
       },
       noteId
     } = this.props;
@@ -293,21 +287,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
       });
       const photoNote = await getNotes({
         userId,
-        noteId: parseInt(noteId, 10)
+        noteId: noteId
       });
       const userClasses = processClasses({
         classes,
         segment
       });
-      const {
-        sectionId
-      } = JSON.parse(userClasses[0].value);
-      const {
-        title,
-        classId,
-        body,
-        tags
-      } = photoNote;
+      const { sectionId } = JSON.parse(userClasses[0].value);
+      const { title, classId, body, tags } = photoNote;
       this.setState({
         title,
         classId,
@@ -319,13 +306,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
       this.handlePush('/feed');
     }
   };
+
   createNotes = async () => {
-    const {
-      tags
-    } = this.state;
-    const {
-      setIsPosting
-    } = this.props;
+    const { tags } = this.state;
+    const { setIsPosting } = this.props;
 
     if (tags.length < 0) {
       return;
@@ -339,18 +323,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
       try {
         const {
           user: {
-            data: {
-              userId = ''
-            }
+            data: { userId = '' }
           }
         } = this.props;
-        const {
-          classList,
-          title,
-          classId,
-          sectionId,
-          body
-        } = this.state;
+        const { classList, title, classId, sectionId, body } = this.state;
 
         if (this.canBatchPost() && !classList.length) {
           this.setState({
@@ -382,44 +358,44 @@ class CreateNotes extends React.PureComponent<Props, State> {
           return;
         }
 
-        const sectionIds = classList.map(c => c.sectionId);
+        const sectionIds = classList.map((c) => c.sectionId);
         const images = await this.uploadImages.handleUploadImages();
-        const fileNames = images.map(item => item.id);
-        const tagValues = tags.map(item => Number(item.value));
+        const fileNames = images.map((item) => item.id);
+        const tagValues = tags.map((item) => Number(item.value));
         setIsPosting(true);
         const {
           points,
-          user: {
-            firstName
-          },
+          user: { firstName },
           classes: resClasses,
           photoNoteId
-        } = this.canBatchPost() ? await createBatchPhotoNote({
-          userId,
-          title,
-          sectionIds,
-          fileNames,
-          comment: body,
-          tags: tagValues
-        }) : await createPhotoNote({
-          userId,
-          title,
-          classId,
-          sectionId,
-          fileNames,
-          comment: body,
-          tags: tagValues
-        });
+        } = this.canBatchPost()
+          ? await createBatchPhotoNote({
+              userId,
+              title,
+              sectionIds,
+              fileNames,
+              comment: body,
+              tags: tagValues
+            })
+          : await createPhotoNote({
+              userId,
+              title,
+              classId,
+              sectionId,
+              fileNames,
+              comment: body,
+              tags: tagValues
+            });
         logEventLocally({
           category: 'PhotoNote',
-          objectId: photoNoteId,
+          objectId: String(photoNoteId),
           type: 'Created'
         });
         let hasError = false;
 
         if (this.canBatchPost() && resClasses) {
-          resClasses.forEach(r => {
-            if (r.status !== 'Success') {
+          resClasses.forEach((r) => {
+            if ((r as any).status !== 'Success') {
               hasError = true;
             }
           });
@@ -438,13 +414,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
         setTimeout(() => {
           if (points > 0 || this.canBatchPost()) {
-            const {
-              enqueueSnackbar,
-              classes
-            } = this.props;
+            const { enqueueSnackbar, classes } = this.props;
             enqueueSnackbar({
               notification: {
-                message: !this.canBatchPost() ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!` : 'All posts were created successfully',
+                message: !this.canBatchPost()
+                  ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
+                  : 'All posts were created successfully',
                 nextPath: '/feed',
                 options: {
                   variant: 'success',
@@ -466,7 +441,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           localStorage.removeItem('note');
           this.handlePush('/feed');
         }, 3000);
-      } catch (err) {
+      } catch (err: any) {
         setIsPosting(false);
 
         if (err.message === 'no images') {
@@ -487,6 +462,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       }
     }
   };
+
   updateNotes = async () => {
     this.setState({
       loading: true
@@ -496,20 +472,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
       try {
         const {
           user: {
-            data: {
-              userId = ''
-            }
+            data: { userId = '' }
           },
           noteId
         } = this.props;
-        const {
-          title,
-          classId,
-          sectionId,
-          summary
-        } = this.state;
+        const { title, classId, sectionId, summary } = this.state;
         const images = await this.uploadImages.handleUploadImages();
-        const fileNames = images.map(item => item.id);
+        const fileNames = images.map((item) => item.id);
         await updatePhotoNote({
           noteId,
           userId,
@@ -523,10 +492,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           this.setState({
             loading: false
           });
-          const {
-            enqueueSnackbar,
-            classes
-          } = this.props;
+          const { enqueueSnackbar, classes } = this.props;
           enqueueSnackbar({
             notification: {
               message: `Successfully updated`,
@@ -549,7 +515,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           localStorage.removeItem('note');
           this.handlePush(`/notes/${noteId}`);
         }, 3000);
-      } catch (err) {
+      } catch (err: any) {
         if (err.message === 'no images') {
           this.setState({
             loading: false,
@@ -568,11 +534,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
       }
     }
   };
-  handleSubmit = event => {
+
+  handleSubmit = (event) => {
     event.preventDefault();
-    const {
-      noteId
-    } = this.props;
+    const { noteId } = this.props;
 
     if (noteId) {
       this.updateNotes();
@@ -580,11 +545,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
       this.createNotes();
     }
   };
-  handleTextChange = name => event => {
+
+  handleTextChange = (name) => (event) => {
     this.setState({
       [name]: event.target.value,
       changed: true
-    });
+    } as any);
 
     if (localStorage.getItem('note')) {
       const currentNote = JSON.parse(localStorage.getItem('note'));
@@ -599,7 +565,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       localStorage.setItem('note', JSON.stringify(note));
     }
   };
-  handleClasses = classList => {
+
+  handleClasses = (classList) => {
     this.setState({
       classList
     });
@@ -616,17 +583,10 @@ class CreateNotes extends React.PureComponent<Props, State> {
       });
     }
   };
-  handleClassChange = ({
-    classId,
-    sectionId
-  }: {
-    classId: number;
-    sectionId: number;
-  }) => {
-    const {
-      user
-    } = this.props;
-    const selected = user.userClasses.classList.find(c => c.classId === classId);
+
+  handleClassChange = ({ classId, sectionId }: { classId: number; sectionId: number }) => {
+    const { user } = this.props;
+    const selected = user.userClasses.classList.find((c) => c.classId === classId);
 
     if (selected) {
       this.setState({
@@ -639,6 +599,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       sectionId
     });
   };
+
   handleErrorDialogClose = () => {
     this.setState({
       errorDialog: false,
@@ -646,14 +607,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody: ''
     });
   };
-  getLeftCharts = field => 50 - field.length >= 0 ? 50 - field.length : 0;
+
+  getLeftCharts = (field) => (50 - field.length >= 0 ? 50 - field.length : 0);
+
   errorMessage = () => {
-    const {
-      classes
-    } = this.props;
-    const {
-      summary
-    } = this.state;
+    const { classes } = this.props;
+    const { summary } = this.state;
 
     if (Number(this.getLeftCharts(summary)) <= 0) {
       return null;
@@ -663,32 +622,29 @@ class CreateNotes extends React.PureComponent<Props, State> {
       return <div />;
     }
 
-    return <Typography variant="subtitle1" align="left" className={classes.errorMessage}>
+    return (
+      <Typography variant="subtitle1" align="left" className={classes.errorMessage}>
         You must type 50 characters or more in the summary to post these notes.
-      </Typography>;
+      </Typography>
+    );
   };
+
   canBatchPost = () => {
     const {
       user: {
         expertMode,
-        data: {
-          permission
-        }
+        data: { permission }
       }
     } = this.props;
     return expertMode && permission.includes('one_touch_send_posts');
   };
-  setEditor = editor => {
+
+  setEditor = (editor) => {
     this.setState(editor);
   };
 
   render() {
-    const {
-      classes,
-      width,
-      images,
-      handleUpdateImages
-    } = this.props;
+    const { classes, width, images, handleUpdateImages } = this.props;
     const {
       loading,
       title,
@@ -699,55 +655,86 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody,
       questionToolbar,
       body,
-      notes // count,
-
+      notes
     } = this.state;
     const notSm = !['xs', 'sm'].includes(width);
-    return <div className={classes.root}>
+    return (
+      <div className={classes.root}>
         <ErrorBoundary>
-          <CreatePostForm errorMessage={this.errorMessage()} loading={loading} changed={changed} buttonLabel={isEdit ? 'Save' : 'Post! 🚀'} handleSubmit={this.handleSubmit}>
+          <CreatePostForm
+            errorMessage={this.errorMessage()}
+            loading={loading}
+            changed={changed}
+            buttonLabel={isEdit ? 'Save' : 'Post! 🚀'}
+            handleSubmit={this.handleSubmit}
+          >
             <Grid container alignItems="center">
               <Grid item xs={12} md={12}>
-                <OutlinedTextValidator labelClass={classes.labelClass} inputClass={classes.textValidator} name="title" placeholder="e.g., Fundamental of Chemistry Notes - Unit #1 Matter and Measurements" onChange={this.handleTextChange} label="Title of Notes*" variant={notSm ? null : 'standard'} value={title} validators={['required']} errorMessages={['Title is required']} />
+                <OutlinedTextValidator
+                  labelClass={classes.labelClass}
+                  inputClass={classes.textValidator}
+                  name="title"
+                  placeholder="e.g., Fundamental of Chemistry Notes - Unit #1 Matter and Measurements"
+                  onChange={this.handleTextChange}
+                  label="Title of Notes*"
+                  variant={notSm ? null : 'standard'}
+                  value={title}
+                  validators={['required']}
+                  errorMessages={['Title is required']}
+                />
               </Grid>
               <Grid item xs={12} md={12}>
-                <UploadImages notes={notes} imageChange={this.imageChange} images={images} handleUpdateImages={handleUpdateImages} innerRef={node => {
-                this.uploadImages = node;
-              }} />
+                {/* TODO:  I'm not sure where `imageChange` came from, but it appears to not be a part of this component. Using any type for now. */}
+                <UploadImages
+                  notes={notes}
+                  imageChange={(this as any).imageChange}
+                  images={images}
+                  handleUpdateImages={handleUpdateImages}
+                  innerRef={(node) => {
+                    this.uploadImages = node;
+                  }}
+                />
               </Grid>
               <Grid item xs={12} md={12} className={classes.quillGrid}>
                 <ToolbarTooltip toolbar={questionToolbar} toolbarClass={classes.toolbarClass} />
-                <RichTextEditor setEditor={this.setEditor} placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too." value={body} onChange={this.handleRTEChange} />
-                {
-                /* <div className={classes.counter}>
-                 {count === 50 && 'Type 50 characters to earn points!'}
-                 {count === 0 && '🎉 Yay! Points!'}
-                 {count > 0 && count < 50 && `${count} characters left...`}
-                </div> */
-              }
+                <RichTextEditor
+                  setEditor={this.setEditor}
+                  placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too."
+                  value={body}
+                  onChange={this.handleRTEChange}
+                />
               </Grid>
             </Grid>
           </CreatePostForm>
         </ErrorBoundary>
         <ErrorBoundary>
-          <SimpleErrorDialog open={errorDialog} title={errorTitle} body={errorBody} handleClose={this.handleErrorDialogClose} />
+          <SimpleErrorDialog
+            open={errorDialog}
+            title={errorTitle}
+            body={errorBody}
+            handleClose={this.handleErrorDialogClose}
+          />
         </ErrorBoundary>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user,
-  campaign
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
   user,
   campaign
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  pushTo: push,
-  enqueueSnackbar: notificationsActions.enqueueSnackbar
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      pushTo: push,
+      enqueueSnackbar: notificationsActions.enqueueSnackbar
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()(withRouter(CreateNotes))));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(withWidth()(withRouter(CreateNotes))));

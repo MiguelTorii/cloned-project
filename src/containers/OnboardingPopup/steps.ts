@@ -4,6 +4,7 @@ import Step3 from '../../assets/img/Onboarding/step3.gif';
 import Step4 from '../../assets/img/Onboarding/step4.gif';
 import Step5 from '../../assets/img/Onboarding/step5.gif';
 import Step6 from '../../assets/img/Onboarding/step6.gif';
+
 export const ONBOARDING_STEPS = [
   {
     id: 'step-1',

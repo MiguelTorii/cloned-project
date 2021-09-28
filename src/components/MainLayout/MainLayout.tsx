@@ -1,95 +1,101 @@
 /* eslint-disable no-unused-expressions */
-import React, { useMemo, memo, useState, useCallback } from "react";
-import classNames from "classnames";
-import { withRouter } from "react-router";
-import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
-import { Link as RouterLink } from "react-router-dom";
-import ChatIcon from "@material-ui/icons/Chat";
-import { withStyles } from "@material-ui/core/styles";
-import withWidth from "@material-ui/core/withWidth";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Badge from "@material-ui/core/Badge";
-import Link from "@material-ui/core/Link";
-import IconButton from "@material-ui/core/IconButton";
-import Avatar from "@material-ui/core/Avatar";
-import Hidden from "@material-ui/core/Hidden";
-import DrawerMenu from "components/MainLayout/Drawer";
-import CreatePostMenu from "components/MainLayout/CreatePostMenu";
-import MobileMenu from "components/MainLayout/MobileMenu";
-import TopMenu from "components/MainLayout/TopMenu";
-import MenuIcon from "@material-ui/icons/Menu";
-import HelpIcon from "@material-ui/icons/Help";
-import Typography from "@material-ui/core/Typography";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import UserDialog from "containers/UserDialog/UserDialog";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import clsx from "clsx";
-import GetAppDialog from "components/GetAppDialog/GetAppDialog";
-import GetStudentJob from "components/GetStudentJob/GetAppDialog";
-import QuickNotes from "containers/QuickNotes/QuickNotes";
-import { ReactComponent as HomeIcon } from "assets/svg/home-inactive.svg";
-import { ReactComponent as IconChat } from "assets/svg/chat.svg";
-import { ReactComponent as IconHome } from "assets/svg/home.svg";
-import logo from "../../assets/svg/circlein_logo.svg";
-import "./currentRoute.css";
-import UseCases from "../UseCases/UseCases";
-import Dialog from "../Dialog/Dialog";
-import HowDoIEarnPoints from "../HowDoIEarnPoints/HowDoIEarnPoints";
-import GiveFeedback from "../../containers/GiveFeedback/GiveFeedback";
-import Tooltip from "../../containers/Tooltip/Tooltip";
-import { AnnouncementBanner } from "../../containers/Announcements/AnnouncementBanner";
-import { styles } from "../_styles/MainLayout/index";
-const MyLink = React.forwardRef(({
-  link,
-  ...props
-}, ref) => {
-  if (!['/', '/feed', '/create/notes', '/create/sharelink', '/create/question', '/create/flashcards'].includes(window.location.pathname)) {
+import React, { useMemo, memo, useState, useCallback } from 'react';
+import classNames from 'classnames';
+import { withRouter } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
+import { Link as RouterLink } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Badge from '@material-ui/core/Badge';
+import Link from '@material-ui/core/Link';
+import IconButton from '@material-ui/core/IconButton';
+import Avatar from '@material-ui/core/Avatar';
+import Hidden from '@material-ui/core/Hidden';
+import MenuIcon from '@material-ui/icons/Menu';
+import HelpIcon from '@material-ui/icons/Help';
+import Typography from '@material-ui/core/Typography';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import clsx from 'clsx';
+import UserDialog from '../../containers/UserDialog/UserDialog';
+import TopMenu from './TopMenu';
+import MobileMenu from './MobileMenu';
+import CreatePostMenu from './CreatePostMenu';
+import DrawerMenu from './Drawer';
+import GetAppDialog from '../GetAppDialog/GetAppDialog';
+import GetStudentJob from '../GetStudentJob/GetAppDialog';
+import QuickNotes from '../../containers/QuickNotes/QuickNotes';
+import { ReactComponent as IconChat } from '../../assets/svg/chat.svg';
+import { ReactComponent as IconHome } from '../../assets/svg/home.svg';
+import logo from '../../assets/svg/circlein_logo.svg';
+import './currentRoute.css';
+import UseCases from '../UseCases/UseCases';
+import Dialog from '../Dialog/Dialog';
+import HowDoIEarnPoints from '../HowDoIEarnPoints/HowDoIEarnPoints';
+import GiveFeedback from '../../containers/GiveFeedback/GiveFeedback';
+import Tooltip from '../../containers/Tooltip/Tooltip';
+import { AnnouncementBanner } from '../../containers/Announcements/AnnouncementBanner';
+import { styles } from '../_styles/MainLayout/index';
+
+const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => {
+  if (
+    ![
+      '/',
+      '/feed',
+      '/create/notes',
+      '/create/sharelink',
+      '/create/question',
+      '/create/flashcards'
+    ].includes(window.location.pathname)
+  ) {
     document.title = 'CircleIn';
   }
 
   return <RouterLink to={link} {...props} ref={ref} />;
 });
+
 type Props = {
-  classes: Record<string, any>;
-  // helpLink: string,
-  width: string;
-  userId: string;
-  email: string;
-  initials: string;
-  userProfileUrl: string;
-  children: any;
-  newNotesScreen: boolean;
-  unreadCount: number;
-  unreadMessages: number;
-  pathname: string;
-  handleNotificationOpen: (...args: Array<any>) => any;
-  handleSignOut: (...args: Array<any>) => any;
-  onManageClasses: (...args: Array<any>) => any;
-  userClasses: Record<string, any>;
-  onManageBlockedUsers: (...args: Array<any>) => any;
-  setOneTouchSend: (...args: Array<any>) => any;
-  newClassExperience: boolean;
-  onOpenReferralStatus: (...args: Array<any>) => any;
-  landingPageCampaign: boolean;
-  updateFeed: (...args: Array<any>) => any;
-  location: {
+  classes?: Record<string, any>;
+  width?: string;
+  userId?: string;
+  email?: string;
+  initials?: string;
+  userProfileUrl?: string;
+  children?: any;
+  newNotesScreen?: boolean;
+  unreadCount?: number;
+  unreadMessages?: number;
+  pathname?: string;
+  handleNotificationOpen?: (...args: Array<any>) => any;
+  handleSignOut?: (...args: Array<any>) => any;
+  onManageClasses?: (...args: Array<any>) => any;
+  userClasses?: Record<string, any>;
+  onManageBlockedUsers?: (...args: Array<any>) => any;
+  setOneTouchSend?: (...args: Array<any>) => any;
+  newClassExperience?: boolean;
+  onOpenReferralStatus?: (...args: Array<any>) => any;
+  landingPageCampaign?: boolean;
+  updateFeed?: (...args: Array<any>) => any;
+  location?: {
     search: string;
   };
-  expertMode: boolean;
-  isExpert: boolean;
-  announcementData: Record<string, any> | null | undefined;
-  toggleExpertMode: (...args: Array<any>) => any;
+  expertMode?: boolean;
+  isExpert?: boolean;
+  announcementData?: Record<string, any> | null | undefined;
+  toggleExpertMode?: (...args: Array<any>) => any;
   viewedOnboarding: boolean;
-  fullName: string;
+  fullName?: string;
+  bannerHeight?: number;
+  setBannerHeight?: number;
 };
 
 const MainLayout = ({
   classes,
   announcementData,
-  // helpLink,
   width,
   userId,
   fullName,
@@ -117,9 +123,7 @@ const MainLayout = ({
   onOpenReferralStatus,
   updateFeed,
   viewedOnboarding,
-  location: {
-    search
-  }
+  location: { search }
 }: Props) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -134,11 +138,11 @@ const MainLayout = ({
   const [openStudentJobs, setOpenStudentJobs] = useState(false);
   const handleAnnouncementLoaded = useCallback(() => {}, []);
   const handleOpenWidget = useCallback(() => {
-    window?.FreshworksWidget('identify', 'ticketForm', {
+    (window as any)?.FreshworksWidget('identify', 'ticketForm', {
       name: fullName,
       email
     });
-    window?.FreshworksWidget('open');
+    (window as any)?.FreshworksWidget('open');
   }, [email, fullName]);
   const handleDrawerOpen = useCallback(() => {
     setOpen(true);
@@ -146,10 +150,10 @@ const MainLayout = ({
   const handleDrawerClose = useCallback(() => {
     setOpen(false);
   }, []);
-  const handleProfileMenuOpen = useCallback(event => {
+  const handleProfileMenuOpen = useCallback((event) => {
     setAnchorEl(event.currentTarget);
   }, []);
-  const handleMobileMenuOpen = useCallback(event => {
+  const handleMobileMenuOpen = useCallback((event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   }, []);
   const handleMobileMenuClose = useCallback(() => {
@@ -159,7 +163,7 @@ const MainLayout = ({
     setAnchorEl(null);
     handleMobileMenuClose();
   }, [handleMobileMenuClose]);
-  const handleCreatePostMenuOpen = useCallback(event => {
+  const handleCreatePostMenuOpen = useCallback((event) => {
     setCreatePostAnchorEl(event.currentTarget);
     setCreatePostOpen(true);
   }, []);
@@ -167,11 +171,14 @@ const MainLayout = ({
     setCreatePostAnchorEl(null);
     setCreatePostOpen(false);
   }, []);
-  const handleNotificationOpenCur = useCallback(event => {
-    handleNotificationOpen(event);
-    handleMobileMenuClose();
-    handleMenuClose();
-  }, [handleMenuClose, handleMobileMenuClose, handleNotificationOpen]);
+  const handleNotificationOpenCur = useCallback(
+    (event) => {
+      handleNotificationOpen(event);
+      handleMobileMenuClose();
+      handleMenuClose();
+    },
+    [handleMenuClose, handleMobileMenuClose, handleNotificationOpen]
+  );
   const handleSignOutCur = useCallback(() => {
     handleSignOut();
     handleMobileMenuClose();
@@ -209,13 +216,6 @@ const MainLayout = ({
     } else {
       window.open('https://tutors.circleinapp.com/home', '_blank');
     }
-
-    // if (helpLink) {
-    // window.open(helpLink, '_blank')
-    // } else {
-    // setOpenHowEarnPoints(true)
-    // handleMenuClose();
-    // }
     handleMenuClose();
   }, [expertMode, handleMenuClose]);
   const handleCloseHowEarnPoints = useCallback(() => {
@@ -240,22 +240,160 @@ const MainLayout = ({
   const isMenuOpen = useMemo(() => Boolean(anchorEl), [anchorEl]);
   const isMobileMenuOpen = useMemo(() => Boolean(mobileMoreAnchorEl), [mobileMoreAnchorEl]);
   const isCreatePostMenuOpen = useMemo(() => Boolean(createPostAnchorEl), [createPostAnchorEl]);
-  const renderMenu = useMemo(() => <TopMenu anchorEl={anchorEl} isMenuOpen={isMenuOpen} handleMenuClose={handleMenuClose} handleBlockedUsers={handleBlockedUsers} handleOpenHowEarnPoints={handleOpenHowEarnPoints} expertMode={expertMode} MyLink={MyLink} userId={userId} handleSignOut={handleSignOutCur} search={search} />, [anchorEl, handleBlockedUsers, handleMenuClose, handleSignOutCur, handleOpenHowEarnPoints, expertMode, isMenuOpen, search, userId]);
-  const renderMobileMenu = useMemo(() => <MobileMenu mobileMoreAnchorEl={mobileMoreAnchorEl} MyLink={MyLink} isMobileMenuOpen={isMobileMenuOpen} handleMobileMenuClose={handleMobileMenuClose} handleNotificationOpen={handleNotificationOpenCur} open={open} unreadMessages={unreadMessages} width={width} unreadCount={unreadCount} handleProfileMenuOpen={handleProfileMenuOpen} initials={initials} userProfileUrl={userProfileUrl} />, [handleMobileMenuClose, handleNotificationOpenCur, handleProfileMenuOpen, initials, isMobileMenuOpen, mobileMoreAnchorEl, open, unreadCount, unreadMessages, userProfileUrl, width]);
-  const renderCreatePostMenu = useMemo(() => <CreatePostMenu MyLink={MyLink} createPostAnchorEl={createPostAnchorEl} isCreatePostMenuOpen={isCreatePostMenuOpen} search={search} handleCreatePostMenuClose={handleCreatePostMenuClose} />, [createPostAnchorEl, handleCreatePostMenuClose, isCreatePostMenuOpen, search]);
-  const appBarHeight = useMemo(() => announcementData ? bannerHeight + 68 : 68, [announcementData, bannerHeight, pathname]);
-  const drawer = useMemo(() => <DrawerMenu expertMode={expertMode} isExpert={isExpert} viewedOnboarding={viewedOnboarding} toggleExpertMode={toggleExpertMode} handleCreatePostMenuOpen={handleCreatePostMenuOpen} appBarHeight={appBarHeight} updateFeed={updateFeed} newNotesScreen={newNotesScreen} newClassExperience={newClassExperience} userId={userId} initials={initials} fullName={fullName} userProfileUrl={userProfileUrl} createPostOpen={createPostOpen} handleOpenGetApp={handleOpenGetApp} handleOpenFeedback={handleOpenFeedback} setOneTouchSend={setOneTouchSend} MyLink={MyLink} search={search} pathname={pathname} handleManageClasses={handleManageClasses} handleOpenUseCases={handleOpenUseCases} handleOpenStudentJobs={handleOpenStudentJobs} handleOpenHowEarnPoints={handleOpenHowEarnPoints} landingPageCampaign={landingPageCampaign} userClasses={userClasses} />, [appBarHeight, createPostOpen, expertMode, fullName, handleCreatePostMenuOpen, handleManageClasses, handleOpenFeedback, handleOpenGetApp, handleOpenHowEarnPoints, handleOpenStudentJobs, handleOpenUseCases, setOneTouchSend, initials, isExpert, landingPageCampaign, newClassExperience, newNotesScreen, pathname, search, toggleExpertMode, updateFeed, userClasses, userId, userProfileUrl, viewedOnboarding]);
-  return <>
+  const renderMenu = useMemo(
+    () => (
+      <TopMenu
+        anchorEl={anchorEl}
+        isMenuOpen={isMenuOpen}
+        handleMenuClose={handleMenuClose}
+        handleBlockedUsers={handleBlockedUsers}
+        handleOpenHowEarnPoints={handleOpenHowEarnPoints}
+        expertMode={expertMode}
+        MyLink={MyLink}
+        userId={userId}
+        handleSignOut={handleSignOutCur}
+        search={search}
+      />
+    ),
+    [
+      anchorEl,
+      handleBlockedUsers,
+      handleMenuClose,
+      handleSignOutCur,
+      handleOpenHowEarnPoints,
+      expertMode,
+      isMenuOpen,
+      search,
+      userId
+    ]
+  );
+  const renderMobileMenu = useMemo(
+    () => (
+      <MobileMenu
+        mobileMoreAnchorEl={mobileMoreAnchorEl}
+        MyLink={MyLink}
+        isMobileMenuOpen={isMobileMenuOpen}
+        handleMobileMenuClose={handleMobileMenuClose}
+        handleNotificationOpen={handleNotificationOpenCur}
+        open={open}
+        unreadMessages={unreadMessages}
+        width={width}
+        unreadCount={unreadCount}
+        handleProfileMenuOpen={handleProfileMenuOpen}
+        initials={initials}
+        userProfileUrl={userProfileUrl}
+      />
+    ),
+    [
+      handleMobileMenuClose,
+      handleNotificationOpenCur,
+      handleProfileMenuOpen,
+      initials,
+      isMobileMenuOpen,
+      mobileMoreAnchorEl,
+      open,
+      unreadCount,
+      unreadMessages,
+      userProfileUrl,
+      width
+    ]
+  );
+  const renderCreatePostMenu = useMemo(
+    () => (
+      <CreatePostMenu
+        MyLink={MyLink}
+        createPostAnchorEl={createPostAnchorEl}
+        isCreatePostMenuOpen={isCreatePostMenuOpen}
+        search={search}
+        handleCreatePostMenuClose={handleCreatePostMenuClose}
+      />
+    ),
+    [createPostAnchorEl, handleCreatePostMenuClose, isCreatePostMenuOpen, search]
+  );
+  const appBarHeight = useMemo(
+    () => (announcementData ? bannerHeight + 68 : 68),
+    [announcementData, bannerHeight, pathname]
+  );
+  const drawer = useMemo(
+    () => (
+      <DrawerMenu
+        expertMode={expertMode}
+        isExpert={isExpert}
+        viewedOnboarding={viewedOnboarding}
+        toggleExpertMode={toggleExpertMode}
+        handleCreatePostMenuOpen={handleCreatePostMenuOpen}
+        appBarHeight={appBarHeight}
+        updateFeed={updateFeed}
+        newNotesScreen={newNotesScreen}
+        newClassExperience={newClassExperience}
+        userId={userId}
+        initials={initials}
+        fullName={fullName}
+        userProfileUrl={userProfileUrl}
+        createPostOpen={createPostOpen}
+        handleOpenGetApp={handleOpenGetApp}
+        handleOpenFeedback={handleOpenFeedback}
+        setOneTouchSend={setOneTouchSend}
+        MyLink={MyLink}
+        search={search}
+        pathname={pathname}
+        handleManageClasses={handleManageClasses}
+        handleOpenUseCases={handleOpenUseCases}
+        handleOpenStudentJobs={handleOpenStudentJobs}
+        handleOpenHowEarnPoints={handleOpenHowEarnPoints}
+        landingPageCampaign={landingPageCampaign}
+        userClasses={userClasses}
+        campaignState={undefined}
+      />
+    ),
+    [
+      appBarHeight,
+      createPostOpen,
+      expertMode,
+      fullName,
+      handleCreatePostMenuOpen,
+      handleManageClasses,
+      handleOpenFeedback,
+      handleOpenGetApp,
+      handleOpenHowEarnPoints,
+      handleOpenStudentJobs,
+      handleOpenUseCases,
+      setOneTouchSend,
+      initials,
+      isExpert,
+      landingPageCampaign,
+      newClassExperience,
+      newNotesScreen,
+      pathname,
+      search,
+      toggleExpertMode,
+      updateFeed,
+      userClasses,
+      userId,
+      userProfileUrl,
+      viewedOnboarding
+    ]
+  );
+  return (
+    <>
       <div className={clsx(classes.root, pathname.indexOf('/chat') === -1 && classes.marginChat)}>
         <UserDialog />
-        <AppBar position="fixed" className={classNames(classes.appBar, {
-        [classes.appBarShift]: open
-      })}>
+        <AppBar
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: open
+          })}
+        >
           <Toolbar disableGutters={!open}>
             <Hidden smUp implementation="css">
-              <IconButton color="inherit" aria-label="Open drawer" onClick={handleDrawerOpen} className={classNames(classes.menuButton, {
-              [classes.hide]: open
-            })}>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={handleDrawerOpen}
+                className={classNames(classes.menuButton, {
+                  [classes.hide]: open
+                })}
+              >
                 <MenuIcon />
               </IconButton>
             </Hidden>
@@ -274,7 +412,12 @@ const MainLayout = ({
                 </Badge>
               </IconButton>
               <QuickNotes />
-              <IconButton color="inherit" onClick={handleNotificationOpenCur} aria-owns={open ? 'notifications-popper' : undefined} aria-haspopup="true">
+              <IconButton
+                color="inherit"
+                onClick={handleNotificationOpenCur}
+                aria-owns={open ? 'notifications-popper' : undefined}
+                aria-haspopup="true"
+              >
                 <Badge badgeContent={unreadCount} color="secondary">
                   <NotificationsIcon />
                 </Badge>
@@ -282,7 +425,13 @@ const MainLayout = ({
               <IconButton color="inherit" onClick={handleOpenWidget} aria-haspopup="true">
                 <HelpIcon />
               </IconButton>
-              <IconButton aria-owns={isMenuOpen ? 'material-appbar' : undefined} aria-haspopup="true" id="avatar-menu" onClick={handleProfileMenuOpen} color="inherit">
+              <IconButton
+                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                aria-haspopup="true"
+                id="avatar-menu"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
                 <Avatar className="avatar-menu" src={userProfileUrl}>
                   {initials}
                 </Avatar>
@@ -295,28 +444,49 @@ const MainLayout = ({
             </div>
           </Toolbar>
 
-          <AnnouncementBanner bannerHeight={bannerHeight} setBannerHeight={setBannerHeight} onLoaded={handleAnnouncementLoaded} />
+          <AnnouncementBanner
+            bannerHeight={bannerHeight}
+            setBannerHeight={setBannerHeight}
+            onLoaded={handleAnnouncementLoaded}
+          />
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
         {renderCreatePostMenu}
         <Hidden smUp implementation="css">
-          <Drawer id="mobileMenu" variant="temporary" open={open && width === 'xs'} onClose={handleDrawerClose} classes={{
-          paper: classes.drawerPaper
-        }}>
+          <Drawer
+            id="mobileMenu"
+            variant="temporary"
+            open={open && width === 'xs'}
+            onClose={handleDrawerClose}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
             {drawer}
           </Drawer>
         </Hidden>
-        {/^(?!\/chat)/.test(pathname) && <Hidden xsDown implementation="css">
-            <Drawer id="desktopMenu" variant="permanent" className={classNames(classes.drawer, classes.drawerOpen)} classes={{
-          paper: classNames(classes.drawerOpen)
-        }} open={open}>
+        {/^(?!\/chat)/.test(pathname) && (
+          <Hidden xsDown implementation="css">
+            <Drawer
+              id="desktopMenu"
+              variant="permanent"
+              className={classNames(classes.drawer, classes.drawerOpen)}
+              classes={{
+                paper: classNames(classes.drawerOpen)
+              }}
+              open={open}
+            >
               {drawer}
             </Drawer>
-          </Hidden>}
-        <main className={classes.content} style={{
-        marginTop: appBarHeight
-      }}>
+          </Hidden>
+        )}
+        <main
+          className={classes.content}
+          style={{
+            marginTop: appBarHeight
+          }}
+        >
           {children}
         </main>
       </div>
@@ -324,11 +494,15 @@ const MainLayout = ({
       <GetStudentJob open={openStudentJobs} onClose={handleCloseStudentJobs} />
       <GiveFeedback origin="Side Menu" open={openFeedback} onClose={handleCloseFeedback} />
       <HowDoIEarnPoints open={openHowEarnPoints} onClose={handleCloseHowEarnPoints} />
-      <Dialog open={openUseCases} onCancel={handleCloseUseCases} title="How to use CircleIn for Studying">
+      <Dialog
+        open={openUseCases}
+        onCancel={handleCloseUseCases}
+        title="How to use CircleIn for Studying"
+      >
         <UseCases onRedirect={handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
       </Dialog>
-    </>;
-}; // MainLayout.whyDidYouRender= true
+    </>
+  );
+};
 
-
-export default memo(withStyles(styles)(withWidth()(withRouter(MainLayout))));
+export default memo(withStyles(styles as any)(withWidth()(withRouter(MainLayout))));

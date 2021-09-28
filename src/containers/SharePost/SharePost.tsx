@@ -1,16 +1,16 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withSnackbar } from "notistack";
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import { createShareURL } from "../../api/posts";
-import { logEvent } from "../../api/analytics";
-import ShareDialog from "../../components/ShareDialog/ShareDialog";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withSnackbar } from 'notistack';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import { createShareURL } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
+import ShareDialog from '../../components/ShareDialog/ShareDialog';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -18,12 +18,12 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
+  classes?: Record<string, any>;
+  user?: UserState;
   feedId: number;
   open: boolean;
   onClose: (...args: Array<any>) => any;
-  enqueueSnackbar: (...args: Array<any>) => any;
+  enqueueSnackbar?: (...args: Array<any>) => any;
 };
 type State = {
   link: string;
@@ -41,16 +41,15 @@ class SharePost extends React.PureComponent<Props, State> {
       open,
       feedId,
       user: {
-        data: {
-          userId
-        }
+        data: { userId }
       }
     } = this.props;
-    const {
-      link
-    } = this.state;
+    const { link } = this.state;
 
-    if (open !== prevProps.open && link === '' && open === true || open !== prevProps.open && feedId !== prevProps.feedId && open === true) {
+    if (
+      (open !== prevProps.open && link === '' && open === true) ||
+      (open !== prevProps.open && feedId !== prevProps.feedId && open === true)
+    ) {
       try {
         this.setState({
           loading: true
@@ -75,11 +74,9 @@ class SharePost extends React.PureComponent<Props, State> {
       }
     }
   };
+
   handleLinkCopied = () => {
-    const {
-      enqueueSnackbar,
-      classes
-    } = this.props;
+    const { enqueueSnackbar, classes } = this.props;
     enqueueSnackbar('Shareable Link has been copied.', {
       variant: 'info',
       anchorOrigin: {
@@ -100,17 +97,12 @@ class SharePost extends React.PureComponent<Props, State> {
       user: {
         isLoading,
         error,
-        data: {
-          userId
-        }
+        data: { userId }
       },
       open,
       onClose
     } = this.props;
-    const {
-      link,
-      loading
-    } = this.state;
+    const { link, loading } = this.state;
 
     if (isLoading) {
       return <CircularProgress size={12} />;
@@ -120,17 +112,25 @@ class SharePost extends React.PureComponent<Props, State> {
       return 'Oops, there was an error loading your data, please try again.';
     }
 
-    return <ErrorBoundary>
-        <ShareDialog open={open} link={link} isLoading={loading} onLinkCopied={this.handleLinkCopied} onClose={onClose} />
-      </ErrorBoundary>;
+    return (
+      <ErrorBoundary>
+        <ShareDialog
+          open={open}
+          link={link}
+          isLoading={loading}
+          onLinkCopied={this.handleLinkCopied}
+          onClose={onClose}
+        />
+      </ErrorBoundary>
+    );
   }
-
 }
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default connect(mapStateToProps, null)(withSnackbar(withStyles(styles)(SharePost)));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  null
+)(withSnackbar(withStyles(styles as any)(SharePost) as any));

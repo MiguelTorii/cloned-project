@@ -1,5 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-export default makeStyles((theme) => ({
+
+export default makeStyles((theme: any): any => ({
   sidebar: {
     backgroundColor: '#1E1F22',
     padding: theme.spacing(10, 4),

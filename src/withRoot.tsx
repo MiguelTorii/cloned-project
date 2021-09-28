@@ -1,11 +1,12 @@
-import React from "react";
-import type { ComponentType } from "react";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MomentUtils from "@date-io/moment";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { SnackbarProvider } from "notistack";
-import { responsiveFontSizes } from "@material-ui/core";
+import React from 'react';
+import type { ComponentType } from 'react';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { SnackbarProvider } from 'notistack';
+import { responsiveFontSizes } from '@material-ui/core';
+
 const circleInTheme = {
   brand: '#03A9F4',
   action: '#49afd9',
@@ -170,7 +171,6 @@ let theme = createTheme({
     }
   },
   typography: {
-    useNextVariants: true,
     color: circleInTheme.primaryText1,
     fontSize: 14,
     fontFamily: '"Nunito", "Helvetica", "Arial", sans-serif'
@@ -325,17 +325,17 @@ function withRoot(Component: ComponentType<any>) {
   function WithRoot(props: Record<string, any>) {
     // MuiThemeProvider makes the theme available down the React tree
     // thanks to React context.
-    return <MuiThemeProvider theme={theme}>
+    return (
+      <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <SnackbarProvider maxSnack={3}>
-            {
-            /* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */
-          }
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <Component {...props} />
           </SnackbarProvider>
         </MuiPickersUtilsProvider>
-      </MuiThemeProvider>;
+      </MuiThemeProvider>
+    );
   }
 
   return WithRoot;

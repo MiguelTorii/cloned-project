@@ -1,9 +1,7 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   extends: [
-    // 'eslint:recommended',
-    'airbnb-typescript',
-    'prettier',
+    'airbnb-typescript-prettier',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended'
@@ -23,6 +21,16 @@ module.exports = {
     }
   ],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-shadow': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+
+
     'prettier/prettier': 'error',
     indent: 'off',
     'no-multiple-empty-lines': 'error',
@@ -117,6 +125,14 @@ module.exports = {
     'react/static-property-placement': ['error', 'static public field'],
     'react/no-unused-state': 'error',
 
+    // Keep this rule off: we will depend on TypeScript for types instead
+    'react/require-default-props': 'off',
+
+    // These 2 react rules conflict with prettier and are not correctness related,
+    // so we will configure them to match prettier or turn them off
+    'react/jsx-closing-tag-location': 'off',
+    'jsx-closing-bracket-location': 'off',
+
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'error',
     'react/no-did-update-set-state': 'error',
@@ -125,7 +141,6 @@ module.exports = {
     'react/button-has-type': 'error',
     'react/no-array-index-key': 'off',
     'react/default-props-match-prop-types': 'error',
-    'react/jsx-closing-bracket-location': 'error',
     'react/forbid-prop-types': 'error',
     'react/no-deprecated': 'off',
     'react/sort-comp': 'error',
@@ -139,6 +154,7 @@ module.exports = {
     'react/state-in-constructor': 'off',
     'react/jsx-one-expression-per-line': 'off',
     'react/no-unused-prop-types': 'off',
+    'react/no-unused-state': 'off',
 
     // TODO turn this on once we can use typescript to generate the prop types
     'react/prop-types': 'off',

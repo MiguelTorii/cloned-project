@@ -7,18 +7,18 @@
 /* eslint-disable prefer-rest-params */
 
 /* eslint-disable no-unused-expressions */
-import React, { useEffect, useMemo } from "react";
-import { connect, useSelector } from "react-redux";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Redirect } from "react-router";
-import useScript from "hooks/useScript";
-import Classes from "pages/Classes";
-import Feed from "pages/Feed";
-import AuthRedirect from "pages/AuthRedirect";
-import type { State as StoreState } from "../../types/state";
-import { isApiCalling } from "../../utils/helpers";
-import { campaignActions } from "../../constants/action-types";
+import React, { useEffect, useMemo } from 'react';
+import { connect, useSelector } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Redirect } from 'react-router';
+import useScript from '../../hooks/useScript';
+import Classes from '../../pages/Classes';
+import Feed from '../../pages/Feed';
+import AuthRedirect from '../../pages/AuthRedirect';
+import type { State as StoreState } from '../../types/state';
+import { isApiCalling } from '../../utils/helpers';
+import { campaignActions } from '../../constants/action-types';
 
 const styles = () => ({
   loading: {
@@ -30,46 +30,48 @@ const styles = () => ({
   }
 });
 
-const Home = ({
-  campaign,
-  classes,
-  user
-}) => {
+type Props = {
+  campaign?: any;
+  classes?: any;
+  user?: any;
+};
+
+const Home = ({ campaign, classes, user }: Props) => {
   const {
-    data: {
-      userId
-    },
+    data: { userId },
     isLoading,
     expertMode
   } = user;
   const isLoadingCampaign = useSelector(isApiCalling(campaignActions.GET_CHAT_LANDING_CAMPAIGN));
-  const widgetUrl = useMemo(() => !userId && 'https://widget.freshworks.com/widgets/67000003041.js', [userId]);
+  const widgetUrl = useMemo(
+    () => !userId && 'https://widget.freshworks.com/widgets/67000003041.js',
+    [userId]
+  );
   const widgetId = useMemo(() => !userId && 67000003041, [userId]);
   const status = useScript(widgetUrl);
   useEffect(() => {
-    async function loadWidget() {
+    function loadWidget() {
       if (!userId && typeof window !== 'undefined') {
-        window.fwSettings = {
+        (window as any).fwSettings = {
           widget_id: widgetId,
           hideChatButton: true
         };
-        !function () {
-          if (typeof window.FreshworksWidget !== 'function') {
-            const n = function () {
-              n.q.push(arguments);
-            };
 
-            n.q = [], window.FreshworksWidget = n;
-          }
-        }();
+        if (typeof (window as any).FreshworksWidget !== 'function') {
+          const n = function () {
+            n.q.push(arguments);
+          };
+          n.q = [];
+          (window as any).FreshworksWidget = n;
+        }
       }
     }
 
-    async function hideWidget() {
+    function hideWidget() {
       if (userId) {
-        window.FreshworksWidget('hide', 'launcher');
+        (window as any).FreshworksWidget('hide', 'launcher');
       } else {
-        window.FreshworksWidget('show', 'launcher');
+        (window as any).FreshworksWidget('show', 'launcher');
       }
     }
 
@@ -77,10 +79,12 @@ const Home = ({
     hideWidget();
   }, [widgetId, widgetUrl, status, userId]);
 
-  if (isLoadingCampaign || isLoading && !userId) {
-    return <div className={classes.loading}>
+  if (isLoadingCampaign || (isLoading && !userId)) {
+    return (
+      <div className={classes.loading}>
         <CircularProgress />
-      </div>;
+      </div>
+    );
   }
 
   if (!userId) {
@@ -106,12 +110,9 @@ const Home = ({
   return <Redirect to="/home" />;
 };
 
-const mapStateToProps = ({
-  campaign,
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
   campaign,
   user
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Home));
+export default connect<{}, {}, Props>(mapStateToProps, null)(withStyles(styles as any)(Home));

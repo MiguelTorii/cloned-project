@@ -1,12 +1,12 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { withRouter } from "react-router";
-import Grid from "@material-ui/core/Grid";
-import withWidth from "@material-ui/core/withWidth";
-import LeaderBoards from "../../containers/LeaderBoards/LeaderBoards";
-import Layout from "../../containers/Layout/Layout";
-import withRoot from "../../withRoot";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router';
+import Grid from '@material-ui/core/Grid';
+import withWidth from '@material-ui/core/withWidth';
+import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
+import Layout from '../../containers/Layout/Layout';
+import withRoot from '../../withRoot';
 
 const styles = () => ({
   item: {
@@ -18,9 +18,8 @@ type Props = {
   classes: Record<string, any>;
 };
 
-const LeaderBoard = ({
-  classes
-}: Props) => <main>
+const LeaderBoard = ({ classes }: Props) => (
+  <main>
     <CssBaseline />
     <Layout>
       <Grid container spacing={0} justifyContent="center">
@@ -29,6 +28,7 @@ const LeaderBoard = ({
         </Grid>
       </Grid>
     </Layout>
-  </main>;
+  </main>
+);
 
-export default withRoot(withStyles(styles)(withWidth()(withRouter(LeaderBoard))));
+export default withRoot(withStyles(styles as any)(withWidth()(withRouter(LeaderBoard))));

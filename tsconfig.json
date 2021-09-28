@@ -19,8 +19,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false, // TODO turn this back on for more type checking
-    "strictNullChecks": false // TODO turn this back on for more type checking
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "target": "es5"
   },
   "include": [
     "src"

@@ -1,74 +1,77 @@
 import update from 'immutability-helper';
 import moment from 'moment';
-import { getTitle } from 'utils/chat';
+import { getTitle } from '../utils/chat';
 import { chatActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { ChatChannels } from '../types/models';
+import type { ChatChannel } from '../types/models';
+
 export type ChatState = {
-  isLoading: boolean,
   data: {
-    uuid: string,
-    entityId: string,
-    entityFirstName: string,
-    entityLastName: string,
-    entityVideo: boolean,
-    entityUuid: string,
-    selectedChannelId: string,
-    client: Record<string, any> | null | undefined,
-    channels: Array<ChatChannels>,
-    openChannels: Array<ChatChannels>,
-    unread: number,
-    local: Record<string, any>,
-    online: boolean,
-    currentChannel: Record<string, any> | null | undefined,
-    currentCommunityChannel: Record<string, any> | null | undefined,
-    currentCommunity: Record<string, any> | null | undefined,
-    newChannel: boolean,
-    mainMessage: string,
-    currentCommunityId: string,
-    communities: Array,
-    communityChannels: Array,
-    newMessage: Record<string, any> | null | undefined,
-    oneTouchSendOpen: boolean,
-    messageLoading: boolean
-  },
-  error: boolean,
+    channels: Array<ChatChannel>;
+    client: Record<string, any> | null | undefined;
+    communities: any[];
+    communityChannels: any[];
+    currentChannel: Record<string, any> | null | undefined;
+    currentCommunity: Record<string, any> | null | undefined;
+    currentCommunityChannel: Record<string, any> | null | undefined;
+    currentCommunityId: string | null;
+    entityFirstName: string;
+    entityId: number;
+    entityLastName: string;
+    entityUuid: string;
+    entityVideo: boolean;
+    local: Record<string, any>;
+    mainMessage: string;
+    messageLoading: boolean;
+    newChannel: boolean;
+    newMessage: Record<string, any> | null | undefined;
+    oneTouchSendOpen: boolean;
+    online: boolean;
+    openChannels: Array<ChatChannel>;
+    selectedChannelId: string;
+    unread: number;
+    uuid: string;
+  };
+  error: boolean;
   errorMessage: {
-    title: string,
-    body: string
-  }
+    title: string;
+    body: string;
+  };
+  isLoading: boolean;
 };
 const defaultState = {
   data: {
-    mainMessage: '',
-    uuid: '',
-    entityId: '',
-    entityFirstName: '',
-    entityLastName: '',
-    selectedChannelId: '',
-    entityVideo: false,
-    entityUuid: '',
-    client: null,
     channels: [],
-    openChannels: [],
-    unread: 0,
-    local: {},
+    client: null,
+    communities: [],
+    communityChannels: [],
     currentChannel: null,
-    currentCommunityChannel: null,
     currentCommunity: null,
-    online: false,
-    newChannel: false,
+    currentCommunityChannel: null,
     currentCommunityId: null,
+    entityFirstName: '',
+    entityId: 0,
+    entityLastName: '',
+    entityUuid: '',
+    entityVideo: false,
+    local: {},
+    mainMessage: '',
+    messageLoading: false,
+    newChannel: false,
     newMessage: null,
     oneTouchSendOpen: false,
-    messageLoading: false
+    online: false,
+    openChannels: [],
+    selectedChannelId: '',
+    unread: 0,
+    uuid: ''
   },
-  isLoading: false,
   error: false,
   errorMessage: {
     title: '',
     body: ''
-  }
+  },
+  isLoading: false
 };
 
 const mergeObjects = (first, second) => {
@@ -169,7 +172,6 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     case chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST:
       return update(state, {
         data: {
-          // $FlowIgnore
           uuid: {
             $set: action.payload.uuid
           }
@@ -179,23 +181,18 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     case chatActions.START_CHANNEL_WITH_ENTITY_REQUEST:
       return update(state, {
         data: {
-          // $FlowIgnore
           entityId: {
             $set: action.payload.entityId
           },
-          // $FlowIgnore
           entityFirstName: {
             $set: action.payload.entityFirstName
           },
-          // $FlowIgnore
           entityLastName: {
             $set: action.payload.entityLastName
           },
-          // $FlowIgnore
           entityVideo: {
             $set: action.payload.entityVideo
           },
-          // $FlowIgnore
           entityUuid: {
             $set: action.payload.entityUuid
           }

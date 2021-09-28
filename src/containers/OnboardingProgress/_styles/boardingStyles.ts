@@ -1,5 +1,6 @@
-import { dialogStyle } from 'components/Dialog/Dialog';
 import { detect } from 'detect-browser';
+import { dialogStyle } from '../../../components/Dialog/Dialog';
+
 const browser = detect();
 const centered = {
   alignItems: 'center',

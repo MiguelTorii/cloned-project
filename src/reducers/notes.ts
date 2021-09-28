@@ -1,24 +1,32 @@
 import update from 'immutability-helper';
 import { notesActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
+
 export type NotesType = {
-  title: string,
-  content: string,
-  created: date,
-  lastModified: date,
-  id: number,
-  sectionId?: number,
-  quicknoteId?: number,
-  quicknoteContent: string
+  title: string;
+  content: string;
+  created: Date;
+  lastModified: Date;
+  id: number;
+  sectionId?: number;
+  quicknoteId?: number;
+  quicknoteContent?: string;
+  classId?: number;
 };
+
 export type NotesState = {
-  date: {
-    notes: array<NotesType>,
-    currentNote?: NotesType,
-    sectionId: number,
-    loading: boolean
-  }
+  data: {
+    currentNote: NotesType | null;
+    sectionId: number | null;
+    classId: any;
+    quicknoteId: any;
+    quicknoteContent: string;
+    notes: NotesType[];
+    initialLoading: boolean;
+    loading: boolean;
+  };
 };
+
 const defaultState = {
   data: {
     currentNote: null,
@@ -31,6 +39,7 @@ const defaultState = {
     loading: false
   }
 };
+
 export default (state: NotesState = defaultState, action: Action): NotesState => {
   switch (action.type) {
     case notesActions.RESET_QUICKNOTE:

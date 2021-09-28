@@ -1,33 +1,41 @@
-import React, { useEffect, useState } from "react";
-import debounce from "lodash/debounce";
-import { withStyles } from "@material-ui/core/styles";
-import Checkbox from "@material-ui/core/Checkbox";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import TreeView from "@material-ui/lab/TreeView";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import TreeItem from "@material-ui/lab/TreeItem";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { leaveUserClass, joinClass, getAvailableClassesSections, getAvailableSubjectsClasses, getAvailableSubjects } from "api/user";
-import searchClasses from "api/class";
-import * as notificationsActions from "../../actions/notifications";
-import * as userActions from "../../actions/user";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-import Dialog from "../Dialog/Dialog";
-import { styles } from "../_styles/AddRemoveClasses";
+import React, { useEffect, useState } from 'react';
+import debounce from 'lodash/debounce';
+import { withStyles } from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+  leaveUserClass,
+  joinClass,
+  getAvailableClassesSections,
+  getAvailableSubjectsClasses,
+  getAvailableSubjects
+} from '../../api/user';
+import searchClasses from '../../api/class';
+import * as notificationsActions from '../../actions/notifications';
+import * as userActions from '../../actions/user';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import Dialog from '../Dialog/Dialog';
+import { styles } from '../_styles/AddRemoveClasses';
+
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
+  classes?: Record<string, any>;
+  user?: UserState;
   open: boolean;
-  enqueueSnackbar: (...args: Array<any>) => any;
-  fetchClasses: (...args: Array<any>) => any;
-  onClose: (...args: Array<any>) => any;
+  enqueueSnackbar?: (...args: Array<any>) => any;
+  fetchClasses?: (...args: Array<any>) => any;
+  onClose?: (...args: Array<any>) => any;
+  onOpenRequestClass?: () => void;
 };
 
 const AddRemoveClasses = (props: Props) => {
@@ -37,14 +45,8 @@ const AddRemoveClasses = (props: Props) => {
     fetchClasses: updateClasses,
     open,
     user: {
-      data: {
-        userId,
-        schoolId
-      },
-      userClasses: {
-        canAddClasses: cac,
-        classList
-      }
+      data: { userId, schoolId },
+      userClasses: { canAddClasses: cac, classList }
     },
     onClose
   } = props;
@@ -58,12 +60,9 @@ const AddRemoveClasses = (props: Props) => {
     try {
       setCanAddClasses(cac);
       const sectionsObj = {};
-      classList.forEach(c => {
-        const {
-          section,
-          permissions
-        } = c;
-        section.forEach(s => {
+      classList.forEach((c) => {
+        const { section, permissions } = c;
+        section.forEach((s) => {
           sectionsObj[`sc${s.sectionId}`] = {
             canLeave: permissions.canLeave
           };
@@ -98,7 +97,7 @@ const AddRemoveClasses = (props: Props) => {
       classId
     });
     const sectionsObj = {};
-    res.forEach(r => {
+    res.forEach((r) => {
       sectionsObj[`sc${r.section_id}`] = {
         name: r.display_name,
         sectionId: r.section_id,
@@ -111,13 +110,13 @@ const AddRemoveClasses = (props: Props) => {
     setLoading(false);
   };
 
-  const fetchClasses = async subjectId => {
+  const fetchClasses = async (subjectId) => {
     setLoading(true);
     const res = await getAvailableSubjectsClasses({
       subjectId
     });
     const classesOps = {};
-    res.forEach(r => {
+    res.forEach((r) => {
       classesOps[`c${r.class_id}`] = {
         name: r.display_name,
         subjectId,
@@ -134,7 +133,7 @@ const AddRemoveClasses = (props: Props) => {
   const fetchSubjects = async () => {
     setLoading(true);
     const res = await getAvailableSubjects();
-    res.forEach(r => {
+    res.forEach((r) => {
       tree[`s${r.subject_id}`] = {
         name: r.display_name,
         subjectId: r.subject_id,
@@ -178,9 +177,7 @@ const AddRemoveClasses = (props: Props) => {
           }
         });
       } else {
-        const {
-          success
-        } = await joinClass({
+        const { success } = await joinClass({
           classId,
           sectionId,
           userId: String(userId)
@@ -243,11 +240,10 @@ const AddRemoveClasses = (props: Props) => {
         fetchUserClasses();
       }
     } // eslint-disable-next-line
-
   }, [userId, open]);
   let debouncedFn;
 
-  const onAutocompleteChange = async e => {
+  const onAutocompleteChange = async (e) => {
     e.persist();
 
     if (!debouncedFn) {
@@ -261,81 +257,151 @@ const AddRemoveClasses = (props: Props) => {
     debouncedFn();
   };
 
-  const renderOption = option => <div className={classes.optionItem}>
+  const renderOption = (option) => (
+    <div className={classes.optionItem}>
       <Typography className={classes.optionName}>
-        {option.name.split('\n').map(item => <span key={Math.random()}>
+        {option.name.split('\n').map((item) => (
+          <span key={Math.random()}>
             {item}
             <br />
-          </span>)}
+          </span>
+        ))}
       </Typography>
-      <Button className={classes.optionButton} color={option.hasJoined ? 'secondary' : 'primary'} onClick={e => {
-      e.stopPropagation();
-      const newOptions = options.map(o => {
-        if (o.sectionId === option.sectionId) {
-          return { ...o,
-            hasJoined: !option.hasJoined
-          };
-        }
+      <Button
+        className={classes.optionButton}
+        color={option.hasJoined ? 'secondary' : 'primary'}
+        onClick={(e) => {
+          e.stopPropagation();
+          const newOptions = options.map((o) => {
+            if (o.sectionId === option.sectionId) {
+              return { ...o, hasJoined: !option.hasJoined };
+            }
 
-        return o;
-      });
-      setOptions(newOptions);
-      handleChange(option.classId, option.sectionId, option.name);
-    }} variant="contained">
+            return o;
+          });
+          setOptions(newOptions);
+          handleChange(option.classId, option.sectionId, option.name);
+        }}
+        variant="contained"
+      >
         {option.hasJoined ? 'Added' : 'Add'}
       </Button>
-    </div>;
+    </div>
+  );
 
-  return <Dialog className={classes.dialog} okTitle="Ok" onCancel={onClose} onOk={onClose} open={open} showActions title="Add/Remove Classes">
+  return (
+    <Dialog
+      className={classes.dialog}
+      okTitle="Ok"
+      onCancel={onClose}
+      onOk={onClose}
+      open={open}
+      showActions
+      title="Add/Remove Classes"
+    >
       <>
-        {loading && <CircularProgress style={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%'
-      }} />}
-        {(schoolId === '52' || schoolId === '16') && <Autocomplete classes={{
-        paper: classes.paper
-      }} onClose={() => setOptions([])} options={options} renderOption={renderOption} renderInput={params => <TextField {...params} label="Find a class..." variant="outlined" onChange={onAutocompleteChange} className={classes.autocomplete} inputProps={{ ...params.inputProps,
-        autoComplete: 'new-password' // disable autocomplete and autofill
-
-      }} />} />}
-        <TreeView className={classes.list} defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-          {Object.keys(tree).map(t => {
-          const subject = tree[t];
-          return <TreeItem key={t} onClick={!subject.expanded ? subject.expand : () => {}} nodeId={t} label={subject.name}>
+        {loading && (
+          <CircularProgress
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%'
+            }}
+          />
+        )}
+        {(schoolId === 52 || schoolId === 16) && (
+          <Autocomplete
+            classes={{
+              paper: classes.paper
+            }}
+            onClose={() => setOptions([])}
+            options={options}
+            renderOption={renderOption}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Find a class..."
+                variant="outlined"
+                onChange={onAutocompleteChange}
+                className={classes.autocomplete}
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'new-password' // disable autocomplete and autofill
+                }}
+              />
+            )}
+          />
+        )}
+        <TreeView
+          className={classes.list}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          {Object.keys(tree).map((t) => {
+            const subject = tree[t];
+            return (
+              <TreeItem
+                key={t}
+                onClick={!subject.expanded ? subject.expand : () => {}}
+                nodeId={t}
+                label={subject.name}
+              >
                 <TreeItem nodeId="classes" />
 
-                {Object.keys(subject.classes).map(c => {
-              const classC = subject.classes[c];
-              return <TreeItem key={c} onClick={classC.expand} nodeId={c} label={classC.name}>
+                {Object.keys(subject.classes).map((c) => {
+                  const classC = subject.classes[c];
+                  return (
+                    <TreeItem key={c} onClick={classC.expand} nodeId={c} label={classC.name}>
                       <TreeItem nodeId="sections" />
-                      {Object.keys(classC.sections).map(sc => {
-                  const section = classC.sections[sc];
-                  return <div key={sc}>
-                            <Checkbox checked={Boolean(sections[sc])} disabled={sections[sc] && !sections[sc].canLeave || !canAddClasses} onChange={() => handleChange(section.classId, section.sectionId, `${classC.name} ${section.name}`)} value="primary" inputProps={{
-                      'aria-label': 'primary checkbox'
-                    }} />
+                      {Object.keys(classC.sections).map((sc) => {
+                        const section = classC.sections[sc];
+                        return (
+                          <div key={sc}>
+                            <Checkbox
+                              checked={Boolean(sections[sc])}
+                              disabled={(sections[sc] && !sections[sc].canLeave) || !canAddClasses}
+                              onChange={() =>
+                                handleChange(
+                                  section.classId,
+                                  section.sectionId,
+                                  `${classC.name} ${section.name}`
+                                )
+                              }
+                              value="primary"
+                              inputProps={{
+                                'aria-label': 'primary checkbox'
+                              }}
+                            />
                             {section.name}
-                          </div>;
+                          </div>
+                        );
+                      })}
+                    </TreeItem>
+                  );
                 })}
-                    </TreeItem>;
-            })}
-              </TreeItem>;
-        })}
+              </TreeItem>
+            );
+          })}
         </TreeView>
       </>
-    </Dialog>;
+    </Dialog>
+  );
 };
 
-const mapStateToProps = ({
-  user
-}: StoreState): {} => ({
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  enqueueSnackbar: notificationsActions.enqueueSnackbar,
-  fetchClasses: userActions.fetchClasses
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      enqueueSnackbar: notificationsActions.enqueueSnackbar,
+      fetchClasses: userActions.fetchClasses
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddRemoveClasses));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(AddRemoveClasses));

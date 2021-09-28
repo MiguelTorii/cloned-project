@@ -1,26 +1,25 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { push as routePush, goBack } from "connected-react-router";
-import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import type { UserState } from "../../reducers/user";
-import type { State as StoreState } from "../../types/state";
-// import type { PhotoNote } from '../../types/models';
-import { getNotes, bookmark } from "../../api/posts";
-import { logEvent } from "../../api/analytics";
-import PostItem from "../../components/PostItem/PostItem";
-import PostItemHeader from "../../components/PostItem/PostItemHeader";
-import PostItemActions from "../PostItemActions/PostItemActions";
-import PostComments from "../PostComments/ViewNotes";
-import ImageGallery from "../../components/ImageGallery/ImageGallery";
-import PdfGallery from "../../components/PdfGallery/PdfGallery";
-import PostTags from "../PostTags/PostTags";
-import Report from "../Report/Report";
-import DeletePost from "../DeletePost/DeletePost";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import React, { useCallback, useState, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { push as routePush, goBack } from 'connected-react-router';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
+import { getNotes, bookmark } from '../../api/posts';
+import { logEvent } from '../../api/analytics';
+import PostItem from '../../components/PostItem/PostItem';
+import PostItemHeader from '../../components/PostItem/PostItemHeader';
+import PostItemActions from '../PostItemActions/PostItemActions';
+import PostComments from '../PostComments/ViewNotes';
+import ImageGallery from '../../components/ImageGallery/ImageGallery';
+import PdfGallery from '../../components/PdfGallery/PdfGallery';
+import PostTags from '../PostTags/PostTags';
+import Report from '../Report/Report';
+import DeletePost from '../DeletePost/DeletePost';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -39,32 +38,21 @@ const styles = theme => ({
 });
 
 type Props = {
-  classes: Record<string, any>;
-  user: UserState;
+  classes?: Record<string, any>;
+  user?: UserState;
   noteId: number;
-  push: (...args: Array<any>) => any;
-  pop: (...args: Array<any>) => any;
+  push?: (...args: Array<any>) => any;
+  pop?: (...args: Array<any>) => any;
+  router?: any;
 };
 
-const ViewNotes = ({
-  pop,
-  classes,
-  noteId,
-  push,
-  user,
-  router
-}: Props) => {
+const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
   const [photoNote, setPhotoNote] = useState(null);
   const [report, setReport] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
   const {
     expertMode,
-    data: {
-      userId,
-      firstName: myFirstName,
-      lastName: myLastName,
-      profileImage
-    }
+    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
   } = user;
   const loadData = useCallback(async () => {
     const pn = await getNotes({
@@ -73,9 +61,7 @@ const ViewNotes = ({
     });
     setPhotoNote(pn);
     const {
-      postInfo: {
-        feedId
-      }
+      postInfo: { feedId }
     } = pn;
     logEvent({
       event: 'Feed- View Photo Note',
@@ -94,24 +80,17 @@ const ViewNotes = ({
       return;
     }
 
-    const {
-      feedId,
-      bookmarked
-    } = photoNote;
+    const { feedId, bookmarked } = photoNote;
 
     try {
-      setPhotoNote({ ...photoNote,
-        bookmarked: !bookmarked
-      });
+      setPhotoNote({ ...photoNote, bookmarked: !bookmarked });
       await bookmark({
         feedId,
         userId,
         remove: bookmarked
       });
     } catch (err) {
-      setPhotoNote({ ...photoNote,
-        bookmarked
-      });
+      setPhotoNote({ ...photoNote, bookmarked });
     }
   };
 
@@ -127,11 +106,7 @@ const ViewNotes = ({
     setDeletePost(true);
   };
 
-  const handleDeleteClose = ({
-    deleted
-  }: {
-    deleted: boolean | null | undefined;
-  }) => {
+  const handleDeleteClose = ({ deleted }: { deleted: boolean | null | undefined }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
@@ -140,9 +115,11 @@ const ViewNotes = ({
   };
 
   if (!photoNote) {
-    return <div className={classes.loader}>
+    return (
+      <div className={classes.loader}>
         <CircularProgress />
-      </div>;
+      </div>
+    );
   }
 
   const {
@@ -161,27 +138,48 @@ const ViewNotes = ({
     notes,
     thanked,
     inStudyCircle,
-    postInfo: {
-      userId: ownerId,
-      questionsCount,
-      thanksCount,
-      viewCount
-    },
+    postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
     readOnly,
     bookmarked
   } = photoNote;
-  const notesMap = notes.map(item => ({
+  const notesMap = notes.map((item) => ({
     src: item.fullNoteUrl,
     fileName: item.note,
     thumbnail: item.noteUrl
   }));
-  const images = notesMap.filter(nm => !nm.src.includes('.pdf'));
-  const pdfs = notesMap.filter(nm => nm.src.includes('.pdf'));
-  return <div className={classes.root}>
+  const images = notesMap.filter((nm) => !nm.src.includes('.pdf'));
+  const pdfs = notesMap.filter((nm) => nm.src.includes('.pdf'));
+  return (
+    <div className={classes.root}>
       <ErrorBoundary>
         <PostItem feedId={feedId}>
           <ErrorBoundary>
-            <PostItemHeader hideShare feedId={feedId} classId={classId} expertMode={expertMode} pushTo={push} router={router} pop={pop} postId={postId} typeId={typeId} currentUserId={userId} userId={ownerId} name={name} userProfileUrl={userProfileUrl} classroomName={courseDisplayName} created={created} body={body} title={title} isMarkdown bookmarked={bookmarked} roleId={roleId} role={role} onBookmark={handleBookmark} onReport={handleReport} onDelete={handleDelete} />
+            <PostItemHeader
+              hideShare
+              feedId={feedId}
+              classId={classId}
+              expertMode={expertMode}
+              pushTo={push}
+              router={router}
+              pop={pop}
+              postId={postId}
+              typeId={typeId}
+              currentUserId={userId}
+              userId={ownerId}
+              name={name}
+              userProfileUrl={userProfileUrl}
+              classroomName={courseDisplayName}
+              created={created}
+              body={body}
+              title={title}
+              isMarkdown
+              bookmarked={bookmarked}
+              roleId={roleId}
+              role={role}
+              onBookmark={handleBookmark}
+              onReport={handleReport}
+              onDelete={handleDelete}
+            />
           </ErrorBoundary>
           <ErrorBoundary>
             <ImageGallery images={images} />
@@ -193,10 +191,31 @@ const ViewNotes = ({
             <PostTags userId={userId} feedId={feedId} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PostItemActions userId={userId} ownerId={ownerId} feedId={feedId} postId={postId} typeId={typeId} name={name} userProfileUrl={profileImage} thanked={thanked} inStudyCircle={inStudyCircle} questionsCount={questionsCount} thanksCount={thanksCount} viewCount={viewCount} ownName={`${myFirstName} ${myLastName}`} onReload={loadData} />
+            <PostItemActions
+              userId={userId}
+              ownerId={ownerId}
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              name={name}
+              userProfileUrl={profileImage}
+              thanked={thanked}
+              inStudyCircle={inStudyCircle}
+              questionsCount={questionsCount}
+              thanksCount={thanksCount}
+              viewCount={viewCount}
+              ownName={`${myFirstName} ${myLastName}`}
+              onReload={loadData}
+            />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PostComments feedId={feedId} postId={postId} typeId={typeId} classId={classId} readOnly={readOnly} />
+            <PostComments
+              feedId={feedId}
+              postId={postId}
+              typeId={typeId}
+              classId={classId}
+              readOnly={readOnly}
+            />
           </ErrorBoundary>
           <ErrorBoundary>
             <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
@@ -206,20 +225,25 @@ const ViewNotes = ({
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
-    </div>;
+    </div>
+  );
 };
 
-const mapStateToProps = ({
-  user,
-  router
-}: StoreState): {} => ({
+const mapStateToProps = ({ user, router }: StoreState): {} => ({
   user,
   router
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  push: routePush,
-  pop: goBack
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      push: routePush,
+      pop: goBack
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewNotes));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(ViewNotes));

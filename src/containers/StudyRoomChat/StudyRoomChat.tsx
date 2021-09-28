@@ -1,25 +1,25 @@
-import React, { useEffect, useMemo, useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { push } from "connected-react-router";
-import Avatar from "@material-ui/core/Avatar";
-import withStyles from "@material-ui/core/styles/withStyles";
-import get from "lodash/get";
-import { fetchAvatars } from "utils/chat";
-import Chat from "containers/StudyRoomChat/Chat";
-import Typography from "@material-ui/core/Typography";
-import set from "lodash/set";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-import CloseIcon from "@material-ui/icons/Close";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { getGroupMembers } from "api/chat";
-import OnlineBadge from "components/OnlineBadge/OnlineBadge";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import type { State as StoreState } from "../../types/state";
+import React, { useEffect, useMemo, useCallback, useState } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import Avatar from '@material-ui/core/Avatar';
+import withStyles from '@material-ui/core/styles/withStyles';
+import get from 'lodash/get';
+import Typography from '@material-ui/core/Typography';
+import set from 'lodash/set';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
+import CloseIcon from '@material-ui/icons/Close';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Chat from './Chat';
+import { fetchAvatars } from '../../utils/chat';
+import { getGroupMembers } from '../../api/chat';
+import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import type { State as StoreState } from '../../types/state';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -72,20 +72,22 @@ const styles = theme => ({
 });
 
 function TabPanel(props) {
-  const {
-    children,
-    value,
-    index,
-    ...other
-  } = props;
-  return <div role="tabpanel" hidden={value !== index} style={{
-    overflow: 'auto'
-  }} {...other}>
+  const { children, value, index, ...other } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      style={{
+        overflow: 'auto'
+      }}
+      {...other}
+    >
       {value === index && <Box>{children}</Box>}
-    </div>;
+    </div>
+  );
 }
 
-const StyledTabs = withStyles(theme => ({
+const StyledTabs = withStyles((theme) => ({
   flexContainer: {
     display: 'flex',
     justifyContent: 'space-evenly',
@@ -93,10 +95,15 @@ const StyledTabs = withStyles(theme => ({
     borderBottom: '1px solid #FFFFFF',
     padding: theme.spacing(1, 0)
   }
-}))(props => <Tabs {...props} TabIndicatorProps={{
-  children: <span />
-}} />);
-const StyledTab = withStyles(theme => ({
+}))((props: any) => (
+  <Tabs
+    {...props}
+    TabIndicatorProps={{
+      children: <span />
+    }}
+  />
+));
+const StyledTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     color: '#fff',
@@ -113,15 +120,17 @@ const StyledTab = withStyles(theme => ({
       borderRadius: 20
     }
   }
-}))(props => <Tab disableRipple {...props} />);
+}))((props: any) => <Tab disableRipple {...props} />);
+
 type Props = {
-  classes: Record<string, any>;
-  user: Record<string, any>;
-  router: Record<string, any>;
-  open: boolean;
-  chat: Record<string, any>;
-  selectedTab: number;
-  participants: Record<string, any>;
+  classes?: Record<string, any>;
+  user?: Record<string, any>;
+  router?: Record<string, any>;
+  open?: boolean;
+  chat?: Record<string, any>;
+  selectedTab?: number;
+  participants?: Record<string, any>;
+  handleClose?: any;
 };
 
 const StudyRoomChat = ({
@@ -162,8 +171,8 @@ const StudyRoomChat = ({
     const initAvatars = async () => {
       const twilioChannel = get(channel, 'twilioChannel');
       const av = await fetchAvatars(twilioChannel);
-      setMembers(members => {
-        av.forEach(a => {
+      setMembers((members) => {
+        av.forEach((a) => {
           set(members, `${a.identity}.avatar`, a.profileImageUrl);
         });
         return members;
@@ -174,7 +183,7 @@ const StudyRoomChat = ({
       const res = await getGroupMembers({
         chatId: channelId
       });
-      const members = res.map(m => ({
+      const members = res.map((m) => ({
         registered: m.registered,
         firstname: m.firstName,
         lastname: m.lastName,
@@ -185,7 +194,7 @@ const StudyRoomChat = ({
         isOnline: m.isOnline
       }));
       const newMembers = {};
-      members.forEach(m => {
+      members.forEach((m) => {
         newMembers[m.userId] = m;
       });
       setMembers(newMembers);
@@ -193,11 +202,9 @@ const StudyRoomChat = ({
     };
 
     if (channel && channel.members) {
-      const {
-        members
-      } = channel;
+      const { members } = channel;
       const newMembers = {};
-      members.forEach(m => {
+      members.forEach((m) => {
         newMembers[m.userId] = m;
       });
       setMembers(newMembers);
@@ -211,14 +218,21 @@ const StudyRoomChat = ({
   const handleChangeTabs = useCallback((_, value) => {
     setTabs(value);
   }, []);
-  const participantsIdList = useMemo(() => participants.map(p => p.participant.identity), [participants]);
-  const memberListOnVideo = useMemo(() => Object.keys(members).filter(member => participantsIdList.indexOf(member) > -1), [members, participantsIdList]);
+  const participantsIdList = useMemo(
+    () => participants.map((p) => p.participant.identity),
+    [participants]
+  );
+  const memberListOnVideo = useMemo(
+    () => Object.keys(members).filter((member) => participantsIdList.indexOf(member) > -1),
+    [members, participantsIdList]
+  );
 
   if (!open) {
     return null;
   }
 
-  return <ErrorBoundary>
+  return (
+    <ErrorBoundary>
       <ClickAwayListener onClickAway={handleClose}>
         <div className={classes.root}>
           <CloseIcon className={classes.closeIcon} onClick={handleClose} />
@@ -230,16 +244,16 @@ const StudyRoomChat = ({
           <TabPanel value={tabs} index={0}>
             <div className={classes.memberContainer}>
               <Typography className={classes.memberTitle}>All</Typography>
-              {memberListOnVideo.map(member => {
-              const memberObj = members[member];
-              const {
-                avatar,
-                firstname,
-                lastname,
-                isOnline
-              } = memberObj;
-              return isOnline && <div key={member} className={classes.member}>
-                      <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
+              {memberListOnVideo.map((member) => {
+                const memberObj = members[member];
+                const { avatar, firstname, lastname, isOnline } = memberObj;
+                return (
+                  isOnline && (
+                    <div key={member} className={classes.member}>
+                      <OnlineBadge
+                        isOnline={isOnline}
+                        bgColorPath="circleIn.palette.feedBackground"
+                      >
                         <Avatar src={avatar} className={classes.avatar}>
                           {firstname[0]}
                           {lastname[0]}
@@ -248,8 +262,10 @@ const StudyRoomChat = ({
                       <Typography className={classes.fullname}>
                         {firstname} {lastname}
                       </Typography>
-                    </div>;
-            })}
+                    </div>
+                  )
+                );
+              })}
             </div>
           </TabPanel>
           <TabPanel value={tabs} index={1}>
@@ -257,21 +273,25 @@ const StudyRoomChat = ({
           </TabPanel>
         </div>
       </ClickAwayListener>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
 
-const mapStateToProps = ({
-  router,
-  user,
-  chat
-}: StoreState): {} => ({
+const mapStateToProps = ({ router, user, chat }: StoreState): {} => ({
   user,
   router,
   chat
 });
 
-const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
-  pushTo: push
-}, dispatch);
+const mapDispatchToProps = (dispatch: any): {} =>
+  bindActionCreators(
+    {
+      pushTo: push
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(StudyRoomChat));
+export default connect<{}, {}, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles as any)(StudyRoomChat));

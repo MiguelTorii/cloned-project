@@ -1,27 +1,26 @@
-// @ts-expect-error
-import React, { useState, useEffect } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import cx from "classnames";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import MobileStepper from "@material-ui/core/MobileStepper";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Lottie from "react-lottie";
-import animation1 from "../../assets/lottie/page_turning.json";
-import animation2 from "../../assets/lottie/coinpig.json";
-import giftCards from "../../assets/img/gift-cards.png";
-import addClasses from "../../assets/img/add-classes.png";
-import withRoot from "../../withRoot";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import Dialog, { dialogStyle } from "../../components/Dialog/Dialog";
-import { logEvent, logEventLocally } from "../../api/analytics";
-import { updateProfile as updateUserProfile } from "../../api/user";
+import React, { useState, useEffect } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import cx from 'classnames';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Lottie from 'react-lottie';
+import animation1 from '../../assets/lottie/page_turning.json';
+import animation2 from '../../assets/lottie/coinpig.json';
+import giftCards from '../../assets/img/gift-cards.png';
+import addClasses from '../../assets/img/add-classes.png';
+import withRoot from '../../withRoot';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
+import { logEvent, logEventLocally } from '../../api/analytics';
+import { updateProfile as updateUserProfile } from '../../api/user';
 
-const styles = theme => ({
+const styles = (theme) => ({
   content: {
     alignItems: 'center',
     display: 'flex',
@@ -73,25 +72,17 @@ const styles = theme => ({
     maxWidth: 600,
     textAlign: 'center'
   },
-  dialog: { ...dialogStyle,
-    padding: 20,
-    width: 750
-  }
+  dialog: { ...dialogStyle, padding: 20, width: 750 }
 });
 
 type Props = {
-  classes: Record<string, any>;
-  open: boolean;
-  userId: number;
-  updateOnboarding: (...args: Array<any>) => any;
+  classes?: Record<string, any>;
+  open?: boolean;
+  userId?: string;
+  updateOnboarding?: (...args: Array<any>) => any;
 };
 
-const Onboarding = ({
-  classes,
-  open,
-  userId,
-  updateOnboarding
-}: Props) => {
+const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   const [activeStep, setActiveStep] = useState(1);
   const [studyPreference, setStudyPreference] = useState('');
   const [studyMethod, setStudyMethod] = useState('');
@@ -113,7 +104,7 @@ const Onboarding = ({
     }
   }, [open, userId]);
 
-  const renderTitle = step => {
+  const renderTitle = (step) => {
     switch (step) {
       case 1:
         return 'We’re here to help you pass your classes.';
@@ -129,7 +120,7 @@ const Onboarding = ({
     }
   };
 
-  const renderSubtitle = step => {
+  const renderSubtitle = (step) => {
     switch (step) {
       case 1:
         return 'But first, we need to get to know you better.';
@@ -145,7 +136,7 @@ const Onboarding = ({
     }
   };
 
-  const renderBody = step => {
+  const renderBody = (step) => {
     switch (step) {
       case 1:
         return <Step1 />;
@@ -161,13 +152,21 @@ const Onboarding = ({
     }
   };
 
-  const Step1 = () => <div>
-      <div style={{
-      display: 'flex'
-    }}>
+  const Step1 = () => (
+    <div>
+      <div
+        style={{
+          display: 'flex'
+        }}
+      >
         <FormControl className={classes.formControl}>
           <InputLabel id="select-preference-label">How do you prefer to study?</InputLabel>
-          <Select id="select-preference" labelId="select-preference-label" onChange={event => setStudyPreference(event.target.value)} value={studyPreference}>
+          <Select
+            id="select-preference"
+            labelId="select-preference-label"
+            onChange={(event) => setStudyPreference(event.target.value as any)}
+            value={studyPreference}
+          >
             <MenuItem value="By myself">By myself</MenuItem>
             <MenuItem value="In a group of 2-5">In a group of 2-5</MenuItem>
             <MenuItem value="in a group of 6-10">in a group of 6-10</MenuItem>
@@ -175,10 +174,15 @@ const Onboarding = ({
         </FormControl>
         <FormControl className={classes.formControl}>
           <InputLabel id="select-test-label">How do you study for tests?</InputLabel>
-          <Select id="select-test" labelId="select-test-label" onChange={event => {
-          setStudyMethod(event.target.value);
-          setOther('');
-        }} value={studyMethod}>
+          <Select
+            id="select-test"
+            labelId="select-test-label"
+            onChange={(event) => {
+              setStudyMethod(event.target.value as any);
+              setOther('');
+            }}
+            value={studyMethod}
+          >
             <MenuItem value="Read and highlight">Read and highlight</MenuItem>
             <MenuItem value="Read and take notes">Read and take notes</MenuItem>
             <MenuItem value="Read and make flash cards">Read and make flash cards</MenuItem>
@@ -186,72 +190,126 @@ const Onboarding = ({
           </Select>
         </FormControl>
       </div>
-      <div style={{
-      display: 'flex'
-    }}>
+      <div
+        style={{
+          display: 'flex'
+        }}
+      >
         <FormControl className={classes.formControl}>
           <InputLabel id="select-frequency-label">How often do you study each week?</InputLabel>
-          <Select id="select-frequency" labelId="select-frequency-label" onChange={event => setStudyLength(event.target.value)} value={studyLength}>
+          <Select
+            id="select-frequency"
+            labelId="select-frequency-label"
+            onChange={(event) => setStudyLength(event.target.value as any)}
+            value={studyLength}
+          >
             <MenuItem value="1-2 time">1-2 times</MenuItem>
             <MenuItem value="3-5 time">3-5 times</MenuItem>
             <MenuItem value="Everyday">Everyday</MenuItem>
           </Select>
         </FormControl>
-        {studyMethod === 'None' && <FormControl className={classes.formControl}>
-            <TextField autoFocus id="text-other" label="Tell us how you study..." onChange={event => setOther(event.target.value)} value={other} />
-          </FormControl>}
+        {studyMethod === 'None' && (
+          <FormControl className={classes.formControl}>
+            <TextField
+              autoFocus
+              id="text-other"
+              label="Tell us how you study..."
+              onChange={(event) => setOther(event.target.value)}
+              value={other}
+            />
+          </FormControl>
+        )}
       </div>
       <div className={classes.buttons}>
-        <Button color="primary" disabled={!studyPreference || !studyMethod || !studyLength || studyMethod === 'None' && other === ''} className={classes.button} onClick={() => setActiveStep(2)} variant="contained">
+        <Button
+          color="primary"
+          disabled={
+            !studyPreference ||
+            !studyMethod ||
+            !studyLength ||
+            (studyMethod === 'None' && other === '')
+          }
+          className={classes.button}
+          onClick={() => setActiveStep(2)}
+          variant="contained"
+        >
           Next
         </Button>
       </div>
-      <Lottie options={{
-      loop: true,
-      autoplay: true,
-      animationData: animation1
-    }} width={250} height={250} className={classes.img} />
-    </div>;
+      <Lottie
+        options={{
+          loop: true,
+          autoplay: true,
+          animationData: animation1
+        }}
+        width={250}
+        height={250}
+        className={classes.img}
+      />
+    </div>
+  );
 
-  const Step2 = () => <div>
+  const Step2 = () => (
+    <div>
       <Typography className={classes.money} component="div" variant="h4">
         $500 - $2500
       </Typography>
-      <Lottie options={{
-      loop: true,
-      autoplay: true,
-      animationData: animation2
-    }} width={200} height={200} className={classes.img} />
+      <Lottie
+        options={{
+          loop: true,
+          autoplay: true,
+          animationData: animation2
+        }}
+        width={200}
+        height={200}
+        className={classes.img}
+      />
       <Typography component="div" className={classes.subtitle}>
         And <b>gift cards</b> to your favorite places and services with over 30 options!
       </Typography>
-      <div style={{
-      textAlign: 'center',
-      margin: '16px 0px'
-    }}>
+      <div
+        style={{
+          textAlign: 'center',
+          margin: '16px 0px'
+        }}
+      >
         <img src={giftCards} alt="Gift cards" />
       </div>
       <div className={classes.buttons}>
-        <Button className={classes.button} color="primary" onClick={() => setActiveStep(1)} variant="outlined">
+        <Button
+          className={classes.button}
+          color="primary"
+          onClick={() => setActiveStep(1)}
+          variant="outlined"
+        >
           Back
         </Button>
-        <Button className={classes.button} color="primary" onClick={() => {
-        setActiveStep(3);
-        logEvent({
-          event: 'Onboarding- Last Onboarding Opened',
-          props: {}
-        });
-      }} variant="contained">
+        <Button
+          className={classes.button}
+          color="primary"
+          onClick={() => {
+            setActiveStep(3);
+            logEvent({
+              event: 'Onboarding- Last Onboarding Opened',
+              props: {}
+            });
+          }}
+          variant="contained"
+        >
           Next
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 
-  const Step3 = () => <div>
-      <div style={{
-      textAlign: 'center',
-      margin: '16px 0px'
-    }}>
+  const Step3 = () => (
+    <div>
+      <div
+        style={{
+          textAlign: 'center',
+          margin: '16px 0px'
+        }}
+      >
         <img src={addClasses} alt="Add classes" />
       </div>
       <Typography component="div" className={classes.subtitle}>
@@ -259,45 +317,72 @@ const Onboarding = ({
         studying!
       </Typography>
       <div className={classes.buttons}>
-        <Button className={cx(classes.button, classes.buttonLarge)} color="primary" onClick={async () => {
-        await updateUserProfile({
-          userId,
-          fields: [{
-            field: 'study_preference',
-            updated_value: studyPreference
-          }, {
-            field: 'study_method',
-            updated_value: studyMethod === 'None' ? other : studyMethod
-          }, {
-            field: 'study_length',
-            updated_value: studyLength
-          }]
-        });
-        logEventLocally({
-          category: 'Onboarding',
-          objectId: userId,
-          type: 'Ended'
-        });
-        updateOnboarding({
-          viewedOnboarding: true
-        });
-      }} variant="contained">
+        <Button
+          className={cx(classes.button, classes.buttonLarge)}
+          color="primary"
+          onClick={async () => {
+            await updateUserProfile({
+              userId,
+              fields: [
+                {
+                  field: 'study_preference',
+                  updated_value: studyPreference
+                },
+                {
+                  field: 'study_method',
+                  updated_value: studyMethod === 'None' ? other : studyMethod
+                },
+                {
+                  field: 'study_length',
+                  updated_value: studyLength
+                }
+              ]
+            });
+            logEventLocally({
+              category: 'Onboarding',
+              objectId: userId,
+              type: 'Ended'
+            });
+            updateOnboarding({
+              viewedOnboarding: true
+            });
+          }}
+          variant="contained"
+        >
           Get Started
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 
-  return <ErrorBoundary>
-      <Dialog ariaDescribedBy="onboarding-description" className={classes.dialog} disableEscapeKeyDown open={open} showHeader={false} title={renderTitle(activeStep)}>
+  return (
+    <ErrorBoundary>
+      <Dialog
+        ariaDescribedBy="onboarding-description"
+        className={classes.dialog}
+        disableEscapeKeyDown
+        open={open}
+        showHeader={false}
+        title={renderTitle(activeStep)}
+      >
         <div className={classes.content}>
           <Typography id="onboarding-description" className={classes.subtitle}>
             {renderSubtitle(activeStep)}
           </Typography>
           {renderBody(activeStep)}
-          <MobileStepper activeStep={activeStep - 1} className={classes.stepper} position="static" steps={3} variant="dots" />
+          <MobileStepper
+            activeStep={activeStep - 1}
+            className={classes.stepper}
+            position="static"
+            steps={3}
+            variant="dots"
+            backButton={''}
+            nextButton={''}
+          />
         </div>
       </Dialog>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
 
-export default withRoot(withStyles(styles)(Onboarding));
+export default withRoot(withStyles(styles as any)(Onboarding));

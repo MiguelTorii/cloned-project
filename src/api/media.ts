@@ -1,7 +1,9 @@
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import { getToken } from "./utils";
-import type { PresignedURL } from "../types/models";
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import { getToken } from './utils';
+import type { PresignedURL } from '../types/models';
+import { APIPresignedURL } from './models/APIPresignedURL';
+
 export const getPresignedURLs = async ({
   userId,
   type,
@@ -13,15 +15,16 @@ export const getPresignedURLs = async ({
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
-    const fileArray = fileNames.map(item => `&file_name=${item}`).join('');
-    const result = await axios.get(`${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}${fileArray}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const fileArray = fileNames.map((item) => `&file_name=${item}`).join('');
+    const result = await axios.get(
+      `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}${fileArray}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data
-    } = result;
+    );
+    const { data } = result;
     return data;
   } catch (err) {
     console.log(err);
@@ -39,18 +42,19 @@ export const getPresignedURL = async ({
 }): Promise<PresignedURL> => {
   try {
     const token = await getToken();
-    const result = await axios.get(`${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}&media_type=${mediaType}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result: { data: APIPresignedURL } = await axios.get(
+      `${API_ROUTES.MEDIA_URL}/${type}?user_id=${userId}&media_type=${mediaType}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    const {
-      data
-    } = result;
+    );
+    const { data } = result;
     const presignedURL = {
-      url: String((data.url as string) || ''),
-      readUrl: String((data.read_url as string) || ''),
-      mediaId: String((data.media_id as string) || '')
+      url: data.url || '',
+      readUrl: data.read_url || '',
+      mediaId: data.media_id || ''
     };
     return presignedURL;
   } catch (err) {
