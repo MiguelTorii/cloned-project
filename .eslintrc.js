@@ -10,9 +10,9 @@ module.exports = {
   plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
   rules: {
     'prettier/prettier': 'error',
-    'indent': 'off',
+    indent: 'off',
     'no-multiple-empty-lines': 'error',
-    curly: ["error", "all"],
+    curly: ['error', 'all'],
     'brace-style': 'error',
     'no-nested-ternary': 'error',
     'function-call-argument-newline': ['error', 'consistent'],
@@ -76,7 +76,11 @@ module.exports = {
 
     'import/no-duplicates': 'error',
     'import/order': 'error',
-    'import/extensions': ['error', 'never', { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }],
+    'import/extensions': [
+      'error',
+      'never',
+      { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }
+    ],
     'import/newline-after-import': 'error',
 
     // TODO turn the 'import' rules back on
@@ -94,13 +98,14 @@ module.exports = {
         extensions: ['.js', '.jsx']
       }
     ],
+    'react/destructuring-assignment': ['error', 'always'],
 
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'off',
     'react/no-unused-state': 'off',
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',
-    'react/destructuring-assignment': 'off',
+    // 'react/destructuring-assignment': 'off',
     'react/jsx-indent': 'off',
     'react/static-property-placement': 'off',
     'react/no-access-state-in-setstate': 'off',

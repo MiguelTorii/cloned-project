@@ -452,6 +452,9 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleSaveProfile = async (avatar, fields) => {
+    const {
+      user: { data }
+    } = this.props;
     this.setState({
       isUpdatingProfile: true
     });
@@ -464,7 +467,7 @@ class Profile extends React.PureComponent<Props, State> {
       }
     }
 
-    const { userId } = this.props.user.data;
+    const { userId } = data;
 
     await updateProfile({
       userId,
