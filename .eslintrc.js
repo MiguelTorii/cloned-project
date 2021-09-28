@@ -10,9 +10,9 @@ module.exports = {
   plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
   rules: {
     'prettier/prettier': 'error',
-    'indent': 'off',
+    indent: 'off',
     'no-multiple-empty-lines': 'error',
-    curly: ["error", "all"],
+    curly: ['error', 'all'],
     'brace-style': 'error',
     'no-nested-ternary': 'error',
     'function-call-argument-newline': ['error', 'consistent'],
@@ -76,7 +76,11 @@ module.exports = {
 
     'import/no-duplicates': 'error',
     'import/order': 'error',
-    'import/extensions': ['error', 'never', { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }],
+    'import/extensions': [
+      'error',
+      'never',
+      { svg: 'always', gif: 'always', png: 'always', mp4: 'always', json: 'always', pdf: 'always' }
+    ],
     'import/newline-after-import': 'error',
 
     // TODO turn the 'import' rules back on

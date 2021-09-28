@@ -2,6 +2,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import { sortableContainer, sortableElement, sortableHandle } from 'react-sortable-hoc';
+import { Box } from '@material-ui/core';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -48,7 +49,7 @@ const UploadImagesForm = ({
                   {loading && <CircularProgress size={50} />}
                   {!loading && (
                     <>
-                      <div>Drag and drop images here or</div>
+                      <Box mr={2}>Drag and drop images here or</Box>
                       <TransparentButton onClick={() => {}}>Upload Notes</TransparentButton>
                     </>
                   )}
