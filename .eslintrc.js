@@ -98,13 +98,13 @@ module.exports = {
         extensions: ['.js', '.jsx']
       }
     ],
+    'react/destructuring-assignment': ['error', 'always'],
 
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'off',
     'react/no-unused-state': 'off',
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',
-    'react/destructuring-assignment': 'off',
     'react/jsx-indent': 'off',
     'react/static-property-placement': 'off',
     'react/no-access-state-in-setstate': 'off',

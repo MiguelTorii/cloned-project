@@ -475,7 +475,8 @@ class ChatChannel extends React.PureComponent<Props, State> {
   };
 
   isMemberOnline = (userId) => {
-    const { members = [] } = this.props.localChannel;
+    const { localChannel } = this.props;
+    const { members = [] } = localChannel;
     const found = members.find((member) => member.userId === userId);
     return found?.isOnline;
   };
