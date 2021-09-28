@@ -7,7 +7,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended'
   ],
-  plugins: ['prettier', 'jsx-a11y', 'flowtype', 'react', 'react-hooks'],
+  plugins: ['prettier', 'jsx-a11y', 'react', 'react-hooks'],
   rules: {
     'prettier/prettier': 'error',
     indent: 'off',
@@ -138,40 +138,6 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
-
-    // TODO remove all 'flowtype' rules (with a switch to TS)
-    'flowtype/boolean-style': ['error', 'boolean'],
-    'flowtype/define-flow-type': 'error',
-    'flowtype/delimiter-dangle': ['error', 'never'],
-    'flowtype/generic-spacing': ['error', 'never'],
-    'flowtype/no-mixed': 'error',
-    'flowtype/no-primitive-constructor-types': 'off',
-    'flowtype/no-types-missing-file-annotation': 'error',
-    'flowtype/no-weak-types': 'off',
-    'flowtype/object-type-delimiter': ['error', 'comma'],
-    'flowtype/require-parameter-type': 'off',
-    'flowtype/require-readonly-react-props': 'off',
-    'flowtype/require-return-type': [
-      'off',
-      'always',
-      {
-        annotateUndefined: 'never'
-      }
-    ],
-    'flowtype/require-valid-file-annotation': 'error',
-    'flowtype/semi': ['error', 'always'],
-    'flowtype/space-after-type-colon': 'off',
-    'flowtype/space-before-generic-bracket': ['error', 'never'],
-    'flowtype/space-before-type-colon': ['error', 'never'],
-    'flowtype/type-id-match': ['off', '^([A-Z][a-z0-9]+)+Type$'],
-    'flowtype/union-intersection-spacing': ['error', 'always'],
-    'flowtype/use-flow-type': 'error',
-    'flowtype/valid-syntax': 'error'
-  },
-  settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: false
-    }
   },
   globals: {
     cy: true,
@@ -190,6 +156,5 @@ module.exports = {
     MutationObserver: true,
     Node: true,
     Image: true
-  },
-  parser: '@babel/eslint-parser'
+  }
 };
