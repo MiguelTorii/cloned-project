@@ -18,16 +18,16 @@ const QuillToolbar = ({ elementId }: Props) => {
 
   return (
     <div id={elementId} className={classes.root} onClick={handleClick}>
-      <button className="ql-bold" />
-      <button className="ql-italic" />
-      <button className="ql-underline" />
-      <button className="ql-strike" />
-      <button className="ql-blockquote" />
-      <button className="ql-list" value="ordered" />
-      <button className="ql-list" value="bullet" />
-      <button className="ql-indent" value="-1" />
-      <button className="ql-indent" value="+1" />
-      <button className="ql-clean" />
+      <button type="button" className="ql-bold" />
+      <button type="button" className="ql-italic" />
+      <button type="button" className="ql-underline" />
+      <button type="button" className="ql-strike" />
+      <button type="button" className="ql-blockquote" />
+      <button type="button" className="ql-list" value="ordered" />
+      <button type="button" className="ql-list" value="bullet" />
+      <button type="button" className="ql-indent" value="-1" />
+      <button type="button" className="ql-indent" value="+1" />
+      <button type="button" className="ql-clean" />
     </div>
   );
 };

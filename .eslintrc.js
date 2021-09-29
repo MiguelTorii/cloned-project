@@ -110,7 +110,7 @@ module.exports = {
     'react/no-access-state-in-setstate': 'off',
     'react/require-default-props': 'off',
     'react/jsx-closing-tag-location': 'off',
-    'react/button-has-type': 'off',
+    'react/button-has-type': 'error',
     'react/no-array-index-key': 'off',
     'react/default-props-match-prop-types': 'off',
     'react/jsx-closing-bracket-location': 'off',
