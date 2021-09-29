@@ -99,6 +99,7 @@ module.exports = {
       }
     ],
     'react/destructuring-assignment': ['error', 'always'],
+    'react/static-property-placement': ['error', 'static public field'],
 
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'off',
@@ -106,7 +107,6 @@ module.exports = {
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',
     'react/jsx-indent': 'off',
-    'react/static-property-placement': 'off',
     'react/no-access-state-in-setstate': 'off',
     'react/require-default-props': 'off',
     'react/jsx-closing-tag-location': 'off',
