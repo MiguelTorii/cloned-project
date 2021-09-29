@@ -632,10 +632,9 @@ class ChatChannel extends React.PureComponent<Props, State> {
             </div>
             {typing !== '' && (
               <div className={classes.typing}>
-                <Typography
-                  className={classes.typingText}
-                  variant="subtitle1"
-                >{`${typing} is typing ...`}</Typography>
+                <Typography className={classes.typingText} variant="subtitle1">
+                  {`${typing} is typing ...`}
+                </Typography>
               </div>
             )}
             <ChatTextField

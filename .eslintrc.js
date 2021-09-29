@@ -109,7 +109,7 @@ module.exports = {
     'react/static-property-placement': 'off',
     'react/no-access-state-in-setstate': 'off',
     'react/require-default-props': 'off',
-    'react/jsx-closing-tag-location': 'off',
+    'react/jsx-closing-tag-location': 'error',
     'react/button-has-type': 'off',
     'react/no-array-index-key': 'off',
     'react/default-props-match-prop-types': 'off',

@@ -45,11 +45,9 @@ class FeedItem extends React.PureComponent<Props, State> {
           return (
             <div className={classes.flashCard}>
               <img src={flashcardImage} className={classes.flashCardImage} alt="Flascarhds" />
-              <Typography
-                className={classes.deckCount}
-                variant="caption"
-                style={{ fontSize: 8 }}
-              >{`${deckSize} Cards`}</Typography>
+              <Typography className={classes.deckCount} variant="caption" style={{ fontSize: 8 }}>
+                {`${deckSize} Cards`}
+              </Typography>
             </div>
           );
         case 4:
