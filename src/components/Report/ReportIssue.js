@@ -197,9 +197,9 @@ const ReportIssue = ({
           </FormControl>
 
           <Typography variant="body1" className={classes.noteText}>
-            The safety and well-being of all of our CircleIn users is important to us. By pressing
-            &quot;Submit&quot; on this report, you authorize CircleIn to access the data to
-            investigate the situation. You may be contacted for further information.
+            {
+              'The safety and well-being of all of our CircleIn users is important to us. By pressing "Submit" on this report, you authorize CircleIn to access the data to investigate the situation. You may be contacted for further information.'
+            }
           </Typography>
 
           <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -226,10 +226,9 @@ const ReportIssue = ({
       {reported && (
         <>
           <Typography variant="body1" className={classes.finalNote}>
-            Thank you for submitting your report. We take reports very seriously. We want you to
-            have a sefe experience and we&apos;re sorry you&apos;re experiencing some issues. We may
-            contact you soon if we have furthur questions about this incident. For additional
-            support please email us at &nbsp;
+            {
+              "Thank you for submitting your report. We take reports very seriously. We want you to have a safe experience and we're sorry you're experiencing some issues. We may contact you soon if we have furthur questions about this incident. For additional support please email us at "
+            }
             <a className={classes.email} href="mailto:support@circleinapp.com">
               support@circleinapp.com
             </a>

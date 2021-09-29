@@ -77,8 +77,9 @@ const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
           <span role="img" aria-label="wave">
             👋
           </span>{' '}
-          We&apos;re so happy you&apos;re here! This classmate isn&apos;t on CircleIn yet but you
-          can still send them a chat. They will receive an email to let them know you messaged them!
+          {
+            "We're so happy you're here! This classmate isn't on CircleIn yet but you can still send them a chat. They will receive an email to let them know you messaged them!"
+          }
         </Typography>
         <LoadImg url={EmptyUnregistered} />
       </Box>

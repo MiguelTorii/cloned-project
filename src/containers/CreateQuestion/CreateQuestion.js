@@ -363,7 +363,7 @@ const CreateQuestion = ({
         >
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12} md={2}>
-              <Typography variant="subtitle1">What&apos;s your question?</Typography>
+              <Typography variant="subtitle1">{"What's your question?"}</Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={10}>
               <OutlinedTextValidator

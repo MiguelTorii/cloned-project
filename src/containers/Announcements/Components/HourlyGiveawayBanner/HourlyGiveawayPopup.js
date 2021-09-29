@@ -65,7 +65,7 @@ const HourlyGiveawayPopup = ({ classes, hourlyReward }: Props) => {
       <div className={classes.row}>
         <div className={classes.subtitle}>How do I qualify?</div>
         <div className={classes.text}>
-          It&apos;s super simple to win a $10 - $50 {hourlyReward} (maybe even $100)! Click the{' '}
+          {"It's super simple to win a $10 - $50"} {hourlyReward} (maybe even $100)! Click the{' '}
           <p className={classes.newPost}>+ Create New Post</p> button, and share notes, create
           flashcards or share a helpful link to win
         </div>
@@ -96,8 +96,9 @@ const HourlyGiveawayPopup = ({ classes, hourlyReward }: Props) => {
       <div className={classes.row}>
         <div className={classes.subtitle}>Can I win multiple times in a week?</div>
         <div className={classes.text}>
-          Yes. you can win each day, but don&apos;t spam CircleIn. If you have good notes
-          you&apos;ve taken from lectures in 4 different classes, that counts as 4 posts.
+          {
+            "Yes. you can win each day, but don't spam CircleIn. If you have good notes you've taken from lectures in 4 different classes, that counts as 4 posts."
+          }
           <br />
           <br />
           If you are getting ready for upcoming tests in 3 different classes, creating 3 different
@@ -105,14 +106,14 @@ const HourlyGiveawayPopup = ({ classes, hourlyReward }: Props) => {
         </div>
       </div>
       <div className={classes.row}>
-        <div className={classes.subtitle}>How do I know if I&apos;ve won?</div>
+        <div className={classes.subtitle}>{"How do I know if I've won?"}</div>
         <div className={classes.text}>
-          At the end of each day, we&apos;ll email up to 300 gift cards to students at your school.
+          {"At the end of each day, we'll email up to 300 gift cards to students at your school."}
         </div>
       </div>
       <div className={classes.row}>
         <div className={classes.subtitle}>
-          What if my classmates haven&apos;t joined CircleIn yet?
+          {"What if my classmates haven't joined CircleIn yet?"}
         </div>
         <div className={classes.text}>
           Tell your classmates to go to

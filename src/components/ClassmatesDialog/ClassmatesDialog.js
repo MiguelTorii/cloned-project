@@ -125,7 +125,8 @@ const ClassmatesDialog = ({
     return (
       <div>
         <div className={classes.text}>
-          Don&apos;t see {expertMode ? 'students' : 'your classmates'}?
+          {"Don't see "}
+          {expertMode ? 'students' : 'your classmates'}?
           <div
             className={classes.link}
             onClick={() => {

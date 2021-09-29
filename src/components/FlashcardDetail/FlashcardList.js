@@ -45,7 +45,7 @@ const FlashcardList = ({
     <div className={classes.root}>
       {hardCount > 0 && (
         <div className={classes.hardCount}>
-          Marked as Didn&apos;t Remember {hardCount} time{hardCount === 1 ? '' : 's'}
+          {"Marked as Didn't Remember "} {hardCount} time{hardCount === 1 ? '' : 's'}
         </div>
       )}
       <Grid

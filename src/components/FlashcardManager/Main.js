@@ -352,7 +352,7 @@ const FlashcardManager = ({
             />
           ) : (
             <div className={classes.emptyState}>
-              You don&apos;t have any cards in this stack! <br />
+              {"You don't have any cards in this stack!"} <br />
               <br />
               Click a different stack on the left side to view more cards.
             </div>
@@ -407,7 +407,7 @@ const FlashcardManager = ({
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you&apos;ll reset your progress. Are you sure you want to restart?
+        {"If you Start Over, then you'll reset your progress. Are you sure you want to restart?"}
       </Dialog>
     </>
   );

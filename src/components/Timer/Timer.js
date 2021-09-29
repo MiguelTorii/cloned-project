@@ -152,7 +152,7 @@ const Timer = ({ defaultStatus }) => {
         )}
         {TIMER_STATUS.TIME_UP === status && (
           <Button className={classes.timeupButton} disabled>
-            Time&apos;s Up
+            {"Time's Up"}
           </Button>
         )}
         {TIMER_STATUS.PAUSED === status && (

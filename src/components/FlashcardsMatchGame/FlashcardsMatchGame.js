@@ -496,7 +496,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you&apos;ll reset your progress. Are you sure you want to restart?
+        {"If you Start Over, then you'll reset your progress. Are you sure you want to restart?"}
       </Dialog>
       <ShareLinkModal
         open={isShareModalOpen}

@@ -186,7 +186,7 @@ const CommentQuill = ({
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
         <Typography component="p" variant="subtitle1" className={classes.errorMessage}>
-          We couldn&apos;t post your comment for some reason. 😥
+          {"We couldn't post your comment for some reason. 😥"}
         </Typography>
       </div>
     </div>
