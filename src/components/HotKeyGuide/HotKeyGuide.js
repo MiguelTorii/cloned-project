@@ -23,7 +23,7 @@ const HotKeyGuide = ({ data }) => {
 };
 
 HotKeyGuide.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.arrayOf.isRequired
 };
 
 export default HotKeyGuide;

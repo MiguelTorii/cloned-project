@@ -473,7 +473,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
 
 FlashcardsQuiz.propTypes = {
   flashcardId: PropTypes.number.isRequired,
-  cards: PropTypes.array.isRequired,
+  cards: PropTypes.arrayOf.isRequired,
   onClose: PropTypes.func
 };
 

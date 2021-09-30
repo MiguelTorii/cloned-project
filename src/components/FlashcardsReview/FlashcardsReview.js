@@ -550,7 +550,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
 FlashcardsReview.propTypes = {
   flashcardId: PropTypes.number.isRequired,
   flashcardTitle: PropTypes.string,
-  cards: PropTypes.array.isRequired,
+  cards: PropTypes.arrayOf.isRequired,
   onClose: PropTypes.func
 };
 

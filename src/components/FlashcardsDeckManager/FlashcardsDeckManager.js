@@ -328,7 +328,7 @@ const FlashcardsDeckManager = ({
 FlashcardsDeckManager.propTypes = {
   title: PropTypes.string.isRequired,
   submitText: PropTypes.string,
-  data: PropTypes.object,
+  data: PropTypes.shape,
   isSubmitting: PropTypes.bool,
   disableClass: PropTypes.bool,
   onSubmit: PropTypes.func
