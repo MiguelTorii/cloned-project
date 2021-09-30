@@ -258,9 +258,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
     }
   };
 
-  renderComments = () => {
+  renderCommentItem = (item) => {
     const {
-      classes,
       user: {
         data: { userId, profileImage, firstName, lastName }
       },
@@ -270,9 +269,150 @@ class ViewNotes extends React.PureComponent<Props, State> {
       isOwner,
       classId
     } = this.props;
-    const { comments, items, isLoading, loadViewMoreComment, replyCommentId } = this.state;
+    const { isLoading, replyCommentId } = this.state;
 
     const name = `${firstName} ${lastName}`;
+    return (
+      <div key={item.id}>
+        <PostItemComment
+          id={item.id}
+          replyCommentId={replyCommentId}
+          role={item.user.role}
+          roleId={item.user.roleId}
+          ownProfileUrl={profileImage}
+          ownName={name}
+          ownerId={item.user.userId}
+          firstName={item.user.firstName}
+          lastName={item.user.lastName}
+          profileImageUrl={item.user.profileImageUrl}
+          created={item.created}
+          comment={item.comment}
+          thanksCount={item.thanksCount}
+          thanked={item.thanked}
+          isOnline={item.user.isOnline}
+          rootCommentId={item.id}
+          accepted={item.accepted}
+          isLoading={isLoading}
+          isQuestion={isQuestion}
+          isOwn={item.user.userId === userId}
+          readOnly={readOnly}
+          hasBestAnswer={hasBestAnswer}
+          isOwner={Boolean(isOwner)}
+          onPostComment={this.handlePostComment}
+          onUpdateComment={this.handleUpdateComment}
+          onThanks={this.handleThanks}
+          onDelete={this.handleDelete}
+          onReport={this.handleReport}
+          onBestAnswer={this.handleBestAnswer}
+          userId={userId}
+          isCurrent={() => this.isCurrent(classId)}
+        />
+        {item.children.reverse().map((reply) => (
+          <PostItemComment
+            key={reply.id}
+            id={reply.id}
+            replyCommentId={replyCommentId}
+            ownProfileUrl={profileImage}
+            ownName={name}
+            role={reply.user.role}
+            roleId={reply.user.roleId}
+            replyTo={reply.replyTo}
+            firstName={reply.user.firstName}
+            lastName={reply.user.lastName}
+            profileImageUrl={reply.user.profileImageUrl}
+            created={reply.created}
+            comment={reply.comment}
+            thanksCount={reply.thanksCount}
+            thanked={reply.thanked}
+            isOnline={item.user.isOnline}
+            rootCommentId={item.id}
+            isLoading={isLoading}
+            isOwn={reply.user.userId === userId}
+            isReply
+            readOnly={readOnly}
+            hasBestAnswer={hasBestAnswer}
+            isOwner={Boolean(isOwner)}
+            onPostComment={this.handlePostComment}
+            onUpdateComment={this.handleUpdateComment}
+            onThanks={this.handleThanks}
+            onDelete={this.handleDelete}
+            onReport={this.handleReport}
+            onBestAnswer={this.handleBestAnswer}
+            userId={userId}
+            isCurrent={() => this.isCurrent(classId)}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  renderInitComment = () => {
+    const {
+      user: {
+        data: { userId, profileImage, firstName, lastName }
+      },
+      isQuestion,
+      readOnly,
+      hasBestAnswer,
+      isOwner,
+      classId
+    } = this.props;
+    const { items, isLoading, replyCommentId } = this.state;
+
+    const name = `${firstName} ${lastName}`;
+    return (
+      <div key={items[0].id}>
+        <PostItemComment
+          id={items[0].id}
+          role={items[0].user.role}
+          roleId={items[0].user.roleId}
+          ownProfileUrl={profileImage}
+          ownName={name}
+          ownerId={items[0].user.userId}
+          firstName={items[0].user.firstName}
+          lastName={items[0].user.lastName}
+          profileImageUrl={items[0].user.profileImageUrl}
+          created={items[0].created}
+          comment={items[0].comment}
+          thanksCount={items[0].thanksCount}
+          thanked={items[0].thanked}
+          isOnline={items[0].user.isOnline}
+          rootCommentId={items[0].id}
+          accepted={items[0].accepted}
+          isLoading={isLoading}
+          isQuestion={isQuestion}
+          isOwn={items[0].user.userId === userId}
+          readOnly={readOnly}
+          hasBestAnswer={hasBestAnswer}
+          isOwner={Boolean(isOwner)}
+          onPostComment={this.handlePostComment}
+          onUpdateComment={this.handleUpdateComment}
+          onThanks={this.handleThanks}
+          onDelete={this.handleDelete}
+          onReport={this.handleReport}
+          onBestAnswer={this.handleBestAnswer}
+          isCurrent={() => this.isCurrent(classId)}
+        />
+        {!!replyCommentId && <SkeletonLoad />}
+      </div>
+    );
+  };
+
+  renderLoadMoreComments = () => {
+    const { items, loadViewMoreComment } = this.state;
+
+    return (
+      <ErrorBoundary>
+        {loadViewMoreComment
+          ? items.map((item) => this.renderCommentItem(item))
+          : !!items.length && this.renderInitComment()}
+      </ErrorBoundary>
+    );
+  };
+
+  renderComments = () => {
+    const { classes } = this.props;
+    const { comments, loadViewMoreComment } = this.state;
 
     if (!comments) {
       return null;
@@ -280,117 +420,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <ErrorBoundary>
-          {loadViewMoreComment
-            ? items.map((item) => (
-                <div key={item.id}>
-                  <PostItemComment
-                    id={item.id}
-                    replyCommentId={replyCommentId}
-                    role={item.user.role}
-                    roleId={item.user.roleId}
-                    ownProfileUrl={profileImage}
-                    ownName={name}
-                    ownerId={item.user.userId}
-                    firstName={item.user.firstName}
-                    lastName={item.user.lastName}
-                    profileImageUrl={item.user.profileImageUrl}
-                    created={item.created}
-                    comment={item.comment}
-                    thanksCount={item.thanksCount}
-                    thanked={item.thanked}
-                    isOnline={item.user.isOnline}
-                    rootCommentId={item.id}
-                    accepted={item.accepted}
-                    isLoading={isLoading}
-                    isQuestion={isQuestion}
-                    isOwn={item.user.userId === userId}
-                    readOnly={readOnly}
-                    hasBestAnswer={hasBestAnswer}
-                    isOwner={Boolean(isOwner)}
-                    onPostComment={this.handlePostComment}
-                    onUpdateComment={this.handleUpdateComment}
-                    onThanks={this.handleThanks}
-                    onDelete={this.handleDelete}
-                    onReport={this.handleReport}
-                    onBestAnswer={this.handleBestAnswer}
-                    userId={userId}
-                    isCurrent={() => this.isCurrent(classId)}
-                  />
-                  {item.children.reverse().map((reply) => (
-                    <PostItemComment
-                      key={reply.id}
-                      id={reply.id}
-                      replyCommentId={replyCommentId}
-                      ownProfileUrl={profileImage}
-                      ownName={name}
-                      role={reply.user.role}
-                      roleId={reply.user.roleId}
-                      replyTo={reply.replyTo}
-                      firstName={reply.user.firstName}
-                      lastName={reply.user.lastName}
-                      profileImageUrl={reply.user.profileImageUrl}
-                      created={reply.created}
-                      comment={reply.comment}
-                      thanksCount={reply.thanksCount}
-                      thanked={reply.thanked}
-                      isOnline={item.user.isOnline}
-                      rootCommentId={item.id}
-                      isLoading={isLoading}
-                      isOwn={reply.user.userId === userId}
-                      isReply
-                      readOnly={readOnly}
-                      hasBestAnswer={hasBestAnswer}
-                      isOwner={Boolean(isOwner)}
-                      onPostComment={this.handlePostComment}
-                      onUpdateComment={this.handleUpdateComment}
-                      onThanks={this.handleThanks}
-                      onDelete={this.handleDelete}
-                      onReport={this.handleReport}
-                      onBestAnswer={this.handleBestAnswer}
-                      userId={userId}
-                      isCurrent={() => this.isCurrent(classId)}
-                    />
-                  ))}
-                </div>
-              ))
-            : !!items.length && (
-                <div key={items[0].id}>
-                  <PostItemComment
-                    id={items[0].id}
-                    role={items[0].user.role}
-                    roleId={items[0].user.roleId}
-                    ownProfileUrl={profileImage}
-                    ownName={name}
-                    ownerId={items[0].user.userId}
-                    firstName={items[0].user.firstName}
-                    lastName={items[0].user.lastName}
-                    profileImageUrl={items[0].user.profileImageUrl}
-                    created={items[0].created}
-                    comment={items[0].comment}
-                    thanksCount={items[0].thanksCount}
-                    thanked={items[0].thanked}
-                    isOnline={items[0].user.isOnline}
-                    rootCommentId={items[0].id}
-                    accepted={items[0].accepted}
-                    isLoading={isLoading}
-                    isQuestion={isQuestion}
-                    isOwn={items[0].user.userId === userId}
-                    readOnly={readOnly}
-                    hasBestAnswer={hasBestAnswer}
-                    isOwner={Boolean(isOwner)}
-                    onPostComment={this.handlePostComment}
-                    onUpdateComment={this.handleUpdateComment}
-                    onThanks={this.handleThanks}
-                    onDelete={this.handleDelete}
-                    onReport={this.handleReport}
-                    onBestAnswer={this.handleBestAnswer}
-                    isCurrent={() => this.isCurrent(classId)}
-                  />
-                  {!!replyCommentId && <SkeletonLoad />}
-                </div>
-              )}
-        </ErrorBoundary>
+        {this.renderLoadMoreComments()}
         <ErrorBoundary>
           <div>
             {comments.comments.length > 1 ? (
