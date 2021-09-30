@@ -100,13 +100,13 @@ module.exports = {
     ],
     'react/destructuring-assignment': ['error', 'always'],
     'react/jsx-indent': ['error', 2],
+    'react/static-property-placement': ['error', 'static public field'],
 
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'off',
     'react/no-unused-state': 'off',
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',
-    'react/static-property-placement': 'off',
     'react/no-access-state-in-setstate': 'off',
     'react/require-default-props': 'off',
     'react/jsx-closing-tag-location': 'off',
