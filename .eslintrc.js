@@ -103,7 +103,7 @@ module.exports = {
     'react/static-property-placement': ['error', 'static public field'],
 
     // TODO turn the 'react' rules back on
-    'react/no-unescaped-entities': 'off',
+    'react/no-unescaped-entities': 'error',
     'react/no-unused-state': 'off',
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',

@@ -23,7 +23,7 @@ const DeleteNote = ({ handleDeleteNote, confirmDelete, closeConfirmDelete }) => 
       showCancel
     >
       <Typography className={classes.archiveTitle}>
-        You're about to delete these notes. Once you do this, you cannot get them back.
+        {"You're about to delete these notes. Once you do this, you cannot get them back."}
       </Typography>
     </Dialog>
   );

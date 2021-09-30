@@ -36,8 +36,9 @@ const Tips = ({ open, close }) => {
             <Grid container>
               <Typography className={classes.title}>What is Workflow?</Typography>
               <Typography className={classes.primaryText}>
-                Workflow is CircleIn's task management tool for students. It helps you work through
-                your task list from start to end.
+                {
+                  "Workflow is CircleIn's task management tool for students. It helps you work through your task list from start to end."
+                }
               </Typography>
               <Typography className={classes.primaryText}>
                 The <b>Upcoming</b> column holds tasks coming up. The <b>In Progress</b> column
