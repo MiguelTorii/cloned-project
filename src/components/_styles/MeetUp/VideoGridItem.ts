@@ -3,13 +3,10 @@ export const centerStyles = {
   alignItems: 'center',
   justifyContent: 'center'
 };
-export const styles = theme => ({
-  root: { ...centerStyles,
-    height: '100%',
-    flex: 1,
-    position: 'relative'
-  },
-  videoWrapper: { ...centerStyles,
+export const styles = (theme) => ({
+  root: { ...centerStyles, height: '100%', flex: 1, position: 'relative' },
+  videoWrapper: {
+    ...centerStyles,
     height: '100%',
     width: '100%',
     backgroundColor: theme.circleIn.palette.black,
@@ -34,7 +31,6 @@ export const styles = theme => ({
       /* Safari and Chrome */
       '-moz-transform': 'rotateY(180deg)'
       /* Firefox */
-
     }
   },
   shareScreen: {
@@ -45,19 +41,10 @@ export const styles = theme => ({
       /* Safari and Chrome */
       '-moz-transform': 'rotateY(360deg)'
       /* Firefox */
-
     }
   },
-  singleAvataravatar: { ...centerStyles,
-    flexDirection: 'column',
-    width: '50%',
-    height: '50%'
-  },
-  avatar: { ...centerStyles,
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%'
-  },
+  singleAvataravatar: { ...centerStyles, flexDirection: 'column', width: '50%', height: '50%' },
+  avatar: { ...centerStyles, flexDirection: 'column', width: '100%', height: '100%' },
   screen: {
     height: '100%   !important',
     width: '100%    !important',
@@ -67,7 +54,8 @@ export const styles = theme => ({
       maxHeight: '100%    !important'
     }
   },
-  mic: { ...centerStyles,
+  mic: {
+    ...centerStyles,
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -98,7 +86,8 @@ export const styles = theme => ({
       fontSize: 12
     }
   },
-  black: { ...centerStyles,
+  black: {
+    ...centerStyles,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -111,13 +100,15 @@ export const styles = theme => ({
     fontSize: '9vw',
     color: '#000000'
   },
-  profile: { ...centerStyles,
+  profile: {
+    ...centerStyles,
     backgroundColor: theme.circleIn.palette.videoThumbDefaultBackground,
     width: '100%',
     height: '100%',
     flexDirection: 'column'
   },
-  singleProfile: { ...centerStyles,
+  singleProfile: {
+    ...centerStyles,
     maxWidth: 350,
     maxHeight: 250,
     width: '100%',

@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   paper: {
     marginRight: theme.spacing(2),
     width: 250,
@@ -85,4 +85,4 @@ export default (theme => ({
   settingIcon: {
     width: 20
   }
-}));
+});

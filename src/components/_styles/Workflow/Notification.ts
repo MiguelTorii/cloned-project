@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles(() => ({
   select: {
     width: 350
@@ -10,7 +10,8 @@ export const useStyles = makeStyles(() => ({
     }
   },
   reminder: {
-    '& .MuiInputLabel-outlined': {// transform: 'translate(14px, 13px) scale(1)'
+    '& .MuiInputLabel-outlined': {
+      // transform: 'translate(14px, 13px) scale(1)'
     },
     '& .MuiOutlinedInput-input': {
       padding: '10.5px 16px'

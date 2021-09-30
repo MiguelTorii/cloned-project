@@ -1,5 +1,5 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
-export default makeStyles(theme => ({
+import makeStyles from '@material-ui/core/styles/makeStyles';
+export default makeStyles((theme) => ({
   container: {
     padding: theme.spacing(5, 4),
     [theme.breakpoints.down('md')]: {

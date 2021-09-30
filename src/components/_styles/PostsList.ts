@@ -1,11 +1,12 @@
-import { gutterStyle } from "./Gutter";
-export const styles = theme => ({
+import { gutterStyle } from './Gutter';
+export const styles = (theme) => ({
   container: {
     maxHeight: 'inherit',
     display: 'flex',
     padding: theme.spacing()
   },
-  root: { ...gutterStyle(theme),
+  root: {
+    ...gutterStyle(theme),
     paddingTop: theme.spacing(),
     paddingBottom: theme.spacing(),
     overflow: 'hidden',

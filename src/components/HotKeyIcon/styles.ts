@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core";
-export default makeStyles(theme => ({
+import { makeStyles } from '@material-ui/core';
+export default makeStyles((theme) => ({
   root: {
     position: 'relative',
     cursor: 'pointer',

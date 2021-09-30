@@ -1,11 +1,11 @@
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import { getToken } from "./utils";
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import { getToken } from './utils';
 // eslint-disable-next-line
 export const getCampaign = async ({
   campaignId
 }: {
-  campaignId: string;
+  campaignId: string
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
@@ -15,9 +15,7 @@ export const getCampaign = async ({
         Authorization: `Bearer ${token}`
       }
     });
-    const {
-      data = {}
-    } = result;
+    const { data = {} } = result;
     return data;
   } catch (err) {
     return null;

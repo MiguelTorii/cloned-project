@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     position: 'absolute',
     bottom: 0,
@@ -7,7 +7,6 @@ export const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1400 // backgroundColor: 'white'
-
   },
   fab: {
     margin: theme.spacing(2)

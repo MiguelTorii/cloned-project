@@ -1,5 +1,5 @@
-import { gutterStyle } from "../Gutter";
-export const styles = theme => ({
+import { gutterStyle } from '../Gutter';
+export const styles = (theme) => ({
   root: {
     position: 'absolute',
     top: 0,

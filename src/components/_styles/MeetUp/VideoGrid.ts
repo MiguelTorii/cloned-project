@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     height: 'calc(100vh - 150px)',
     overflow: 'hidden',

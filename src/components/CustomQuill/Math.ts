@@ -1,19 +1,14 @@
-import { Quill } from "react-quill";
-export default (() => {
-  const {
-    MathQuill
-  } = window;
-  const {
-    katex
-  } = window;
-  const {
-    localStorage
-  } = window;
+import { Quill } from 'react-quill';
+export default () => {
+  const { MathQuill } = window;
+  const { katex } = window;
+  const { localStorage } = window;
 
   function setCacheItem(key, value) {
     try {
       localStorage.setItem(key, value);
-    } catch (e) {// eslint-disable-line no-empty
+    } catch (e) {
+      // eslint-disable-line no-empty
     }
   }
 
@@ -28,7 +23,8 @@ export default (() => {
   function removeCacheItem(key) {
     try {
       localStorage.removeItem(key);
-    } catch (e) {// eslint-disable-line no-empty
+    } catch (e) {
+      // eslint-disable-line no-empty
     }
   }
 
@@ -103,7 +99,8 @@ export default (() => {
 
         try {
           localStorage.setItem(historyCacheKey, JSON.stringify(historyList));
-        } catch (e) {// eslint-disable-line no-empty
+        } catch (e) {
+          // eslint-disable-line no-empty
         }
       }
     }
@@ -140,7 +137,8 @@ export default (() => {
 
       function syncMathquillToQuill(latexInput, saveButton) {
         const handlers = mathQuillConfig.handlers == null ? {} : mathQuillConfig.handlers;
-        mathQuillConfig.handlers = { ...handlers,
+        mathQuillConfig.handlers = {
+          ...handlers,
 
           edit() {
             const latex = mqField.latex();
@@ -151,7 +149,6 @@ export default (() => {
           enter() {
             saveButton.click();
           }
-
         };
         mqField = MathQuill.getInterface(2).MathField(mqInput, mathQuillConfig);
         const cachedLatex = getCacheItem(cacheKey);
@@ -203,7 +200,6 @@ export default (() => {
           mqInput.remove();
           mqInput = null;
         }
-
       };
     }
 
@@ -248,7 +244,7 @@ export default (() => {
           tooltip.style.height = 'auto';
           container = document.createElement('div');
           applyOperatorContainerStyles(container);
-          operators.forEach(element => {
+          operators.forEach((element) => {
             const button = createOperatorButton(element, mqField);
             applyOperatorButtonStyles(button);
             container.appendChild(button);
@@ -264,7 +260,6 @@ export default (() => {
           container.remove();
           container = null;
         }
-
       };
     }
 
@@ -322,7 +317,7 @@ export default (() => {
           const header = document.createElement('p');
           header.innerHTML = `Past formulas (max ${historySize})`;
           historyDiv.appendChild(header);
-          history.forEach(element => {
+          history.forEach((element) => {
             const button = createHistoryButton(element, mqField);
             applyHistoryButtonStyles(button);
             container.appendChild(button);
@@ -339,7 +334,6 @@ export default (() => {
           historyDiv.remove();
           historyDiv = null;
         }
-
       };
     }
 
@@ -353,7 +347,10 @@ export default (() => {
     const operatorButtons = newOperatorButtons();
     const historyListButtons = newHistoryList();
     const observer = new MutationObserver(() => {
-      const isFormulaTooltipActive = !tooltip.classList.contains('ql-hidden') && tooltip.attributes['data-mode'] && tooltip.attributes['data-mode'].value === 'formula';
+      const isFormulaTooltipActive =
+        !tooltip.classList.contains('ql-hidden') &&
+        tooltip.attributes['data-mode'] &&
+        tooltip.attributes['data-mode'].value === 'formula';
 
       if (isFormulaTooltipActive) {
         const mqField = mqInput.render();
@@ -372,4 +369,4 @@ export default (() => {
   }
 
   return enableMathQuillFormulaAuthoring;
-});
+};

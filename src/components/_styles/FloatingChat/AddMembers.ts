@@ -1,5 +1,5 @@
-import { dialogStyle } from "../Dialog";
-export const styles = theme => ({
+import { dialogStyle } from '../Dialog';
+export const styles = (theme) => ({
   validatorForm: {
     flex: 1,
     display: 'flex',
@@ -14,7 +14,5 @@ export const styles = theme => ({
   input: {
     display: 'none'
   },
-  dialog: { ...dialogStyle,
-    width: 600
-  }
+  dialog: { ...dialogStyle, width: 600 }
 });

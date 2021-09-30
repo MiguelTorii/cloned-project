@@ -1,7 +1,8 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { dialogStyle } from "../Dialog";
-export const useStyles = makeStyles(theme => ({
-  dialog: { ...dialogStyle,
+import { makeStyles } from '@material-ui/core/styles';
+import { dialogStyle } from '../Dialog';
+export const useStyles = makeStyles((theme) => ({
+  dialog: {
+    ...dialogStyle,
     height: 700,
     '& > :first-child': {
       zIndex: 999999

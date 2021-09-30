@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import { getToken } from "./utils";
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import { getToken } from './utils';
 export const getAnnouncement = async (campaignId: number): Promise<Record<string, any>> => {
   try {
     const token = await getToken();

@@ -1,5 +1,5 @@
-import { makeStyles } from "@material-ui/core/styles";
-export default makeStyles(theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+export default makeStyles((theme) => ({
   root: {
     paddingRight: '0 !important',
     overflow: 'hidden',

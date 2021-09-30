@@ -1,5 +1,5 @@
-import { dialogStyle } from "components/Dialog/Dialog";
-import { detect } from "detect-browser";
+import { dialogStyle } from 'components/Dialog/Dialog';
+import { detect } from 'detect-browser';
 const browser = detect();
 const centered = {
   alignItems: 'center',
@@ -12,7 +12,7 @@ const gifStyles = {
   border: '15px solid rgba(255, 255, 255, .3)'
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   actionPanel: {
     flexGrow: 1,
     flex: 1,
@@ -55,9 +55,7 @@ const styles = theme => ({
   buttonLabel: {
     textTransform: 'none'
   },
-  sildeButtons: { ...centered,
-    width: '100%'
-  },
+  sildeButtons: { ...centered, width: '100%' },
   backButton: {
     position: 'absolute',
     left: 85,
@@ -83,16 +81,10 @@ const styles = theme => ({
     height: 20,
     border: '1px solid #1e88e5'
   },
-  domGifArea: { ...centered,
-    width: '100%',
-    height: '100%'
-  },
-  videoPlayer: { ...centered,
-    width: '100%',
-    height: '100%',
-    position: 'relative'
-  },
-  demoGif: { ...gifStyles,
+  domGifArea: { ...centered, width: '100%', height: '100%' },
+  videoPlayer: { ...centered, width: '100%', height: '100%', position: 'relative' },
+  demoGif: {
+    ...gifStyles,
     objectFit: 'cover',
     objectPosition: '100% 44%',
     height: 485,
@@ -103,9 +95,7 @@ const styles = theme => ({
       height: 400
     }
   },
-  notesGif: { ...gifStyles,
-    height: 400
-  },
+  notesGif: { ...gifStyles, height: 400 },
   wfGifArea: {
     backgroundColor: 'rgba(255, 255, 255, .3)',
     borderRadius: 8,
@@ -118,8 +108,7 @@ const styles = theme => ({
     objectFit: 'cover',
     objectPosition: '100% 50%'
   },
-  chatGif: { ...gifStyles
-  },
+  chatGif: { ...gifStyles },
   demoPanel: {
     backgroundImage: 'linear-gradient(135deg,#94daf9, #1e88e5)',
     flexGrow: 1,
@@ -138,12 +127,7 @@ const styles = theme => ({
     padding: theme.spacing(3, 3, 0, 5),
     width: '100%'
   },
-  dialog: { ...dialogStyle,
-    borderRadius: 5,
-    backgroundColor: 'white',
-    height: 700,
-    width: 1100
-  },
+  dialog: { ...dialogStyle, borderRadius: 5, backgroundColor: 'white', height: 700, width: 1100 },
   contentDialog: {
     padding: '0px !important'
   },

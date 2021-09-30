@@ -1,5 +1,5 @@
-import { callApi } from "api/api_base";
-import { API_URL_V1_1 } from "constants/routes";
+import { callApi } from 'api/api_base';
+import { API_URL_V1_1 } from 'constants/routes';
 
 /**
  *
@@ -9,13 +9,15 @@ import { API_URL_V1_1 } from "constants/routes";
  *   match_game_id: number
  * }
  */
-export const apiInitializeMatchGame = async (flashcardId) => // return {
-//   match_game_id: 1
-// };
-callApi({
-  url: `${API_URL_V1_1}/deck/${flashcardId}/match`,
-  method: 'POST'
-});
+export const apiInitializeMatchGame = async (
+  flashcardId // return {
+) =>
+  //   match_game_id: 1
+  // };
+  callApi({
+    url: `${API_URL_V1_1}/deck/${flashcardId}/match`,
+    method: 'POST'
+  });
 
 /**
  *
@@ -27,14 +29,18 @@ callApi({
  *   logged: boolean
  * }
  */
-export const apiSaveMatchGameRecords = async (flashcardId, matchGameId, matches) => // return { success: true }
-callApi({
-  url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}`,
-  method: 'POST',
-  data: {
-    matches
-  }
-});
+export const apiSaveMatchGameRecords = async (
+  flashcardId,
+  matchGameId,
+  matches // return { success: true }
+) =>
+  callApi({
+    url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}`,
+    method: 'POST',
+    data: {
+      matches
+    }
+  });
 
 /**
  * @param flashcardId: number
@@ -47,15 +53,16 @@ callApi({
  *   ended: boolean
  * }
  */
-export const apiEndMatchGame = async (flashcardId, matchGameId, startTime, endTime, duration) => callApi({
-  url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}/end`,
-  method: 'POST',
-  data: {
-    start_time: startTime,
-    end_time: endTime,
-    duration
-  }
-});
+export const apiEndMatchGame = async (flashcardId, matchGameId, startTime, endTime, duration) =>
+  callApi({
+    url: `${API_URL_V1_1}/deck/${flashcardId}/match/${matchGameId}/end`,
+    method: 'POST',
+    data: {
+      start_time: startTime,
+      end_time: endTime,
+      duration
+    }
+  });
 
 /**
  *
@@ -67,7 +74,8 @@ export const apiEndMatchGame = async (flashcardId, matchGameId, startTime, endTi
  *   }
  * }
  */
-export const apiGetMatchStats = async (flashcardId) => callApi({
-  url: `${API_URL_V1_1}/deck/${flashcardId}/match/stats`,
-  method: 'GET'
-});
+export const apiGetMatchStats = async (flashcardId) =>
+  callApi({
+    url: `${API_URL_V1_1}/deck/${flashcardId}/match/stats`,
+    method: 'GET'
+  });

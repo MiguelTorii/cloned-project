@@ -1,5 +1,5 @@
-import green from "@material-ui/core/colors/green";
-export const styles = theme => ({
+import green from '@material-ui/core/colors/green';
+export const styles = (theme) => ({
   main: {
     width: 'auto',
     display: 'block',

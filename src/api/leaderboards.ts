@@ -1,7 +1,7 @@
-import axios from "axios";
-import { callApi } from "api/api_base";
-import { API_ROUTES } from "../constants/routes";
-import { getToken } from "./utils";
+import axios from 'axios';
+import { callApi } from 'api/api_base';
+import { API_ROUTES } from '../constants/routes';
+import { getToken } from './utils';
 export const getLeaderboards = async () => {
   try {
     const token = await getToken();
@@ -10,9 +10,7 @@ export const getLeaderboards = async () => {
         Authorization: `Bearer ${token}`
       }
     });
-    const {
-      data = {}
-    } = result;
+    const { data = {} } = result;
     return data;
   } catch (err) {
     return [];
@@ -26,9 +24,7 @@ export const getGrandPrizeInfo = async () => {
         Authorization: `Bearer ${token}`
       }
     });
-    const {
-      data = {}
-    } = result;
+    const { data = {} } = result;
     return data;
   } catch (err) {
     return [];
@@ -55,10 +51,8 @@ export const getMoreGrandStudents = async (sectionId, index) => {
       url: `${API_ROUTES.LEADERBOARD_V2_BOARD_TWO}${sectionQuery}${indexQuery}`,
       method: 'GET'
     });
-    const {
-      students = []
-    } = result;
-    const studentsCamel = students.map(s => ({
+    const { students = [] } = result;
+    const studentsCamel = students.map((s) => ({
       position: s.position,
       score: s.score,
       firstName: s.first_name,
@@ -92,10 +86,8 @@ export const getMoreTuesdayStudents = async (sectionId, index) => {
       url: `${API_ROUTES.LEADERBOARD_V2_BOARD_ONE}${sectionQuery}${indexQuery}`,
       method: 'GET'
     });
-    const {
-      students = []
-    } = result;
-    const studentsCamel = students.map(s => ({
+    const { students = [] } = result;
+    const studentsCamel = students.map((s) => ({
       position: s.position,
       score: s.score,
       firstName: s.first_name,

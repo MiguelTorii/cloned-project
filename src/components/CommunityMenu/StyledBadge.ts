@@ -1,6 +1,6 @@
-import { withStyles } from "@material-ui/core/styles";
-import Badge from "@material-ui/core/Badge";
-const StyledBadge = withStyles(theme => ({
+import { withStyles } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
+const StyledBadge = withStyles((theme) => ({
   badge: {
     right: 5,
     top: '100%',

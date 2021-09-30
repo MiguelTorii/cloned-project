@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   container: {
     position: 'relative',
     display: 'flex',
@@ -132,4 +132,4 @@ export default (theme => ({
   fileInfo: {
     height: 24
   }
-}));
+});

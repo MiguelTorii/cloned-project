@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   buttonWrapper: {
     position: 'relative',
     marginTop: theme.spacing()
@@ -54,4 +54,4 @@ export default (theme => ({
     color: theme.circleIn.palette.danger,
     marginLeft: theme.spacing(1)
   }
-}));
+});

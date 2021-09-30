@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   header: {
     display: 'flex',
     justifyContent: 'center',
@@ -14,4 +14,4 @@ export default (theme => ({
     fontSize: 20,
     color: 'white'
   }
-}));
+});

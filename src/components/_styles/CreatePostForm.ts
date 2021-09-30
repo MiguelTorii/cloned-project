@@ -1,5 +1,5 @@
-import green from "@material-ui/core/colors/green";
-export const styles = theme => ({
+import green from '@material-ui/core/colors/green';
+export const styles = (theme) => ({
   main: {
     width: 'auto',
     display: 'block'
@@ -36,7 +36,6 @@ export const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     marginBottom: theme.spacing(2) // justifyContent: 'flex-end'
-
   },
   icon: {
     marginRight: theme.spacing()

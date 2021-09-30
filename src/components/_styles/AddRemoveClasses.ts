@@ -1,5 +1,5 @@
-import { dialogStyle } from "./Dialog";
-export const styles = theme => ({
+import { dialogStyle } from './Dialog';
+export const styles = (theme) => ({
   circleIn: {
     color: theme.circleIn.palette.action
   },
@@ -9,10 +9,7 @@ export const styles = theme => ({
   stackbar: {
     color: theme.circleIn.palette.primaryText1
   },
-  dialog: { ...dialogStyle,
-    height: 700,
-    width: 700
-  },
+  dialog: { ...dialogStyle, height: 700, width: 700 },
   optionItem: {
     alignItems: 'center',
     display: 'flex',

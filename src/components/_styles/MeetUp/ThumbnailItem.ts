@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -136,7 +136,6 @@ export const styles = theme => ({
       /* Safari and Chrome */
       '-moz-transform': 'rotateY(180deg)'
       /* Firefox */
-
     }
   }
 });

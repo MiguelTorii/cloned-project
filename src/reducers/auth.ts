@@ -1,18 +1,18 @@
-import update from "immutability-helper";
-import { rootActions, authActions } from "../constants/action-types";
-import type { Action } from "../types/action";
-import type { School, ReferralData } from "../types/models";
+import update from 'immutability-helper';
+import { rootActions, authActions } from '../constants/action-types';
+import type { Action } from '../types/action';
+import type { School, ReferralData } from '../types/models';
 export type AuthState = {
-  isLoading: boolean;
+  isLoading: boolean,
   data: {
-    school: School | null | undefined;
-  };
-  error: boolean;
+    school: School | null | undefined
+  },
+  error: boolean,
   errorMessage: {
-    title: string;
-    body: string;
-  };
-  referralData: ReferralData;
+    title: string,
+    body: string
+  },
+  referralData: ReferralData
 };
 const defaultState = {
   data: {
@@ -27,7 +27,7 @@ const defaultState = {
   },
   referralData: null
 };
-export default ((state: AuthState = defaultState, action: Action): AuthState => {
+export default (state: AuthState = defaultState, action: Action): AuthState => {
   switch (action.type) {
     case authActions.UPDATE_AUTH_ROLE:
       return update(state, {
@@ -62,4 +62,4 @@ export default ((state: AuthState = defaultState, action: Action): AuthState => 
     default:
       return state;
   }
-});
+};

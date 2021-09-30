@@ -1,13 +1,14 @@
-import { dialogStyle } from "./Dialog";
-import { gutterStyle } from "./Gutter";
-export const styles = theme => ({
+import { dialogStyle } from './Dialog';
+import { gutterStyle } from './Gutter';
+export const styles = (theme) => ({
   root: {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
-  paper: { ...gutterStyle(theme),
+  paper: {
+    ...gutterStyle(theme),
     paddingTop: 0,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
@@ -103,7 +104,6 @@ export const styles = theme => ({
     /* Safari and Chrome */
     '-moz-transform': 'rotateY(180deg)'
     /* Firefox */
-
   },
   letsGo: {
     margin: theme.spacing(4, 0),
@@ -129,9 +129,7 @@ export const styles = theme => ({
   tada: {
     marginLeft: theme.spacing()
   },
-  dialog: { ...dialogStyle,
-    width: 600
-  },
+  dialog: { ...dialogStyle, width: 600 },
   rules: {
     fontSize: 16,
     fontWeight: 400

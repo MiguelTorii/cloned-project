@@ -1,10 +1,10 @@
-import green from "@material-ui/core/colors/green";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-export default makeStyles(theme => ({
+import green from '@material-ui/core/colors/green';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+export default makeStyles((theme) => ({
   root: {
     borderRadius: 0,
     backgroundColor: theme.circleIn.palette.feedBackground,
-    marginTop: props => props.showSimple ? theme.spacing(1) : theme.spacing(3)
+    marginTop: (props) => (props.showSimple ? theme.spacing(1) : theme.spacing(3))
   },
   media: {
     height: 10
@@ -177,15 +177,16 @@ export default makeStyles(theme => ({
     marginRight: 30
   },
   flashCards: {
-    width: props => props.showSimple ? 100 : 270,
-    height: props => props.showSimple ? 60 : 130,
+    width: (props) => (props.showSimple ? 100 : 270),
+    height: (props) => (props.showSimple ? 60 : 130),
     backgroundColor: theme.circleIn.palette.appBar,
     borderRadius: 10
   },
   gradientBar: {
     width: '100%',
-    height: props => props.showSimple ? 6 : 12,
-    background: props => props.showSimple ? '#EFC448' : 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+    height: (props) => (props.showSimple ? 6 : 12),
+    background: (props) =>
+      props.showSimple ? '#EFC448' : 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     borderRadius: '10px 10px 0 0'
   },
   flashcardTitle: {
@@ -255,15 +256,15 @@ export default makeStyles(theme => ({
     color: theme.circleIn.palette.danger
   },
   titleText: {
-    fontSize: props => props.showSimple ? 12 : 18,
+    fontSize: (props) => (props.showSimple ? 12 : 18),
     marginRight: theme.spacing()
   },
   boldTitle: {
-    fontSize: props => props.showSimple ? 14 : 18,
+    fontSize: (props) => (props.showSimple ? 14 : 18),
     fontWeight: 600
   },
   titleFormat: {
-    fontSize: props => props.showSimple ? 12 : 18,
+    fontSize: (props) => (props.showSimple ? 12 : 18),
     lineHeight: '25px',
     fontWeight: 600
   },

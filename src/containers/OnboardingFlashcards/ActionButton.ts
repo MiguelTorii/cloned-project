@@ -1,6 +1,6 @@
-import { Button, withStyles } from "@material-ui/core";
-import withRoot from "../../withRoot";
-const ActionButton = withStyles(theme => ({
+import { Button, withStyles } from '@material-ui/core';
+import withRoot from '../../withRoot';
+const ActionButton = withStyles((theme) => ({
   root: {
     background: 'linear-gradient(114.44deg, #94DAF9 9.9%, #1E88E5 83.33%)',
     width: 163,

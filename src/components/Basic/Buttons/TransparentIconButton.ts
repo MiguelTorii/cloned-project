@@ -1,6 +1,6 @@
-import withStyles from "@material-ui/core/styles/withStyles";
-import IconButton from "@material-ui/core/IconButton";
-const TransparentIconButton = withStyles(theme => ({
+import withStyles from '@material-ui/core/styles/withStyles';
+import IconButton from '@material-ui/core/IconButton';
+const TransparentIconButton = withStyles((theme) => ({
   root: {
     border: 'solid 1px white',
     width: 30,

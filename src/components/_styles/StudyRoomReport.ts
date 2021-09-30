@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   dialog: {
     width: 600,
     '& > :first-child': {
@@ -104,4 +104,4 @@ export default (theme => ({
     backgroundColor: theme.circleIn.palette.gray1,
     border: `1px solid ${theme.circleIn.palette.white}`
   }
-}));
+});

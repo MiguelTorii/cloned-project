@@ -1,2 +1,2 @@
-import FlashcardManager from "./Main";
+import FlashcardManager from './Main';
 export default FlashcardManager;

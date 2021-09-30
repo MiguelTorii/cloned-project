@@ -1,7 +1,8 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { dialogStyle } from "./Dialog";
-const useStyles = makeStyles(theme => ({
-  dialog: { ...dialogStyle,
+import { makeStyles } from '@material-ui/core/styles';
+import { dialogStyle } from './Dialog';
+const useStyles = makeStyles((theme) => ({
+  dialog: {
+    ...dialogStyle,
     backgroundColor: theme.circleIn.palette.appBar,
     width: 600,
     borderRadius: 10

@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   meetingDetails: {
     position: 'absolute',
     bottom: 120,

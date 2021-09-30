@@ -1,6 +1,4 @@
-import { dialogStyle } from "./Dialog";
+import { dialogStyle } from './Dialog';
 export const styles = () => ({
-  dialog: { ...dialogStyle,
-    width: 400
-  }
+  dialog: { ...dialogStyle, width: 400 }
 });

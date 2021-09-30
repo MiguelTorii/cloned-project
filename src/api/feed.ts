@@ -24,16 +24,16 @@ export const fetchFeed = async ({
   fromDate,
   toDate
 }: {
-  userId: string;
-  schoolId: number;
-  userClasses: Array<string>;
-  index: number;
-  limit: number;
-  postTypes: Array<string>;
-  from: string;
-  query: string;
-  fromDate: Record<string, any> | null | undefined;
-  toDate: Record<string, any> | null | undefined;
+  userId: string,
+  schoolId: number,
+  userClasses: Array<string>,
+  index: number,
+  limit: number,
+  postTypes: Array<string>,
+  from: string,
+  query: string,
+  fromDate: Record<string, any> | null | undefined,
+  toDate: Record<string, any> | null | undefined
 }): Promise<Feed> => {
   const url = generateFeedURL({
     userId,
@@ -56,9 +56,7 @@ export const fetchFeed = async ({
       }
     });
     const {
-      data: {
-        posts
-      }
+      data: { posts }
     } = result;
     const feed = feedToCamelCase(posts);
 
@@ -81,7 +79,7 @@ export const fetchFeed = async ({
     return [];
   }
 };
-export const fetchRecommendations = async limit => {
+export const fetchRecommendations = async (limit) => {
   try {
     const response = await callApi({
       url: API_ROUTES.RECOMMENDATIONS,
@@ -98,21 +96,23 @@ export const fetchRecommendations = async limit => {
 export const saveQuizAnswers = async ({
   results
 }: {
-  results: array;
+  results: array
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.FLASHCARDS}/save_quiz_answers`, {
-      answers: results
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.FLASHCARDS}/save_quiz_answers`,
+      {
+        answers: results
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     const {
-      data: {
-        session_id: sessionId
-      }
+      data: { session_id: sessionId }
     } = result;
     return {
       sessionId
@@ -124,7 +124,7 @@ export const saveQuizAnswers = async ({
 export const feedResources = async ({
   userId
 }: {
-  userId: string;
+  userId: string
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
@@ -158,7 +158,7 @@ export const feedResources = async ({
 export const queryFeed = async ({
   query
 }: {
-  query: string;
+  query: string
 }): Promise<Array<Record<string, any>>> => {
   try {
     const token = await getToken();
@@ -168,9 +168,7 @@ export const queryFeed = async ({
       }
     });
     const {
-      data: {
-        results
-      }
+      data: { results }
     } = result;
     const feed = feedToCamelCase(results);
     return feed;
@@ -184,23 +182,26 @@ export const fetchFeedv2 = async ({
   sectionId,
   bookmarked = false
 }: {
-  userId: string;
-  sectionId: number;
-  bookmarked?: boolean;
+  userId: string,
+  sectionId: number,
+  bookmarked?: boolean
 }): Promise<Feed> => {
   try {
     const filterSection = sectionId ? `&section_id=${sectionId}` : '';
     const token = await getToken();
     const myPosts = bookmarked ? '' : `user_id=${userId}`;
-    const result = await axios.get(`${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(bookmarked).toString()}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.get(
+      `${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(
+        bookmarked
+      ).toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     const {
-      data: {
-        posts
-      }
+      data: { posts }
     } = result;
     const feed = feedToCamelCase(posts);
     return feed;
@@ -214,9 +215,9 @@ export const postEvent = async ({
   category,
   type
 }: {
-  sectionId: number;
-  category: string;
-  type: string;
+  sectionId: number,
+  category: string,
+  type: string
 }): Promise<Array<Record<string, any>>> => {
   if (reduxStore.getState().user.isMasquerading) {
     return;
@@ -224,19 +225,21 @@ export const postEvent = async ({
 
   try {
     const token = await getToken();
-    const result = await axios.post(`${API_ROUTES.EVENT}`, {
-      section_id: sectionId,
-      category,
-      type
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const result = await axios.post(
+      `${API_ROUTES.EVENT}`,
+      {
+        section_id: sectionId,
+        category,
+        type
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
+    );
     const {
-      data: {
-        success
-      }
+      data: { success }
     } = result;
     return success;
   } catch (err) {
@@ -246,7 +249,7 @@ export const postEvent = async ({
 export const generateQuiz = async ({
   deckId
 }: {
-  deckId: number;
+  deckId: number
 }): Promise<Record<string, any>> => {
   try {
     const token = await getToken();

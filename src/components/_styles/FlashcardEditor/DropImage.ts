@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     padding: theme.spacing(2)
   },
@@ -21,6 +21,5 @@ export const styles = theme => ({
     paddingTop: theme.spacing(),
     width: 31,
     height: 31 // color: '#909090'
-
   }
 });

@@ -1,5 +1,5 @@
-import makeStyles from "@material-ui/core/styles/makeStyles";
-export default makeStyles(theme => ({
+import makeStyles from '@material-ui/core/styles/makeStyles';
+export default makeStyles((theme) => ({
   sidebar: {
     backgroundColor: '#1E1F22',
     padding: theme.spacing(10, 5),
@@ -50,7 +50,7 @@ export default makeStyles(theme => ({
     cursor: 'pointer',
     border: 'solid 2px transparent',
     '&.active': {
-      borderColor: props => props.markColor || 'primary'
+      borderColor: (props) => props.markColor || 'primary'
     },
     userSelect: 'none'
   },
@@ -60,7 +60,7 @@ export default makeStyles(theme => ({
   },
   markText: {
     fontSize: 34,
-    color: props => props.markColor || 'primary'
+    color: (props) => props.markColor || 'primary'
   },
   actionButton: {
     backgroundColor: '#1E1F22',

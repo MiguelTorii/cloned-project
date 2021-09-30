@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   root: {
     color: theme.circleIn.palette.white,
     borderRadius: theme.spacing(5),
@@ -36,4 +36,4 @@ export default (theme => ({
     height: 20,
     padding: theme.spacing(0.5)
   }
-}));
+});

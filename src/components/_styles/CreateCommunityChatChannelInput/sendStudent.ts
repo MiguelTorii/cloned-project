@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   validatorForm: {
     flex: 1,
     minWidth: 350,
@@ -72,4 +72,4 @@ export default (theme => ({
     fontSize: 14,
     lineHeight: '19px'
   }
-}));
+});

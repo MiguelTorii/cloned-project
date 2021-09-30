@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     padding: theme.spacing(),
     display: 'flex',
@@ -39,7 +39,8 @@ export const styles = theme => ({
     minHeight: 0
   },
   selectedReadAll: {
-    filter: 'invert(200%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)'
+    filter:
+      'invert(200%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)'
   },
   progress: {
     display: 'flex',

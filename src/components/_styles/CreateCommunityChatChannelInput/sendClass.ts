@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   closeIcon: {
     position: 'absolute',
     right: theme.spacing(2)
@@ -85,4 +85,4 @@ export default (theme => ({
   noOptions: {
     color: 'white'
   }
-}));
+});

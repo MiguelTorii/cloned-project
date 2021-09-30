@@ -1,4 +1,4 @@
-export default (theme => ({
+export default (theme) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -25,4 +25,4 @@ export default (theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end'
   }
-}));
+});

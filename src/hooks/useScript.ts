@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 function useScript(src) {
   const [status, setStatus] = useState(src ? 'loading' : 'idle');
@@ -18,7 +18,7 @@ function useScript(src) {
       script.setAttribute('data-status', 'loading');
       document.body.appendChild(script);
 
-      const setAttributeFromEvent = event => {
+      const setAttributeFromEvent = (event) => {
         script.setAttribute('data-status', event.type === 'load' ? 'ready' : 'error');
       };
 
@@ -28,7 +28,7 @@ function useScript(src) {
       setStatus(script.getAttribute('data-status'));
     }
 
-    const setStateFromEvent = event => {
+    const setStateFromEvent = (event) => {
       setStatus(event.type === 'load' ? 'ready' : 'error');
     };
 

@@ -1,8 +1,8 @@
-import { Class } from "utility-types";
-import axios from "axios";
-import { API_ROUTES } from "../constants/routes";
-import type { Class } from "../types/models";
-import { getToken } from "./utils";
+import { Class } from 'utility-types';
+import axios from 'axios';
+import { API_ROUTES } from '../constants/routes';
+import type { Class } from '../types/models';
+import { getToken } from './utils';
 
 const searchClasses = async (query: stirng): Promise<Class> => {
   try {
@@ -16,7 +16,7 @@ const searchClasses = async (query: stirng): Promise<Class> => {
         Authorization: `Bearer ${token}`
       }
     });
-    const classes = result.data.classes.map(c => ({
+    const classes = result.data.classes.map((c) => ({
       classId: c.class_id,
       hasJoined: c.has_joined,
       name: c.course_display_name,

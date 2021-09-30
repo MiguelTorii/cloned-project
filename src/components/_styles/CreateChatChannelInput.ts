@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme) => ({
   validatorForm: {
     flex: 1,
     display: 'flex',

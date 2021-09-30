@@ -1,17 +1,17 @@
-import update from "immutability-helper";
-import { webNotificationsActions, rootActions } from "../constants/action-types";
-import type { Action } from "../types/action";
+import update from 'immutability-helper';
+import { webNotificationsActions, rootActions } from '../constants/action-types';
+import type { Action } from '../types/action';
 export type WebNotificationsState = {
-  isLoading: boolean;
+  isLoading: boolean,
   data: {
-    title: string;
-    body: string;
-  };
-  error: boolean;
+    title: string,
+    body: string
+  },
+  error: boolean,
   errorMessage: {
-    title: string;
-    body: string;
-  };
+    title: string,
+    body: string
+  }
 };
 const defaultState = {
   data: {
@@ -25,7 +25,10 @@ const defaultState = {
     body: ''
   }
 };
-export default ((state: WebNotificationsState = defaultState, action: Action): WebNotificationsState => {
+export default (
+  state: WebNotificationsState = defaultState,
+  action: Action
+): WebNotificationsState => {
   switch (action.type) {
     case webNotificationsActions.UPDATE_TITLE_SUCCESS:
       return update(state, {
@@ -47,4 +50,4 @@ export default ((state: WebNotificationsState = defaultState, action: Action): W
     default:
       return state;
   }
-});
+};

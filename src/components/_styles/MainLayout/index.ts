@@ -1,5 +1,5 @@
 const drawerWidth = 280;
-export const styles = theme => ({
+export const styles = (theme) => ({
   root: {
     display: 'flex'
   },

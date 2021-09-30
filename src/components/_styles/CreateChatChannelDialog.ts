@@ -1,5 +1,5 @@
-import { dialogStyle } from "./Dialog";
-export default (theme => ({
+import { dialogStyle } from './Dialog';
+export default (theme) => ({
   validatorForm: {
     flex: 1,
     display: 'flex',
@@ -7,15 +7,11 @@ export default (theme => ({
   },
   form: {
     width: '100%' // Fix IE 11 issue.
-
   },
   input: {
     display: 'none'
   },
-  dialog: { ...dialogStyle,
-    backgroundColor: theme.circleIn.palette.appBar,
-    width: 500
-  },
+  dialog: { ...dialogStyle, backgroundColor: theme.circleIn.palette.appBar, width: 500 },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -46,4 +42,4 @@ export default (theme => ({
   contentClassName: {
     paddingBottom: 0
   }
-}));
+});

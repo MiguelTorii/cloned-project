@@ -1,11 +1,11 @@
-import backgroundImg from "assets/img/onboarding-background.png";
-import { dialogStyle } from "./Dialog";
+import backgroundImg from 'assets/img/onboarding-background.png';
+import { dialogStyle } from './Dialog';
 const centered = {
   alignItems: 'center',
   display: 'flex',
   justifyContent: 'center'
 };
-export const styles = theme => ({
+export const styles = (theme) => ({
   actionPanel: {
     flex: 2,
     flexDirection: 'column',
@@ -30,7 +30,8 @@ export const styles = theme => ({
     flex: 3,
     ...centered
   },
-  dialog: { ...dialogStyle,
+  dialog: {
+    ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground,
     zIndex: 1300,
     height: 700

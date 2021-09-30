@@ -1,6 +1,6 @@
-import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from "constants/app";
-import createEvent from "./events";
-import { EventData } from "../types/models";
+import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from 'constants/app';
+import createEvent from './events';
+import { EventData } from '../types/models';
 
 const toEventData = (eventName: string, props: object): EventData => {
   const [category, eventType] = eventName.split('- ');
@@ -60,10 +60,7 @@ const toEventData = (eventName: string, props: object): EventData => {
     customProps.sectionId = props.sectionId;
   }
 
-  return { ...customProps,
-    category,
-    objectId
-  };
+  return { ...customProps, category, objectId };
 };
 
 export const logEventLocally = (eventData: EventData) => {
@@ -80,13 +77,7 @@ const sendToCircleIn = (eventName: string, props: object) => {
   }
 };
 
-export const logEvent = ({
-  event,
-  props
-}: {
-  event: string;
-  props: Record<string, any>;
-}) => {
+export const logEvent = ({ event, props }: { event: string, props: Record<string, any> }) => {
   try {
     sendToCircleIn(event, props);
   } catch (err) {

@@ -6,7 +6,7 @@ import { POST_WRITER } from "../constants/common";
 import { FEEDS_PER_PAGE } from "../constants/app";
 import { feedToCamelCase } from "../api/utils";
 export type FeedState = {
-  isLoading: boolean;
+  isLoading: boolean,
   data: {
     items: Feed;
     hasMore: boolean;
@@ -26,9 +26,9 @@ export type FeedState = {
   };
   error: boolean;
   errorMessage: {
-    title: string;
-    body: string;
-  };
+    title: string,
+    body: string
+  },
   scrollData: {
     position: number;
     classId: string;
@@ -64,7 +64,7 @@ const defaultState = {
     classId: -1
   }
 };
-export default ((state: FeedState = defaultState, action: Action): FeedState => {
+export default (state: FeedState = defaultState, action: Action): FeedState => {
   switch (action.type) {
     case feedActions.SEARCH_FEED_REQUEST:
     case feedActions.FETCH_FEED_REQUEST:
@@ -153,9 +153,11 @@ export default ((state: FeedState = defaultState, action: Action): FeedState => 
       return update(state, {
         data: {
           items: {
-            $apply: b => {
-              const index = b.findIndex( // $FlowFixMe
-              item => item.feedId === action.payload.feedId);
+            $apply: (b) => {
+              const index = b.findIndex(
+                // $FlowFixMe
+                (item) => item.feedId === action.payload.feedId
+              );
 
               if (index > -1) {
                 return update(b, {
@@ -240,7 +242,8 @@ export default ((state: FeedState = defaultState, action: Action): FeedState => 
       {
         return update(state, {
           data: {
-            filters: filterData => ({ ...filterData,
+            filters: filterData => ({
+              ...filterData,
               ...action.payload
             })
           }
@@ -298,7 +301,8 @@ export default ((state: FeedState = defaultState, action: Action): FeedState => 
                 return feed;
               }
 
-              return { ...feed,
+              return {
+                ...feed,
                 bookmarked: bookmarked
               };
             })
@@ -312,4 +316,4 @@ export default ((state: FeedState = defaultState, action: Action): FeedState => 
     default:
       return state;
   }
-});
+};

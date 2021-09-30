@@ -1,10 +1,10 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 const text = {
   fontSize: 18,
   fontWeight: 'bold',
   letterSpacing: 1
 };
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: theme.spacing(),
@@ -16,17 +16,15 @@ export const useStyles = makeStyles(theme => ({
   },
   list: {
     display: 'flex',
-    flexDirection: isNarrow => isNarrow ? 'column' : 'row'
+    flexDirection: (isNarrow) => (isNarrow ? 'column' : 'row')
   },
   listItem: {
     alignItems: 'center',
     display: 'flex',
     marginRight: theme.spacing(4),
-    marginBottom: isNarrow => isNarrow ? theme.spacing(2) : 0
+    marginBottom: (isNarrow) => (isNarrow ? theme.spacing(2) : 0)
   },
-  listItemText: { ...text,
-    color: '#6d7884'
-  },
+  listItemText: { ...text, color: '#6d7884' },
   listItemTextCompleted: text,
   listItemCheckBox: {
     height: 26,
@@ -35,7 +33,7 @@ export const useStyles = makeStyles(theme => ({
   progress: {
     alignItems: 'center',
     display: 'flex',
-    flexDirection: isNarrow => isNarrow ? 'column' : 'row',
+    flexDirection: (isNarrow) => (isNarrow ? 'column' : 'row'),
     marginTop: theme.spacing(3)
   },
   progressBar: {
@@ -44,9 +42,10 @@ export const useStyles = makeStyles(theme => ({
   progressColorPrimary: {
     backgroundColor: theme.circleIn.palette.primaryBackground
   },
-  progressLabel: { ...text,
-    marginLeft: isNarrow => isNarrow ? 0 : theme.spacing(2),
-    marginTop: isNarrow => isNarrow ? theme.spacing(2) : 0,
+  progressLabel: {
+    ...text,
+    marginLeft: (isNarrow) => (isNarrow ? 0 : theme.spacing(2)),
+    marginTop: (isNarrow) => (isNarrow ? theme.spacing(2) : 0),
     whiteSpace: 'nowrap'
   },
   progressRoot: {

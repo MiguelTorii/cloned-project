@@ -1,5 +1,5 @@
-import { get } from "lodash";
-import { apiActions } from "../constants/action-types";
+import { get } from 'lodash';
+import { apiActions } from '../constants/action-types';
 
 const apiActionCreator = ({
   dispatch
@@ -8,8 +8,8 @@ const apiActionCreator = ({
     type,
     apiCall,
     meta,
-    successCallback = () => {},
-    failureCallback = () => {}
+    successCallback = () => { },
+    failureCallback = () => { }
   } = action;
 
   if (typeof apiCall !== 'function') {
