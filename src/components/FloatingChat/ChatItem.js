@@ -124,11 +124,7 @@ class ChatItem extends React.PureComponent<Props, State> {
     const { anchorEl, openRemove } = this.state;
     return (
       <>
-        <div
-        // ref={node => {
-        //   this.el = node
-        // }}
-        >
+        <div>
           <Paper
             className={cx(
               classes.paper,

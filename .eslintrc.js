@@ -113,7 +113,7 @@ module.exports = {
     'react/button-has-type': 'error',
     'react/no-array-index-key': 'off',
     'react/default-props-match-prop-types': 'off',
-    'react/jsx-closing-bracket-location': 'off',
+    'react/jsx-closing-bracket-location': 'error',
     'react/forbid-prop-types': 'off',
     'react/no-deprecated': 'off',
     'react/sort-comp': 'off',
