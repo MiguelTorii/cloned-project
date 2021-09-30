@@ -93,4 +93,9 @@ Task.propTypes = {
   sectionId: PropTypes.number
 };
 
+Task.defaultProps = {
+  dueDate: null,
+  sectionId: null
+};
+
 export default Task;

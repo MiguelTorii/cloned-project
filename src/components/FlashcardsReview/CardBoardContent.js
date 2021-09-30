@@ -91,6 +91,9 @@ CardBoardContent.propTypes = {
 CardBoardContent.defaultProps = {
   editable: false,
   isQuestion: true,
+  image: null,
+  toolbarId: null,
+  onFlip: () => {},
   onAction: () => {}
 };
 
