@@ -19,7 +19,7 @@ const HotKey = ({ keys }) => (
 );
 
 HotKey.propTypes = {
-  keys: PropTypes.array.isRequired
+  keys: PropTypes.arrayOf.isRequired
 };
 
 export default HotKey;

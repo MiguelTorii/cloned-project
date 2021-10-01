@@ -69,10 +69,10 @@ const HideUntilLoaded = ({ animationIn, children, Spinner, imageToLoad, style })
 
 HideUntilLoaded.propTypes = {
   animationIn: PropTypes.string.isRequired,
-  children: PropTypes.any.isRequired,
+  children: PropTypes.node.isRequired,
   imageToLoad: PropTypes.string.isRequired,
-  Spinner: PropTypes.any,
-  style: PropTypes.object
+  Spinner: PropTypes.node,
+  style: PropTypes.shape
 };
 
 HideUntilLoaded.defaultProps = {

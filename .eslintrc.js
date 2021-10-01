@@ -113,7 +113,7 @@ module.exports = {
     'react/no-array-index-key': 'off',
     'react/default-props-match-prop-types': 'error',
     'react/jsx-closing-bracket-location': 'error',
-    'react/forbid-prop-types': 'off',
+    'react/forbid-prop-types': 'error',
     'react/no-deprecated': 'off',
     'react/sort-comp': 'off',
     'react/jsx-wrap-multilines': 'off',

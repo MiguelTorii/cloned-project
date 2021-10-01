@@ -47,7 +47,7 @@ const ScrollToTop = ({ scrollElement }) => {
 };
 
 ScrollToTop.propTypes = {
-  scrollElement: PropTypes.object
+  scrollElement: PropTypes.shape
 };
 
 ScrollToTop.defaultProps = {

@@ -517,7 +517,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
 };
 
 FlashcardsMatchGame.propTypes = {
-  cards: PropTypes.array.isRequired,
+  cards: PropTypes.arrayOf.isRequired,
   flashcardId: PropTypes.string.isRequired,
   flashcardTitle: PropTypes.string,
   onClose: PropTypes.func
