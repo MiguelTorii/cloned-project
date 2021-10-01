@@ -33,4 +33,10 @@ const Avatar = ({ src, initialText, mobileSize, desktopSize }: Props) => {
   );
 };
 
+Avatar.defaultProps = {
+  initialText: '',
+  mobileSize: DEFAULT_AVATAR_SIZE.mobile,
+  desktopSize: DEFAULT_AVATAR_SIZE.desktop
+};
+
 export default withRoot(Avatar);

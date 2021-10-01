@@ -59,8 +59,9 @@ class ProfilePosts extends React.PureComponent<Props> {
         return (
           <div className={cx(classes.container, classes.nothing)}>
             <Typography variant="h6" color="textPrimary" align="center">
-              It looks like you don't have any bookmarks yet. Once you find a post that you want to
-              save to view later, bookmark it and it'll appear here
+              {
+                "It looks like you don't have any bookmarks yet. Once you find a post that you want to save to view later, bookmark it and it'll appear here"
+              }
             </Typography>
           </div>
         );

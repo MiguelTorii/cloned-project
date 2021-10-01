@@ -124,11 +124,7 @@ class ChatItem extends React.PureComponent<Props, State> {
     const { anchorEl, openRemove } = this.state;
     return (
       <>
-        <div
-        // ref={node => {
-        //   this.el = node
-        // }}
-        >
+        <div>
           <Paper
             className={cx(
               classes.paper,
@@ -241,7 +237,7 @@ class ChatItem extends React.PureComponent<Props, State> {
             Are you sure you want to delete this chat?
             <br />
             <br />
-            Deleting this chat can't be undone
+            {"Deleting this chat can't be undone"}
           </Typography>
         </Dialog>
       </>

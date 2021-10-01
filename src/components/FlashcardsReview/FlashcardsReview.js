@@ -433,7 +433,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
             <img src={ImgNoCards} alt="No cards" />
           </Box>
           <Typography variant="h6" gutterBottom align="center" className={classes.secondaryText}>
-            You don't have any cards in this stack yet.
+            {"You don't have any cards in this stack yet."}
           </Typography>
           <Typography align="center" className={classes.secondaryText}>
             You can return to the main deck to review all your cards.
@@ -527,7 +527,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         showCancel
         title="Start Over"
       >
-        If you Start Over, then you'll reset your progress. Are you sure you want to restart?
+        {"If you Start Over, then you'll reset your progress. Are you sure you want to restart?"}
       </Dialog>
       <ShareLinkModal
         open={isShareModalOpen}
@@ -550,7 +550,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
 FlashcardsReview.propTypes = {
   flashcardId: PropTypes.number.isRequired,
   flashcardTitle: PropTypes.string,
-  cards: PropTypes.array.isRequired,
+  cards: PropTypes.arrayOf.isRequired,
   onClose: PropTypes.func
 };
 

@@ -124,7 +124,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
           {loading && <CircularProgress size={12} />}
           {!loading && blockedUsers.length === 0 && (
             <Typography color="textPrimary" id="blocked-users-dialog-description">
-              You don't have blocked users
+              {"You don't have blocked users"}
             </Typography>
           )}
           {!loading && (

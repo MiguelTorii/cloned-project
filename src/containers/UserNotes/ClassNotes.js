@@ -118,7 +118,7 @@ const ClassNotes = ({ classData, arrayIndex }) => {
 };
 
 PropTypes.propTypes = {
-  classData: PropTypes.object.isRequired,
+  classData: PropTypes.shape.isRequired,
   arrayIndex: PropTypes.number.isRequired
 };
 

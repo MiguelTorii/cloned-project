@@ -42,7 +42,7 @@ const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
 
 FlashcardsDeckEditor.propTypes = {
   flashcardId: PropTypes.number.isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.shape.isRequired,
   onAfterUpdate: PropTypes.func
 };
 

@@ -73,7 +73,7 @@ const Note = ({ noteData }) => {
 };
 
 Note.propTypes = {
-  noteData: PropTypes.object.isRequired
+  noteData: PropTypes.shape.isRequired
 };
 
 export default Note;

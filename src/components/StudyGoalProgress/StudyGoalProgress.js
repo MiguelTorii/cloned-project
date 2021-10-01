@@ -58,7 +58,7 @@ const StudyGoalProgress = ({ title, content, value, total }) => {
 
 StudyGoalProgress.propTypes = {
   title: PropTypes.string.isRequired,
-  content: PropTypes.any.isRequired,
+  content: PropTypes.node.isRequired,
   value: PropTypes.number,
   total: PropTypes.number
 };

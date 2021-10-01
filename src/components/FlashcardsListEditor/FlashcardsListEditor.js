@@ -225,7 +225,7 @@ const FlashcardsListEditor = ({
 };
 
 FlashcardsListEditor.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.arrayOf,
   onUpdate: PropTypes.func,
   onUpdateFlashcardField: PropTypes.func,
   onSetRef: PropTypes.func,

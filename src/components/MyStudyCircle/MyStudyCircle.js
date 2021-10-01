@@ -79,10 +79,9 @@ class MyStudyCircle extends React.PureComponent<Props> {
               disableTypography
               primary={
                 <Typography>
-                  <Link
-                    component={MyLink}
-                    href={`/profile/${item.userId}`}
-                  >{`${item.firstName} ${item.lastName}`}</Link>
+                  <Link component={MyLink} href={`/profile/${item.userId}`}>
+                    {`${item.firstName} ${item.lastName}`}
+                  </Link>
                 </Typography>
               }
             />

@@ -58,10 +58,9 @@ class VerifyAccount extends React.PureComponent<Props, State> {
         onSubmit={this.handleSubmit}
         className={cx(classes.form, hide && classes.hide)}
       >
-        <Typography
-          align="center"
-          variant="subtitle1"
-        >{`We have sent the code to ${email}. It may take several minutes for the code to arrive`}</Typography>
+        <Typography align="center" variant="subtitle1">
+          {`We have sent the code to ${email}. It may take several minutes for the code to arrive`}
+        </Typography>
         <TextValidator
           variant="outlined"
           label="Email Address"

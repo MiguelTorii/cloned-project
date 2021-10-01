@@ -199,8 +199,8 @@ const FlashcardEditor = ({
 FlashcardEditor.propTypes = {
   index: PropTypes.number.isRequired,
   inViewport: PropTypes.bool,
-  data: PropTypes.object,
-  dndProps: PropTypes.object,
+  data: PropTypes.shape,
+  dndProps: PropTypes.shape,
   readOnly: PropTypes.bool,
   toolbarPrefix: PropTypes.string,
   onDelete: PropTypes.func,
