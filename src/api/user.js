@@ -156,6 +156,32 @@ const setClassesCache = (result) => {
   );
 };
 
+const getClasses = (classes) =>
+  classes.map((userClass) => ({
+    className: String((userClass.course_display_name: string) || ''),
+    classId: Number((userClass.class_id: number) || 0),
+    permissions: {
+      canLeave: Boolean(((userClass.permissions || {}).can_leave: boolean) || false),
+      canCreate: Boolean(((userClass.permissions || {}).can_create: boolean) || false)
+    },
+    section: (userClass.section || []).map((item) => ({
+      firstName: String((item.first_name: string) || ''),
+      lastName: String((item.last_name: string) || ''),
+      section: String((item.section: string) || ''),
+      sectionId: Number((item.section_id: number) || 0),
+      subject: String((item.subject: string) || ''),
+      sectionDisplayName: String((item.section_display_name: string) || ''),
+      instructorDisplayName: String((item.instructor_display_name: string) || '')
+    })),
+    subjectId: Number((userClass.subject_id: number) || 0),
+    courseDisplayName: String((userClass.course_display_name: string) || ''),
+    class: String((userClass.class: string) || ''),
+    bgColor: String(userClass.bg_color || ''),
+    didInviteClassmates: Boolean(userClass.did_invite_classmates || false),
+    didHideFeedEmptyState: Boolean(userClass.did_hide_feed_empty_state || false),
+    isCurrent: Boolean(userClass.is_current || false)
+  }));
+
 export const getUserClasses = async ({
   userId,
   skipCache,
@@ -186,33 +212,16 @@ export const getUserClasses = async ({
     }
 
     const {
-      data: { classes = [], permissions = {}, empty_state: empty = {} }
+      data: {
+        classes = [],
+        past_classes: pastClasses = [],
+        permissions = {},
+        empty_state: empty = {}
+      }
     } = result;
 
-    const userClasses = classes.map((userClass) => ({
-      className: String((userClass.course_display_name: string) || ''),
-      classId: Number((userClass.class_id: number) || 0),
-      permissions: {
-        canLeave: Boolean(((userClass.permissions || {}).can_leave: boolean) || false),
-        canCreate: Boolean(((userClass.permissions || {}).can_create: boolean) || false)
-      },
-      section: (userClass.section || []).map((item) => ({
-        firstName: String((item.first_name: string) || ''),
-        lastName: String((item.last_name: string) || ''),
-        section: String((item.section: string) || ''),
-        sectionId: Number((item.section_id: number) || 0),
-        subject: String((item.subject: string) || ''),
-        sectionDisplayName: String((item.section_display_name: string) || ''),
-        instructorDisplayName: String((item.instructor_display_name: string) || '')
-      })),
-      subjectId: Number((userClass.subject_id: number) || 0),
-      courseDisplayName: String((userClass.course_display_name: string) || ''),
-      class: String((userClass.class: string) || ''),
-      bgColor: String(userClass.bg_color || ''),
-      didInviteClassmates: Boolean(userClass.did_invite_classmates || false),
-      didHideFeedEmptyState: Boolean(userClass.did_hide_feed_empty_state || false),
-      isCurrent: Boolean(userClass.is_current || false)
-    }));
+    const userClasses = getClasses(classes);
+    const userPastClasses = getClasses(pastClasses || []);
 
     const emptyState = {
       visibility: Boolean((empty.visibility: boolean) || false),
@@ -224,10 +233,14 @@ export const getUserClasses = async ({
       canAddClasses: Boolean((permissions.can_add_classes: boolean) || false)
     };
 
-    return { classes: userClasses, permissions: userPermissions, emptyState };
+    return {
+      classes: userClasses,
+      permissions: userPermissions,
+      emptyState,
+      pastClasses: userPastClasses
+    };
   } catch (err) {
-    console.log(err);
-    return { classes: [], permissions: { canAddClasses: false } };
+    return { classes: [], pastClasses: [], permissions: { canAddClasses: false } };
   }
 };
 

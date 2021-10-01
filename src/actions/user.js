@@ -45,6 +45,7 @@ const setClassesAction = ({
   userClasses
 }: {
   userClasses: Array<string>,
+  pastClasses: Array<string>,
   emptyState: Object
 }): Action => ({
   type: userActions.UPDATE_CLASSES,
@@ -66,6 +67,7 @@ export const fetchClasses = (skipCache) => async (dispatch: Dispatch, getState: 
     const res = await getUserClasses({ userId, skipCache, expertMode });
     const {
       classes: classList,
+      pastClasses,
       emptyState,
       permissions: { canAddClasses }
     } = res;
@@ -94,6 +96,7 @@ export const fetchClasses = (skipCache) => async (dispatch: Dispatch, getState: 
           userClasses: {
             classList,
             canAddClasses,
+            pastClasses,
             emptyState
           }
         })
