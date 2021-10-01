@@ -111,7 +111,7 @@ module.exports = {
     'react/jsx-closing-tag-location': 'error',
     'react/button-has-type': 'error',
     'react/no-array-index-key': 'off',
-    'react/default-props-match-prop-types': 'off',
+    'react/default-props-match-prop-types': 'error',
     'react/jsx-closing-bracket-location': 'off',
     'react/forbid-prop-types': 'off',
     'react/no-deprecated': 'off',
