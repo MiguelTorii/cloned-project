@@ -6,11 +6,12 @@ import styles from '../_styles/OnlineBadge';
 
 type Props = {
   classes: Object,
-  isVisible: boolean,
-  isOnline: boolean,
   backColor: string,
-  fromChat: boolean,
-  children: Node
+  children: Node,
+  isVisible?: boolean,
+  isOnline?: boolean,
+  fromChat?: boolean,
+  bgColorPath?: string
 };
 
 const OnlineBadge = ({ isVisible, classes, children }: Props) =>

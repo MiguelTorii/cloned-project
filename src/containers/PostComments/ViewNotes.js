@@ -72,7 +72,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
     isQuestion: false,
     isPastClassFlashcard: false,
     hasBestAnswer: false,
-    isOwner: false
+    isOwner: false,
+    toolbarPrefix: ''
   };
 
   state = {

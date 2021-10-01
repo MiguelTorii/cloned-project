@@ -653,11 +653,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
                       ? classes.leftCharactersRed
                       : classes.leftCharacters
                   }
-                >{`${this.getLeftCharts(summary)} ${
-                  this.canBatchPost()
-                    ? 'more characters required'
-                    : 'more characters to earn points'
-                }`}</Typography>
+                >
+                  {`${this.getLeftCharts(summary)} ${
+                    this.canBatchPost()
+                      ? 'more characters required'
+                      : 'more characters to earn points'
+                  }`}
+                </Typography>
               </Grid>
 
               {/* {notSm && <Grid item md={2}> */}
