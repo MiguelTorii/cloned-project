@@ -45,12 +45,12 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }) => {
   const me = useSelector((state) => state.user.data);
   const decks = useSelector((state) => state.user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
-  const classList = useSelector((state) => state.user.userClasses.classList);
+  const pastClasses = useSelector((state) => state.user.userClasses.pastClasses);
   const location = useLocation();
   // Internal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const pastClassIds = useMemo(() => getPastClassIds(classList), [classList]);
+  const pastClassIds = useMemo(() => getPastClassIds(pastClasses), [pastClasses]);
 
   // Memos
   const arrFilters = useMemo(
