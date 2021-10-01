@@ -54,6 +54,12 @@ class Index extends React.Component<Props, State> {
     participants: []
   };
 
+  canvas: Object;
+
+  canvasTemp: Object;
+
+  input: Object;
+
   constructor(props) {
     super(props);
     // $FlowIgnore
@@ -375,12 +381,6 @@ class Index extends React.Component<Props, State> {
   handleCancelInput = () => {
     this.setState({ showInput: false });
   };
-
-  canvas: Object;
-
-  canvasTemp: Object;
-
-  input: Object;
 
   render() {
     const { classes } = this.props;

@@ -115,7 +115,7 @@ module.exports = {
     'react/jsx-closing-bracket-location': 'error',
     'react/forbid-prop-types': 'error',
     'react/no-deprecated': 'off',
-    'react/sort-comp': 'off',
+    'react/sort-comp': 'error',
     'react/jsx-wrap-multilines': 'off',
     'react/display-name': 'off',
     'react/jsx-key': 'off',

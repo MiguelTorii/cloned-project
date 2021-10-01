@@ -25,6 +25,8 @@ type State = {};
 class LocalThumbnail extends React.PureComponent<Props, State> {
   state = {};
 
+  videoinput: Object;
+
   constructor(props) {
     super(props);
     // $FlowIgnore
@@ -48,8 +50,6 @@ class LocalThumbnail extends React.PureComponent<Props, State> {
       attachedElements.forEach((element) => element.remove());
     }
   };
-
-  videoinput: Object;
 
   render() {
     const { classes, profileImage, isVideo, isMic } = this.props;
