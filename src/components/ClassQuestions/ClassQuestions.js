@@ -234,4 +234,8 @@ ClassQuestions.propTypes = {
   classId: PropTypes.number
 };
 
+ClassQuestions.defaultProps = {
+  classId: null
+};
+
 export default ClassQuestions;

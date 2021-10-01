@@ -83,7 +83,10 @@ CardBoardContent.propTypes = {
 };
 
 CardBoardContent.defaultProps = {
-  editable: false
+  editable: false,
+  image: null,
+  toolbarId: null,
+  onFlip: () => {}
 };
 
 export default withRoot(CardBoardContent);

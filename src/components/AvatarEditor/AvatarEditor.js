@@ -165,4 +165,8 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
   );
 };
 
+AvatarEditor.defaultProps = {
+  title: null
+};
+
 export default withRoot(AvatarEditor);
