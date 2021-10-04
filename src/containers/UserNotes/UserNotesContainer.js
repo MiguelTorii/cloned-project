@@ -59,18 +59,10 @@ const UserNotesContainer = () => {
   const classes = useStyles();
   const [currentFilter, setCurrentFilter] = useState('current');
 
-  const classList = useMemo(() => {
-    const list = userClasses?.classList || [];
-
-    if (currentFilter === 'current') {
-      return list.filter((cl) => cl.isCurrent);
-    }
-
-    if (currentFilter === 'past') {
-      return list.filter((cl) => !cl.isCurrent);
-    }
-    return [];
-  }, [userClasses, currentFilter]);
+  const classList = useMemo(
+    () => (currentFilter === 'current' ? userClasses.classList : userClasses.pastClasses),
+    [userClasses, currentFilter]
+  );
 
   return (
     <div className={classes.container}>
