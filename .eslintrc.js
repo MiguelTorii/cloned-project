@@ -107,7 +107,6 @@ module.exports = {
     'react/no-unescaped-entities': 'error',
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',
-    'react/no-access-state-in-setstate': 'off',
     'react/jsx-closing-tag-location': 'error',
     'react/button-has-type': 'error',
     'react/no-array-index-key': 'off',
