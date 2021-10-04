@@ -101,10 +101,10 @@ module.exports = {
     'react/destructuring-assignment': ['error', 'always'],
     'react/jsx-indent': ['error', 2],
     'react/static-property-placement': ['error', 'static public field'],
+    'react/no-unused-state': 'error',
 
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'error',
-    'react/no-unused-state': 'off',
     'react/no-did-update-set-state': 'off',
     'react/jsx-curly-newline': 'off',
     'react/no-access-state-in-setstate': 'off',
