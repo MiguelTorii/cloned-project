@@ -16,6 +16,8 @@ import FileUpload from 'components/FileUpload/FileUploadContainer';
 import { getInitials, bytesToSize } from 'utils/chat';
 import { MEMBER_ROLES } from '../../constants/app';
 import { gutterStyle } from '../../components/_styles/Gutter';
+import { buildPath } from '../../utils/helpers';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -327,7 +329,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
           <ListItemAvatar
             className={classes.avatarLink}
             component={MyLink}
-            href={`/profile/${userId || ''}`}
+            href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
           >
             <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
               <Avatar alt={name} src={avatar}>
@@ -339,7 +341,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>
           {!isOwn && (
             <Typography variant="caption" className={classes.name}>
-              <Link className={classes.link} component={MyLink} href={`/profile/${userId || ''}`}>
+              <Link
+                className={classes.link}
+                component={MyLink}
+                href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
+              >
                 {name}
               </Link>
               {role && role !== MEMBER_ROLES.STUDENT && <RoleBadge text={role} />}

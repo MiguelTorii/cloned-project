@@ -32,6 +32,8 @@ class StudyCircle extends React.PureComponent<Props, State> {
     circle: []
   };
 
+  mounted: boolean;
+
   componentDidMount = async () => {
     this.mounted = true;
     const {
@@ -78,8 +80,6 @@ class StudyCircle extends React.PureComponent<Props, State> {
       this.setState({ isLoading: false });
     }, 2000);
   };
-
-  mounted: boolean;
 
   render() {
     const { classes } = this.props;

@@ -11,6 +11,8 @@ import { getMoreGrandStudents, getMoreTuesdayStudents } from 'api/leaderboards';
 import Student from './student';
 
 import { styles } from '../_styles/LeaderBoardTabs/table';
+import { buildPath } from '../../utils/helpers';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -81,7 +83,11 @@ const StudentTable = ({
               <TableRow
                 hover
                 key={s.userId}
-                onClick={() => pushTo(`/profile/${s.userId}`)}
+                onClick={() =>
+                  pushTo(
+                    buildPath(`/profile/${s.userId}`, { from: PROFILE_PAGE_SOURCE.LEADERBOARD })
+                  )
+                }
                 className={cx(classes.tr, userId === s.userId ? classes.trHighlight : '')}
               >
                 <TableCell padding="none" className={classes.tdnp} align="center">

@@ -50,6 +50,9 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
     rotate: 0
   };
 
+  // eslint-disable-next-line no-undef
+  editor: ?HTMLDivElement;
+
   setEditorRef = (editor) => {
     this.editor = editor;
   };
@@ -114,9 +117,6 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
     }
     return <CreateIcon className={classes.icon} fontSize="small" />;
   };
-
-  // eslint-disable-next-line no-undef
-  editor: ?HTMLDivElement;
 
   render() {
     const { classes, image, loaded, loading, type, error } = this.props;

@@ -17,6 +17,8 @@ import { getInitials } from 'utils/chat';
 import type { StudyCircle } from '../../types/models';
 
 import { styles } from '../_styles/MyStudyCircle';
+import { buildPath } from '../../utils/helpers';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 
@@ -69,7 +71,9 @@ class MyStudyCircle extends React.PureComponent<Props> {
             <ListItemAvatar
               className={classes.avatarLink}
               component={MyLink}
-              href={`/profile/${item.userId}`}
+              href={buildPath(`/profile/${item.userId}`, {
+                from: PROFILE_PAGE_SOURCE.STUDY_CIRCLE
+              })}
             >
               <Avatar alt={item.firstName} src={item.profileImageUrl}>
                 {getInitials(`${item.firstName} ${item.lastName}`)}
@@ -79,7 +83,12 @@ class MyStudyCircle extends React.PureComponent<Props> {
               disableTypography
               primary={
                 <Typography>
-                  <Link component={MyLink} href={`/profile/${item.userId}`}>
+                  <Link
+                    component={MyLink}
+                    href={buildPath(`/profile/${item.userId}`, {
+                      from: PROFILE_PAGE_SOURCE.STUDY_CIRCLE
+                    })}
+                  >
                     {`${item.firstName} ${item.lastName}`}
                   </Link>
                 </Typography>

@@ -7,6 +7,7 @@ import type { Feed } from '../types/models';
 import * as feedApi from '../api/feed';
 import * as postsApi from '../api/posts';
 import { FEEDS_PER_PAGE } from '../constants/app';
+import { apiFetchFeeds } from '../api/feed';
 
 const requestFetchFeed = (): Action => ({
   type: feedActions.FETCH_FEED_REQUEST
@@ -92,6 +93,10 @@ const clearFeedsAction = () => ({
   type: feedActions.CLEAR_FEEDS
 });
 
+/**
+ * - This should be deprecated.
+ * - It will be replaced by `actionFetchFeed`.
+ */
 export const fetchFeed = () => async (dispatch: Dispatch, getState: Function) => {
   try {
     const {
@@ -233,3 +238,24 @@ export const clearFilter = () => async (dispatch: Dispatch) => {
     );
   }
 };
+
+export const updateFilterFields = (newFilter) => ({
+  type: feedActions.UPDATE_FILTER_FIELDS,
+  payload: newFilter
+});
+
+export const actionFetchFeed = (params, cancelToken) => ({
+  type: feedActions.FETCH_FEED,
+  apiCall: () => apiFetchFeeds(params, cancelToken)
+});
+
+export const actionDeleteFeed = (feedId) => ({
+  type: feedActions.DELETE_FEED,
+  payload: { feedId }
+});
+
+export const actionBookmarkFeed = ({ feedId, userId, bookmarked }) => ({
+  type: feedActions.BOOKMARK_FEED,
+  apiCall: () => postsApi.bookmark({ feedId, userId, remove: bookmarked }),
+  meta: { feedId, bookmarked: !bookmarked }
+});

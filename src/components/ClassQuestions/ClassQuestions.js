@@ -16,6 +16,8 @@ import { POST_TYPES } from '../../constants/app';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
 import { cypher } from '../../utils/crypto';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const ClassQuestions = ({ classId }) => {
   const classes = useStyles();
@@ -114,7 +116,7 @@ const ClassQuestions = ({ classId }) => {
 
   const handleUserClick = useCallback(
     ({ userId }) => {
-      dispatch(push(`/profile/${userId}`));
+      dispatch(push(buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST })));
     },
     [dispatch]
   );

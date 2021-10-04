@@ -115,10 +115,43 @@ export const fileContent = {
   'other-default': 'File'
 };
 
+export const POST_WRITER = {
+  ME: 'me',
+  CLASSMATES: 'classmates',
+  ANYONE: 'anyone'
+};
+
+export const DEFAULT_DEBOUNCE_DURATION_IN_MS = 500;
+
+export const FEED_NAVIGATION_TABS = {
+  CLASS_FEED: 'class_feed',
+  MY_POSTS: 'my_posts',
+  BOOKMARKS: 'bookmarks'
+};
+
 export const QUILL_TOOLBAR_SHORT_KEYS = {
   BOLD: `Bold (${commandHotkeyText('B')})`,
   ITALIC: `Italic (${commandHotkeyText('I')})`,
   UNDERLINE: `Underline (${commandHotkeyText('U')})`,
   EMOJI: `Emoji (${isMac() ? '⌘J' : 'CTRL + ALT + J'})`,
   IMAGE: `Image (${commandHotkeyText('P')})`
+};
+
+export const PROFILE_PAGE_SOURCE = {
+  CHAT: 'Chat',
+  POST: 'Post',
+  COMMENT: 'Comment',
+  URL: 'Url',
+  CLASSMATES_MODAL: 'Classmates Modal',
+  LEADERBOARD: 'Leaderboard',
+  FLASHCARD: 'Flashcard',
+  STUDY_CIRCLE: 'Study Circle'
+};
+
+export const LOG_EVENT_CATEGORY = {
+  PROFILE: 'Profile'
+};
+
+export const LOG_EVENT_TYPE = {
+  VIEWED: 'Viewed'
 };

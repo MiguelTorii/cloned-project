@@ -19,11 +19,13 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
+import lodash from 'lodash';
 import Tooltip from 'containers/Tooltip/Tooltip';
 import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 import Dialog from '../Dialog/Dialog';
 import DateRange from '../DateRange/DateRange';
 import styles from '../_styles/FeedFilter';
+import { DEFAULT_DEBOUNCE_DURATION_IN_MS } from '../../constants/common';
 
 const types = [
   {
@@ -70,19 +72,18 @@ type Props = {
   classList: array,
   fromDate: ?Object,
   toDate: ?Object,
-  onChange: Function,
+  onChangeSearch: Function,
   onApplyFilters: Function,
-  onClearFilters: Function,
   onOpenFilter: Function,
   onRefresh: Function,
-  onChangeDateRange: Function,
-  onClearSearch: Function
+  onChangeDateRange: Function
 };
 
 type State = {
   open: boolean,
   postTypes: Array<string>,
-  userClasses: Array<string>
+  userClasses: Array<string>,
+  searchValue: string
 };
 
 class FeedFilter extends React.PureComponent<Props, State> {
@@ -90,7 +91,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
     open: false,
     openClassFilter: false,
     postTypes: [],
-    selectedUserClasses: []
+    selectedUserClasses: [],
+    searchValue: ''
   };
 
   mounted: boolean;
@@ -98,7 +100,12 @@ class FeedFilter extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     this.mounted = true;
 
-    const { classList, userClasses } = this.props;
+    const { classList, userClasses, query, postTypes } = this.props;
+
+    this.setState({
+      searchValue: query,
+      postTypes
+    });
 
     if (classList) {
       const selectedUserClasses = userClasses.map((uc) => {
@@ -138,6 +145,19 @@ class FeedFilter extends React.PureComponent<Props, State> {
 
   handleClose = () => {
     this.setState({ open: false, openClassFilter: false });
+  };
+
+  onChangeSearchDebounced = lodash.debounce((search) => {
+    const { onChangeSearch } = this.props;
+    onChangeSearch(search);
+  }, DEFAULT_DEBOUNCE_DURATION_IN_MS);
+
+  handleChangeQuery = (event) => {
+    const searchValue = event.target.value;
+    this.setState({
+      searchValue: searchValue
+    });
+    this.onChangeSearchDebounced(searchValue);
   };
 
   handleChange = (name) => (event) => {
@@ -199,18 +219,10 @@ class FeedFilter extends React.PureComponent<Props, State> {
       currentPropTypes = postTypes.filter((postType) => postType !== id);
     }
     this.setState({ postTypes: currentPropTypes });
-
-    const filters = [
-      {
-        name: 'postTypes',
-        value: currentPropTypes
-      },
-      {
-        name: 'userClasses',
-        value: userClasses
-      }
-    ];
-    onApplyFilters(filters);
+    onApplyFilters({
+      postTypes: currentPropTypes,
+      userClasses
+    });
   };
 
   handleDeselectAll = (name) => () => {
@@ -224,25 +236,11 @@ class FeedFilter extends React.PureComponent<Props, State> {
     const { onApplyFilters, userClasses } = this.props;
     const { postTypes } = this.state;
 
-    const filters = [
-      {
-        name: 'postTypes',
-        value: postTypes
-      },
-      {
-        name: 'userClasses',
-        value: userClasses
-      }
-    ];
-    onApplyFilters(filters);
+    onApplyFilters({
+      postTypes,
+      userClasses
+    });
     this.setState({ open: false, openClassFilter: false });
-  };
-
-  handleClearFilters = () => {
-    const { onClearFilters } = this.props;
-    onClearFilters();
-    this.setState({ postTypes: [], userClasses: [] });
-    this.handleClose();
   };
 
   getFilterCount = () => {
@@ -263,18 +261,16 @@ class FeedFilter extends React.PureComponent<Props, State> {
       courseDisplayName,
       classesList,
       expertMode,
-      query,
       fromDate,
       toDate,
-      onChange,
       onRefresh,
       onChangeDateRange,
       newClassExperience,
       userClasses,
-      onClearSearch
+      onChangeSearch
     } = this.props;
 
-    const { open, postTypes } = this.state;
+    const { open, postTypes, searchValue } = this.state;
 
     const filterCount = this.getFilterCount();
     // eslint-disable-next-line no-script-url
@@ -295,12 +291,15 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 />
               }
               placeholder={courseDisplayName ? 'Search posts' : 'To search add some posts first'}
-              value={query}
-              onChange={onChange('query')}
+              value={searchValue}
+              onChange={this.handleChangeQuery}
               endAdornment={
-                query !== '' && (
+                searchValue !== '' && (
                   <InputAdornment position="end">
-                    <IconButton aria-label="Toggle password visibility" onClick={onClearSearch}>
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={() => onChangeSearch('')}
+                    >
                       <ClearIcon fontSize="small" />
                     </IconButton>
                   </InputAdornment>

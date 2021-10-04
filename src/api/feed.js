@@ -8,6 +8,11 @@ import { getToken, feedToCamelCase, generateFeedURL } from './utils';
 import reduxStore from '../configureStore';
 import { callApi } from './api_base';
 
+/**
+ * - This should be deprecated.
+ * - It will be replaced by `apiFetchFeeds`
+ * - Jira Ticket: https://circleinapp.atlassian.net/browse/NCGNT-669
+ */
 export const fetchFeed = async ({
   userId,
   schoolId,
@@ -249,10 +254,14 @@ export const generateQuiz = async ({ deckId }: { deckId: number }): Promise<Obje
   }
 };
 
-export const apiFetchFeeds = async (params) =>
+/**
+ * Fetch feed data.
+ */
+export const apiFetchFeeds = async (params, cancelToken) =>
   callApi({
     url: API_ROUTES.FEED_V1_1,
-    params
+    params,
+    cancelToken
   });
 
 export const apiDeleteFeed = async (userId, feedId) =>

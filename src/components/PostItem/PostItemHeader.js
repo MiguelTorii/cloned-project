@@ -33,10 +33,11 @@ import Tooltip from 'containers/Tooltip/Tooltip';
 import SharePost from 'containers/SharePost/SharePost';
 
 import { getInitials } from 'utils/chat';
-import { getPastClassIds } from 'utils/helpers';
+import { buildPath, getPastClassIds } from 'utils/helpers';
 import _ from 'lodash';
 import { styles } from '../_styles/PostItem/PostItemHeader';
 import HoverPopup from '../HoverPopup/HoverPopup';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
@@ -258,8 +259,12 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           <Typography className={classes.feedTypo}>{navigationTitle}</Typography>
         </Grid>
         <div className={classes.root}>
-          <Link className={classes.avatar} component={MyLink} href={`/profile/${userId}`}>
-            <HoverPopup userId={userId}>
+          <Link
+            className={classes.avatar}
+            component={MyLink}
+            href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST })}
+          >
+            <HoverPopup userId={userId} profileSource={PROFILE_PAGE_SOURCE.POST}>
               <Avatar src={userProfileUrl} className={classes.bigAvatar}>
                 {initials}
               </Avatar>
@@ -268,7 +273,11 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           <div className={classes.userInfo}>
             <Box display="flex" alignItems="center">
               <Typography component="p" variant="h6" noWrap>
-                <Link component={MyLink} href={`/profile/${userId}`} className={classes.link}>
+                <Link
+                  component={MyLink}
+                  href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST })}
+                  className={classes.link}
+                >
                   {name}
                 </Link>
               </Typography>

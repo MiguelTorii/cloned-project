@@ -15,7 +15,8 @@ const DrawerItem = ({
   primaryText,
   pathname,
   OnIcon,
-  OffIcon
+  OffIcon,
+  active = false
 }) => {
   const [hover, setHover] = useState(false);
   const classes = useStyles();
@@ -35,10 +36,10 @@ const DrawerItem = ({
       link={link}
       onMouseOver={onHover(true)}
       onMouseLeave={onHover(false)}
-      className={clsx(classes.root, listItemClass)}
+      className={clsx(classes.root, listItemClass, active && classes.activePath)}
     >
       <ListItemIcon className={classes.menuIcon}>
-        {hover || pathname === link ? OnIcon : OffIcon}
+        {active || hover || pathname === link ? OnIcon : OffIcon}
       </ListItemIcon>
       <ListItemText primary={primaryText} />
     </ListItem>

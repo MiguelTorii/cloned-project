@@ -1,10 +1,9 @@
 // @flow
 
 import React from 'react';
-import debounce from 'lodash/debounce';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { push as routePush } from 'connected-react-router';
+import { push as routePush, replace as routeReplace } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import { processClasses } from 'containers/ClassesSelector/utils';
 import queryString from 'query-string';
@@ -13,6 +12,8 @@ import { decypherClass } from 'utils/crypto';
 import ClassmatesDialog from 'components/ClassmatesDialog/ClassmatesDialog';
 import Tooltip from 'containers/Tooltip/Tooltip';
 import PostCreationHeader from 'containers/Feed/PostCreationHeader';
+import lodash from 'lodash';
+import axios from 'axios';
 import FeedList from '../../components/FeedList/FeedList';
 import FeedFilter from '../../components/FeedFilter/FeedFilter';
 import Report from '../../components/Report/ReportIssue';
@@ -24,8 +25,11 @@ import SharePost from '../SharePost/SharePost';
 import DeletePost from '../DeletePost/DeletePost';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import * as feedActions from '../../actions/feed';
+import { feedActions as feedActionTypes } from '../../constants/action-types';
 import type { CampaignState } from '../../reducers/campaign';
-// const defaultClass = JSON.stringify({ classId: -1, sectionId: -1 });
+import { isSame, buildPath } from '../../utils/helpers';
+import { FEED_NAVIGATION_TABS, POST_WRITER, PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { FEEDS_PER_PAGE } from '../../constants/app';
 
 const styles = () => ({
   root: {
@@ -39,6 +43,7 @@ const styles = () => ({
 });
 
 type Props = {
+  api: Object,
   classes: Object,
   user: UserState,
   feed: FeedState,
@@ -48,125 +53,126 @@ type Props = {
   sectionId: number,
   from: boolean,
   push: Function,
-  fetchFeed: Function,
-  updateBookmark: Function,
+  replace: Function,
+  bookmarkFeed: Function,
   updateFilter: Function,
   clearFilter: Function,
   campaign: CampaignState,
   updateScrollData: Function,
-  clearFeeds: Function
+  clearFeeds: Function,
+  updateFilterFields: Function,
+  actionFetchFeed: Function,
+  deleteFeed: Function
 };
 
 type State = {
-  feedId: ?number,
-  report: ?Object,
-  deletePost: ?Object,
-  selectedClasses: Array,
+  activeAction: {
+    type: string,
+    data: Object
+  },
+  activeTab: boolean,
   isFiltering: boolean
+};
+
+const FEED_ACTIONS = {
+  SHARE: 'share',
+  DELETE: 'delete',
+  REPORT: 'report'
 };
 
 class Feed extends React.PureComponent<Props, State> {
   state = {
-    feedId: null,
-    report: null,
-    deletePost: null,
-    selectedClasses: [],
-    isFiltering: false,
-    isBeforeFirstLoad: true // This is used to display loading state from the beginning.
+    activeAction: null, // Store the active action and its data.
+    activeTab: FEED_NAVIGATION_TABS.CLASS_FEED, // Active navigation tab.
+    isFiltering: false
   };
+
+  cancelSource: Object;
 
   mounted: boolean;
 
-  componentDidUpdate(prevProps) {
-    const { from } = this.props;
-    if (from !== prevProps.from) {
-      this.handleUpdateFilter();
-    }
-  }
-
-  setSelectedClasses = (selectedClasses) => {
-    this.setState({ selectedClasses });
+  handleUpdateSelectedSectionIds = (sectionIds) => {
+    this.handleUpdateFilterFields({ userClasses: sectionIds });
   };
 
-  handleUpdateFilter = () => {
-    const { from, updateFilter } = this.props;
-    if (from) {
-      updateFilter({ field: 'from', value: from });
-    } else {
-      updateFilter({ field: 'from', value: 'everyone' });
-    }
-  };
-
-  componentDidMount = async () => {
-    this.mounted = true;
+  componentDidMount = () => {
     const {
-      classId,
-      sectionId,
-      updateFilter,
-      feed: { scrollData },
-      resetScrollData
-      // push,
-      // user: {
-      // expertMode
-      // }
-    } = this.props;
-    // if (!expertMode && !classId) push('/')
-
-    if (classId >= 0 && sectionId >= 0) {
-      updateFilter({
-        field: 'userClasses',
-        value: [JSON.stringify({ classId, sectionId })]
-      });
-    }
-
-    this.handleUpdateFilter();
-
-    window.addEventListener('offline', () => {
-      if (this.handleFetchFeed.cancel && typeof this.handleFetchFeed.cancel === 'function') {
-        this.handleFetchFeed.cancel();
+      router: {
+        location: { search }
       }
-    });
-    window.addEventListener('online', () => {
-      this.handleFetchFeed();
-    });
+    } = this.props;
+    const { sectionId, replace, feed, updateScrollData, user } = this.props;
+    const { userClasses, bookmark, from } = feed.data.filters;
+    const query = queryString.parse(search);
+    const filter = {};
+    let forceReload = false;
 
-    this.handleFetchFeed = debounce(this.handleFetchFeed, 521);
-    await this.handleFetchFeed();
+    filter.pastFilter = query.pastFilter === 'true';
 
-    if (classId === scrollData.classId) {
-      window.scrollTo(0, scrollData.position);
+    // If a class is selected by URL params, filter class feed.
+    if (sectionId) {
+      filter.userClasses = [Number(sectionId)];
+    } else if (lodash.isEmpty(userClasses)) {
+      // If no classes are selected, select all classes by default.
+      const { classList } = user.userClasses;
+
+      if (!classList?.length) {
+        forceReload = true;
+      }
+
+      // Filter valid Section IDs
+      filter.userClasses = (classList || [])
+        .map((classData) => classData.section?.[0].sectionId)
+        .filter((sectionId) => !!sectionId);
     }
 
-    resetScrollData();
+    // Update filter
+    this.handleUpdateFilterFields(filter, forceReload);
+
+    // Initialize active tab
+    let activeTab = FEED_NAVIGATION_TABS.CLASS_FEED;
+
+    if (bookmark) {
+      activeTab = FEED_NAVIGATION_TABS.BOOKMARKS;
+    } else if (from === POST_WRITER.ME) {
+      activeTab = FEED_NAVIGATION_TABS.MY_POSTS;
+    }
+
+    this.setState({ activeTab });
+
+    // If there was parameters in the url, it removes all url params.
+    if (search) {
+      replace('/feed');
+    }
+
+    this.cancelSource = axios.CancelToken.source();
+
+    // Check scroll position
+    const { position } = feed.scrollData;
+
+    if (position) {
+      window.scrollTo(0, position);
+      updateScrollData({ position: null });
+    }
   };
 
-  componentWillUnmount = () => {
-    this.mounted = false;
-    if (this.handleFetchFeed.cancel && typeof this.handleFetchFeed.cancel === 'function') {
-      this.handleFetchFeed.cancel();
-    }
-  };
-
-  handleFetchFeed = async () => {
-    const { fetchFeed } = this.props;
-    try {
-      await fetchFeed();
-      this.setState({
-        isBeforeFirstLoad: false
-      });
-    } catch (err) {
-      console.log(err);
-    } finally {
-      this.setState({ isFiltering: false });
-    }
+  clearActiveAction = () => {
+    this.setState({
+      activeAction: null
+    });
   };
 
   handleShare = ({ feedId }: { feedId: number }) => {
-    this.setState({ feedId });
+    this.setState({
+      activeAction: {
+        type: FEED_ACTIONS.SHARE,
+        data: feedId
+      }
+    });
   };
 
   handleShareClose = () => {
-    this.setState({ feedId: null });
+    this.clearActiveAction();
   };
 
   handleBookmark = ({ feedId, bookmarked }: { feedId: number, bookmarked: boolean }) => {
@@ -174,79 +180,56 @@ class Feed extends React.PureComponent<Props, State> {
       user: {
         data: { userId }
       },
-      updateBookmark
+      bookmarkFeed
     } = this.props;
 
-    updateBookmark({ feedId, userId, bookmarked });
+    bookmarkFeed({ feedId, userId, bookmarked });
   };
 
   handleReport = ({ feedId, ownerId, ownerName }) => {
-    this.setState({ report: { feedId, ownerId, ownerName } });
+    this.setState({
+      activeAction: {
+        type: FEED_ACTIONS.REPORT,
+        data: { feedId, ownerId, ownerName }
+      }
+    });
   };
 
   handleReportClose = () => {
-    this.setState({ report: null });
+    this.clearActiveAction();
   };
 
   handleDelete = ({ feedId }) => {
-    this.setState({ deletePost: { feedId } });
+    this.setState({
+      activeAction: {
+        type: FEED_ACTIONS.DELETE,
+        data: feedId
+      }
+    });
   };
 
   handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
     if (deleted && deleted === true) {
-      this.handleFetchFeed();
+      const { deleteFeed } = this.props;
+      const { activeAction } = this.state;
+
+      deleteFeed(activeAction.data);
     }
-    this.setState({ deletePost: null });
+
+    this.clearActiveAction();
   };
 
-  handleChange = (name) => async (event) => {
-    const { updateFilter } = this.props;
-    await updateFilter({ field: name, value: event.target.value });
-    this.handleFetchFeed();
+  handleChangeSearch = (query) => {
+    this.handleUpdateFilterFields({ query });
   };
 
-  handleApplyFilters = (filters) => {
-    const { updateFilter } = this.props;
-    // eslint-disable-next-line no-restricted-syntax
-    this.setState({ isFiltering: true });
-    for (const filter of filters) {
-      updateFilter({ field: filter.name, value: filter.value });
-    }
-    this.setState({
-      isBeforeFirstLoad: true
-    });
-    this.handleFetchFeed();
-  };
-
-  handleClearFilters = () => {
-    const { clearFilter } = this.props;
-    clearFilter();
-    this.handleFetchFeed();
-  };
-
-  handleClearSearch = () => {
-    const { updateFilter } = this.props;
-    updateFilter({ field: 'query', value: '' });
-    this.handleFetchFeed();
-  };
-
-  handleLoadMore = () => {
-    const { fetchFeed } = this.props;
-    fetchFeed();
-  };
-
-  updateFeed = async (filters) => {
-    const { updateFilter } = this.props;
-    await updateFilter({
-      field: 'userClasses',
-      value: filters
-    });
-    this.handleFetchFeed();
+  handleApplyFilters = (filter) => {
+    this.handleUpdateFilterFields(filter);
   };
 
   handleUserClick = ({ userId }: { userId: string }) => {
     const { push } = this.props;
-    push(`/profile/${userId}`);
+    push(buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST }));
   };
 
   handleOpenFilter = () => {
@@ -256,46 +239,99 @@ class Feed extends React.PureComponent<Props, State> {
     });
   };
 
-  handleRefresh = () => {
-    const { clearFeeds } = this.props;
-
-    clearFeeds();
-    this.setState({
-      isBeforeFirstLoad: true
+  handleChangeDateRange = (fromDate, toDate) => {
+    this.handleUpdateFilterFields({
+      fromDate,
+      toDate
     });
-    this.handleFetchFeed();
   };
 
-  handleChangeDateRange = (range, date) => {
-    const { updateFilter } = this.props;
-    updateFilter({ field: range, value: date });
-    this.handleFetchFeed();
+  // Fetch new page posts
+  fetchMorePosts = () => {
+    const { feed, user, actionFetchFeed } = this.props;
+    const { filters, lastIndex } = feed.data;
+    const { bookmark, from, fromDate, toDate, postTypes, query, userClasses } = filters;
+    const { userId, schoolId } = user.data;
+    const fetchParams = {
+      index: lastIndex,
+      limit: FEEDS_PER_PAGE,
+      bookmarked: bookmark || undefined,
+      query: query || undefined,
+      section_id: userClasses,
+      tool_type_id: postTypes,
+      from_date: fromDate?.valueOf(),
+      to_date: toDate?.valueOf()
+    };
+
+    switch (from) {
+      case POST_WRITER.ME:
+        fetchParams.user_id = userId;
+        break;
+      case POST_WRITER.CLASSMATES:
+        fetchParams.school_id = schoolId;
+        break;
+      default:
+        break;
+    }
+
+    actionFetchFeed(fetchParams, this.cancelSource.token);
+  };
+
+  refetchPosts = () => {
+    if (this.cancelSource) {
+      this.cancelSource.cancel();
+    }
+
+    const { clearFeeds } = this.props;
+
+    // Regenerate cancel token.
+    this.cancelSource = axios.CancelToken.source();
+
+    clearFeeds().then(this.fetchMorePosts);
+  };
+
+  handleUpdateFilterFields = (newFilter, forceReload = false) => {
+    const { feed } = this.props;
+    const currentFilter = feed.data.filters;
+
+    // Remove non-modified filters
+    Object.keys(newFilter).forEach((filterKey) => {
+      if (isSame(currentFilter[filterKey], newFilter[filterKey])) {
+        delete newFilter[filterKey];
+      }
+    });
+
+    // Return if filter is not updated.
+    if (!forceReload && lodash.isEmpty(newFilter)) {
+      return;
+    }
+
+    const { updateFilterFields } = this.props;
+
+    // Update filter on Redux and refetch posts
+    updateFilterFields(newFilter).then(this.refetchPosts);
   };
 
   handlePostClick =
     ({ typeId, postId, feedId }: { typeId: number, postId: number, feedId: number }) =>
     () => {
-      const { push, updateScrollData, classId } = this.props;
-      const { search } = window.location;
-      const query = queryString.parse(search);
-      const newQuery = queryString.stringify({ ...query, id: feedId });
-      updateScrollData({ position: window.pageYOffset, classId });
-      push(`/feed?${newQuery}`);
+      const { push, updateScrollData } = this.props;
+      updateScrollData({ position: window.pageYOffset });
       switch (typeId) {
         case 3:
-          push(`/flashcards/${postId}${search}`);
+          push(`/flashcards/${postId}`);
           break;
         case 4:
-          push(`/notes/${postId}${search}`);
+          push(`/notes/${postId}`);
           break;
         case 5:
-          push(`/sharelink/${postId}${search}`);
+          push(`/sharelink/${postId}`);
           break;
         case 6:
-          push(`/question/${postId}${search}`);
+          push(`/question/${postId}`);
           break;
         case 8:
-          push(`/post/${postId}${search}`);
+          push(`/post/${postId}`);
           break;
         default:
           break;
@@ -329,6 +365,29 @@ class Feed extends React.PureComponent<Props, State> {
     return '';
   };
 
+  handleSetActiveTab = (tab) => {
+    this.setState({
+      activeTab: tab
+    });
+
+    switch (tab) {
+      case FEED_NAVIGATION_TABS.CLASS_FEED: {
+        this.handleUpdateFilterFields({ from: POST_WRITER.CLASSMATES, bookmark: false });
+        break;
+      }
+      case FEED_NAVIGATION_TABS.MY_POSTS: {
+        this.handleUpdateFilterFields({ from: POST_WRITER.ME, bookmark: false });
+        break;
+      }
+      case FEED_NAVIGATION_TABS.BOOKMARKS: {
+        this.handleUpdateFilterFields({ from: POST_WRITER.CLASSMATES, bookmark: true });
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
   render() {
     const {
       classes,
@@ -343,30 +402,27 @@ class Feed extends React.PureComponent<Props, State> {
           items,
           hasMore,
           filters: { postTypes, query, from, userClasses, fromDate, toDate }
-        },
-        isLoading
+        }
       },
       router: {
-        location: { search, pathname, state }
+        location: { pathname }
       },
       feedId: fromFeedId,
-      campaign
+      campaign,
+      api
     } = this.props;
-    const {
-      feedId,
-      report,
-      deletePost,
-      openClassmates,
-      selectedClasses,
-      isBeforeFirstLoad,
-      isFiltering
-    } = this.state;
+    const { activeAction, activeTab, openClassmates, isFiltering } = this.state;
 
     let courseName = '';
 
     if (items.length > 0) {
       courseName = items[0].courseDisplayName;
     }
+
+    const isLoadingPosts = !!api[feedActionTypes.FETCH_FEED]?.inProgress;
+    const selectedClasses = classList.filter((classData) =>
+      userClasses.includes(classData.section?.[0]?.sectionId)
+    );
 
     return (
       <>
@@ -383,17 +439,16 @@ class Feed extends React.PureComponent<Props, State> {
               courseDisplayName={this.courseDisplayName()}
             />
             <HeaderNavigation
-              selectedClasses={selectedClasses}
-              setSelectedClasses={this.setSelectedClasses}
+              selectedSectionIds={userClasses}
+              setSelectedSectionIds={this.handleUpdateSelectedSectionIds}
+              activeTab={activeTab}
+              setActiveTab={this.handleSetActiveTab}
               firstName={firstName}
               schoolId={schoolId}
-              state={state}
               classList={classList}
               openClassmatesDialog={this.openClassmatesDialog}
               pathname={pathname}
               expertMode={expertMode}
-              search={search}
-              updateFeed={this.updateFeed}
               push={push}
             />
             {selectedClasses.length === 1 && !selectedClasses[0].isCurrent ? null : (
@@ -411,13 +466,11 @@ class Feed extends React.PureComponent<Props, State> {
               newClassExperience={campaign.newClassExperience}
               fromDate={fromDate}
               toDate={toDate}
-              onChange={this.handleChange}
               onApplyFilters={this.handleApplyFilters}
-              onClearFilters={this.handleClearFilters}
               onOpenFilter={this.handleOpenFilter}
-              onRefresh={this.handleRefresh}
+              onRefresh={this.refetchPosts}
               onChangeDateRange={this.handleChangeDateRange}
-              onClearSearch={this.handleClearSearch}
+              onChangeSearch={this.handleChangeSearch}
             />
             <Tooltip
               id={9045}
@@ -426,7 +479,7 @@ class Feed extends React.PureComponent<Props, State> {
               text="When you're in Expert Mode, you see posts from all your classes at once."
             >
               <FeedList
-                isLoading={isBeforeFirstLoad || isLoading}
+                isLoading={isLoadingPosts}
                 userId={userId}
                 schoolId={schoolId}
                 items={items}
@@ -441,7 +494,7 @@ class Feed extends React.PureComponent<Props, State> {
                 pushTo={push}
                 onReport={this.handleReport}
                 onDelete={this.handleDelete}
-                onLoadMore={this.handleLoadMore}
+                onLoadMore={this.fetchMorePosts}
                 onUserClick={this.handleUserClick}
                 isFiltering={isFiltering}
               />
@@ -449,21 +502,25 @@ class Feed extends React.PureComponent<Props, State> {
           </div>
         </ErrorBoundary>
         <ErrorBoundary>
-          <SharePost feedId={feedId} open={Boolean(feedId)} onClose={this.handleShareClose} />
+          <SharePost
+            feedId={activeAction?.data}
+            open={activeAction?.type === FEED_ACTIONS.SHARE}
+            onClose={this.handleShareClose}
+          />
         </ErrorBoundary>
         <ErrorBoundary>
           <Report
-            open={Boolean(report)}
-            ownerId={(report || {}).ownerId || ''}
-            ownerName={(report || {}).ownerName || ''}
-            objectId={(report || {}).feedId || -1}
+            open={activeAction?.type === FEED_ACTIONS.REPORT}
+            ownerId={activeAction?.data.ownerId || ''}
+            ownerName={activeAction?.data.ownerName || ''}
+            objectId={activeAction?.data.feedId || -1}
             onClose={this.handleReportClose}
           />
         </ErrorBoundary>
         <ErrorBoundary>
           <DeletePost
-            open={Boolean(deletePost)}
-            feedId={(deletePost || {}).feedId || -1}
+            open={activeAction?.type === FEED_ACTIONS.DELETE}
+            feedId={activeAction?.data}
             onClose={this.handleDeleteClose}
           />
         </ErrorBoundary>
@@ -472,7 +529,8 @@ class Feed extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ router, user, feed, campaign }: StoreState): {} => ({
+const mapStateToProps = ({ router, user, feed, campaign, api }: StoreState): {} => ({
+  api,
   user,
   campaign,
   router,
@@ -483,13 +541,16 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       push: routePush,
-      fetchFeed: feedActions.fetchFeed,
-      updateBookmark: feedActions.updateBookmark,
+      replace: routeReplace,
+      deleteFeed: feedActions.actionDeleteFeed,
+      actionFetchFeed: feedActions.actionFetchFeed,
+      bookmarkFeed: feedActions.actionBookmarkFeed,
       updateFilter: feedActions.updateFilter,
       clearFilter: feedActions.clearFilter,
       updateScrollData: feedActions.updateScrollData,
       resetScrollData: feedActions.resetScrollData,
-      clearFeeds: feedActions.clearFeeds
+      clearFeeds: feedActions.clearFeeds,
+      updateFilterFields: feedActions.updateFilterFields
     },
     dispatch
   );

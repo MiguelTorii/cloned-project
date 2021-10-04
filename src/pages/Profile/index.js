@@ -37,6 +37,7 @@ type State = {
 class ProfilePage extends React.Component<Props, State> {
   state = {
     userId: '',
+    source: null,
     edit: false
   };
 
@@ -49,12 +50,13 @@ class ProfilePage extends React.Component<Props, State> {
         location: { search = {} }
       }
     } = this.props;
+    const query = queryString.parse(search);
+
     if (userId !== '') {
-      this.setState({ userId: String(userId) });
+      this.setState({ userId: String(userId), source: query.from });
     }
 
-    const values = queryString.parse(search);
-    const { edit = false } = values;
+    const { edit = false } = query;
     this.setState({ edit });
   };
 
@@ -62,6 +64,9 @@ class ProfilePage extends React.Component<Props, State> {
     const {
       match: {
         params: { userId = '' }
+      },
+      history: {
+        location: { search }
       }
     } = this.props;
     const {
@@ -70,20 +75,21 @@ class ProfilePage extends React.Component<Props, State> {
       }
     } = prevProps;
     if (userId !== '' && prevUserId !== '' && userId !== prevUserId) {
-      this.setState({ userId: String(userId) });
+      const query = queryString.parse(search);
+      this.setState({ userId: String(userId), source: query.from });
     }
   };
 
   render() {
     const { classes } = this.props;
-    const { userId, edit } = this.state;
+    const { userId, edit, source } = this.state;
     return (
       <main>
         <CssBaseline />
         <Layout>
           <Grid container spacing={0}>
             <Grid item xs={12} className={classes.item}>
-              <Profile key={userId} userId={userId} edit={edit} />
+              <Profile key={userId} userId={userId} edit={edit} from={source} />
             </Grid>
           </Grid>
         </Layout>

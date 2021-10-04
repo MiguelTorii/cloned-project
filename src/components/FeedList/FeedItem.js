@@ -56,6 +56,7 @@ import { getPastClassIds } from 'utils/helpers';
 import useStyles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import HoverPopup from '../HoverPopup/HoverPopup';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 const FeedTypes = {
   flashcards: {
@@ -451,7 +452,7 @@ const FeedItem = ({
             </Grid>
           )}
           <Grid item>
-            <HoverPopup userId={data.userId}>
+            <HoverPopup userId={data.userId} profileSource={PROFILE_PAGE_SOURCE.POST}>
               <Box display="flex" alignItems="center">
                 <ButtonBase className={classes.avatar} onClick={handleUserClick}>
                   <OnlineBadge

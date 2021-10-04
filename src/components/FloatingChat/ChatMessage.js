@@ -15,6 +15,8 @@ import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 import RoleBadge from 'components/RoleBadge/RoleBadge';
 import { getInitials } from 'utils/chat';
 import { styles } from '../_styles/FloatingChat/ChatMessage';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -152,7 +154,7 @@ class ChatMessage extends React.PureComponent<Props> {
           <ListItemAvatar
             className={classes.avatarLink}
             component={MyLink}
-            href={`/profile/${userId || ''}`}
+            href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
           >
             <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
               <Avatar alt={name} src={avatar}>
@@ -164,7 +166,11 @@ class ChatMessage extends React.PureComponent<Props> {
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>
           {!isOwn && (
             <Typography variant="caption" className={classes.name}>
-              <Link className={classes.link} component={MyLink} href={`/profile/${userId || ''}`}>
+              <Link
+                className={classes.link}
+                component={MyLink}
+                href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
+              >
                 {name}
               </Link>
               {role && <RoleBadge text={role} />}

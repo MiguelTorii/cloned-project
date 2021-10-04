@@ -11,6 +11,8 @@ import Tooltip from 'containers/Tooltip/Tooltip';
 import cx from 'clsx';
 import queryString from 'query-string';
 import { Typography } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { FEED_NAVIGATION_TABS, POST_WRITER } from '../../constants/common';
 
 const useStyles = makeStyles((theme) => ({
   allClasses: {
@@ -50,47 +52,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
-  updateFeed: Function,
+  activeTab: boolean,
+  setActiveTab: Function,
   push: Function,
-  search: string,
   pathname: string,
-  state: Object,
   firstName: string,
   expertMode: boolean,
   classList: Array,
-  selectedClasses: Array,
-  setSelectedClasses: Function
+  selectedSectionIds: Array,
+  setSelectedSectionIds: Function
 };
 
 const HeaderNavigation = ({
-  selectedClasses,
-  setSelectedClasses,
+  selectedSectionIds,
+  setSelectedSectionIds,
   openClassmatesDialog,
   classList,
   schoolId,
   push,
-  search,
   pathname,
   firstName,
   expertMode,
-  updateFeed,
-  state
+  activeTab,
+  setActiveTab
 }: Props) => {
-  const [prevFilters, setPrevFilters] = useState('');
-
-  const isPastFilter = useMemo(() => {
-    const query = queryString.parse(search);
-    const pastClasses = getPastClassIds(classList);
-
-    if (query?.class) {
-      const { classId } = decypherClass(query?.class);
-      return pastClasses.includes(Number(classId));
-    }
-    if (query?.pastFilter === 'true') {
-      return true;
-    }
-    return false;
-  }, [search, classList]);
+  const isPastFilter = useSelector((state) => state.feed.data.filters.pastFilter);
 
   const options = useMemo(() => {
     const newClassList = {};
@@ -114,9 +100,14 @@ const HeaderNavigation = ({
     }));
   }, [classList, isPastFilter]);
 
+  const selectedClasses = useMemo(
+    () => options.filter((option) => selectedSectionIds.includes(option.sectionId)),
+    [options, selectedSectionIds]
+  );
+
   const allSelected = useMemo(
-    () => options.length === selectedClasses.length,
-    [options.length, selectedClasses.length]
+    () => options.length === selectedSectionIds.length,
+    [options.length, selectedSectionIds.length]
   );
 
   const allLabel = useMemo(
@@ -124,118 +115,14 @@ const HeaderNavigation = ({
     [firstName, isPastFilter]
   );
 
+  const handleSelectClasses = useCallback(
+    (classesData) => {
+      setSelectedSectionIds(classesData.map((item) => item.sectionId));
+    },
+    [setSelectedSectionIds]
+  );
+
   const classes = useStyles();
-
-  const handleFilters = useCallback(
-    (classes) => {
-      const currentSelectedClasses = !classes.length ? options : classes;
-      setSelectedClasses(currentSelectedClasses);
-      const filters = currentSelectedClasses.map((classItem) =>
-        JSON.stringify({
-          classId: classItem?.classId,
-          sectionId: classItem?.sectionId
-        })
-      );
-      if (prevFilters !== String(filters)) {
-        setPrevFilters(String(filters));
-        updateFeed(filters);
-      }
-    },
-    [prevFilters, setSelectedClasses, updateFeed, options]
-  );
-
-  useEffect(() => {
-    const query = queryString.parse(search);
-
-    if (state?.selectedClasses) {
-      state.selectedClasses.forEach((sc) => {
-        const id = options.findIndex(
-          (o) => o.classId === sc.classId && o.sectionId === sc.sectionId
-        );
-        if (id === -1) {
-          handleFilters(options);
-        } else {
-          handleFilters(state.selectedClasses);
-        }
-      });
-    } else if (query.class) {
-      const { classId } = decypherClass(query.class);
-      const currentClass = classList.filter((userClass) => userClass.classId === Number(classId));
-      const newClass = {};
-      currentClass.forEach((cl) => {
-        if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
-          cl.section.forEach((s) => {
-            newClass[s.sectionId] = cl;
-          });
-        }
-      });
-
-      const currentSelectedClass = Object.keys(newClass).map((sectionId) => ({
-        ...newClass[sectionId],
-        sectionId: Number(sectionId)
-      }));
-      handleFilters(currentSelectedClass);
-    } else {
-      handleFilters(options);
-    }
-  }, [classList, handleFilters, options, search, setSelectedClasses, state]);
-
-  const onSelect = useCallback(
-    (options) => {
-      handleFilters(options);
-      const parsedHash = queryString.parse(search);
-      const { class: remove, 0: remove2, ...rest } = parsedHash;
-      if (options.length === 1) {
-        const newSearch = queryString.stringify({
-          ...rest,
-          class: cypher(`${options[0].classId}:${options[0].sectionId}`)
-        });
-        push({
-          pathname,
-          search: newSearch,
-          state: { selectedClasses: options }
-        });
-      } else {
-        const newSearch = queryString.stringify(rest);
-        push({
-          pathname,
-          search: newSearch,
-          state: { selectedClasses: options }
-        });
-      }
-    },
-    [handleFilters, pathname, push, search]
-  );
-
-  const navigate = useCallback(
-    (path, extras) => () => {
-      const parsedHash = queryString.parse(search);
-      const { class: remove, 0: remove2, from: remove3, ...rest } = parsedHash;
-      if (selectedClasses.length === 1) {
-        const newSearch = queryString.stringify({
-          ...rest,
-          ...extras,
-          class: cypher(`${selectedClasses[0].classId}:${selectedClasses[0].sectionId}`)
-        });
-        push({
-          pathname: path,
-          search: newSearch,
-          state: { selectedClasses }
-        });
-      } else {
-        const newSearch = queryString.stringify({
-          ...rest,
-          ...extras
-        });
-        push({
-          pathname: path,
-          search: newSearch,
-          state: { selectedClasses }
-        });
-      }
-    },
-    [push, search, selectedClasses]
-  );
 
   return (
     <Box>
@@ -250,7 +137,7 @@ const HeaderNavigation = ({
           externalOptions={options}
           selected={selectedClasses}
           schoolId={schoolId}
-          onSelect={onSelect}
+          onSelect={handleSelectClasses}
         />
         {isPastFilter && !allSelected && (
           <Typography variant="h5" display="inline" className={classes.pastClassLabel}>
@@ -260,22 +147,22 @@ const HeaderNavigation = ({
       </Box>
       <Box className={classes.links}>
         <Button
-          onClick={navigate('/feed', {})}
-          className={cx(pathname === '/feed' && classes.currentPath)}
+          onClick={() => setActiveTab(FEED_NAVIGATION_TABS.CLASS_FEED)}
+          className={cx(activeTab === FEED_NAVIGATION_TABS.CLASS_FEED && classes.currentPath)}
         >
           Class Feed
         </Button>
         <span> | </span>
         <Button
-          onClick={navigate('/my_posts', { from: 'me' })}
-          className={cx(pathname === '/my_posts' && classes.currentPath)}
+          onClick={() => setActiveTab(FEED_NAVIGATION_TABS.MY_POSTS)}
+          className={cx(activeTab === FEED_NAVIGATION_TABS.MY_POSTS && classes.currentPath)}
         >
           My Posts
         </Button>
         <span> | </span>
         <Button
-          onClick={navigate('/bookmarks', { from: 'bookmarks' })}
-          className={cx(pathname === '/bookmarks' && classes.currentPath)}
+          onClick={() => setActiveTab(FEED_NAVIGATION_TABS.BOOKMARKS)}
+          className={cx(activeTab === FEED_NAVIGATION_TABS.BOOKMARKS && classes.currentPath)}
         >
           Bookmarks
         </Button>
@@ -300,7 +187,7 @@ const HeaderNavigation = ({
           <>
             <span> | </span>
             <Button
-              onClick={navigate('/leaderboard', {})}
+              onClick={() => push('/leaderboard')}
               className={cx(pathname === '/leaderboard' && classes.currentPath)}
             >
               Class Leaderboard
