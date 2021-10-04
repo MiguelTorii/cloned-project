@@ -70,7 +70,7 @@ class Index extends React.Component<Props, State> {
     this.handleCursor = this.throttle(this.handleCursor, 500);
   };
 
-  componentDidUpdate = (prevProps) => {
+  getSnapshotBeforeUpdate = (prevProps) => {
     const { drawData, isText } = this.props;
     if (isText) {
       this.input.focus();

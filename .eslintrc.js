@@ -105,7 +105,7 @@ module.exports = {
 
     // TODO turn the 'react' rules back on
     'react/no-unescaped-entities': 'error',
-    'react/no-did-update-set-state': 'off',
+    'react/no-did-update-set-state': 'error',
     'react/jsx-curly-newline': 'off',
     'react/jsx-closing-tag-location': 'error',
     'react/button-has-type': 'error',
