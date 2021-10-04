@@ -26,7 +26,7 @@ const CardBoard = ({ data, onAction }) => {
           content={currentData.question}
           image={currentData.questionImage}
           onFlip={handleFlip}
-          isQuestion={true}
+          isQuestion
         />
       </div>
       <div key="back">

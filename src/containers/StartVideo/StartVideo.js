@@ -40,18 +40,11 @@ type State = {
 
 class StartVideo extends React.PureComponent<Props, State> {
   state = {
-    isLoading: false,
     channel: '',
     client: null,
     channels: [],
-    errorDialog: false,
-    errorTitle: '',
-    errorBody: '',
-    createChannel: 'single',
     online: true,
     inviteVisible: false,
-    classId: '',
-    sectionId: '',
     classList: [],
     groupUsers: []
   };
@@ -69,7 +62,6 @@ class StartVideo extends React.PureComponent<Props, State> {
 
     this.setState({ classList: [...classList] });
     const { classId, sectionId } = decypherClass();
-    this.setState({ classId: Number(classId), sectionId: Number(sectionId) });
 
     window.addEventListener('offline', () => {
       console.log('**** offline ****');
@@ -129,7 +121,6 @@ class StartVideo extends React.PureComponent<Props, State> {
         data: { userId }
       }
     } = this.props;
-    this.setState({ isLoading: true });
     try {
       const accessToken = await renewTwilioToken({
         userId
@@ -151,17 +142,8 @@ class StartVideo extends React.PureComponent<Props, State> {
         criteria: 'lastMessage',
         order: 'descending'
       });
-      // const channelList = channels.map(channel => ({
-      //   value: channel.sid,
-      //   label: getTitle(channel, userId)
-      // }));
-      this.setState({
-        client,
-        channels
-        // channelList
-      });
+      this.setState({ client, channels });
     } finally {
-      this.setState({ isLoading: false });
     }
   };
 
@@ -185,7 +167,6 @@ class StartVideo extends React.PureComponent<Props, State> {
 
   handleInvite = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
     const { client, channel } = this.state;
-    this.setState({ isLoading: true });
     try {
       const users = selectedUsers.map((item) => Number(item.userId));
 
@@ -220,30 +201,12 @@ class StartVideo extends React.PureComponent<Props, State> {
           startVideo
         });
       }
-    } catch (e) {
-      this.setState({ isLoading: false });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
-
-  handleErrorDialogClose = () => {
-    this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
-  };
-
-  handleCreateChannelClose = () => {
-    this.setState({ createChannel: null });
-  };
-
-  handleCreateChannelOpen = (type) => () => {
-    this.setState({ createChannel: type });
+    } catch (e) {}
   };
 
   handleChannelUpdated = ({ channel, isNew }: { channel: Object, isNew: boolean }) => {
     this.setState(({ channels }) => ({
-      // channelList
       channels: [channel, ...channels],
-      // channelList: [newChannel, ...channelList],
       channel: channel.sid
     }));
   };

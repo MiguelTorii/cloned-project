@@ -85,7 +85,7 @@ type Props = {
 };
 
 const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => {
-  const [classList, setClassList] = useState(null);
+  const [classList, setClassList] = useState([]);
   const [canAddClasses, setCanAddClasses] = useState(false);
   const [openAddClasses, setOpenAddClasses] = useState(false);
   const [emptyLogo, setEmptyLogo] = useState('');
@@ -128,7 +128,7 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
       setLoading(true);
       try {
         const {
-          userClasses: { classList, canAddClasses, emptyState }
+          userClasses: { classList, canAddClasses, emptyState, pastClasses }
         } = user;
 
         if (emptyState && emptyState.visibility) {
@@ -138,9 +138,11 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
           setEmptyVisibility(visibility);
         }
 
-        if (classList) {
+        const classListArr = currentFilter === 'current' ? classList : pastClasses;
+
+        if (classListArr) {
           setClassList(
-            classList.map((cl) => {
+            classListArr.map((cl) => {
               const classesInter = cl.section.map((s) => ({
                 sectionDisplayName: s.sectionDisplayName,
                 instructorDisplayName: s.instructorDisplayName,
@@ -173,7 +175,7 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
     };
 
     init();
-  }, [handleLeaveClass, user]);
+  }, [handleLeaveClass, user, currentFilter]);
 
   const navigate = useCallback(
     ({ courseDisplayName, sectionId, classId, isCurrent }) => {
@@ -236,31 +238,30 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
       </Grid>
 
       <Grid
-        justifyContent={classList && getFilteredList().length > 0 ? 'flex-start' : 'center'}
+        justifyContent={classList?.length ? 'flex-start' : 'center'}
         className={classes.container}
         container
         spacing={2}
       >
         <AddRemoveClasses open={openAddClasses} onClose={() => setOpenAddClasses(false)} />
-        {classList &&
-          getFilteredList().map(
-            (cl) =>
-              cl && (
-                <Grid key={cl.sectionId} item xs={12} md={6} lg={4} xl={3} className={classes.item}>
-                  <ClassCard
-                    sectionDisplayName={cl.sectionDisplayName}
-                    instructorDisplayName={cl.instructorDisplayName}
-                    courseDisplayName={cl.courseDisplayName}
-                    bgColor={cl.bgColor}
-                    canLeave={cl.canLeave}
-                    handleLeaveClass={cl.handleLeaveClass}
-                    isCurrent={cl.isCurrent}
-                    navigate={() => navigate({ ...cl })}
-                  />
-                </Grid>
-              )
-          )}
-        {classList && getFilteredList().length === 0 && (
+        {classList.map(
+          (cl) =>
+            cl && (
+              <Grid key={cl.sectionId} item xs={12} md={6} lg={4} xl={3} className={classes.item}>
+                <ClassCard
+                  sectionDisplayName={cl.sectionDisplayName}
+                  instructorDisplayName={cl.instructorDisplayName}
+                  courseDisplayName={cl.courseDisplayName}
+                  bgColor={cl.bgColor}
+                  canLeave={cl.canLeave}
+                  handleLeaveClass={cl.handleLeaveClass}
+                  isCurrent={cl.isCurrent}
+                  navigate={() => navigate({ ...cl })}
+                />
+              </Grid>
+            )
+        )}
+        {!classList?.length && (
           <EmptyState imageUrl={EmptyClass}>
             <div className={classes.emptyTitle}>
               {currentFilter === 'current' ? 'No classes yet.' : 'No past classes yet.'}

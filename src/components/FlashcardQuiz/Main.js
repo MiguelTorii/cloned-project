@@ -446,7 +446,7 @@ const FlashcardQuiz = ({ flashcardId, isOpen }: Props) => {
                 Answer these next questions by clicking on the answer you believe is correct.
               </div>
               {multiQuestions.map((multiQuestion, i) => (
-                <MultiQuestion multiQuestion={multiQuestion} index={i + 1} />
+                <MultiQuestion key={multiQuestion.id} multiQuestion={multiQuestion} index={i + 1} />
               ))}
             </Grid>
           )}

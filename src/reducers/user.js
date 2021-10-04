@@ -16,6 +16,7 @@ export type UserState = {
   runningTour: boolean,
   userClasses: {
     classList: ?Array<Object>,
+    pastClasses: ?Array<Object>,
     canAddClasses: boolean,
     emptyState: {
       visibility: boolean,
@@ -78,6 +79,7 @@ const defaultState = {
   isMasquerading: store.get('MASQUERADING') === true,
   userClasses: {
     classList: [],
+    pastClasses: [],
     canAddClasses: false,
     emptyState: {
       visibility: false,

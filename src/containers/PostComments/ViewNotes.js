@@ -163,12 +163,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
         }
       });
 
-      this.setState(
-        update(this.state, {
-          comments: { $set: newComments },
-          items: { $set: processComments(newComments.comments).reverse() }
-        })
-      );
+      this.setState({
+        comments: newComments,
+        items: processComments(newComments.comments).reverse()
+      });
     }
   };
 

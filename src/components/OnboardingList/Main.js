@@ -121,7 +121,7 @@ const OnboardingList = ({
       </div>
       <div className={classes.list}>
         {onboardingList.checklist.map((item) => (
-          <OnboardingListItem item={item} />
+          <OnboardingListItem key={item.id} item={item} />
         ))}
       </div>
       <LinearProgressWithLabel value={completionPercentage} />

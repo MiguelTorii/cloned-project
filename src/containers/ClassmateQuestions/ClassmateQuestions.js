@@ -11,13 +11,11 @@ const ClassmateQuestions = () => {
   const myClasses = useSelector((state) => state.user.userClasses.classList);
   const [selectedClass, setSelectedClass] = useState('all');
 
-  const activeClasses = useMemo(() => myClasses.filter((item) => item.isCurrent), [myClasses]);
-
   const handleChangeClass = useCallback((event, newClass) => {
     setSelectedClass(newClass);
   }, []);
 
-  if (_.isEmpty(activeClasses)) {
+  if (_.isEmpty(myClasses)) {
     return null;
   }
 
@@ -37,7 +35,7 @@ const ClassmateQuestions = () => {
         }}
       >
         <Tab key="all" label="All Courses" value="all" />
-        {activeClasses.map((item) => (
+        {myClasses.map((item) => (
           <Tab key={item.classId} label={item.className} value={item.classId} />
         ))}
       </Tabs>

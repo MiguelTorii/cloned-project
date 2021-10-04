@@ -152,7 +152,8 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "yarn lint:fix"
+      "prettier --write",
+      "yarn eslint --fix"
     ]
   },
   "browserslist": [
