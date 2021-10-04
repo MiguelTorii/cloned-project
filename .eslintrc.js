@@ -1,8 +1,7 @@
 module.exports = {
-  root: true,
   parser: '@typescript-eslint/parser',
   extends: [
-    'eslint:recommended',
+    // 'eslint:recommended',
     'airbnb-typescript',
     'prettier',
     'plugin:jsx-a11y/recommended',
@@ -10,6 +9,19 @@ module.exports = {
     'plugin:react-hooks/recommended'
   ],
   plugins: ['prettier', 'jsx-a11y', 'react', 'react-hooks', '@typescript-eslint'],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        ecmaVersion: 6,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
+    }
+  ],
   rules: {
     'prettier/prettier': 'error',
     indent: 'off',
@@ -97,7 +109,7 @@ module.exports = {
     'react/jsx-filename-extension': [
       'error',
       {
-        extensions: ['.js', '.jsx']
+        extensions: ['.tsx']
       }
     ],
     'react/destructuring-assignment': ['error', 'always'],
@@ -139,7 +151,7 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
-    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off'
   },
   globals: {
     cy: true,
@@ -158,5 +170,10 @@ module.exports = {
     MutationObserver: true,
     Node: true,
     Image: true
+  },
+  env: {
+    browser: true,
+    es6: true,
+    jest: true
   }
 };

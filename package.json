@@ -129,6 +129,7 @@
     "cypress": "^4.12.1",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.0",
     "eslint-config-import": "^0.13.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
@@ -144,8 +145,8 @@
   },
   "scripts": {
     "start": "ESLINT_NO_DEV_ERRORS='true' REACT_APP_STAGE=dev react-scripts start",
-    "lint": "prettier --check 'src/**/**/**/**/*.ts' && eslint src",
-    "lint:fix": "prettier --write 'src/**/**/**/**/*.ts' && eslint src --fix",
+    "lint": "prettier --check 'src/**/**/**/**/*.{ts,tsx}' && eslint src || return 0",
+    "lint:fix": "prettier --write 'src/**/**/**/**/*.{ts,tsx}' && eslint --fix src",
     "start:demo": "REACT_APP_STAGE=demo react-scripts start",
     "build:production": "yarn install && ./build.sh production",
     "build:sourcemaps": "./build.sh",

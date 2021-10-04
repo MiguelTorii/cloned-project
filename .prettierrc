@@ -1,6 +1,6 @@
 {
   "singleQuote": true,
-  "parser": "flow",
+  "parser": "typescript",
   "arrowParens": "always",
   "trailingComma": "none",
   "bracketSpacing": true,
