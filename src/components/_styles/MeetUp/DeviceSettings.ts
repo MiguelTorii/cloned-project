@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   dialog: {
     width: 600,
     '& > :first-child': {

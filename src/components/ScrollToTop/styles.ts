@@ -1,6 +1,5 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
-
-export default makeStyles((theme) => ({
+import makeStyles from "@material-ui/core/styles/makeStyles";
+export default makeStyles(theme => ({
   root: {
     position: 'fixed',
     borderRadius: '8px 0 0 8px !important',

@@ -1,4 +1,4 @@
-export default (theme) => ({
+export default (theme => ({
   dialog: {
     width: 600,
     '& > :first-child': {
@@ -24,14 +24,12 @@ export default (theme) => ({
     '& .MuiSelect-root': {
       padding: theme.spacing(1.25, 1.75)
     },
-
     '& > svg': {
       display: 'none'
     }
   },
   select: {
     color: theme.circleIn.palette.helperText,
-
     '& label': {
       color: theme.circleIn.palette.helperText
     }
@@ -70,7 +68,6 @@ export default (theme) => ({
   },
   menuItem: {
     color: theme.circleIn.palette.white,
-
     '&:hover': {
       backgroundColor: theme.circleIn.palette.brand
     }
@@ -117,4 +114,4 @@ export default (theme) => ({
     backgroundColor: theme.circleIn.palette.gray1,
     border: `1px solid ${theme.circleIn.palette.white}`
   }
-});
+}));

@@ -1,6 +1,5 @@
-import green from '@material-ui/core/colors/green';
-
-export const styles = (theme) => ({
+import green from "@material-ui/core/colors/green";
+export const styles = theme => ({
   main: {
     width: 'auto',
     display: 'block'
@@ -13,7 +12,8 @@ export const styles = (theme) => ({
     boxShadow: 'none !important'
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
+    // Fix IE 11 issue.
     display: 'flex',
     flexDirection: 'column'
   },
@@ -35,8 +35,8 @@ export const styles = (theme) => ({
   visible: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: theme.spacing(2)
-    // justifyContent: 'flex-end'
+    marginBottom: theme.spacing(2) // justifyContent: 'flex-end'
+
   },
   icon: {
     marginRight: theme.spacing()

@@ -1,4 +1,4 @@
-export default (theme) => ({
+export default (theme => ({
   validatorForm: {
     flex: 1,
     minWidth: 350,
@@ -11,7 +11,8 @@ export default (theme) => ({
     margin: theme.spacing(2)
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
+    // Fix IE 11 issue.
     display: 'flex',
     alignItems: 'flex-start',
     flexDirection: 'column'
@@ -71,4 +72,4 @@ export default (theme) => ({
     fontSize: 14,
     lineHeight: '19px'
   }
-});
+}));

@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   commentQuill: {
     width: '100%'
   },

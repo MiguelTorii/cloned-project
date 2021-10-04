@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   courseLogo: {
     position: 'relative'
   },
@@ -26,5 +25,4 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center'
   }
 }));
-
 export default useStyles;

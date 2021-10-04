@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { dialogStyle } from '../Dialog';
-
-export const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+import { dialogStyle } from "../Dialog";
+export const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(),
     '& .fc-header-toolbar': {
@@ -47,8 +46,7 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center'
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 600
   },
   archiveTitle: {

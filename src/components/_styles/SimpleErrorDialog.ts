@@ -1,6 +1,5 @@
-import { dialogStyle } from './Dialog';
-
-export const styles = (theme) => ({
+import { dialogStyle } from "./Dialog";
+export const styles = theme => ({
   buttons: {
     display: 'flex',
     marginTop: theme.spacing(1.25),
@@ -10,8 +9,7 @@ export const styles = (theme) => ({
   button: {
     width: 160
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 500
   }
 });

@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   container: {
     marginTop: theme.spacing(2),
     '& .microlink_card': {

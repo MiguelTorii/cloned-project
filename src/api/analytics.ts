@@ -1,12 +1,9 @@
-// @flow
-
-import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from 'constants/app';
-import createEvent from './events';
-import { EventData } from '../types/models';
+import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from "constants/app";
+import createEvent from "./events";
+import { EventData } from "../types/models";
 
 const toEventData = (eventName: string, props: object): EventData => {
   const [category, eventType] = eventName.split('- ');
-
   let objectId = '';
   const customProps = {};
 
@@ -18,6 +15,7 @@ const toEventData = (eventName: string, props: object): EventData => {
     objectId = props['Channel SID'];
     customProps.type = 'Sent';
   }
+
   if (category === LOG_EVENT_CATEGORIES.VIDEO) {
     objectId = props.channelName;
     customProps.type = props.type;
@@ -62,8 +60,7 @@ const toEventData = (eventName: string, props: object): EventData => {
     customProps.sectionId = props.sectionId;
   }
 
-  return {
-    ...customProps,
+  return { ...customProps,
     category,
     objectId
   };
@@ -83,7 +80,13 @@ const sendToCircleIn = (eventName: string, props: object) => {
   }
 };
 
-export const logEvent = ({ event, props }: { event: string, props: Object }) => {
+export const logEvent = ({
+  event,
+  props
+}: {
+  event: string;
+  props: Record<string, any>;
+}) => {
   try {
     sendToCircleIn(event, props);
   } catch (err) {

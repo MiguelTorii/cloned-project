@@ -1,6 +1,5 @@
-import { dialogStyle } from '../Dialog';
-
-export const styles = (theme) => ({
+import { dialogStyle } from "../Dialog";
+export const styles = theme => ({
   buttonReset: {
     marginRight: theme.spacing(),
     borderRadius: 8,
@@ -23,8 +22,7 @@ export const styles = (theme) => ({
     marginTop: 50,
     position: 'relative'
   },
-  dialogPaper: {
-    ...dialogStyle,
+  dialogPaper: { ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground
   },
   emptyState: {

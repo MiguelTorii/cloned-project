@@ -10,5 +10,4 @@ const DEFAULT_COMMUNITY_MENU_ITEMS = {
   communityIconUrl: '',
   communityBannerUrl: ''
 };
-
 export default DEFAULT_COMMUNITY_MENU_ITEMS;

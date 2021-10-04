@@ -1,53 +1,48 @@
-/**
- * @format
- * @flow
- */
-import update from 'immutability-helper';
-import { rootActions, feedActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Feed } from '../types/models';
-import { POST_WRITER } from '../constants/common';
-import { FEEDS_PER_PAGE } from '../constants/app';
-import { feedToCamelCase } from '../api/utils';
-
+import update from "immutability-helper";
+import { rootActions, feedActions } from "../constants/action-types";
+import type { Action } from "../types/action";
+import type { Feed } from "../types/models";
+import { POST_WRITER } from "../constants/common";
+import { FEEDS_PER_PAGE } from "../constants/app";
+import { feedToCamelCase } from "../api/utils";
 export type FeedState = {
-  isLoading: boolean,
+  isLoading: boolean;
   data: {
-    items: Feed,
-    hasMore: boolean,
-    lastIndex: number,
+    items: Feed;
+    hasMore: boolean;
+    lastIndex: number;
     filters: {
-      userClasses: Array<string>,
-      index: number,
-      limit: number,
-      postTypes: Array<string>,
-      from: string,
-      bookmark: boolean,
-      query: string,
-      fromDate: ?Object,
-      toDate: ?Object,
-      pastFilter: boolean
-    }
-  },
-  error: boolean,
+      userClasses: Array<string>;
+      index: number;
+      limit: number;
+      postTypes: Array<string>;
+      from: string;
+      bookmark: boolean;
+      query: string;
+      fromDate: Record<string, any> | null | undefined;
+      toDate: Record<string, any> | null | undefined;
+      pastFilter: boolean;
+    };
+  };
+  error: boolean;
   errorMessage: {
-    title: string,
-    body: string
-  },
+    title: string;
+    body: string;
+  };
   scrollData: {
-    position: number,
-    classId: string
-  },
-  lastClickedPostScrollPosition: number
+    position: number;
+    classId: string;
+  };
+  lastClickedPostScrollPosition: number;
 };
-
 const defaultState = {
   data: {
     items: [],
     hasMore: true,
     lastIndex: 0,
     filters: {
-      userClasses: [], // an array of sectionIds
+      userClasses: [],
+      // an array of sectionIds
       postTypes: [],
       from: POST_WRITER.CLASSMATES,
       bookmark: false,
@@ -69,172 +64,252 @@ const defaultState = {
     classId: -1
   }
 };
-
-export default (state: FeedState = defaultState, action: Action): FeedState => {
+export default ((state: FeedState = defaultState, action: Action): FeedState => {
   switch (action.type) {
     case feedActions.SEARCH_FEED_REQUEST:
     case feedActions.FETCH_FEED_REQUEST:
       return update(state, {
-        error: { $set: defaultState.error },
-        errorMessage: { $set: defaultState.errorMessage },
-        isLoading: { $set: true }
+        error: {
+          $set: defaultState.error
+        },
+        errorMessage: {
+          $set: defaultState.errorMessage
+        },
+        isLoading: {
+          $set: true
+        }
       });
+
     case feedActions.FETCH_FEED_SUCCESS:
       return update(state, {
         data: {
           // $FlowFixMe
-          items: { $push: action.payload.feed },
+          items: {
+            $push: action.payload.feed
+          },
           // $FlowFixMe
-          hasMore: { $set: action.payload.hasMore }
+          hasMore: {
+            $set: action.payload.hasMore
+          }
         },
-        errorMessage: { $set: defaultState.errorMessage },
-        isLoading: { $set: false }
+        errorMessage: {
+          $set: defaultState.errorMessage
+        },
+        isLoading: {
+          $set: false
+        }
       });
+
     case feedActions.SEARCH_FEED_SUCCESS:
       return update(state, {
         data: {
           // $FlowFixMe
-          items: { $set: action.payload.feed }
+          items: {
+            $set: action.payload.feed
+          }
         },
-        errorMessage: { $set: defaultState.errorMessage },
-        isLoading: { $set: false }
+        errorMessage: {
+          $set: defaultState.errorMessage
+        },
+        isLoading: {
+          $set: false
+        }
       });
+
     case feedActions.FETCH_FEED_ERROR:
       return update(state, {
-        error: { $set: true },
+        error: {
+          $set: true
+        },
         errorMessage: {
           // $FlowFixMe
-          title: { $set: action.payload.title },
+          title: {
+            $set: action.payload.title
+          },
           // $FlowFixMe
-          body: { $set: action.payload.body }
+          body: {
+            $set: action.payload.body
+          }
         },
-        isLoading: { $set: false }
+        isLoading: {
+          $set: false
+        }
       });
+
     case feedActions.CLEAR_FEED_ERROR:
       return update(state, {
-        error: { $set: defaultState.error },
-        errorMessage: { $set: defaultState.errorMessage },
-        isLoading: { $set: false }
+        error: {
+          $set: defaultState.error
+        },
+        errorMessage: {
+          $set: defaultState.errorMessage
+        },
+        isLoading: {
+          $set: false
+        }
       });
+
     case feedActions.UPDATE_BOOKMARK_REQUEST:
       return update(state, {
         data: {
           items: {
-            $apply: (b) => {
-              const index = b.findIndex(
-                // $FlowFixMe
-                (item) => item.feedId === action.payload.feedId
-              );
+            $apply: b => {
+              const index = b.findIndex( // $FlowFixMe
+              item => item.feedId === action.payload.feedId);
+
               if (index > -1) {
                 return update(b, {
                   [index]: {
                     // $FlowFixMe
-                    bookmarked: { $set: !action.payload.bookmarked }
+                    bookmarked: {
+                      $set: !action.payload.bookmarked
+                    }
                   }
                 });
               }
+
               return b;
             }
           }
         }
       });
+
     case feedActions.UPDATE_FEED_FILTER_FIELD_REQUEST:
       return update(state, {
         data: {
           filters: {
             // $FlowFixMe
-            [action.payload.field]: { $set: action.payload.value }
+            [action.payload.field]: {
+              $set: action.payload.value
+            }
           }
         }
       });
+
     case feedActions.CLEAR_FEEDS:
       return update(state, {
         data: {
-          items: { $set: [] },
-          hasMore: { $set: true },
-          lastIndex: { $set: 0 }
+          items: {
+            $set: []
+          },
+          hasMore: {
+            $set: true
+          },
+          lastIndex: {
+            $set: 0
+          }
         }
       });
+
     case feedActions.UPDATE_FEED_LIMIT_REQUEST:
       return update(state, {
         data: {
           filters: {
             // $FlowFixMe
-            limit: { $set: action.payload.limit }
+            limit: {
+              $set: action.payload.limit
+            }
           }
         }
       });
+
     case feedActions.CLEAR_FEED_FILTER_REQUEST:
       return update(state, {
         data: {
-          filters: { $set: defaultState.data.filters }
+          filters: {
+            $set: defaultState.data.filters
+          }
         }
       });
+
     case feedActions.UPDATE_SCROLL_DATA:
       return update(state, {
-        scrollData: { $set: action.payload }
+        scrollData: {
+          $set: action.payload
+        }
       });
+
     case feedActions.RESET_SCROLL_DATA:
       return update(state, {
-        scrollData: { $set: defaultState.scrollData }
-      });
-    case feedActions.UPDATE_FILTER_FIELDS: {
-      return update(state, {
-        data: {
-          filters: (filterData) => ({
-            ...filterData,
-            ...action.payload
-          })
+        scrollData: {
+          $set: defaultState.scrollData
         }
       });
-    }
-    case feedActions.FETCH_FEED: {
-      const posts = action.payload.posts || [];
-      return update(state, {
-        data: {
-          items: { $push: feedToCamelCase(posts) },
-          hasMore: { $set: posts.length >= FEEDS_PER_PAGE },
-          lastIndex: (data) => data + posts.length
-        }
-      });
-    }
-    case feedActions.DELETE_FEED: {
-      return update(state, {
-        data: {
-          items: (data) => data.filter((feed) => feed.feedId !== action.payload.feedId)
-        }
-      });
-    }
-    case feedActions.BOOKMARK_FEED: {
-      const { feedId, bookmarked } = action.meta;
-      const { bookmark: filterBookmark } = state.data.filters;
 
-      // If only bookmarked posts show up and the bookmark was removed from the post, it should be removed from the list.
-      if (filterBookmark && !bookmarked) {
+    case feedActions.UPDATE_FILTER_FIELDS:
+      {
         return update(state, {
           data: {
-            items: (data) => data.filter((feed) => feed.feedId !== feedId)
+            filters: filterData => ({ ...filterData,
+              ...action.payload
+            })
           }
         });
       }
-      return update(state, {
-        data: {
-          items: (data) =>
-            data.map((feed) => {
+
+    case feedActions.FETCH_FEED:
+      {
+        const posts = action.payload.posts || [];
+        return update(state, {
+          data: {
+            items: {
+              $push: feedToCamelCase(posts)
+            },
+            hasMore: {
+              $set: posts.length >= FEEDS_PER_PAGE
+            },
+            lastIndex: data => data + posts.length
+          }
+        });
+      }
+
+    case feedActions.DELETE_FEED:
+      {
+        return update(state, {
+          data: {
+            items: data => data.filter(feed => feed.feedId !== action.payload.feedId)
+          }
+        });
+      }
+
+    case feedActions.BOOKMARK_FEED:
+      {
+        const {
+          feedId,
+          bookmarked
+        } = action.meta;
+        const {
+          bookmark: filterBookmark
+        } = state.data.filters;
+
+        // If only bookmarked posts show up and the bookmark was removed from the post, it should be removed from the list.
+        if (filterBookmark && !bookmarked) {
+          return update(state, {
+            data: {
+              items: data => data.filter(feed => feed.feedId !== feedId)
+            }
+          });
+        }
+
+        return update(state, {
+          data: {
+            items: data => data.map(feed => {
               if (feed.feedId !== feedId) {
                 return feed;
               }
-              return {
-                ...feed,
+
+              return { ...feed,
                 bookmarked: bookmarked
               };
             })
-        }
-      });
-    }
+          }
+        });
+      }
+
     case rootActions.CLEAR_STATE:
       return defaultState;
+
     default:
       return state;
   }
-};
+});

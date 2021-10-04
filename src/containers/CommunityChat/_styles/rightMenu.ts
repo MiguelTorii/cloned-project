@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   usersContainer: {
     flexGrow: 1,
     width: '100%',
@@ -110,5 +109,4 @@ const useStyles = makeStyles((theme) => ({
     flex: 1
   }
 }));
-
 export default useStyles;

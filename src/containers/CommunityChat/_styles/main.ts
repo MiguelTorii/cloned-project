@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
-import CoverImg from 'assets/svg/community-chat-default-cover.svg';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+import CoverImg from "assets/svg/community-chat-default-cover.svg";
+const useStyles = makeStyles(theme => ({
   root: {
     height: 'inherit',
     width: '100%',
@@ -117,5 +116,4 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   }
 }));
-
 export default useStyles;

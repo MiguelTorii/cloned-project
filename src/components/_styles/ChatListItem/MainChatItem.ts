@@ -1,8 +1,6 @@
-import { dialogStyle } from '../Dialog';
-
-export const styles = (theme) => ({
-  dialog: {
-    ...dialogStyle,
+import { dialogStyle } from "../Dialog";
+export const styles = theme => ({
+  dialog: { ...dialogStyle,
     width: 500,
     zIndex: 2100
   },

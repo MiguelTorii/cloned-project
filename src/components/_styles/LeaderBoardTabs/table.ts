@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   root: {
     width: '100%',
     overflowX: 'auto',

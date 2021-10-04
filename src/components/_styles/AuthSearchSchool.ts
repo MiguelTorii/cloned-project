@@ -1,7 +1,8 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   root: {
     width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    display: 'block',
+    // Fix IE 11 issue.
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
     [theme.breakpoints.up(400 + theme.spacing(6))]: {

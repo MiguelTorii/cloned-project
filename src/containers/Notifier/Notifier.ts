@@ -1,26 +1,34 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import { removeSnackbar } from '../../actions/notifications';
-
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { removeSnackbar } from "../../actions/notifications";
 let displayed = [];
 
 const Notifier = () => {
   const dispatch = useDispatch();
-  const notifications = useSelector((store) => store.notifications.items || []);
-  const pathname = useSelector((store) => store.router.location.pathname || '');
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const notifications = useSelector(store => store.notifications.items || []);
+  const pathname = useSelector(store => store.router.location.pathname || '');
+  const {
+    enqueueSnackbar,
+    closeSnackbar
+  } = useSnackbar();
 
-  const storeDisplayed = (id) => {
+  const storeDisplayed = id => {
     displayed = [...displayed, id];
   };
 
-  const removeDisplayed = (id) => {
-    displayed = [...displayed.filter((key) => id !== key)];
+  const removeDisplayed = id => {
+    displayed = [...displayed.filter(key => id !== key)];
   };
 
   useEffect(() => {
-    notifications.forEach(({ nextPath, key, message, options = {}, dismissed = false }) => {
+    notifications.forEach(({
+      nextPath,
+      key,
+      message,
+      options = {},
+      dismissed = false
+    }) => {
       if (dismissed) {
         // dismiss snackbar using notistack
         closeSnackbar(key);
@@ -48,17 +56,16 @@ const Notifier = () => {
         },
         onExited: (event, myKey) => {
           // removen this snackbar from redux store
-          dispatch(removeSnackbar({ key: myKey }));
+          dispatch(removeSnackbar({
+            key: myKey
+          }));
           removeDisplayed(myKey);
         }
       });
-
       // keep track of snackbars that we've displayed
       storeDisplayed(key);
-    });
-    // eslint-disable-next-line
+    }); // eslint-disable-next-line
   }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
-
   return null;
 };
 

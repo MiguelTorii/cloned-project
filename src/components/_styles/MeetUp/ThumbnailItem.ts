@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   root: {
     display: 'flex',
     alignItems: 'flex-start',
@@ -131,8 +131,12 @@ export const styles = (theme) => ({
   cameraVideo: {
     '& video': {
       transform: 'rotateY(180deg)',
-      '-webkit-transform': 'rotateY(180deg)' /* Safari and Chrome */,
-      '-moz-transform': 'rotateY(180deg)' /* Firefox */
+      '-webkit-transform': 'rotateY(180deg)',
+
+      /* Safari and Chrome */
+      '-moz-transform': 'rotateY(180deg)'
+      /* Firefox */
+
     }
   }
 });

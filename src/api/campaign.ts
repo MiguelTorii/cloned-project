@@ -1,11 +1,12 @@
-// @flow
-
-import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import { getToken } from './utils';
-
+import axios from "axios";
+import { API_ROUTES } from "../constants/routes";
+import { getToken } from "./utils";
 // eslint-disable-next-line
-export const getCampaign = async ({ campaignId }: { campaignId: string }): Promise<Object> => {
+export const getCampaign = async ({
+  campaignId
+}: {
+  campaignId: string;
+}): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
     // if (!token) return
@@ -14,8 +15,9 @@ export const getCampaign = async ({ campaignId }: { campaignId: string }): Promi
         Authorization: `Bearer ${token}`
       }
     });
-    const { data = {} } = result;
-
+    const {
+      data = {}
+    } = result;
     return data;
   } catch (err) {
     return null;

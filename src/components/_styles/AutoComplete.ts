@@ -1,6 +1,5 @@
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-
-export default (theme) => ({
+import { emphasize } from "@material-ui/core/styles/colorManipulator";
+export default (theme => ({
   root: {
     flexGrow: 1
   },
@@ -55,10 +54,7 @@ export default (theme) => ({
     backgroundColor: theme.palette.primary.main
   },
   chipFocused: {
-    backgroundColor: emphasize(
-      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
-      0.08
-    )
+    backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08)
   },
   noOptionsMessage: {
     padding: `${theme.spacing()}px ${theme.spacing(2)}px`
@@ -118,4 +114,4 @@ export default (theme) => ({
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
     borderRadius: 20
   }
-});
+}));

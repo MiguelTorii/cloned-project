@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-export const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+export const useStyles = makeStyles(theme => ({
   detailsButton: {
     padding: theme.spacing(0, 1),
     color: theme.circleIn.palette.action,

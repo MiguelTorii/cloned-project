@@ -1,6 +1,5 @@
-import { Button, withStyles } from '@material-ui/core';
-
-const ActionButton = withStyles((theme) => ({
+import { Button, withStyles } from "@material-ui/core";
+const ActionButton = withStyles(theme => ({
   root: {
     backgroundColor: '#3F4146',
     borderRadius: theme.spacing(1),
@@ -22,5 +21,4 @@ const ActionButton = withStyles((theme) => ({
     }
   }
 }))(Button);
-
 export default ActionButton;

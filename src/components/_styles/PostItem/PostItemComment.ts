@@ -1,6 +1,5 @@
-import green from '@material-ui/core/colors/green';
-
-export const styles = (theme) => ({
+import green from "@material-ui/core/colors/green";
+export const styles = theme => ({
   container: {
     width: '100%',
     display: 'flex',

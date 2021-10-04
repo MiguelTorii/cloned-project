@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   tooltip: {
     fontSize: 14
   },
@@ -75,5 +74,4 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0.5)
   }
 }));
-
 export default useStyles;

@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   container: {},
   loadingContainer: {
     height: '100%'
@@ -87,5 +86,4 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-
 export default useStyles;

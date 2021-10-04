@@ -1,15 +1,19 @@
-import { Quill } from 'react-quill';
-
-export default () => {
-  const { MathQuill } = window;
-  const { katex } = window;
-  const { localStorage } = window;
+import { Quill } from "react-quill";
+export default (() => {
+  const {
+    MathQuill
+  } = window;
+  const {
+    katex
+  } = window;
+  const {
+    localStorage
+  } = window;
 
   function setCacheItem(key, value) {
     try {
       localStorage.setItem(key, value);
-    } catch (e) {
-      // eslint-disable-line no-empty
+    } catch (e) {// eslint-disable-line no-empty
     }
   }
 
@@ -24,8 +28,7 @@ export default () => {
   function removeCacheItem(key) {
     try {
       localStorage.removeItem(key);
-    } catch (e) {
-      // eslint-disable-line no-empty
+    } catch (e) {// eslint-disable-line no-empty
     }
   }
 
@@ -35,36 +38,39 @@ export default () => {
 
   function enableMathQuillFormulaAuthoring(quill, options) {
     options = options || {};
-
     const historyCacheKey = options.historyCacheKey || '__mathquill4quill_historylist_cache__';
     const historySize = options.historySize || 10;
     const displayHistory = options.displayHistory || false;
-
     let historyList;
 
     function areAllDependenciesMet() {
       if (!Quill) {
         console.log('Quill.js not loaded'); // eslint-disable-line no-console
+
         return false;
       }
 
       if (!MathQuill) {
         console.log('MathQuill.js not loaded'); // eslint-disable-line no-console
+
         return false;
       }
 
       if (!katex) {
         console.log('katex.js not loaded'); // eslint-disable-line no-console
+
         return false;
       }
 
       if (!quill.options.modules.formula) {
         console.log('Formula module not enabled'); // eslint-disable-line no-console
+
         return false;
       }
 
       if (!MutationObserver) {
         console.log('MutationObserver not defined'); // eslint-disable-line no-console
+
         return false;
       }
 
@@ -81,19 +87,23 @@ export default () => {
 
     function addItemToHistoryList(key) {
       const item = getCacheItem(key);
+
       if (item && item.length > 0) {
         const index = historyList.indexOf(item);
+
         if (index !== -1) {
           historyList.splice(index, 1);
         }
+
         historyList.unshift(item);
+
         if (historyList.length > historySize) {
           historyList.pop();
         }
+
         try {
           localStorage.setItem(historyCacheKey, JSON.stringify(historyList));
-        } catch (e) {
-          // eslint-disable-line no-empty
+        } catch (e) {// eslint-disable-line no-empty
         }
       }
     }
@@ -130,21 +140,22 @@ export default () => {
 
       function syncMathquillToQuill(latexInput, saveButton) {
         const handlers = mathQuillConfig.handlers == null ? {} : mathQuillConfig.handlers;
-        mathQuillConfig.handlers = {
-          ...handlers,
+        mathQuillConfig.handlers = { ...handlers,
+
           edit() {
             const latex = mqField.latex();
             latexInput.value = latex;
             setCacheItem(cacheKey, latex);
           },
+
           enter() {
             saveButton.click();
           }
+
         };
-
         mqField = MathQuill.getInterface(2).MathField(mqInput, mathQuillConfig);
-
         const cachedLatex = getCacheItem(cacheKey);
+
         if (cachedLatex) {
           mqField.latex(cachedLatex);
         }
@@ -153,7 +164,6 @@ export default () => {
           addItemToHistoryList(cacheKey);
           removeCacheItem(cacheKey);
         });
-
         return mqField;
       }
 
@@ -173,32 +183,27 @@ export default () => {
 
           const latexInput = getLatexInput();
           const saveButton = getSaveButton();
-
           mqInput = document.createElement('span');
           applyMathquillInputStyles(mqInput);
-
           latexInputStyle = latexInput.className;
           applyLatexInputStyles(latexInput);
-
           mqField = syncMathquillToQuill(latexInput, saveButton);
           autofocusFormulaField(mqField);
-
           insertAfter(mqInput, latexInput);
-
           return mqField;
         },
+
         destroy() {
           if (mqInput == null) {
             return;
           }
 
           const latexInput = getLatexInput();
-
           latexInput.setAttribute('class', latexInputStyle);
-
           mqInput.remove();
           mqInput = null;
         }
+
       };
     }
 
@@ -217,15 +222,14 @@ export default () => {
       function createOperatorButton(element, mqField) {
         const displayOperator = element[0];
         const operator = element[1];
-
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
-
         katex.render(displayOperator, button, {
           color: 'Black',
           dpi: 100,
           throwOnError: false
         });
+
         button.onclick = () => {
           mqField.cmd(operator);
           mqField.focus();
@@ -242,18 +246,16 @@ export default () => {
 
           const tooltip = getTooltip();
           tooltip.style.height = 'auto';
-
           container = document.createElement('div');
           applyOperatorContainerStyles(container);
-
-          operators.forEach((element) => {
+          operators.forEach(element => {
             const button = createOperatorButton(element, mqField);
             applyOperatorButtonStyles(button);
             container.appendChild(button);
           });
-
           tooltip.appendChild(container);
         },
+
         destroy() {
           if (container == null) {
             return;
@@ -262,6 +264,7 @@ export default () => {
           container.remove();
           container = null;
         }
+
       };
     }
 
@@ -280,12 +283,12 @@ export default () => {
       function createHistoryButton(latex, mqField) {
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
-
         katex.render(latex, button, {
           color: 'Black',
           dpi: 100,
           throwOnError: false
         });
+
         button.onclick = () => {
           mqField.write(latex);
           mqField.focus();
@@ -313,15 +316,13 @@ export default () => {
           }
 
           const tooltip = getTooltip();
-
           historyDiv = document.createElement('div');
           const container = document.createElement('div');
           applyHistoryContainerStyles(container);
           const header = document.createElement('p');
           header.innerHTML = `Past formulas (max ${historySize})`;
           historyDiv.appendChild(header);
-
-          history.forEach((element) => {
+          history.forEach(element => {
             const button = createHistoryButton(element, mqField);
             applyHistoryButtonStyles(button);
             container.appendChild(button);
@@ -329,6 +330,7 @@ export default () => {
           historyDiv.appendChild(container);
           tooltip.appendChild(historyDiv);
         },
+
         destroy() {
           if (historyDiv == null) {
             return;
@@ -337,6 +339,7 @@ export default () => {
           historyDiv.remove();
           historyDiv = null;
         }
+
       };
     }
 
@@ -346,16 +349,11 @@ export default () => {
 
     const tooltip = getTooltip();
     historyList = fetchHistoryList(historyCacheKey);
-
     const mqInput = newMathquillInput();
     const operatorButtons = newOperatorButtons();
     const historyListButtons = newHistoryList();
-
     const observer = new MutationObserver(() => {
-      const isFormulaTooltipActive =
-        !tooltip.classList.contains('ql-hidden') &&
-        tooltip.attributes['data-mode'] &&
-        tooltip.attributes['data-mode'].value === 'formula';
+      const isFormulaTooltipActive = !tooltip.classList.contains('ql-hidden') && tooltip.attributes['data-mode'] && tooltip.attributes['data-mode'].value === 'formula';
 
       if (isFormulaTooltipActive) {
         const mqField = mqInput.render();
@@ -367,7 +365,6 @@ export default () => {
         historyListButtons.destroy();
       }
     });
-
     observer.observe(tooltip, {
       attributes: true,
       attributeFilter: ['class', 'data-mode']
@@ -375,4 +372,4 @@ export default () => {
   }
 
   return enableMathQuillFormulaAuthoring;
-};
+});

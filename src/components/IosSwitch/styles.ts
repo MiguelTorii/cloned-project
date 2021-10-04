@@ -1,6 +1,5 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
-
-export default makeStyles((theme) => ({
+import makeStyles from "@material-ui/core/styles/makeStyles";
+export default makeStyles(theme => ({
   root: {
     width: 34,
     height: 18,

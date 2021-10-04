@@ -1,4 +1,4 @@
-export default (theme) => ({
+export default (theme => ({
   container: {
     position: 'relative',
     display: 'flex',
@@ -83,4 +83,4 @@ export default (theme) => ({
     height: 20,
     cursor: 'pointer'
   }
-});
+}));

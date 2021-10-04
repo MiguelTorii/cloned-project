@@ -1,6 +1,5 @@
-import { dialogStyle } from '../Dialog';
-
-export const styles = (theme) => ({
+import { dialogStyle } from "../Dialog";
+export const styles = theme => ({
   highlight: {
     color: '#fec04f',
     fontSize: 14
@@ -24,8 +23,7 @@ export const styles = (theme) => ({
     color: theme.circleIn.palette.primaryText2,
     fontSize: 12
   },
-  dialogFootnote: {
-    ...styles.footnote,
+  dialogFootnote: { ...styles.footnote,
     whiteSpace: 'pre-wrap',
     textAlign: 'center'
   },
@@ -50,8 +48,7 @@ export const styles = (theme) => ({
     justifyContent: 'space-between',
     marginBottom: 15
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     height: 680
   }
 });

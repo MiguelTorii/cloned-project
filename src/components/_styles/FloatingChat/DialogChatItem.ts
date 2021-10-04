@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   paper: {
     marginRight: theme.spacing(2),
     width: 250,

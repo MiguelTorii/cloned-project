@@ -1,6 +1,5 @@
 export const styles = () => ({
-  primary: {
-    // width: 200
+  primary: {// width: 200
   },
   image: {
     height: 40,

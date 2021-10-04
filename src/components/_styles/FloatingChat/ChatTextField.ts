@@ -1,4 +1,4 @@
-export default (theme) => ({
+export default (theme => ({
   tooltip: {
     fontSize: 14
   },
@@ -59,4 +59,4 @@ export default (theme) => ({
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)'
   }
-});
+}));

@@ -1,17 +1,12 @@
 /* eslint-disable import/prefer-default-export */
-// @flow
+import { leaderboardActions } from "../constants/action-types";
+import type { Action } from "../types/action";
+import type { Dispatch } from "../types/store";
+import { getLeaderboards, getGrandPrizeScores, getGrandPrizeInfo, getTuesdayPrizeScores } from "../api/leaderboards";
 
-import { leaderboardActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
-import {
-  getLeaderboards,
-  getGrandPrizeScores,
-  getGrandPrizeInfo,
-  getTuesdayPrizeScores
-} from '../api/leaderboards';
-
-const updateLeaderboardRequest = ({ leaderboards }): Action => ({
+const updateLeaderboardRequest = ({
+  leaderboards
+}): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_REQUEST,
   payload: {
     leaderboards
@@ -20,16 +15,22 @@ const updateLeaderboardRequest = ({ leaderboards }): Action => ({
 
 const updateLeaderboards = () => async (dispatch: Dispatch) => {
   try {
-    const res: Object = await getLeaderboards();
+    const res: Record<string, any> = await getLeaderboards();
     const {
       first_tuesday_reward: {
-        time_left: { time: timeTuesday, label: labelTuesday },
+        time_left: {
+          time: timeTuesday,
+          label: labelTuesday
+        },
         slots,
         current_month_points_display_name: currentMonthPointsDisplayName,
         eligibility: eligibilityTuesday
       },
       grand_prize: {
-        time_left: { time: timeGrand, label: labelGrand },
+        time_left: {
+          time: timeGrand,
+          label: labelGrand
+        },
         logo_url: logo,
         grand_prize_text: text,
         eligibility: eligibilityGrand,
@@ -37,14 +38,13 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
         mvp_count: mvpCount
       }
     } = res;
-    const camelSlots = slots.map((s) => ({
+    const camelSlots = slots.map(s => ({
       slot: s.slot,
       company: s.company,
       name: s.displa_name,
       logo: s.image_url,
       thumbnail: s.thumbnail_url
     }));
-
     const leaderboards = {
       tuesday: {
         timeLeft: {
@@ -67,24 +67,30 @@ const updateLeaderboards = () => async (dispatch: Dispatch) => {
         mvpCount
       }
     };
-
-    dispatch(updateLeaderboardRequest({ leaderboards }));
+    dispatch(updateLeaderboardRequest({
+      leaderboards
+    }));
   } catch (e) {
     console.log(e);
   }
 };
 
-const updateTuesdayLeaderboardRequest = ({ leaderboards }): Action => ({
+const updateTuesdayLeaderboardRequest = ({
+  leaderboards
+}): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_TUESDAY_REQUEST,
   payload: {
     leaderboards
   }
 });
 
-const camelCaseLeaderboard = (res: Object) => {
-  const { board_name: boardName, score_type_label: scoreLabel, students } = res;
-
-  const studentsCamel = students.map((s) => ({
+const camelCaseLeaderboard = (res: Record<string, any>) => {
+  const {
+    board_name: boardName,
+    score_type_label: scoreLabel,
+    students
+  } = res;
+  const studentsCamel = students.map(s => ({
     position: s.position,
     score: s.score,
     firstName: s.first_name,
@@ -92,7 +98,6 @@ const camelCaseLeaderboard = (res: Object) => {
     userId: s.user_id,
     profileImg: s.profile_image_url
   }));
-
   return {
     boardName,
     scoreLabel,
@@ -102,16 +107,19 @@ const camelCaseLeaderboard = (res: Object) => {
 
 const updateTuesdayLeaderboard = (sectionId, index) => async (dispatch: Dispatch) => {
   try {
-    const res: Object = await getTuesdayPrizeScores(sectionId, index);
+    const res: Record<string, any> = await getTuesdayPrizeScores(sectionId, index);
     const leaderboards = camelCaseLeaderboard(res);
-
-    dispatch(updateTuesdayLeaderboardRequest({ leaderboards }));
+    dispatch(updateTuesdayLeaderboardRequest({
+      leaderboards
+    }));
   } catch (e) {
     console.log(e);
   }
 };
 
-const updateGrandLeaderboardRequest = ({ leaderboards }): Action => ({
+const updateGrandLeaderboardRequest = ({
+  leaderboards
+}): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_REQUEST,
   payload: {
     leaderboards
@@ -122,13 +130,17 @@ const updateGrandLeaderboards = (sectionId, index) => async (dispatch: Dispatch)
   try {
     const res = await getGrandPrizeScores(sectionId, index);
     const leaderboards = camelCaseLeaderboard(res);
-    dispatch(updateGrandLeaderboardRequest({ leaderboards }));
+    dispatch(updateGrandLeaderboardRequest({
+      leaderboards
+    }));
   } catch (e) {
     console.log(e);
   }
 };
 
-const updateLeaderboardGrandInfoRequest = ({ grandInfo }): Action => ({
+const updateLeaderboardGrandInfoRequest = ({
+  grandInfo
+}): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_GRAND_INFO_RESQUEST,
   payload: {
     grandInfo
@@ -137,7 +149,7 @@ const updateLeaderboardGrandInfoRequest = ({ grandInfo }): Action => ({
 
 const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
   try {
-    const res: Object = await getGrandPrizeInfo();
+    const res: Record<string, any> = await getGrandPrizeInfo();
     const grandInfo = {
       logoUrl: res.logo_url,
       description: res.description,
@@ -149,7 +161,9 @@ const updateLeaderboardGrandInfo = () => async (dispatch: Dispatch) => {
       eligibilityDialog: res.eligibility_dialog,
       eligibilitySubtitleDialog: res.eligibility_subtitle_dialog
     };
-    dispatch(updateLeaderboardGrandInfoRequest({ grandInfo }));
+    dispatch(updateLeaderboardGrandInfoRequest({
+      grandInfo
+    }));
   } catch (e) {
     console.log(e);
   }

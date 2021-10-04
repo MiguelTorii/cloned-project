@@ -1,6 +1,5 @@
-import { gutterStyle } from '../Gutter';
-
-export default (theme) => ({
+import { gutterStyle } from "../Gutter";
+export default (theme => ({
   container: {
     maxHeight: 'inherit',
     // display: 'flex',
@@ -8,8 +7,7 @@ export default (theme) => ({
     position: 'relative',
     minHeight: 400
   },
-  root: {
-    ...gutterStyle(theme),
+  root: { ...gutterStyle(theme),
     backgroundColor: theme.circleIn.palette.feedBackground,
     marginBottom: theme.spacing(3),
     display: 'flex',
@@ -96,4 +94,4 @@ export default (theme) => ({
   loadingGif: {
     width: 400
   }
-});
+}));

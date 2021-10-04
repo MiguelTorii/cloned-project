@@ -1,6 +1,4 @@
-// @flow
-
-export const processSeasons = (stats: Array<Object>) => {
+export const processSeasons = (stats: Array<Record<string, any>>) => {
   const seasons = [];
   const all = {
     seasonId: 0,
@@ -13,7 +11,7 @@ export const processSeasons = (stats: Array<Object>) => {
     reach: 0,
     thanks: 0
   };
-  stats.forEach((item) => {
+  stats.forEach(item => {
     seasons.push(item);
     all.bestAnswers += item.bestAnswers;
     all.communityServiceHours += item.communityServiceHours;

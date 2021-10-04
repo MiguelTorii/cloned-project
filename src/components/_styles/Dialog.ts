@@ -2,8 +2,7 @@ export const dialogStyle = {
   borderRadius: 8,
   overflow: 'auto'
 };
-
-export const styles = (theme) => ({
+export const styles = theme => ({
   dialogPaper: dialogStyle,
   contentRoot: {
     display: 'flex',

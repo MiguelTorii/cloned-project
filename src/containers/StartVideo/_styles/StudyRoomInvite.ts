@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   dialog: {},
   searchWrapper: {
     display: 'flex',
@@ -52,5 +51,4 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center'
   }
 }));
-
 export default useStyles;

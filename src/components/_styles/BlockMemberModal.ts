@@ -1,9 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { dialogStyle } from 'components/Dialog/Dialog';
-
-const useStyles = makeStyles((theme) => ({
-  dialog: {
-    ...dialogStyle,
+import { makeStyles } from "@material-ui/core/styles";
+import { dialogStyle } from "components/Dialog/Dialog";
+const useStyles = makeStyles(theme => ({
+  dialog: { ...dialogStyle,
     width: 500,
     zIndex: 2100,
     borderRadius: 10,
@@ -33,5 +31,4 @@ const useStyles = makeStyles((theme) => ({
     background: 'rgba(255, 255, 255, 0.3)'
   }
 }));
-
 export default useStyles;

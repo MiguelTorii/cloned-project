@@ -1,6 +1,5 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
-
-export default makeStyles((theme) => ({
+import makeStyles from "@material-ui/core/styles/makeStyles";
+export default makeStyles(theme => ({
   separator: {
     color: '#5F6165'
   },

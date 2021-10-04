@@ -1,12 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-// @flow
-import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import type { Feed } from '../types/models';
-import { logEvent } from './analytics';
-import { getToken, feedToCamelCase, generateFeedURL } from './utils';
-import reduxStore from '../configureStore';
-import { callApi } from './api_base';
+import axios from "axios";
+import { API_ROUTES } from "../constants/routes";
+import type { Feed } from "../types/models";
+import { logEvent } from "./analytics";
+import { getToken, feedToCamelCase, generateFeedURL } from "./utils";
+import reduxStore from "../configureStore";
+import { callApi } from "./api_base";
 
 /**
  * - This should be deprecated.
@@ -25,16 +24,16 @@ export const fetchFeed = async ({
   fromDate,
   toDate
 }: {
-  userId: string,
-  schoolId: number,
-  userClasses: Array<string>,
-  index: number,
-  limit: number,
-  postTypes: Array<string>,
-  from: string,
-  query: string,
-  fromDate: ?Object,
-  toDate: ?Object
+  userId: string;
+  schoolId: number;
+  userClasses: Array<string>;
+  index: number;
+  limit: number;
+  postTypes: Array<string>;
+  from: string;
+  query: string;
+  fromDate: Record<string, any> | null | undefined;
+  toDate: Record<string, any> | null | undefined;
 }): Promise<Feed> => {
   const url = generateFeedURL({
     userId,
@@ -48,6 +47,7 @@ export const fetchFeed = async ({
     fromDate,
     toDate
   });
+
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.FEED_V1_1}${url}`, {
@@ -56,29 +56,38 @@ export const fetchFeed = async ({
       }
     });
     const {
-      data: { posts }
+      data: {
+        posts
+      }
     } = result;
-
     const feed = feedToCamelCase(posts);
+
     try {
       if (query !== '') {
-        logEvent({ event: 'Feed- Start Search', props: { Query: query } });
+        logEvent({
+          event: 'Feed- Start Search',
+          props: {
+            Query: query
+          }
+        });
       }
     } catch (err) {
       console.log(err);
     }
+
     return feed;
   } catch (err) {
     console.log(err);
     return [];
   }
 };
-
-export const fetchRecommendations = async (limit) => {
+export const fetchRecommendations = async limit => {
   try {
     const response = await callApi({
       url: API_ROUTES.RECOMMENDATIONS,
-      params: { limit }
+      params: {
+        limit
+      }
     });
     const posts = response || [];
     return feedToCamelCase(posts);
@@ -86,24 +95,24 @@ export const fetchRecommendations = async (limit) => {
     return [];
   }
 };
-
-export const saveQuizAnswers = async ({ results }: { results: array }): Promise<Object> => {
+export const saveQuizAnswers = async ({
+  results
+}: {
+  results: array;
+}): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
-    const result = await axios.post(
-      `${API_ROUTES.FLASHCARDS}/save_quiz_answers`,
-      {
-        answers: results
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.FLASHCARDS}/save_quiz_answers`, {
+      answers: results
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
-
+    });
     const {
-      data: { session_id: sessionId }
+      data: {
+        session_id: sessionId
+      }
     } = result;
     return {
       sessionId
@@ -112,8 +121,11 @@ export const saveQuizAnswers = async ({ results }: { results: array }): Promise<
     return null;
   }
 };
-
-export const feedResources = async ({ userId }: { userId: string }): Promise<Object> => {
+export const feedResources = async ({
+  userId
+}: {
+  userId: string;
+}): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SYNC}/${userId}`, {
@@ -121,7 +133,6 @@ export const feedResources = async ({ userId }: { userId: string }): Promise<Obj
         Authorization: `Bearer ${token}`
       }
     });
-
     const {
       data: {
         institution_resources: {
@@ -144,8 +155,11 @@ export const feedResources = async ({ userId }: { userId: string }): Promise<Obj
     return null;
   }
 };
-
-export const queryFeed = async ({ query }: { query: string }): Promise<Array<Object>> => {
+export const queryFeed = async ({
+  query
+}: {
+  query: string;
+}): Promise<Array<Record<string, any>>> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SEARCH}?query=${query}`, {
@@ -154,9 +168,10 @@ export const queryFeed = async ({ query }: { query: string }): Promise<Array<Obj
       }
     });
     const {
-      data: { results }
+      data: {
+        results
+      }
     } = result;
-
     const feed = feedToCamelCase(results);
     return feed;
   } catch (err) {
@@ -164,34 +179,29 @@ export const queryFeed = async ({ query }: { query: string }): Promise<Array<Obj
     return [];
   }
 };
-
 export const fetchFeedv2 = async ({
   userId,
   sectionId,
   bookmarked = false
 }: {
-  userId: string,
-  sectionId: number,
-  bookmarked?: boolean
+  userId: string;
+  sectionId: number;
+  bookmarked?: boolean;
 }): Promise<Feed> => {
   try {
     const filterSection = sectionId ? `&section_id=${sectionId}` : '';
     const token = await getToken();
     const myPosts = bookmarked ? '' : `user_id=${userId}`;
-    const result = await axios.get(
-      `${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(
-        bookmarked
-      ).toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.get(`${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(bookmarked).toString()}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
     const {
-      data: { posts }
+      data: {
+        posts
+      }
     } = result;
-
     const feed = feedToCamelCase(posts);
     return feed;
   } catch (err) {
@@ -199,55 +209,52 @@ export const fetchFeedv2 = async ({
     return [];
   }
 };
-
 export const postEvent = async ({
   sectionId,
   category,
   type
 }: {
-  sectionId: number,
-  category: string,
-  type: string
-}): Promise<Array<Object>> => {
+  sectionId: number;
+  category: string;
+  type: string;
+}): Promise<Array<Record<string, any>>> => {
   if (reduxStore.getState().user.isMasquerading) {
     return;
   }
 
   try {
     const token = await getToken();
-    const result = await axios.post(
-      `${API_ROUTES.EVENT}`,
-      {
-        section_id: sectionId,
-        category,
-        type
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+    const result = await axios.post(`${API_ROUTES.EVENT}`, {
+      section_id: sectionId,
+      category,
+      type
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
-
+    });
     const {
-      data: { success }
+      data: {
+        success
+      }
     } = result;
     return success;
   } catch (err) {
     return null;
   }
 };
-
-export const generateQuiz = async ({ deckId }: { deckId: number }): Promise<Object> => {
+export const generateQuiz = async ({
+  deckId
+}: {
+  deckId: number;
+}): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
-
     const result = await axios.get(`${API_ROUTES.FLASHCARDS}/${deckId}/generate_quiz`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-
     return result.data;
   } catch (err) {
     return null;
@@ -257,15 +264,12 @@ export const generateQuiz = async ({ deckId }: { deckId: number }): Promise<Obje
 /**
  * Fetch feed data.
  */
-export const apiFetchFeeds = async (params, cancelToken) =>
-  callApi({
-    url: API_ROUTES.FEED_V1_1,
-    params,
-    cancelToken
-  });
-
-export const apiDeleteFeed = async (userId, feedId) =>
-  callApi({
-    url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
-    method: 'DELETE'
-  });
+export const apiFetchFeeds = async (params, cancelToken) => callApi({
+  url: API_ROUTES.FEED_V1_1,
+  params,
+  cancelToken
+});
+export const apiDeleteFeed = async (userId, feedId) => callApi({
+  url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,
+  method: 'DELETE'
+});

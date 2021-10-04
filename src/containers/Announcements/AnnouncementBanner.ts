@@ -1,3 +1,2 @@
 /* eslint-disable import/prefer-default-export */
-
-export { default as AnnouncementBanner } from './Banner';
+export { default as AnnouncementBanner } from "./Banner";

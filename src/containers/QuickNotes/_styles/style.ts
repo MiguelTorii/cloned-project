@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   container: {
     padding: theme.spacing(3),
     borderRadius: theme.spacing(2),
@@ -124,5 +123,4 @@ const useStyles = makeStyles((theme) => ({
     color: 'white !important'
   }
 }));
-
 export default useStyles;

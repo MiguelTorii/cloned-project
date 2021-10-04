@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   dropzoneWrapper: {
     position: 'relative',
     // height: 96,

@@ -1,21 +1,18 @@
-import { dialogStyle } from 'components/Dialog/Dialog';
-import { detect } from 'detect-browser';
-
+import { dialogStyle } from "components/Dialog/Dialog";
+import { detect } from "detect-browser";
 const browser = detect();
-
 const centered = {
   alignItems: 'center',
   display: 'flex',
   justifyContent: 'center'
 };
-
 const gifStyles = {
   borderRadius: 8,
   width: 'calc(100% - 20px)',
   border: '15px solid rgba(255, 255, 255, .3)'
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   actionPanel: {
     flexGrow: 1,
     flex: 1,
@@ -58,8 +55,7 @@ const styles = (theme) => ({
   buttonLabel: {
     textTransform: 'none'
   },
-  sildeButtons: {
-    ...centered,
+  sildeButtons: { ...centered,
     width: '100%'
   },
   backButton: {
@@ -87,19 +83,16 @@ const styles = (theme) => ({
     height: 20,
     border: '1px solid #1e88e5'
   },
-  domGifArea: {
-    ...centered,
+  domGifArea: { ...centered,
     width: '100%',
     height: '100%'
   },
-  videoPlayer: {
-    ...centered,
+  videoPlayer: { ...centered,
     width: '100%',
     height: '100%',
     position: 'relative'
   },
-  demoGif: {
-    ...gifStyles,
+  demoGif: { ...gifStyles,
     objectFit: 'cover',
     objectPosition: '100% 44%',
     height: 485,
@@ -110,8 +103,7 @@ const styles = (theme) => ({
       height: 400
     }
   },
-  notesGif: {
-    ...gifStyles,
+  notesGif: { ...gifStyles,
     height: 400
   },
   wfGifArea: {
@@ -126,8 +118,7 @@ const styles = (theme) => ({
     objectFit: 'cover',
     objectPosition: '100% 50%'
   },
-  chatGif: {
-    ...gifStyles
+  chatGif: { ...gifStyles
   },
   demoPanel: {
     backgroundImage: 'linear-gradient(135deg,#94daf9, #1e88e5)',
@@ -147,8 +138,7 @@ const styles = (theme) => ({
     padding: theme.spacing(3, 3, 0, 5),
     width: '100%'
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     borderRadius: 5,
     backgroundColor: 'white',
     height: 700,

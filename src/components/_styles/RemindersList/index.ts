@@ -1,7 +1,8 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   main: {
     width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    display: 'block',
+    // Fix IE 11 issue.
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3)
   },
@@ -22,7 +23,8 @@ export const styles = (theme) => ({
     marginLeft: theme.spacing(2)
   },
   content: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
+    // Fix IE 11 issue.
     marginTop: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'

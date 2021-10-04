@@ -1,10 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-// @flow
-import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import { getToken } from './utils';
-
-export const getAnnouncement = async (campaignId: number): Promise<Object> => {
+import axios from "axios";
+import { API_ROUTES } from "../constants/routes";
+import { getToken } from "./utils";
+export const getAnnouncement = async (campaignId: number): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.ANNOUNCEMENT}/${campaignId}`, {
@@ -24,7 +22,6 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
         title,
         variation_id: variationId
       } = result.data;
-
       return {
         hourlyReward,
         imageUrl,
@@ -42,8 +39,7 @@ export const getAnnouncement = async (campaignId: number): Promise<Object> => {
     return null;
   }
 };
-
-export const getAnnouncementCampaign = async (): Promise<Object> => {
+export const getAnnouncementCampaign = async (): Promise<Record<string, any>> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.GET_ANNOUNCEMENT_CAMPAIGN}`, {
@@ -51,7 +47,6 @@ export const getAnnouncementCampaign = async (): Promise<Object> => {
         Authorization: `Bearer ${token}`
       }
     });
-
     return result.data;
   } catch (err) {
     return null;

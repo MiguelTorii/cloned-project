@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   main: {
     width: '100%',
     display: 'flex',

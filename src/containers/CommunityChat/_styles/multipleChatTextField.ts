@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   tooltip: {
     fontSize: 14
   },
@@ -24,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     flex: 1
   },
   textfield: {
-    width: '100%'
-    // paddingLeft: theme.spacing(2),
+    width: '100%' // paddingLeft: theme.spacing(2),
+
   },
   sendIcon: {
     color: theme.circleIn.palette.brand
@@ -80,5 +79,4 @@ const useStyles = makeStyles((theme) => ({
     border: 'solid 1px rgba(255, 255, 255, 0.2)'
   }
 }));
-
 export default useStyles;

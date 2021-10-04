@@ -1,5 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
-
+import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles(() => ({
   toolbar: {
     textAlign: 'center',
@@ -23,7 +22,9 @@ export const useStyles = makeStyles(() => ({
   },
   firstline: {},
   secondline: {},
-  hidden: { display: 'none' },
+  hidden: {
+    display: 'none'
+  },
   highlighter: {
     height: 14,
     width: 14,

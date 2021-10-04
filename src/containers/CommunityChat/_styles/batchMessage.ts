@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   selectClasses: {
     width: '100%',
     padding: theme.spacing(),
@@ -15,5 +14,4 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-
 export default useStyles;

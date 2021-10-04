@@ -1,8 +1,8 @@
-import { dialogStyle } from './Dialog';
-
-export const styles = (theme) => ({
+import { dialogStyle } from "./Dialog";
+export const styles = theme => ({
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
+    // Fix IE 11 issue.
     marginTop: theme.spacing(),
     display: 'flex',
     flexDirection: 'column'
@@ -24,8 +24,7 @@ export const styles = (theme) => ({
     marginTop: -12,
     marginLeft: -12
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 600
   }
 });

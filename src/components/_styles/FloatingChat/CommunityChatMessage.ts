@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { gutterStyle } from '../Gutter';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+import { gutterStyle } from "../Gutter";
+const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(1, 6),
     [theme.breakpoints.down('sm')]: {
@@ -15,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
   report: {
     color: theme.circleIn.palette.danger
   },
-  paper: {
-    ...gutterStyle(theme),
+  paper: { ...gutterStyle(theme),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
   },
@@ -169,5 +167,4 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20
   }
 }));
-
 export default useStyles;

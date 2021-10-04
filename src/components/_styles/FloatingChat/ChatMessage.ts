@@ -1,8 +1,6 @@
-import { gutterStyle } from '../Gutter';
-
-export const styles = (theme) => ({
-  paper: {
-    ...gutterStyle(theme),
+import { gutterStyle } from "../Gutter";
+export const styles = theme => ({
+  paper: { ...gutterStyle(theme),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
   },
@@ -68,9 +66,9 @@ export const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column'
-    // marginLeft: -55
+    flexDirection: 'column' // marginLeft: -55
     // cursor: 'pointer'
+
   },
   videoTitle: {
     // textAlign: 'center',
@@ -88,8 +86,8 @@ export const styles = (theme) => ({
     backgroundColor: '#f5f5f5',
     color: '#303030',
     wordWrap: 'break-word',
-    width: '100%'
-    // 'word-break': 'break-all'
+    width: '100%' // 'word-break': 'break-all'
+
   },
   right: {
     textAlign: 'right',

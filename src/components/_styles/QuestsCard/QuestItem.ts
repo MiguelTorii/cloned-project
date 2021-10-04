@@ -1,6 +1,5 @@
-import green from '@material-ui/core/colors/green';
-
-export const styles = (theme) => ({
+import green from "@material-ui/core/colors/green";
+export const styles = theme => ({
   root: {
     paddingLeft: theme.spacing(),
     paddingRight: theme.spacing(),
@@ -53,11 +52,10 @@ export const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing()
-    // transition: 'padding 0.5s'
+    padding: theme.spacing() // transition: 'padding 0.5s'
+
   },
-  imageWrapperSmall: {
-    // padding: theme.spacing(1/2)
+  imageWrapperSmall: {// padding: theme.spacing(1/2)
   },
   image: {
     height: 40,

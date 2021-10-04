@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   container: {
     position: 'relative',
     height: 'inherit'
@@ -69,5 +68,4 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1002
   }
 }));
-
 export default useStyles;

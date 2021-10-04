@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-export default makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+export default makeStyles(theme => ({
   toolbar: {
     textAlign: 'center',
     bottom: 0,
@@ -38,7 +37,9 @@ export default makeStyles((theme) => ({
   },
   firstline: {},
   secondline: {},
-  hidden: { display: 'none' },
+  hidden: {
+    display: 'none'
+  },
   highlighter: {
     height: 14,
     width: 14,

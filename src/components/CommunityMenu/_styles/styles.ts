@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   listItem: {
     width: 40,
     height: 40,
@@ -36,5 +35,4 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14
   }
 }));
-
 export default useStyles;

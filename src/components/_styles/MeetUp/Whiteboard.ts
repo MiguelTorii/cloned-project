@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   main: {
     position: 'absolute',
     top: 0,

@@ -1,6 +1,5 @@
 const drawerWidth = 280;
-
-export const styles = (theme) => ({
+export const styles = theme => ({
   root: {
     display: 'flex'
   },
@@ -101,7 +100,6 @@ export const styles = (theme) => ({
       marginBottom: theme.spacing(8)
     }
   },
-
   myClasses: {
     display: 'flex',
     marginLeft: 16,

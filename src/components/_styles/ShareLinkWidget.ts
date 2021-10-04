@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   header: {
     fontWeight: 'bold',
     marginBottom: theme.spacing(1),

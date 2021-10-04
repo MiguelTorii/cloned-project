@@ -1,9 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { dialogStyle } from './Dialog';
-
+import { makeStyles } from "@material-ui/core/styles";
+import { dialogStyle } from "./Dialog";
 export const useStyles = makeStyles(() => ({
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 600
   }
 }));

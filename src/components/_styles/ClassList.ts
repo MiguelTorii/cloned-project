@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = theme => ({
   addRm: {
     color: theme.circleIn.palette.action,
     width: '90%',

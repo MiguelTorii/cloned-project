@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles(theme => ({
   header: {
     position: 'relative',
     display: 'flex',
@@ -39,5 +38,4 @@ const useStyles = makeStyles((theme) => ({
     color: theme.circleIn.palette.danger
   }
 }));
-
 export default useStyles;

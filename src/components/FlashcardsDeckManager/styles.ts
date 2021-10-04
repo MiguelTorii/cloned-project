@@ -1,6 +1,5 @@
-import makeStyles from '@material-ui/core/styles/makeStyles';
-
-export default makeStyles((theme) => ({
+import makeStyles from "@material-ui/core/styles/makeStyles";
+export default makeStyles(theme => ({
   addDeckButton: {
     backgroundColor: 'rgba(55, 57, 62, 0.2)',
     border: '1px solid rgba(95, 97, 101, 0.5)',

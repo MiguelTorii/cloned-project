@@ -1,10 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-import { dialogStyle } from 'components/Dialog/Dialog';
-
-const useStyles = makeStyles((theme) => ({
-  dialog: {
-    ...dialogStyle,
+import { makeStyles } from "@material-ui/core/styles";
+import { dialogStyle } from "components/Dialog/Dialog";
+const useStyles = makeStyles(theme => ({
+  dialog: { ...dialogStyle,
     width: 500,
     zIndex: 2100
   },
@@ -20,5 +17,4 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 100
   }
 }));
-
 export default useStyles;

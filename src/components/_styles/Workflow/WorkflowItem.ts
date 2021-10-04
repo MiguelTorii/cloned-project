@@ -1,6 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { dialogStyle } from '../Dialog';
-
+import { makeStyles } from "@material-ui/core/styles";
+import { dialogStyle } from "../Dialog";
 export const useStyles = makeStyles(() => ({
   root: {
     position: 'relative'
@@ -11,8 +10,7 @@ export const useStyles = makeStyles(() => ({
   iconButton: {
     padding: 0
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 600
   },
   archiveTitle: {
