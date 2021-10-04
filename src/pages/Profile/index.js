@@ -60,7 +60,7 @@ class ProfilePage extends React.Component<Props, State> {
     this.setState({ edit });
   };
 
-  componentDidUpdate = (prevProps) => {
+  getSnapshotBeforeUpdate = (prevProps) => {
     const {
       match: {
         params: { userId = '' }

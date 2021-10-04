@@ -39,7 +39,7 @@ class SharePost extends React.PureComponent<Props, State> {
     loading: false
   };
 
-  componentDidUpdate = async (prevProps) => {
+  getSnapshotBeforeUpdate = async (prevProps) => {
     const {
       open,
       feedId,

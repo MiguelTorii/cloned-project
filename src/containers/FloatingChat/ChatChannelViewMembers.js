@@ -69,7 +69,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     members: []
   };
 
-  componentDidUpdate = async (prevProps) => {
+  getSnapshotBeforeUpdate = async (prevProps) => {
     const { chatId, open } = this.props;
     if (open && !prevProps.open) {
       const members = await getGroupMembers({ chatId });
