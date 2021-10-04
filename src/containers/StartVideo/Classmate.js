@@ -22,6 +22,8 @@ import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 
 import { getInitials } from 'utils/chat';
 import useStyles from './_styles/Classmate';
+import { buildPath } from '../../utils/helpers';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 type ClassmateType = {
   userId: string,
@@ -97,7 +99,10 @@ const Classmate = ({
   return (
     <ListItem className={clsx(width === 'xs' && classes.buttons)}>
       <ListItemAvatar>
-        <Link href={`/profile/${classmate.userId}`} component={MyProfileLink}>
+        <Link
+          href={buildPath(`/profile/${classmate.userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
+          component={MyProfileLink}
+        >
           <OnlineBadge isOnline={classmate.isOnline} bgColorPath="circleIn.palette.feedBackground">
             <Avatar
               alt={`Avatar n°${classmate.userId}`}

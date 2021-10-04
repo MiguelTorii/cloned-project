@@ -27,8 +27,8 @@ import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import * as feedActions from '../../actions/feed';
 import { feedActions as feedActionTypes } from '../../constants/action-types';
 import type { CampaignState } from '../../reducers/campaign';
-import { isSame } from '../../utils/helpers';
-import { FEED_NAVIGATION_TABS, POST_WRITER } from '../../constants/common';
+import { isSame, buildPath } from '../../utils/helpers';
+import { FEED_NAVIGATION_TABS, POST_WRITER, PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { FEEDS_PER_PAGE } from '../../constants/app';
 
 const styles = () => ({
@@ -84,8 +84,7 @@ class Feed extends React.PureComponent<Props, State> {
   state = {
     activeAction: null, // Store the active action and its data.
     activeTab: FEED_NAVIGATION_TABS.CLASS_FEED, // Active navigation tab.
-    isFiltering: false,
-    isBeforeFirstLoad: true // This is used to display loading state from the beginning.
+    isFiltering: false
   };
 
   cancelSource: Object;
@@ -97,9 +96,13 @@ class Feed extends React.PureComponent<Props, State> {
   };
 
   componentDidMount = () => {
-    const { search } = this.props.router.location;
-    const { sectionId, replace } = this.props;
-    const { userClasses, bookmark, from } = this.props.feed.data.filters;
+    const {
+      router: {
+        location: { search }
+      }
+    } = this.props;
+    const { sectionId, replace, feed, updateScrollData, user } = this.props;
+    const { userClasses, bookmark, from } = feed.data.filters;
     const query = queryString.parse(search);
     const filter = {};
     let forceReload = false;
@@ -111,7 +114,7 @@ class Feed extends React.PureComponent<Props, State> {
       filter.userClasses = [Number(sectionId)];
     } else if (lodash.isEmpty(userClasses)) {
       // If no classes are selected, select all classes by default.
-      const { classList } = this.props.user.userClasses;
+      const { classList } = user.userClasses;
 
       if (!classList?.length) {
         forceReload = true;
@@ -145,11 +148,11 @@ class Feed extends React.PureComponent<Props, State> {
     this.cancelSource = axios.CancelToken.source();
 
     // Check scroll position
-    const { position } = this.props.feed.scrollData;
+    const { position } = feed.scrollData;
 
     if (position) {
       window.scrollTo(0, position);
-      this.props.updateScrollData({ position: null });
+      updateScrollData({ position: null });
     }
   };
 
@@ -226,7 +229,7 @@ class Feed extends React.PureComponent<Props, State> {
 
   handleUserClick = ({ userId }: { userId: string }) => {
     const { push } = this.props;
-    push(`/profile/${userId}`);
+    push(buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST }));
   };
 
   handleOpenFilter = () => {
@@ -245,9 +248,10 @@ class Feed extends React.PureComponent<Props, State> {
 
   // Fetch new page posts
   fetchMorePosts = () => {
-    const { filters, lastIndex } = this.props.feed.data;
+    const { feed, user, actionFetchFeed } = this.props;
+    const { filters, lastIndex } = feed.data;
     const { bookmark, from, fromDate, toDate, postTypes, query, userClasses } = filters;
-    const { userId, schoolId } = this.props.user.data;
+    const { userId, schoolId } = user.data;
     const fetchParams = {
       index: lastIndex,
       limit: FEEDS_PER_PAGE,
@@ -270,7 +274,7 @@ class Feed extends React.PureComponent<Props, State> {
         break;
     }
 
-    this.props.actionFetchFeed(fetchParams, this.cancelSource.token);
+    actionFetchFeed(fetchParams, this.cancelSource.token);
   };
 
   refetchPosts = () => {
@@ -278,14 +282,17 @@ class Feed extends React.PureComponent<Props, State> {
       this.cancelSource.cancel();
     }
 
+    const { clearFeeds } = this.props;
+
     // Regenerate cancel token.
     this.cancelSource = axios.CancelToken.source();
 
-    this.props.clearFeeds().then(this.fetchMorePosts);
+    clearFeeds().then(this.fetchMorePosts);
   };
 
   handleUpdateFilterFields = (newFilter, forceReload = false) => {
-    const currentFilter = this.props.feed.data.filters;
+    const { feed } = this.props;
+    const currentFilter = feed.data.filters;
 
     // Remove non-modified filters
     Object.keys(newFilter).forEach((filterKey) => {

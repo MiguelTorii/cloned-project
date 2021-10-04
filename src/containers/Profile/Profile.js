@@ -36,12 +36,14 @@ import ProfileEdit from '../../components/ProfileEdit/ProfileEdit';
 import StudyCircleDialog from '../../components/StudyCircleDialog/StudyCircleDialog';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { processSeasons } from './utils';
-import { logEvent } from '../../api/analytics';
+import { logEvent, logEventLocally } from '../../api/analytics';
 import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
 import { updateProfileImage, uploadMedia } from '../../actions/user';
 import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
+import { LOG_EVENT_CATEGORY, LOG_EVENT_TYPE, PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const styles = (theme) => ({
   root: {
@@ -66,6 +68,7 @@ type Props = {
   classes: Object,
   user: UserState,
   userId: string,
+  from: string,
   edit: boolean,
   push: Function,
   checkUserSession: Function,
@@ -149,8 +152,22 @@ class Profile extends React.PureComponent<Props, State> {
     this.handleFetchBookmarks();
     const {
       edit,
-      match: { params }
+      match: { params },
+      userId,
+      user,
+      from
     } = this.props;
+
+    // If profile is other's and `from` is valid, it dispatches a log event.
+    if (userId !== user.data.userId && Object.values(PROFILE_PAGE_SOURCE).includes(from)) {
+      logEventLocally({
+        category: LOG_EVENT_CATEGORY.PROFILE,
+        type: LOG_EVENT_TYPE.VIEWED,
+        source: from,
+        objectId: userId,
+        user_id: userId
+      });
+    }
 
     if (params.tab) {
       this.setState({ tab: Number(params.tab) });
@@ -410,7 +427,7 @@ class Profile extends React.PureComponent<Props, State> {
 
   handleUserClick = ({ userId }: { userId: string }) => {
     const { push } = this.props;
-    push(`/profile/${userId}`);
+    push(buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST }));
   };
 
   handlePostClick =

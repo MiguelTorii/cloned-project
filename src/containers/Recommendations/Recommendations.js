@@ -13,6 +13,8 @@ import { POST_TYPES } from '../../constants/app';
 import { updateBookmark } from '../../actions/feed';
 import DeletePost from '../DeletePost/DeletePost';
 import Report from '../../components/Report/ReportIssue';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const Recommendations = () => {
   const classes = useStyles();
@@ -74,7 +76,7 @@ const Recommendations = () => {
 
   const handleUserClick = useCallback(
     ({ userId }) => {
-      dispatch(push(`/profile/${userId}`));
+      dispatch(push(buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.POST })));
     },
     [dispatch]
   );

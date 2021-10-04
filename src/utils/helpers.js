@@ -2,6 +2,7 @@
 
 import moment from 'moment';
 import _ from 'lodash';
+import qs from 'query-string';
 import { TIME_ZONE } from '../constants/app';
 
 export const getPointsText = (points: number) => Math.floor(points).toLocaleString();
@@ -134,3 +135,5 @@ export const checkPath = (path, urls) => {
 
   return urls.findIndex((url) => path.startsWith(url)) >= 0;
 };
+
+export const buildPath = (rootPath, params) => `${rootPath}?${qs.stringify(params)}`;

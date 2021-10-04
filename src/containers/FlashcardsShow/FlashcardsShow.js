@@ -30,7 +30,7 @@ import Link from '@material-ui/core/Link';
 import { getFlashcards } from 'api/posts';
 import { logEvent } from 'api/analytics';
 import { bookmarkFlashcards } from 'actions/user';
-import { TIMEOUT } from 'constants/common';
+import { PROFILE_PAGE_SOURCE, TIMEOUT } from 'constants/common';
 import { INTERVAL, APP_ROOT_PATH } from 'constants/app';
 import { userActions } from 'constants/action-types';
 
@@ -54,7 +54,7 @@ import PostItem from 'components/PostItem/PostItem';
 import PostItemHeader from 'components/PostItem/PostItemHeader';
 import Avatar from 'components/Avatar/Avatar';
 
-import { isApiCalling, getPastClassIds } from 'utils/helpers';
+import { isApiCalling, getPastClassIds, buildPath } from 'utils/helpers';
 import { getInitials } from 'utils/chat';
 
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -295,7 +295,7 @@ const FlashcardsShow = () => {
   const handleCloseMatchGame = useCallback(() => setIsInMatchGame(false), []);
 
   const handleClickUser = useCallback(() => {
-    dispatch(push(`/profile/${data.userId}`));
+    dispatch(push(buildPath(`/profile/${data.userId}`, { from: PROFILE_PAGE_SOURCE.FLASHCARD })));
   }, [dispatch, data]);
 
   const handleReport = useCallback(() => {

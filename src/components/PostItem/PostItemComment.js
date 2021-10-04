@@ -42,6 +42,8 @@ import commentSvg from '../../assets/svg/comment.svg';
 import { styles } from '../_styles/PostItem/PostItemComment';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import HoverPopup from '../HoverPopup/HoverPopup';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -269,7 +271,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
           <div className={classes.header}>
             <Box display="flex" alignItems="center">
               <Typography component="p" variant="subtitle2" noWrap>
-                <Link component={MyLink} href={`/profile/${ownerId}`} className={classes.link}>
+                <Link
+                  component={MyLink}
+                  href={buildPath(`/profile/${ownerId}`, { from: PROFILE_PAGE_SOURCE.COMMENT })}
+                  className={classes.link}
+                >
                   {name}
                 </Link>
               </Typography>
@@ -315,8 +321,11 @@ class PostItemComment extends React.PureComponent<Props, State> {
     ) : (
       <>
         <div className={cx(classes.container, isReply && classes.reply)}>
-          <Link component={MyLink} href={`/profile/${ownerId}`}>
-            <HoverPopup userId={ownerId}>
+          <Link
+            component={MyLink}
+            href={buildPath(`/profile/${ownerId}`, { from: PROFILE_PAGE_SOURCE.COMMENT })}
+          >
+            <HoverPopup userId={ownerId} profileSource={PROFILE_PAGE_SOURCE.COMMENT}>
               <OnlineBadge
                 isOnline={isOnline}
                 bgColorPath="circleIn.palette.feedBackground"

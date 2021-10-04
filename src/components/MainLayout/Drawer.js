@@ -252,7 +252,7 @@ const Drawer = ({
           primaryText="Flashcards"
           pathname={pathname}
           component={MyLink}
-          link={`/flashcards${search}`}
+          link={`/flashcards`}
           OffIcon={<FlashcardsIconOff />}
           listItemClass={classNames(
             pathname.includes('/flashcards') ? classes.currentPath : classes.otherPath

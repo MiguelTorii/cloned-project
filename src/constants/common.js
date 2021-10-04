@@ -136,3 +136,22 @@ export const QUILL_TOOLBAR_SHORT_KEYS = {
   EMOJI: `Emoji (${isMac() ? '⌘J' : 'CTRL + ALT + J'})`,
   IMAGE: `Image (${commandHotkeyText('P')})`
 };
+
+export const PROFILE_PAGE_SOURCE = {
+  CHAT: 'Chat',
+  POST: 'Post',
+  COMMENT: 'Comment',
+  URL: 'Url',
+  CLASSMATES_MODAL: 'Classmates Modal',
+  LEADERBOARD: 'Leaderboard',
+  FLASHCARD: 'Flashcard',
+  STUDY_CIRCLE: 'Study Circle'
+};
+
+export const LOG_EVENT_CATEGORY = {
+  PROFILE: 'Profile'
+};
+
+export const LOG_EVENT_TYPE = {
+  VIEWED: 'Viewed'
+};

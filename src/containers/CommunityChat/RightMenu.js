@@ -18,6 +18,8 @@ import HoverPopup from 'components/HoverPopup/HoverPopup';
 // import { ReactComponent as SearchIcon } from 'assets/svg/search-icon.svg'
 import useStyles from './_styles/rightMenu';
 import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
@@ -69,11 +71,11 @@ const RightMenu = ({ local, channel, isCommunityChat }) => {
           {localChannel?.members.map((m) => {
             const fullName = `${m.firstname} ${m.lastname}`;
             return (
-              <HoverPopup userId={m.userId} key={m.userId}>
+              <HoverPopup userId={m.userId} key={m.userId} profileSource={PROFILE_PAGE_SOURCE.CHAT}>
                 <ListItem
                   component={MyLink}
                   disableGutters
-                  link={`/profile/${m.userId}`}
+                  link={buildPath(`/profile/${m.userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
                   button
                   classes={{
                     secondaryAction: classes.secondaryAction

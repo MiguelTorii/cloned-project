@@ -23,11 +23,13 @@ import { getUserProfile } from '../../api/user';
 import * as chatActions from '../../actions/chat';
 
 import useStyles from '../_styles/HoverPopup';
+import { buildPath } from '../../utils/helpers';
 
 const HoverPopup = ({
   leftAligned = false,
   children = null,
   userId,
+  profileSource,
   setCurrentCommunityId,
   setCurrentChannel,
   setCurrentCommunity,
@@ -154,8 +156,8 @@ const HoverPopup = ({
   };
 
   const handleGotoProfile = useCallback(() => {
-    dispatch(push(`/profile/${profile.userId}`));
-  }, [profile, dispatch]);
+    dispatch(push(buildPath(`/profile/${profile.userId}`, { from: profileSource })));
+  }, [profile, dispatch, profileSource]);
 
   const fullName = `${profile.firstName} ${profile.lastName}`;
 

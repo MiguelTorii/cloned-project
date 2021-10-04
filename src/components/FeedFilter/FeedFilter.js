@@ -148,7 +148,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   onChangeSearchDebounced = lodash.debounce((search) => {
-    this.props.onChangeSearch(search);
+    const { onChangeSearch } = this.props;
+    onChangeSearch(search);
   }, DEFAULT_DEBOUNCE_DURATION_IN_MS);
 
   handleChangeQuery = (event) => {

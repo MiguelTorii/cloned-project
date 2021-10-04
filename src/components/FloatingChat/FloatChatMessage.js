@@ -22,6 +22,8 @@ import AnyFileUpload from 'components/AnyFileUpload/AnyFileUpload';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import { getInitials } from 'utils/chat';
 import useStyles from '../_styles/FloatingChat/FloatChatMessage';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { buildPath } from '../../utils/helpers';
 
 const MyLink = React.forwardRef(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -180,7 +182,7 @@ const ChatMessage = ({
               <ListItemAvatar
                 className={classes.avatarLink}
                 component={MyLink}
-                href={`/profile/${userId || ''}`}
+                href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
               >
                 <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
                   <Avatar alt={name} src={avatar}>
@@ -197,7 +199,7 @@ const ChatMessage = ({
                   <Link
                     className={classes.link}
                     component={MyLink}
-                    href={`/profile/${userId || ''}`}
+                    href={buildPath(`/profile/${userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
                   >
                     {name}
                   </Link>

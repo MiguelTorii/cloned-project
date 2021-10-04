@@ -26,9 +26,10 @@ import OnlineBadge from 'components/OnlineBadge/OnlineBadge';
 import RoleBadge from 'components/RoleBadge/RoleBadge';
 import ShareLinkWidget from 'components/ShareLinkWidget/ShareLinkWidget';
 import { useDispatch } from 'react-redux';
-import { PERMISSIONS } from 'constants/common';
+import { PERMISSIONS, PROFILE_PAGE_SOURCE } from 'constants/common';
 import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
+import { buildPath } from '../../utils/helpers';
 
 const MyLink = React.forwardRef(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
@@ -290,7 +291,7 @@ const RightMenu = ({
                       key={m.userId}
                       component={MyLink}
                       disableGutters
-                      link={`/profile/${m.userId}`}
+                      link={buildPath(`/profile/${m.userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
                       button
                       classes={{
                         secondaryAction: classes.secondaryAction
@@ -308,7 +309,9 @@ const RightMenu = ({
                       </ListItemAvatar>
                       {fullName} {m.role && <RoleBadge text={m.role} />}
                       <ListItemSecondaryAction>
-                        <RouterLink to={`/profile/${m.userId}`}>
+                        <RouterLink
+                          to={buildPath(`/profile/${m.userId}`, { from: PROFILE_PAGE_SOURCE.CHAT })}
+                        >
                           <ArrowForwardIosIcon className={classes.icon} />
                         </RouterLink>
                       </ListItemSecondaryAction>
