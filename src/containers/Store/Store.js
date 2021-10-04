@@ -40,6 +40,8 @@ class Store extends React.PureComponent<Props, State> {
     loading: false
   };
 
+  mounted: boolean;
+
   componentDidMount = () => {
     window.addEventListener('offline', () => {
       if (this.handleFetchRewards.cancel && typeof this.handleFetchRewards.cancel === 'function') {
@@ -102,8 +104,6 @@ class Store extends React.PureComponent<Props, State> {
       this.setState({ loading: false });
     }
   };
-
-  mounted: boolean;
 
   render() {
     const { classes } = this.props;

@@ -42,6 +42,12 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
     openErase: false
   };
 
+  colorAnchorEl: Object;
+
+  pencilAnchorEl: Object;
+
+  eraseAnchorEl: Object;
+
   handleToggle = (name) => () => {
     this.setState((state) => ({ [name]: !state[name] }));
   };
@@ -86,12 +92,6 @@ class WhiteboardControls extends React.PureComponent<Props, State> {
     this.setState({ openErase: false });
     onErase(size);
   };
-
-  colorAnchorEl: Object;
-
-  pencilAnchorEl: Object;
-
-  eraseAnchorEl: Object;
 
   render() {
     const { classes, onText, onSave, onClear } = this.props;

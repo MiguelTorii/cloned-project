@@ -19,17 +19,6 @@ type State = {
 class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false };
 
-  skip = (error: Error) => {
-    if (
-      JSON.stringify(error).includes(
-        'transition is invalid while previous transition is still in progress'
-      )
-    ) {
-      return true;
-    }
-    return false;
-  };
-
   componentDidCatch(error: Error, info: Object) {
     this.setState({ hasError: true });
     if (process.env.NODE_ENV !== 'development') {
@@ -42,6 +31,17 @@ class ErrorBoundary extends React.Component<Props, State> {
       console.error('Boundary: ', error);
     }
   }
+
+  skip = (error: Error) => {
+    if (
+      JSON.stringify(error).includes(
+        'transition is invalid while previous transition is still in progress'
+      )
+    ) {
+      return true;
+    }
+    return false;
+  };
 
   render() {
     const { classes, children } = this.props;

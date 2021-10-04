@@ -49,6 +49,8 @@ class StartVideo extends React.PureComponent<Props, State> {
     groupUsers: []
   };
 
+  mounted: boolean;
+
   componentDidMount = () => {
     this.mounted = true;
     const {
@@ -216,8 +218,6 @@ class StartVideo extends React.PureComponent<Props, State> {
   handleClose = () => {
     this.setState({ inviteVisible: false });
   };
-
-  mounted: boolean;
 
   render() {
     const {
