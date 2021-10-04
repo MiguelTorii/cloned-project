@@ -225,9 +225,8 @@ class FeedList extends React.PureComponent<Props, State> {
             }
           >
             {items.map((item) => (
-              <Paper className={classes.root} elevation={0}>
+              <Paper key={item.feedId} className={classes.root} elevation={0}>
                 <FeedItem
-                  key={item.feedId}
                   schoolId={schoolId}
                   expertMode={expertMode}
                   userId={userId}

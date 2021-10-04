@@ -54,7 +54,7 @@ const Status = ({ classes }: { classes: Object }) => {
         ))}
       </Typography>
       {users.map((user, index) => (
-        <div className={classes.row}>
+        <div key={user.id} className={classes.row}>
           <div>{`${index + 1}. ${user.name}`}</div>
           <div>
             <DoneIcon style={{ fill: '#60b515' }} />

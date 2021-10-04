@@ -225,6 +225,7 @@ const CreateChatChannelInput = ({
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
             <Chip
+              key={option.community.id}
               classes={{
                 root: classes.chip
               }}
