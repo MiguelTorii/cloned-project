@@ -1,39 +1,36 @@
-// @flow
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import withRoot from "../../withRoot";
+import TermsOfUse from "../../components/TermsOfUse/TermsOfUse";
 
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../../withRoot';
-import TermsOfUse from '../../components/TermsOfUse/TermsOfUse';
-
-const styles = (theme) => ({
+const styles = theme => ({
   main: {
     padding: theme.spacing(2)
   }
 });
 
 type ProvidedProps = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type State = {};
 
 class TermsOfUsePage extends React.Component<ProvidedProps & Props, State> {
   componentDidMount = () => {};
 
   render() {
-    const { classes } = this.props;
-    return (
-      <main className={classes.main}>
+    const {
+      classes
+    } = this.props;
+    return <main className={classes.main}>
         <CssBaseline />
         <TermsOfUse />
-      </main>
-    );
+      </main>;
   }
+
 }
 
 export default withRoot(withStyles(styles)(TermsOfUsePage));

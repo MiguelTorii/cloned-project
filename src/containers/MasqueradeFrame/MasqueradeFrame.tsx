@@ -1,11 +1,10 @@
-import React from 'react';
-import { makeStyles, Grid, Typography, Button, Box } from '@material-ui/core';
-import { DesktopMac, Stop } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import withRoot from '../../withRoot';
-import { signOut } from '../../actions/sign-in';
-
-const useStyles = makeStyles((theme) => ({
+import React from "react";
+import { makeStyles, Grid, Typography, Button, Box } from "@material-ui/core";
+import { DesktopMac, Stop } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import withRoot from "../../withRoot";
+import { signOut } from "../../actions/sign-in";
+const useStyles = makeStyles(theme => ({
   root: {
     position: 'fixed',
     left: 0,
@@ -36,11 +35,10 @@ const useStyles = makeStyles((theme) => ({
 
 const MasqueradeFrame = () => {
   const classes = useStyles();
-  const userData = useSelector((state) => state.user.data);
+  const userData = useSelector(state => state.user.data);
   const dispatch = useDispatch();
-
   // Whenever userData is updated, the component is re-rendered that the value from the storage is always updated.
-  const isMasquerade = useSelector((state) => state.user.isMasquerading);
+  const isMasquerade = useSelector(state => state.user.isMasquerading);
 
   const handleStop = () => {
     dispatch(signOut());
@@ -50,8 +48,7 @@ const MasqueradeFrame = () => {
     return null;
   }
 
-  return (
-    <div className={classes.root}>
+  return <div className={classes.root}>
       <div className={classes.header}>
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
           <Grid item>
@@ -63,21 +60,15 @@ const MasqueradeFrame = () => {
             </Box>
           </Grid>
           <Grid item>
-            <Button
-              classes={{
-                root: classes.stopButton
-              }}
-              size="small"
-              startIcon={<Stop />}
-              onClick={handleStop}
-            >
+            <Button classes={{
+            root: classes.stopButton
+          }} size="small" startIcon={<Stop />} onClick={handleStop}>
               Stop Acting as User
             </Button>
           </Grid>
         </Grid>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default withRoot(MasqueradeFrame);

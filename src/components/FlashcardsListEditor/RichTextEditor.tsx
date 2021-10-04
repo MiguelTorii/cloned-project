@@ -1,16 +1,14 @@
-// @flow
-
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
-import { useDropzone } from 'react-dropzone';
-import IconImage from '@material-ui/icons/ImageOutlined';
-import clsx from 'clsx';
-import { useSelector } from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import PropTypes from 'prop-types';
-import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
-import { uploadMedia } from '../../actions/user';
-import useStyles from './styles';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import ReactQuill from "react-quill";
+import { useDropzone } from "react-dropzone";
+import IconImage from "@material-ui/icons/ImageOutlined";
+import clsx from "clsx";
+import { useSelector } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import PropTypes from "prop-types";
+import { UPLOAD_MEDIA_TYPES } from "../../constants/app";
+import { uploadMedia } from "../../actions/user";
+import useStyles from "./styles";
 
 const RichTextEditor = ({
   active,
@@ -26,50 +24,47 @@ const RichTextEditor = ({
 }: Props) => {
   // Hooks
   const classes = useStyles();
-  const me = useSelector((state) => state.user.data);
+  const me = useSelector(state => state.user.data);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const editorRef = useRef(null);
-  const { getRootProps, getInputProps } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps
+  } = useDropzone({
     accept: 'image/*',
     disabled: readOnly,
-    onDropAccepted: (files) => {
+    onDropAccepted: files => {
       setIsUploadingImage(true);
-      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0]).then(({ readUrl }) => {
+      uploadMedia(me.userId, UPLOAD_MEDIA_TYPES.FLASHCARDS, files[0]).then(({
+        readUrl
+      }) => {
         onChangeImageUrl(readUrl);
         setIsUploadingImage(false);
       });
     }
   });
-
   // Callbacks
   const removeStyleMatcher = useCallback((node, delta) => {
-    delta.ops = delta.ops.map((op) => ({
+    delta.ops = delta.ops.map(op => ({
       insert: op.insert
     }));
     return delta;
   }, []);
-
   // Event Handlers
-  const handleFocus = useCallback(
-    (event) => {
-      if (!readOnly) {
-        event.stopPropagation();
-        onFocus();
-      }
-    },
-    [onFocus, readOnly]
-  );
-
-  const handleKeyDown = useCallback((event) => {
+  const handleFocus = useCallback(event => {
+    if (!readOnly) {
+      event.stopPropagation();
+      onFocus();
+    }
+  }, [onFocus, readOnly]);
+  const handleKeyDown = useCallback(event => {
     // If it's tab key, dispatch an event
     if (event.keyCode === 9) {
       if (editorRef.current) {
         // Remove focus from editor
         editorRef.current.getEditor().blur();
-
         // Dispatch a new event
         const newEvent = document.createEvent('Events');
-
         newEvent.initEvent('keydown', true, true);
         newEvent.keyCode = 9;
         newEvent.which = 9;
@@ -77,17 +72,14 @@ const RichTextEditor = ({
         newEvent.key = 'Tab';
         newEvent.code = 'Tab';
         newEvent.shiftKey = event.shiftKey;
-
         document.dispatchEvent(newEvent);
       }
     }
   }, []);
-
-  const handleSetRef = useCallback((ref) => {
+  const handleSetRef = useCallback(ref => {
     editorRef.current = ref;
     onSetRef(ref);
   }, []);
-
   // Effect
   useEffect(() => {
     if (editorRef.current && active) {
@@ -112,47 +104,32 @@ const RichTextEditor = ({
     return <IconImage className={classes.imageIcon} />;
   };
 
-  return (
-    <div
-      className={clsx(classes.textEditorContainer, active && 'active', readOnly && 'read-only')}
-      onMouseDown={handleFocus}
-    >
+  return <div className={clsx(classes.textEditorContainer, active && 'active', readOnly && 'read-only')} onMouseDown={handleFocus}>
       {!readOnly && <div className={clsx(classes.editorLabel, active && 'active')}>{label}</div>}
       <div className={classes.textEditor}>
-        <ReactQuill
-          ref={handleSetRef}
-          theme="snow"
-          placeholder={readOnly ? '' : placeholder}
-          modules={{
-            keyboard: {
-              bindings: {
-                tab: false
-              }
-            },
-            toolbar: {
-              container: `#${containerId}`
-            },
-            clipboard: {
-              matchers: [[Node.ELEMENT_NODE, removeStyleMatcher]]
-            }
-          }}
-          defaultValue={value}
-          readOnly={readOnly}
-          onKeyDown={handleKeyDown}
-        />
+        <ReactQuill ref={handleSetRef} theme="snow" placeholder={readOnly ? '' : placeholder} modules={{
+        keyboard: {
+          bindings: {
+            tab: false
+          }
+        },
+        toolbar: {
+          container: `#${containerId}`
+        },
+        clipboard: {
+          matchers: [[Node.ELEMENT_NODE, removeStyleMatcher]]
+        }
+      }} defaultValue={value} readOnly={readOnly} onKeyDown={handleKeyDown} />
       </div>
       <div className="container">
-        <div
-          {...getRootProps({
-            className: clsx(classes.imageDnd, readOnly && 'read-only')
-          })}
-        >
+        <div {...getRootProps({
+        className: clsx(classes.imageDnd, readOnly && 'read-only')
+      })}>
           <input {...getInputProps()} />
           {renderImage()}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 RichTextEditor.propTypes = {
@@ -167,7 +144,6 @@ RichTextEditor.propTypes = {
   onFocus: PropTypes.func,
   onSetRef: PropTypes.func
 };
-
 RichTextEditor.defaultProps = {
   active: false,
   placeholder: '',
@@ -178,5 +154,4 @@ RichTextEditor.defaultProps = {
   onFocus: () => {},
   onSetRef: () => {}
 };
-
 export default RichTextEditor;

@@ -1,12 +1,10 @@
-// @flow
-
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
-import ViewQuestion from '../../containers/ViewQuestion/ViewQuestion';
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import withRoot from "../../withRoot";
+import Layout from "../../containers/Layout/Layout";
+import ViewQuestion from "../../containers/ViewQuestion/ViewQuestion";
 
 const styles = () => ({
   item: {
@@ -15,21 +13,24 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Object,
+  classes: Record<string, any>;
   match: {
     params: {
-      questionId: string
-    }
-  }
+      questionId: string;
+    };
+  };
 };
 
-const QuestionPage = ({ classes, match }: Props) => {
+const QuestionPage = ({
+  classes,
+  match
+}: Props) => {
   const {
-    params: { questionId }
+    params: {
+      questionId
+    }
   } = match;
-
-  return (
-    <main>
+  return <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={0}>
@@ -38,8 +39,7 @@ const QuestionPage = ({ classes, match }: Props) => {
           </Grid>
         </Grid>
       </Layout>
-    </main>
-  );
+    </main>;
 };
 
 export default withRoot(withStyles(styles)(QuestionPage));

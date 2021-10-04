@@ -1,50 +1,45 @@
-// @flow
-import React from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import EmptyState from 'components/FeedList/EmptyState';
-import EmptyFeed from 'assets/svg/empty-feed.svg';
-import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg';
-import EmptyMyPosts from 'assets/svg/empty-my-posts.svg';
-import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg';
-import LoadImg from 'components/LoadImg/LoadImg';
-import Box from '@material-ui/core/Box';
-import ImgLoading from 'assets/gif/class-feed-loading.gif';
-import FilterLoading from 'assets/gif/feed-loading.gif';
-import FeedItem from './FeedItem';
-
-import styles from '../_styles/FeedList';
-
+import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import EmptyState from "components/FeedList/EmptyState";
+import EmptyFeed from "assets/svg/empty-feed.svg";
+import EmptyBookmarks from "assets/svg/empty-bookmarks.svg";
+import EmptyMyPosts from "assets/svg/empty-my-posts.svg";
+import ExpertFeedEmpty from "assets/svg/expertFeedEmpty.svg";
+import LoadImg from "components/LoadImg/LoadImg";
+import Box from "@material-ui/core/Box";
+import ImgLoading from "assets/gif/class-feed-loading.gif";
+import FilterLoading from "assets/gif/feed-loading.gif";
+import FeedItem from "./FeedItem";
+import styles from "../_styles/FeedList";
 type Props = {
-  classes: Object,
-  userId: string,
-  items: Array<Object>,
-  isLoading: boolean,
-  hasMore: boolean,
-  fromFeedId: ?number,
-  handleShare: Function,
-  onPostClick: Function,
-  onBookmark: Function,
-  onReport: Function,
-  onDelete: Function,
-  pushTo: Function,
-  onLoadMore: Function,
-  newClassExperience: boolean,
-  onUserClick: Function
+  classes: Record<string, any>;
+  userId: string;
+  items: Array<Record<string, any>>;
+  isLoading: boolean;
+  hasMore: boolean;
+  fromFeedId: number | null | undefined;
+  handleShare: (...args: Array<any>) => any;
+  onPostClick: (...args: Array<any>) => any;
+  onBookmark: (...args: Array<any>) => any;
+  onReport: (...args: Array<any>) => any;
+  onDelete: (...args: Array<any>) => any;
+  pushTo: (...args: Array<any>) => any;
+  onLoadMore: (...args: Array<any>) => any;
+  newClassExperience: boolean;
+  onUserClick: (...args: Array<any>) => any;
 };
-
 type State = {};
 
 class FeedList extends React.PureComponent<Props, State> {
   selectedRef: {
     // eslint-disable-next-line no-undef
-    el: ?HTMLDivElement
+    el: HTMLDivElement | null | undefined;
   };
-
   mounted: boolean;
 
   constructor(props) {
@@ -57,23 +52,22 @@ class FeedList extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     this.mounted = true;
   };
-
   componentDidUpdate = () => {
     if (this.mounted && this.selectedRef) {
       this.handleScrollToRef();
     }
   };
-
   componentWillUnmount = () => {
     this.mounted = false;
   };
-
-  getEmptyState = (pathname) => {
-    const { classes, expertMode } = this.props;
+  getEmptyState = pathname => {
+    const {
+      classes,
+      expertMode
+    } = this.props;
 
     if (expertMode) {
-      return (
-        <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
+      return <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
           <Box className={classes.expertContainerText}>
             <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
               <Typography className={classes.expertTitle}>
@@ -92,54 +86,45 @@ class FeedList extends React.PureComponent<Props, State> {
             </Box>
           </Box>
           <LoadImg url={ExpertFeedEmpty} />
-        </Box>
-      );
+        </Box>;
     }
 
     if (pathname === '/bookmarks') {
-      return (
-        <EmptyState
-          imageUrl={EmptyBookmarks}
-          title="When you bookmark posts you can search for them!"
-        />
-      );
+      return <EmptyState imageUrl={EmptyBookmarks} title="When you bookmark posts you can search for them!" />;
     }
 
     if (pathname === '/my_posts') {
-      return (
-        <EmptyState imageUrl={EmptyMyPosts} title="Your posts will appear here">
+      return <EmptyState imageUrl={EmptyMyPosts} title="Your posts will appear here">
           After posting, your study material will be here for you to view later for an exam
-        </EmptyState>
-      );
+        </EmptyState>;
     }
 
-    return (
-      <EmptyState imageUrl={EmptyFeed} title="">
+    return <EmptyState imageUrl={EmptyFeed} title="">
         <div className={classes.title2}>
           Click <p className={classes.newPost}>+ Create New Post</p> to post and earn points, and
           get yourself closer to winning a gift card or scholarship!
         </div>
-      </EmptyState>
-    );
+      </EmptyState>;
   };
-
   handleScrollToRef = () => {
     if (this.selectedRef && this.selectedRef.el) {
-      this.selectedRef.el.scrollIntoView({ behavior: 'instant' });
+      this.selectedRef.el.scrollIntoView({
+        behavior: 'instant'
+      });
     }
   };
-
   setQuillRefs = (feedId, ref) => {
     this.quillRefs[feedId] = ref;
   };
-
   setNewComments = (feedId, content) => {
     this.newComments[feedId] = content;
   };
+  isCurrent = classId => {
+    const {
+      classList
+    } = this.props;
+    const filteredList = classList.filter(cl => cl.classId === classId);
 
-  isCurrent = (classId) => {
-    const { classList } = this.props;
-    const filteredList = classList.filter((cl) => cl.classId === classId);
     if (filteredList.length > 0) {
       return filteredList[0].isCurrent;
     }
@@ -164,14 +149,13 @@ class FeedList extends React.PureComponent<Props, State> {
       expertMode,
       onUserClick,
       schoolId,
-      location: { pathname },
+      location: {
+        pathname
+      },
       isFiltering
     } = this.props;
-
-    return (
-      <div className={`${classes.container} tour-onboarding-feed`}>
-        {isLoading && !isFiltering && items.length === 0 && (
-          <>
+    return <div className={`${classes.container} tour-onboarding-feed`}>
+        {isLoading && !isFiltering && items.length === 0 && <>
             <Box display="flex" justifyContent="center">
               <img src={ImgLoading} alt="load feeds" className={classes.loadingGif} />
             </Box>
@@ -182,10 +166,8 @@ class FeedList extends React.PureComponent<Props, State> {
               Take a delightfully slow and relaxing <br />
               deep breath while we apply your filters!
             </Typography>
-          </>
-        )}
-        {isFiltering && (
-          <>
+          </>}
+        {isFiltering && <>
             <Box display="flex" justifyContent="center">
               <img src={FilterLoading} alt="Filter Feeds" className={classes.loadingGif} />
             </Box>
@@ -196,66 +178,33 @@ class FeedList extends React.PureComponent<Props, State> {
               Take a delightfully slow and relaxing <br />
               deep breath while we apply your filters!
             </Typography>
-          </>
-        )}
+          </>}
         <Paper className={classes.root} elevation={0}>
           {!isLoading && items.length === 0 && this.getEmptyState(pathname)}
         </Paper>
-        {items.length > 0 && (
-          <InfiniteScroll
-            dataLength={items.length}
-            next={onLoadMore}
-            hasMore={hasMore}
-            loader={
-              <Box display="flex" justifyContent="center">
+        {items.length > 0 && <InfiniteScroll dataLength={items.length} next={onLoadMore} hasMore={hasMore} loader={<Box display="flex" justifyContent="center">
                 <div className={classes.progress}>
                   <Typography align="center" variant="subtitle1" paragraph>
                     Loading Posts
                   </Typography>
                   <CircularProgress size={20} />
                 </div>
-              </Box>
-            }
-            endMessage={
-              <div className={classes.feedEnd}>
+              </Box>} endMessage={<div className={classes.feedEnd}>
                 <Typography variant="h6" align="center">
                   All posts have been loaded
                 </Typography>
-              </div>
+              </div>}>
+            {items.map(item => <Paper key={item.feedId} className={classes.root} elevation={0}>
+                <FeedItem schoolId={schoolId} expertMode={expertMode} userId={userId} data={item} handleShareClick={handleShare} innerRef={node => {
+            if (fromFeedId === item.feedId) {
+              this.selectedRef = node;
             }
-          >
-            {items.map((item) => (
-              <Paper key={item.feedId} className={classes.root} elevation={0}>
-                <FeedItem
-                  schoolId={schoolId}
-                  expertMode={expertMode}
-                  userId={userId}
-                  data={item}
-                  handleShareClick={handleShare}
-                  innerRef={(node) => {
-                    if (fromFeedId === item.feedId) {
-                      this.selectedRef = node;
-                    }
-                  }}
-                  onPostClick={onPostClick}
-                  newClassExperience={newClassExperience}
-                  onBookmark={onBookmark}
-                  pushTo={pushTo}
-                  onReport={onReport}
-                  onDelete={onDelete}
-                  onUserClick={onUserClick}
-                  setQuillRefs={this.setQuillRefs}
-                  quillRefs={this.quillRefs}
-                  setNewComments={this.setNewComments}
-                  newComments={this.newComments}
-                />
-              </Paper>
-            ))}
-          </InfiniteScroll>
-        )}
-      </div>
-    );
+          }} onPostClick={onPostClick} newClassExperience={newClassExperience} onBookmark={onBookmark} pushTo={pushTo} onReport={onReport} onDelete={onDelete} onUserClick={onUserClick} setQuillRefs={this.setQuillRefs} quillRefs={this.quillRefs} setNewComments={this.setNewComments} newComments={this.newComments} />
+              </Paper>)}
+          </InfiniteScroll>}
+      </div>;
   }
+
 }
 
 export default withStyles(styles)(withRouter(FeedList));

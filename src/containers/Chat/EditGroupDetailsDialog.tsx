@@ -1,23 +1,21 @@
-// @flow
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { ValidatorForm } from "react-material-ui-form-validator";
+import withStyles from "@material-ui/core/styles/withStyles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Dialog, { dialogStyle } from "components/Dialog/Dialog";
+import Typography from "@material-ui/core/Typography";
+import { Box } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import GroupIcon from "@material-ui/icons/Group";
+import { Create } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import AvatarEditor from "../../components/AvatarEditor/AvatarEditor";
+import GradientButton from "../../components/Basic/Buttons/GradientButton";
+import TextField from "../../components/Basic/TextField/TextField";
+import { handleUpdateGroupPhoto } from "../../actions/chat";
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ValidatorForm } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
-import Typography from '@material-ui/core/Typography';
-import { Box } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import GroupIcon from '@material-ui/icons/Group';
-import { Create } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
-import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
-import TextField from '../../components/Basic/TextField/TextField';
-import { handleUpdateGroupPhoto } from '../../actions/chat';
-
-const styles = (theme) => ({
+const styles = theme => ({
   validatorForm: {
     flex: 1,
     display: 'flex',
@@ -25,12 +23,12 @@ const styles = (theme) => ({
   },
   form: {
     width: '100%' // Fix IE 11 issue.
+
   },
   input: {
     display: 'none'
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 800
   },
   name: {
@@ -86,11 +84,11 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  title: ?string,
-  channel: Object,
-  onClose: Function,
-  updateGroupName: Function,
-  localChannel: Object
+  title: string | null | undefined;
+  channel: Record<string, any>;
+  onClose: (...args: Array<any>) => any;
+  updateGroupName: (...args: Array<any>) => any;
+  localChannel: Record<string, any>;
 };
 
 const EditGroupDetailsDialog = ({
@@ -112,11 +110,9 @@ const EditGroupDetailsDialog = ({
   useEffect(() => {
     setName(localChannel.title);
   }, [localChannel]);
-
   useEffect(() => {
     setGroupImage(localChannel.thumbnail);
   }, [localChannel.thumbnail]);
-
   const groupImageUrl = useMemo(() => {
     if (groupImage instanceof Blob) {
       return window.URL.createObjectURL(groupImage);
@@ -124,17 +120,13 @@ const EditGroupDetailsDialog = ({
 
     return groupImage;
   }, [groupImage]);
+  const handleGroupNameChange = useCallback(e => {
+    if (e.target.value.length > 100) {
+      return;
+    }
 
-  const handleGroupNameChange = useCallback(
-    (e) => {
-      if (e.target.value.length > 100) {
-        return;
-      }
-      setName(e.target.value);
-    },
-    [setName]
-  );
-
+    setName(e.target.value);
+  }, [setName]);
   const handleClose = useCallback(() => {
     setIsSaving(false);
     onClose();
@@ -154,7 +146,6 @@ const EditGroupDetailsDialog = ({
 
   const handleSubmit = async () => {
     setIsSaving(true);
-
     await updateChannelName();
 
     if (groupImage instanceof Blob) {
@@ -165,19 +156,15 @@ const EditGroupDetailsDialog = ({
   };
 
   const handleStartEditPhoto = () => setIsEditingGroupPhoto(true);
+
   const handleCancelEditPhoto = () => setIsEditingGroupPhoto(false);
-  const handleSavePhoto = (imageData) => {
+
+  const handleSavePhoto = imageData => {
     setGroupImage(imageData);
     setIsEditingGroupPhoto(false);
   };
 
-  return (
-    <Dialog
-      open={open}
-      title={title || 'Edit Group Details'}
-      className={classes.editDialog}
-      onCancel={handleClose}
-    >
+  return <Dialog open={open} title={title || 'Edit Group Details'} className={classes.editDialog} onCancel={handleClose}>
       {isLoading && <CircularProgress className={classes.progress} />}
       <Typography variant="h6" gutterBottom>
         Are you sure you want to make changes to&nbsp;{name}?
@@ -185,25 +172,13 @@ const EditGroupDetailsDialog = ({
       <div className={classes.spacer}></div>
       <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
         <div className={classes.form}>
-          <TextField
-            placeholder="Enter a New Friendly Name"
-            label="Edit Group Name"
-            fullWidth
-            variant="outlined"
-            onChange={handleGroupNameChange}
-            value={name}
-            helperText={`${100 - (name?.length || 0)} characters remaining`}
-            FormHelperTextProps={{
-              className: classes.helperText
-            }}
-            InputLabelProps={{
-              className: classes.labelText
-            }}
-            inputProps={{
-              className: classes.name
-            }}
-            size="medium"
-          />
+          <TextField placeholder="Enter a New Friendly Name" label="Edit Group Name" fullWidth variant="outlined" onChange={handleGroupNameChange} value={name} helperText={`${100 - (name?.length || 0)} characters remaining`} FormHelperTextProps={{
+          className: classes.helperText
+        }} InputLabelProps={{
+          className: classes.labelText
+        }} inputProps={{
+          className: classes.name
+        }} size="medium" />
         </div>
       </ValidatorForm>
       <Box mt={2}>
@@ -216,12 +191,9 @@ const EditGroupDetailsDialog = ({
           <Avatar src={groupImageUrl} alt="group-image" className={classes.avatar}>
             <GroupIcon />
           </Avatar>
-          <Button
-            onClick={handleStartEditPhoto}
-            classes={{
-              root: classes.penButton
-            }}
-          >
+          <Button onClick={handleStartEditPhoto} classes={{
+          root: classes.penButton
+        }}>
             <Create />
           </Button>
         </Box>
@@ -232,14 +204,8 @@ const EditGroupDetailsDialog = ({
           Save Changes
         </GradientButton>
       </Box>
-      <AvatarEditor
-        open={isEditingGroupPhoto}
-        originalImage={groupImage}
-        onCancel={handleCancelEditPhoto}
-        onSave={handleSavePhoto}
-      />
-    </Dialog>
-  );
+      <AvatarEditor open={isEditingGroupPhoto} originalImage={groupImage} onCancel={handleCancelEditPhoto} onSave={handleSavePhoto} />
+    </Dialog>;
 };
 
 export default withStyles(styles)(EditGroupDetailsDialog);

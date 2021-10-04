@@ -1,8 +1,7 @@
-import React from 'react';
-import Radio from '@material-ui/core/Radio';
-import { makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
-
+import React from "react";
+import Radio from "@material-ui/core/Radio";
+import { makeStyles } from "@material-ui/core";
+import clsx from "clsx";
 const useStyles = makeStyles({
   root: {
     padding: '4px 12px 4px 4px'
@@ -27,17 +26,9 @@ const useStyles = makeStyles({
   }
 });
 
-const ChoiceRadio = (props) => {
+const ChoiceRadio = props => {
   const classes = useStyles();
-
-  return (
-    <Radio
-      className={classes.root}
-      icon={<span className={classes.icon} />}
-      checkedIcon={<span className={clsx(classes.icon, classes.checkIcon)} />}
-      {...props}
-    />
-  );
+  return <Radio className={classes.root} icon={<span className={classes.icon} />} checkedIcon={<span className={clsx(classes.icon, classes.checkIcon)} />} {...props} />;
 };
 
 export default ChoiceRadio;

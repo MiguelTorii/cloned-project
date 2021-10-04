@@ -1,44 +1,33 @@
-import React from 'react';
-import Dialog from 'components/Dialog/Dialog';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TipsAnimation from 'assets/gif/tips.gif';
-import tipsBubbles from 'assets/svg/tipsBubbles.svg';
-import tipsCards from 'assets/svg/tipsCards.svg';
-import tipsPad from 'assets/svg/tipsPad.svg';
-import LoadImg from 'components/LoadImg/LoadImg';
-import { useStyles } from '../_styles/Workflow/Tips';
+import React from "react";
+import Dialog from "components/Dialog/Dialog";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import TipsAnimation from "assets/gif/tips.gif";
+import tipsBubbles from "assets/svg/tipsBubbles.svg";
+import tipsCards from "assets/svg/tipsCards.svg";
+import tipsPad from "assets/svg/tipsPad.svg";
+import LoadImg from "components/LoadImg/LoadImg";
+import { useStyles } from "../_styles/Workflow/Tips";
 
-const Tips = ({ open, close }) => {
+const Tips = ({
+  open,
+  close
+}) => {
   const classes = useStyles();
-
-  return (
-    <Dialog open={open} onCancel={close}>
+  return <Dialog open={open} onCancel={close}>
       <Grid container>
         <Grid item xs={12}>
           <Typography className={classes.header}>Tips for Using Workflow</Typography>
         </Grid>
-        <Grid
-          container
-          spacing={2}
-          justifyContent="center"
-          className={classes.borders}
-          alignItems="center"
-        >
+        <Grid container spacing={2} justifyContent="center" className={classes.borders} alignItems="center">
           <Grid item xs={6} container justifyContent="center">
-            <LoadImg
-              className={classes.animation}
-              alt="drag and drop tips animation"
-              url={TipsAnimation}
-            />
+            <LoadImg className={classes.animation} alt="drag and drop tips animation" url={TipsAnimation} />
           </Grid>
           <Grid item xs={6}>
             <Grid container>
               <Typography className={classes.title}>What is Workflow?</Typography>
               <Typography className={classes.primaryText}>
-                {
-                  "Workflow is CircleIn's task management tool for students. It helps you work through your task list from start to end."
-                }
+                {"Workflow is CircleIn's task management tool for students. It helps you work through your task list from start to end."}
               </Typography>
               <Typography className={classes.primaryText}>
                 The <b>Upcoming</b> column holds tasks coming up. The <b>In Progress</b> column
@@ -93,8 +82,7 @@ const Tips = ({ open, close }) => {
           </Grid>
         </Grid>
       </Grid>
-    </Dialog>
-  );
+    </Dialog>;
 };
 
 export default Tips;

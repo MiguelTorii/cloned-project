@@ -1,15 +1,13 @@
-// @flow
+import React from "react";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import ForgotPasswordForm from "../../components/ForgotPasswordForm/ForgotPasswordForm";
+import SimpleErrorDialog from "../../components/SimpleErrorDialog/SimpleErrorDialog";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import { recoverPassword } from "../../api/sign-in";
 
-import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import ForgotPasswordForm from '../../components/ForgotPasswordForm/ForgotPasswordForm';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { recoverPassword } from '../../api/sign-in';
-
-const styles = (theme) => ({
+const styles = theme => ({
   success: {
     display: 'flex',
     alignItems: 'center',
@@ -19,16 +17,15 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type State = {
-  email: string,
-  loading: boolean,
-  success: boolean,
-  error: boolean,
-  title: string,
-  body: string
+  email: string;
+  loading: boolean;
+  success: boolean;
+  error: boolean;
+  title: string;
+  body: string;
 };
 
 class ForgotPassword extends React.Component<Props, State> {
@@ -40,30 +37,37 @@ class ForgotPassword extends React.Component<Props, State> {
     title: '',
     body: ''
   };
+  handleChange = (field: string) => (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const {
+      target
+    } = event;
 
-  handleChange =
-    (field: string) =>
-    (
-      // eslint-disable-next-line no-undef
-      event: SyntheticEvent<HTMLInputElement>
-    ) => {
-      const { target } = event;
-      // eslint-disable-next-line no-undef
-      if (!(target instanceof HTMLInputElement)) {
-        return;
-      }
-      this.setState({
-        [field]: target.value
-      });
-    };
+    // eslint-disable-next-line no-undef
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
 
+    this.setState({
+      [field]: target.value
+    });
+  };
   handleSubmit = async () => {
-    const { email } = this.state;
+    const {
+      email
+    } = this.state;
+
     try {
-      this.setState({ loading: true });
-      const success = await recoverPassword({ email });
+      this.setState({
+        loading: true
+      });
+      const success = await recoverPassword({
+        email
+      });
+
       if (success) {
-        this.setState({ success: true });
+        this.setState({
+          success: true
+        });
       } else {
         this.setState({
           error: true,
@@ -79,51 +83,49 @@ class ForgotPassword extends React.Component<Props, State> {
         body: "We couldn't process your request, please try again"
       });
     } finally {
-      this.setState({ loading: false });
+      this.setState({
+        loading: false
+      });
     }
   };
-
   handleErrorDialogClose = () => {
-    this.setState({ error: false, title: '', body: '' });
+    this.setState({
+      error: false,
+      title: '',
+      body: ''
+    });
   };
 
   render() {
-    const { classes } = this.props;
-    const { email, loading, error, title, body, success } = this.state;
-
-    return (
-      <main className={classes.main}>
+    const {
+      classes
+    } = this.props;
+    const {
+      email,
+      loading,
+      error,
+      title,
+      body,
+      success
+    } = this.state;
+    return <main className={classes.main}>
         <Grid container justifyContent="space-around">
           <Grid item xs={12} sm={6}>
-            {success ? (
-              <div className={classes.success}>
+            {success ? <div className={classes.success}>
                 <Typography align="center" variant="h5">
                   We have sent you an email, please follow the link inside to reset your password
                 </Typography>
-              </div>
-            ) : (
-              <ErrorBoundary>
-                <ForgotPasswordForm
-                  email={email}
-                  loading={loading}
-                  onChange={this.handleChange}
-                  onSubmit={this.handleSubmit}
-                />
-              </ErrorBoundary>
-            )}
+              </div> : <ErrorBoundary>
+                <ForgotPasswordForm email={email} loading={loading} onChange={this.handleChange} onSubmit={this.handleSubmit} />
+              </ErrorBoundary>}
           </Grid>
         </Grid>
         <ErrorBoundary>
-          <SimpleErrorDialog
-            open={error}
-            title={title}
-            body={body}
-            handleClose={this.handleErrorDialogClose}
-          />
+          <SimpleErrorDialog open={error} title={title} body={body} handleClose={this.handleErrorDialogClose} />
         </ErrorBoundary>
-      </main>
-    );
+      </main>;
   }
+
 }
 
 export default withStyles(styles)(ForgotPassword);

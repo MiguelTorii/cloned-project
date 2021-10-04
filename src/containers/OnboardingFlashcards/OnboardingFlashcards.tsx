@@ -1,16 +1,14 @@
-// @flow
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { makeStyles } from '@material-ui/core';
-import Dialog from '../../components/Dialog/Dialog';
-import type { State as StoreState } from '../../types/state';
-import withRoot from '../../withRoot';
-import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
-import { ONBOARDING_STEPS } from './steps';
-import OnboardingStep from './OnboardingStep';
-
-const useStyles = makeStyles((theme) => ({
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { makeStyles } from "@material-ui/core";
+import Dialog from "../../components/Dialog/Dialog";
+import type { State as StoreState } from "../../types/state";
+import withRoot from "../../withRoot";
+import { confirmTooltip as confirmTooltipAction } from "../../actions/user";
+import { ONBOARDING_STEPS } from "./steps";
+import OnboardingStep from "./OnboardingStep";
+const useStyles = makeStyles(theme => ({
   dialog: {
     width: 750,
     height: 625,
@@ -23,14 +21,16 @@ const useStyles = makeStyles((theme) => ({
     padding: '0 !important'
   }
 }));
-
 const FLASHCARDS_ONBOARDING_ID = 9066;
 
-const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
+const OnboardingFlashcards = ({
+  userId,
+  viewedTooltips,
+  confirmTooltip
+}) => {
   const classes = useStyles();
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
-
   useEffect(() => {
     if (!!viewedTooltips?.length && viewedTooltips.indexOf(FLASHCARDS_ONBOARDING_ID) === -1) {
       setOpen(true);
@@ -56,37 +56,19 @@ const OnboardingFlashcards = ({ userId, viewedTooltips, confirmTooltip }) => {
     }
   };
 
-  return (
-    <Dialog
-      className={classes.dialog}
-      contentClassName={classes.dialogContent}
-      open={open}
-      showHeader={false}
-      onCancel={closePopup}
-    >
-      <OnboardingStep
-        data={ONBOARDING_STEPS[step]}
-        step={step + 1}
-        totalSteps={ONBOARDING_STEPS.length}
-        userId={userId}
-        onAction={onStepAction}
-        onBackAction={onBackAction}
-        onClose={closePopup}
-      />
-    </Dialog>
-  );
+  return <Dialog className={classes.dialog} contentClassName={classes.dialogContent} open={open} showHeader={false} onCancel={closePopup}>
+      <OnboardingStep data={ONBOARDING_STEPS[step]} step={step + 1} totalSteps={ONBOARDING_STEPS.length} userId={userId} onAction={onStepAction} onBackAction={onBackAction} onClose={closePopup} />
+    </Dialog>;
 };
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({
+  user
+}: StoreState): {} => ({
   viewedTooltips: user.syncData.viewedTooltips
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      confirmTooltip: confirmTooltipAction
-    },
-    dispatch
-  );
+const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
+  confirmTooltip: confirmTooltipAction
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRoot(OnboardingFlashcards));

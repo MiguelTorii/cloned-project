@@ -1,12 +1,10 @@
-// @flow
-
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
-import ViewNotes from '../../containers/ViewNotes/ViewNotes';
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import withRoot from "../../withRoot";
+import Layout from "../../containers/Layout/Layout";
+import ViewNotes from "../../containers/ViewNotes/ViewNotes";
 
 const styles = () => ({
   item: {
@@ -15,21 +13,24 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Object,
+  classes: Record<string, any>;
   match: {
     params: {
-      noteId: string
-    }
-  }
+      noteId: string;
+    };
+  };
 };
 
-const PostPage = ({ classes, match }: Props) => {
+const PostPage = ({
+  classes,
+  match
+}: Props) => {
   const {
-    params: { noteId }
+    params: {
+      noteId
+    }
   } = match;
-
-  return (
-    <main>
+  return <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={0}>
@@ -38,8 +39,7 @@ const PostPage = ({ classes, match }: Props) => {
           </Grid>
         </Grid>
       </Layout>
-    </main>
-  );
+    </main>;
 };
 
 export default withRoot(withStyles(styles)(PostPage));

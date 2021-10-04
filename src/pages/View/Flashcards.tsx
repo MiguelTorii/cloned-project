@@ -1,13 +1,11 @@
-// @flow
-
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import { useParams } from 'react-router';
-import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
-import ViewFlashcards from '../../containers/ViewFlashcards/ViewFlashcards';
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import { useParams } from "react-router";
+import withRoot from "../../withRoot";
+import Layout from "../../containers/Layout/Layout";
+import ViewFlashcards from "../../containers/ViewFlashcards/ViewFlashcards";
 
 const styles = () => ({
   item: {
@@ -16,14 +14,16 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
 
-const FlashcardsPage = ({ classes }: Props) => {
-  const { flashcardId } = useParams();
-
-  return (
-    <main>
+const FlashcardsPage = ({
+  classes
+}: Props) => {
+  const {
+    flashcardId
+  } = useParams();
+  return <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={0}>
@@ -32,8 +32,7 @@ const FlashcardsPage = ({ classes }: Props) => {
           </Grid>
         </Grid>
       </Layout>
-    </main>
-  );
+    </main>;
 };
 
 export default withRoot(withStyles(styles)(FlashcardsPage));

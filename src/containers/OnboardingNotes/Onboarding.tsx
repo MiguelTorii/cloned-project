@@ -1,24 +1,20 @@
-// @flow
-import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-
+import React, { useState, useEffect } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 // import { logEventLocally } from 'api/analytics';
-import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
-import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
-import LoadImg from 'components/LoadImg/LoadImg';
-
-import notesOnboardingFirst from 'assets/svg/notesOnboardingFirst.svg';
-import notesOnboardingSecond from 'assets/svg/notesOnboardingSecond.svg';
-import backgroundImg from 'assets/img/onboarding-background.png';
-
+import ErrorBoundary from "containers/ErrorBoundary/ErrorBoundary";
+import Dialog, { dialogStyle } from "components/Dialog/Dialog";
+import LoadImg from "components/LoadImg/LoadImg";
+import notesOnboardingFirst from "assets/svg/notesOnboardingFirst.svg";
+import notesOnboardingSecond from "assets/svg/notesOnboardingSecond.svg";
+import backgroundImg from "assets/img/onboarding-background.png";
 const centered = {
   alignItems: 'center',
   display: 'flex',
   justifyContent: 'center'
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   actionPanel: {
     flex: 2,
     flexDirection: 'column',
@@ -43,8 +39,7 @@ const styles = (theme) => ({
     flex: 3,
     ...centered
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     backgroundColor: theme.circleIn.palette.primaryBackground,
     zIndex: 1300,
     height: 700
@@ -84,29 +79,32 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  open: boolean,
-  userId: number,
-  updateOnboarding: Function
+  classes: Record<string, any>;
+  open: boolean;
+  userId: number;
+  updateOnboarding: (...args: Array<any>) => any;
 };
 
-const ImageFirst = () => (
-  <div style={{ margin: '0px 32px' }}>
-    <LoadImg url={notesOnboardingFirst} style={{ width: '100%' }} />
-  </div>
-);
+const ImageFirst = () => <div style={{
+  margin: '0px 32px'
+}}>
+    <LoadImg url={notesOnboardingFirst} style={{
+    width: '100%'
+  }} />
+  </div>;
 
-const ImageSecond = () => (
-  <div style={{ margin: '0px 32px' }}>
-    <LoadImg url={notesOnboardingSecond} style={{ width: '100%' }} />
-  </div>
-);
+const ImageSecond = () => <div style={{
+  margin: '0px 32px'
+}}>
+    <LoadImg url={notesOnboardingSecond} style={{
+    width: '100%'
+  }} />
+  </div>;
 
 const titleStyle = {
   fontSize: 48,
   textAlign: 'center'
 };
-
 const bodyStyle = {
   fontSize: 20,
   marginBottom: 20,
@@ -115,46 +113,37 @@ const bodyStyle = {
   fontWeight: 'bold'
 };
 
-const FirstTitle = () => (
-  <div style={titleStyle}>
+const FirstTitle = () => <div style={titleStyle}>
     <div>Introducing</div>
-    <div style={{ fontStyle: 'italic' }}>
+    <div style={{
+    fontStyle: 'italic'
+  }}>
       <b>In-App Notetaking</b>
     </div>
-  </div>
-);
+  </div>;
 
-const SecondTitle = () => (
-  <div style={titleStyle}>
+const SecondTitle = () => <div style={titleStyle}>
     <div>Organization and</div>
     <div>Convenience in One Tool.</div>
-  </div>
-);
+  </div>;
 
-const FirstBody = () => (
-  <div style={bodyStyle}>Now, you can work on CircleIn and take notes all at the same time.</div>
-);
+const FirstBody = () => <div style={bodyStyle}>Now, you can work on CircleIn and take notes all at the same time.</div>;
 
-const SecondBody = () => (
-  <div style={bodyStyle}>
+const SecondBody = () => <div style={bodyStyle}>
     The notes you write on CircleIn are visible to you only, so you can work in peace.
-  </div>
-);
+  </div>;
 
-const STEPS = [
-  {
-    buttonText: 'Next',
-    demoComponent: ImageFirst,
-    body: FirstBody,
-    title: FirstTitle
-  },
-  {
-    buttonText: 'Cool!',
-    demoComponent: ImageSecond,
-    body: SecondBody,
-    title: SecondTitle
-  }
-];
+const STEPS = [{
+  buttonText: 'Next',
+  demoComponent: ImageFirst,
+  body: FirstBody,
+  title: FirstTitle
+}, {
+  buttonText: 'Cool!',
+  demoComponent: ImageSecond,
+  body: SecondBody,
+  title: SecondTitle
+}];
 
 const OnboardingStep = ({
   classes,
@@ -165,19 +154,12 @@ const OnboardingStep = ({
   DemoComponent,
   Title,
   Body
-}) => (
-  <div className={classes.step}>
+}) => <div className={classes.step}>
     <div className={classes.actionPanel}>
       <Title />
       <Body />
       <div>
-        <Button
-          color="primary"
-          disabled={buttonDisabled}
-          className={classes.button}
-          onClick={handleButtonClick}
-          variant="contained"
-        >
+        <Button color="primary" disabled={buttonDisabled} className={classes.button} onClick={handleButtonClick} variant="contained">
           {buttonText}
         </Button>
       </div>
@@ -187,15 +169,17 @@ const OnboardingStep = ({
       </div>
     </div>
     <div className={classes.demoPanel}>{DemoComponent && <DemoComponent />}</div>
-  </div>
-);
+  </div>;
 
-const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
+const Onboarding = ({
+  classes,
+  open,
+  userId,
+  updateOnboarding
+}: Props) => {
   const [activeStep, setActiveStep] = useState(0);
-
   useEffect(() => {
-    if (open) {
-      // logEventLocally({
+    if (open) {// logEventLocally({
       // category: 'Onboarding',
       // objectId: userId,
       // type: 'Started',
@@ -212,30 +196,11 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
   };
 
   const currentStep = STEPS[activeStep];
-
-  return (
-    <ErrorBoundary>
-      <Dialog
-        ariaDescribedBy="onboarding-description"
-        className={classes.dialog}
-        fullWidth
-        maxWidth="lg"
-        disableEscapeKeyDown
-        open={open}
-        showHeader={false}
-      >
-        <OnboardingStep
-          classes={classes}
-          handleButtonClick={handleButtonClick}
-          buttonText={currentStep.buttonText}
-          DemoComponent={currentStep.demoComponent}
-          Body={currentStep.body}
-          activeStep={activeStep}
-          Title={currentStep.title}
-        />
+  return <ErrorBoundary>
+      <Dialog ariaDescribedBy="onboarding-description" className={classes.dialog} fullWidth maxWidth="lg" disableEscapeKeyDown open={open} showHeader={false}>
+        <OnboardingStep classes={classes} handleButtonClick={handleButtonClick} buttonText={currentStep.buttonText} DemoComponent={currentStep.demoComponent} Body={currentStep.body} activeStep={activeStep} Title={currentStep.title} />
       </Dialog>
-    </ErrorBoundary>
-  );
+    </ErrorBoundary>;
 };
 
 export default withStyles(styles)(Onboarding);

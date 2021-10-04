@@ -1,29 +1,22 @@
-import React from 'react';
-import { Tooltip } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import HotKeyIcon from '../HotKeyIcon/HotKeyIcon';
-import HotKeyBox from '../HotKeyBox/HotKeyBox';
-import useStyles from './styles';
+import React from "react";
+import { Tooltip } from "@material-ui/core";
+import PropTypes from "prop-types";
+import HotKeyIcon from "../HotKeyIcon/HotKeyIcon";
+import HotKeyBox from "../HotKeyBox/HotKeyBox";
+import useStyles from "./styles";
 
-const HotKeyGuide = ({ data }) => {
+const HotKeyGuide = ({
+  data
+}) => {
   const classes = useStyles();
-
-  return (
-    <Tooltip
-      title={<HotKeyBox data={data} />}
-      arrow
-      placement="top"
-      classes={{
-        popper: classes.popper
-      }}
-    >
+  return <Tooltip title={<HotKeyBox data={data} />} arrow placement="top" classes={{
+    popper: classes.popper
+  }}>
       <HotKeyIcon />
-    </Tooltip>
-  );
+    </Tooltip>;
 };
 
 HotKeyGuide.propTypes = {
   data: PropTypes.arrayOf.isRequired
 };
-
 export default HotKeyGuide;

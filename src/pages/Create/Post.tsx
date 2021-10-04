@@ -1,29 +1,26 @@
-// @flow
-
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
-import CreatePost from '../../containers/CreatePostLayout/CreatePostLayout';
-
+import React from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
+import withRoot from "../../withRoot";
+import Layout from "../../containers/Layout/Layout";
+import CreatePost from "../../containers/CreatePostLayout/CreatePostLayout";
 type Props = {
   match: {
     params: {
-      postId: string
-    }
-  }
+      postId: string;
+    };
+  };
 };
 
 const CreatePostPage = (props: Props) => {
   const {
     match: {
-      params: { postId }
+      params: {
+        postId
+      }
     }
   } = props;
-
-  return (
-    <main>
+  return <main>
       <CssBaseline />
       <Layout>
         <Grid container>
@@ -32,8 +29,7 @@ const CreatePostPage = (props: Props) => {
           </Grid>
         </Grid>
       </Layout>
-    </main>
-  );
+    </main>;
 };
 
 export default withRoot(CreatePostPage);

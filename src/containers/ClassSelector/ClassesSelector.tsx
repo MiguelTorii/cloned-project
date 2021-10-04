@@ -1,25 +1,22 @@
-// @flow
+import React, { useCallback, useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { ReactComponent as ClassFeedIcon } from "assets/svg/myclass-active.svg";
+import AddRemoveClasses from "components/AddRemoveClasses/AddRemoveClasses";
+import type { UserState } from "../../reducers/user";
+import type { State as StoreState } from "../../types/state";
+import { processClasses } from "./utils";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import RequestClass from "../RequestClass/RequestClass";
 
-import React, { useCallback, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { ReactComponent as ClassFeedIcon } from 'assets/svg/myclass-active.svg';
-
-import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { processClasses } from './utils';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import RequestClass from '../RequestClass/RequestClass';
-
-const styles = (theme) => ({
+const styles = theme => ({
   formControl: {
     width: '100%'
   },
@@ -33,7 +30,6 @@ const styles = (theme) => ({
   classDropdown: {
     paddingTop: `${theme.spacing(1)}px !important`,
     paddingBottom: `${theme.spacing(1)}px !important`,
-
     '& input::placeholder': {
       color: theme.circleIn.palette.brand
     },
@@ -64,16 +60,16 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  user: UserState,
-  onChange: Function,
-  classId: ?number,
-  label: ?string,
-  variant: ?string,
-  sectionId: ?number,
+  classes: Record<string, any>;
+  user: UserState;
+  onChange: (...args: Array<any>) => any;
+  classId: number | null | undefined;
+  label: string | null | undefined;
+  variant: string | null | undefined;
+  sectionId: number | null | undefined;
   location: {
-    pathname: string
-  }
+    pathname: string;
+  };
 };
 
 const ClassesSelector = ({
@@ -81,13 +77,20 @@ const ClassesSelector = ({
   user: {
     isLoading,
     error,
-    data: { segment, userId },
-    userClasses: { classList }
+    data: {
+      segment,
+      userId
+    },
+    userClasses: {
+      classList
+    }
   },
   onChange,
   classId,
   router: {
-    location: { pathname }
+    location: {
+      pathname
+    }
   },
   sectionId
 }: Props) => {
@@ -96,69 +99,80 @@ const ClassesSelector = ({
   const [value, setValue] = useState('');
   const [open, setOpen] = useState(false);
   const [openRequestClass, setOpenRequestClass] = useState(false);
-
   useEffect(() => {
     if (classId && sectionId) {
-      setValue(JSON.stringify({ classId, sectionId }));
+      setValue(JSON.stringify({
+        classId,
+        sectionId
+      }));
     }
   }, [classId, sectionId]);
-
   const handleLoadClasses = useCallback(async () => {
     try {
-      const currentClassList = classList.filter((cl) => cl.isCurrent);
+      const currentClassList = classList.filter(cl => cl.isCurrent);
       const userClasses = processClasses({
         classes: currentClassList,
         segment
       });
       setUserClasses(userClasses);
+
       if (classId && sectionId) {
-        setValue(JSON.stringify({ classId, sectionId }));
+        setValue(JSON.stringify({
+          classId,
+          sectionId
+        }));
       }
     } catch (err) {
       console.log(err);
     }
   }, [classId, classList, sectionId, segment]);
-
   useEffect(() => {
     const init = async () => {
       if (pathname.includes('/edit')) {
         setIsEdit(true);
       }
+
       await handleLoadClasses();
     };
 
     init();
   }, [handleLoadClasses, pathname]);
+  const handleChange = useCallback((event, option) => {
+    if (!option) {
+      setValue(null);
+      onChange({
+        classId: 0,
+        sectionId: 0
+      });
+    } else {
+      const {
+        value: selectedClass
+      } = option;
 
-  const handleChange = useCallback(
-    (event, option) => {
-      if (!option) {
-        setValue(null);
-        onChange({ classId: 0, sectionId: 0 });
-      } else {
-        const { value: selectedClass } = option;
-        if (selectedClass === 'new') {
-          setOpen(true);
-          return;
-        }
-        setValue(selectedClass);
-        const { classId, sectionId } = JSON.parse(selectedClass);
-        onChange({ classId, sectionId });
+      if (selectedClass === 'new') {
+        setOpen(true);
+        return;
       }
-    },
-    [onChange]
-  );
 
+      setValue(selectedClass);
+      const {
+        classId,
+        sectionId
+      } = JSON.parse(selectedClass);
+      onChange({
+        classId,
+        sectionId
+      });
+    }
+  }, [onChange]);
   const handleCloseManageClasses = useCallback(async () => {
     setOpen(false);
     await handleLoadClasses();
   }, [handleLoadClasses]);
-
   const handleOpenRequestClass = useCallback(() => {
     handleCloseManageClasses();
     setOpenRequestClass(true);
   }, [handleCloseManageClasses]);
-
   const handleCloseRequestClass = useCallback(() => {
     setOpenRequestClass(false);
   }, []);
@@ -166,70 +180,42 @@ const ClassesSelector = ({
   if (isLoading) {
     return <CircularProgress size={12} />;
   }
+
   if (userId === '' || error) {
     return 'Oops, there was an error loading your data, please try again.';
   }
 
-  return (
-    <>
+  return <>
       <ErrorBoundary>
         <div className={classes.root}>
           <FormControl className={classes.classList} variant="outlined" fullWidth>
-            <Autocomplete
-              id="select-class"
-              size="small"
-              disabled={isEdit}
-              classes={{
-                inputRoot: classes.classDropdown,
-                option: classes.option
-              }}
-              options={userClasses}
-              getOptionLabel={(option) => option.label}
-              onChange={handleChange}
-              renderOption={(option) => (
-                <div className={classes.optionItem}>
-                  {value === option.value ? (
-                    <CheckCircleIcon className={classes.mr1} />
-                  ) : (
-                    <RadioButtonUncheckedIcon className={classes.mr1} />
-                  )}
+            <Autocomplete id="select-class" size="small" disabled={isEdit} classes={{
+            inputRoot: classes.classDropdown,
+            option: classes.option
+          }} options={userClasses} getOptionLabel={option => option.label} onChange={handleChange} renderOption={option => <div className={classes.optionItem}>
+                  {value === option.value ? <CheckCircleIcon className={classes.mr1} /> : <RadioButtonUncheckedIcon className={classes.mr1} />}
                   <span>{option.label}</span>
-                </div>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="filled"
-                  placeholder="Choose a class"
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <InputAdornment className={classes.classIcon} position="start">
+                </div>} renderInput={params => <TextField {...params} variant="filled" placeholder="Choose a class" InputProps={{ ...params.InputProps,
+            startAdornment: <InputAdornment className={classes.classIcon} position="start">
                         <ClassFeedIcon />
                       </InputAdornment>
-                    )
-                  }}
-                />
-              )}
-            />
+          }} />} />
           </FormControl>
         </div>
       </ErrorBoundary>
       <ErrorBoundary>
-        <AddRemoveClasses
-          open={open}
-          onClose={handleCloseManageClasses}
-          onOpenRequestClass={handleOpenRequestClass}
-        />
+        <AddRemoveClasses open={open} onClose={handleCloseManageClasses} onOpenRequestClass={handleOpenRequestClass} />
       </ErrorBoundary>
       <ErrorBoundary>
         <RequestClass open={openRequestClass} onClose={handleCloseRequestClass} />
       </ErrorBoundary>
-    </>
-  );
+    </>;
 };
 
-const mapStateToProps = ({ user, router }: StoreState): {} => ({
+const mapStateToProps = ({
+  user,
+  router
+}: StoreState): {} => ({
   user,
   router
 });

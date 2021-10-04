@@ -1,18 +1,15 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useState, useEffect, useCallback } from 'react';
-import cx from 'classnames';
-import axios from 'axios';
-import { useQuill } from 'react-quilljs';
-
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-import EditorToolbar, { formats } from './Toolbar';
-import { getPresignedURL } from '../../api/media';
-
-import { styles } from '../_styles/PostItem/CommentQuill';
+import React, { useState, useEffect, useCallback } from "react";
+import cx from "classnames";
+import axios from "axios";
+import { useQuill } from "react-quilljs";
+import { withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import EditorToolbar, { formats } from "./Toolbar";
+import { getPresignedURL } from "../../api/media";
+import { styles } from "../_styles/PostItem/CommentQuill";
 
 const CommentQuill = ({
   classes,
@@ -29,7 +26,10 @@ const CommentQuill = ({
   const [loading, setLoading] = useState(false);
   const [isNewLine, setIsNewLine] = useState(false);
   const [currentQuill, setCurrentQuill] = useState(null);
-  const { quill, quillRef } = useQuill({
+  const {
+    quill,
+    quillRef
+  } = useQuill({
     modules: {
       toolbar: `#comment-toolbar-${feedId}-${toolbarPrefix}`
     },
@@ -37,16 +37,15 @@ const CommentQuill = ({
     formats,
     placeholder: 'Type a comment...'
   });
-
   useEffect(() => {
     if (quill && isPastClassFlashcard) {
       quill.enable(false);
     }
+
     if (quill && !isPastClassFlashcard) {
       quill.enable();
     }
   }, [isPastClassFlashcard, quill]);
-
   useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
@@ -54,11 +53,7 @@ const CommentQuill = ({
           onChange(quill.container.firstChild.innerHTML);
           const currentFocusPosition = quill.getSelection(true).index;
           const leftPosition = quill.getBounds(currentFocusPosition).left;
-          const currentTooltipWidth = document.getElementById(
-            `comment-toolbar-${feedId}-${toolbarPrefix}`
-          )
-            ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
-            : 0;
+          const currentTooltipWidth = document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`) ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth : 0;
           const currentEditorWidth = quill.container.firstChild.clientWidth;
 
           if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
@@ -74,13 +69,11 @@ const CommentQuill = ({
       });
     }
   }, [feedId, toolbarPrefix, isNewLine, onChange, quill]);
-
   useEffect(() => {
     if (currentQuill && isNewLine) {
       currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n');
     }
   }, [currentQuill, isNewLine]);
-
   useEffect(() => {
     if (quill && value) {
       quill.clipboard.dangerouslyPasteHTML(value);
@@ -88,10 +81,9 @@ const CommentQuill = ({
         index: value.length,
         length: 0
       });
-    }
-    // eslint-disable-next-line
-  }, [quill]);
+    } // eslint-disable-next-line
 
+  }, [quill]);
   const selectLocalImage = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -100,23 +92,27 @@ const CommentQuill = ({
 
     input.onchange = async () => {
       setLoading(true);
+
       try {
         const file = input.files[0];
         const range = quill.getSelection(true);
-        const { type } = file;
+        const {
+          type
+        } = file;
         const result = await getPresignedURL({
           userId,
           type: 1,
           mediaType: type
         });
-        const { readUrl, url } = result;
-
+        const {
+          readUrl,
+          url
+        } = result;
         await axios.put(url, file, {
           headers: {
             'Content-Type': type
           }
         });
-
         quill.insertEmbed(range.index, 'image', readUrl);
         quill.insertText(range.index + 1, '\n');
         setLoading(false);
@@ -126,61 +122,39 @@ const CommentQuill = ({
       }
     };
   }, [quill, userId]);
-
   useEffect(() => {
     if (quill) {
       quill.getModule('toolbar').addHandler('image', selectLocalImage);
     }
   }, [quill, selectLocalImage]);
-
-  const insertEmoji = useCallback(
-    (emoji) => {
-      if (quill) {
-        const cursorPosition = quill.getSelection(true).index;
-
-        quill.insertText(cursorPosition, `${emoji}`);
-        quill.setSelection(cursorPosition + 2);
-
-        const currentContent = quill.root.innerHTML;
-        setValue(currentContent);
-      }
-    },
-    [quill, setValue]
-  );
-
-  return (
-    <div className={classes.commentQuill}>
+  const insertEmoji = useCallback(emoji => {
+    if (quill) {
+      const cursorPosition = quill.getSelection(true).index;
+      quill.insertText(cursorPosition, `${emoji}`);
+      quill.setSelection(cursorPosition + 2);
+      const currentContent = quill.root.innerHTML;
+      setValue(currentContent);
+    }
+  }, [quill, setValue]);
+  return <div className={classes.commentQuill}>
       <div className={classes.editor}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id={`editor-${feedId}`} className={classes.editorable} ref={quillRef} />
-            <EditorToolbar
-              id={`comment-toolbar-${feedId}-${toolbarPrefix}`}
-              handleSelect={insertEmoji}
-            />
+            <EditorToolbar id={`comment-toolbar-${feedId}-${toolbarPrefix}`} handleSelect={insertEmoji} />
           </div>
-          {loading && (
-            <div className={classes.loader}>
+          {loading && <div className={classes.loader}>
               <CircularProgress />
-            </div>
-          )}
+            </div>}
         </div>
         <div className={classes.postCommentAction}>
-          {value ? (
-            <Button className={classes.postComment} onClick={handleClick(quill)}>
+          {value ? <Button className={classes.postComment} onClick={handleClick(quill)}>
               <b>Comment</b>
-            </Button>
-          ) : (
-            <Button
-              classes={{
-                disabled: classes.disablePostComment
-              }}
-              disabled
-              onClick={handleClick(quill)}
-            >
+            </Button> : <Button classes={{
+          disabled: classes.disablePostComment
+        }} disabled onClick={handleClick(quill)}>
               <b>Comment</b>
-            </Button>
-          )}
+            </Button>}
         </div>
       </div>
 
@@ -189,8 +163,7 @@ const CommentQuill = ({
           {"We couldn't post your comment for some reason. 😥"}
         </Typography>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default withStyles(styles)(CommentQuill);

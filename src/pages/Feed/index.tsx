@@ -1,20 +1,18 @@
-// @flow
-
-import React, { useRef } from 'react';
-import queryString from 'query-string';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import withWidth from '@material-ui/core/withWidth';
-import { withRouter } from 'react-router';
-import FeedResources from 'containers/FeedResources/FeedResources';
-import { decypherClass } from 'utils/crypto';
-import { Hidden } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
-import Feed from '../../containers/Feed/Feed';
-import Recommendations from '../../containers/Recommendations/Recommendations';
+import React, { useRef } from "react";
+import queryString from "query-string";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import withWidth from "@material-ui/core/withWidth";
+import { withRouter } from "react-router";
+import FeedResources from "containers/FeedResources/FeedResources";
+import { decypherClass } from "utils/crypto";
+import { Hidden } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import withRoot from "../../withRoot";
+import Layout from "../../containers/Layout/Layout";
+import Feed from "../../containers/Feed/Feed";
+import Recommendations from "../../containers/Recommendations/Recommendations";
 
 const styles = () => ({
   item: {
@@ -24,19 +22,26 @@ const styles = () => ({
 });
 
 type Props = {
-  classes: Object,
+  classes: Record<string, any>;
   location: {
-    search: string
-  }
+    search: string;
+  };
 };
 
-const FeedPage = ({ classes, location }: Props) => {
-  const { feedId, from } = queryString.parse(location.search);
+const FeedPage = ({
+  classes,
+  location
+}: Props) => {
+  const {
+    feedId,
+    from
+  } = queryString.parse(location.search);
   const gridRef = useRef(null);
-
-  const { classId, sectionId } = decypherClass();
-  return (
-    <main>
+  const {
+    classId,
+    sectionId
+  } = decypherClass();
+  return <main>
       <CssBaseline />
       <Layout>
         <Grid container spacing={2}>
@@ -59,8 +64,7 @@ const FeedPage = ({ classes, location }: Props) => {
           </Grid>
         </Grid>
       </Layout>
-    </main>
-  );
+    </main>;
 };
 
 export default withRoot(withStyles(styles)(withWidth()(withRouter(FeedPage))));

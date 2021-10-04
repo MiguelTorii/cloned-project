@@ -1,23 +1,20 @@
-import React from 'react';
-import Dialog from 'components/Dialog/Dialog';
-import withRoot from 'withRoot';
-import PropTypes from 'prop-types';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import GradientButton from 'components/Basic/Buttons/GradientButton';
-import ImgBook from 'assets/gif/magic-book.gif';
-import useStyles from './styles';
+import React from "react";
+import Dialog from "components/Dialog/Dialog";
+import withRoot from "withRoot";
+import PropTypes from "prop-types";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import GradientButton from "components/Basic/Buttons/GradientButton";
+import ImgBook from "assets/gif/magic-book.gif";
+import useStyles from "./styles";
 
-const StartupModal = ({ open, onClose, onStart }) => {
+const StartupModal = ({
+  open,
+  onClose,
+  onStart
+}) => {
   const classes = useStyles();
-
-  return (
-    <Dialog
-      className={classes.startupModal}
-      open={open}
-      onCancel={onClose}
-      title="Welcome to Match Magic Game!"
-    >
+  return <Dialog className={classes.startupModal} open={open} onCancel={onClose} title="Welcome to Match Magic Game!">
       <Box>
         <Box display="flex" justifyContent="center" pt={3} mb={3}>
           <img src={ImgBook} alt="Magic Book" className={classes.modalGif} />
@@ -37,8 +34,7 @@ const StartupModal = ({ open, onClose, onStart }) => {
           </GradientButton>
         </Box>
       </Box>
-    </Dialog>
-  );
+    </Dialog>;
 };
 
 StartupModal.propTypes = {
@@ -46,11 +42,9 @@ StartupModal.propTypes = {
   onClose: PropTypes.func,
   onStart: PropTypes.func
 };
-
 StartupModal.defaultProps = {
   open: false,
   onClose: () => {},
   onStart: () => {}
 };
-
 export default withRoot(StartupModal);

@@ -1,15 +1,13 @@
-// @flow
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { withSnackbar } from 'notistack';
-import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
-import { logEventLocally } from 'api/analytics';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { withSnackbar } from "notistack";
+import Dialog, { dialogStyle } from "components/Dialog/Dialog";
+import { logEventLocally } from "api/analytics";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import LoadImg from "components/LoadImg/LoadImg";
 
-import LoadImg from 'components/LoadImg/LoadImg';
-
-const styles = (theme) => ({
+const styles = theme => ({
   action: {
     color: theme.circleIn.palette.action,
     marginLeft: 20
@@ -19,8 +17,7 @@ const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column'
   },
-  dialog: {
-    ...dialogStyle,
+  dialog: { ...dialogStyle,
     width: 500
   },
   coupon: {
@@ -51,23 +48,28 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  enqueueSnackbar: Function,
-  onHide: Function,
+  classes: Record<string, any>;
+  enqueueSnackbar: (...args: Array<any>) => any;
+  onHide: (...args: Array<any>) => any;
   referralData: {
-    code: string,
-    imageUrl: string,
-    subtitle: string,
-    title: string
-  },
-  visible: boolean
+    code: string;
+    imageUrl: string;
+    subtitle: string;
+    title: string;
+  };
+  visible: boolean;
 };
 
 const Invite = ({
   classes,
   enqueueSnackbar,
   onHide,
-  referralData: { code, imageUrl, subtitle, title },
+  referralData: {
+    code,
+    imageUrl,
+    subtitle,
+    title
+  },
   visible
 }: Props) => {
   const handleLinkCopied = () => {
@@ -76,7 +78,6 @@ const Invite = ({
       objectId: code || '',
       type: 'Copied'
     });
-
     enqueueSnackbar('Link copied', {
       variant: 'info',
       anchorOrigin: {
@@ -93,19 +94,17 @@ const Invite = ({
   };
 
   const link = `${window.location.host}/referral/${code}`;
-
-  return (
-    <Dialog className={classes.dialog} onCancel={onHide} open={visible}>
+  return <Dialog className={classes.dialog} onCancel={onHide} open={visible}>
       <div className={classes.body}>
-        <LoadImg key={imageUrl} url={imageUrl} style={{ width: 200 }} />
+        <LoadImg key={imageUrl} url={imageUrl} style={{
+        width: 200
+      }} />
         <Typography className={classes.title}>{title}</Typography>
         <Typography className={classes.subtitle}>
-          {subtitle.split('\n').map((item) => (
-            <span key={Math.random()}>
+          {subtitle.split('\n').map(item => <span key={Math.random()}>
               {item}
               <br />
-            </span>
-          ))}
+            </span>)}
         </Typography>
         <CopyToClipboard text={link} onCopy={handleLinkCopied}>
           <div className={classes.coupon}>
@@ -114,8 +113,7 @@ const Invite = ({
           </div>
         </CopyToClipboard>
       </div>
-    </Dialog>
-  );
+    </Dialog>;
 };
 
 export default withSnackbar(withStyles(styles)(Invite));

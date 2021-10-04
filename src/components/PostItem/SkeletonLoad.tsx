@@ -1,12 +1,11 @@
-import React from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import React from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { withStyles } from "@material-ui/core/styles";
+import { styles } from "../_styles/PostItem/SkeletonLoad";
 
-import { withStyles } from '@material-ui/core/styles';
-
-import { styles } from '../_styles/PostItem/SkeletonLoad';
-
-const SkeletonLoad = ({ classes }) => (
-  <div className={classes.root}>
+const SkeletonLoad = ({
+  classes
+}) => <div className={classes.root}>
     <SkeletonTheme color="#202020" highlightColor="#444">
       <div className={classes.skeletonLoad}>
         <Skeleton circle height={50} width={50} />
@@ -15,7 +14,6 @@ const SkeletonLoad = ({ classes }) => (
         </div>
       </div>
     </SkeletonTheme>
-  </div>
-);
+  </div>;
 
 export default withStyles(styles)(SkeletonLoad);

@@ -1,23 +1,22 @@
 /* eslint-disable react/no-danger */
-// @flow
-import React, { useRef, useCallback, useState } from 'react';
-import Textarea from 'react-textarea-autosize';
-import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SendIcon from '@material-ui/icons/Send';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import ClearIcon from '@material-ui/icons/Clear';
-import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
-import AttachFile from 'components/FileUpload/AttachFile';
-import Tooltip from '@material-ui/core/Tooltip';
-import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
-import { FILE_LIMIT_SIZE } from 'constants/chat';
-import { uploadMedia } from '../../actions/user';
+import React, { useRef, useCallback, useState } from "react";
+import Textarea from "react-textarea-autosize";
+import cx from "classnames";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import SendIcon from "@material-ui/icons/Send";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import ClearIcon from "@material-ui/icons/Clear";
+import EmojiSelector from "components/EmojiSelector/EmojiSelector";
+import AttachFile from "components/FileUpload/AttachFile";
+import Tooltip from "@material-ui/core/Tooltip";
+import { ReactComponent as PaperClip } from "assets/svg/quill-paper.svg";
+import { FILE_LIMIT_SIZE } from "constants/chat";
+import { uploadMedia } from "../../actions/user";
 
-const styles = (theme) => ({
+const styles = theme => ({
   input: {
     display: 'none'
   },
@@ -129,21 +128,21 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  onSendMessage: Function,
-  expanded: boolean,
-  onSendInput: Function,
-  onTyping: Function,
-  showNotification: Function,
-  userId: string,
-  message: string,
-  input: Object,
-  image: Object,
-  setInput: Function,
-  setMessage: Function,
-  files: Array,
-  setFiles: Function,
-  onClose: Function
+  classes: Record<string, any>;
+  onSendMessage: (...args: Array<any>) => any;
+  expanded: boolean;
+  onSendInput: (...args: Array<any>) => any;
+  onTyping: (...args: Array<any>) => any;
+  showNotification: (...args: Array<any>) => any;
+  userId: string;
+  message: string;
+  input: Record<string, any>;
+  image: Record<string, any>;
+  setInput: (...args: Array<any>) => any;
+  setMessage: (...args: Array<any>) => any;
+  files: Array;
+  setFiles: (...args: Array<any>) => any;
+  onClose: (...args: Array<any>) => any;
 };
 
 const ChatTextField = ({
@@ -165,96 +164,85 @@ const ChatTextField = ({
   const [addNextLine, setAddNextLine] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const fileInput = useRef(null);
+  const handleSubmit = useCallback(event => {
+    event.preventDefault();
 
-  const handleSubmit = useCallback(
-    (event) => {
+    if (input && !files.length) {
+      onSendInput(input);
+      setInput(null);
+      setIsHover(false);
+      setInput(null);
+    }
+
+    if (message.trim() !== '' || !!files.length) {
+      onSendMessage(message, files);
+      setMessage('');
+      setFiles([]);
+    }
+  }, [input, message, onSendInput, onSendMessage, setInput, setMessage, files, setFiles]);
+  const handleChange = useCallback(event => {
+    setMessage(event.target.value);
+    onTyping();
+  }, [onTyping, setMessage]);
+  const handleKeyDown = useCallback(event => {
+    if (event.keyCode === 13 && !addNextLine) {
       event.preventDefault();
-      if (input && !files.length) {
-        onSendInput(input);
-        setInput(null);
-        setIsHover(false);
-        setInput(null);
-      }
 
       if (message.trim() !== '' || !!files.length) {
         onSendMessage(message, files);
         setMessage('');
         setFiles([]);
       }
-    },
-    [input, message, onSendInput, onSendMessage, setInput, setMessage, files, setFiles]
-  );
 
-  const handleChange = useCallback(
-    (event) => {
-      setMessage(event.target.value);
-      onTyping();
-    },
-    [onTyping, setMessage]
-  );
-
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (event.keyCode === 13 && !addNextLine) {
-        event.preventDefault();
-        if (message.trim() !== '' || !!files.length) {
-          onSendMessage(message, files);
-          setMessage('');
-          setFiles([]);
-        }
-        if (input || !!files.length) {
-          setInput(null);
-          setIsHover(false);
-          onSendInput(input);
-          setInput(null);
-          setFiles([]);
-        }
+      if (input || !!files.length) {
+        setInput(null);
+        setIsHover(false);
+        onSendInput(input);
+        setInput(null);
+        setFiles([]);
       }
-      if (event.keyCode === 16) {
-        setAddNextLine(true);
-      }
-    },
-    [addNextLine, input, message, onSendInput, onSendMessage, setInput, setMessage, files]
-  );
+    }
 
-  const handleKeyUp = useCallback((event) => {
+    if (event.keyCode === 16) {
+      setAddNextLine(true);
+    }
+  }, [addNextLine, input, message, onSendInput, onSendMessage, setInput, setMessage, files]);
+  const handleKeyUp = useCallback(event => {
     if (event.keyCode === 16) {
       setAddNextLine(false);
     }
   }, []);
-
-  const handleSelect = useCallback(
-    (emoji) => {
-      setMessage(`${message}${emoji}`);
-    },
-    [message, setMessage]
-  );
-
+  const handleSelect = useCallback(emoji => {
+    setMessage(`${message}${emoji}`);
+  }, [message, setMessage]);
   const handleOpenInputFile = useCallback(() => {
     if (fileInput.current) {
       fileInput.current.click();
     }
   }, []);
-
   const handleMouseEnter = useCallback(() => {
     setIsHover(true);
   }, []);
-
   const handleMouseLeave = useCallback(() => {
     setIsHover(false);
   }, []);
-
   const handleRemoveImg = useCallback(() => {
     setInput(null);
     setIsHover(false);
   }, [setInput]);
-
   const handleInputChange = useCallback(async () => {
     const file = fileInput.current.files[0];
-    const { type, name, size } = file;
+    const {
+      type,
+      name,
+      size
+    } = file;
+
     if (size < FILE_LIMIT_SIZE) {
       const result = await uploadMedia(userId, 1, file);
-      const { readUrl } = result;
+      const {
+        readUrl
+      } = result;
       const anyFile = {
         type,
         name,
@@ -269,96 +257,54 @@ const ChatTextField = ({
       });
     }
   }, [userId, fileInput, showNotification, files]);
-
   const checkDisabled = useCallback(() => {
     if (files.length > 0) {
       return false;
     }
+
     if (!message && !input) {
       return true;
     }
+
     return false;
   }, [files, message, input]);
-
-  return (
-    <Paper className={classes.root} elevation={1}>
+  return <Paper className={classes.root} elevation={1}>
       <form autoComplete="off" className={classes.form} onSubmit={handleSubmit}>
         <div className={cx(files.length > 0 ? classes.fileInputContainer : classes.inputContainer)}>
-          <input
-            accept="*/*"
-            className={classes.input}
-            ref={fileInput}
-            onChange={handleInputChange}
-            type="file"
-          />
-          <Tooltip
-            title="Upload File (max limit: 40 MB)"
-            aria-label="file"
-            arrow
-            placement="top"
-            classes={{
-              tooltip: classes.tooltip,
-              arrow: classes.tooltipArrow,
-              popper: classes.popper
-            }}
-          >
-            <IconButton
-              className={classes.imgIcon}
-              onClick={handleOpenInputFile}
-              aria-label="Upload File"
-            >
+          <input accept="*/*" className={classes.input} ref={fileInput} onChange={handleInputChange} type="file" />
+          <Tooltip title="Upload File (max limit: 40 MB)" aria-label="file" arrow placement="top" classes={{
+          tooltip: classes.tooltip,
+          arrow: classes.tooltipArrow,
+          popper: classes.popper
+        }}>
+            <IconButton className={classes.imgIcon} onClick={handleOpenInputFile} aria-label="Upload File">
               <PaperClip />
             </IconButton>
           </Tooltip>
           <div className={classes.inputWrapper}>
-            <InputBase
-              value={message}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}
-              className={classes.textfield}
-              inputComponent={Textarea}
-              inputProps={{
-                style: {
-                  maxHeight: expanded ? 200 : 40,
-                  paddingTop: 5,
-                  width: '100%',
-                  height: 'auto'
-                }
-              }}
-              multiline
-              rowsMax={2}
-              placeholder="Write a message ..."
-              autoComplete="off"
-              autoFocus
-            />
+            <InputBase value={message} onChange={handleChange} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} className={classes.textfield} inputComponent={Textarea} inputProps={{
+            style: {
+              maxHeight: expanded ? 200 : 40,
+              paddingTop: 5,
+              width: '100%',
+              height: 'auto'
+            }
+          }} multiline rowsMax={2} placeholder="Write a message ..." autoComplete="off" autoFocus />
           </div>
           <EmojiSelector onSelect={handleSelect} />
         </div>
         <div className={classes.iconButton}>
-          <IconButton
-            disabled={checkDisabled()}
-            className={classes.icon}
-            type="submit"
-            aria-label="Send"
-          >
-            <SendIcon
-              classes={{
-                root: checkDisabled() ? classes.sendIconDisabled : classes.sendIcon
-              }}
-            />
+          <IconButton disabled={checkDisabled()} className={classes.icon} type="submit" aria-label="Send">
+            <SendIcon classes={{
+            root: checkDisabled() ? classes.sendIconDisabled : classes.sendIcon
+          }} />
           </IconButton>
         </div>
       </form>
-      {files.length > 0 && (
-        <div className={classes.files}>
-          {files.map((file) => (
-            <AttachFile key={file.url} smallChat file={file} onClose={() => onClose(file)} />
-          ))}
-        </div>
-      )}
-    </Paper>
-  );
+      {files.length > 0 && <div className={classes.files}>
+          {files.map(file => <AttachFile key={file.url} smallChat file={file} onClose={() => onClose(file)} />)}
+        </div>}
+    </Paper>;
 };
 
 export default withStyles(styles)(ChatTextField);

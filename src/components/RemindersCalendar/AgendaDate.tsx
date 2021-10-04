@@ -1,14 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// @flow
-
-import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { styles } from '../_styles/RemindersCalendar/AgendaDate';
-
+import React from "react";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { styles } from "../_styles/RemindersCalendar/AgendaDate";
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type State = {};
 
 class AgendaDate extends React.PureComponent<Props, State> {
@@ -16,15 +12,16 @@ class AgendaDate extends React.PureComponent<Props, State> {
     console.log(action);
     return date;
   };
-
-  static title = (date) => `${date.toLocaleDateString()}`;
+  static title = date => `${date.toLocaleDateString()}`;
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes
+    } = this.props;
     console.log(this.props);
-
     return <main className={classes.main}>date</main>;
   }
+
 }
 
 export default withStyles(styles)(AgendaDate);

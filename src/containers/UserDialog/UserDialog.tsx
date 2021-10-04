@@ -1,11 +1,9 @@
-// @flow
-import React from 'react';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import type { State as StoreState } from 'types/state';
-import Typography from '@material-ui/core/Typography';
-
-const useStyles = makeStyles((theme) => ({
+import React from "react";
+import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import type { State as StoreState } from "types/state";
+import Typography from "@material-ui/core/Typography";
+const useStyles = makeStyles(theme => ({
   background: {
     position: 'fixed',
     overflow: 'hidden',
@@ -27,23 +25,28 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserDialog = ({ user }) => {
+const UserDialog = ({
+  user
+}) => {
   const {
-    dialogMessage: { title }
+    dialogMessage: {
+      title
+    }
   } = user;
   const classes = useStyles();
 
   if (!title) {
     return null;
   }
-  return (
-    <div className={classes.background}>
+
+  return <div className={classes.background}>
       <Typography className={classes.text}>{title}</Typography>
-    </div>
-  );
+    </div>;
 };
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({
+  user
+}: StoreState): {} => ({
   user
 });
 

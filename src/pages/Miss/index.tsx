@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 const Miss = () => {
   useEffect(() => {
@@ -6,7 +6,6 @@ const Miss = () => {
       window.location.href = '/';
     }, 1000);
   }, []);
-
   return <div>Not found. Redirecting...</div>;
 };
 

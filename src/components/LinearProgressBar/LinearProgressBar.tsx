@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { LinearProgress } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import useStyles from './styles';
-import withRoot from '../../withRoot';
-
-const GradientProgress = withStyles((theme) => ({
+import React from "react";
+import PropTypes from "prop-types";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { LinearProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import useStyles from "./styles";
+import withRoot from "../../withRoot";
+const GradientProgress = withStyles(theme => ({
   root: {
     height: 28,
     borderRadius: 40
@@ -19,20 +18,19 @@ const GradientProgress = withStyles((theme) => ({
   }
 }))(LinearProgress);
 
-const LinearProgressBar = ({ value, totalValue }) => {
+const LinearProgressBar = ({
+  value,
+  totalValue
+}) => {
   const classes = useStyles();
-
-  return (
-    <div className={classes.container}>
-      <GradientProgress value={(value * 100) / totalValue} variant="determinate" />
+  return <div className={classes.container}>
+      <GradientProgress value={value * 100 / totalValue} variant="determinate" />
       <Typography className={classes.text}>{`${value} / ${totalValue}`}</Typography>
-    </div>
-  );
+    </div>;
 };
 
 LinearProgressBar.propTypes = {
   value: PropTypes.number.isRequired,
   totalValue: PropTypes.number.isRequired
 };
-
 export default withRoot(LinearProgressBar);

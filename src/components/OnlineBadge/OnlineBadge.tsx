@@ -1,28 +1,24 @@
-// @flow
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-
-import styles from '../_styles/OnlineBadge';
-
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "../_styles/OnlineBadge";
 type Props = {
-  classes: Object,
-  backColor: string,
-  children: Node,
-  isVisible?: boolean,
-  isOnline?: boolean,
-  fromChat?: boolean,
-  bgColorPath?: string
+  classes: Record<string, any>;
+  backColor: string;
+  children: Node;
+  isVisible?: boolean;
+  isOnline?: boolean;
+  fromChat?: boolean;
+  bgColorPath?: string;
 };
 
-const OnlineBadge = ({ isVisible, classes, children }: Props) =>
-  isVisible ? (
-    <span className={classes.root}>
+const OnlineBadge = ({
+  isVisible,
+  classes,
+  children
+}: Props) => isVisible ? <span className={classes.root}>
       {children}
       <span className={classes.badge}></span>
-    </span>
-  ) : (
-    children
-  );
+    </span> : children;
 
 OnlineBadge.defaultProps = {
   isVisible: true,
@@ -30,5 +26,4 @@ OnlineBadge.defaultProps = {
   fromChat: true,
   bgColorPath: 'circleIn.palette.modalBackground'
 };
-
 export default withStyles(styles)(OnlineBadge);

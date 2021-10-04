@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import usePreloadImage from './usePreloadImage';
-import { animations, easings } from './easings';
-import './keyframes.css';
+import React from "react";
+import PropTypes from "prop-types";
+import usePreloadImage from "./usePreloadImage";
+import { animations, easings } from "./easings";
+import "./keyframes.css";
 
 /**
  * Animates in a component once an image has loaded.
@@ -14,16 +14,19 @@ import './keyframes.css';
  * imageToLoad: {String} A URL of the image being loaded
  * style:       {Object} Custom style rules as required
  */
-
-const HideUntilLoaded = ({ animationIn, children, Spinner, imageToLoad, style }) => {
+const HideUntilLoaded = ({
+  animationIn,
+  children,
+  Spinner,
+  imageToLoad,
+  style
+}) => {
   const [errored, loaded] = usePreloadImage(imageToLoad);
-
   const styles = {
     display: 'inline-block',
     position: 'relative',
     ...style
   };
-
   const contentStyles = {
     transition: 'none'
   };
@@ -53,18 +56,14 @@ const HideUntilLoaded = ({ animationIn, children, Spinner, imageToLoad, style })
     spinnerStyles.transform = 'translate(-50%, -50%) scale(0.8)';
   }
 
-  return (
-    <span style={styles}>
+  return <span style={styles}>
       <div className="hide-until-loaded-content" style={contentStyles}>
         {children}
       </div>
-      {Spinner && (
-        <div className="hide-until-loaded-spinner" style={spinnerStyles}>
+      {Spinner && <div className="hide-until-loaded-spinner" style={spinnerStyles}>
           <Spinner />
-        </div>
-      )}
-    </span>
-  );
+        </div>}
+    </span>;
 };
 
 HideUntilLoaded.propTypes = {
@@ -74,10 +73,8 @@ HideUntilLoaded.propTypes = {
   Spinner: PropTypes.node,
   style: PropTypes.shape
 };
-
 HideUntilLoaded.defaultProps = {
   Spinner: null,
   style: null
 };
-
 export default HideUntilLoaded;

@@ -1,16 +1,17 @@
-import React from 'react';
-import Dialog from 'components/Dialog/Dialog';
-import Typography from '@material-ui/core/Typography';
-import DarkStar from 'assets/svg/dark-star.svg';
-import DarkMoon from 'assets/svg/dark-moon.svg';
-import LoadImg from 'components/LoadImg/LoadImg';
-import { useStyles } from '../_styles/DarkModeDialog';
+import React from "react";
+import Dialog from "components/Dialog/Dialog";
+import Typography from "@material-ui/core/Typography";
+import DarkStar from "assets/svg/dark-star.svg";
+import DarkMoon from "assets/svg/dark-moon.svg";
+import LoadImg from "components/LoadImg/LoadImg";
+import { useStyles } from "../_styles/DarkModeDialog";
 
-const DarkModeDialog = ({ open, finish }) => {
+const DarkModeDialog = ({
+  open,
+  finish
+}) => {
   const classes = useStyles();
-
-  return (
-    <Dialog className={classes.dialog} onCancel={finish} open={open}>
+  return <Dialog className={classes.dialog} onCancel={finish} open={open}>
       <div className={classes.container}>
         <div className={classes.textContainer}>
           <Typography className={classes.title}>Introducing Dark Mode!</Typography>
@@ -41,8 +42,7 @@ const DarkModeDialog = ({ open, finish }) => {
           <LoadImg url={DarkMoon} />
         </div>
       </div>
-    </Dialog>
-  );
+    </Dialog>;
 };
 
 export default DarkModeDialog;

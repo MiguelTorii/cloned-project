@@ -1,16 +1,14 @@
-// @flow
-import React, { useCallback } from 'react';
-import { makeStyles } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import LoadImg from 'components/LoadImg/LoadImg';
-import { StudyRoomOnboardingStepData } from '../../types/models';
-import withRoot from '../../withRoot';
-import Ellipses from './Ellipses';
-import TransparentButton from './TransparentButton';
-import ActionButton from './ActionButton';
-
-const useStyles = makeStyles((theme) => ({
+import React, { useCallback } from "react";
+import { makeStyles } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import LoadImg from "components/LoadImg/LoadImg";
+import { StudyRoomOnboardingStepData } from "../../types/models";
+import withRoot from "../../withRoot";
+import Ellipses from "./Ellipses";
+import TransparentButton from "./TransparentButton";
+import ActionButton from "./ActionButton";
+const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
     background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
@@ -71,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: 240,
-
     '& > h3': {
       // Title
       margin: 0,
@@ -132,17 +129,23 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   }
 }));
-
 type Props = {
-  data: StudyRoomOnboardingStepData,
-  step: number,
-  totalSteps: number,
-  onAction: Function,
-  onBackAction: Function,
-  onClose: Function
+  data: StudyRoomOnboardingStepData;
+  step: number;
+  totalSteps: number;
+  onAction: (...args: Array<any>) => any;
+  onBackAction: (...args: Array<any>) => any;
+  onClose: (...args: Array<any>) => any;
 };
 
-const OnboardingStep = ({ data, step, totalSteps, onAction, onBackAction, onClose }: Props) => {
+const OnboardingStep = ({
+  data,
+  step,
+  totalSteps,
+  onAction,
+  onBackAction,
+  onClose
+}: Props) => {
   const classes = useStyles();
   const handleBack = useCallback(() => {
     if (step === 1) {
@@ -151,8 +154,7 @@ const OnboardingStep = ({ data, step, totalSteps, onAction, onBackAction, onClos
 
     onBackAction();
   }, [step, onClose, onBackAction]);
-  return (
-    <div className={classes.root}>
+  return <div className={classes.root}>
       <CloseIcon className={classes.closeIcon} onClick={onClose} />
       <div className={classes.imageContainer}>
         <LoadImg url={data.imageUrl} className={classes.img} />
@@ -164,7 +166,9 @@ const OnboardingStep = ({ data, step, totalSteps, onAction, onBackAction, onClos
         <div className={classes.textContainer}>
           <div className={classes.title}>
             <Typography component="h4">{data.title1}</Typography>
-            <Typography component="h3" style={{ fontSize: step === 1 && 40 }}>
+            <Typography component="h3" style={{
+            fontSize: step === 1 && 40
+          }}>
               {data.title}
             </Typography>
           </div>
@@ -177,8 +181,7 @@ const OnboardingStep = ({ data, step, totalSteps, onAction, onBackAction, onClos
           <ActionButton onClick={() => onAction()}>{data.actionText}</ActionButton>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default withRoot(OnboardingStep);

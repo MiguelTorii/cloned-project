@@ -1,30 +1,30 @@
-// @flow
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import { styles } from '../_styles/WeeklyStudyPackCard';
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
+import { styles } from "../_styles/WeeklyStudyPackCard";
 
-const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
+const MyLink = ({
+  href,
+  ...props
+}) => <RouterLink to={href} {...props} />;
 
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type State = {};
 
 class WeeklyStudyPackCard extends React.PureComponent<Props, State> {
   static defaultProps = {};
-
   state = {};
 
   render() {
-    const { classes } = this.props;
-
-    return (
-      <Paper className={classes.root} elevation={1}>
+    const {
+      classes
+    } = this.props;
+    return <Paper className={classes.root} elevation={1}>
         <Typography variant="h4" paragraph>
           Weekly Study Pack
         </Typography>
@@ -50,9 +50,9 @@ class WeeklyStudyPackCard extends React.PureComponent<Props, State> {
             </Link>
           </Typography>
         </div>
-      </Paper>
-    );
+      </Paper>;
   }
+
 }
 
 export default withStyles(styles)(WeeklyStudyPackCard);

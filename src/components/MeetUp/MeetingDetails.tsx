@@ -1,32 +1,29 @@
-import React from 'react';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import CloseIcon from "@material-ui/icons/Close";
+import Tooltip from "containers/Tooltip/Tooltip";
+import { ReactComponent as AddUser } from "assets/svg/add-user.svg";
+import { ReactComponent as ClipIcon } from "assets/svg/clip.svg";
+import { styles } from "../_styles/MeetUp/MeetingDetails";
 
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import CloseIcon from '@material-ui/icons/Close';
-
-import Tooltip from 'containers/Tooltip/Tooltip';
-import { ReactComponent as AddUser } from 'assets/svg/add-user.svg';
-import { ReactComponent as ClipIcon } from 'assets/svg/clip.svg';
-
-import { styles } from '../_styles/MeetUp/MeetingDetails';
-
-const MeetingDetails = ({ classes, onClose, onCopy, meetingUri, setRef, openClassmatesDialog }) => (
-  <ClickAwayListener onClickAway={onClose}>
+const MeetingDetails = ({
+  classes,
+  onClose,
+  onCopy,
+  meetingUri,
+  setRef,
+  openClassmatesDialog
+}) => <ClickAwayListener onClickAway={onClose}>
     <Paper elevation={3} className={classes.meetingDetails}>
-      <Tooltip
-        id={9061}
-        placement="right"
-        text="Invite friends and classmates to your Study Room here! Collaboration made easy! ⚡️"
-        totalSteps={4}
-        completedSteps={1}
-      >
+      <Tooltip id={9061} placement="right" text="Invite friends and classmates to your Study Room here! Collaboration made easy! ⚡️" totalSteps={4} completedSteps={1}>
         <Box className={classes.detailContent}>
           <Box display="flex" justifyContent="space-between">
             <Typography component="p" variant="h6" className={classes.header}>
@@ -37,13 +34,7 @@ const MeetingDetails = ({ classes, onClose, onCopy, meetingUri, setRef, openClas
             </IconButton>
           </Box>
           <Box marginTop={1}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.inviteMembers}
-              onClick={openClassmatesDialog}
-              endIcon={<AddUser />}
-            >
+            <Button variant="contained" color="primary" className={classes.inviteMembers} onClick={openClassmatesDialog} endIcon={<AddUser />}>
               Invite others
             </Button>
           </Box>
@@ -54,25 +45,14 @@ const MeetingDetails = ({ classes, onClose, onCopy, meetingUri, setRef, openClas
             </span>
           </Typography>
 
-          <OutlinedInput
-            id="meeting-url"
-            inputRef={(textarea) => setRef(textarea)}
-            type="text"
-            fullWidth
-            className={classes.meetingUri}
-            value={meetingUri}
-            endAdornment={
-              <InputAdornment position="end">
+          <OutlinedInput id="meeting-url" inputRef={textarea => setRef(textarea)} type="text" fullWidth className={classes.meetingUri} value={meetingUri} endAdornment={<InputAdornment position="end">
                 <IconButton aria-label="toggle password visibility" onClick={onCopy} edge="end">
                   <ClipIcon />
                 </IconButton>
-              </InputAdornment>
-            }
-          />
+              </InputAdornment>} />
         </Box>
       </Tooltip>
     </Paper>
-  </ClickAwayListener>
-);
+  </ClickAwayListener>;
 
 export default withStyles(styles)(MeetingDetails);

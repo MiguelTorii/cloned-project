@@ -1,23 +1,25 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { memo, useCallback, useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import LoadImg from 'components/LoadImg/LoadImg';
-import learnGif from 'assets/gif/reading-education-career.gif';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
+import React, { memo, useCallback, useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
+import LoadImg from "components/LoadImg/LoadImg";
+import learnGif from "assets/gif/reading-education-career.gif";
+import { ReactComponent as AppLogo } from "../../assets/svg/circlein_logo.svg";
 
-const WalkThrough = ({ setScreen, school }) => {
+const WalkThrough = ({
+  setScreen,
+  school
+}) => {
   const centered = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   };
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      ...centered,
+  const useStyles = makeStyles(theme => ({
+    root: { ...centered,
       width: '100%',
       minHeight: '100vh',
       backgroundColor: 'white',
@@ -39,8 +41,7 @@ const WalkThrough = ({ setScreen, school }) => {
     mobileContainer: {
       maxWidth: 270
     },
-    flexView: {
-      ...centered,
+    flexView: { ...centered,
       width: '100%'
     },
     walkthroughText: {
@@ -66,21 +67,17 @@ const WalkThrough = ({ setScreen, school }) => {
       width: 150
     }
   }));
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   const classes = useStyles();
-
   useEffect(() => {
     const handleWindowResize = () => setWindowWidth(window.innerWidth);
+
     window.addEventListener('resize', handleWindowResize);
     return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
-
   const goBack = useCallback(() => {
     setScreen('school');
   }, [setScreen]);
-
   const goNext = useCallback(() => {
     const responseType = 'code';
     const origin = `${window.location.origin}/oauth`;
@@ -91,9 +88,7 @@ const WalkThrough = ({ setScreen, school }) => {
       client_id: school.clientId,
       redirect_uri: origin
     };
-
     const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
-
     let uri = `${school.authUri}?client_id=${school.clientId}&response_type=${responseType}&redirect_uri=${origin}&state=${buff}`;
 
     if (school.scope) {
@@ -103,10 +98,12 @@ const WalkThrough = ({ setScreen, school }) => {
     window.location.replace(uri);
   }, [school]);
 
-  const renderWebView = () => (
-    <div className={classes.container}>
+  const renderWebView = () => <div className={classes.container}>
       <div className={classes.flexView}>
-        <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
+        <AppLogo style={{
+        maxHeight: 100,
+        maxWidth: 200
+      }} />
       </div>
       <Typography variant="body1" className={classes.walkthroughText}>
         Hi friend! 👋🏽 We can’t wait for you to login to CircleIn - the all-in-one studying app!{' '}
@@ -136,25 +133,23 @@ const WalkThrough = ({ setScreen, school }) => {
         We’re excited to see what amazing things you learn and give to your new studying community.
       </Typography>
       <div className={classes.flexView}>
-        <Button
-          variant="contained"
-          className={classes.nextStep}
-          classes={{ label: classes.buttonLabel }}
-          onClick={goNext}
-        >
+        <Button variant="contained" className={classes.nextStep} classes={{
+        label: classes.buttonLabel
+      }} onClick={goNext}>
           Let’s do this! 🔥
         </Button>
       </div>
       <div className={classes.flexView}>
         <LoadImg url={learnGif} className={classes.learnGif} />
       </div>
-    </div>
-  );
+    </div>;
 
-  const mobileView = () => (
-    <div className={classes.mobileContainer}>
+  const mobileView = () => <div className={classes.mobileContainer}>
       <div className={classes.flexView}>
-        <AppLogo style={{ maxHeight: 100, maxWidth: 200 }} />
+        <AppLogo style={{
+        maxHeight: 100,
+        maxWidth: 200
+      }} />
       </div>
       <Typography variant="body2">
         Hi friend! 👋🏽 We can’t wait for you to login to CircleIn - the all-in-one studying app!
@@ -191,29 +186,23 @@ const WalkThrough = ({ setScreen, school }) => {
         things you learn and give to your new studying community.
       </Typography>
       <div className={classes.flexView}>
-        <Button
-          variant="contained"
-          className={classes.nextStep}
-          classes={{ label: classes.buttonLabel }}
-          onClick={goNext}
-        >
+        <Button variant="contained" className={classes.nextStep} classes={{
+        label: classes.buttonLabel
+      }} onClick={goNext}>
           Let’s do this! 🔥
         </Button>
       </div>
       <div className={classes.flexView}>
         <LoadImg url={learnGif} className={classes.mobileLearnGif} />
       </div>
-    </div>
-  );
+    </div>;
 
-  return (
-    <div className={classes.root}>
+  return <div className={classes.root}>
       <IconButton aria-label="back" className={classes.arrowBack} onClick={goBack}>
         <ArrowBackIosRoundedIcon className={classes.iconColor} />
       </IconButton>
       {windowWidth > 768 ? renderWebView() : mobileView()}
-    </div>
-  );
+    </div>;
 };
 
 export default memo(WalkThrough);

@@ -1,8 +1,15 @@
-import React from 'react';
-import LoadImg from '../LoadImg/LoadImg';
+import React from "react";
+import LoadImg from "../LoadImg/LoadImg";
 
-const Student = ({ student, you }) => {
-  const { firstName, lastName, profileImg } = student;
+const Student = ({
+  student,
+  you
+}) => {
+  const {
+    firstName,
+    lastName,
+    profileImg
+  } = student;
   const imageStyle = {
     height: 45,
     backgroundColor: '#bdbdbd',
@@ -21,17 +28,12 @@ const Student = ({ student, you }) => {
   const name = {
     marginLeft: 10
   };
-
   const fallback = <div style={imageStyle}>{`${firstName[0]}${lastName[0]}`}</div>;
-
   const fullName = you ? 'You' : `${firstName} ${lastName}`;
-
-  return (
-    <div style={container}>
+  return <div style={container}>
       <LoadImg style={imageStyle} url={profileImg} loadgingSize={12} fallback={fallback} />
       <div style={name}>{fullName}</div>
-    </div>
-  );
+    </div>;
 };
 
 export default Student;

@@ -1,25 +1,23 @@
-// @flow
+import React, { useState, useEffect } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { goBack, push as routePush } from "connected-react-router";
+import { withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import PostItem from "components/PostItem/PostItem";
+import type { UserState } from "../../reducers/user";
+import type { State as StoreState } from "../../types/state";
+import { getPost, bookmark } from "../../api/posts";
+import { logEvent } from "../../api/analytics";
+import PostItemHeader from "../../components/PostItem/PostItemHeader";
+import PostItemActions from "../PostItemActions/PostItemActions";
+import PostComments from "../PostComments/ViewNotes";
+import PostTags from "../PostTags/PostTags";
+import Report from "../Report/Report";
+import DeletePost from "../DeletePost/DeletePost";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
-import React, { useState, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { goBack, push as routePush } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import PostItem from 'components/PostItem/PostItem';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { getPost, bookmark } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
-import PostItemHeader from '../../components/PostItem/PostItemHeader';
-import PostItemActions from '../PostItemActions/PostItemActions';
-import PostComments from '../PostComments/ViewNotes';
-import PostTags from '../PostTags/PostTags';
-import Report from '../Report/Report';
-import DeletePost from '../DeletePost/DeletePost';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-
-const styles = (theme) => ({
+const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -38,51 +36,80 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  user: UserState,
-  postId: number,
-  push: Function,
-  pop: Function,
-  router: Object
+  classes: Record<string, any>;
+  user: UserState;
+  postId: number;
+  push: (...args: Array<any>) => any;
+  pop: (...args: Array<any>) => any;
+  router: Record<string, any>;
 };
 
-const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
+const ViewPost = ({
+  classes,
+  user,
+  postId,
+  push,
+  router,
+  pop
+}: Props) => {
   const [post, setPost] = useState(null);
   const [report, setReport] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
-
   const {
-    data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
+    data: {
+      userId,
+      firstName: myFirstName,
+      lastName: myLastName,
+      profileImage
+    }
   } = user;
 
   const loadData = async () => {
-    const post = await getPost({ userId, postId });
+    const post = await getPost({
+      userId,
+      postId
+    });
     setPost(post);
     const {
-      postInfo: { feedId }
+      postInfo: {
+        feedId
+      }
     } = post;
-
     logEvent({
       event: 'Feed- View Post',
-      props: { 'Internal ID': feedId }
+      props: {
+        'Internal ID': feedId
+      }
     });
   };
 
   useEffect(() => {
-    loadData();
-    // eslint-disable-next-line
+    loadData(); // eslint-disable-next-line
   }, [postId]);
 
   const handleBookmark = async () => {
     if (!post) {
       return;
     }
-    const { feedId, bookmarked } = post;
+
+    const {
+      feedId,
+      bookmarked
+    } = post;
+
     try {
-      setPost({ ...post, bookmarked: !bookmarked });
-      await bookmark({ feedId, userId, remove: bookmarked });
+      setPost({ ...post,
+        bookmarked: !bookmarked
+      });
+      await bookmark({
+        feedId,
+        userId,
+        remove: bookmarked
+      });
     } catch (err) {
-      setPost({ ...post, bookmarked });
+      setPost({ ...post,
+        bookmarked
+      });
     }
   };
 
@@ -92,19 +119,22 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
 
   const handleDelete = () => setDeletePost(true);
 
-  const handleDeleteClose = ({ deleted }: { deleted?: boolean }) => {
+  const handleDeleteClose = ({
+    deleted
+  }: {
+    deleted?: boolean;
+  }) => {
     if (deleted && deleted === true) {
       push('/feed');
     }
+
     setDeletePost(false);
   };
 
   if (!post) {
-    return (
-      <div className={classes.loader}>
+    return <div className={classes.loader}>
         <CircularProgress />
-      </div>
-    );
+      </div>;
   }
 
   const {
@@ -121,76 +151,30 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
     title,
     thanked,
     inStudyCircle,
-    postInfo: { userId: ownerId, questionsCount, thanksCount, viewCount },
+    postInfo: {
+      userId: ownerId,
+      questionsCount,
+      thanksCount,
+      viewCount
+    },
     readOnly,
     bookmarked,
     bestAnswer
   } = post;
-
-  return (
-    <div className={classes.root}>
+  return <div className={classes.root}>
       <ErrorBoundary>
         <PostItem feedId={feedId}>
           <ErrorBoundary>
-            <PostItemHeader
-              hideShare
-              feedId={feedId}
-              classId={classId}
-              currentUserId={userId}
-              router={router}
-              pop={pop}
-              pushTo={push}
-              postId={postId}
-              typeId={typeId}
-              userId={ownerId}
-              name={name}
-              userProfileUrl={userProfileUrl}
-              classroomName={courseDisplayName}
-              created={created}
-              body={content}
-              title={title}
-              isMarkdown
-              bookmarked={bookmarked}
-              roleId={roleId}
-              role={role}
-              onBookmark={handleBookmark}
-              onReport={handleReport}
-              onDelete={handleDelete}
-            />
+            <PostItemHeader hideShare feedId={feedId} classId={classId} currentUserId={userId} router={router} pop={pop} pushTo={push} postId={postId} typeId={typeId} userId={ownerId} name={name} userProfileUrl={userProfileUrl} classroomName={courseDisplayName} created={created} body={content} title={title} isMarkdown bookmarked={bookmarked} roleId={roleId} role={role} onBookmark={handleBookmark} onReport={handleReport} onDelete={handleDelete} />
           </ErrorBoundary>
           <ErrorBoundary>
             <PostTags userId={userId} feedId={feedId} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PostItemActions
-              userId={userId}
-              ownerId={ownerId}
-              feedId={feedId}
-              postId={postId}
-              typeId={typeId}
-              name={name}
-              userProfileUrl={profileImage}
-              thanked={thanked}
-              inStudyCircle={inStudyCircle}
-              questionsCount={questionsCount}
-              thanksCount={thanksCount}
-              viewCount={viewCount}
-              isPost
-              ownName={`${myFirstName} ${myLastName}`}
-              onReload={loadData}
-            />
+            <PostItemActions userId={userId} ownerId={ownerId} feedId={feedId} postId={postId} typeId={typeId} name={name} userProfileUrl={profileImage} thanked={thanked} inStudyCircle={inStudyCircle} questionsCount={questionsCount} thanksCount={thanksCount} viewCount={viewCount} isPost ownName={`${myFirstName} ${myLastName}`} onReload={loadData} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <PostComments
-              feedId={feedId}
-              postId={postId}
-              typeId={typeId}
-              classId={classId}
-              isPost
-              hasBestAnswer={bestAnswer}
-              readOnly={readOnly}
-              isOwner={userId === ownerId}
-            />
+            <PostComments feedId={feedId} postId={postId} typeId={typeId} classId={classId} isPost hasBestAnswer={bestAnswer} readOnly={readOnly} isOwner={userId === ownerId} />
           </ErrorBoundary>
           <ErrorBoundary>
             <Report open={report} ownerId={ownerId} objectId={feedId} onClose={handleReportClose} />
@@ -200,22 +184,20 @@ const ViewPost = ({ classes, user, postId, push, router, pop }: Props) => {
           </ErrorBoundary>
         </PostItem>
       </ErrorBoundary>
-    </div>
-  );
+    </div>;
 };
 
-const mapStateToProps = ({ user, router }: StoreState): {} => ({
+const mapStateToProps = ({
+  user,
+  router
+}: StoreState): {} => ({
   user,
   router
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      push: routePush,
-      pop: goBack
-    },
-    dispatch
-  );
+const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
+  push: routePush,
+  pop: goBack
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ViewPost));

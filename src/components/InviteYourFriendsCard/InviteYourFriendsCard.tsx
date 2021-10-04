@@ -1,43 +1,41 @@
-// @flow
-import React from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import type { InviteCard } from '../../types/models';
-import { renderText } from '../HomeGridList/utils';
-
-import { styles } from '../_styles/InviteYourFriendsCard';
-
+import React from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import type { InviteCard } from "../../types/models";
+import { renderText } from "../HomeGridList/utils";
+import { styles } from "../_styles/InviteYourFriendsCard";
 type Props = {
-  classes: Object,
-  data: InviteCard,
-  isLoading: boolean,
-  onCopy: Function
+  classes: Record<string, any>;
+  data: InviteCard;
+  isLoading: boolean;
+  onCopy: (...args: Array<any>) => any;
 };
-
 type State = {};
 
 class InviteYourFriendsCard extends React.PureComponent<Props, State> {
   state = {};
 
   render() {
-    const { classes, data, onCopy, isLoading } = this.props;
+    const {
+      classes,
+      data,
+      onCopy,
+      isLoading
+    } = this.props;
 
     if (isLoading) {
-      return (
-        <Paper className={classes.root} elevation={1}>
+      return <Paper className={classes.root} elevation={1}>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
-        </Paper>
-      );
+        </Paper>;
     }
 
-    return (
-      <Paper className={classes.root} elevation={1}>
+    return <Paper className={classes.root} elevation={1}>
         <Typography variant="h4" paragraph>
           {data.title}
         </Typography>
@@ -57,9 +55,9 @@ class InviteYourFriendsCard extends React.PureComponent<Props, State> {
             </Button>
           </CopyToClipboard>
         </div>
-      </Paper>
-    );
+      </Paper>;
   }
+
 }
 
 export default withStyles(styles)(InviteYourFriendsCard);

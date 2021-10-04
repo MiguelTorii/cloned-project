@@ -1,15 +1,13 @@
-// @flow
+import React from "react";
+import { Redirect } from "react-router";
+import queryString from "query-string";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import withRoot from "../../withRoot";
+import ResetPassword from "../../containers/ResetPassword/SignIn";
 
-import React from 'react';
-import { Redirect } from 'react-router';
-import queryString from 'query-string';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import withRoot from '../../withRoot';
-import ResetPassword from '../../containers/ResetPassword/SignIn';
-
-const styles = (theme) => ({
+const styles = theme => ({
   progress: {
     display: 'flex',
     alignItems: 'center',
@@ -19,20 +17,18 @@ const styles = (theme) => ({
 });
 
 type ProvidedProps = {
-  classes: Object,
+  classes: Record<string, any>;
   location: {
-    search: string
-  }
+    search: string;
+  };
 };
-
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type State = {
-  email: string,
-  resetToken: string,
-  redirect: string
+  email: string;
+  resetToken: string;
+  redirect: string;
 };
 
 class ResetPasswordPage extends React.Component<ProvidedProps & Props, State> {
@@ -41,41 +37,56 @@ class ResetPasswordPage extends React.Component<ProvidedProps & Props, State> {
     resetToken: '',
     redirect: ''
   };
-
   componentDidMount = () => {
     const {
-      location: { search = {} }
+      location: {
+        search = {}
+      }
     } = this.props;
     const values = queryString.parse(search);
-    const { email = '', reset_token: resetToken = '' } = values;
+    const {
+      email = '',
+      reset_token: resetToken = ''
+    } = values;
+
     if (email === '' || resetToken === '') {
-      this.setState({ redirect: '/login' });
+      this.setState({
+        redirect: '/login'
+      });
     }
-    this.setState({ email: email.replace(' ', '+'), resetToken });
+
+    this.setState({
+      email: email.replace(' ', '+'),
+      resetToken
+    });
   };
 
   render() {
-    const { classes } = this.props;
-    const { email, resetToken, redirect } = this.state;
+    const {
+      classes
+    } = this.props;
+    const {
+      email,
+      resetToken,
+      redirect
+    } = this.state;
+
     if (redirect !== '') {
       return <Redirect to={redirect} />;
     }
 
     if (email === '' || resetToken === '') {
-      return (
-        <div className={classes.progress}>
+      return <div className={classes.progress}>
           <CircularProgress />
-        </div>
-      );
+        </div>;
     }
 
-    return (
-      <main className={classes.main}>
+    return <main className={classes.main}>
         <CssBaseline />
         <ResetPassword email={email} resetToken={resetToken} />
-      </main>
-    );
+      </main>;
   }
+
 }
 
 export default withRoot(withStyles(styles)(ResetPasswordPage));

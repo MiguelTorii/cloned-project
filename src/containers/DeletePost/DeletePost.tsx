@@ -1,17 +1,15 @@
-// @flow
+import React from "react";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+import Dialog from "../../components/Dialog/Dialog";
+import type { UserState } from "../../reducers/user";
+import type { State as StoreState } from "../../types/state";
+import { deletePost } from "../../api/posts";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
-import React from 'react';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '../../components/Dialog/Dialog';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { deletePost } from '../../api/posts';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-
-const styles = (theme) => ({
+const styles = theme => ({
   wrapper: {
     margin: theme.spacing(),
     position: 'relative'
@@ -26,40 +24,46 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  user: UserState,
-  feedId: number,
-  open: boolean,
-  onClose: Function
+  classes: Record<string, any>;
+  user: UserState;
+  feedId: number;
+  open: boolean;
+  onClose: (...args: Array<any>) => any;
 };
-
 type State = {
-  loading: boolean
+  loading: boolean;
 };
 
 class DeletePost extends React.PureComponent<Props, State> {
   state = {
     loading: false
   };
-
   handleSubmit = async () => {
     const {
       user: {
-        data: { userId }
+        data: {
+          userId
+        }
       },
       feedId,
       onClose
     } = this.props;
+    this.setState({
+      loading: true
+    });
 
-    this.setState({ loading: true });
     try {
       await deletePost({
         userId,
         feedId
       });
     } finally {
-      this.setState({ loading: false });
-      onClose({ deleted: true });
+      this.setState({
+        loading: false
+      });
+      onClose({
+        deleted: true
+      });
     }
   };
 
@@ -68,42 +72,39 @@ class DeletePost extends React.PureComponent<Props, State> {
       user: {
         isLoading,
         error,
-        data: { userId }
+        data: {
+          userId
+        }
       },
       open,
       onClose
     } = this.props;
-    const { loading } = this.state;
+    const {
+      loading
+    } = this.state;
+
     if (isLoading) {
       return <CircularProgress size={12} />;
     }
+
     if (userId === '' || error) {
       return 'Oops, there was an error loading your data, please try again.';
     }
 
-    return (
-      <ErrorBoundary>
-        <Dialog
-          ariaDescribedBy="confirmation-dialog-description"
-          disableActions={loading}
-          okTitle="Delete"
-          onCancel={onClose}
-          onOk={this.handleSubmit}
-          open={open}
-          showActions
-          showCancel
-          title="Delete Post"
-        >
+    return <ErrorBoundary>
+        <Dialog ariaDescribedBy="confirmation-dialog-description" disableActions={loading} okTitle="Delete" onCancel={onClose} onOk={this.handleSubmit} open={open} showActions showCancel title="Delete Post">
           <Typography color="textPrimary" id="confirmation-dialog-description">
             Are you sure you want to delete this post?
           </Typography>
         </Dialog>
-      </ErrorBoundary>
-    );
+      </ErrorBoundary>;
   }
+
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({
+  user
+}: StoreState): {} => ({
   user
 });
 

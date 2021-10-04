@@ -1,38 +1,31 @@
-// @flow
+import React from "react";
+import debounce from "lodash/debounce";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { push } from "connected-react-router";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Dialog from "@material-ui/core/Dialog";
+import { processClasses } from "containers/ClassesSelector/utils";
+import { withRouter } from "react-router";
+import { cypher } from "utils/crypto";
+import ToolbarTooltip from "components/FlashcardEditor/ToolbarTooltip";
+import RichTextEditor from "containers/RichTextEditor/RichTextEditor";
+import postingImage from "assets/gif/loading-rocket.gif";
+import type { UserState } from "../../reducers/user";
+import type { State as StoreState } from "../../types/state";
+import type { SelectType } from "../../types/models";
+import CreatePostForm from "../../components/CreatePostForm/CreatePostForm";
+import OutlinedTextValidator from "../../components/OutlinedTextValidator/OutlinedTextValidator";
+import LinkPreview from "../../components/LinkPreview/LinkPreview";
+import SimpleErrorDialog from "../../components/SimpleErrorDialog/SimpleErrorDialog";
+import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from "../../api/posts";
+import { logEvent, logEventLocally } from "../../api/analytics";
+import * as notificationsActions from "../../actions/notifications";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import type { CampaignState } from "../../reducers/campaign";
 
-import React from 'react';
-import debounce from 'lodash/debounce';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import { processClasses } from 'containers/ClassesSelector/utils';
-import { withRouter } from 'react-router';
-import { cypher } from 'utils/crypto';
-import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
-import postingImage from 'assets/gif/loading-rocket.gif';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { SelectType } from '../../types/models';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import LinkPreview from '../../components/LinkPreview/LinkPreview';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import {
-  updateShareURL,
-  createBatchShareLink,
-  createShareLink,
-  getShareLink
-} from '../../api/posts';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import * as notificationsActions from '../../actions/notifications';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { CampaignState } from '../../reducers/campaign';
-
-const styles = (theme) => ({
+const styles = theme => ({
   preview: {
     padding: theme.spacing(2)
   },
@@ -65,7 +58,6 @@ const styles = (theme) => ({
       },
       '& .ql-container': {
         borderColor: theme.circleIn.palette.appBar,
-
         '& .ql-editor.ql-blank::before': {
           opacity: 1
         }
@@ -94,40 +86,41 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  user: UserState,
-  pushTo: Function,
-  campaign: CampaignState,
-  sharelinkId: number,
+  classes: Record<string, any>;
+  user: UserState;
+  pushTo: (...args: Array<any>) => any;
+  campaign: CampaignState;
+  sharelinkId: number;
   location: {
-    search: string
-  },
-  enqueueSnackbar: Function
+    search: string;
+  };
+  enqueueSnackbar: (...args: Array<any>) => any;
 };
-
 type State = {
-  loading: boolean,
-  title: string,
-  summary: string,
-  url: string,
-  preview: string,
-  classId: number,
-  sectionId: ?number,
-  tags: Array<SelectType>,
-  tagsError: boolean,
-  errorDialog: boolean,
-  errorTitle: string,
-  changed: ?boolean,
-  classList: array,
-  errorBody: string,
-  isPosting: boolean
+  loading: boolean;
+  title: string;
+  summary: string;
+  url: string;
+  preview: string;
+  classId: number;
+  sectionId: number | null | undefined;
+  tags: Array<SelectType>;
+  tagsError: boolean;
+  errorDialog: boolean;
+  errorTitle: string;
+  changed: boolean | null | undefined;
+  classList: array;
+  errorBody: string;
+  isPosting: boolean;
 };
 
 class CreateShareLink extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
-    const { classId: currentSelectedClassId, sectionId: curretnSelectedSectoinId } = props;
-
+    const {
+      classId: currentSelectedClassId,
+      sectionId: curretnSelectedSectoinId
+    } = props;
     this.state = {
       loading: false,
       title: '',
@@ -150,17 +143,22 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const {
       user: {
         expertMode,
-        data: { permission }
+        data: {
+          permission
+        }
       }
     } = this.props;
-
     return expertMode && permission.includes('one_touch_send_posts');
   };
-
-  handlePush = (path) => {
-    const { pushTo, campaign } = this.props;
-
-    const { sectionId, classId } = this.state;
+  handlePush = path => {
+    const {
+      pushTo,
+      campaign
+    } = this.props;
+    const {
+      sectionId,
+      classId
+    } = this.state;
 
     if (campaign.newClassExperience) {
       const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
@@ -169,10 +167,13 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       pushTo(path);
     }
   };
-
   componentDidMount = () => {
-    const { sharelinkId } = this.props;
-    const { editor } = this.state;
+    const {
+      sharelinkId
+    } = this.props;
+    const {
+      editor
+    } = this.state;
 
     if (sharelinkId) {
       this.loadData();
@@ -180,21 +181,31 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
     // const { classId, sectionId } = decypherClass()
     // this.setState({ classId: Number(classId), sectionId: Number(sectionId) })
-
     if (localStorage.getItem('shareLink')) {
       const shareLink = JSON.parse(localStorage.getItem('shareLink'));
 
       if ('title' in shareLink) {
-        this.setState({ title: shareLink.title });
+        this.setState({
+          title: shareLink.title
+        });
       }
+
       if ('summary' in shareLink) {
-        this.setState({ summary: shareLink.summary });
+        this.setState({
+          summary: shareLink.summary
+        });
       }
+
       if ('url' in shareLink) {
-        this.setState({ url: shareLink.url });
+        this.setState({
+          url: shareLink.url
+        });
       }
+
       if ('changed' in shareLink) {
-        this.setState({ changed: shareLink.changed });
+        this.setState({
+          changed: shareLink.changed
+        });
       }
     }
 
@@ -210,20 +221,38 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       });
     }
   };
-
   loadData = async () => {
     const {
       user: {
-        data: { userId, segment },
-        userClasses: { classList: classes }
+        data: {
+          userId,
+          segment
+        },
+        userClasses: {
+          classList: classes
+        }
       },
       sharelinkId
     } = this.props;
+
     try {
-      const shareLink = await getShareLink({ userId, sharelinkId });
-      const userClasses = processClasses({ classes, segment });
-      const { sectionId } = JSON.parse(userClasses[0].value);
-      const { classId, summary, title, uri } = shareLink;
+      const shareLink = await getShareLink({
+        userId,
+        sharelinkId
+      });
+      const userClasses = processClasses({
+        classes,
+        segment
+      });
+      const {
+        sectionId
+      } = JSON.parse(userClasses[0].value);
+      const {
+        classId,
+        summary,
+        title,
+        uri
+      } = shareLink;
       this.updatePreview(uri);
       this.setState({
         title,
@@ -233,35 +262,46 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         sectionId
       });
       const {
-        postInfo: { feedId }
+        postInfo: {
+          feedId
+        }
       } = shareLink;
-
       logEvent({
         event: 'Feed- Edit Link',
-        props: { 'Internal ID': feedId }
+        props: {
+          'Internal ID': feedId
+        }
       });
     } catch (e) {
       this.handlePush('/feed');
     }
   };
-
   componentWillUnmount = () => {
     if (this.updatePreview.cancel && typeof this.updatePreview.cancel === 'function') {
       this.updatePreview.cancel();
     }
   };
-
   updateSharelink = async () => {
-    this.setState({ loading: true });
+    this.setState({
+      loading: true
+    });
+
     try {
       const {
         sharelinkId,
         user: {
-          data: { userId = '' }
+          data: {
+            userId = ''
+          }
         }
       } = this.props;
-      const { title, summary, url, classId, sectionId } = this.state;
-
+      const {
+        title,
+        summary,
+        url,
+        classId,
+        sectionId
+      } = this.state;
       const res = await updateShareURL({
         userId,
         sharelinkId,
@@ -280,8 +320,10 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         event: 'Feed- Update Share Link',
         props: {}
       });
-
-      const { enqueueSnackbar, classes } = this.props;
+      const {
+        enqueueSnackbar,
+        classes
+      } = this.props;
       enqueueSnackbar({
         notification: {
           message: `Successfully updated`,
@@ -301,10 +343,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           }
         }
       });
-
       localStorage.removeItem('shareLink');
       this.handlePush(`/sharelink/${sharelinkId}`);
-      this.setState({ loading: false });
+      this.setState({
+        loading: false
+      });
     } catch (err) {
       this.setState({
         loading: false,
@@ -314,17 +357,27 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       });
     }
   };
-
   createSharelink = async () => {
-    const { tags, classId, sectionId } = this.state;
+    const {
+      tags,
+      classId,
+      sectionId
+    } = this.state;
+
     if (tags.length < 0) {
       return;
     }
-    this.setState({ loading: true });
+
+    this.setState({
+      loading: true
+    });
+
     try {
       const {
         user: {
-          data: { userId = '' }
+          data: {
+            userId = ''
+          }
         },
         classList
       } = this.props;
@@ -338,6 +391,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         });
         return;
       }
+
       if (!this.canBatchPost() && !classId && !sectionId) {
         this.setState({
           loading: false,
@@ -348,54 +402,58 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         return;
       }
 
-      const { title, summary, url } = this.state;
-
-      this.setState({ isPosting: true });
-
-      const tagValues = tags.map((item) => Number(item.value));
-
-      const res = this.canBatchPost()
-        ? await createBatchShareLink({
-            userId,
-            title,
-            summary,
-            uri: url,
-            sectionIds: classList.map((c) => c.sectionId),
-            tags: tagValues
-          })
-        : await createShareLink({
-            userId,
-            title,
-            summary,
-            uri: url,
-            classId,
-            sectionId,
-            tags: tagValues
-          });
-
+      const {
+        title,
+        summary,
+        url
+      } = this.state;
+      this.setState({
+        isPosting: true
+      });
+      const tagValues = tags.map(item => Number(item.value));
+      const res = this.canBatchPost() ? await createBatchShareLink({
+        userId,
+        title,
+        summary,
+        uri: url,
+        sectionIds: classList.map(c => c.sectionId),
+        tags: tagValues
+      }) : await createShareLink({
+        userId,
+        title,
+        summary,
+        uri: url,
+        classId,
+        sectionId,
+        tags: tagValues
+      });
       const {
         points,
         linkId,
         classes: resClasses,
-        user: { firstName }
+        user: {
+          firstName
+        }
       } = res;
-
-      const { enqueueSnackbar, classes } = this.props;
-
+      const {
+        enqueueSnackbar,
+        classes
+      } = this.props;
       let hasError = false;
+
       if (this.canBatchPost()) {
-        resClasses.forEach((r) => {
+        resClasses.forEach(r => {
           if (r.status !== 'Success') {
             hasError = true;
           }
         });
+
         if (hasError || resClasses.length === 0) {
           this.setState({
             loading: false,
             errorDialog: true,
             errorTitle: 'Website not allowed',
-            errorBody: (
-              <div>
+            errorBody: <div>
                 It’s not you, it’s us! We maintain a whitelist of allowable URLs. The website you
                 entered is not currently on our list. Please contact us at&nbsp;
                 <a href="mailto:support@circleinapp.com" className={classes.link}>
@@ -404,8 +462,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
                 &nbsp; and send us your link, we will review it and most likely allow it so you can
                 share it with your classmates! Sorry for the inconvenience, we want to make sure we
                 keep CircleIn a welcoming space for all.
-              </div>
-            ),
+              </div>,
             isPosting: false
           });
           return;
@@ -417,8 +474,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           loading: false,
           errorDialog: true,
           errorTitle: 'Website not allowed',
-          errorBody: (
-            <div>
+          errorBody: <div>
               It’s not you, it’s us! We maintain a whitelist of allowable URLs. The website you
               entered is not currently on our list. Please contact us at&nbsp;
               <a href="mailto:support@circleinapp.com" className={classes.link}>
@@ -427,8 +483,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
               &nbsp; and send us your link, we will review it and most likely allow it so you can
               share it with your classmates! Sorry for the inconvenience, we want to make sure we
               keep CircleIn a welcoming space for all.
-            </div>
-          ),
+            </div>,
           isPosting: false
         });
         return;
@@ -438,7 +493,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         event: 'Feed- Share Link',
         props: {}
       });
-
       logEventLocally({
         category: 'Link',
         objectId: linkId,
@@ -448,9 +502,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       if (points > 0 || this.canBatchPost()) {
         enqueueSnackbar({
           notification: {
-            message: !this.canBatchPost()
-              ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
-              : 'All posts were created successfully',
+            message: !this.canBatchPost() ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!` : 'All posts were created successfully',
             nextPath: '/feed',
             options: {
               variant: 'success',
@@ -468,6 +520,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           }
         });
       }
+
       localStorage.removeItem('shareLink');
       this.handlePush('/feed');
     } catch (err) {
@@ -479,19 +532,24 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       });
     }
   };
-
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
-    const { sharelinkId } = this.props;
+    const {
+      sharelinkId
+    } = this.props;
+
     if (sharelinkId) {
       this.updateSharelink();
     } else {
       this.createSharelink();
     }
   };
+  handleTextChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+      changed: true
+    });
 
-  handleTextChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value, changed: true });
     if (name === 'url') {
       this.updatePreview(event.target.value);
     }
@@ -509,9 +567,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       localStorage.setItem('shareLink', JSON.stringify(shareLink));
     }
   };
-
-  handleRTEChange = (value) => {
-    this.setState({ summary: value, changed: true });
+  handleRTEChange = value => {
+    this.setState({
+      summary: value,
+      changed: true
+    });
 
     if (localStorage.getItem('shareLink')) {
       const currentShareLink = JSON.parse(localStorage.getItem('shareLink'));
@@ -526,21 +586,27 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       localStorage.setItem('shareLink', JSON.stringify(shareLink));
     }
   };
-
   handleErrorDialogClose = () => {
-    this.setState({ errorDialog: false, errorTitle: '', errorBody: '' });
+    this.setState({
+      errorDialog: false,
+      errorTitle: '',
+      errorBody: ''
+    });
   };
-
-  updatePreview = (value) => {
-    this.setState({ preview: value });
+  updatePreview = value => {
+    this.setState({
+      preview: value
+    });
   };
-
-  setEditor = (editor) => {
+  setEditor = editor => {
     this.setState(editor);
   };
 
   render() {
-    const { sharelinkId, classes } = this.props;
+    const {
+      sharelinkId,
+      classes
+    } = this.props;
     const {
       loading,
       resourceToolbar,
@@ -554,73 +620,41 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       errorBody,
       isPosting
     } = this.state;
-
-    return (
-      <div className={classes.root}>
+    return <div className={classes.root}>
         <ErrorBoundary>
-          <CreatePostForm
-            loading={loading}
-            buttonLabel={sharelinkId ? 'Save' : 'Post! 🚀'}
-            changed={changed}
-            handleSubmit={this.handleSubmit}
-          >
+          <CreatePostForm loading={loading} buttonLabel={sharelinkId ? 'Save' : 'Post! 🚀'} changed={changed} handleSubmit={this.handleSubmit}>
             <Grid container alignItems="center">
               <Grid item xs={12} sm={12} md={12}>
-                <OutlinedTextValidator
-                  required
-                  label="Title of Post"
-                  labelClass={classes.labelClass}
-                  inputClass={classes.textValidator}
-                  placeholder="e.g. A colorful Periodic Table"
-                  onChange={this.handleTextChange}
-                  name="title"
-                  value={title}
-                  validators={['required']}
-                  errorMessages={['Title is required']}
-                />
+                <OutlinedTextValidator required label="Title of Post" labelClass={classes.labelClass} inputClass={classes.textValidator} placeholder="e.g. A colorful Periodic Table" onChange={this.handleTextChange} name="title" value={title} validators={['required']} errorMessages={['Title is required']} />
               </Grid>
 
               <Grid item xs={12} sm={12} md={12} className={classes.quillGrid}>
                 <ToolbarTooltip toolbar={resourceToolbar} toolbarClass={classes.toolbarClass} />
-                <RichTextEditor
-                  setEditor={this.setEditor}
-                  placeholder="(Optional) Write a description to help your classmates understand what resource(s) you’re sharing."
-                  value={summary}
-                  onChange={this.handleRTEChange}
-                />
+                <RichTextEditor setEditor={this.setEditor} placeholder="(Optional) Write a description to help your classmates understand what resource(s) you’re sharing." value={summary} onChange={this.handleRTEChange} />
               </Grid>
 
               <Grid item xs={12} sm={12} md={12}>
-                <OutlinedTextValidator
-                  required
-                  label="Type/Paste URL here"
-                  labelClass={classes.labelClass}
-                  inputClass={classes.textValidator}
-                  placeholder="Share links to PDFs, PowerPoints, YouTube, Google Drive or DropBox documents or a URL here."
-                  onChange={this.handleTextChange}
-                  name="url"
-                  value={url}
-                  validators={['required']}
-                  errorMessages={['URL is required']}
-                />
+                <OutlinedTextValidator required label="Type/Paste URL here" labelClass={classes.labelClass} inputClass={classes.textValidator} placeholder="Share links to PDFs, PowerPoints, YouTube, Google Drive or DropBox documents or a URL here." onChange={this.handleTextChange} name="url" value={url} validators={['required']} errorMessages={['URL is required']} />
               </Grid>
-              {/*
+              {
+              /*
               <Grid item xs={12} sm={12} md={12}>
-                <OutlinedTextValidator
-                  required
-                  label="Description"
-                  labelClass={classes.labelClass}
-                  inputClass={classes.textValidator}
-                  placeholder="Type a description to help your classmates "
-                  onChange={this.handleTextChange}
-                  name="summary"
-                  multiline
-                  rows={2}
-                  value={summary}
-                  validators={['required']}
-                  errorMessages={['Description is required']}
-                />
-              </Grid> */}
+               <OutlinedTextValidator
+                 required
+                 label="Description"
+                 labelClass={classes.labelClass}
+                 inputClass={classes.textValidator}
+                 placeholder="Type a description to help your classmates "
+                 onChange={this.handleTextChange}
+                 name="summary"
+                 multiline
+                 rows={2}
+                 value={summary}
+                 validators={['required']}
+                 errorMessages={['Description is required']}
+               />
+              </Grid> */
+            }
 
               <Grid item xs={12} sm={12} md={12} className={classes.preview}>
                 <LinkPreview uri={preview} />
@@ -629,44 +663,32 @@ class CreateShareLink extends React.PureComponent<Props, State> {
           </CreatePostForm>
         </ErrorBoundary>
         <ErrorBoundary>
-          <Dialog
-            open={isPosting}
-            classes={{
-              paper: classes.dialogPaper
-            }}
-          >
+          <Dialog open={isPosting} classes={{
+          paper: classes.dialogPaper
+        }}>
             <img src={postingImage} alt="Posting" className={classes.postingImage} />
             <div className={classes.label}>Posting...</div>
           </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>
-          <SimpleErrorDialog
-            open={errorDialog}
-            title={errorTitle}
-            body={errorBody}
-            handleClose={this.handleErrorDialogClose}
-          />
+          <SimpleErrorDialog open={errorDialog} title={errorTitle} body={errorBody} handleClose={this.handleErrorDialogClose} />
         </ErrorBoundary>
-      </div>
-    );
+      </div>;
   }
+
 }
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
+const mapStateToProps = ({
+  user,
+  campaign
+}: StoreState): {} => ({
   user,
   campaign
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      pushTo: push,
-      enqueueSnackbar: notificationsActions.enqueueSnackbar
-    },
-    dispatch
-  );
+const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
+  pushTo: push,
+  enqueueSnackbar: notificationsActions.enqueueSnackbar
+}, dispatch);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withRouter(CreateShareLink)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(CreateShareLink)));

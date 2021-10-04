@@ -1,24 +1,24 @@
-// @flow
-
-import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
-import type { SelectType } from '../../types/models';
-import FederatedIdentities from '../../components/FederatedIdentities/FederatedIdentities';
-import { getLMSSchools } from '../../api/lms';
-import { REDIRECT_URI } from '../../constants/app';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import React from "react";
+import withStyles from "@material-ui/core/styles/withStyles";
+import type { SelectType } from "../../types/models";
+import FederatedIdentities from "../../components/FederatedIdentities/FederatedIdentities";
+import { getLMSSchools } from "../../api/lms";
+import { REDIRECT_URI } from "../../constants/app";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 // const REDIRECT_URI = 'http://localhost:2000/oauth';
-
 const styles = () => ({});
 
 type Props = {
-  classes: Object
+  classes: Record<string, any>;
 };
-
 type State = {
-  school: ?(SelectType & { uri: string, authUri: string, lmsTypeId: number }),
-  error: boolean
+  school: (SelectType & {
+    uri: string;
+    authUri: string;
+    lmsTypeId: number;
+  }) | null | undefined;
+  error: boolean;
 };
 
 class FederatedLogin extends React.Component<Props, State> {
@@ -26,19 +26,24 @@ class FederatedLogin extends React.Component<Props, State> {
     school: null,
     error: false
   };
+  handleChange = value => {
+    this.setState({
+      school: value
+    });
 
-  handleChange = (value) => {
-    this.setState({ school: value });
     if (!value) {
-      this.setState({ error: true });
+      this.setState({
+        error: true
+      });
     } else {
-      this.setState({ error: false });
+      this.setState({
+        error: false
+      });
     }
   };
-
   handleLoadOptions = async () => {
     const schools = await getLMSSchools();
-    const options = schools.map((school) => ({
+    const options = schools.map(school => ({
       value: school.clientId,
       label: school.school,
       uri: school.uri,
@@ -50,9 +55,10 @@ class FederatedLogin extends React.Component<Props, State> {
       hasMore: false
     };
   };
-
   handleSubmit = () => {
-    const { school } = this.state;
+    const {
+      school
+    } = this.state;
 
     if (school) {
       const responseType = 'code';
@@ -63,9 +69,7 @@ class FederatedLogin extends React.Component<Props, State> {
         client_id: school.value,
         redirect_uri: REDIRECT_URI
       };
-
       const buff = Buffer.from(JSON.stringify(obj)).toString('hex');
-
       let uri = `${school.authUri}?client_id=${school.value}&response_type=${responseType}&redirect_uri=${REDIRECT_URI}&state=${buff}`;
 
       if (school.lmsTypeId === 1) {
@@ -77,22 +81,20 @@ class FederatedLogin extends React.Component<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
-    const { school, error } = this.state;
-    return (
-      <main className={classes.main}>
+    const {
+      classes
+    } = this.props;
+    const {
+      school,
+      error
+    } = this.state;
+    return <main className={classes.main}>
         <ErrorBoundary>
-          <FederatedIdentities
-            school={school}
-            error={error}
-            onChange={this.handleChange}
-            onLoad={this.handleLoadOptions}
-            onSubmit={this.handleSubmit}
-          />
+          <FederatedIdentities school={school} error={error} onChange={this.handleChange} onLoad={this.handleLoadOptions} onSubmit={this.handleSubmit} />
         </ErrorBoundary>
-      </main>
-    );
+      </main>;
   }
+
 }
 
 export default withStyles(styles)(FederatedLogin);

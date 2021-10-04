@@ -1,13 +1,11 @@
-// @flow
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Linkify from "react-linkify";
 
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Linkify from 'react-linkify';
-
-const styles = (theme) => ({
+const styles = theme => ({
   paper: {
     margin: theme.spacing(1, 0, 0, 1),
     display: 'flex',
@@ -48,32 +46,28 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  classes: Object,
-  logo: string,
-  body: string
+  classes: Record<string, any>;
+  logo: string;
+  body: string;
 };
 
-const Empty = ({ classes, logo, body }: Props) => (
-  <Paper className={classes.paper}>
+const Empty = ({
+  classes,
+  logo,
+  body
+}: Props) => <Paper className={classes.paper}>
     <Grid item>
       <div className={classes.imgContainer}>
         {logo && <img alt="logo" className={classes.img} src={logo} />}
       </div>
     </Grid>
-    <Grid
-      container
-      className={classes.textContainer}
-      alignItems="center"
-      justifyContent="center"
-      spacing={2}
-    >
-      {body.split('\n').map((line) => (
-        <Typography key={line} className={classes.text}>
-          <Linkify properties={{ target: '_blank' }}>{line}</Linkify>
-        </Typography>
-      ))}
+    <Grid container className={classes.textContainer} alignItems="center" justifyContent="center" spacing={2}>
+      {body.split('\n').map(line => <Typography key={line} className={classes.text}>
+          <Linkify properties={{
+        target: '_blank'
+      }}>{line}</Linkify>
+        </Typography>)}
     </Grid>
-  </Paper>
-);
+  </Paper>;
 
 export default withStyles(styles)(Empty);

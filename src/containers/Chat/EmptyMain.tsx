@@ -1,15 +1,12 @@
-// @flow
-
-import React from 'react';
-import EmptyMainChat from 'assets/svg/empty_main_chat.svg';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import ExpertEmptyChat from 'assets/svg/expertEmptyChat.svg';
-import { makeStyles } from '@material-ui/core/styles';
-import LoadImg from 'components/LoadImg/LoadImg';
-import EmptyUnregistered from 'assets/svg/emptyChatUnregistered.svg';
-
-const useStyles = makeStyles((theme) => ({
+import React from "react";
+import EmptyMainChat from "assets/svg/empty_main_chat.svg";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import ExpertEmptyChat from "assets/svg/expertEmptyChat.svg";
+import { makeStyles } from "@material-ui/core/styles";
+import LoadImg from "components/LoadImg/LoadImg";
+import EmptyUnregistered from "assets/svg/emptyChatUnregistered.svg";
+const useStyles = makeStyles(theme => ({
   container: {
     height: '100%',
     display: 'flex',
@@ -49,52 +46,38 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   }
 }));
-
 type Props = {
-  noChannel: boolean
+  noChannel: boolean;
+};
+const imageStyle = {
+  maxWidth: '100%'
 };
 
-const imageStyle = { maxWidth: '100%' };
-
-const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
+const EmptyMain = ({
+  newChannel,
+  otherUser,
+  noChannel,
+  expertMode
+}: Props) => {
   const classes = useStyles();
 
   if (otherUser && !otherUser.registered && !newChannel) {
-    return (
-      <Box
-        justifyContent="center"
-        className={classes.unregisterContainer}
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-      >
-        <Typography
-          classes={{
-            root: classes.titleMessage
-          }}
-        >
+    return <Box justifyContent="center" className={classes.unregisterContainer} alignItems="center" display="flex" flexDirection="column">
+        <Typography classes={{
+        root: classes.titleMessage
+      }}>
           Hey!{' '}
           <span role="img" aria-label="wave">
             👋
           </span>{' '}
-          {
-            "We're so happy you're here! This classmate isn't on CircleIn yet but you can still send them a chat. They will receive an email to let them know you messaged them!"
-          }
+          {"We're so happy you're here! This classmate isn't on CircleIn yet but you can still send them a chat. They will receive an email to let them know you messaged them!"}
         </Typography>
         <LoadImg url={EmptyUnregistered} />
-      </Box>
-    );
+      </Box>;
   }
 
   if (expertMode) {
-    return (
-      <Box
-        justifyContent="center"
-        className={classes.expertContainer}
-        alignItems="center"
-        display="flex"
-        flexDirection="column"
-      >
+    return <Box justifyContent="center" className={classes.expertContainer} alignItems="center" display="flex" flexDirection="column">
         <Box className={classes.expertContainerText}>
           <Box justifyContent="center" alignItems="center" display="flex" flexDirection="column">
             <Typography className={classes.expertTitle}>
@@ -113,33 +96,24 @@ const EmptyMain = ({ newChannel, otherUser, noChannel, expertMode }: Props) => {
           </Box>
         </Box>
         <LoadImg url={ExpertEmptyChat} />
-      </Box>
-    );
+      </Box>;
   }
 
-  return (
-    <div className={classes.container}>
+  return <div className={classes.container}>
       <div className={classes.messageContainer}>
         <LoadImg url={EmptyMainChat} alt="emptychat" style={imageStyle} />
-        <Typography
-          classes={{
-            root: classes.titleMessage
-          }}
-        >
+        <Typography classes={{
+        root: classes.titleMessage
+      }}>
           {!noChannel ? 'Time to send a message!' : 'Set up a group class chat'}
         </Typography>
-        {noChannel && (
-          <Typography
-            classes={{
-              root: classes.subtitleMessage
-            }}
-          >
+        {noChannel && <Typography classes={{
+        root: classes.subtitleMessage
+      }}>
             Or just chat with a classmate about an issue
-          </Typography>
-        )}
+          </Typography>}
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default EmptyMain;

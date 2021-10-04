@@ -1,24 +1,21 @@
-// @flow
-
-import React from 'react';
-import queryString from 'query-string';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../../withRoot';
-import OAuth from '../../containers/OAuth/OAuth';
+import React from "react";
+import queryString from "query-string";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import withStyles from "@material-ui/core/styles/withStyles";
+import withRoot from "../../withRoot";
+import OAuth from "../../containers/OAuth/OAuth";
 
 const styles = () => ({});
 
 type Props = {
-  classes: Object,
+  classes: Record<string, any>;
   location: {
-    search: string
-  }
+    search: string;
+  };
 };
-
 type State = {
-  code: string,
-  state: string
+  code: string;
+  state: string;
 };
 
 class OAuthPage extends React.Component<Props, State> {
@@ -26,26 +23,37 @@ class OAuthPage extends React.Component<Props, State> {
     code: '',
     state: ''
   };
-
   componentDidMount = () => {
     const {
-      location: { search = {} }
+      location: {
+        search = {}
+      }
     } = this.props;
     const values = queryString.parse(search);
-    const { code = '', state = '' } = values;
-    this.setState({ code, state });
+    const {
+      code = '',
+      state = ''
+    } = values;
+    this.setState({
+      code,
+      state
+    });
   };
 
   render() {
-    const { classes } = this.props;
-    const { code, state } = this.state;
-    return (
-      <main className={classes.main}>
+    const {
+      classes
+    } = this.props;
+    const {
+      code,
+      state
+    } = this.state;
+    return <main className={classes.main}>
         <CssBaseline />
         {code !== '' && state !== '' && <OAuth code={code} state={state} />}
-      </main>
-    );
+      </main>;
   }
+
 }
 
 export default withRoot(withStyles(styles)(OAuthPage));

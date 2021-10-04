@@ -1,33 +1,30 @@
-// @flow
-
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import ResetPasswordForm from '../../components/ResetPasswordForm/ResetPasswordForm';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import * as signInActions from '../../actions/sign-in';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { changePassword } from '../../api/sign-in';
+import React from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import ResetPasswordForm from "../../components/ResetPasswordForm/ResetPasswordForm";
+import SimpleErrorDialog from "../../components/SimpleErrorDialog/SimpleErrorDialog";
+import type { State as StoreState } from "../../types/state";
+import type { UserState } from "../../reducers/user";
+import * as signInActions from "../../actions/sign-in";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import { changePassword } from "../../api/sign-in";
 
 const styles = () => ({});
 
 type Props = {
-  classes: Object,
-  email: string,
-  resetToken: string,
-  user: UserState,
-  signIn: Function,
-  updateError: Function,
-  clearError: Function
+  classes: Record<string, any>;
+  email: string;
+  resetToken: string;
+  user: UserState;
+  signIn: (...args: Array<any>) => any;
+  updateError: (...args: Array<any>) => any;
+  clearError: (...args: Array<any>) => any;
 };
-
 type State = {
-  password: string,
-  loading: boolean
+  password: string;
+  loading: boolean;
 };
 
 class SignIn extends React.Component<Props, State> {
@@ -35,29 +32,40 @@ class SignIn extends React.Component<Props, State> {
     password: '',
     loading: false
   };
+  handleChange = (field: string) => (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const {
+      target
+    } = event;
 
-  handleChange =
-    (field: string) =>
-    (
-      // eslint-disable-next-line no-undef
-      event: SyntheticEvent<HTMLInputElement>
-    ) => {
-      const { target } = event;
-      // eslint-disable-next-line no-undef
-      if (!(target instanceof HTMLInputElement)) {
-        return;
-      }
-      this.setState({
-        [field]: target.value
-      });
-    };
+    // eslint-disable-next-line no-undef
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
 
+    this.setState({
+      [field]: target.value
+    });
+  };
   handleSubmit = async () => {
-    const { email, resetToken, updateError } = this.props;
+    const {
+      email,
+      resetToken,
+      updateError
+    } = this.props;
+
     try {
-      this.setState({ loading: true });
-      const { password } = this.state;
-      const success = await changePassword({ email, password, resetToken });
+      this.setState({
+        loading: true
+      });
+      const {
+        password
+      } = this.state;
+      const success = await changePassword({
+        email,
+        password,
+        resetToken
+      });
+
       if (success) {
         this.handleSignIn();
       } else {
@@ -73,66 +81,75 @@ class SignIn extends React.Component<Props, State> {
         body: "We couldn't process your request, please try again"
       });
     } finally {
-      this.setState({ loading: false });
+      this.setState({
+        loading: false
+      });
     }
   };
-
   handleSignIn = () => {
-    const { signIn, email } = this.props;
-    const { password } = this.state;
-    signIn({ email, password });
+    const {
+      signIn,
+      email
+    } = this.props;
+    const {
+      password
+    } = this.state;
+    signIn({
+      email,
+      password
+    });
   };
-
   handleErrorDialogClose = () => {
-    const { clearError } = this.props;
+    const {
+      clearError
+    } = this.props;
     clearError();
   };
 
   render() {
-    const { classes, user } = this.props;
-    const { password, loading } = this.state;
-    const { error, errorMessage, isLoading } = user;
-    const { title, body } = errorMessage;
-
-    return (
-      <main className={classes.main}>
+    const {
+      classes,
+      user
+    } = this.props;
+    const {
+      password,
+      loading
+    } = this.state;
+    const {
+      error,
+      errorMessage,
+      isLoading
+    } = user;
+    const {
+      title,
+      body
+    } = errorMessage;
+    return <main className={classes.main}>
         <Grid container justifyContent="space-around">
           <Grid item xs={12} sm={6}>
             <ErrorBoundary>
-              <ResetPasswordForm
-                password={password}
-                loading={isLoading || loading}
-                onChange={this.handleChange}
-                onSubmit={this.handleSubmit}
-              />
+              <ResetPasswordForm password={password} loading={isLoading || loading} onChange={this.handleChange} onSubmit={this.handleSubmit} />
             </ErrorBoundary>
           </Grid>
         </Grid>
         <ErrorBoundary>
-          <SimpleErrorDialog
-            open={error}
-            title={title}
-            body={body}
-            handleClose={this.handleErrorDialogClose}
-          />
+          <SimpleErrorDialog open={error} title={title} body={body} handleClose={this.handleErrorDialogClose} />
         </ErrorBoundary>
-      </main>
-    );
+      </main>;
   }
+
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
+const mapStateToProps = ({
+  user
+}: StoreState): {} => ({
   user
 });
 
-const mapDispatchToProps = (dispatch: *): {} =>
-  bindActionCreators(
-    {
-      signIn: signInActions.signIn,
-      updateError: signInActions.updateError,
-      clearError: signInActions.clearSignInError
-    },
-    dispatch
-  );
+const mapDispatchToProps = (dispatch: any): {} => bindActionCreators({
+  signIn: signInActions.signIn,
+  updateError: signInActions.updateError,
+  clearError: signInActions.clearSignInError
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignIn));
