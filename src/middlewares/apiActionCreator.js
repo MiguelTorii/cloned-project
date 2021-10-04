@@ -5,21 +5,10 @@ const apiActionCreator =
   ({ dispatch }) =>
   (next) =>
   async (action) => {
-    const {
-      isApiCall,
-      type,
-      apiCall,
-      meta,
-      successCallback = () => {},
-      failureCallback = () => {}
-    } = action;
-
-    if (!isApiCall) {
-      return next(action);
-    }
+    const { type, apiCall, meta, successCallback = () => {}, failureCallback = () => {} } = action;
 
     if (typeof apiCall !== 'function') {
-      throw new Error('Expected `apiCall` to be a function');
+      return next(action);
     }
 
     try {

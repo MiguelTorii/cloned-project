@@ -41,8 +41,7 @@ class DateRange extends React.PureComponent<Props, State> {
       from: null,
       to: null
     });
-    onChange('fromDate', null);
-    onChange('toDate', null);
+    onChange(null, null);
   };
 
   handleOpen = () => {
@@ -53,8 +52,7 @@ class DateRange extends React.PureComponent<Props, State> {
   handleDateChange = () => {
     const { onChange } = this.props;
     const { from, to } = this.state;
-    onChange('fromDate', from);
-    onChange('toDate', to);
+    onChange(from, to);
     this.setState({ open: false });
   };
 

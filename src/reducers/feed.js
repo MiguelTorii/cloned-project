@@ -6,21 +6,27 @@ import update from 'immutability-helper';
 import { rootActions, feedActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Feed } from '../types/models';
+import { POST_WRITER } from '../constants/common';
+import { FEEDS_PER_PAGE } from '../constants/app';
+import { feedToCamelCase } from '../api/utils';
 
 export type FeedState = {
   isLoading: boolean,
   data: {
     items: Feed,
     hasMore: boolean,
+    lastIndex: number,
     filters: {
       userClasses: Array<string>,
       index: number,
       limit: number,
       postTypes: Array<string>,
       from: string,
+      bookmark: boolean,
       query: string,
       fromDate: ?Object,
-      toDate: ?Object
+      toDate: ?Object,
+      pastFilter: boolean
     }
   },
   error: boolean,
@@ -31,23 +37,24 @@ export type FeedState = {
   scrollData: {
     position: number,
     classId: string
-  }
+  },
+  lastClickedPostScrollPosition: number
 };
 
 const defaultState = {
   data: {
     items: [],
-    hasMore: false,
+    hasMore: true,
+    lastIndex: 0,
     filters: {
-      // userClass: JSON.stringify({ classId: -1, sectionId: -1 }),
-      userClasses: [],
-      index: 0,
-      limit: 10,
+      userClasses: [], // an array of sectionIds
       postTypes: [],
-      from: 'everyone',
+      from: POST_WRITER.CLASSMATES,
+      bookmark: false,
       query: '',
       fromDate: null,
-      toDate: null
+      toDate: null,
+      pastFilter: false
     }
   },
   isLoading: false,
@@ -56,8 +63,9 @@ const defaultState = {
     title: '',
     body: ''
   },
+  lastClickedPostScrollPosition: null,
   scrollData: {
-    position: 0,
+    position: null,
     classId: -1
   }
 };
@@ -142,12 +150,9 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
     case feedActions.CLEAR_FEEDS:
       return update(state, {
         data: {
-          filters: {
-            index: { $set: 0 },
-            limit: { $set: 10 }
-          },
           items: { $set: [] },
-          hasMore: { $set: false }
+          hasMore: { $set: true },
+          lastIndex: { $set: 0 }
         }
       });
     case feedActions.UPDATE_FEED_LIMIT_REQUEST:
@@ -173,6 +178,60 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
       return update(state, {
         scrollData: { $set: defaultState.scrollData }
       });
+    case feedActions.UPDATE_FILTER_FIELDS: {
+      return update(state, {
+        data: {
+          filters: (filterData) => ({
+            ...filterData,
+            ...action.payload
+          })
+        }
+      });
+    }
+    case feedActions.FETCH_FEED: {
+      const posts = action.payload.posts || [];
+      return update(state, {
+        data: {
+          items: { $push: feedToCamelCase(posts) },
+          hasMore: { $set: posts.length >= FEEDS_PER_PAGE },
+          lastIndex: (data) => data + posts.length
+        }
+      });
+    }
+    case feedActions.DELETE_FEED: {
+      return update(state, {
+        data: {
+          items: (data) => data.filter((feed) => feed.feedId !== action.payload.feedId)
+        }
+      });
+    }
+    case feedActions.BOOKMARK_FEED: {
+      const { feedId, bookmarked } = action.meta;
+      const { bookmark: filterBookmark } = state.data.filters;
+
+      // If only bookmarked posts show up and the bookmark was removed from the post, it should be removed from the list.
+      if (filterBookmark && !bookmarked) {
+        return update(state, {
+          data: {
+            items: (data) => data.filter((feed) => feed.feedId !== feedId)
+          }
+        });
+      }
+      return update(state, {
+        data: {
+          items: (data) =>
+            data.map((feed) => {
+              if (feed.feedId !== feedId) {
+                return feed;
+              }
+              return {
+                ...feed,
+                bookmarked: bookmarked
+              };
+            })
+        }
+      });
+    }
     case rootActions.CLEAR_STATE:
       return defaultState;
     default:

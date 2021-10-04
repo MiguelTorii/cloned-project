@@ -114,3 +114,23 @@ export const commandHotkeyText = (key) => {
 
   return `CTRL + ${key}`;
 };
+
+/**
+ * Check if two objects are same
+ * - Two arrays with same elements in different order are same.
+ */
+export const isSame = (obj1, obj2) => {
+  if (obj1 instanceof Array && obj2 instanceof Array) {
+    return _.isEqual(obj1.sort(), obj2.sort());
+  }
+
+  return _.isEqual(obj1, obj2);
+};
+
+export const checkPath = (path, urls) => {
+  if (!path) {
+    return false;
+  }
+
+  return urls.findIndex((url) => path.startsWith(url)) >= 0;
+};

@@ -242,7 +242,6 @@ export const getPointsHistory = (
   limit: number,
   successCb: Function
 ) => ({
-  isApiCall: true,
   type: userActions.GET_POINTS_HISTORY,
   apiCall: () => apiGetPointsHistory(userId, { index, limit }),
   successCallback: successCb
@@ -275,7 +274,6 @@ export const getFlashcards = (
   index: number,
   limit: number
 ) => ({
-  isApiCall: true,
   type: userActions.GET_FLASHCARDS,
   apiCall: () =>
     apiFetchFeeds({
@@ -288,7 +286,6 @@ export const getFlashcards = (
 });
 
 export const deleteFlashcard = (userId: number, feedId: number) => ({
-  isApiCall: true,
   type: userActions.DELETE_FLASHCARDS,
   meta: { feedId },
   apiCall: () => apiDeleteFeed(userId, feedId)
@@ -300,7 +297,6 @@ export const bookmarkFlashcards = (
   isRemove: boolean,
   cb: Function
 ) => ({
-  isApiCall: true,
   type: userActions.BOOKMARK_FLASHCARDS,
   meta: { feedId },
   apiCall: () => bookmark({ feedId, userId, remove: isRemove }),

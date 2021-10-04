@@ -13,7 +13,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 
-import HomeItem from 'components/MainLayout/HomeItem';
 import ClassList from 'components/ClassList/ClassList';
 import CustomSwitch from 'components/MainLayout/Switch';
 import Tooltip from 'containers/Tooltip/Tooltip';
@@ -51,6 +50,7 @@ import { ReactComponent as OnStudyRoom } from 'assets/svg/active-study-room.svg'
 import DrawerItem from 'components/MainLayout/DrawerItem';
 
 import { useStyles } from '../_styles/MainLayout/Drawer';
+import { checkPath } from '../../utils/helpers';
 
 const Drawer = ({
   newClassExperience,
@@ -331,7 +331,21 @@ const Drawer = ({
           OffIcon={<ChatIconOff />}
           listItemClass={classes.otherPath}
         />
-        <HomeItem MyLink={MyLink} newClassExperience={newClassExperience} />
+        <DrawerItem
+          OnIcon={<ClassFeedIconOn />}
+          OffIcon={<ClassFeedIconOff />}
+          primaryText="Class Feeds"
+          link="/feed"
+          component={MyLink}
+          active={checkPath(pathname, [
+            '/feed',
+            '/question',
+            '/notes',
+            '/sharelink',
+            '/question',
+            '/post'
+          ])}
+        />
         <DrawerItem
           OnIcon={
             <img src={FlashcardsIconOn} alt="flashcards on" className={classes.flashcardIconOn} />
@@ -339,11 +353,9 @@ const Drawer = ({
           primaryText="Flashcards"
           pathname={pathname}
           component={MyLink}
-          link={`/flashcards${search}`}
+          link="/flashcards"
           OffIcon={<FlashcardsIconOff />}
-          listItemClass={classNames(
-            pathname.includes('/flashcards') ? classes.currentPath : classes.otherPath
-          )}
+          active={checkPath(pathname, ['/flashcards'])}
         />
         <DrawerItem
           OnIcon={<WorkflowIconOn />}

@@ -80,11 +80,10 @@ type Props = {
   fetchClasses: Function,
   // campaign: CampaignState,
   user: UserState,
-  pushTo: Function,
-  clearFeeds: Function
+  pushTo: Function
 };
 
-const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => {
+const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [classList, setClassList] = useState([]);
   const [canAddClasses, setCanAddClasses] = useState(false);
   const [openAddClasses, setOpenAddClasses] = useState(false);
@@ -180,10 +179,9 @@ const Classes = ({ pushTo, fetchClasses, clearFeeds, classes, user }: Props) => 
   const navigate = useCallback(
     ({ courseDisplayName, sectionId, classId, isCurrent }) => {
       document.title = courseDisplayName;
-      clearFeeds();
       pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}&pastFilter=${!isCurrent}`);
     },
-    [pushTo, clearFeeds]
+    [pushTo]
   );
 
   const getFilteredList = () => {
@@ -311,7 +309,6 @@ const mapDispatchToProps = (dispatch: *): {} =>
   bindActionCreators(
     {
       fetchClasses: userActions.fetchClasses,
-      clearFeeds: feedActions.clearFeeds,
       pushTo: push
     },
     dispatch

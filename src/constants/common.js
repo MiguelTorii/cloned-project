@@ -115,6 +115,20 @@ export const fileContent = {
   'other-default': 'File'
 };
 
+export const POST_WRITER = {
+  ME: 'me',
+  CLASSMATES: 'classmates',
+  ANYONE: 'anyone'
+};
+
+export const DEFAULT_DEBOUNCE_DURATION_IN_MS = 500;
+
+export const FEED_NAVIGATION_TABS = {
+  CLASS_FEED: 'class_feed',
+  MY_POSTS: 'my_posts',
+  BOOKMARKS: 'bookmarks'
+};
+
 export const QUILL_TOOLBAR_SHORT_KEYS = {
   BOLD: `Bold (${commandHotkeyText('B')})`,
   ITALIC: `Italic (${commandHotkeyText('I')})`,
