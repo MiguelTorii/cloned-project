@@ -36,7 +36,6 @@ export default (theme) => ({
   editor: {
     display: 'flex',
     justifyContent: 'space-between',
-    paddingBottom: theme.spacing(2),
     '& .ql-toolbar.ql-snow': {
       border: 'none',
       padding: theme.spacing(1, 0)
