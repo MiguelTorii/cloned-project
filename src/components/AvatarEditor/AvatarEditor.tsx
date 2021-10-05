@@ -128,7 +128,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
         <Toolbar disabledActions={disabledActions} onAction={onAction} />
       </Box>
       <Grid container justifyContent="space-between">
-        <Grid item></Grid>
+        <Grid item />
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>

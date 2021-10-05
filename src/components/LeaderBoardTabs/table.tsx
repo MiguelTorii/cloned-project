@@ -66,7 +66,7 @@ const StudentTable = ({
         <Table className={classes.table}>
           <TableHead>
             <StyledTableRow>
-              <TableCell className={classes.tdHeader} padding="none" align="center"></TableCell>
+              <TableCell className={classes.tdHeader} padding="none" align="center" />
               <TableCell className={classes.tdHeader} align="left">
                 Student
               </TableCell>

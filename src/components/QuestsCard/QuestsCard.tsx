@@ -37,7 +37,7 @@ class QuestsCard extends React.PureComponent<Props, State> {
           Quests
         </Typography>
         <Quests userId={userId} quests={data.activeQuests} />
-        <div className={classes.status}></div>
+        <div className={classes.status} />
       </Paper>
     );
   }

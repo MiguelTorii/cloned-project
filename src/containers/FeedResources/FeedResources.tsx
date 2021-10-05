@@ -116,7 +116,7 @@ const FeedResources = ({ gridRef, width, classes, user, onboardingListVisible }:
         height: `calc(100vh - ${bannerHeight + 90}px)`
       }}
     >
-      <div className={classes.content}></div>
+      <div className={classes.content} />
       {display && (
         <Paper className={classes.paper}>
           <Grid item>

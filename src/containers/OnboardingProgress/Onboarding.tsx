@@ -208,7 +208,7 @@ const Onboarding = ({ classes, open, userId, updateOnboarding }: Props) => {
         <div>
           <Button
             color="primary"
-            {...({ label: <span className={classes.buttonLabel}></span> } as any)}
+            {...({ label: <span className={classes.buttonLabel} /> } as any)}
             disabled={buttonDisabled}
             className={classes.button}
             classes={{

@@ -17,7 +17,7 @@ class SignUpForm extends React.PureComponent<Props, State> {
       <main className={classes.main}>
         <Paper className={classes.paper}>
           {children}
-          <div className={classes.links}></div>
+          <div className={classes.links} />
         </Paper>
       </main>
     );
