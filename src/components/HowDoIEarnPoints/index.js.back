@@ -141,4 +141,4 @@ class HowDoIEarnPoints extends React.PureComponent<Props> {
   }
 }
 
-export default withStyles(styles)(HowDoIEarnPoints);
+export default withStyles(styles as any)(HowDoIEarnPoints);

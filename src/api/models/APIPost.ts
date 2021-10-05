@@ -1,0 +1,32 @@
+import { APIPostInfo } from './APIPostInfo';
+
+export type APIPost = {
+  body: string;
+  summary: string;
+  bookmarked: boolean;
+  class_id: number;
+  classroom_name: string;
+  course_display_name: string;
+  created: string;
+  feed_id: number;
+  grade: number;
+  in_study_circle: boolean;
+  name: string;
+  post_id: number;
+  post_info: APIPostInfo;
+  rank: number;
+  reports: number;
+  role_id: number;
+  role: string;
+  school: string;
+  subject: string;
+  thanked: boolean;
+  title: string;
+  type_id: number;
+  user_id: string;
+  user_profile_url: string;
+  read_only: boolean;
+  best_answer: boolean;
+  section_id: number;
+  content: string;
+};
