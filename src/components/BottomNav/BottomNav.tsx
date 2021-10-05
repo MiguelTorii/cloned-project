@@ -55,7 +55,7 @@ class BottomNav extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { value, open } = this.state;
     return (
-      <Fragment>
+      <>
         <BottomNavigation
           value={value}
           onChange={this.handleChange}
@@ -164,7 +164,7 @@ class BottomNav extends React.PureComponent<Props, State> {
             </List>
           </div>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }

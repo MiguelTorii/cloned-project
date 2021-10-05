@@ -655,7 +655,7 @@ class Profile extends React.PureComponent<Props, State> {
 
     const seasons = processSeasons(userStatistics);
     return (
-      <Fragment>
+      <>
         <div className={classes.root}>
           <Grid container spacing={4}>
             <Grid item xs={12} lg={8}>
@@ -804,7 +804,7 @@ class Profile extends React.PureComponent<Props, State> {
             onClose={this.handleStudyCircleClose}
           />
         </ErrorBoundary>
-      </Fragment>
+      </>
     );
   }
 

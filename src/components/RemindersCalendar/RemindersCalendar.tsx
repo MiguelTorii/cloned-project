@@ -122,7 +122,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
       }
     };
     return (
-      <Fragment>
+      <>
         <main className={classes.main}>
           <Paper className={classes.paper}>
             <div className={classes.header}>
@@ -193,7 +193,7 @@ class RemindersCalendar extends React.PureComponent<Props, State> {
             </ListItem>
           </List>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }
