@@ -85,7 +85,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
     const { classes, children, title, open, onClose, onStartVideoCall } = this.props;
     const { anchorEl, openRemove } = this.state;
     return (
-      <Fragment>
+      <>
         <Dialog //   className={cx(classes.paper, open && classes.paperOpen)}
           fullScreen
           open={Boolean(open)}
@@ -96,7 +96,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
                 {title}
               </Typography>
             </ButtonBase>
-            <Fragment>
+            <>
               <ButtonBase className={classes.iconButton} onClick={onStartVideoCall}>
                 <VideoCamIcon />
               </ButtonBase>
@@ -108,7 +108,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
               >
                 <SettingsIcon />
               </ButtonBase>
-            </Fragment>
+            </>
             <ButtonBase className={classes.iconButton} onClick={onClose}>
               <ClearIcon />
             </ButtonBase>
@@ -173,7 +173,7 @@ class DialogChatItem extends React.PureComponent<Props, State> {
             </Button>
           </DialogActions>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }

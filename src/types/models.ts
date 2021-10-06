@@ -581,3 +581,13 @@ export type SyncSuccessData = {
   viewedOnboarding: boolean;
   viewedTooltips: Array<number>;
 };
+export type Member = {
+  firstname: string;
+  image: string;
+  isOnline: boolean;
+  lastname: string;
+  registered: boolean;
+  role: string;
+  roleId: number;
+  userId: number;
+};

@@ -76,7 +76,7 @@ class WebNotification extends React.Component<Props, State> {
       sound: mp3Sound
     };
     return (
-      <Fragment>
+      <>
         <Notification
           ignore={ignore && title !== ''}
           notSupported={this.handleNotSupported}
@@ -103,7 +103,7 @@ class WebNotification extends React.Component<Props, State> {
             src={mp3Sound}
           />
         </audio>
-      </Fragment>
+      </>
     );
   }
 }

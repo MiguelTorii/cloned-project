@@ -49,7 +49,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     return (
-      <Fragment>
+      <>
         <IconButton
           className={classes.button}
           aria-label="Select Emoji"
@@ -78,7 +78,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
         >
           <Picker onSelect={this.handleSelect} />
         </Popover>
-      </Fragment>
+      </>
     );
   }
 }

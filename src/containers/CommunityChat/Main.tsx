@@ -20,6 +20,7 @@ import LoadingMessageGif from '../../assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
 import { PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
+import { Member } from '../../types/models';
 
 type Props = {
   isLoading?: boolean;
@@ -90,7 +91,7 @@ const Main = ({
   const [typing, setTyping] = useState(null);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState({});
+  const [members, setMembers] = useState<{ [index: number]: Member }>({});
   const [campaign, setCampaign] = useState(null);
   const [showError, setShowError] = useState(false);
   const [focusMessageBox, setFocusMessageBox] = useState(0);
@@ -145,14 +146,22 @@ const Main = ({
       }
     } // eslint-disable-next-line
   }, [newMessage]);
+
   const getTypingMemberName = useCallback(
     (id) => {
       const { members } = local[channel.sid];
-      const currentMember = members.filter((member) => member.userId === id);
-      return `${currentMember[0].firstname} ${currentMember[0].lastname}`;
+      const currentMember: Member = members.find(
+        (member: Member) => String(member.userId) === String(id)
+      );
+
+      if (currentMember) {
+        return `${currentMember.firstname} ${currentMember.lastname}`;
+      }
+      return '';
     },
     [local, channel]
   );
+
   useEffect(() => {
     if (channelList.length && !channel) {
       startMessageLoading(true);
@@ -283,17 +292,7 @@ const Main = ({
     },
     [members]
   );
-  const getFullName = useCallback(
-    (userId) => {
-      if (!members[userId]) {
-        return null;
-      }
 
-      const { firstName, lastName } = members[userId];
-      return `${firstName} ${lastName}`;
-    },
-    [members]
-  );
   const renderMessage = useCallback(
     (item, profileURLs) => {
       const { id, type } = item;
@@ -568,7 +567,6 @@ const Main = ({
             setFiles={setFiles}
             files={files}
             focusMessageBox={focusMessageBox}
-            getFullName={getFullName}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
             showNotification={showNotification}

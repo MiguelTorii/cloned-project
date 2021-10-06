@@ -222,7 +222,7 @@ const FlashcardEditor = ({
     }
   }, [questionEditor, okRef]);
   return (
-    <Fragment>
+    <>
       <ToolbarTooltip toolbar={questionToolbar} />
       <ToolbarTooltip toolbar={answerToolbar} />
       <FlashcardDetail
@@ -318,7 +318,7 @@ const FlashcardEditor = ({
           </Grid>
         </ValidatorForm>
       </Dialog>
-    </Fragment>
+    </>
   );
 };
 

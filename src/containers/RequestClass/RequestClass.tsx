@@ -84,7 +84,7 @@ class RequestClass extends React.PureComponent<Props, State> {
     const { classes } = this.props;
     const { class1, class2, class3, class4, class5 } = this.state;
     return (
-      <Fragment>
+      <>
         <Typography paragraph>
           We are adding more classes soon. Please enter the class you are attempting to access
           below. Add up to five classes.
@@ -132,14 +132,14 @@ class RequestClass extends React.PureComponent<Props, State> {
             margin="normal"
           />
         </form>
-      </Fragment>
+      </>
     );
   };
 
   renderThanks = () => (
-    <Fragment>
+    <>
       <Typography paragraph>We will contact you when your classes become available.</Typography>
-    </Fragment>
+    </>
   );
 
   render() {
