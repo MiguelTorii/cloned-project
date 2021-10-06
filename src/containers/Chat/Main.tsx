@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative'
   },
   typing: {
-    minHeight: 28,
+    height: 28,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'

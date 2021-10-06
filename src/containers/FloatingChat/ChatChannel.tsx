@@ -28,6 +28,7 @@ import ChatChannelAddMembers from './ChatChannelAddMembers';
 import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { Member } from '../../types/models';
 
 const styles = (theme) => ({
   list: {
@@ -147,8 +148,14 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const {
       localChannel: { members }
     } = this.props;
-    const currentMember = members.filter((member) => member.userId === id);
-    return `${currentMember[0].firstname} ${currentMember[0].lastname}`;
+    const currentMember: Member = members.find(
+      (member: Member) => String(member.userId) === String(id)
+    );
+
+    if (currentMember) {
+      return `${currentMember.firstname} ${currentMember.lastname}`;
+    }
+    return '';
   };
 
   componentDidMount = async () => {
