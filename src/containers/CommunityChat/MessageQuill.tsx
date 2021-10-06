@@ -23,7 +23,6 @@ type Props = {
   setValue?: any;
   onSendMessage?: any;
   focusMessageBox?: any;
-  getFullName?: any;
   showError?: any;
   onTyping?: any;
   userId?: any;
@@ -41,7 +40,6 @@ const MessageQuill = ({
   setValue,
   onSendMessage,
   focusMessageBox,
-  getFullName,
   showError,
   onTyping,
   userId,
@@ -55,7 +53,6 @@ const MessageQuill = ({
   const [isPressEnter, setPressEnter] = useState(false);
   const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
   const inputFieldRef = useRef();
-  const userName = getFullName(userId);
   const bindings = useMemo(
     () => ({
       enter: {

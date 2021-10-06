@@ -119,7 +119,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
       return item;
     });
     return (
-      <Fragment>
+      <>
         <Paper className={classes.root} elevation={1}>
           <div className={classes.header}>
             <Typography variant="h3" className={classes.title} paragraph align="center">
@@ -240,7 +240,7 @@ class YourMonthCard extends React.PureComponent<Props, State> {
             </DialogActions>
           </DialogContent>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }

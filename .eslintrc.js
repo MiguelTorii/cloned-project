@@ -30,7 +30,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
 
-
     'prettier/prettier': 'error',
     indent: 'off',
     'no-multiple-empty-lines': 'error',
@@ -147,8 +146,8 @@ module.exports = {
     'react/jsx-wrap-multilines': 'off',
     'react/display-name': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'react/jsx-fragments': 'off',
-    'react/self-closing-comp': 'off',
+    'react/jsx-fragments': 'error',
+    'react/self-closing-comp': 'error',
     'react/jsx-curly-brace-presence': 'off',
     'react/jsx-tag-spacing': 'off',
     'react/state-in-constructor': 'off',

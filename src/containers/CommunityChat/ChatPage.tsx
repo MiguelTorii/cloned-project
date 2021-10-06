@@ -38,12 +38,14 @@ const ChatPage = ({
       currentCommunity,
       currentCommunityId,
       oneTouchSendOpen,
-      currentCommunityChannel
+      currentCommunityChannel,
+      defaultCommunityId
     },
     isLoading
   } = chat;
-  const classes: any = useStyles();
-  const campaign = useSelector((state) => (state as any).campaign);
+
+  const classes = useStyles();
+
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -88,11 +90,22 @@ const ChatPage = ({
         setCommunityList(nonEmptyCommunities);
         setCommunityChannels(communityChannels);
 
-        if (currentCommunityId && !currentCommunityChannel && nonEmptyCommunities.length > 0) {
-          const defaultCommunity = nonEmptyCommunities[0].community;
-          setCurrentCommunityId(defaultCommunity.id);
-          setCurrentCommunity(defaultCommunity);
+        let defaultCommunity;
+
+        if (nonEmptyCommunities.length === 0 || oneTouchSendOpen) {
+          defaultCommunity = DEFAULT_COMMUNITY_MENU_ITEMS;
+        } else if (!currentCommunityId || !currentCommunityChannel) {
+          defaultCommunity = (
+            nonEmptyCommunities.find(
+              (community) => community.community.id === defaultCommunityId
+            ) || nonEmptyCommunities[0]
+          ).community;
+        } else {
+          defaultCommunity = currentCommunity;
         }
+
+        setCurrentCommunityId(defaultCommunity.id);
+        setCurrentCommunity(defaultCommunity);
 
         setLoading(false);
       } catch (e) {
@@ -136,35 +149,6 @@ const ChatPage = ({
     },
     [currentCommunity, setCurrentCommunityId, setCurrentCommunity, setCurrentChannelSid]
   );
-  useEffect(() => {
-    if (oneTouchSendOpen || currentCommunityId === 'chat' || !currentCommunityId) {
-      setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
-    } else if (currentCommunity && !!communities?.length && currentCommunity.id !== 'chat') {
-      const targetCourse = communities.filter(
-        (course) => course.community.id === currentCommunity.id
-      );
-
-      if (targetCourse.length) {
-        setCurrentCommunity(targetCourse[0]?.community);
-      }
-    } else if (currentCommunityId && !!communities?.length && currentCommunityId !== 'chat') {
-      const targetCourseChannel = communities.filter(
-        (community) => community.community.id === Number(currentCommunityId)
-      );
-
-      if (targetCourseChannel.length) {
-        setCurrentCommunity(targetCourseChannel[0].community);
-      }
-    }
-  }, [
-    currentCommunityId,
-    setCurrentCommunityId,
-    setCurrentCommunity,
-    currentCommunity,
-    communities,
-    loading,
-    campaign.chatLanding
-  ]);
 
   if (loading) {
     return <LoadingSpin />;

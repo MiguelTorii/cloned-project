@@ -46,7 +46,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
     const { classes, thumbnails, chat } = this.props;
     const { type } = this.state;
     return (
-      <Fragment>
+      <>
         <div className={classes.root}>
           <Paper className={cx(classes.paper, !thumbnails && classes.paperHide)} elevation={1}>
             <div className={classes.scroll}>{thumbnails}</div>
@@ -86,7 +86,7 @@ class LeftPanel extends React.PureComponent<Props, State> {
           </div>
           <div className={cx(classes.section, type !== 'chat' && classes.hide)}>{chat}</div>
         </Drawer>
-      </Fragment>
+      </>
     );
   }
 }

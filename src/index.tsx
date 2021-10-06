@@ -68,6 +68,7 @@ import Flashcards from './pages/View/Flashcards';
 import HomePage from './pages/Home';
 import Gondor from './containers/Auth/Gondor';
 import { theme } from './withRoot';
+import JoinCommunity from './pages/JoinCommunity';
 
 defaultKatexRender('White');
 ReactGA.initialize(GOOGLE_ANALYTICS);
@@ -104,6 +105,7 @@ ReactDOM.render(
                     <Route exact path="/workflow" component={withTracker(Workflow)} />
                     <Route exact path="/chat/:hashId" component={withTracker(ChatChannel)} />
                     <Route exact path="/chat" component={withTracker(Chat)} />
+                    <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
                     <Route exact path="/bookmarks" component={withTracker(Feed)} />
                     <Route exact path="/my_posts" component={withTracker(Feed)} />
                     <Route exact path="/study" component={withTracker(StudyCirclein)} />

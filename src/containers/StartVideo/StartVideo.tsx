@@ -254,7 +254,7 @@ class StartVideo extends React.PureComponent<Props, State> {
     } = this.props;
     const { inviteVisible, classList, groupUsers } = this.state;
     return (
-      <Fragment>
+      <>
         <ErrorBoundary>
           <div className={classes.root}>
             <div className={classes.row}>
@@ -293,7 +293,7 @@ class StartVideo extends React.PureComponent<Props, State> {
           handleInvite={this.handleInvite}
           handleStart={this.handleStart}
         />
-      </Fragment>
+      </>
     );
   }
 }

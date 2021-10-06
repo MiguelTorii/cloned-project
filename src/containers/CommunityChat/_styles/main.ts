@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: any) => ({
     flex: 1,
     overflowY: 'auto',
     position: 'relative',
-    marginBottom: 20,
+    marginBottom: theme.spacing(1 / 2),
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       display: 'flex',
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
   typing: {
     padding: theme.spacing(0, 2),
-    minHeight: 40,
+    height: 28,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start'

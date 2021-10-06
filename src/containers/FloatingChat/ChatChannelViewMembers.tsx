@@ -122,7 +122,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     const { classes, open, userId, onClose, onAddMember } = this.props;
     const { loading, blockedUserId, name, members } = this.state;
     return (
-      <Fragment>
+      <>
         <ErrorBoundary>
           <Dialog
             className={classes.dialog}
@@ -207,7 +207,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
             </Typography>
           </Dialog>
         </ErrorBoundary>
-      </Fragment>
+      </>
     );
   }
 }

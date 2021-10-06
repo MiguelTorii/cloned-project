@@ -156,7 +156,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
     } = this.props;
     const { studyCircle, isThanksLoading, isStudyCircleLoading, loading, circle } = this.state;
     return (
-      <Fragment>
+      <>
         <ErrorBoundary>
           <PostActions
             thanked={thanked}
@@ -184,7 +184,7 @@ class PostItemActions extends React.PureComponent<Props, State> {
             onClose={this.handleStudyCircleClose}
           />
         </ErrorBoundary>
-      </Fragment>
+      </>
     );
   }
 }

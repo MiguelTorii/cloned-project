@@ -131,7 +131,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
     const { classes, image, loaded, loading, type, error } = this.props;
     const { open, zoom, rotate } = this.state;
     return (
-      <Fragment>
+      <>
         <Paper
           className={cx(
             classes.root,
@@ -252,7 +252,7 @@ class EditPhotoThumbnail extends React.PureComponent<Props, State> {
             </GradientButton>
           </div>
         </Dialog>
-      </Fragment>
+      </>
     );
   }
 }

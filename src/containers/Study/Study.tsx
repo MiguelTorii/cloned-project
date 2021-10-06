@@ -1,10 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
+import type { UserState } from '../../reducers/user';
+import type { State as StoreState } from '../../types/state';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import QuestionMark from '../../assets/svg/question-mark.svg';
 import StudyRoomMark from '../../assets/svg/studyroom-mark.svg';
@@ -20,9 +23,16 @@ import Exam from '../../assets/svg/exam.svg';
 import Organization from '../../assets/svg/organization.svg';
 import useStyles from './styles';
 
-const StudyCircleIn = () => {
+type Props = {
+  user?: UserState;
+};
+
+const StudyCircleIn = ({ user }: Props) => {
   const classes = useStyles();
   const history = useHistory();
+  const {
+    data: { userId }
+  } = user;
 
   const scrollMove = (id: string) => {
     const element = document.getElementById(id);
@@ -45,7 +55,7 @@ const StudyCircleIn = () => {
   };
 
   const goToProfile = () => {
-    history.push('/profile');
+    history.push(`/profile/${userId}`);
   };
 
   const goToWorkflow = () => {
@@ -333,4 +343,8 @@ const StudyCircleIn = () => {
   );
 };
 
-export default StudyCircleIn;
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
+});
+
+export default connect<{}, {}, Props>(mapStateToProps, null)(StudyCircleIn);

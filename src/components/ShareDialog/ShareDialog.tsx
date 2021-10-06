@@ -35,7 +35,7 @@ class ShareDialog extends React.PureComponent<Props, State> {
           {isLoading ? (
             <CircularProgress />
           ) : (
-            <Fragment>
+            <>
               <div className={classes.link}>
                 <Typography variant="subtitle1">{link}</Typography>
               </div>
@@ -45,7 +45,7 @@ class ShareDialog extends React.PureComponent<Props, State> {
                   Copy
                 </Button>
               </CopyToClipboard>
-            </Fragment>
+            </>
           )}
         </div>
       </Dialog>

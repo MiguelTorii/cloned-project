@@ -63,7 +63,7 @@ class RemindersListItem extends React.PureComponent<Props, State> {
     const { classes, title, items, left, onUpdate, onDelete } = this.props;
     const { open } = this.state;
     return (
-      <Fragment>
+      <>
         <ListItem button onClick={this.handleClick}>
           <ListItemText primary={title} />
 
@@ -108,7 +108,7 @@ class RemindersListItem extends React.PureComponent<Props, State> {
             </List>
           </Collapse>
         )}
-      </Fragment>
+      </>
     );
   }
 }
