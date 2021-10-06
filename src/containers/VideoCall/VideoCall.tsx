@@ -386,7 +386,7 @@ class VideoCall extends React.Component<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Fragment>
+        <>
           <ErrorBoundary>
             {loading && (
               <div className={classes.loading}>
@@ -403,7 +403,7 @@ class VideoCall extends React.Component<Props, State> {
               handleClose={this.handleErrorDialogClose}
             />
           </ErrorBoundary>
-        </Fragment>
+        </>
       </div>
     );
   }

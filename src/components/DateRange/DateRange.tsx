@@ -142,7 +142,7 @@ class DateRange extends React.PureComponent<Props, State> {
     const { open } = this.state;
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Fragment>
+        <>
           <div className={classes.buttonWrapper}>
             <TransparentButton
               variant="outlined"
@@ -174,7 +174,7 @@ class DateRange extends React.PureComponent<Props, State> {
             variant="dialog"
             renderDay={this.handleRenderDay}
           />
-        </Fragment>
+        </>
       </MuiPickersUtilsProvider>
     );
   }
