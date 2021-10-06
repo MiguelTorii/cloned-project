@@ -276,9 +276,10 @@ class Feed extends React.PureComponent<Props, State> {
     const { filters, lastIndex } = feed.data;
     const { bookmark, from, fromDate, toDate, postTypes, query, userClasses } = filters;
     const { userId, schoolId } = user.data;
+
     const fetchParams = {
-      user_id: string,
-      school_id: string,
+      user_id: '',
+      school_id: -1,
       index: lastIndex,
       limit: FEEDS_PER_PAGE,
       bookmarked: bookmark || undefined,
@@ -291,11 +292,11 @@ class Feed extends React.PureComponent<Props, State> {
 
     switch (from) {
       case POST_WRITER.ME:
-        fetchParams.user_id = userId as any;
+        fetchParams.user_id = userId;
         break;
 
       case POST_WRITER.CLASSMATES:
-        fetchParams.school_id = schoolId as any;
+        fetchParams.school_id = schoolId;
         break;
 
       default:
