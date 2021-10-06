@@ -178,7 +178,7 @@ const EditGroupDetailsDialog = ({
       <Typography variant="h6" gutterBottom>
         Are you sure you want to make changes to&nbsp;{name}?
       </Typography>
-      <div className={classes.spacer}></div>
+      <div className={classes.spacer} />
       <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
         <div className={classes.form}>
           <TextField

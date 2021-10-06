@@ -59,7 +59,7 @@ const CardBoardContent = ({ content, image, isQuestion, onFlip, onAction }) => {
         </Box>
       )}
       <div className={classes.cardBoardFooter}>
-        <div></div>
+        <div />
         <Button
           size="large"
           endIcon={<IconRepeat />}

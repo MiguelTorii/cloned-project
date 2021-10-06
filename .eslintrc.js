@@ -147,7 +147,7 @@ module.exports = {
     'react/display-name': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-fragments': 'error',
-    'react/self-closing-comp': 'off',
+    'react/self-closing-comp': 'error',
     'react/jsx-curly-brace-presence': 'off',
     'react/jsx-tag-spacing': 'off',
     'react/state-in-constructor': 'off',

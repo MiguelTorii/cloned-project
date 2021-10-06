@@ -16,7 +16,7 @@ const OnlineBadge = ({ classes, isVisible, isOnline, backColor, fromChat, childr
   isVisible ? (
     <span className={classes.root}>
       {children}
-      <span className={classes.badge}></span>
+      <span className={classes.badge} />
     </span>
   ) : (
     children
