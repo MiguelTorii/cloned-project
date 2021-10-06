@@ -109,6 +109,7 @@ const Dialog = ({
       disableRestoreFocus
       onClose={onCancel}
       open={open}
+      fullScreen={fullScreen}
       {...props}
     >
       {showHeader && (
