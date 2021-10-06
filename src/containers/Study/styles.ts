@@ -32,5 +32,9 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     fontWeight: 'bold',
     marginLeft: theme.spacing(2)
+  },
+  flashcardLink: {
+    color: theme.circleIn.palette.primaryii222,
+    textDecoration: 'underline'
   }
 }));

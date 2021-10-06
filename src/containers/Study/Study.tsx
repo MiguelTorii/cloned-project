@@ -1,8 +1,10 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import QuestionMark from '../../assets/svg/question-mark.svg';
 import StudyRoomMark from '../../assets/svg/studyroom-mark.svg';
@@ -20,6 +22,43 @@ import useStyles from './styles';
 
 const StudyCircleIn = () => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const scrollMove = (id: string) => {
+    const element = document.getElementById(id);
+    const headerOffset = 80;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  };
+
+  const goToFeed = () => {
+    history.push('/feed');
+  };
+
+  const goToChat = () => {
+    history.push('/chat');
+  };
+
+  const goToProfile = () => {
+    history.push('/profile');
+  };
+
+  const goToWorkflow = () => {
+    history.push('/workflow');
+  };
+
+  const goToFlashcard = () => {
+    history.push('/flashcards');
+  };
+
+  const createNewPost = (tabId: number) => {
+    history.push(`/create_post?tab=${tabId}`);
+  };
 
   return (
     <Box>
@@ -38,32 +77,48 @@ const StudyCircleIn = () => {
           What do you need help with today?
         </Typography>
         <Grid container spacing={3}>
-          <Grid item lg={6} md={12}>
-            <Paper elevation={0} className={classes.helpItem}>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Paper
+              elevation={0}
+              className={classes.helpItem}
+              onClick={() => scrollMove('study-tools')}
+            >
               <img src={Question} alt="homework-help" />
               <Typography variant="body1" paragraph>
                 Homework Help
               </Typography>
             </Paper>
           </Grid>
-          <Grid item lg={6} md={12}>
-            <Paper elevation={0} className={classes.helpItem}>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Paper
+              elevation={0}
+              className={classes.helpItem}
+              onClick={() => scrollMove('group-project')}
+            >
               <img src={Group} alt="group" />
               <Typography variant="body1" paragraph>
                 Group Projects and Studying
               </Typography>
             </Paper>
           </Grid>
-          <Grid item lg={6} md={12}>
-            <Paper elevation={0} className={classes.helpItem}>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Paper
+              elevation={0}
+              className={classes.helpItem}
+              onClick={() => scrollMove('prepare-exam')}
+            >
               <img src={Exam} alt="exam" />
               <Typography variant="body1" paragraph>
                 Prepare for an Exam
               </Typography>
             </Paper>
           </Grid>
-          <Grid item lg={6} md={12}>
-            <Paper elevation={0} className={classes.helpItem}>
+          <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Paper
+              elevation={0}
+              className={classes.helpItem}
+              onClick={() => scrollMove('organization')}
+            >
               <img src={Organization} alt="organization" />
               <Typography variant="body1" paragraph>
                 Organization
@@ -82,13 +137,13 @@ const StudyCircleIn = () => {
           points for helping you out.
         </Typography>
       </Box>
-      <Box mt={5}>
+      <Box mt={5} id="study-tools">
         <Typography className={classes.pageTitle} variant="h5" paragraph>
           Study Tools for Homework Help
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={goToFeed}>
               <img src={QuestionMark} alt="question-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Ask a Question
@@ -114,7 +169,7 @@ const StudyCircleIn = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box mt={5}>
+      <Box mt={5} id="group-project">
         <Typography className={classes.pageTitle} variant="h5" paragraph>
           Group Projects and Studying
         </Typography>
@@ -141,7 +196,7 @@ const StudyCircleIn = () => {
             </Typography>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={goToChat}>
               <img src={MessageMark} alt="message-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Send a Message
@@ -154,7 +209,7 @@ const StudyCircleIn = () => {
             </Typography>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={() => createNewPost(3)}>
               <img src={ResourceMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Share a Resource
@@ -167,7 +222,7 @@ const StudyCircleIn = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box mt={5}>
+      <Box mt={5} id="prepare-exam">
         <Typography className={classes.pageTitle} variant="h5" paragraph>
           Prepare for an Exam
         </Typography>
@@ -181,7 +236,7 @@ const StudyCircleIn = () => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={goToFlashcard}>
               <img src={FlashcardMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Create Flashcards
@@ -192,9 +247,24 @@ const StudyCircleIn = () => {
               concepts. After you have created your flashcards, check out the following Flashcard
               Modes to review or test your knowledge!
             </Typography>
+            <Link href="#" onClick={goToFlashcard}>
+              <Typography variant="h6" paragraph className={classes.flashcardLink}>
+                Review Time
+              </Typography>
+            </Link>
+            <Link href="#" onClick={goToFlashcard}>
+              <Typography variant="h6" paragraph className={classes.flashcardLink}>
+                Quiz Yourself
+              </Typography>
+            </Link>
+            <Link href="#" onClick={goToFlashcard}>
+              <Typography variant="h6" paragraph className={classes.flashcardLink}>
+                Match Magic
+              </Typography>
+            </Link>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={() => createNewPost(2)}>
               <img src={NoteMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Upload your Notes
@@ -204,7 +274,7 @@ const StudyCircleIn = () => {
               Writing notes is an effective way to solidy your understanding of new topics and
               concepts. In the future, you can use these notes to review for any upcoming exams!
             </Typography>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={goToWorkflow}>
               <img src={WorkflowMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Add a task to Workflow
@@ -217,7 +287,7 @@ const StudyCircleIn = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box mt={5}>
+      <Box mt={5} id="organization">
         <Typography className={classes.pageTitle} variant="h5" paragraph>
           Organization
         </Typography>
@@ -232,7 +302,7 @@ const StudyCircleIn = () => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={goToWorkflow}>
               <img src={WorkflowMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Add a task to Workflow
@@ -245,7 +315,7 @@ const StudyCircleIn = () => {
             </Typography>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
+            <Paper elevation={3} className={classes.studyAction} onClick={goToProfile}>
               <img src={BookMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 View my Bookmarks
