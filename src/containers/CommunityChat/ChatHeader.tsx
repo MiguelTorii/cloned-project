@@ -29,6 +29,7 @@ import { PERMISSIONS } from '../../constants/common';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/chatHeader';
 import type { State as StoreState } from '../../types/state';
+import CommunityShareLinkModal from './CommunityShareLinkModal';
 
 type Props = {
   isCommunityChat?: boolean;
@@ -67,6 +68,7 @@ const ChatHeader = ({
   const [openShareLink, setOpenShareLink] = useState(false);
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
   const [openRemoveStudent, setOpenRemoveStudent] = useState(false);
+  const [openCommunityLinkModal, setOpenCommunityLinkModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [membersEl, setMembersEl] = useState(null);
 
@@ -127,9 +129,15 @@ const ChatHeader = ({
     () => permission && permission.includes(PERMISSIONS.REMOVE_USER_GROUP_CHAT_ACCESS),
     [permission]
   );
+
+  const showCommunityShareLink = useMemo(
+    () => isCommunityChat && permission?.includes(PERMISSIONS.EXPERT_MODE_ACCESS),
+    [permission, isCommunityChat]
+  );
+
   const showThreeDotsMenu = useMemo(
-    () => (Object.keys(members).length > 2 && isShow) || deletePermission,
-    [isCommunityChat, deletePermission, members, isShow]
+    () => (Object.keys(members).length > 2 && isShow) || deletePermission || showCommunityShareLink,
+    [isCommunityChat, deletePermission, members, isShow, showCommunityShareLink]
   );
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), []);
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), []);
@@ -142,6 +150,14 @@ const ChatHeader = ({
   const closeShareLinkDialog = useCallback(() => {
     setOpenShareLink(false);
   }, []);
+
+  const handleShareCommunityLink = useCallback(() => {
+    setOpenCommunityLinkModal(true);
+    handleCloseGroupDetailMenu();
+  }, [handleCloseGroupDetailMenu]);
+
+  const handleCloseCommunityLinkModal = useCallback(() => setOpenCommunityLinkModal(false), []);
+
   const handleLoadOptions = useCallback(
     async ({ query, from }) => {
       if (query.trim() === '' || query.trim().length < 3) {
@@ -351,12 +367,19 @@ const ChatHeader = ({
                       Remove Students
                     </MenuItem>
                   )}
+                  {showCommunityShareLink && (
+                    <MenuItem onClick={handleShareCommunityLink}>Share Link</MenuItem>
+                  )}
                 </MenuList>
               </Paper>
             </Popover>
           </div>
         </Grid>
       )}
+      <CommunityShareLinkModal
+        open={openCommunityLinkModal}
+        onClose={handleCloseCommunityLinkModal}
+      />
       <EditGroupDetailsDialog
         title="Edit Group Details"
         channel={channel}

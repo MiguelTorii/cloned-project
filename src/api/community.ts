@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+import { API_ROUTES, API_URL } from '../constants/routes';
 import { callApi } from './api_base';
 import { getToken } from './utils';
 
@@ -46,3 +46,12 @@ export const batchMessage = async ({ message, chatIds }) => {
     method: 'post'
   });
 };
+
+export const joinCommunity = async (hashId) =>
+  callApi({
+    url: `${API_URL}/community/join`,
+    method: 'POST',
+    data: {
+      hid: hashId
+    }
+  });

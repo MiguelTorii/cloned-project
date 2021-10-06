@@ -2,7 +2,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import get from 'lodash/get';
-import { API_ROUTES } from '../constants/routes';
+import { API_ROUTES, API_URL } from '../constants/routes';
 import type { CreateChat, ChatUser } from '../types/models';
 import { callApi } from './api_base';
 import { getToken } from './utils';
@@ -335,3 +335,10 @@ export const apiUpdateChat = async (chatId: string, attributes: Record<string, a
   });
   return response.data;
 };
+
+export const apiGetCommunityShareLink = async (community_id) =>
+  callApi({
+    url: `${API_URL}/community/link`,
+    method: 'POST',
+    data: { community_id }
+  });
