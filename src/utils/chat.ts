@@ -24,7 +24,7 @@ export const getTitle = (channel: Record<string, any>, userId: string, members: 
     if (users) {
       const filter = members.filter((o) => {
         if (o.userId) {
-          return o.userId.toString() !== userId.toString();
+          return o.userId !== userId;
         }
 
         return false;

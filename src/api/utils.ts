@@ -180,7 +180,7 @@ export const userToCamelCase = (user: APIUser): User => ({
 
 export const feedToCamelCase = (posts: APIFeedItem[]): FeedItem[] =>
   posts.map((item: APIFeedItem) => ({
-    userId: String(item.user_id),
+    userId: item.user_id,
     numberOfNotes: item.pages_notes || 0,
     bestAnswer: item.best_answer,
     typeId: item.type_id || 0,

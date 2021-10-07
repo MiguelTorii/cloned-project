@@ -233,7 +233,7 @@ const CreateQuestion = ({
 
       logEventLocally({
         category: 'Question',
-        objectId: String(questionId),
+        objectId: questionId ? String(questionId) : '',
         type: 'Created'
       });
 

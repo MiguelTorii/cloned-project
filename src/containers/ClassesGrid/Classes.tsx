@@ -149,7 +149,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
                   handleLeaveClass({
                     sectionId: s.sectionId,
                     classId: cl.classId,
-                    userId: String(user.data.userId)
+                    userId: user.data.userId
                   }),
                 canLeave: cl.permissions.canLeave
               }));

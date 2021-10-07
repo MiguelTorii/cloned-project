@@ -95,7 +95,7 @@ const CreateChatChannelInput = ({
           ...user,
           value: user.userId,
           label: name,
-          userId: String(user.userId),
+          userId: user.userId,
           avatar: user.profileImageUrl,
           role: user?.role,
           initials

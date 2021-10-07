@@ -154,7 +154,7 @@ const AddRemoveClasses = (props: Props) => {
         await leaveUserClass({
           sectionId,
           classId,
-          userId: String(userId)
+          userId
         });
         delete sections[`sc${sectionId}`];
         setSections(sections);

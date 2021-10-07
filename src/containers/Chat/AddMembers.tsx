@@ -58,7 +58,7 @@ const AddMembers = ({ userId, schoolId, channel, members }) => {
             grade: user.grade,
             avatar: user.profileImageUrl,
             initials,
-            userId: String(user.userId),
+            userId: user.userId,
             firstName: user.firstName,
             lastName: user.lastName,
             relationship: user.relationship

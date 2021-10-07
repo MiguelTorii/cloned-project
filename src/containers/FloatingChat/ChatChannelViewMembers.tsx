@@ -99,7 +99,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     try {
       await blockUser({
         userId,
-        blockedUserId: String(blockedUserId)
+        blockedUserId: blockedUserId
       });
       await onBlock({
         blockedUserId

@@ -82,7 +82,7 @@ class ProfilePage extends React.Component<Props, State> {
     if (userId !== '' && prevUserId !== '' && userId !== prevUserId) {
       const query = queryString.parse(search);
       this.setState({
-        userId: String(userId),
+        userId: userId,
         source: query.from
       });
     }

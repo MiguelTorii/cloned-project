@@ -34,7 +34,7 @@ export const getUserProfile = async ({ userId }: { userId: string }): Promise<Pr
   });
   const { user_profile, about, user_statistics } = result.data;
   const userProfile: UserProfile = {
-    userId: String(user_profile.user_id) || '',
+    userId: user_profile.user_id || '',
     firstName: user_profile.first_name || '',
     lastName: user_profile.last_name || '',
     grade: user_profile.grade || 0,
@@ -131,25 +131,25 @@ const setClassesCache = (result) => {
 
 const getClasses = (classes) =>
   classes.map((userClass) => ({
-    className: String((userClass.course_display_name as string) || ''),
-    classId: Number((userClass.class_id as number) || 0),
+    className: (userClass.course_display_name as string) || '',
+    classId: (userClass.class_id as number) || 0,
     permissions: {
       canLeave: Boolean(((userClass.permissions || {}).can_leave as boolean) || false),
       canCreate: Boolean(((userClass.permissions || {}).can_create as boolean) || false)
     },
     section: (userClass.section || []).map((item) => ({
-      firstName: String((item.first_name as string) || ''),
-      lastName: String((item.last_name as string) || ''),
-      section: String((item.section as string) || ''),
+      firstName: (item.first_name as string) || '',
+      lastName: (item.last_name as string) || '',
+      section: (item.section as string) || '',
       sectionId: Number((item.section_id as number) || 0),
-      subject: String((item.subject as string) || ''),
-      sectionDisplayName: String((item.section_display_name as string) || ''),
-      instructorDisplayName: String((item.instructor_display_name as string) || '')
+      subject: (item.subject as string) || '',
+      sectionDisplayName: (item.section_display_name as string) || '',
+      instructorDisplayName: (item.instructor_display_name as string) || ''
     })),
     subjectId: Number((userClass.subject_id as number) || 0),
-    courseDisplayName: String((userClass.course_display_name as string) || ''),
-    class: String((userClass.class as string) || ''),
-    bgColor: String(userClass.bg_color || ''),
+    courseDisplayName: (userClass.course_display_name as string) || '',
+    class: (userClass.class as string) || '',
+    bgColor: userClass.bg_color || '',
     didInviteClassmates: Boolean(userClass.did_invite_classmates || false),
     didHideFeedEmptyState: Boolean(userClass.did_hide_feed_empty_state || false),
     isCurrent: Boolean(userClass.is_current || false)

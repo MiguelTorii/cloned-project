@@ -24,7 +24,7 @@ const createEvent = async ({
     `${API_ROUTES.EVENTS}`,
     {
       category,
-      object_id: objectId.toString(),
+      object_id: objectId ? objectId.toString() : '',
       recommendation_type: recommendationType,
       type,
       ...rest
