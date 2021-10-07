@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useCallback, useMemo, Fragment } from 'react';
+import React, { useState, useEffect, memo, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
@@ -21,6 +21,7 @@ import { ReactComponent as ChatIconOff } from '../../assets/svg/chat-icon-off.sv
 import { ReactComponent as FeedbackIconOff } from '../../assets/svg/feedback-icon-off.svg';
 import { ReactComponent as FeedbackIconOn } from '../../assets/svg/feedback-icon-on.svg';
 import { ReactComponent as FlashcardsIconOff } from '../../assets/svg/flashcards-icon-off.svg';
+// import { ReactComponent as CircleInLogoIcon } from '../../assets/svg/ic_simple_circlein_logo.svg';
 import FlashcardsIconOn from '../../assets/img/flashcards-icon-on.png';
 import { ReactComponent as GetAppIconOff } from '../../assets/svg/get-app-icon-off.svg';
 import { ReactComponent as GetAppIconOn } from '../../assets/svg/get-app-icon-on.svg';
@@ -466,6 +467,17 @@ const Drawer = ({
             ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
+        {/* <DrawerItem
+          OnIcon={<CircleInLogoIcon />}
+          primaryText="Studying on CircleIn"
+          pathname={pathname}
+          component={MyLink}
+          link="/study"
+          OffIcon={<CircleInLogoIcon />}
+          listItemClass={classNames(
+            ['/study'].includes(pathname) ? classes.currentPath : classes.otherPath
+          )}
+        /> */}
         <div className={classes.divider} />
         <DrawerItem
           onClick={handleOpenGetApp}

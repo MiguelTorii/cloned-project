@@ -42,6 +42,7 @@ import FloatingChat from './containers/FloatingChat/Chat';
 import UserInitializer from './containers/UserInitializer/UserInitializer';
 import Referral from './containers/Referrals/Referral';
 import Saml from './containers/Auth/Saml';
+import StudyCirclein from './pages/Study';
 import Auth from './pages/Auth';
 import AuthRedirect from './pages/AuthRedirect';
 import SignIn from './pages/SignIn';
@@ -107,6 +108,7 @@ ReactDOM.render(
                     <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
                     <Route exact path="/bookmarks" component={withTracker(Feed)} />
                     <Route exact path="/my_posts" component={withTracker(Feed)} />
+                    <Route exact path="/study" component={withTracker(StudyCirclein)} />
                     <Route exact path="/store" component={withTracker(Store)} />
                     <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
                     <Route exact path="/notifications" component={withTracker(Notifications)} />
