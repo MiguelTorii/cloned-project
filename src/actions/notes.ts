@@ -134,7 +134,7 @@ export const updateNote =
       if (res.success) {
         logEventLocally({
           category: 'Note',
-          objectId: String(note.id),
+          objectId: note.id ? String(note.id) : '',
           sectionId: note.sectionId,
           type: 'Updated'
         });

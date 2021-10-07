@@ -150,9 +150,7 @@ const Main = ({
   const getTypingMemberName = useCallback(
     (id) => {
       const { members } = local[channel.sid];
-      const currentMember: Member = members.find(
-        (member: Member) => String(member.userId) === String(id)
-      );
+      const currentMember: Member = members.find((member: Member) => member.userId === id);
 
       if (currentMember) {
         return `${currentMember.firstname} ${currentMember.lastname}`;

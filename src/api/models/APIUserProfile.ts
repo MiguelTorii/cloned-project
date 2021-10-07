@@ -1,5 +1,5 @@
 export type APIUserProfile = {
-  user_id: string | number;
+  user_id: string;
   first_name: string;
   last_name: string;
   grade: number;

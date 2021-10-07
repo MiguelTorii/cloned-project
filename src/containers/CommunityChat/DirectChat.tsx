@@ -191,7 +191,7 @@ const DirectChat = ({
       try {
         await blockUser({
           userId,
-          blockedUserId: String(blockedUserId)
+          blockedUserId: blockedUserId
         });
         await handleBlockUser({
           blockedUserId

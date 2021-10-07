@@ -260,7 +260,7 @@ const UserInitializer = ({
             break;
 
           case 'grade':
-            item.updated_value = currentUser.grade.toString();
+            item.updated_value = currentUser.grade ? currentUser.grade.toString() : '';
             break;
 
           case 'email':

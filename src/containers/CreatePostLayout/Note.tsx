@@ -388,7 +388,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
             });
         logEventLocally({
           category: 'PhotoNote',
-          objectId: String(photoNoteId),
+          objectId: photoNoteId ? String(photoNoteId) : '',
           type: 'Created'
         });
         let hasError = false;
@@ -658,6 +658,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       notes
     } = this.state;
     const notSm = !['xs', 'sm'].includes(width);
+    console.log('note here image change', (this as any).imageChange);
     return (
       <div className={classes.root}>
         <ErrorBoundary>

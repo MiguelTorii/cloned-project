@@ -54,7 +54,7 @@ export const createAccount = async ({
 }) => {
   const result = await axios.post(API_ROUTES.SIGNUP, {
     grade,
-    school_id: String(school),
+    school_id: school,
     first_name: firstName,
     last_name: lastName,
     password,

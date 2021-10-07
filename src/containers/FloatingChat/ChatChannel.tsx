@@ -148,9 +148,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     const {
       localChannel: { members }
     } = this.props;
-    const currentMember: Member = members.find(
-      (member: Member) => String(member.userId) === String(id)
-    );
+    const currentMember: Member = members.find((member: Member) => member.userId === id);
 
     if (currentMember) {
       return `${currentMember.firstname} ${currentMember.lastname}`;

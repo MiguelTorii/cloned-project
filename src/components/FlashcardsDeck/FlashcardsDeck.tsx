@@ -77,6 +77,7 @@ const FlashcardsDeck = ({ data }: Props) => {
     event.preventDefault();
     event.stopPropagation();
   }, []);
+
   // Rendering
   return (
     <div
@@ -125,7 +126,7 @@ const FlashcardsDeck = ({ data }: Props) => {
               onClick={handleClickActionBar}
             >
               <ActionBar
-                isOwn={me.userId.toString() === data.user_id.toString()}
+                isOwn={me.userId === data.user_id}
                 bookmarked={data.bookmarked}
                 onViewEdit={handleView}
                 onBookmark={handleBookmark}
