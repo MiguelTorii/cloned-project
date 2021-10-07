@@ -110,13 +110,19 @@ export const searchUsers = async ({
 };
 
 const getClassesCache = () => {
-  const { result, expires } = JSON.parse(store.get('CLASSES_CACHE'));
+  try {
+    const { result, expires } = JSON.parse(store.get('CLASSES_CACHE'));
 
-  if (moment().valueOf() > expires) {
+    if (moment().valueOf() > expires) {
+      return null;
+    }
+
+    return result;
+  } catch {
+    // TODO log an error to the server here so we know this happened
+    // (because it shouldn't happen).
     return null;
   }
-
-  return result;
 };
 
 const setClassesCache = (result) => {
