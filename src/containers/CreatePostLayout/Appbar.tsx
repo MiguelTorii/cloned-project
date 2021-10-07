@@ -47,7 +47,9 @@ const styles = (theme) => ({
     borderRight: `1px solid ${theme.circleIn.palette.modalBackground}`
   },
   tabWapper: {
-    display: 'contents',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     color: theme.circleIn.palette.inactiveColor,
     fontSize: 16,
     fontWeight: 'bold',
