@@ -218,7 +218,7 @@ class Profile extends React.PureComponent<Props, State> {
 
     if (userId !== '') {
       fetchFeedv2({
-        userId: userId as string
+        userId: userId
       }).then((feed) => {
         this.setState({
           feed
