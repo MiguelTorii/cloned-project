@@ -158,7 +158,7 @@ export const commentsToCamelCase = (comments: APIComments): Comments => ({
 export const userToCamelCase = (user: APIUser): User => ({
   permission: user.permission,
   nonce: user.nonce || '',
-  userId: user.user_id || '',
+  userId: user.user_id ? String(user.user_id) : '',
   email: user.email || '',
   firstName: user.first_name || '',
   lastName: user.last_name || '',
