@@ -32,6 +32,7 @@ import { getInitials } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
+import MessageQuill from './EditMessageQuill';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -71,6 +72,9 @@ const ChatMessage = ({
   handleBlock
 }: Props) => {
   const classes: any = useStyles();
+  const [value, setValue] = useState('');
+  const [isEdit, setEdit] = useState(false);
+  const [editMessageId, setEditMessageId] = useState('');
   const [showOpetions, setShowOptions] = useState(0);
   const [openReport, setOpenReport] = useState(false);
   const [blockUserId, setBlockuserId] = useState('');
@@ -196,6 +200,23 @@ const ChatMessage = ({
     await handleBlock(blockUserId);
   };
 
+  const handleEdit = (msgId, body) => {
+    const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
+    setEdit(true);
+    setEditMessageId(msgId);
+    setValue(message);
+    setAnchorEl(null);
+  };
+
+  const handleRTEChange = useCallback((updatedValue) => {
+    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
+      setValue('');
+    } else {
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '');
+      setValue(currentValue);
+    }
+  }, []);
+
   const open = Boolean(anchorEl);
 
   const renderItem = ({
@@ -204,14 +225,14 @@ const ChatMessage = ({
     isVideoNotification,
     files,
     firstName,
-    createdAt
+    messageId
   }: {
     imageKey: string;
     body: string;
     files: object;
     isVideoNotification: boolean;
     firstName: string;
-    createdAt?: any;
+    messageId: string;
   }) => {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
 
@@ -228,14 +249,29 @@ const ChatMessage = ({
       );
     }
 
-    if (imageKey !== '') {
+    if (messageId === editMessageId && isEdit) {
       return (
-        <div className={classes.bodyWrapper}>
-          <ButtonBase onClick={handleImageClick(imageKey)}>
-            <img className={classes.image} src={imageKey} alt="chat" onLoad={onImageLoaded} />
-          </ButtonBase>
-        </div>
+        <MessageQuill
+          isCommunityChat
+          value={value}
+          userId={currentUserId}
+          onChange={handleRTEChange}
+          files={[]}
+          setValue={setValue}
+        />
       );
+    }
+
+    if (message) {
+      if (imageKey !== '') {
+        return (
+          <div className={classes.bodyWrapper}>
+            <ButtonBase onClick={handleImageClick(imageKey)}>
+              <img className={classes.image} src={imageKey} alt="chat" onLoad={onImageLoaded} />
+            </ButtonBase>
+          </div>
+        );
+      }
     }
 
     if (isVideoNotification) {
@@ -328,7 +364,7 @@ const ChatMessage = ({
                     {date} at {message.createdAt}
                   </Typography>
                 </Box>
-                {showOpetions === message.sid && currentUserId !== userId && (
+                {showOpetions === message.sid && (
                   <Button
                     className={classes.threeDots}
                     variant="contained"
@@ -360,6 +396,11 @@ const ChatMessage = ({
                         <Typography variant="inherit">Block Member</Typography>
                       </MenuItem>
                     )}
+                    {currentUserId === userId && (
+                      <MenuItem onClick={() => handleEdit(message.sid, message.body)}>
+                        <Typography variant="inherit">Edit</Typography>
+                      </MenuItem>
+                    )}
                     <MenuItem onClick={handleOpenReport}>
                       <Typography variant="inherit" className={classes.report} noWrap>
                         Report Issue
@@ -375,7 +416,7 @@ const ChatMessage = ({
               files: message?.files,
               isVideoNotification: message.isVideoNotification,
               firstName: message.firstName,
-              createdAt: message.createdAt
+              messageId: message.sid
             })}
           </div>
         </ListItem>
