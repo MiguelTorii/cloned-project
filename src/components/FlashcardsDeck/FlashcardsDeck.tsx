@@ -17,7 +17,6 @@ import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
 import { APP_ROOT_PATH } from '../../constants/app';
 import Dialog from '../Dialog/Dialog';
 import ActionBar from './ActionBar';
-import type { FeedItem } from '../../types/models';
 import withRoot from '../../withRoot';
 import useStyles from './styles';
 
@@ -78,6 +77,11 @@ const FlashcardsDeck = ({ data }: Props) => {
     event.stopPropagation();
   }, []);
 
+  const isOwn = () => {
+    const dataUserId: string = data.user_id ? String(data.user_id) : '';
+    return me.userId === dataUserId;
+  };
+
   // Rendering
   return (
     <div
@@ -126,7 +130,7 @@ const FlashcardsDeck = ({ data }: Props) => {
               onClick={handleClickActionBar}
             >
               <ActionBar
-                isOwn={me.userId === data.user_id}
+                isOwn={isOwn()}
                 bookmarked={data.bookmarked}
                 onViewEdit={handleView}
                 onBookmark={handleBookmark}

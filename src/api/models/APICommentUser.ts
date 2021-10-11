@@ -1,5 +1,5 @@
 export type APICommentUser = {
-  user_id: string;
+  user_id: number;
   first_name: string;
   last_name: string;
   profile_image_url: string;

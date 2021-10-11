@@ -78,7 +78,7 @@ export const signUp =
         referralCode
       });
       const user: User = {
-        userId: result.user_id || '',
+        userId: result.user_id ? String(result.user_id) : '',
         nonce: result.nonce || '',
         email: result.email || '',
         firstName: result.first_name || '',

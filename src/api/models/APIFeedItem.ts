@@ -4,7 +4,7 @@ import { APITag } from './APITag';
 import { APIPostInfo } from './APIPostInfo';
 
 export type APIFeedItem = {
-  user_id: string;
+  user_id: number;
   type_id: number;
   pages_notes: number;
   feed_id: number;

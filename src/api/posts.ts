@@ -1058,7 +1058,7 @@ export const getPostMetadata = async ({
     numberOfNotes: item.page_notes || 0,
     postId: item.post_id || 0,
     typeId: item.type_id || 0,
-    userId: item.user_id || '',
+    userId: item.user_id ? String(item.user_id) : '',
     firstName: item.first_name || '',
     lastName: item.last_name || '',
     title: item.title || '',
