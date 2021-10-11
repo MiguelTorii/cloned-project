@@ -94,10 +94,9 @@ export const searchSchools = async ({ query }: { query: string }): Promise<Schoo
   }));
 };
 export const getSchool = async ({ schoolId }: { schoolId: string }): Promise<School> => {
-  const result: { data: { school: APISchool } } = await axios.get(
-    `${API_ROUTES.GET_SCHOOL}/${schoolId}`
-  );
-  const { school } = result.data;
+  const result: { data: APISchool } = await axios.get(`${API_ROUTES.GET_SCHOOL}/${schoolId}`);
+  const school = result.data;
+
   return {
     studentLive: school.student_live || 0,
     id: school.id || 0,
