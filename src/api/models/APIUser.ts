@@ -1,7 +1,7 @@
 import type { UpdateProfile } from '../../types/models';
 
 export type APIUser = {
-  user_id: string;
+  user_id: number;
   nonce: string;
   email: string;
   first_name: string;

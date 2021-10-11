@@ -278,7 +278,7 @@ class Feed extends React.PureComponent<Props, State> {
     const { userId, schoolId } = user.data;
 
     const fetchParams = {
-      user_id: '',
+      user_id: 0,
       school_id: -1,
       index: lastIndex,
       limit: FEEDS_PER_PAGE,
@@ -292,7 +292,7 @@ class Feed extends React.PureComponent<Props, State> {
 
     switch (from) {
       case POST_WRITER.ME:
-        fetchParams.user_id = userId;
+        fetchParams.user_id = userId ? Number(userId) : 0;
         break;
 
       case POST_WRITER.CLASSMATES:

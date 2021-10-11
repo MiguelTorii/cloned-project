@@ -20,7 +20,7 @@ export type APIPostResponse = {
     scholarship_points: number;
     school_id: number;
     state: string;
-    user_id: string;
+    user_id: number;
   };
   classes: string[];
   post_id: number;

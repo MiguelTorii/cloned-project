@@ -4,6 +4,6 @@ export type APIPostInfo = {
   post_id: number;
   questions_count: number;
   thanks_count: number;
-  user_id: string;
+  user_id: number;
   view_count: number;
 };
