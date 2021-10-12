@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '../Dialog/Dialog';
-import useStyles from '../_styles/EditFailedModal';
+import useStyles from '../_styles/ChatModal';
 
 type Props = {
   onOk: (...args: Array<any>) => any;
@@ -15,7 +15,7 @@ const EditFailedModal = ({ onOk, open }: Props) => {
       ariaDescribedBy="edit-message-alert"
       className={classes.dialog}
       okTitle="Back to editing"
-      okButtonClass={classes.okButtonClass}
+      okButtonClass={classes.backEditButton}
       headerTitleClass={classes.headerTitleClass}
       hrClass={classes.hrClass}
       onOk={onOk}

@@ -12,7 +12,7 @@ import AttachFile from '../FileUpload/AttachFile';
 import { FILE_LIMIT_SIZE } from '../../constants/chat';
 import { uploadMedia } from '../../actions/user';
 import EditorToolbar, { formats } from './Toolbar';
-import styles from './_styles/messageQuill';
+import styles from '../../containers/CommunityChat/_styles/messageQuill';
 import { isMac } from '../../utils/helpers';
 
 type Props = {
@@ -199,7 +199,7 @@ const MessageQuill = ({
       ) {
         setPressEnter(false);
       } else {
-        await onSendMessage(value.replaceAll('<p><br></p>', ''));
+        await onSendMessage((quill as any).container.firstChild.innerHTML);
         setPressEnter(false);
       }
     }
@@ -259,11 +259,8 @@ const MessageQuill = ({
   );
 
   return (
-    <div className={classes.messageQuill}>
-      <div
-        className={cx(files.length > 0 ? classes.editWithFile : classes.editor)}
-        ref={inputFieldRef}
-      >
+    <div className={classes.editMessageQuill}>
+      <div className={classes.editor} ref={inputFieldRef}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id="editor" className={classes.editorable} ref={quillRef} />
@@ -295,13 +292,6 @@ const MessageQuill = ({
       >
         <Picker onSelect={handleSelectEmoji} />
       </Popover>
-      {files.length > 0 && (
-        <div className={classes.files}>
-          {files.map((file) => (
-            <AttachFile key={file.url} file={file} onClose={() => onClose(file)} smallChat />
-          ))}
-        </div>
-      )}
 
       <div className={cx(showError ? classes.error : classes.nonError)}>
         <Typography component="p" variant="subtitle1" className={classes.errorMessage}>

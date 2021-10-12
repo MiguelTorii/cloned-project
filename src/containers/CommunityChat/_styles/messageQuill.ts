@@ -6,6 +6,10 @@ export default (theme) => ({
       padding: theme.spacing(0, 1)
     }
   },
+  editMessageQuill: {
+    width: '100%',
+    padding: 0
+  },
   files: {
     width: '100%',
     padding: theme.spacing(1),

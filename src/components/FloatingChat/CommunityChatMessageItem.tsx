@@ -144,10 +144,10 @@ const CommunityChatMessageItem = ({
   );
 
   const handleSaveMessage = useCallback(
-    async (message) => {
+    async (messageBody) => {
       try {
         await editMessage({
-          message,
+          message: messageBody,
           messageId: editMessageId,
           chatId: channelId
         });
@@ -160,7 +160,7 @@ const CommunityChatMessageItem = ({
         setShowError(true);
       }
     },
-    [editMessageId, channelId, showNotification]
+    [editMessageId, channelId, showNotification, value]
   );
 
   const handleCloseErrorModal = useCallback(() => {
@@ -171,7 +171,7 @@ const CommunityChatMessageItem = ({
     setEdit(false);
   }, []);
 
-  const handleRTEChange = useCallback((updatedValue) => {
+  const handleChangeMessage = useCallback((updatedValue) => {
     if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
       setValue('');
     } else {
@@ -223,7 +223,7 @@ const CommunityChatMessageItem = ({
             setFiles={setFiles}
             showNotification={showNotification}
             onSendMessage={handleSaveMessage}
-            onChange={handleRTEChange}
+            onChange={handleChangeMessage}
           />
           <Box mt={1}>
             <Button onClick={() => handleCancelEdit()}>Cancel</Button>
@@ -249,6 +249,12 @@ const CommunityChatMessageItem = ({
             {parse(value)}
             <span className={classes.editedMessage}> (edited) </span>
           </Typography>
+          <AnyFileUpload
+            files={files}
+            onImageClick={onImageClick}
+            onImageLoaded={onImageLoaded}
+            renderHtmlWithImage={renderHtmlWithImage}
+          />
         </div>
       );
     }
@@ -306,6 +312,7 @@ const CommunityChatMessageItem = ({
     message,
     name,
     isEdit,
+    value,
     editMessageId,
     onImageClick,
     onImageLoaded,
@@ -403,7 +410,7 @@ const CommunityChatMessageItem = ({
                     <Typography variant="inherit">Block Member</Typography>
                   </MenuItem>
                 )}
-                {myUserId === authorUserId && (
+                {myUserId === authorUserId && message.body && !message.isVideoNotification && (
                   <MenuItem onClick={() => handleEdit(message.sid, message.body)}>
                     <Typography variant="inherit">Edit</Typography>
                   </MenuItem>

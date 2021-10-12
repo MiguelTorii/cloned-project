@@ -21,7 +21,7 @@ import { ReactComponent as ChatIconOff } from '../../assets/svg/chat-icon-off.sv
 import { ReactComponent as FeedbackIconOff } from '../../assets/svg/feedback-icon-off.svg';
 import { ReactComponent as FeedbackIconOn } from '../../assets/svg/feedback-icon-on.svg';
 import { ReactComponent as FlashcardsIconOff } from '../../assets/svg/flashcards-icon-off.svg';
-// import { ReactComponent as CircleInLogoIcon } from '../../assets/svg/ic_simple_circlein_logo.svg';
+import { ReactComponent as CircleInLogoIcon } from '../../assets/svg/ic_simple_circlein_logo.svg';
 import FlashcardsIconOn from '../../assets/img/flashcards-icon-on.png';
 import { ReactComponent as GetAppIconOff } from '../../assets/svg/get-app-icon-off.svg';
 import { ReactComponent as GetAppIconOn } from '../../assets/svg/get-app-icon-on.svg';
@@ -305,6 +305,17 @@ const Drawer = ({
           onClick={handleOpenOneTouchSend}
           pathname={undefined}
         />
+        <DrawerItem
+          OnIcon={<CircleInLogoIcon />}
+          primaryText="Studying on CircleIn"
+          pathname={pathname}
+          component={MyLink}
+          link="/study"
+          OffIcon={<CircleInLogoIcon />}
+          listItemClass={classNames(
+            ['/study'].includes(pathname) ? classes.currentPath : classes.otherPath
+          )}
+        />
         <div className={classes.divider} />
         <ListItem button onClick={handleOpenTutorHelp} className={classes.otherPath}>
           <ListItemIcon className={classes.menuIcon}>
@@ -467,7 +478,7 @@ const Drawer = ({
             ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
-        {/* <DrawerItem
+        <DrawerItem
           OnIcon={<CircleInLogoIcon />}
           primaryText="Studying on CircleIn"
           pathname={pathname}
@@ -477,7 +488,7 @@ const Drawer = ({
           listItemClass={classNames(
             ['/study'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
-        /> */}
+        />
         <div className={classes.divider} />
         <DrawerItem
           onClick={handleOpenGetApp}

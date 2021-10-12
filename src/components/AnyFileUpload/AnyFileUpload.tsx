@@ -8,7 +8,7 @@ import { bytesToSize } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 
 const AnyFileUpload = ({
-  message,
+  message = '',
   renderHtmlWithImage,
   files,
   onImageClick,

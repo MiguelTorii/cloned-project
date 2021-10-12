@@ -6,8 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import EmojiSelector from '../EmojiSelector/EmojiSelector';
+import useStyles from '../../containers/CommunityChat/_styles/toolbar';
 import { ReactComponent as PaperClip } from '../../assets/svg/quill-paper.svg';
-import useStyles from './_styles/toolbar';
 import { QUILL_TOOLBAR_SHORT_KEYS } from '../../constants/common';
 
 const Link = Quill.import('formats/link');

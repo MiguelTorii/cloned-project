@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '../Dialog/Dialog';
-import useStyles from '../_styles/BlockMemberModal';
+import useStyles from '../_styles/ChatModal';
 
 type Props = {
   closeModal: (...args: Array<any>) => any;
