@@ -105,6 +105,7 @@ const ChatMessage = ({
     isVideoNotification,
     firstName,
     files,
+    messageId,
     isOwn
   }: {
     imageKey: string;
@@ -112,6 +113,7 @@ const ChatMessage = ({
     files: object;
     isVideoNotification: boolean;
     firstName: string;
+    messageId: string;
     isOwn: boolean;
   }) => {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
@@ -229,6 +231,7 @@ const ChatMessage = ({
               isVideoNotification: message.isVideoNotification,
               files: message?.files,
               firstName: message.firstName,
+              messageId: message.sid,
               isOwn
             })}
           </div>

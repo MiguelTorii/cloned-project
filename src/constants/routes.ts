@@ -14,6 +14,11 @@ export const API_URL_V1_2 = process.env.REACT_APP_API_BASE_URL
   : process.env.REACT_APP_STAGE === 'production'
   ? 'https://api.circleinapp.com/v1.2'
   : 'https://dev-api.circleinapp.com/v1.2';
+export const API_URL_V2 = process.env.REACT_APP_API_BASE_URL
+  ? `${process.env.REACT_APP_API_BASE_URL}/v2`
+  : process.env.REACT_APP_STAGE === 'production'
+  ? 'https://api.circleinapp.com/v2'
+  : 'https://dev-api.circleinapp.com/v2';
 export const VIDEO_SHARE_URL = process.env.REACT_APP_SELF_URL
   ? `${process.env.REACT_APP_SELF_URL}/video-call`
   : process.env.REACT_APP_STAGE === 'production'
@@ -93,6 +98,7 @@ export const API_ROUTES = {
   SCHOOL_USERS: `${API_URL}/school`,
   CHAT: `${API_URL}/chat`,
   CHAT_V1: `${API_URL_V1_1}/chat`,
+  CHAT_V2: `${API_URL_V2}/chat`,
   LEADERBOARD: `${API_URL_V1_1}/leaderboard`,
   HOME: `${API_URL}/home`,
   HOME_V1_1: `${API_URL_V1_1}/home`,

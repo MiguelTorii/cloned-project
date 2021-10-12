@@ -21,9 +21,7 @@ type Props = {
   value?: any;
   setValue?: any;
   onSendMessage?: any;
-  focusMessageBox?: any;
   showError?: any;
-  onTyping?: any;
   userId?: any;
   showNotification?: any;
   setFiles?: any;
@@ -37,9 +35,7 @@ const MessageQuill = ({
   value,
   setValue,
   onSendMessage,
-  focusMessageBox,
   showError,
-  onTyping,
   userId,
   showNotification,
   setFiles,
@@ -96,8 +92,9 @@ const MessageQuill = ({
     },
     [setFiles, showNotification, classes, files]
   );
+
   const imageHandler = useCallback(
-    async (imageDataUrl, type, imageData) => {
+    async (type, imageData) => {
       setLoading(true);
 
       try {
@@ -145,10 +142,13 @@ const MessageQuill = ({
   }
 
   useEffect(() => {
-    if (quill) {
-      quill.focus();
+    if (quill && value) {
+      quill.clipboard.dangerouslyPasteHTML(value);
+      quill.setSelection(
+        quill.getSelection(true).index + (quill as any).container.firstChild.innerHTML.length
+      );
     }
-  }, [focusMessageBox, quill]);
+  }, [quill]);
 
   useEffect(() => {
     if (quill) {
@@ -185,11 +185,9 @@ const MessageQuill = ({
             quill.focus();
           }
         }
-
-        onTyping();
       });
     }
-  }, [onChange, quill, Quill, onTyping]);
+  }, [onChange, quill, Quill]);
 
   useEffect(() => {
     async function sendMessage() {
@@ -203,7 +201,6 @@ const MessageQuill = ({
         setPressEnter(false);
       } else {
         await onSendMessage(value.replaceAll('<p><br></p>', ''));
-        setValue('');
         setPressEnter(false);
         quill.setText('');
       }

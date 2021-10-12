@@ -5,8 +5,9 @@ import 'react-quill/dist/quill.snow.css';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useHistory, withRouter } from 'react-router';
 import cx from 'classnames';
-import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
+import parse from 'html-react-parser';
+import { Link as RouterLink } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -25,6 +26,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import BlockMemberModal from '../BlockMemberModal/BlockMemberModal';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
+import { editMessage } from '../../api/chat';
 import StudyRoomReport from '../StudyRoomReport/ReportIssue';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
@@ -46,7 +48,9 @@ type Props = {
   role?: string;
   date?: string;
   currentUserId?: string;
+  channelId: string;
   isGroupChannel?: boolean;
+  showNotification?: Function;
   members?: Array<any>;
   messageList?: Array<Record<string, any>>;
   onImageLoaded?: (...args: Array<any>) => any;
@@ -64,7 +68,9 @@ const ChatMessage = ({
   isOnline,
   currentUserId,
   members,
+  channelId,
   isGroupChannel,
+  showNotification,
   messageList,
   onImageLoaded,
   onStartVideoCall,
@@ -73,9 +79,11 @@ const ChatMessage = ({
 }: Props) => {
   const classes: any = useStyles();
   const [value, setValue] = useState('');
+  const [files, setFiles] = useState([]);
   const [isEdit, setEdit] = useState(false);
   const [editMessageId, setEditMessageId] = useState('');
   const [showOpetions, setShowOptions] = useState(0);
+  const [showError, setShowError] = useState(false);
   const [openReport, setOpenReport] = useState(false);
   const [blockUserId, setBlockuserId] = useState('');
   const [blockUserName, setBlockUserName] = useState('');
@@ -113,6 +121,30 @@ const ChatMessage = ({
       return url;
     });
   };
+
+  const handleSaveMessage = useCallback(
+    async (message) => {
+      setEdit(false);
+      try {
+        await editMessage({
+          message,
+          messageId: editMessageId,
+          chatId: channelId
+        });
+        showNotification({
+          message: 'Your message was successfully edited.',
+          variant: 'info'
+        });
+      } catch (err) {
+        setShowError(true);
+      }
+    },
+    [editMessageId, channelId, showNotification]
+  );
+
+  const handleCancelEdit = useCallback(() => {
+    setEdit(false);
+  }, []);
 
   const clickImage = useCallback(
     (e) => {
@@ -203,8 +235,10 @@ const ChatMessage = ({
   const handleEdit = (msgId, body) => {
     const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
     setEdit(true);
-    setEditMessageId(msgId);
-    setValue(message);
+    if (msgId !== editMessageId) {
+      setEditMessageId(msgId);
+      setValue(message);
+    }
     setAnchorEl(null);
   };
 
@@ -251,14 +285,43 @@ const ChatMessage = ({
 
     if (messageId === editMessageId && isEdit) {
       return (
-        <MessageQuill
-          isCommunityChat
-          value={value}
-          userId={currentUserId}
-          onChange={handleRTEChange}
-          files={[]}
-          setValue={setValue}
-        />
+        <>
+          <MessageQuill
+            isCommunityChat
+            userId={currentUserId}
+            value={value}
+            setValue={setValue}
+            files={files}
+            setFiles={setFiles}
+            showNotification={showNotification}
+            onSendMessage={handleSaveMessage}
+            onChange={handleRTEChange}
+          />
+          <Box mt={1}>
+            <Button onClick={() => handleCancelEdit()}>Cancel</Button>
+            <Button
+              classes={{
+                root: classes.saveEditMessageButton,
+                disabled: classes.disableBtn
+              }}
+              disabled={!value}
+              onClick={() => handleSaveMessage(value)}
+            >
+              Save changes
+            </Button>
+          </Box>
+        </>
+      );
+    }
+
+    if (messageId === editMessageId) {
+      return (
+        <div className={classes.bodyWrapper}>
+          <Typography className={clsx(classes.bodyEditMessage, 'ql-editor')}>
+            {parse(value)}
+            <span className={classes.editedMessage}> (edited) </span>
+          </Typography>
+        </div>
       );
     }
 
