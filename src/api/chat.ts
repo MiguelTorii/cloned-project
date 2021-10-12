@@ -52,7 +52,7 @@ export const editMessage = async ({
   message: string;
   messageId: string;
   chatId: string;
-}) => {
+}) =>
   callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/message/${messageId}`,
     method: 'PUT',
@@ -60,7 +60,6 @@ export const editMessage = async ({
       message
     }
   });
-};
 
 export const removeUser = async (userId, chatId) =>
   callApi({

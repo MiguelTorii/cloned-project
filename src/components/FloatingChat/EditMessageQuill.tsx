@@ -197,12 +197,10 @@ const MessageQuill = ({
           !value ||
           value.replaceAll('<p>', '').replaceAll('</p>', '').trim() === '')
       ) {
-        setValue('');
         setPressEnter(false);
       } else {
         await onSendMessage(value.replaceAll('<p><br></p>', ''));
         setPressEnter(false);
-        quill.setText('');
       }
     }
 

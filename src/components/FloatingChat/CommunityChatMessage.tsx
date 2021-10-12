@@ -24,6 +24,7 @@ import Popover from '@material-ui/core/Popover';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import RoleBadge from '../RoleBadge/RoleBadge';
+import EditFailedModal from '../EditFailedModal/EditFailedModal';
 import BlockMemberModal from '../BlockMemberModal/BlockMemberModal';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import { editMessage } from '../../api/chat';
@@ -124,7 +125,6 @@ const ChatMessage = ({
 
   const handleSaveMessage = useCallback(
     async (message) => {
-      setEdit(false);
       try {
         await editMessage({
           message,
@@ -135,16 +135,13 @@ const ChatMessage = ({
           message: 'Your message was successfully edited.',
           variant: 'info'
         });
+        setEdit(false);
       } catch (err) {
         setShowError(true);
       }
     },
     [editMessageId, channelId, showNotification]
   );
-
-  const handleCancelEdit = useCallback(() => {
-    setEdit(false);
-  }, []);
 
   const clickImage = useCallback(
     (e) => {
@@ -163,7 +160,7 @@ const ChatMessage = ({
     };
   }, [clickImage, onImageLoaded]);
 
-  const renderHtmlWithImage = (text) => {
+  const renderHtmlWithImage = useCallback((text) => {
     const htmlString = text.replaceAll(
       '<img',
       `<img
@@ -172,75 +169,104 @@ const ChatMessage = ({
         class=${classes.image}`
     );
     return linkify(htmlString);
-  };
+  }, []);
 
-  const handleViewProfile = (userId) => () => {
-    history.push(
-      buildPath(`/profile/${userId}`, {
-        from: PROFILE_PAGE_SOURCE.CHAT
-      })
-    );
-    setAnchorEl(null);
-  };
+  const handleViewProfile = useCallback(
+    (userId) => () => {
+      history.push(
+        buildPath(`/profile/${userId}`, {
+          from: PROFILE_PAGE_SOURCE.CHAT
+        })
+      );
+      setAnchorEl(null);
+    },
+    []
+  );
 
-  const handleImageClick = (url) => () => {
-    onImageClick(url);
-  };
+  const handleCloseErrorModal = useCallback(() => {
+    setShowError(false);
+  }, []);
 
-  const handleMouseEnter = (sid) => () => {
-    setShowOptions(sid);
-  };
+  const handleImageClick = useCallback(
+    (url) => () => {
+      onImageClick(url);
+    },
+    []
+  );
 
-  const handleMouseLeave = () => () => {
-    setShowOptions(0);
-  };
+  const handleMouseEnter = useCallback(
+    (sid) => () => {
+      setShowOptions(sid);
+    },
+    []
+  );
+
+  const handleMouseLeave = useCallback(
+    () => () => {
+      setShowOptions(0);
+    },
+    []
+  );
 
   const initials = getInitials(name);
 
-  const handleClick = (msgId) => (event) => {
-    setHoverMessageId(msgId);
-    setAnchorEl(event.currentTarget);
-  };
+  const handleClick = useCallback(
+    (msgId) => (event) => {
+      setHoverMessageId(msgId);
+      setAnchorEl(event.currentTarget);
+    },
+    []
+  );
 
   const handleOpenReport = () => {
     setOpenReport(true);
     setAnchorEl(null);
   };
 
-  const handleCloseReport = () => setOpenReport(false);
+  const handleCloseReport = useCallback(() => setOpenReport(false), []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setHoverMessageId('');
     setAnchorEl(null);
-  };
+  }, []);
 
-  const handleOpenBlockMemberModal = (userId, name) => () => {
-    setBlockuserId(userId);
-    setBlockUserName(name);
-    setOpenBlockModal(true);
-    setAnchorEl(null);
-  };
+  const handleOpenBlockMemberModal = useCallback(
+    (userId, name) => () => {
+      setBlockuserId(userId);
+      setBlockUserName(name);
+      setOpenBlockModal(true);
+      setAnchorEl(null);
+    },
+    []
+  );
 
-  const handleCloseBlockMemberModal = () => {
+  const handleCloseBlockMemberModal = useCallback(() => {
     setBlockuserId('');
     setBlockUserName('');
     setOpenBlockModal(false);
-  };
+  }, []);
 
-  const handleBlockUser = async () => {
+  const handleBlockUser = useCallback(async () => {
     handleCloseBlockMemberModal();
     await handleBlock(blockUserId);
-  };
+  }, [blockUserId]);
 
-  const handleEdit = (msgId, body) => {
-    const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
-    setEdit(true);
-    if (msgId !== editMessageId) {
-      setEditMessageId(msgId);
-      setValue(message);
-    }
-    setAnchorEl(null);
-  };
+  const handleEdit = useCallback(
+    (msgId, body) => {
+      const message = body.replace(/(\r\n|\n|\r)/gm, '<br />');
+      setEdit(true);
+      if (msgId !== editMessageId) {
+        setEditMessageId(msgId);
+        setValue(message);
+      }
+      setAnchorEl(null);
+    },
+    [editMessageId]
+  );
+
+  const handleCancelEdit = useCallback(() => {
+    setEdit(false);
+  }, []);
 
   const handleRTEChange = useCallback((updatedValue) => {
     if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
@@ -314,7 +340,7 @@ const ChatMessage = ({
       );
     }
 
-    if (messageId === editMessageId) {
+    if (messageId === editMessageId && message !== value) {
       return (
         <div className={classes.bodyWrapper}>
           <Typography className={clsx(classes.bodyEditMessage, 'ql-editor')}>
@@ -486,6 +512,8 @@ const ChatMessage = ({
       ))}
 
       <StudyRoomReport profiles={profiles} open={openReport} handleClose={handleCloseReport} />
+
+      <EditFailedModal onOk={handleCloseErrorModal} open={showError} />
 
       <BlockMemberModal
         closeModal={handleCloseBlockMemberModal}
