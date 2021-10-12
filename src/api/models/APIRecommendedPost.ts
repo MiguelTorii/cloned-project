@@ -3,7 +3,7 @@ export type APIRecommendedPost = {
   page_notes: number;
   post_id: number;
   type_id: number;
-  user_id: string;
+  user_id: number;
   first_name: string;
   last_name: string;
   title: string;

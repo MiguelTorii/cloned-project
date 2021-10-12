@@ -18,6 +18,11 @@ export type EmptyState = {
   visibility: boolean;
 };
 
+export type FlashcardData = {
+  byId: Record<number, FeedItem>;
+  ids: Array<number>;
+};
+
 export type UserState = {
   action: any;
   announcementData: Announcement | null;
@@ -35,10 +40,7 @@ export type UserState = {
     showSignup: boolean;
   };
   expertMode: boolean;
-  flashcards: {
-    byId: Record<string, FeedItem>;
-    ids: Array<number>;
-  };
+  flashcards: FlashcardData;
   isExpert: boolean;
   isLoading: boolean;
   isMasquerading: boolean;

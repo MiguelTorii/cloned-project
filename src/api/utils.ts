@@ -91,7 +91,7 @@ export const postToCamelCase = (post: APIPost): Post => ({
   title: post.title || '',
   content: post.content || '',
   typeId: post.type_id || 0,
-  userId: post.user_id || '',
+  userId: post.user_id ? String(post.user_id) : '',
   userProfileUrl: post.user_profile_url || '',
   readOnly: post.read_only
 });
@@ -121,7 +121,7 @@ export const postResponseToCamelCase = (response: APIPostResponse): PostResponse
     scholarshipPoints: (response.user || {}).scholarship_points || 0,
     schoolId: (response.user || {}).school_id || 0,
     state: (response.user || {}).state || '',
-    userId: (response.user || {}).user_id || ''
+    userId: (response.user || {}).user_id ? String(response.user.user_id) : ''
   }
 });
 
@@ -138,7 +138,7 @@ export const commentsToCamelCase = (comments: APIComments): Comments => ({
     thanked: item.thanked,
     thanksCount: item.thanks_count || 0,
     user: {
-      userId: item.user.user_id || '',
+      userId: item.user.user_id ? String(item.user.user_id) : '',
       firstName: item.user.first_name || '',
       lastName: item.user.last_name || '',
       profileImageUrl: item.user.profile_image_url || '',
@@ -158,7 +158,7 @@ export const commentsToCamelCase = (comments: APIComments): Comments => ({
 export const userToCamelCase = (user: APIUser): User => ({
   permission: user.permission,
   nonce: user.nonce || '',
-  userId: user.user_id || '',
+  userId: user.user_id ? String(user.user_id) : '',
   email: user.email || '',
   firstName: user.first_name || '',
   lastName: user.last_name || '',
@@ -180,7 +180,7 @@ export const userToCamelCase = (user: APIUser): User => ({
 
 export const feedToCamelCase = (posts: APIFeedItem[]): FeedItem[] =>
   posts.map((item: APIFeedItem) => ({
-    userId: item.user_id,
+    userId: item.user_id ? String(item.user_id) : '',
     numberOfNotes: item.pages_notes || 0,
     bestAnswer: item.best_answer,
     typeId: item.type_id || 0,
@@ -227,7 +227,7 @@ export const feedToCamelCase = (posts: APIFeedItem[]): FeedItem[] =>
       postId: item.post_info.post_id || 0,
       questionsCount: item.post_info.questions_count || 0,
       thanksCount: item.post_info.thanks_count || 0,
-      userId: item.post_info.user_id || '',
+      userId: item.post_info.user_id ? String(item.post_info.user_id) : '',
       viewCount: item.post_info.view_count || 0
     }
   }));

@@ -287,7 +287,7 @@ export const getGroupMembers = async ({ chatId }: { chatId: string }): Promise<A
     scholarshipPoints: user.scholarship_points || 0,
     schoolId: user.school_id || 0,
     state: user.state || '',
-    userId: user.user_id || '',
+    userId: user.user_id ? String(user.user_id) : '',
     isOnline: user.is_online
   }));
 };

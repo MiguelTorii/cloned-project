@@ -34,7 +34,7 @@ export const getUserProfile = async ({ userId }: { userId: string }): Promise<Pr
   });
   const { user_profile, about, user_statistics } = result.data;
   const userProfile: UserProfile = {
-    userId: user_profile.user_id || '',
+    userId: user_profile.user_id ? String(user_profile.user_id) : '',
     firstName: user_profile.first_name || '',
     lastName: user_profile.last_name || '',
     grade: user_profile.grade || 0,

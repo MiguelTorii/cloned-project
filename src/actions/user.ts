@@ -18,7 +18,8 @@ import { checkUserSession } from './sign-in';
 import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
-import { UserClassList, EmptyState } from '../reducers/user';
+import { UserClassList, EmptyState, FlashcardData } from '../reducers/user';
+import { APIFlashcardDeck } from '../api/models/APIFlashcardDeck';
 
 const setBannerHeightAction = ({ bannerHeight }: { bannerHeight: number }): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
@@ -275,7 +276,7 @@ export const getFlashcards = (
   limit?: number
 ) => ({
   type: userActions.GET_FLASHCARDS,
-  apiCall: () =>
+  apiCall: (): Promise<APIFlashcardDeck> =>
     apiFetchFeeds(
       {
         user_id: userId,
