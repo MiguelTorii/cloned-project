@@ -39,7 +39,7 @@ export default (theme) => ({
     },
     '& .ql-editor': {
       maxHeight: 500,
-      background: theme.circleIn.palette.hoverMenu,
+      background: theme.circleIn.palette.floatChatTextAreaBackground,
       color: theme.palette.common.white,
       borderRadius: 20,
       '& > p': {

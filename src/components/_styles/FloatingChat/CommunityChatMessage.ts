@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme: any) => ({
     [theme.breakpoints.down('xs')]: {
       paddingLeft: 0,
       paddingRight: 0
+    },
+    '&.hover': {
+      backgroundColor: theme.circleIn.palette.modalBackground
     }
   },
   report: {
@@ -36,16 +39,6 @@ const useStyles = makeStyles((theme: any) => ({
     margin: theme.spacing(0.5),
     display: 'flex',
     flexDirection: 'column'
-  },
-  messageHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  threeDots: {
-    backgroundColor: theme.circleIn.palette.menuBackground,
-    minWidth: 20,
-    padding: 0
   },
   userMenu: {
     backgroundColor: theme.circleIn.palette.feedBackground
@@ -163,6 +156,22 @@ const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.modalBackground,
     padding: theme.spacing(1, 3),
     borderRadius: 20
+  },
+  chatItemHoverMenu: {
+    position: 'absolute',
+    right: 10,
+    top: -20,
+    background: theme.circleIn.palette.modalBackground,
+    borderRadius: 2,
+    filter: 'drop-shadow(7.30435px 7.30435px 23.1304px rgba(0, 0, 0, 0.4))'
+  },
+  hoverMenuItem: {
+    minWidth: 0,
+    width: 40,
+    height: 40,
+    '& svg': {
+      fontSize: 20
+    }
   },
   saveEditMessageButton: {
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
