@@ -177,7 +177,7 @@ export const getUserClasses = async ({
   if (!cache || skipCache) {
     const appId = expertMode ? 3 : 1;
     result = await axios.get(
-      `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}&application_id=${appId}`,
+      `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}&application_id=${appId}&include_past_classes=true`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -197,7 +197,8 @@ export const getUserClasses = async ({
       empty_state: empty = {}
     }
   } = result;
-  const userClasses = getClasses(classes);
+  const currentClasses = classes.filter((classEntry) => classEntry.is_current);
+  const userCurrentClasses = getClasses(currentClasses);
   const userPastClasses = getClasses(pastClasses || []);
   const emptyState = {
     visibility: empty.visibility || false,
@@ -208,7 +209,7 @@ export const getUserClasses = async ({
     canAddClasses: permissions.can_add_classes || false
   };
   return {
-    classes: userClasses,
+    classes: userCurrentClasses,
     permissions: userPermissions,
     pastClasses: userPastClasses,
     emptyState
