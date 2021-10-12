@@ -591,3 +591,13 @@ export type Member = {
   roleId: number;
   userId: number;
 };
+export type ChatMessageItem = {
+  sid: string;
+  imageKey: string;
+  createdAt: string;
+  body: string;
+  files: any[];
+  isVideoNotification: boolean;
+  firstName: string;
+  lastName: string;
+};

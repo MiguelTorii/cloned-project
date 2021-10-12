@@ -190,3 +190,4 @@ export const LOG_EVENT_CATEGORY = {
 export const LOG_EVENT_TYPE = {
   VIEWED: 'Viewed'
 };
+export const DEFAULT_EMOJI_REACTIONS = [':rocket:', ':raised_hands:', ':heart:', ':tada:'];
