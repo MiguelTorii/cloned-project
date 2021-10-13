@@ -29,6 +29,7 @@ import type { CampaignState } from '../../reducers/campaign';
 import { isSame, buildPath } from '../../utils/helpers';
 import { FEED_NAVIGATION_TABS, POST_WRITER, PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { FEEDS_PER_PAGE } from '../../constants/app';
+import { APIFetchFeedsParams } from '../../api/params/APIFetchFeedsParams';
 
 const styles = () => ({
   root: {
@@ -277,9 +278,7 @@ class Feed extends React.PureComponent<Props, State> {
     const { bookmark, from, fromDate, toDate, postTypes, query, userClasses } = filters;
     const { userId, schoolId } = user.data;
 
-    const fetchParams = {
-      user_id: 0,
-      school_id: -1,
+    const fetchParams: APIFetchFeedsParams = {
       index: lastIndex,
       limit: FEEDS_PER_PAGE,
       bookmarked: bookmark || undefined,

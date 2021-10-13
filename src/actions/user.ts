@@ -20,6 +20,7 @@ import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
 import { UserClassList, EmptyState, FlashcardData } from '../reducers/user';
 import { APIFlashcardDeck } from '../api/models/APIFlashcardDeck';
+import { APIFetchFeedsParams } from '../api/params/APIFetchFeedsParams';
 
 const setBannerHeightAction = ({ bannerHeight }: { bannerHeight: number }): Action => ({
   type: userActions.SET_BANNER_HEIGHT,
@@ -276,17 +277,21 @@ export const getFlashcards = (
   limit?: number
 ) => ({
   type: userActions.GET_FLASHCARDS,
-  apiCall: (): Promise<APIFlashcardDeck> =>
-    apiFetchFeeds(
-      {
-        user_id: userId,
-        bookmarked,
-        tool_type_id: 3,
-        index,
-        limit
-      },
-      null
-    )
+  apiCall: (): Promise<APIFlashcardDeck> => {
+    const params: APIFetchFeedsParams = {
+      bookmarked,
+      tool_type_id: 3,
+      index,
+      limit
+    };
+
+    // Add optional values.
+    if (userId) {
+      params.user_id = Number(userId);
+    }
+
+    return apiFetchFeeds(params, null);
+  }
 });
 export const deleteFlashcard = (userId: string, feedId: number) => ({
   type: userActions.DELETE_FLASHCARDS,
