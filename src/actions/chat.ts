@@ -342,13 +342,11 @@ export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
   }
 };
 export const setCurrentChannelSid = (selectedChannelId) => async (dispatch: Dispatch) => {
-  if (selectedChannelId) {
-    dispatch(
-      setCurrentChannelSidAction({
-        selectedChannelId
-      })
-    );
-  }
+  dispatch(
+    setCurrentChannelSidAction({
+      selectedChannelId
+    })
+  );
 };
 export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) => {
   if (currentChannel) {
