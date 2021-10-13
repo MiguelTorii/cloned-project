@@ -93,9 +93,10 @@ const capitalize = (string) => {
 };
 
 export const getChannelName = (chatName) => {
-  const name = chatName.replaceAll('-', ' ');
+  const name = chatName.replace(/-/g, ' ');
   return capitalize(name);
 };
+
 export const getAvatar = ({
   id,
   profileURLs
@@ -106,6 +107,7 @@ export const getAvatar = ({
   const item = profileURLs.find((user) => Number(user.identity) === Number(id));
   return item ? item.profileImageUrl : '';
 };
+
 export const processMessages = ({
   items,
   userId
@@ -245,7 +247,9 @@ export const processMessages = ({
     return [];
   }
 };
+
 export const getFileExtension = (filename) => filename.split('.').pop();
+
 export const getFileAttributes = (files) =>
   files.map((file) => ({
     file_name: file.name,
@@ -254,6 +258,7 @@ export const getFileAttributes = (files) =>
     file_extension: getFileExtension(file.name),
     file_read_url: file.url
   }));
+
 export const getInitials = (name = '') => {
   const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
 
@@ -264,12 +269,14 @@ export const getInitials = (name = '') => {
   const { length } = initials;
   return initials[0] + initials[length - 1];
 };
+
 export const containsImage = (message: string) =>
   message.includes('<img')
     ? 'Uploaded a image'
     : message.includes('File Attachment')
     ? 'Uploaded a file'
     : parse(message);
+
 export const bytesToSize = (bytes, decimals = 1) => {
   if (bytes === 0) {
     return '0 Bytes';
