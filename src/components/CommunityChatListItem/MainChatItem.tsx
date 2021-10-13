@@ -149,7 +149,7 @@ const MainChatItem = ({
           bgColorPath={dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'}
         >
           <Avatar className={classes.avatarProfile} src={imageProfile}>
-            {initials || <GroupIcon />}
+            {initials() || <GroupIcon />}
           </Avatar>
         </OnlineBadge>
         <div className={classes.grow}>

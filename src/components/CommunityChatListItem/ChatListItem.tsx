@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import MainChatItem from './MainChatItem';
 import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
+import { Member } from '../../types/models';
 
 type Props = {
   channel?: Record<string, any>;
@@ -40,8 +41,8 @@ const ChatListItem = ({
     if (channel && channel.members) {
       if (channel.members.length === 2) {
         setIsDirectChat(true);
-        channel.members.forEach((member) => {
-          if (Number(member.userId) !== Number(userId)) {
+        channel.members.forEach((member: Member) => {
+          if (String(member.userId) !== String(userId)) {
             setName(`${member.firstname} ${member.lastname}`);
             setThumbnail(member.image);
             setIsOnline(member.isOnline);
