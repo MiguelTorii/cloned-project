@@ -1,9 +1,37 @@
 import { getInitials, getChannelName } from './chat';
 
-test('name is not null', () => {
-  expect(getInitials('Jaron Coco Johnson')).toBe('JJ');
+test('middle name test for getInitials', () => {
+  expect(getInitials('Jaron Coco Swanson')).toBe('JS');
 });
 
-test('channel name is valid', () => {
-  expect(getChannelName('Name-of-this-CHANNEL')).toBe('Name of this CHANNEL');
+test('all caps name test for getInitials', () => {
+  expect(getInitials('JARON JOHNSON')).toBe('JJ');
+});
+
+test('lowercase name test for getInitials', () => {
+  expect(getInitials('jaron coco johnson')).toBe('jj');
+});
+
+test('undefined name for getIntials', () => {
+  expect(getInitials(undefined)).toBe('');
+});
+
+test('null name for getInitials', () => {
+  expect(getInitials(null)).toBe('');
+});
+
+test('single word channel name for getChannelName', () => {
+  expect(getChannelName('CHANNEL')).toBe('CHANNEL');
+});
+
+test('null channel name for getChannelName', () => {
+  expect(getChannelName(null)).toBe('');
+});
+
+test('undefined channel name for getChannelName', () => {
+  expect(getChannelName(undefined)).toBe('');
+});
+
+test('undefined channel name for getChannelName', () => {
+  expect(getChannelName(undefined)).toBe('');
 });

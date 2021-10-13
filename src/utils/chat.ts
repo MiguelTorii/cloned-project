@@ -45,6 +45,7 @@ export const getTitle = (channel: Record<string, any>, userId: string, members: 
     return '';
   }
 };
+
 export const getSubTitle = (message: Record<string, any>, userId: string) => {
   const { state } = message;
   const { attributes, author, body } = state;
@@ -88,13 +89,15 @@ const capitalize = (string) => {
   if (typeof string !== 'string') {
     return '';
   }
-
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 export const getChannelName = (chatName) => {
-  const name = chatName.replace(/-/g, ' ');
-  return capitalize(name);
+  if (chatName) {
+    const name = chatName.replace(/-/g, ' ');
+    return capitalize(name);
+  }
+  return '';
 };
 
 export const getAvatar = ({
@@ -259,15 +262,16 @@ export const getFileAttributes = (files) =>
     file_read_url: file.url
   }));
 
-export const getInitials = (name = '') => {
-  const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
-
-  if (initials.length < 3) {
-    return initials;
+export const getInitials = (name = ''): string => {
+  if (name) {
+    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    if (initials.length < 3) {
+      return initials;
+    }
+    const { length } = initials;
+    return initials[0] + initials[length - 1];
   }
-
-  const { length } = initials;
-  return initials[0] + initials[length - 1];
+  return '';
 };
 
 export const containsImage = (message: string) =>
