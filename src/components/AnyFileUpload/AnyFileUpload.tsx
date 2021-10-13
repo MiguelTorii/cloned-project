@@ -8,7 +8,7 @@ import { bytesToSize } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 
 const AnyFileUpload = ({
-  message,
+  message = '',
   renderHtmlWithImage,
   files,
   onImageClick,
@@ -17,7 +17,7 @@ const AnyFileUpload = ({
 }) => {
   const classes: any = useStyles();
 
-  const renderMessage = (html, fileHtml) => (
+  const renderMessage = (fileHtml) => (
     <div className={cx(classes.bodyWrapper)}>
       <Typography
         className={clsx(classes.body, 'ql-editor')}
@@ -30,7 +30,7 @@ const AnyFileUpload = ({
   );
 
   if (files?.length) {
-    const fileHtml = files.map((file, index) => {
+    const fileHtml = files.map((file) => {
       const { readUrl, fileName, fileType } = file;
 
       if (fileType && fileType.includes('image')) {
@@ -53,7 +53,7 @@ const AnyFileUpload = ({
         />
       );
     });
-    return renderMessage(message, fileHtml);
+    return renderMessage(fileHtml);
   }
 
   return (

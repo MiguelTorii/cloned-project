@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import parse from 'html-react-parser';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
@@ -19,8 +20,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import { Emoji } from 'emoji-mart';
 import clsx from 'clsx';
+import { editMessage } from '../../api/chat';
 import { getInitials } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
+import EditFailedModal from '../EditFailedModal/EditFailedModal';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import { DEFAULT_EMOJI_REACTIONS, PROFILE_PAGE_SOURCE } from '../../constants/common';
@@ -29,6 +32,7 @@ import { ChatMessageItem } from '../../types/models';
 import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
 import { ReactComponent as IconAddReaction } from '../../assets/svg/add_reaction.svg';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
+import MessageQuill from './EditMessageQuill';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -39,6 +43,7 @@ type Props = {
   name: string;
   authorUserId: string;
   role: string;
+  channelId: string;
   avatar: string;
   isOnline: boolean;
   isGroupChannel: boolean;
@@ -48,6 +53,7 @@ type Props = {
   onBlockMember: (number, string) => void;
   onImageClick: (string) => void;
   onImageLoaded: (string) => void;
+  showNotification: (object) => void;
   onStartVideoCall: () => void;
 };
 
@@ -70,11 +76,13 @@ const CommunityChatMessageItem = ({
   date,
   message,
   role,
+  channelId,
   name,
   authorUserId,
   avatar,
   isOnline,
   isGroupChannel,
+  showNotification,
   onViewProfile,
   onReportIssue,
   onBlockMember,
@@ -85,6 +93,11 @@ const CommunityChatMessageItem = ({
   const classes = useStyles();
   const myUserId = useSelector<any>((state) => state.user.data.userId);
   const [isHover, setIsHover] = useState(false);
+  const [isEdit, setEdit] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [value, setValue] = useState('');
+  const [editMessageId, setEditMessageId] = useState('');
+  const [files, setFiles] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMouseEnter = useCallback(() => {
@@ -117,6 +130,56 @@ const CommunityChatMessageItem = ({
 
   const handleAddEmojiReaction = useCallback((emojiColons) => {}, []);
 
+  const handleEdit = useCallback(
+    (msgId, body) => {
+      const messageBody = body.replace(/(\r\n|\n|\r)/gm, '<br />');
+      setEdit(true);
+      if (msgId !== editMessageId) {
+        setEditMessageId(msgId);
+        setValue(messageBody);
+      }
+      setAnchorEl(null);
+    },
+    [editMessageId]
+  );
+
+  const handleSaveMessage = useCallback(
+    async (messageBody) => {
+      try {
+        await editMessage({
+          message: messageBody,
+          messageId: editMessageId,
+          chatId: channelId
+        });
+        showNotification({
+          message: 'Your message was successfully edited.',
+          variant: 'info'
+        });
+        setEdit(false);
+      } catch (err) {
+        setShowError(true);
+      }
+    },
+    [editMessageId, channelId, showNotification, value]
+  );
+
+  const handleCloseErrorModal = useCallback(() => {
+    setShowError(false);
+  }, []);
+
+  const handleCancelEdit = useCallback(() => {
+    setEdit(false);
+  }, []);
+
+  const handleChangeMessage = useCallback((updatedValue) => {
+    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
+      setValue('');
+    } else {
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '');
+      setValue(currentValue);
+    }
+  }, []);
+
   const renderHtmlWithImage = useCallback(
     (text) => {
       const htmlString = text.replaceAll(
@@ -132,7 +195,7 @@ const CommunityChatMessageItem = ({
   );
 
   const messageBody = useMemo(() => {
-    const { body, imageKey, isVideoNotification, firstName, files } = message;
+    const { body, imageKey, isVideoNotification, firstName, files, sid } = message;
     const messageBody = body.replace(/(\r\n|\n|\r)/gm, '<br />');
 
     if (['add_new_member', 'remove_user'].includes(imageKey)) {
@@ -143,6 +206,54 @@ const CommunityChatMessageItem = ({
             dangerouslySetInnerHTML={{
               __html: linkify(messageBody)
             }}
+          />
+        </div>
+      );
+    }
+
+    if (sid === editMessageId && isEdit) {
+      return (
+        <>
+          <MessageQuill
+            isCommunityChat
+            userId={myUserId}
+            value={value}
+            setValue={setValue}
+            files={files}
+            setFiles={setFiles}
+            showNotification={showNotification}
+            onSendMessage={handleSaveMessage}
+            onChange={handleChangeMessage}
+          />
+          <Box mt={1}>
+            <Button onClick={() => handleCancelEdit()}>Cancel</Button>
+            <Button
+              classes={{
+                root: classes.saveEditMessageButton,
+                disabled: classes.disableBtn
+              }}
+              disabled={!value}
+              onClick={() => handleSaveMessage(value)}
+            >
+              Save changes
+            </Button>
+          </Box>
+        </>
+      );
+    }
+
+    if (sid === editMessageId && messageBody !== value) {
+      return (
+        <div className={classes.bodyWrapper}>
+          <Typography className={clsx(classes.bodyEditMessage, 'ql-editor')}>
+            {parse(value)}
+            <span className={classes.editedMessage}> (edited) </span>
+          </Typography>
+          <AnyFileUpload
+            files={files}
+            onImageClick={onImageClick}
+            onImageLoaded={onImageLoaded}
+            renderHtmlWithImage={renderHtmlWithImage}
           />
         </div>
       );
@@ -200,6 +311,9 @@ const CommunityChatMessageItem = ({
   }, [
     message,
     name,
+    isEdit,
+    value,
+    editMessageId,
     onImageClick,
     onImageLoaded,
     onStartVideoCall,
@@ -296,6 +410,11 @@ const CommunityChatMessageItem = ({
                     <Typography variant="inherit">Block Member</Typography>
                   </MenuItem>
                 )}
+                {myUserId === authorUserId && message.body && !message.isVideoNotification && (
+                  <MenuItem onClick={() => handleEdit(message.sid, message.body)}>
+                    <Typography variant="inherit">Edit</Typography>
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleReportIssue}>
                   <Typography variant="inherit" className={classes.report} noWrap>
                     Report Issue
@@ -306,6 +425,7 @@ const CommunityChatMessageItem = ({
           </Box>
         )}
         {messageBody}
+        <EditFailedModal onOk={handleCloseErrorModal} open={showError} />
       </div>
     </ListItem>
   );

@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme: any) => ({
     borderRadius: 20,
     color: 'white'
   },
+  backEditButton: {
+    background: theme.circleIn.palette.sendMessageButton,
+    borderRadius: 20,
+    color: 'white'
+  },
   cancleButtonClass: {
     border: '1px solid white',
     borderRadius: 20,

@@ -313,6 +313,8 @@ const Main = ({
                 role={role}
                 isCommunityChat={isCommunityChat}
                 date={item.date}
+                channelId={channel.sid}
+                showNotification={showNotification}
                 isOnline={isOnline}
                 isOwn={type === 'own'}
                 currentUserId={userId}

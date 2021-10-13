@@ -1,39 +1,13 @@
-/* eslint-disable no-await-in-loop */
-
-/* eslint-disable react/no-danger */
 import 'react-quill/dist/quill.snow.css';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useHistory, withRouter } from 'react-router';
-import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
-import clsx from 'clsx';
-import ListItem from '@material-ui/core/ListItem';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Link from '@material-ui/core/Link';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import Popover from '@material-ui/core/Popover';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import RoleBadge from '../RoleBadge/RoleBadge';
 import BlockMemberModal from '../BlockMemberModal/BlockMemberModal';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import StudyRoomReport from '../StudyRoomReport/ReportIssue';
-import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
-import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
-import { getInitials } from '../../utils/chat';
-import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
-import CommunityChatMessageItem from './CommunityChatMessageItem';
 import { ChatMessageItem } from '../../types/models';
+import CommunityChatMessageItem from './CommunityChatMessageItem';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -46,7 +20,7 @@ type Props = {
   isOnline?: boolean;
   role?: string;
   date?: string;
-  currentUserId?: string;
+  channelId: string;
   isGroupChannel?: boolean;
   members?: Array<any>;
   messageList?: Array<ChatMessageItem>;
@@ -54,6 +28,7 @@ type Props = {
   onStartVideoCall?: (...args: Array<any>) => any;
   onImageClick?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
+  showNotification?: (...args: Array<any>) => any;
 };
 
 const ChatMessage = ({
@@ -61,12 +36,13 @@ const ChatMessage = ({
   name,
   role,
   date,
+  channelId,
   avatar,
   isOnline,
-  currentUserId,
   members,
   isGroupChannel,
   messageList,
+  showNotification,
   onImageLoaded,
   onStartVideoCall,
   onImageClick,
@@ -152,9 +128,11 @@ const ChatMessage = ({
           authorUserId={userId}
           role={role}
           avatar={avatar}
+          channelId={channelId}
           isOnline={isOnline}
           isGroupChannel={isGroupChannel}
           date={date}
+          showNotification={showNotification}
           onViewProfile={handleViewProfile}
           onReportIssue={handleOpenReport}
           onBlockMember={handleOpenBlockMemberModal}

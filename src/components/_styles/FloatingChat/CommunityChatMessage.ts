@@ -172,6 +172,35 @@ const useStyles = makeStyles((theme: any) => ({
     '& svg': {
       fontSize: 20
     }
+  },
+  saveEditMessageButton: {
+    background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
+    borderRadius: 100,
+    padding: theme.spacing(3 / 4, 3),
+    color: 'black'
+  },
+  disableBtn: {
+    background: theme.circleIn.palette.gray3,
+    boxShadow: '4px 4px 20px rgba(34, 34, 34, 0.12)',
+    borderRadius: 20,
+    color: 'white !important'
+  },
+  editedMessage: {
+    color: theme.circleIn.palette.gray3
+  },
+  bodyEditMessage: {
+    display: 'flex',
+    textAlign: 'left',
+    color: 'white',
+    wordWrap: 'break-word',
+    width: '100%',
+    maxWidth: 900,
+    overflowY: 'visible',
+    maxHeight: '100%',
+    padding: 0,
+    '& > p': {
+      margin: 0
+    }
   }
 }));
 export default useStyles;
