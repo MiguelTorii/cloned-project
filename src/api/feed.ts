@@ -10,6 +10,7 @@ import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL } from './utils';
 import reduxStore from '../configureStore';
 import { callApi } from './api_base';
+import { APIFetchFeedsParams } from './params/APIFetchFeedsParams';
 
 export const fetchFeed = async ({
   userId,
@@ -262,7 +263,7 @@ export const generateQuiz = async ({
 /**
  * Fetch feed data.
  */
-export const apiFetchFeeds = async (params: any, cancelToken) =>
+export const apiFetchFeeds = async (params: APIFetchFeedsParams, cancelToken) =>
   callApi({
     url: API_ROUTES.FEED_V1_1,
     params,
