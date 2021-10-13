@@ -118,7 +118,7 @@ const MainChatItem = ({
           isOnline={isOnline}
           bgColorPath={dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'}
         >
-          <Avatar src={imageProfile}>{initials || <GroupIcon />}</Avatar>
+          <Avatar src={imageProfile}>{initials() || <GroupIcon />}</Avatar>
         </OnlineBadge>
         <div className={classes.grow}>
           <Typography variant="subtitle1" noWrap>
