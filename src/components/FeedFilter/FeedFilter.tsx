@@ -462,9 +462,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
                 </FormLabel>
                 <FormGroup>
                   {types.map((type) => (
-                    <>
+                    <div key={type.label}>
                       <FormControlLabel
-                        key={type.label}
                         control={
                           <Checkbox
                             checked={postTypes.findIndex((o) => o === type.value) > -1}
@@ -478,8 +477,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
                         }
                         label={type.label}
                       />
-                      <span className={classes.description}>{type.description}</span>
-                    </>
+                      <div className={classes.description}>{type.description}</div>
+                    </div>
                   ))}
                 </FormGroup>
                 <FormControlLabel
