@@ -117,11 +117,11 @@ export const postResponseToCamelCase = (response: APIPostResponse): PostResponse
     joined: (response.user || {}).joined || '',
     lastName: (response.user || {}).last_name || '',
     profileImageUrl: (response.user || {}).profile_image_url || '',
-    rank: response.user.rank || 0,
+    rank: (response.user || {}).rank || 0,
     scholarshipPoints: (response.user || {}).scholarship_points || 0,
     schoolId: (response.user || {}).school_id || 0,
     state: (response.user || {}).state || '',
-    userId: (response.user || {}).user_id ? String(response.user.user_id) : ''
+    userId: (response.user || {}).user_id ? String((response.user || {}).user_id) : ''
   }
 });
 
