@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoadImg from '../../components/LoadImg/LoadImg';
 import CollapseNavbar from '../../components/CollapseNavbar/CollapseNavbar';
 import useStyles from './_styles/courseChannels';
-import { cypher } from '../../utils/crypto';
+import { cypherClass } from '../../utils/crypto';
 
 type Props = {
   currentCommunity?: Record<string, any>;
@@ -47,7 +47,12 @@ const CourseChannels = ({
     }
 
     dispatch(
-      push(`/feed?class=${cypher(`${communityClass.classId}:${currentCommunity.section_id}`)}`)
+      push(
+        `/feed?class=${cypherClass({
+          classId: communityClass.classId,
+          sectionId: currentCommunity.section_id
+        })}`
+      )
     );
   }, [currentCommunity, userClasses, dispatch]);
   return (

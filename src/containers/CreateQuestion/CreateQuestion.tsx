@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router';
 import { processClasses } from '../ClassesSelector/utils';
-import { cypher, decypherClass } from '../../utils/crypto';
+import { cypherClass, decypherClass } from '../../utils/crypto';
 import AnonymousButton from '../../components/AnonymousButton/AnonymousButton';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
@@ -83,7 +83,7 @@ const CreateQuestion = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+        const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);

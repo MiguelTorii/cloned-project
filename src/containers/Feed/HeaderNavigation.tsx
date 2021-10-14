@@ -8,7 +8,7 @@ import { Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import Tooltip from '../Tooltip/Tooltip';
 import { getPastClassIds } from '../../utils/helpers';
-import { cypher, decypherClass } from '../../utils/crypto';
+import { cypherClass, decypherClass } from '../../utils/crypto';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import { FEED_NAVIGATION_TABS, POST_WRITER } from '../../constants/common';
 

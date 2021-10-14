@@ -13,7 +13,8 @@ import type {
   QuestsCard,
   CurrentSeasonCard,
   InviteCard,
-  SyncSuccessData
+  SyncSuccessData,
+  UserClass
 } from '../types/models';
 import { getToken } from './utils';
 import callApi from './api_base';
@@ -135,7 +136,7 @@ const setClassesCache = (result) => {
   );
 };
 
-const getClasses = (classes) =>
+const getClasses = (classes): UserClass[] =>
   classes.map((userClass) => ({
     className: (userClass.course_display_name as string) || '',
     classId: (userClass.class_id as number) || 0,

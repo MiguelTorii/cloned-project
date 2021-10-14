@@ -439,7 +439,7 @@ const FeedItem = ({
         }
         title={
           <div className={classes.title}>
-            <Typography component="div" variant={(showSimple ? 'body' : 'h6') as any} noWrap>
+            <Typography component="div" variant={showSimple ? 'body1' : 'h6'} noWrap>
               {feedTypeData.title}
             </Typography>
           </div>
@@ -447,7 +447,7 @@ const FeedItem = ({
         subheader={
           <Typography
             className={classes.feedSubheader}
-            variant={(showSimple ? 'subtitle1' : 'body') as any}
+            variant={showSimple ? 'subtitle1' : 'body1'}
           >
             {data.classroomName}
           </Typography>
@@ -545,7 +545,7 @@ const FeedItem = ({
           </Grid>
           <Grid item>
             <Box ml={2}>
-              <Typography component="p" noWrap variant={(showSimple ? 'body2' : 'body') as any}>
+              <Typography component="p" noWrap variant={showSimple ? 'body2' : 'body1'}>
                 {fromNow}
               </Typography>
             </Box>

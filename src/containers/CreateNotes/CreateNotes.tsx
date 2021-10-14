@@ -10,7 +10,7 @@ import withWidth from '@material-ui/core/withWidth';
 import { withRouter } from 'react-router';
 import Tooltip from '../Tooltip/Tooltip';
 import { processClasses } from '../ClassesSelector/utils';
-import { decypherClass, cypher } from '../../utils/crypto';
+import { decypherClass, cypherClass } from '../../utils/crypto';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import { PERMISSIONS } from '../../constants/common';
 import type { CampaignState } from '../../reducers/campaign';
@@ -131,7 +131,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);

@@ -1,6 +1,11 @@
 import queryString from 'query-string';
 
-export const cypher = (text: string) => {
+export type ClassSectionLocation = {
+  classId?: number;
+  sectionId?: number;
+};
+
+export const cypher = (text: string): string => {
   try {
     return btoa(text);
   } catch (e) {
@@ -8,7 +13,7 @@ export const cypher = (text: string) => {
   }
 };
 
-export const decypher = (text: string) => {
+export const decypher = (text: string): string => {
   try {
     return atob(text);
   } catch (e) {
@@ -16,11 +21,19 @@ export const decypher = (text: string) => {
   }
 };
 
-export const decypherClass = () => {
-  const { class: classCypher } = queryString.parse(window.location.search);
-  const [classId, sectionId] = decypher(classCypher as string).split(':');
-  return {
-    classId: Number(classId),
-    sectionId: Number(sectionId)
-  };
+export const cypherClass = (location: ClassSectionLocation): string =>
+  cypher(`${location.classId}:${location.sectionId}`);
+
+export const decypherClass = (): ClassSectionLocation => {
+  try {
+    const { class: classCypher } = queryString.parse(window.location.search);
+    if (classCypher) {
+      const [classId, sectionId] = decypher(classCypher as string).split(':');
+      return {
+        classId: Number(classId),
+        sectionId: Number(sectionId)
+      };
+    }
+  } catch (error) {}
+  return {};
 };

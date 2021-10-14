@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import { processClasses } from '../ClassesSelector/utils';
-import { cypher } from '../../utils/crypto';
+import { cypherClass } from '../../utils/crypto';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
@@ -208,7 +208,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);

@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import { processClasses } from '../ClassesSelector/utils';
-import { cypher, decypherClass } from '../../utils/crypto';
+import { cypherClass, decypherClass } from '../../utils/crypto';
 import Tooltip from '../Tooltip/Tooltip';
 import { PERMISSIONS } from '../../constants/common';
 import type { UserState } from '../../reducers/user';
@@ -101,7 +101,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);

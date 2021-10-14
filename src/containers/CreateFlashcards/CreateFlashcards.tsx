@@ -12,7 +12,7 @@ import { useDebounce } from '@react-hook/debounce';
 import store from 'store';
 import { processClasses } from '../ClassesSelector/utils';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
-import { cypher, decypherClass } from '../../utils/crypto';
+import { cypherClass, decypherClass } from '../../utils/crypto';
 import Tooltip from '../Tooltip/Tooltip';
 import { PERMISSIONS } from '../../constants/common';
 import type { UserState } from '../../reducers/user';
@@ -117,7 +117,7 @@ const CreateFlashcards = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+        const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);
