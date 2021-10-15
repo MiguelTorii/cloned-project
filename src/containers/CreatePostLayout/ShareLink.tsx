@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
 import { withRouter } from 'react-router';
 import { processClasses } from '../ClassesSelector/utils';
-import { cypher } from '../../utils/crypto';
+import { cypherClass } from '../../utils/crypto';
 import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import postingImage from '../../assets/gif/loading-rocket.gif';
@@ -160,7 +160,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     const { sectionId, classId } = this.state;
 
     if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
       pushTo(`${path}${search}`);
     } else {
       pushTo(path);

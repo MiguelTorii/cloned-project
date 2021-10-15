@@ -14,7 +14,7 @@ import useStyles from './styles';
 import { POST_TYPES } from '../../constants/app';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
-import { cypher } from '../../utils/crypto';
+import { cypherClass } from '../../utils/crypto';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 
@@ -165,7 +165,10 @@ const ClassQuestions = ({ classId }: Props) => {
       return;
     }
 
-    const queryString = cypher(`${classData.classId}:${classData.section?.[0].sectionId}`);
+    const queryString = cypherClass({
+      classId: classData.classId as number,
+      sectionId: classData.section?.[0].sectionId as number
+    });
     dispatch(push(`/feed?class=${queryString}`));
   }, [dispatch, classData]);
   const handleAskQuestion = useCallback(() => {

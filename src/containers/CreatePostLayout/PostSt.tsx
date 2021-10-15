@@ -11,7 +11,7 @@ import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import { cypher } from '../../utils/crypto';
+import { cypherClass } from '../../utils/crypto';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -140,7 +140,7 @@ const CreatePostSt = ({
   const handlePush = useCallback(
     (path) => {
       if (campaign.newClassExperience) {
-        const search = !canBatchPost ? `?class=${cypher(`${classId}:${sectionId}`)}` : '';
+        const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
         pushTo(`${path}${search}`);
       } else {
         pushTo(path);

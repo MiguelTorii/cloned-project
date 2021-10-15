@@ -15,7 +15,7 @@ import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses
 import FiltersBar from '../../components/FiltersBar/FiltersBar';
 import Empty from './Empty';
 import EmptyState from '../../components/FeedList/EmptyState';
-import { cypher } from '../../utils/crypto';
+import { cypherClass } from '../../utils/crypto';
 import EmptyClass from '../../assets/svg/empty-class.svg';
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
@@ -174,7 +174,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const navigate = useCallback(
     ({ courseDisplayName, sectionId, classId, isCurrent }) => {
       document.title = courseDisplayName;
-      pushTo(`/feed?class=${cypher(`${classId}:${sectionId}`)}&pastFilter=${!isCurrent}`);
+      pushTo(`/feed?class=${cypherClass({ classId, sectionId })}&pastFilter=${!isCurrent}`);
     },
     [pushTo]
   );

@@ -73,18 +73,22 @@ export type ClassSection = {
 export type UserClass = {
   className: string;
   classId: number;
-  permissions: {
-    canLeave: boolean;
-    canCreate: boolean;
-  };
+  permissions: PermissionMetadata;
   section: Array<ClassSection>;
   subjectId: number;
   courseDisplayName: string;
-  bgColor: any;
+  class: string;
+  bgColor: string;
+  didInviteClassmates: boolean;
+  didHideFeedEmptyState: boolean;
   isCurrent: boolean;
 };
 export type Permissions = {
   canAddClasses: boolean;
+};
+export type PermissionMetadata = {
+  canLeave: boolean;
+  canCreate: boolean;
 };
 export type UserClasses = {
   classes: Array<UserClass>;
