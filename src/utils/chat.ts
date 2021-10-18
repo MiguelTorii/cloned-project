@@ -264,7 +264,7 @@ export const getFileAttributes = (files) =>
 
 export const getInitials = (name = ''): string => {
   if (name) {
-    const initials = name !== '' ? (name.match(/\b(\w)/g) || []).join('') : '';
+    const initials = (name.match(/\b(\w)/g) || []).join('');
     if (initials.length < 3) {
       return initials;
     }
