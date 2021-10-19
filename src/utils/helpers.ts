@@ -3,7 +3,8 @@ import _ from 'lodash';
 import qs from 'query-string';
 import { TIME_ZONE } from '../constants/app';
 
-export const getPointsText = (points: number) => Math.floor(points).toLocaleString();
+export const getPointsText = (points: number) =>
+  points ? Math.floor(points).toLocaleString() : '0';
 export const momentWithTimezone = (date: string) => moment(date).tz(TIME_ZONE);
 export const isApiCalling = (type) => (state) => _.get(state.api[type], 'inProgress', false);
 export const getPastClassIds = (classList) =>
@@ -42,7 +43,14 @@ export const shuffleArray = (array: any[]) => {
 
   return result;
 };
-export const truncate = (str, n) => (str.length > n ? `${str.substr(0, n - 1)}...` : str);
+export const truncate = (string, n) => {
+  if (string) {
+    const truncatedString = string.length > n ? `${string.substr(0, n - 1)}...` : string;
+    return truncatedString;
+  }
+  return '';
+};
+
 export const arrElemToId = (array: string[]) => {
   const result: string[] = [];
   array.forEach((elem, id) => {
@@ -50,16 +58,17 @@ export const arrElemToId = (array: string[]) => {
   });
   return result;
 };
+
 export const extractTextFromHtml = (html) => {
   if (!html) {
     return '';
   }
-
   const tempDivElement = document.createElement('div');
   tempDivElement.innerHTML = html;
   const result = tempDivElement.textContent || tempDivElement.innerText || '';
   return _.trim(result);
 };
+
 export const englishIdFromNumber = (aNumber: number) => {
   if (aNumber === 0) {
     return 'A';
@@ -67,7 +76,7 @@ export const englishIdFromNumber = (aNumber: number) => {
 
   const rem: number[] = [];
 
-  while (aNumber) {
+  while (aNumber && aNumber >= -1) {
     rem.push(aNumber % 26);
     aNumber = Math.floor(aNumber / 26);
   }
@@ -77,18 +86,31 @@ export const englishIdFromNumber = (aNumber: number) => {
     .map((id) => String.fromCharCode(65 + id))
     .join('');
 };
-export const twoDigitsNumber = (aNumber) =>
-  aNumber.toLocaleString('en-Us', {
+
+export const twoDigitsNumber = (aNumber) => {
+  if (!aNumber) {
+    return '00';
+  }
+  const twoDigits = aNumber.toLocaleString('en-Us', {
     minimumIntegerDigits: 2,
     useGrouping: false
   });
+  return twoDigits;
+};
+
 export const formatSeconds = (seconds) =>
   `${twoDigitsNumber(Math.floor(seconds / 60))}:${twoDigitsNumber(seconds % 60)}`;
+
 export const deepLinkCheck = (pathname) => {
+  if (!pathname) {
+    return '';
+  }
   const deepLinkRegExp = new RegExp(/^\/login\/(\d+)\/?$/);
   return deepLinkRegExp.test(pathname);
 };
+
 export const isMac = () => window.navigator.platform.includes('Mac');
+
 export const commandHotkeyText = (key) => {
   if (isMac()) {
     return `⌘${key}`;
@@ -108,11 +130,12 @@ export const isSame = (obj1, obj2) => {
 
   return _.isEqual(obj1, obj2);
 };
+
 export const checkPath = (path, urls) => {
   if (!path) {
     return false;
   }
-
   return urls.findIndex((url) => path.startsWith(url)) >= 0;
 };
+
 export const buildPath = (rootPath, params) => `${rootPath}?${qs.stringify(params)}`;
