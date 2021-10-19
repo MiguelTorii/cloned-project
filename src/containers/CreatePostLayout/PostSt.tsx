@@ -20,6 +20,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
+import { buildPath } from '../../utils/helpers';
 
 const styles = (theme) => ({
   stackbar: {
@@ -71,8 +72,6 @@ type Props = {
   classes?: Record<string, any>;
   currentTag?: any;
   user?: UserState;
-  campaign?: CampaignState;
-  pushTo?: (...args: Array<any>) => any;
   postId?: number;
   location?: {
     search: string;
@@ -83,6 +82,7 @@ type Props = {
   classList?: Array<any>;
   classId?: any;
   sectionId?: number;
+  handleAfterCreation: (path: string) => void;
 };
 
 const CreatePostSt = ({
@@ -93,14 +93,13 @@ const CreatePostSt = ({
     data: { permission, segment, userId },
     userClasses
   },
-  campaign,
-  pushTo,
   postId,
   enqueueSnackbar,
   classList,
   classId: currentSelectedClassId,
   sectionId: currentSelectedSectionId,
-  setIsPosting
+  setIsPosting,
+  handleAfterCreation
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -136,17 +135,6 @@ const CreatePostSt = ({
   const canBatchPost = useMemo(
     () => expertMode && permission.includes('one_touch_send_posts'),
     [expertMode, permission]
-  );
-  const handlePush = useCallback(
-    (path) => {
-      if (campaign.newClassExperience) {
-        const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
-        pushTo(`${path}${search}`);
-      } else {
-        pushTo(path);
-      }
-    },
-    [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]
   );
   const loadData = useCallback(async () => {
     const post = await api.getPost({
@@ -233,7 +221,7 @@ const CreatePostSt = ({
         }
       });
       localStorage.removeItem('postSt');
-      handlePush(`/post/${postId}`);
+      handleAfterCreation(`/post/${postId}`);
       setLoading(false);
     } catch (err) {
       console.log('err', err);
@@ -244,7 +232,7 @@ const CreatePostSt = ({
       });
       setErrorDialog(true);
     }
-  }, [body, classes.stackbar, enqueueSnackbar, handlePush, postId, classId, title]);
+  }, [body, classes.stackbar, enqueueSnackbar, handleAfterCreation, postId, classId, title]);
   const createPostSt = useCallback(async () => {
     setLoading(true);
 
@@ -333,7 +321,7 @@ const CreatePostSt = ({
             message: !canBatchPost
               ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
               : 'All posts were created successfully',
-            nextPath: '/feed',
+            nextPath: '/feed?reload=true',
             options: {
               variant: 'success',
               anchorOrigin: {
@@ -352,7 +340,7 @@ const CreatePostSt = ({
       }
 
       localStorage.removeItem('postSt');
-      handlePush('/feed');
+      handleAfterCreation('/feed');
     } catch (err) {
       setIsPosting(false);
       setLoading(false);
@@ -368,7 +356,7 @@ const CreatePostSt = ({
     classList,
     classes.stackbar,
     enqueueSnackbar,
-    handlePush,
+    handleAfterCreation,
     sectionId,
     title,
     userId
@@ -480,15 +468,13 @@ const CreatePostSt = ({
   );
 };
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      pushTo: push,
       enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch

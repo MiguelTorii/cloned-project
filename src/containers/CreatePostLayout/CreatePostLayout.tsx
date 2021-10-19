@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Dialog from '@material-ui/core/Dialog';
 import { useLocation } from 'react-router';
+import { push } from 'connected-react-router';
 import LoadImg from '../../components/LoadImg/LoadImg';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import ClassSelector from '../ClassSelector/ClassesSelector';
@@ -23,6 +24,9 @@ import CreateShareLink from './ShareLink';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { State as StoreState } from '../../types/state';
 import Appbar from './Appbar';
+import { buildPath } from '../../utils/helpers';
+import { cypherClass } from '../../utils/crypto';
+import { AppState } from '../../configureStore';
 
 const styles = (theme) => ({
   item: {
@@ -95,6 +99,10 @@ type Props = {
 };
 
 const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelinkId }: Props) => {
+  const dispatch = useDispatch();
+  const newClassExperience = useSelector<AppState, boolean>(
+    (state) => state.campaign.newClassExperience
+  );
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [value, setValue] = useState(0);
   const [classId, setClassId] = useState(0);
@@ -197,6 +205,24 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
     );
   }
 
+  const handleAfterCreation = useCallback(
+    (path) => {
+      if (newClassExperience) {
+        dispatch(
+          push(
+            buildPath(path, {
+              class: !canBatchPost ? cypherClass({ classId, sectionId }) : undefined,
+              reload: true
+            })
+          )
+        );
+      } else {
+        dispatch(push(path));
+      }
+    },
+    [newClassExperience, dispatch, canBatchPost]
+  );
+
   return (
     <ErrorBoundary>
       <Dialog
@@ -248,6 +274,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 currentTag={value}
                 postId={postId}
                 setIsPosting={(val) => setIsPosting(val)}
+                handleAfterCreation={handleAfterCreation}
               />
             </TabPanel>
             <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)}>
@@ -258,6 +285,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 currentTag={value}
                 questionId={questionId}
                 setIsPosting={(val) => setIsPosting(val)}
+                handleAfterCreation={handleAfterCreation}
               />
             </TabPanel>
             <TabPanel key="share-note" value={value} index={2} {...a11yProps(2)}>
@@ -270,6 +298,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 images={images}
                 handleUpdateImages={setImages}
                 setIsPosting={(val) => setIsPosting(val)}
+                handleAfterCreation={handleAfterCreation}
               />
             </TabPanel>
             <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)}>
@@ -279,6 +308,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 classId={classId}
                 sectionId={sectionId}
                 sharelinkId={sharelinkId}
+                handleAfterCreation={handleAfterCreation}
               />
             </TabPanel>
           </div>

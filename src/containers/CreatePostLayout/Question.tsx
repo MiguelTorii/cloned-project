@@ -71,8 +71,6 @@ type Props = {
   classes?: Record<string, any>;
   currentTag?: any;
   user?: UserState;
-  campaign?: CampaignState;
-  pushTo?: (...args: Array<any>) => any;
   questionId?: number;
   location?: {
     search: string;
@@ -83,6 +81,7 @@ type Props = {
   classList?: Array<any>;
   classId?: number;
   sectionId?: number;
+  handleAfterCreation: (path: string) => void;
 };
 
 const CreateQuestion = ({
@@ -93,14 +92,13 @@ const CreateQuestion = ({
     data: { permission, segment, userId },
     userClasses
   },
-  campaign,
-  pushTo,
   questionId,
   enqueueSnackbar,
   classList,
   classId: currentSelectedClassId,
   sectionId: currentSelectedSectionId,
-  setIsPosting
+  setIsPosting,
+  handleAfterCreation
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -134,17 +132,6 @@ const CreateQuestion = ({
   const canBatchPost = useMemo(
     () => expertMode && permission.includes('one_touch_send_posts'),
     [expertMode, permission]
-  );
-  const handlePush = useCallback(
-    (path) => {
-      if (campaign.newClassExperience) {
-        const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
-        pushTo(`${path}${search}`);
-      } else {
-        pushTo(path);
-      }
-    },
-    [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]
   );
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({
@@ -223,7 +210,7 @@ const CreateQuestion = ({
         }
       });
       localStorage.removeItem('question');
-      handlePush(`/question/${questionId}`);
+      handleAfterCreation(`/question/${questionId}`);
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -236,7 +223,7 @@ const CreateQuestion = ({
     classId,
     classes.stackbar,
     enqueueSnackbar,
-    handlePush,
+    handleAfterCreation,
     questionId,
     sectionId,
     title,
@@ -314,7 +301,7 @@ const CreateQuestion = ({
             message: !canBatchPost
               ? `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`
               : 'All posts were created successfully',
-            nextPath: '/feed',
+            nextPath: '/feed?reload=true',
             options: {
               variant: 'success',
               anchorOrigin: {
@@ -333,7 +320,7 @@ const CreateQuestion = ({
       }
 
       localStorage.removeItem('question');
-      handlePush('/feed');
+      handleAfterCreation('/feed');
     } catch (err) {
       setIsPosting(false);
       setLoading(false);
@@ -350,7 +337,7 @@ const CreateQuestion = ({
     classList,
     classes.stackbar,
     enqueueSnackbar,
-    handlePush,
+    handleAfterCreation,
     sectionId,
     title,
     userId
@@ -462,15 +449,13 @@ const CreateQuestion = ({
   );
 };
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      pushTo: push,
       enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch

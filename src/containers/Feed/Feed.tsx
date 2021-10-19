@@ -116,13 +116,14 @@ class Feed extends React.PureComponent<Props, State> {
     const { sectionId, replace, feed, updateScrollData, user } = this.props;
     const { userClasses, bookmark, from } = feed.data.filters;
     const query = queryString.parse(search);
-    const filter = {};
-    let forceReload = false;
-    (filter as any).pastFilter = query.pastFilter === 'true';
+    const filter: any = {};
+    let forceReload = query.reload === 'true';
+
+    filter.pastFilter = query.pastFilter === 'true';
 
     // If a class is selected by URL params, filter class feed.
     if (sectionId) {
-      (filter as any).userClasses = [Number(sectionId)];
+      filter.userClasses = [Number(sectionId)];
     } else if (lodash.isEmpty(userClasses)) {
       // If no classes are selected, select all classes by default.
       const { classList } = user.userClasses;
@@ -132,7 +133,7 @@ class Feed extends React.PureComponent<Props, State> {
       }
 
       // Filter valid Section IDs
-      (filter as any).userClasses = (classList || [])
+      filter.userClasses = (classList || [])
         .map((classData) => classData.section?.[0].sectionId)
         .filter((sectionId) => !!sectionId);
     }

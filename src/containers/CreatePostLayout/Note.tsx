@@ -5,20 +5,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 import { processClasses } from '../ClassesSelector/utils';
-import { cypherClass } from '../../utils/crypto';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
 import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType } from '../../types/models';
@@ -136,8 +133,6 @@ type Props = {
   classes?: Record<string, any>;
   noteId?: number;
   user?: UserState;
-  pushTo?: (...args: Array<any>) => any;
-  campaign?: CampaignState;
   width?: string;
   enqueueSnackbar?: (...args: Array<any>) => any;
   handleUpdateImages?: (...args: Array<any>) => any;
@@ -147,6 +142,7 @@ type Props = {
   };
   setIsPosting: any;
   images: any;
+  handleAfterCreation: (path: string) => void;
 };
 
 type State = {
@@ -202,18 +198,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
       hasImages: false
     };
   }
-
-  handlePush = (path) => {
-    const { pushTo, campaign } = this.props;
-    const { sectionId, classId } = this.state;
-
-    if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
-      pushTo(`${path}${search}`);
-    } else {
-      pushTo(path);
-    }
-  };
 
   componentDidMount = async () => {
     this.loadData();
@@ -274,7 +258,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
         data: { userId, segment },
         userClasses: { classList: classes }
       },
-      noteId
+      noteId,
+      handleAfterCreation
     } = this.props;
 
     try {
@@ -303,13 +288,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
         tags
       });
     } catch (e) {
-      this.handlePush('/feed');
+      handleAfterCreation('/feed');
     }
   };
 
   createNotes = async () => {
     const { tags } = this.state;
-    const { setIsPosting } = this.props;
+    const { setIsPosting, handleAfterCreation } = this.props;
 
     if (tags.length < 0) {
       return;
@@ -439,7 +424,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           }
 
           localStorage.removeItem('note');
-          this.handlePush('/feed');
+          handleAfterCreation('/feed');
         }, 3000);
       } catch (err: any) {
         setIsPosting(false);
@@ -474,7 +459,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
           user: {
             data: { userId = '' }
           },
-          noteId
+          noteId,
+          handleAfterCreation
         } = this.props;
         const { title, classId, sectionId, summary } = this.state;
         const images = await this.uploadImages.handleUploadImages();
@@ -513,7 +499,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
             }
           });
           localStorage.removeItem('note');
-          this.handlePush(`/notes/${noteId}`);
+          handleAfterCreation(`/notes/${noteId}`);
         }, 3000);
       } catch (err: any) {
         if (err.message === 'no images') {
@@ -721,15 +707,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      pushTo: push,
       enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch

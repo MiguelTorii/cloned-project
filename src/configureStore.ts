@@ -14,4 +14,5 @@ const reduxStore = createStore(
   {},
   composeEnhancers(applyMiddleware(routerMiddleware(history), thunk, apiActionCreator))
 );
+export type AppState = ReturnType<typeof reduxStore.getState>;
 export default reduxStore;

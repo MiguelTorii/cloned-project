@@ -93,14 +93,13 @@ const styles = (theme) => ({
 type Props = {
   classes?: Record<string, any>;
   user?: UserState;
-  pushTo?: (...args: Array<any>) => any;
-  campaign?: CampaignState;
   sharelinkId?: number;
   location?: {
     search: string;
   };
   enqueueSnackbar?: (...args: Array<any>) => any;
   classList?: any;
+  handleAfterCreation: (path: string) => void;
 };
 
 type State = {
@@ -153,18 +152,6 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       }
     } = this.props;
     return expertMode && permission.includes('one_touch_send_posts');
-  };
-
-  handlePush = (path) => {
-    const { pushTo, campaign } = this.props;
-    const { sectionId, classId } = this.state;
-
-    if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
-      pushTo(`${path}${search}`);
-    } else {
-      pushTo(path);
-    }
   };
 
   componentDidMount = () => {
@@ -224,7 +211,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         data: { userId, segment },
         userClasses: { classList: classes }
       },
-      sharelinkId
+      sharelinkId,
+      handleAfterCreation
     } = this.props;
 
     try {
@@ -256,7 +244,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         }
       });
     } catch (e) {
-      this.handlePush('/feed');
+      handleAfterCreation('/feed');
     }
   };
 
@@ -279,7 +267,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         sharelinkId,
         user: {
           data: { userId = '' }
-        }
+        },
+        handleAfterCreation
       } = this.props;
       const { title, summary, url, classId, sectionId } = this.state;
       const res = await updateShareURL({
@@ -321,7 +310,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         }
       });
       localStorage.removeItem('shareLink');
-      this.handlePush(`/sharelink/${sharelinkId}`);
+      handleAfterCreation(`/sharelink/${sharelinkId}`);
       this.setState({
         loading: false
       });
@@ -351,7 +340,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         user: {
           data: { userId = '' }
         },
-        classList
+        classList,
+        handleAfterCreation
       } = this.props;
 
       if (this.canBatchPost() && !classList.length) {
@@ -493,7 +483,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
       }
 
       localStorage.removeItem('shareLink');
-      this.handlePush('/feed');
+      handleAfterCreation('/feed');
     } catch (err) {
       this.setState({
         loading: false,
@@ -671,15 +661,13 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      pushTo: push,
       enqueueSnackbar: notificationsActions.enqueueSnackbar
     },
     dispatch
