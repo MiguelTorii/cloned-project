@@ -2,7 +2,7 @@ name: Lint check
 on: [push]
 jobs:
   build:
-    name: Lint Runner
+    name: Lint Runner and Jest Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,9 +12,6 @@ jobs:
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: lint # will run `yarn lint` command
-  build:
-    name: Jest Test
-    steps:
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: test # will run `yarn test` command
