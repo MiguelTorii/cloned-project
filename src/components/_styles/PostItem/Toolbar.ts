@@ -40,7 +40,8 @@ export const useStyles = makeStyles(() => ({
   emoji: {
     display: 'flex !important',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: '24px'
   },
   emoIconStyle: {
     width: 20
