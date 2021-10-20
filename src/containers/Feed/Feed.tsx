@@ -470,9 +470,12 @@ class Feed extends React.PureComponent<Props, State> {
     }
 
     const isLoadingPosts = !!api[feedActionTypes.FETCH_FEED]?.inProgress;
-    const selectedClasses = classList.filter((classData: any) =>
-      userClasses.includes(classData.section?.[0]?.sectionId)
-    );
+    const selectedClasses = classList
+      .filter((classData: any) => userClasses.includes(classData.section?.[0]?.sectionId))
+      .map((classData) => ({
+        ...classData,
+        sectionId: classData.section?.[0]?.sectionId
+      }));
     return (
       <>
         <ErrorBoundary>
