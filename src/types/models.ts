@@ -597,6 +597,7 @@ export type Member = {
 };
 export type ChatMessageItem = {
   sid: string;
+  index: number;
   imageKey: string;
   createdAt: string;
   body: string;

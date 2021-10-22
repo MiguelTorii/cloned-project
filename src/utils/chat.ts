@@ -127,6 +127,17 @@ export const processMessages = ({
       const { firstName, lastName, imageKey, isVideoNotification, files } = attributes;
       const date = moment(timestamp).format('MMMM DD');
       const createdAt = moment(timestamp).format('h:mm a');
+      const messageItem = {
+        index: item.index,
+        sid,
+        body,
+        files,
+        imageKey,
+        isVideoNotification,
+        firstName,
+        lastName,
+        createdAt
+      };
 
       if (data.length === 0) {
         data.push({
@@ -148,18 +159,7 @@ export const processMessages = ({
           files,
           imageKey: '',
           date,
-          messageList: [
-            {
-              sid,
-              body,
-              files,
-              imageKey,
-              isVideoNotification,
-              firstName,
-              lastName,
-              createdAt
-            }
-          ]
+          messageList: [messageItem]
         });
       } else if (data[data.length - 1].date !== date) {
         data.push({
@@ -181,33 +181,13 @@ export const processMessages = ({
           files,
           imageKey: '',
           date,
-          messageList: [
-            {
-              sid,
-              body,
-              imageKey,
-              isVideoNotification,
-              files,
-              firstName,
-              lastName,
-              createdAt
-            }
-          ]
+          messageList: [messageItem]
         });
       } else {
         const previous = data[data.length - 1];
 
         if (Number(previous.author) === Number(author)) {
-          previous.messageList.push({
-            sid,
-            body,
-            imageKey,
-            isVideoNotification,
-            files,
-            firstName,
-            lastName,
-            createdAt
-          });
+          previous.messageList.push(messageItem);
         } else {
           data.push({
             type: Number(author) === Number(userId) ? 'own' : 'message',
@@ -218,18 +198,7 @@ export const processMessages = ({
             body: '',
             imageKey: '',
             date,
-            messageList: [
-              {
-                sid,
-                body,
-                imageKey,
-                files,
-                isVideoNotification,
-                firstName,
-                lastName,
-                createdAt
-              }
-            ]
+            messageList: [messageItem]
           });
         }
       }

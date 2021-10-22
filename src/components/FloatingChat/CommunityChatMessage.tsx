@@ -8,6 +8,7 @@ import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChatMessageItem } from '../../types/models';
 import CommunityChatMessageItem from './CommunityChatMessageItem';
+import NewMessageLine from '../NewMessageLine/NewMessageLine';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -23,6 +24,8 @@ type Props = {
   channelId: string;
   isGroupChannel?: boolean;
   members?: Array<any>;
+  lastReadMessageIndex: number;
+  isLastMessage: boolean;
   messageList?: Array<ChatMessageItem>;
   onImageLoaded?: (...args: Array<any>) => any;
   onStartVideoCall?: (...args: Array<any>) => any;
@@ -46,7 +49,9 @@ const ChatMessage = ({
   onImageLoaded,
   onStartVideoCall,
   onImageClick,
-  handleBlock
+  handleBlock,
+  lastReadMessageIndex,
+  isLastMessage
 }: Props) => {
   const [openReport, setOpenReport] = useState(false);
   const [blockUserId, setBlockuserId] = useState('');
@@ -120,26 +125,30 @@ const ChatMessage = ({
 
   return (
     <>
-      {messageList.map((message) => (
-        <CommunityChatMessageItem
-          key={message.sid}
-          message={message}
-          name={name}
-          authorUserId={userId}
-          role={role}
-          avatar={avatar}
-          channelId={channelId}
-          isOnline={isOnline}
-          isGroupChannel={isGroupChannel}
-          date={date}
-          showNotification={showNotification}
-          onViewProfile={handleViewProfile}
-          onReportIssue={handleOpenReport}
-          onBlockMember={handleOpenBlockMemberModal}
-          onImageClick={onImageClick}
-          onImageLoaded={onImageLoaded}
-          onStartVideoCall={onStartVideoCall}
-        />
+      {messageList.map((message, index) => (
+        <React.Fragment key={message.sid}>
+          <CommunityChatMessageItem
+            message={message}
+            name={name}
+            authorUserId={userId}
+            role={role}
+            avatar={avatar}
+            channelId={channelId}
+            isOnline={isOnline}
+            isGroupChannel={isGroupChannel}
+            date={date}
+            showNotification={showNotification}
+            onViewProfile={handleViewProfile}
+            onReportIssue={handleOpenReport}
+            onBlockMember={handleOpenBlockMemberModal}
+            onImageClick={onImageClick}
+            onImageLoaded={onImageLoaded}
+            onStartVideoCall={onStartVideoCall}
+          />
+          {/* Display the line if the message item is not the last item of the last message. */}
+          {message.index === lastReadMessageIndex &&
+            (!isLastMessage || index < messageList.length - 1) && <NewMessageLine />}
+        </React.Fragment>
       ))}
 
       <StudyRoomReport profiles={profiles} open={openReport} handleClose={handleCloseReport} />

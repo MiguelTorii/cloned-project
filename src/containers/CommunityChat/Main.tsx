@@ -49,6 +49,7 @@ type Props = {
   onCollapseRight?: any;
   leftSpace?: any;
   enqueueSnackbar?: any;
+  lastReadMessageIndex?: number;
 };
 
 const Main = ({
@@ -77,7 +78,8 @@ const Main = ({
   onCollapseLeft,
   onCollapseRight,
   leftSpace,
-  enqueueSnackbar
+  enqueueSnackbar,
+  lastReadMessageIndex
 }: Props) => {
   const classes: any = useStyles();
   const end = useRef(null);
@@ -292,7 +294,7 @@ const Main = ({
   );
 
   const renderMessage = useCallback(
-    (item, profileURLs) => {
+    (item, profileURLs, isLastMessage) => {
       const { id, type } = item;
       const role = getRole(item.author);
       const isOnline = getIsOnline(item.author);
@@ -316,6 +318,8 @@ const Main = ({
                 channelId={channel.sid}
                 showNotification={showNotification}
                 isOnline={isOnline}
+                isLastMessage={isLastMessage}
+                lastReadMessageIndex={lastReadMessageIndex}
                 isOwn={type === 'own'}
                 currentUserId={userId}
                 userId={item.author}
@@ -364,7 +368,8 @@ const Main = ({
       handleBlock,
       members,
       channelMembers,
-      userId
+      userId,
+      lastReadMessageIndex
     ]
   );
   const onSendMessage = useCallback(
@@ -543,7 +548,10 @@ const Main = ({
                   channel={channel}
                 />
               )}
-              {messageItems.map((item) => renderMessage(item, avatars))}
+              {/* check if it's last message using length - 2, because we have `end` message at the end. */}
+              {messageItems.map((item, index) =>
+                renderMessage(item, avatars, index === messageItems.length - 2)
+              )}
               {loading && (
                 <div className={classes.progress}>
                   <CircularProgress size={20} />

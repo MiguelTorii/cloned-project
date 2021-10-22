@@ -45,6 +45,13 @@ const CommunityChat = ({
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
   const [selectedChannel, setSelctedChannel] = useState(null);
+  const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
+    channelId: string;
+    lastIndex: number;
+  }>({
+    channelId: null,
+    lastIndex: null
+  });
   const {
     data: { userId, schoolId, permission }
   } = user;
@@ -108,6 +115,24 @@ const CommunityChat = ({
       }
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel, width, isLoading]);
+
+  // This effect is to keep the index of last read message.
+  useEffect(() => {
+    // We just want to update the last read message info only if the channel is changed.
+    if (selectedChannel?.chat_id === lastReadMessageInfo.channelId) {
+      return;
+    }
+
+    const localChannel = selectedChannel ? local[selectedChannel.chat_id] : null;
+    if (!localChannel) {
+      return;
+    }
+    setLastReadMessageInfo({
+      channelId: selectedChannel.chat_id,
+      lastIndex: localChannel.twilioChannel.channelState.lastConsumedMessageIndex
+    });
+  }, [selectedChannel, lastReadMessageInfo, local]);
+
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
     [width]
@@ -202,6 +227,11 @@ const CommunityChat = ({
         <Grid item xs={(12 - leftSpace - rightSpace) as any} className={classes.main}>
           <Main
             isCommunityChat
+            lastReadMessageIndex={
+              lastReadMessageInfo.channelId === selectedChannelId
+                ? lastReadMessageInfo.lastIndex
+                : null
+            }
             channelList={communityChannels}
             currentCommunity={currentCommunity}
             selectedChannel={selectedChannel}

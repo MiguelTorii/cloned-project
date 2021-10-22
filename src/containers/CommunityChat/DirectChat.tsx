@@ -83,6 +83,14 @@ const DirectChat = ({
   const [rightSpace, setRightSpace] = useState(0);
   const [prevWidth, setPrevWidth] = useState(null);
   const [channelList, setChannelList] = useState([]);
+  const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
+    channelId: string;
+    lastIndex: number;
+  }>({
+    channelId: null,
+    lastIndex: null
+  });
+
   const lastChannelSid = useMemo(() => localStorage.getItem('currentDMChannel'), []);
   const currentChannelId = useMemo(
     () => selectedChannelId || lastChannelSid || channelList[0],
@@ -186,6 +194,19 @@ const DirectChat = ({
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentChannel, isLoading]);
+
+  // This effect is to keep the index of last read message.
+  useEffect(() => {
+    // We just want to update the last read message info only if the channel is changed.
+    if (currentChannel?.sid === lastReadMessageInfo.channelId) {
+      return;
+    }
+    setLastReadMessageInfo({
+      lastIndex: currentChannel?.channelState.lastConsumedMessageIndex,
+      channelId: currentChannel?.sid
+    });
+  }, [currentChannel, lastReadMessageInfo]);
+
   const handleBlock = useCallback(
     async (blockedUserId) => {
       try {
@@ -284,6 +305,11 @@ const DirectChat = ({
             newChannel={newChannel}
             enqueueSnackbar={enqueueSnackbar}
             user={user}
+            lastReadMessageIndex={
+              lastReadMessageInfo.channelId === currentChannel.sid
+                ? lastReadMessageInfo.lastIndex
+                : null
+            }
             handleUpdateGroupName={updateGroupName}
             setRightPanel={handleOpenRightPanel}
             onSend={() => {
