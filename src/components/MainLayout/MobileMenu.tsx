@@ -33,6 +33,7 @@ const MobileMenu = ({
     }}
     open={isMobileMenuOpen}
     onClose={handleMobileMenuClose}
+    getContentAnchorEl={null}
   >
     {width !== 'xs' && (
       <MenuItem

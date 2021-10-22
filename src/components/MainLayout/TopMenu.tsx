@@ -35,6 +35,7 @@ const TopMenu = ({
         paper: classes.menuPaper,
         list: classes.avatarMenu
       }}
+      getContentAnchorEl={null}
     >
       <MenuItem component={MyLink} link={`/profile/${userId}${search}`}>
         My Profile

@@ -400,6 +400,7 @@ const CommunityChatMessageItem = ({
                 vertical: 'top',
                 horizontal: 'right'
               }}
+              getContentAnchorEl={null}
             >
               <MenuList className={classes.userMenu}>
                 <MenuItem onClick={handleViewProfile}>

@@ -33,6 +33,7 @@ const MoreMenu = ({
     }}
     open={Boolean(anchor)}
     onClose={handleMenuClose}
+    getContentAnchorEl={null}
   >
     <MenuItem onClick={toggleHide}>
       <ListItemText inset primary={hide ? 'Expand' : 'Minimise'} />

@@ -187,6 +187,7 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
             vertical: 'top',
             horizontal: 'center'
           }}
+          getContentAnchorEl={null}
         >
           <Picker onSelect={handleSelectEmoji} />
         </Popover>

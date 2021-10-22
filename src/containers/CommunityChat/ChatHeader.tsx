@@ -288,6 +288,7 @@ const ChatHeader = ({
               vertical: 'top',
               horizontal: 'right'
             }}
+            getContentAnchorEl={null}
           >
             {renderOtherMembers()}
           </Popover>
@@ -356,6 +357,7 @@ const ChatHeader = ({
                 vertical: 'top',
                 horizontal: 'right'
               }}
+              getContentAnchorEl={null}
             >
               <Paper className={classes.paper}>
                 <MenuList>

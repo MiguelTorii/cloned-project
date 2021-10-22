@@ -95,6 +95,7 @@ const Settings = ({
           vertical: 'top',
           horizontal: 'right'
         }}
+        getContentAnchorEl={null}
       >
         {isShow && channel.members._c.size !== 2 && (
           <>

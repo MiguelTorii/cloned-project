@@ -365,6 +365,7 @@ const FeedItem = ({
         }}
         open={isMenuOpen}
         onClose={handleMenuClose}
+        getContentAnchorEl={null}
       >
         {data.userId !== currentUserId ? (
           <MenuItem onClick={handleReport}>

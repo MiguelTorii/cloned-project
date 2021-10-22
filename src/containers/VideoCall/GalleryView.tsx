@@ -210,6 +210,7 @@ function GalleryViewMode({ onChange, currentView, isSharing }) {
           vertical: 'top',
           horizontal: 'right'
         }}
+        getContentAnchorEl={null}
       >
         <Paper>{renderMenu}</Paper>
       </Popover>
