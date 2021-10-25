@@ -75,6 +75,7 @@ class EmojiSelector extends React.PureComponent<Props, State> {
             vertical: 'top',
             horizontal: 'center'
           }}
+          getContentAnchorEl={null}
         >
           <Picker onSelect={this.handleSelect} />
         </Popover>

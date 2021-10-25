@@ -287,6 +287,7 @@ const QuickNotes = ({
           vertical: 'top',
           horizontal: 'right'
         }}
+        getContentAnchorEl={null}
       >
         <Paper
           className={classes.container}
@@ -398,6 +399,7 @@ const QuickNotes = ({
               vertical: 'top',
               horizontal: 'right'
             }}
+            getContentAnchorEl={null}
           >
             <Picker onSelect={handleSelectEmoji} />
           </Popover>
