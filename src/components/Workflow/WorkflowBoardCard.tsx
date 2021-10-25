@@ -108,14 +108,14 @@ const WorkflowBoardCard = ({
                 Details
               </Button>
               <IconButton onClick={openConfirmArchive} className={classes.iconButton}>
-                <DeleteIcon className={classes.icon} />
+                <DeleteIcon className={cx(classes.icon, 'delete')} />
               </IconButton>
             </Grid>
           )}
           {newInput && (
             <Grid item xs={12} className={classes.buttons}>
               <Button
-                className={classes.newButton}
+                className={cx(classes.newButton, 'add-button')}
                 onClick={handleNew}
                 variant="contained"
                 color="primary"

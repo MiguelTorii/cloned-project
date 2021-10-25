@@ -1,13 +1,13 @@
 describe('Classes', () => {
   beforeEach(() => {
-    cy.login()
-  })
+    cy.login();
+  });
 
   it('Renders classes page', () => {
-    cy.visit(`${Cypress.env('url')}classes`)
+    cy.visit(`${Cypress.env('url')}classes`);
     // cy.contains('+ Add More Classes')
-    cy.contains('Literature I')
-  })
+    cy.contains('cypress test 101');
+  });
 
   // it('Navigates to feed', () => {
   // cy.contains('Fundamentals of Chemistry').click()
@@ -18,7 +18,6 @@ describe('Classes', () => {
   // cy.contains('Test Question').click()
   // cy.contains('Is it working?')
   // })
-
 
   // it('Navigates to flashcard', () => {
   // cy.get('#desktopMenu').within(() => {
@@ -65,4 +64,4 @@ describe('Classes', () => {
   // cy.contains('Send Message')
   // cy.contains('Start Video')
   // })
-})
+});
