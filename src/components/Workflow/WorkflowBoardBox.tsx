@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import cx from 'classnames';
 import WorkflowBoardCard from './WorkflowBoardCard';
 import WorkflowContext from '../../containers/Workflow/WorkflowContext';
 import { useStyles } from '../_styles/Workflow/WorkflowBoardBox';
@@ -54,7 +55,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list, 
         )}
         <TextField
           fullWidth
-          className={classes.textField}
+          className={cx(classes.textField, 'text-area')}
           InputProps={{
             className: classes.multilineColor
           }}
@@ -91,7 +92,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list, 
               style={{
                 backgroundColor: buttonColor
               }}
-              className={classes.button}
+              className={cx(classes.button, 'create-task-button')}
               onClick={openNew}
             >
               + Add a task
