@@ -11,7 +11,6 @@
 
 ## 	:cake: Checklist:
 
-- [] `yarn precommit` passes with no warnings
 - [] I self-reviewed my changes
 - [] My changes follow the style guide: https://circleinapp.atlassian.net/wiki/spaces/EN/pages/851476481/Web+style+guide
 - [] I tested my changes in Chrome

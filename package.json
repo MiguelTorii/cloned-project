@@ -156,7 +156,7 @@
         "eject": "react-scripts eject",
         "test": "jest",
         "precommit:fix": "yarn lint:fix && yarn test",
-        "precommit": "yarn lint && yarn test"
+        "precommit": "yarn tsc && yarn lint && yarn test"
     },
     "browserslist": [
         ">0.2%",
