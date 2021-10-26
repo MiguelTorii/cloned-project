@@ -55,7 +55,7 @@ const WorkflowBoardBox = ({ buttonColor, bgcolor, categoryId, drop, name, list, 
         )}
         <TextField
           fullWidth
-          className={cx(classes.textField, 'text-area')}
+          className={cx(classes.textField, 'workflow-task-text-area')}
           InputProps={{
             className: classes.multilineColor
           }}

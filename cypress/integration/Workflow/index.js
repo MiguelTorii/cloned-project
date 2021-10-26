@@ -8,7 +8,7 @@ describe('Workflow', () => {
   it('Creates task', () => {
     cy.visit(`${Cypress.env('url')}workflow`);
     cy.get('#board-Overdue .create-task-button').click();
-    cy.get('.text-area').type('Create Test Task');
+    cy.get('.workflow-task-text-area').type('Create Test Task');
     cy.get('.add-workflow-button').click();
     cy.contains('Congratulations cypress, you have just earned 1000 points. Good Work!');
   });
