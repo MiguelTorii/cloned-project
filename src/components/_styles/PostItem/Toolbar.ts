@@ -37,12 +37,6 @@ export const useStyles = makeStyles(() => ({
     textAlign: 'center',
     paddingTop: 0.5
   },
-  emoji: {
-    display: 'flex !important',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '24px'
-  },
   emoIconStyle: {
     width: 20
   },
