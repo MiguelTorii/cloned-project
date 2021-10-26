@@ -1,6 +1,6 @@
-import FlashcardsListPage from './list';
-import FlashcardsNewPage from './new';
-import FlashcardsShowPage from './show';
-import FlashcardsEditPage from './edit';
+import FlashcardsListPage from './FlashcardsListPage';
+import FlashcardsNewPage from './FlashcardsNewPage';
+import FlashcardsShowPage from './FlashcardsShowPage';
+import FlashcardsEditPage from './FlashcardsEditPage';
 
 export { FlashcardsListPage, FlashcardsNewPage, FlashcardsShowPage, FlashcardsEditPage };
