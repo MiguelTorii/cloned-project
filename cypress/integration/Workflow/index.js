@@ -27,6 +27,7 @@ describe('Workflow', () => {
   });
 
   it('Moves task to done', () => {
+    cy.wait(1000);
     cy.contains('Create Test Task Edit').trigger('dragstart').trigger('dragleave');
 
     cy.get('#board-Done')
@@ -39,7 +40,10 @@ describe('Workflow', () => {
   });
 
   it('Deletes task', () => {
-    cy.contains('Create Test Task Edit').trigger('mouseover').get('#board-Done .delete').click();
+    cy.contains('Create Test Task Edit')
+      .trigger('mouseover')
+      .get('#board-Done .workflow-task-delete-button')
+      .click();
     cy.contains('Delete').click();
   });
 
