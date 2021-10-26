@@ -39,10 +39,7 @@ describe('Workflow', () => {
   });
 
   it('Deletes task', () => {
-    cy.contains('Create Test Task Edit')
-      .trigger('mouseover')
-      .get('#board-Done .workflow-task-delete-button')
-      .click();
+    cy.contains('Create Test Task Edit').trigger('mouseover').get('#board-Done .delete').click();
     cy.contains('Delete').click();
   });
 
