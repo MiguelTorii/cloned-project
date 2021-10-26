@@ -21,6 +21,8 @@ import { blockUser } from '../../api/user';
 import type { State as StoreState } from '../../types/state';
 import useStyles from './_styles/directChat';
 
+const RIGHT_GRID_SPAN = 2;
+
 type Props = {
   chat?: ChatState;
   user?: UserState;
@@ -103,7 +105,7 @@ const DirectChat = ({
     if (['xs'].includes(width)) {
       setRightSpace(0);
     } else if (!rightSpace) {
-      setRightSpace(3);
+      setRightSpace(RIGHT_GRID_SPAN);
     } else {
       setRightSpace(0);
     }
@@ -189,7 +191,7 @@ const DirectChat = ({
     }
 
     if (currentChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) {
-      setRightSpace(3);
+      setRightSpace(RIGHT_GRID_SPAN);
     }
 
     setPrevWidth(width);

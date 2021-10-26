@@ -18,6 +18,8 @@ import type { State as StoreState } from '../../types/state';
 import CourseChannels from './CourseChannels';
 import useStyles from './_styles/styles';
 
+const RIGHT_GRID_SPAN = 2;
+
 type Props = {
   chat?: Record<string, any>;
   user?: Record<string, any>;
@@ -141,7 +143,7 @@ const CommunityChat = ({
     if (['xs', 'sm'].includes(width)) {
       setRightSpace(0);
     } else if (!rightSpace) {
-      setRightSpace(3);
+      setRightSpace(RIGHT_GRID_SPAN);
     } else {
       setRightSpace(0);
     }
@@ -162,7 +164,7 @@ const CommunityChat = ({
     }
 
     if (currentCommunityChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) {
-      setRightSpace(3);
+      setRightSpace(RIGHT_GRID_SPAN);
     }
 
     setPrevWidth(width);
