@@ -32,6 +32,7 @@ type Props = {
   onImageClick?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
   showNotification?: (...args: Array<any>) => any;
+  onRemoveMessage: (messageId: string) => void;
 };
 
 const ChatMessage = ({
@@ -51,7 +52,8 @@ const ChatMessage = ({
   onImageClick,
   handleBlock,
   lastReadMessageIndex,
-  isLastMessage
+  isLastMessage,
+  onRemoveMessage
 }: Props) => {
   const [openReport, setOpenReport] = useState(false);
   const [blockUserId, setBlockuserId] = useState('');
@@ -144,6 +146,7 @@ const ChatMessage = ({
             onImageClick={onImageClick}
             onImageLoaded={onImageLoaded}
             onStartVideoCall={onStartVideoCall}
+            onRemoveMessage={onRemoveMessage}
           />
           {/* Display the line if the message item is not the last item of the last message. */}
           {message.index === lastReadMessageIndex &&

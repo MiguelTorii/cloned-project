@@ -270,6 +270,9 @@ const Main = ({
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
   }, [channel]);
+  const handleRemoveMessage = useCallback((messageId) => {
+    setMessages((oldMessages) => oldMessages.filter((item) => item.state.sid !== messageId));
+  }, []);
   const getRole = useCallback(
     (userId) => {
       if (!members[userId]) {
@@ -334,6 +337,7 @@ const Main = ({
                 onImageLoaded={handleScrollToBottom}
                 onStartVideoCall={handleStartVideoCall}
                 onImageClick={handleImageClick}
+                onRemoveMessage={handleRemoveMessage}
                 handleBlock={handleBlock}
               />
             );

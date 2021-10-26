@@ -20,7 +20,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import { Emoji } from 'emoji-mart';
 import clsx from 'clsx';
-import { editMessage } from '../../api/chat';
+import { apiDeleteMessage, editMessage } from '../../api/chat';
 import { getInitials } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import EditFailedModal from '../EditFailedModal/EditFailedModal';
@@ -33,6 +33,7 @@ import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg'
 import { ReactComponent as IconAddReaction } from '../../assets/svg/add_reaction.svg';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 import MessageQuill from './EditMessageQuill';
+import { useDeleteModal } from '../../contexts/DeleteModalContext';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -55,6 +56,7 @@ type Props = {
   onImageLoaded: (string) => void;
   showNotification: (object) => void;
   onStartVideoCall: () => void;
+  onRemoveMessage: (messageId: string) => void;
 };
 
 const linkify = (text) => {
@@ -88,9 +90,11 @@ const CommunityChatMessageItem = ({
   onBlockMember,
   onImageClick,
   onImageLoaded,
-  onStartVideoCall
+  onStartVideoCall,
+  onRemoveMessage
 }: Props) => {
   const classes = useStyles();
+  const { open: openDeleteModal } = useDeleteModal();
   const myUserId = useSelector<any>((state) => state.user.data.userId);
   const [isHover, setIsHover] = useState(false);
   const [isEdit, setEdit] = useState(false);
@@ -141,6 +145,20 @@ const CommunityChatMessageItem = ({
       setAnchorEl(null);
     },
     [editMessageId]
+  );
+
+  const handleDeleteMessage = useCallback(
+    (msgId) => {
+      setAnchorEl(null);
+      openDeleteModal(
+        'Delete this chat message?',
+        'Are you sure you want to delete what you wrote? This action cannot be undone.',
+        () => {
+          apiDeleteMessage(channelId, msgId).then(() => onRemoveMessage(msgId));
+        }
+      );
+    },
+    [channelId, onRemoveMessage]
   );
 
   const handleSaveMessage = useCallback(
@@ -416,8 +434,15 @@ const CommunityChatMessageItem = ({
                     <Typography variant="inherit">Edit</Typography>
                   </MenuItem>
                 )}
+                {myUserId === authorUserId && message.body && !message.isVideoNotification && (
+                  <MenuItem onClick={() => handleDeleteMessage(message.sid)}>
+                    <Typography variant="inherit" className={classes.colorRed}>
+                      Delete Message
+                    </Typography>
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleReportIssue}>
-                  <Typography variant="inherit" className={classes.report} noWrap>
+                  <Typography variant="inherit" className={classes.colorRed} noWrap>
                     Report Issue
                   </Typography>
                 </MenuItem>

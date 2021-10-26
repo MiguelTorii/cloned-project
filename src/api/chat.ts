@@ -61,6 +61,15 @@ export const editMessage = async ({
     }
   });
 
+export const apiDeleteMessage = async (chatId, messageId) =>
+  callApi({
+    url: `${API_ROUTES.CHAT}/${chatId}/message/${messageId}`,
+    method: 'DELETE',
+    data: {
+      message: ''
+    }
+  });
+
 export const removeUser = async (userId, chatId) =>
   callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/class/members?chat_id=${userId}`,

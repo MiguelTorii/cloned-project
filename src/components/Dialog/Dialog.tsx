@@ -172,7 +172,7 @@ const Dialog = ({
           {showCancel && (
             <Button
               id="dialog-cancel-button"
-              className={cx(closeButtonClass, classes.button)}
+              className={cx(closeButtonClass, classes.button, classes.cancelButton)}
               color="primary"
               disabled={disableActions}
               onClick={onCancel}
@@ -192,7 +192,7 @@ const Dialog = ({
             </Button>
           )}
           <Button
-            className={cx(okButtonClass, classes.button)}
+            className={cx(okButtonClass, classes.button, classes.okButton)}
             classes={{
               disabled: classes.btnDisabled
             }}

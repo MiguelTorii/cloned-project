@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: any) => ({
       backgroundColor: theme.circleIn.palette.modalBackground
     }
   },
-  report: {
+  colorRed: {
     color: theme.circleIn.palette.danger
   },
   paper: { ...gutterStyle(theme), paddingTop: theme.spacing(2), paddingBottom: theme.spacing(2) },
