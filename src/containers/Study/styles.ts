@@ -9,6 +9,8 @@ export default makeStyles((theme) => ({
     minWidth: 350
   },
   helpItem: {
+    width: '100%',
+    backgroundColor: theme.circleIn.palette.feedBackground,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -17,14 +19,18 @@ export default makeStyles((theme) => ({
     '& > p': {
       marginTop: theme.spacing(2),
       marginBottom: 0
-    }
+    },
+    borderRadius: 10
   },
   studyAction: {
-    backgroundColor: '#3F4146',
+    backgroundColor: theme.circleIn.palette.modalBackground,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     padding: theme.spacing(1.5),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
+    width: '100%',
+    borderRadius: 10
   },
   studyActionText: {
     marginBottom: 0,

@@ -4,13 +4,12 @@ import { useHistory } from 'react-router';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
+import { ButtonBase } from '@material-ui/core';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import QuestionMark from '../../assets/svg/question-mark.svg';
-import StudyRoomMark from '../../assets/svg/studyroom-mark.svg';
 import MessageMark from '../../assets/svg/message-mark.svg';
 import ResourceMark from '../../assets/svg/resource-mark.svg';
 import FlashcardMark from '../../assets/svg/flashcard-mark.svg';
@@ -88,52 +87,36 @@ const StudyCircleIn = ({ user }: Props) => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={6} sm={12} xs={12}>
-            <Paper
-              elevation={0}
-              className={classes.helpItem}
-              onClick={() => scrollMove('study-tools')}
-            >
+            <ButtonBase className={classes.helpItem} onClick={() => scrollMove('study-tools')}>
               <img src={Question} alt="homework-help" />
               <Typography variant="body1" paragraph>
                 Homework Help
               </Typography>
-            </Paper>
+            </ButtonBase>
           </Grid>
           <Grid item lg={6} md={6} sm={12} xs={12}>
-            <Paper
-              elevation={0}
-              className={classes.helpItem}
-              onClick={() => scrollMove('group-project')}
-            >
+            <ButtonBase className={classes.helpItem} onClick={() => scrollMove('group-project')}>
               <img src={Group} alt="group" />
               <Typography variant="body1" paragraph>
                 Group Projects and Studying
               </Typography>
-            </Paper>
+            </ButtonBase>
           </Grid>
           <Grid item lg={6} md={6} sm={12} xs={12}>
-            <Paper
-              elevation={0}
-              className={classes.helpItem}
-              onClick={() => scrollMove('prepare-exam')}
-            >
+            <ButtonBase className={classes.helpItem} onClick={() => scrollMove('prepare-exam')}>
               <img src={Exam} alt="exam" />
               <Typography variant="body1" paragraph>
                 Prepare for an Exam
               </Typography>
-            </Paper>
+            </ButtonBase>
           </Grid>
           <Grid item lg={6} md={6} sm={12} xs={12}>
-            <Paper
-              elevation={0}
-              className={classes.helpItem}
-              onClick={() => scrollMove('organization')}
-            >
+            <ButtonBase className={classes.helpItem} onClick={() => scrollMove('organization')}>
               <img src={Organization} alt="organization" />
               <Typography variant="body1" paragraph>
                 Organization
               </Typography>
-            </Paper>
+            </ButtonBase>
           </Grid>
         </Grid>
       </Box>
@@ -153,28 +136,15 @@ const StudyCircleIn = ({ user }: Props) => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={goToFeed}>
+            <ButtonBase className={classes.studyAction} onClick={goToFeed}>
               <img src={QuestionMark} alt="question-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Ask a Question
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               If you’re ever stuck on a homework question or maybe missed class because you were
               sick, ask a question on your Class Feed. One of your classmates may have the answer!
-            </Typography>
-          </Grid>
-          <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
-              <img src={StudyRoomMark} alt="studyroom-mark" />
-              <Typography variant="h6" paragraph className={classes.studyActionText}>
-                Start a Study Room
-              </Typography>
-            </Paper>
-            <Typography variant="body1" paragraph>
-              Study Rooms are a great way to get quick answers on your questions! You can join a
-              study room with multiple classmates to share screens and walkthrough difficult
-              problems.
             </Typography>
           </Grid>
         </Grid>
@@ -194,24 +164,12 @@ const StudyCircleIn = ({ user }: Props) => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction}>
-              <img src={StudyRoomMark} alt="studyroom-mark" />
-              <Typography variant="h6" paragraph className={classes.studyActionText}>
-                Start a Study Room
-              </Typography>
-            </Paper>
-            <Typography variant="body1" paragraph>
-              If you’re ever stuck on a homework question or maybe missed class because you were
-              sick, ask a question on your Class Feed. One of your classmates may have the answer!
-            </Typography>
-          </Grid>
-          <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={goToChat}>
+            <ButtonBase className={classes.studyAction} onClick={goToChat}>
               <img src={MessageMark} alt="message-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Send a Message
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               Study Rooms are a great way to get quick answers on your questions! You can join a
               study room with multiple classmates to share screens and walkthrough difficult
@@ -219,12 +177,12 @@ const StudyCircleIn = ({ user }: Props) => {
             </Typography>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={() => createNewPost(3)}>
+            <ButtonBase className={classes.studyAction} onClick={() => createNewPost(3)}>
               <img src={ResourceMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Share a Resource
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               Sharing resources is a great way to share knowledge and valuable articles in order to
               get your team to be successful. You can share useful resources on your Class Feeds.
@@ -246,12 +204,12 @@ const StudyCircleIn = ({ user }: Props) => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={goToFlashcard}>
+            <ButtonBase className={classes.studyAction} onClick={goToFlashcard}>
               <img src={FlashcardMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Create Flashcards
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               Creating flashcards is a great way to solidify your understanding of new terms and
               concepts. After you have created your flashcards, check out the following Flashcard
@@ -274,22 +232,22 @@ const StudyCircleIn = ({ user }: Props) => {
             </Link>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={() => createNewPost(2)}>
+            <ButtonBase className={classes.studyAction} onClick={() => createNewPost(2)}>
               <img src={NoteMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Upload your Notes
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               Writing notes is an effective way to solidy your understanding of new topics and
               concepts. In the future, you can use these notes to review for any upcoming exams!
             </Typography>
-            <Paper elevation={3} className={classes.studyAction} onClick={goToWorkflow}>
+            <ButtonBase className={classes.studyAction} onClick={goToWorkflow}>
               <img src={WorkflowMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Add a task to Workflow
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               Writing notes is an effective way to solidy your understanding of new topics and
               concepts. In the future, you can use these notes to review for any upcoming exams!
@@ -312,12 +270,12 @@ const StudyCircleIn = ({ user }: Props) => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={goToWorkflow}>
+            <ButtonBase className={classes.studyAction} onClick={goToWorkflow}>
               <img src={WorkflowMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 Add a task to Workflow
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               Create tasks on Workflow to set up reminders for due dates on projects, essays, and
               any important meetings! These tasks will give you a visual for what you need to
@@ -325,12 +283,12 @@ const StudyCircleIn = ({ user }: Props) => {
             </Typography>
           </Grid>
           <Grid item lg={6} md={12}>
-            <Paper elevation={3} className={classes.studyAction} onClick={goToProfile}>
+            <ButtonBase className={classes.studyAction} onClick={goToProfile}>
               <img src={BookMark} alt="resource-mark" />
               <Typography variant="h6" paragraph className={classes.studyActionText}>
                 View my Bookmarks
               </Typography>
-            </Paper>
+            </ButtonBase>
             <Typography variant="body1" paragraph>
               While browsing your Class Feeds, you may come across posts that you find to be helpful
               or useful. Make sure to Bookmark these posts so you easily access them in the future.
