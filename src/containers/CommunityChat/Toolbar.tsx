@@ -127,9 +127,7 @@ export const QuillToolbar = ({ id, handleSelect, handleUploadFile }) => {
           popper: classes.popper
         }}
       >
-        <div className={cx('ql-emoji', classes.emoji)}>
-          <EmojiSelector onSelect={handleSelect} emoIconStyle={classes.emoIconStyle} />
-        </div>
+        <EmojiSelector onSelect={handleSelect} emoIconStyle={classes.emoIconStyle} />
       </Tooltip>
     </>
   );

@@ -219,9 +219,7 @@ export const QuillToolbar = ({ open, insertEmoji }) => {
               popper: classes.popper
             }}
           >
-            <div className={cx('ql-emoji', classes.emoji)}>
-              <EmojiSelector onSelect={insertEmoji} emoIconStyle={classes.emoIconStyle} />
-            </div>
+            <EmojiSelector onSelect={insertEmoji} emoIconStyle={classes.emoIconStyle} />
           </Tooltip>
           <Tooltip
             title="Clean"
