@@ -52,11 +52,6 @@ export default makeStyles((theme: any) => ({
     textAlign: 'center',
     paddingTop: 0.5
   },
-  emoji: {
-    display: 'flex !important',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   emoIconStyle: {
     width: 20
   },

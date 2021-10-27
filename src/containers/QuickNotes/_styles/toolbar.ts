@@ -55,11 +55,6 @@ export default makeStyles((theme: any) => ({
   editorToolbar: {
     marginBottom: 40
   },
-  emoji: {
-    display: 'flex !important',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   emoIconStyle: {
     width: 20
   },
