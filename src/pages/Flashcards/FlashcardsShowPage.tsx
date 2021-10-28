@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { useSelector } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
-import Flashcards from '../View/Flashcards';
+import Flashcards from '../View/FlashcardsPage';
 import { isApiCalling } from '../../utils/helpers';
 import { campaignActions } from '../../constants/action-types';
 import withRoot from '../../withRoot';
