@@ -1,5 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
-
 export const styles = () => ({
   app: {
     position: 'absolute',
@@ -15,7 +13,7 @@ export const styles = () => ({
     gridColumn: '2 / -2',
     gridRow: '1 / -1'
   },
-  convoAvatar: {
+  storyAvatar: {
     background: 'orchid',
     gridColumn: 4,
     gridRow: 2
@@ -40,7 +38,7 @@ export const styles = () => ({
     gridColumn: 5,
     gridRow: '5 / -2'
   },
-  convoCaption: {
+  storyCaption: {
     background: 'fireBrick',
     gridColumn: '2 / -2',
     gridRow: 5
