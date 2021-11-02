@@ -53,6 +53,7 @@ import Canvas from './pages/Canvas/CanvasPage';
 import TermsOfUse from './pages/TermsOfUse/TermsOfUsePage';
 import Redirect from './pages/Redirect/RedirectPage';
 import Sandbox from './pages/Sandbox/Sandbox';
+import Hud from './pages/Hud/Hud';
 import Miss from './pages/Miss/Miss';
 import UserNotes from './pages/UserNotes/UserNotes';
 import { GOOGLE_ANALYTICS, SENTRY, ENV, RELEASE } from './constants/app';
@@ -203,6 +204,7 @@ ReactDOM.render(
                       <Route exact path="/canvas/:nonce" component={withTracker(Canvas)} />
                       <Route exact path="/redirect" component={Redirect} />
                       <Route exact path="/sandbox" component={Sandbox} />
+                      <Route exact path="/hud" component={withTracker(Hud)} />
                       <Route component={Miss} />
                     </Switch>
                   </div>
