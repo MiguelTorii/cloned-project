@@ -6,7 +6,7 @@ export const styles = () => ({
   appWithHud: {
     display: 'grid',
     gridTemplateColumns: '200px 150px 1fr 150px 200px',
-    gridTemplateRows: '0px 100px 1fr 2fr 50px 40px 40px 0px'
+    gridTemplateRows: '0px 100px 2fr 1fr 50px 40px 40px 0px'
   },
   mainAction: {
     gridColumn: '2 / -2',
@@ -14,16 +14,15 @@ export const styles = () => ({
     overflow: 'auto'
   },
   storyAvatar: {
+    background: 'white',
     gridColumn: 4,
     gridRow: 2,
     margin: 'auto',
-    background: 'orchid',
     borderRadius: '75px',
     border: 'black solid 1px',
     boxShadow: '3px 3px gray',
     padding: '7px',
-    zIndex: 2,
-    opacity: 0.7
+    zIndex: 2
   },
   miniMap: {
     background: 'goldenRod',
@@ -33,14 +32,15 @@ export const styles = () => ({
   questTasks: {
     background: 'forestGreen',
     gridColumn: 5,
-    gridRow: 3
+    gridRow: 3,
+    overflow: 'auto'
   },
   rewardUpdates: {
     background: 'hotPink',
     gridColumn: 5,
     gridRow: 4
   },
-  toolsAndSpells: {
+  navigation: {
     background: 'tan',
     gridColumn: 5,
     gridRow: '5 / -2'
@@ -62,14 +62,9 @@ export const styles = () => ({
     gridColumn: '2 / -2',
     gridRow: 7
   },
-  playerModes: {
-    background: 'royalBlue',
-    gridColumn: 1,
-    gridRow: 7
-  },
   chat: {
     background: 'purple',
     gridColumn: 1,
-    gridRow: '2 / span 5'
+    gridRow: '2 / -1'
   }
 });
