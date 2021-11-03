@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import withWidth from '@material-ui/core/withWidth';
 import withRoot from '../../withRoot';
 import UserNotesContainer from '../../containers/UserNotes/UserNotesContainer';
 import { NotesContextProvider } from '../../hooks/useNotes';
-import MainActionNavbar from '../navbar/HudNavbar';
+import HudNavbar from '../navbar/HudNavbar';
 import QuickNotes from '../../containers/QuickNotes/QuickNotes';
 import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
 
@@ -11,48 +10,47 @@ type Props = {
   classes: Record<string, any>;
 };
 
-enum NOTE_SECTIONS {
-  'Classes',
-  'QuickNotes',
-  'Flashcards'
-}
+const CLASSES_NAV_ITEM_ID = 'classes';
+const QUICK_NOTES_NAV_ITEM_ID = 'quickNotes';
+const FLASHCARDS_NAV_ITEM_ID = 'flashcards';
 
 const NotesHudItem = ({ classes }: Props) => {
-  const [currentGoalPage, setCurrentGoalPage] = useState<NOTE_SECTIONS>(NOTE_SECTIONS.Classes);
-
   const navbarItems = [
     {
-      id: 'classes',
-      displayName: 'Classes',
-      onSelection: () => setCurrentGoalPage(NOTE_SECTIONS.Classes)
+      id: CLASSES_NAV_ITEM_ID,
+      displayName: 'Classes'
     },
     {
-      id: 'quickNotes',
-      displayName: 'Quick Notes',
-      onSelection: () => setCurrentGoalPage(NOTE_SECTIONS.QuickNotes)
+      id: QUICK_NOTES_NAV_ITEM_ID,
+      displayName: 'Quick Notes'
     },
     {
-      id: 'flashcards',
-      displayName: 'Flashcards',
-      onSelection: () => setCurrentGoalPage(NOTE_SECTIONS.Flashcards)
+      id: FLASHCARDS_NAV_ITEM_ID,
+      displayName: 'Flashcards'
     }
   ];
 
+  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
+
   return (
     <div className={classes.container}>
-      <MainActionNavbar navbarItems={navbarItems} classes={classes} />
+      <HudNavbar
+        onSelectItem={setCurrentNavbarItemId}
+        navbarItems={navbarItems}
+        classes={classes}
+      />
 
-      {currentGoalPage === NOTE_SECTIONS.Classes && (
+      {currentNavbarItemId === CLASSES_NAV_ITEM_ID && (
         <NotesContextProvider>
           <UserNotesContainer />
         </NotesContextProvider>
       )}
 
-      {currentGoalPage === NOTE_SECTIONS.QuickNotes && <QuickNotes />}
+      {currentNavbarItemId === QUICK_NOTES_NAV_ITEM_ID && <QuickNotes />}
 
-      {currentGoalPage === NOTE_SECTIONS.Flashcards && <FlashcardsList />}
+      {currentNavbarItemId === FLASHCARDS_NAV_ITEM_ID && <FlashcardsList />}
     </div>
   );
 };
 
-export default withRoot(withWidth()(NotesHudItem));
+export default withRoot(NotesHudItem);

@@ -1,39 +1,34 @@
 import React, { useRef, useState } from 'react';
-import { Box, Grid, Hidden, withWidth } from '@material-ui/core';
-import MainActionNavbar from '../navbar/HudNavbar';
+import { Box, Grid, Hidden } from '@material-ui/core';
+import HudNavbar from '../navbar/HudNavbar';
 import { decypherClass } from '../../utils/crypto';
 import Classes from '../../containers/ClassesGrid/Classes';
 import FeedResources from '../../containers/FeedResources/FeedResources';
 import Feed from '../../containers/Feed/Feed';
 import withRoot from '../../withRoot';
 import Recommendations from '../../containers/Recommendations/Recommendations';
+import { HudNavbarItem } from '../navbar/HudNavbarItem';
 
 type Props = {
   classes: Record<string, any>;
 };
 
-enum CLASSES_SECTIONS {
-  'Classes',
-  'Feeds'
-}
+const CLASSES_NAV_ITEM_ID = 'classes';
+const FEED_NAV_ITEM_ID = 'feeds';
 
 const ClassesHudItem = ({ classes }: Props) => {
-  const [currentGoalPage, setCurrentGoalPage] = useState<CLASSES_SECTIONS>(
-    CLASSES_SECTIONS.Classes
-  );
-
-  const navbarItems = [
+  const navbarItems: HudNavbarItem[] = [
     {
-      id: 'classes',
-      displayName: 'Classes',
-      onSelection: () => setCurrentGoalPage(CLASSES_SECTIONS.Classes)
+      id: CLASSES_NAV_ITEM_ID,
+      displayName: 'Classes'
     },
     {
-      id: 'feeds',
-      displayName: 'Feeds',
-      onSelection: () => setCurrentGoalPage(CLASSES_SECTIONS.Feeds)
+      id: FEED_NAV_ITEM_ID,
+      displayName: 'Feeds'
     }
   ];
+
+  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
 
   const gridRef = useRef(null);
   const feedId = 0;
@@ -42,11 +37,15 @@ const ClassesHudItem = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <MainActionNavbar navbarItems={navbarItems} classes={classes} />
+      <HudNavbar
+        onSelectItem={setCurrentNavbarItemId}
+        navbarItems={navbarItems}
+        classes={classes}
+      />
 
-      {currentGoalPage === CLASSES_SECTIONS.Classes && <Classes />}
+      {currentNavbarItemId === CLASSES_NAV_ITEM_ID && <Classes />}
 
-      {currentGoalPage === CLASSES_SECTIONS.Feeds && (
+      {currentNavbarItemId === FEED_NAV_ITEM_ID && (
         <Grid container spacing={2}>
           <Hidden lgUp>
             <Grid item xs={12}>
@@ -76,4 +75,4 @@ const ClassesHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(withWidth()(ClassesHudItem));
+export default withRoot(ClassesHudItem);

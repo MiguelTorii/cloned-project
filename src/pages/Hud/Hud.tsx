@@ -5,85 +5,84 @@ import cx from 'classnames';
 import withRoot from '../../withRoot';
 import { styles } from '../../components/_styles/Hud/Hud';
 import GoalsHudItem from '../../hud/goals/GoalsHudItem';
-import MainActionNavbar from '../../hud/navbar/HudNavbar';
+import HudNavbar from '../../hud/navbar/HudNavbar';
 import NotesHudItem from '../../hud/notes/NotesHudItem';
 import ClassesHudItem from '../../hud/classes/ClassesHudItem';
 import CalendarHudItem from '../../hud/calendar/CalendarHudItem';
 import ProfileHudItem from '../../hud/profile/ProfileHudItem';
 import ChatHudItem from '../../hud/chat/ChatHudItem';
 import Chat from '../../containers/MainChat/MainChat';
+import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 
 type Props = {
   classes: Record<string, any>;
 };
 
-enum TOP_NAVIGATION {
-  'Calendar',
-  'Classes',
-  'Notes',
-  'Chat',
-  'Goals',
-  'Profile'
-}
+const CALENDAR_NAV_ITEM_ID = 'calendar';
+const CLASSES_NAV_ITEM_ID = 'classes';
+const NOTES_NAV_ITEM_ID = 'notes';
+const CHAT_NAV_ITEM_ID = 'chat';
+const GOALS_NAV_ITEM_ID = 'goals';
+const PROFILE_NAV_ITEM_ID = 'profile';
 
 const Hud = ({ classes }: Props) => {
-  const [currentPage, setCurrentPage] = useState<TOP_NAVIGATION>(TOP_NAVIGATION.Profile);
-
   const navbarItems = [
     {
-      id: 'calendar',
-      displayName: 'Calendar',
-      onSelection: () => setCurrentPage(TOP_NAVIGATION.Calendar)
+      id: CALENDAR_NAV_ITEM_ID,
+      displayName: 'Calendar'
     },
     {
-      id: 'classes',
-      displayName: 'Classes',
-      onSelection: () => setCurrentPage(TOP_NAVIGATION.Classes)
+      id: CLASSES_NAV_ITEM_ID,
+      displayName: 'Classes'
     },
     {
-      id: 'notes',
-      displayName: 'Notes',
-      onSelection: () => setCurrentPage(TOP_NAVIGATION.Notes)
+      id: NOTES_NAV_ITEM_ID,
+      displayName: 'Notes'
     },
     {
-      id: 'chat',
-      displayName: 'Chat',
-      onSelection: () => setCurrentPage(TOP_NAVIGATION.Chat)
+      id: CHAT_NAV_ITEM_ID,
+      displayName: 'Chat'
     },
     {
-      id: 'goals',
-      displayName: 'Goals',
-      onSelection: () => setCurrentPage(TOP_NAVIGATION.Goals)
+      id: GOALS_NAV_ITEM_ID,
+      displayName: 'Goals'
     },
     {
-      id: 'profile',
-      displayName: 'Profile',
-      onSelection: () => setCurrentPage(TOP_NAVIGATION.Profile)
+      id: PROFILE_NAV_ITEM_ID,
+      displayName: 'Profile'
     }
   ];
+
+  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
 
   return (
     <main>
       <CssBaseline />
       <div className={cx(classes.app, classes.appWithHud)}>
         <div className={classes.mainAction}>
-          {currentPage === TOP_NAVIGATION.Calendar && <CalendarHudItem classes={classes} />}
+          {currentNavbarItemId === CALENDAR_NAV_ITEM_ID && <CalendarHudItem classes={classes} />}
 
-          {currentPage === TOP_NAVIGATION.Classes && <ClassesHudItem classes={classes} />}
+          {currentNavbarItemId === CLASSES_NAV_ITEM_ID && <ClassesHudItem classes={classes} />}
 
-          {currentPage === TOP_NAVIGATION.Notes && <NotesHudItem classes={classes} />}
+          {currentNavbarItemId === NOTES_NAV_ITEM_ID && <NotesHudItem classes={classes} />}
 
-          {currentPage === TOP_NAVIGATION.Chat && <Chat />}
+          {currentNavbarItemId === CHAT_NAV_ITEM_ID && <Chat />}
 
-          {currentPage === TOP_NAVIGATION.Goals && <GoalsHudItem classes={classes} />}
+          {currentNavbarItemId === GOALS_NAV_ITEM_ID && <GoalsHudItem classes={classes} />}
 
-          {currentPage === TOP_NAVIGATION.Profile && <ProfileHudItem classes={classes} />}
+          {currentNavbarItemId === PROFILE_NAV_ITEM_ID && <ProfileHudItem classes={classes} />}
         </div>
         <div className={classes.storyAvatar} />
         <div className={classes.miniMap}>
-          <MainActionNavbar navbarItems={navbarItems} classes={classes} />
+          <HudNavbar
+            onSelectItem={setCurrentNavbarItemId}
+            navbarItems={navbarItems}
+            classes={classes}
+          />
         </div>
-        <div className={classes.questTasks} />
+        <div className={classes.questTasks}>
+          <MiniWorkflows />
+        </div>
         <div className={classes.rewardUpdates} />
         <div className={classes.toolsAndSpells} />
         <div className={classes.storyCaption}>

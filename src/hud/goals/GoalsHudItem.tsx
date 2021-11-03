@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { withWidth } from '@material-ui/core';
-import MainActionNavbar from '../navbar/HudNavbar';
+import HudNavbar from '../navbar/HudNavbar';
 import Store from '../../containers/Store/Store';
 import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
 import WeeklyGoals from '../../containers/WeeklyGoals/WeeklyGoals';
@@ -10,44 +9,43 @@ type Props = {
   classes: Record<string, any>;
 };
 
-enum GOAL_SECTIONS {
-  'Goals',
-  'Rewards',
-  'LeaderBoard'
-}
+const GOALS_NAV_ITEM_ID = 'classes';
+const REWARDS_NAV_ITEM_ID = 'feeds';
+const LEADER_BOARD_NAV_ITEM_ID = 'leaderBoard';
 
 const GoalsHudItem = ({ classes }: Props) => {
-  const [currentGoalPage, setCurrentGoalPage] = useState<GOAL_SECTIONS>(GOAL_SECTIONS.Goals);
-
   const navbarItems = [
     {
-      id: 'goals',
-      displayName: 'Goals',
-      onSelection: () => setCurrentGoalPage(GOAL_SECTIONS.Goals)
+      id: GOALS_NAV_ITEM_ID,
+      displayName: 'Goals'
     },
     {
-      id: 'rewards',
-      displayName: 'Rewards',
-      onSelection: () => setCurrentGoalPage(GOAL_SECTIONS.Rewards)
+      id: REWARDS_NAV_ITEM_ID,
+      displayName: 'Rewards'
     },
     {
-      id: 'leaderboard',
-      displayName: 'LeaderBoard',
-      onSelection: () => setCurrentGoalPage(GOAL_SECTIONS.LeaderBoard)
+      id: LEADER_BOARD_NAV_ITEM_ID,
+      displayName: 'LeaderBoard'
     }
   ];
 
+  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
+
   return (
     <div className={classes.container}>
-      <MainActionNavbar navbarItems={navbarItems} classes={classes} />
+      <HudNavbar
+        onSelectItem={setCurrentNavbarItemId}
+        navbarItems={navbarItems}
+        classes={classes}
+      />
 
-      {currentGoalPage === GOAL_SECTIONS.Goals && <WeeklyGoals />}
+      {currentNavbarItemId === GOALS_NAV_ITEM_ID && <WeeklyGoals />}
 
-      {currentGoalPage === GOAL_SECTIONS.Rewards && <Store />}
+      {currentNavbarItemId === REWARDS_NAV_ITEM_ID && <Store />}
 
-      {currentGoalPage === GOAL_SECTIONS.LeaderBoard && <LeaderBoards />}
+      {currentNavbarItemId === LEADER_BOARD_NAV_ITEM_ID && <LeaderBoards />}
     </div>
   );
 };
 
-export default withRoot(withWidth()(GoalsHudItem));
+export default withRoot(GoalsHudItem);

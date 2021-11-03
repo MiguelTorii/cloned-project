@@ -5,14 +5,15 @@ import { HudNavbarItem } from './HudNavbarItem';
 type Props = {
   classes: Record<string, any>;
   navbarItems: HudNavbarItem[];
+  onSelectItem: (navbarItemId: string) => void;
 };
 
-const MainActionNavbar = ({ classes, navbarItems }: Props) => {
+const HudNavbar = ({ classes, navbarItems, onSelectItem }: Props) => {
   const [currentNavbarItem, setCurrentNavbarItem] = useState<HudNavbarItem>(navbarItems[0]);
 
   const onNavbarItemSelected = (navbarItem: HudNavbarItem) => {
     setCurrentNavbarItem(navbarItem);
-    navbarItem.onSelection();
+    onSelectItem(navbarItem.id);
   };
 
   return (
@@ -31,4 +32,4 @@ const MainActionNavbar = ({ classes, navbarItems }: Props) => {
   );
 };
 
-export default MainActionNavbar;
+export default HudNavbar;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import withWidth from '@material-ui/core/withWidth';
 import withRoot from '../../withRoot';
 import RightMenu from '../../containers/CommunityChat/RightMenu';
 import type { UserState } from '../../reducers/user';
@@ -24,4 +23,4 @@ const ChatHudItem = () => {
   );
 };
 
-export default withRoot(withWidth()(ChatHudItem));
+export default withRoot(ChatHudItem);

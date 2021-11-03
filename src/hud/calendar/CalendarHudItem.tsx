@@ -1,5 +1,4 @@
 import React from 'react';
-import { withWidth } from '@material-ui/core';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -23,4 +22,4 @@ const CalendarHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(withWidth()(CalendarHudItem));
+export default withRoot(CalendarHudItem);

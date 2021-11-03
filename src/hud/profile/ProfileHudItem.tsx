@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { withWidth } from '@material-ui/core';
-import MainActionNavbar from '../navbar/HudNavbar';
+import HudNavbar from '../navbar/HudNavbar';
 import Profile, { PROFILE_PAGES } from '../../containers/Profile/Profile';
 import withRoot from '../../withRoot';
 
@@ -8,28 +7,22 @@ type Props = {
   classes: Record<string, any>;
 };
 
-enum PROFILE_SECTIONS {
-  'Profile',
-  'PointsHistory'
-}
+const PROFILE_NAV_ITEM_ID = 'profile';
+const POINTS_HISTORY_NAV_ITEM_ID = 'pointsHistory';
 
 const ProfileHudItem = ({ classes }: Props) => {
-  const [currentGoalPage, setCurrentGoalPage] = useState<PROFILE_SECTIONS>(
-    PROFILE_SECTIONS.Profile
-  );
-
   const navbarItems = [
     {
-      id: 'profile',
-      displayName: 'Profile',
-      onSelection: () => setCurrentGoalPage(PROFILE_SECTIONS.Profile)
+      id: PROFILE_NAV_ITEM_ID,
+      displayName: 'Profile'
     },
     {
-      id: 'pointsHistory',
-      displayName: 'Points History',
-      onSelection: () => setCurrentGoalPage(PROFILE_SECTIONS.PointsHistory)
+      id: POINTS_HISTORY_NAV_ITEM_ID,
+      displayName: 'Points History'
     }
   ];
+
+  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
 
   // TODO unhardcode
   const userId = '1041028';
@@ -38,9 +31,13 @@ const ProfileHudItem = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <MainActionNavbar navbarItems={navbarItems} classes={classes} />
+      <HudNavbar
+        onSelectItem={setCurrentNavbarItemId}
+        navbarItems={navbarItems}
+        classes={classes}
+      />
 
-      {currentGoalPage === PROFILE_SECTIONS.Profile && (
+      {currentNavbarItemId === PROFILE_NAV_ITEM_ID && (
         <Profile
           key={`${userId}index`}
           userId={userId}
@@ -50,7 +47,7 @@ const ProfileHudItem = ({ classes }: Props) => {
         />
       )}
 
-      {currentGoalPage === PROFILE_SECTIONS.PointsHistory && (
+      {currentNavbarItemId === POINTS_HISTORY_NAV_ITEM_ID && (
         <Profile
           key={`${userId}history`}
           userId={userId}
@@ -63,4 +60,4 @@ const ProfileHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(withWidth()(ProfileHudItem));
+export default withRoot(ProfileHudItem);
