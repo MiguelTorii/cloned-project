@@ -4,10 +4,6 @@ import FullScreenLoader from '../../components/FullScreenLoader/FullScreenLoader
 import Avatar from '../../components/Avatar/Avatar';
 import avatarImg from '../../assets/img/circlein-web-notification.png';
 
-const HudAvatar = () => {
-  const storyData = useSelector((state) => (state as any).campaign);
-
-  return <Avatar alt="hud-avatar" src={avatarImg} />;
-};
+const HudAvatar = () => <Avatar alt="hud-avatar" src={avatarImg} />;
 
 export default HudAvatar;
