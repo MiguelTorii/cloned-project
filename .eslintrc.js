@@ -30,6 +30,9 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
 
+    // Turn this off because consistent types are nice to have.
+    'no-inferrable-types': 'off',
+
     'prettier/prettier': 'error',
     indent: 'off',
     'no-multiple-empty-lines': 'error',

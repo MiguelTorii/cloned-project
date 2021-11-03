@@ -9,14 +9,16 @@ export const styles = () => ({
     gridTemplateRows: '0px 100px 1fr 2fr 50px 40px 40px 0px'
   },
   mainAction: {
-    background: 'cornflowerBlue',
     gridColumn: '2 / -2',
-    gridRow: '1 / -1'
+    gridRow: '1 / -5',
+    overflow: 'auto'
   },
   storyAvatar: {
     background: 'orchid',
     gridColumn: 4,
-    gridRow: 2
+    gridRow: 2,
+    zIndex: 2,
+    opacity: 0.7
   },
   miniMap: {
     background: 'goldenRod',
@@ -41,15 +43,17 @@ export const styles = () => ({
   storyCaption: {
     background: 'fireBrick',
     gridColumn: '2 / -2',
-    gridRow: 5
+    gridRow: 5,
+    zIndex: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    opacity: 0.7
   },
   experienceUpdates: {
-    background: 'turquoise',
     gridColumn: '2 / -2',
     gridRow: 6
   },
   experienceProgress: {
-    background: 'seaGreen',
     gridColumn: '2 / -2',
     gridRow: 7
   },
@@ -58,14 +62,9 @@ export const styles = () => ({
     gridColumn: 1,
     gridRow: 7
   },
-  chatChannels: {
-    background: 'aqua',
-    gridColumn: 1,
-    gridRow: '2 / span 2'
-  },
-  activeChat: {
+  chat: {
     background: 'purple',
     gridColumn: 1,
-    gridRow: '4 / span 3'
+    gridRow: '2 / span 5'
   }
 });

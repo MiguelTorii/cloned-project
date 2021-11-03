@@ -76,6 +76,7 @@ type Props = {
   updateBookmark?: (...args: Array<any>) => any;
   updateProfileImage?: (...args: Array<any>) => any;
   match?: any;
+  defaultPage?: string;
 };
 
 type State = {
@@ -100,7 +101,7 @@ type State = {
   isEditingProfile: boolean;
   isUpdatingProfile: boolean;
 };
-const PROFILE_PAGES = {
+export const PROFILE_PAGES = {
   index: 'index',
   points_history: 'points_history'
 };
@@ -154,8 +155,15 @@ class Profile extends React.PureComponent<Props, State> {
       match: { params },
       userId,
       user,
-      from
+      from,
+      defaultPage
     } = this.props;
+
+    if (defaultPage) {
+      this.setState({
+        page: defaultPage
+      });
+    }
 
     // If profile is other's and `from` is valid, it dispatches a log event.
     if (userId !== user.data.userId && Object.values(PROFILE_PAGE_SOURCE).includes(from)) {
