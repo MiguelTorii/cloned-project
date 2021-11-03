@@ -5,7 +5,7 @@ export const styles = () => ({
   },
   appWithHud: {
     display: 'grid',
-    gridTemplateColumns: '200px 100px 1fr 100px 200px',
+    gridTemplateColumns: '200px 150px 1fr 150px 200px',
     gridTemplateRows: '0px 100px 1fr 2fr 50px 40px 40px 0px'
   },
   mainAction: {
@@ -14,9 +14,14 @@ export const styles = () => ({
     overflow: 'auto'
   },
   storyAvatar: {
-    background: 'orchid',
     gridColumn: 4,
     gridRow: 2,
+    margin: 'auto',
+    background: 'orchid',
+    borderRadius: '75px',
+    border: 'black solid 1px',
+    boxShadow: '3px 3px gray',
+    padding: '7px',
     zIndex: 2,
     opacity: 0.7
   },

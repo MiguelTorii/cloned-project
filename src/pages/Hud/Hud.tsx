@@ -13,6 +13,7 @@ import ProfileHudItem from '../../hud/profile/ProfileHudItem';
 import ChatHudItem from '../../hud/chat/ChatHudItem';
 import Chat from '../../containers/MainChat/MainChat';
 import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
+import HudAvatar from '../../containers/Hud/HudAvatar';
 
 type Props = {
   classes: Record<string, any>;
@@ -72,7 +73,9 @@ const Hud = ({ classes }: Props) => {
 
           {currentNavbarItemId === PROFILE_NAV_ITEM_ID && <ProfileHudItem classes={classes} />}
         </div>
-        <div className={classes.storyAvatar} />
+        <div className={classes.storyAvatar}>
+          <HudAvatar />
+        </div>
         <div className={classes.miniMap}>
           <HudNavbar
             onSelectItem={setCurrentNavbarItemId}
