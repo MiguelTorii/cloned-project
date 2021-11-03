@@ -7,8 +7,7 @@ import type { UserProfile } from '../../types/models';
 import withRoot from '../../withRoot';
 import Header from './Header';
 import PointsHistory from './PointsHistory';
-// import PointsReport from './PointsReport';
-// import StudyStats from './StudyStats';
+
 type Props = {
   profile: UserProfile;
   isMyProfile: boolean;

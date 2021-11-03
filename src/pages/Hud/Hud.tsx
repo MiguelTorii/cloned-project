@@ -1,37 +1,104 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import { withRouter } from 'react-router';
-import { useSelector } from 'react-redux';
-import { any } from 'prop-types';
 import cx from 'classnames';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
 import { styles } from '../../components/_styles/Hud/Hud';
+import GoalsHudItem from '../../hud/goals/GoalsHudItem';
+import HudNavbar from '../../hud/navbar/HudNavbar';
+import NotesHudItem from '../../hud/notes/NotesHudItem';
+import ClassesHudItem from '../../hud/classes/ClassesHudItem';
+import CalendarHudItem from '../../hud/calendar/CalendarHudItem';
+import ProfileHudItem from '../../hud/profile/ProfileHudItem';
+import ChatHudItem from '../../hud/chat/ChatHudItem';
+import Chat from '../../containers/MainChat/MainChat';
+import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 
 type Props = {
   classes: Record<string, any>;
 };
 
-const Hud = ({ classes }: Props) => (
-  <main>
-    <CssBaseline />
-    <div className={cx(classes.app, classes.appWithHud)}>
-      <div className={classes.mainAction}>Main action</div>
-      <div className={classes.convoAvatar}>Avatar talking to me</div>
-      <div className={classes.miniMap}>Mini map</div>
-      <div className={classes.questTasks}>Quest tasks</div>
-      <div className={classes.rewardUpdates}>Reward updates</div>
-      <div className={classes.toolsAndSpells}>Tools and spells</div>
-      <div className={classes.convoCaption}>Conversation</div>
-      <div className={classes.experienceUpdates}>Experience updates</div>
-      <div className={classes.experienceProgress}>Experience progress</div>
-      <div className={classes.playerModes}>Player modes</div>
-      <div className={classes.chatChannels}>Chat channels (groups and people)</div>
-      <div className={classes.activeChat}>Active chat</div>
-    </div>
-  </main>
-);
+const CALENDAR_NAV_ITEM_ID = 'calendar';
+const CLASSES_NAV_ITEM_ID = 'classes';
+const NOTES_NAV_ITEM_ID = 'notes';
+const CHAT_NAV_ITEM_ID = 'chat';
+const GOALS_NAV_ITEM_ID = 'goals';
+const PROFILE_NAV_ITEM_ID = 'profile';
+
+const Hud = ({ classes }: Props) => {
+  const navbarItems = [
+    {
+      id: CALENDAR_NAV_ITEM_ID,
+      displayName: 'Calendar'
+    },
+    {
+      id: CLASSES_NAV_ITEM_ID,
+      displayName: 'Classes'
+    },
+    {
+      id: NOTES_NAV_ITEM_ID,
+      displayName: 'Notes'
+    },
+    {
+      id: CHAT_NAV_ITEM_ID,
+      displayName: 'Chat'
+    },
+    {
+      id: GOALS_NAV_ITEM_ID,
+      displayName: 'Goals'
+    },
+    {
+      id: PROFILE_NAV_ITEM_ID,
+      displayName: 'Profile'
+    }
+  ];
+
+  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
+
+  return (
+    <main>
+      <CssBaseline />
+      <div className={cx(classes.app, classes.appWithHud)}>
+        <div className={classes.mainAction}>
+          {currentNavbarItemId === CALENDAR_NAV_ITEM_ID && <CalendarHudItem classes={classes} />}
+
+          {currentNavbarItemId === CLASSES_NAV_ITEM_ID && <ClassesHudItem classes={classes} />}
+
+          {currentNavbarItemId === NOTES_NAV_ITEM_ID && <NotesHudItem classes={classes} />}
+
+          {currentNavbarItemId === CHAT_NAV_ITEM_ID && <Chat />}
+
+          {currentNavbarItemId === GOALS_NAV_ITEM_ID && <GoalsHudItem classes={classes} />}
+
+          {currentNavbarItemId === PROFILE_NAV_ITEM_ID && <ProfileHudItem classes={classes} />}
+        </div>
+        <div className={classes.storyAvatar} />
+        <div className={classes.miniMap}>
+          <HudNavbar
+            onSelectItem={setCurrentNavbarItemId}
+            navbarItems={navbarItems}
+            classes={classes}
+          />
+        </div>
+        <div className={classes.questTasks}>
+          <MiniWorkflows />
+        </div>
+        <div className={classes.rewardUpdates} />
+        <div className={classes.toolsAndSpells} />
+        <div className={classes.storyCaption}>
+          <div className={classes.storyCaptionContent}>
+            {`Hello, I'm Kobe. Welcome to CircleIn!`}
+          </div>
+        </div>
+        <div className={classes.experienceUpdates} />
+        <div className={classes.experienceProgress} />
+        <div className={classes.playerModes} />
+        <div className={classes.chat}>
+          <ChatHudItem />
+        </div>
+      </div>
+    </main>
+  );
+};
 
 export default withRoot(withStyles(styles as any)(Hud));

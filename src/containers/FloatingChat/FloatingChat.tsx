@@ -382,7 +382,7 @@ const FloatingChat = ({
     setCreateChat(null);
   };
 
-  if (pathname === '/chat' || userId === '' || !client) {
+  if (pathname === '/chat' || pathname === '/hud' || userId === '' || !client) {
     return null;
   }
 
