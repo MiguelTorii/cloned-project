@@ -138,3 +138,6 @@ export const apiActions = {
   API_CALL_SUCCESS: 'API_CALL_SUCCESS',
   API_CALL_FAILURE: 'API_CALL_FAILURE'
 };
+export const storyActions = {
+  SET_CONVERSATION: 'SET_CONVERSATION'
+};
