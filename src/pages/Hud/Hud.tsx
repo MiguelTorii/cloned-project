@@ -76,18 +76,19 @@ const Hud = ({ classes }: Props) => {
         <div className={classes.storyAvatar}>
           <HudAvatar />
         </div>
-        <div className={classes.miniMap}>
+        <div className={classes.miniMap} />
+        <div className={classes.miniMap} />
+        <div className={classes.questTasks}>
+          <MiniWorkflows />
+        </div>
+        <div className={classes.rewardUpdates} />
+        <div className={classes.navigation}>
           <HudNavbar
             onSelectItem={setCurrentNavbarItemId}
             navbarItems={navbarItems}
             classes={classes}
           />
         </div>
-        <div className={classes.questTasks}>
-          <MiniWorkflows />
-        </div>
-        <div className={classes.rewardUpdates} />
-        <div className={classes.toolsAndSpells} />
         <div className={classes.storyCaption}>
           <div className={classes.storyCaptionContent}>
             {`Hello, I'm Kobe. Welcome to CircleIn!`}
