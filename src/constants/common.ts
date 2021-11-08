@@ -191,3 +191,9 @@ export const LOG_EVENT_TYPE = {
   VIEWED: 'Viewed'
 };
 export const DEFAULT_EMOJI_REACTIONS = [':rocket:', ':raised_hands:', ':heart:', ':tada:'];
+export const MessageItemType = {
+  DATE: 'date',
+  OWN: 'own',
+  MESSAGE: 'message',
+  END: 'end'
+};

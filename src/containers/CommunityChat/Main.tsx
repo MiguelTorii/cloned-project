@@ -18,7 +18,7 @@ import LoadImg from '../../components/LoadImg/LoadImg';
 import { processMessages, fetchAvatars, getAvatar, getFileAttributes } from '../../utils/chat';
 import LoadingMessageGif from '../../assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
-import { PERMISSIONS } from '../../constants/common';
+import { MessageItemType, PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
 import { Member } from '../../types/models';
 
@@ -234,6 +234,28 @@ const Main = ({
       }),
     [messages, userId]
   );
+
+  // Calculate last message index.
+  const lastReadIndex = useMemo(() => {
+    let resultIndex = lastReadMessageIndex;
+    for (const messageItem of messageItems) {
+      if (
+        messageItem.type === MessageItemType.OWN ||
+        messageItem.type === MessageItemType.MESSAGE
+      ) {
+        for (const message of messageItem.messageList) {
+          if (message.index > lastReadMessageIndex) {
+            if (messageItem.type === MessageItemType.MESSAGE) {
+              return resultIndex;
+            }
+            resultIndex = message.index;
+          }
+        }
+      }
+    }
+    return resultIndex;
+  }, [messageItems, lastReadMessageIndex]);
+
   const hasPermission = useMemo(
     () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
     [permission]
@@ -322,7 +344,7 @@ const Main = ({
                 showNotification={showNotification}
                 isOnline={isOnline}
                 isLastMessage={isLastMessage}
-                lastReadMessageIndex={lastReadMessageIndex}
+                lastReadMessageIndex={lastReadIndex}
                 isOwn={type === 'own'}
                 currentUserId={userId}
                 userId={item.author}
