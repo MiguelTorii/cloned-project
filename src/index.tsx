@@ -38,7 +38,7 @@ import Profile from './pages/Profile/ProfilePage';
 import Reminders from './pages/Reminders/RemindersPage';
 import VideoCall from './pages/VideoCall/VideoCallPage';
 import StartVideo from './pages/StartVideo/StartVideoPage';
-import FloatingChat from './containers/FloatingChat/Chat';
+import FloatingChatContainer from './containers/FloatingChat/FloatingChatContainer';
 import UserInitializer from './containers/UserInitializer/UserInitializer';
 import Referral from './containers/Referrals/Referral';
 import Saml from './containers/Auth/Saml';
@@ -58,8 +58,8 @@ import Miss from './pages/Miss/Miss';
 import UserNotes from './pages/UserNotes/UserNotes';
 import { GOOGLE_ANALYTICS, SENTRY, ENV, RELEASE } from './constants/app';
 import withTracker from './withTracker';
-import Chat from './pages/Chat/ChatPage';
-import ChatChannel from './pages/ChatChannel/ChatChannelPage';
+import ChatPage from './pages/Chat/ChatPage';
+import ChatChannelPage from './pages/ChatChannel/ChatChannelPage';
 import './index.css';
 import ErrorBoundary from './containers/ErrorBoundary/ErrorBoundary';
 import OnboardingPopup from './containers/OnboardingPopup/OnboardingPopup';
@@ -100,7 +100,7 @@ ReactDOM.render(
               <ConnectedRouter history={history}>
                 <LastLocationProvider>
                   <div>
-                    <FloatingChat />
+                    <FloatingChatContainer />
                     <Switch>
                       <Route exact path="/" component={withTracker(Home)} />
                       <Route exact path="/create_post" component={withTracker(CreatePost)} />
@@ -108,8 +108,8 @@ ReactDOM.render(
                       <Route exact path="/classes" component={withTracker(Classes)} />
                       <Route exact path="/feed" component={withTracker(Feed)} />
                       <Route exact path="/workflow" component={withTracker(Workflow)} />
-                      <Route exact path="/chat/:hashId" component={withTracker(ChatChannel)} />
-                      <Route exact path="/chat" component={withTracker(Chat)} />
+                      <Route exact path="/chat/:hashId" component={withTracker(ChatChannelPage)} />
+                      <Route exact path="/chat" component={withTracker(ChatPage)} />
                       <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
                       <Route exact path="/bookmarks" component={withTracker(Feed)} />
                       <Route exact path="/my_posts" component={withTracker(Feed)} />

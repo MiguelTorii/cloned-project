@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import withRoot from '../../withRoot';
 import ChatListItem from '../../components/ChatListItem/ChatListItem';
 import LoadImg from '../../components/LoadImg/LoadImg';
-import MainChat from '../../components/FloatingChat/MainChat';
+import FloatingMainChat from '../../components/FloatingChat/FloatingMainChat';
 import * as OnboardingActions from '../../actions/onboarding';
 import * as chatActions from '../../actions/chat';
 import { updateTitle } from '../../actions/web-notifications';
@@ -437,7 +437,7 @@ const FloatingChat = ({
               />
             )}
           </ErrorBoundary>
-          <MainChat unread={unread} onCreateChannel={handleNewChannelOpen}>
+          <FloatingMainChat unread={unread} onCreateChannel={handleNewChannelOpen}>
             {channelList.length === 0 ? (
               <div className={classes.noMessages}>
                 {!isLoading ? (
@@ -471,7 +471,7 @@ const FloatingChat = ({
                   )
               )
             )}
-          </MainChat>
+          </FloatingMainChat>
         </div>
       </ErrorBoundary>
       <ErrorBoundary>

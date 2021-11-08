@@ -4,10 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import { useSelector } from 'react-redux';
-import { any } from 'prop-types';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
-import Chat from '../../containers/MainChat/MainChat';
+import MainChat from '../../containers/MainChat/MainChat';
 
 const useStyles = makeStyles((theme: any) => ({
   item: {
@@ -32,7 +31,7 @@ const ChatPage = () => {
       <CssBaseline />
       <Layout>
         <Grid container justifyContent="center" className={classes.container}>
-          <Chat />
+          <MainChat />
         </Grid>
       </Layout>
     </main>
