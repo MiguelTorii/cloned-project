@@ -15,7 +15,7 @@ type Props = {
   };
 };
 
-const Chat = ({ user, width, location: { pathname } }: Props) => {
+const FloatingChatContainer = ({ user, width, location: { pathname } }: Props) => {
   const {
     data: { userId }
   } = user;
@@ -45,4 +45,6 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
-export default withRouter(connect<{}, {}, Props>(mapStateToProps, null)(withWidth()(Chat)));
+export default withRouter(
+  connect<{}, {}, Props>(mapStateToProps, null)(withWidth()(FloatingChatContainer))
+);

@@ -20,7 +20,7 @@ type State = {
   open: boolean;
 };
 
-class MainChat extends React.PureComponent<Props, State> {
+class FloatingMainChat extends React.PureComponent<Props, State> {
   state = {
     open: false
   };
@@ -72,4 +72,4 @@ class MainChat extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles as any)(MainChat);
+export default withStyles(styles as any)(FloatingMainChat);
