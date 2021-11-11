@@ -63,26 +63,21 @@ interface AvatarData {
   profileImageUrl: string;
 }
 
-export const fetchAvatars = async (channel: Record<string, any>) => {
-  try {
-    const { members = [] } = channel;
-    const result: AvatarData[] = [];
+export const fetchAvatars = async (channel: Record<string, any>): Promise<AvatarData[]> => {
+  const { members = [] } = channel;
+  const result: AvatarData[] = [];
 
-    for (const member of members) {
-      const user = await member[1].getUserDescriptor();
-      const { identity = '', attributes = {} } = user;
-      const { profileImageUrl = '' } = attributes;
-      result.push({
-        identity,
-        profileImageUrl
-      });
-    }
-
-    return result;
-  } catch (err) {
-    console.log(err);
-    return [];
+  for (const member of members) {
+    const user = await member[1].getUserDescriptor();
+    const { identity = '', attributes = {} } = user;
+    const { profileImageUrl = '' } = attributes;
+    result.push({
+      identity,
+      profileImageUrl
+    });
   }
+
+  return result;
 };
 
 const capitalize = (string) => {
