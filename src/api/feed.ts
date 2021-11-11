@@ -4,10 +4,10 @@
  * - Jira Ticket: https://circleinapp.atlassian.net/browse/NCGNT-669
  */
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import type { FeedItem } from '../types/models';
+import { API_ROUTES, API_URL_V1_1, API_URL_V1_2 } from '../constants/routes';
+import type { TFeedItem } from '../types/models';
 import { logEvent } from './analytics';
-import { getToken, feedToCamelCase, generateFeedURL } from './utils';
+import { getToken, feedToCamelCase, generateFeedURL, feedToCamelCaseV2 } from './utils';
 import reduxStore from '../configureStore';
 import { callApi } from './api_base';
 import { APIFetchFeedsParams } from './params/APIFetchFeedsParams';
@@ -34,7 +34,7 @@ export const fetchFeed = async ({
   query: string;
   fromDate?: Record<string, any> | null | undefined;
   toDate?: Record<string, any> | null | undefined;
-}): Promise<FeedItem[]> => {
+}): Promise<TFeedItem[]> => {
   const url = generateFeedURL({
     userId,
     schoolId,
@@ -155,7 +155,7 @@ export const feedResources = async ({
     return null;
   }
 };
-export const queryFeed = async ({ query }: { query: string }): Promise<FeedItem[]> => {
+export const queryFeed = async ({ query }: { query: string }): Promise<TFeedItem[]> => {
   try {
     const token = await getToken();
     const result = await axios.get(`${API_ROUTES.SEARCH}?query=${query}`, {
@@ -167,39 +167,6 @@ export const queryFeed = async ({ query }: { query: string }): Promise<FeedItem[
       data: { results }
     } = result;
     const feed = feedToCamelCase(results);
-    return feed;
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
-export const fetchFeedv2 = async ({
-  userId,
-  sectionId,
-  bookmarked = false
-}: {
-  userId: string;
-  sectionId?: number;
-  bookmarked?: boolean;
-}): Promise<FeedItem[]> => {
-  try {
-    const filterSection = sectionId ? `&section_id=${sectionId}` : '';
-    const token = await getToken();
-    const myPosts = bookmarked ? '' : `user_id=${userId}`;
-    const result = await axios.get(
-      `${API_ROUTES.FEED_V1_1}?${myPosts}${filterSection}&bookmarked=${Boolean(
-        bookmarked
-      ).toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
-    const {
-      data: { posts }
-    } = result;
-    const feed = feedToCamelCase(posts);
     return feed;
   } catch (err) {
     console.log(err);
@@ -265,10 +232,20 @@ export const generateQuiz = async ({
  */
 export const apiFetchFeeds = async (params: APIFetchFeedsParams, cancelToken) =>
   callApi({
-    url: API_ROUTES.FEED_V1_1,
+    url: `${API_URL_V1_1}/feed`,
     params,
     cancelToken
   });
+export const apiFetchFeedsV2 = async (params: APIFetchFeedsParams, cancelToken) => {
+  const data = await callApi({
+    url: `${API_URL_V1_2}/feed`,
+    params,
+    cancelToken
+  });
+
+  return feedToCamelCaseV2(data.posts);
+};
+
 export const apiDeleteFeed = async (userId, feedId) =>
   callApi({
     url: `${API_ROUTES.FEED}/${feedId}?user_id=${userId}`,

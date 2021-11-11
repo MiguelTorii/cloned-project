@@ -4,9 +4,9 @@ export type APIFetchFeedsParams = {
   user_id?: number;
 
   school_id?: number;
-  index: number;
-  limit: number;
-  bookmarked: boolean;
+  index?: number;
+  limit?: number;
+  bookmarked?: boolean;
   query?: string;
   section_id?: string[];
   tool_type_id?: string[] | number; // TODO figure out the correct type here.

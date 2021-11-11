@@ -3,13 +3,13 @@ import store from 'store';
 import decode from 'jwt-decode';
 import moment from 'moment';
 import { API_ROUTES } from '../constants/routes';
-import type { Post, Comments, User, FeedItem, PostResponse } from '../types/models';
+import type { Post, TComment, Comments, User, TFeedItem, PostResponse } from '../types/models';
 import { APIPost } from './models/APIPost';
 import { APIPostResponse } from './models/APIPostResponse';
 import { APIComments } from './models/APIComments';
 import { APIComment } from './models/APIComment';
 import { APIUser } from './models/APIUser';
-import { APIFeedItem } from './models/APIFeedItem';
+import { APIFeedItem, APIFeedItemV2 } from './models/APIFeedItem';
 import { APIFlashcard } from './models/APIFlashcard';
 import { APINote } from './models/APINote';
 
@@ -125,34 +125,36 @@ export const postResponseToCamelCase = (response: APIPostResponse): PostResponse
   }
 });
 
+export const commentToCamelCase = (comment: APIComment): TComment => ({
+  accepted: comment.accepted,
+  comment: comment.comment || '',
+  created: comment.created || '',
+  id: comment.id || 0,
+  parentCommentId: comment.parent_comment_id || 0,
+  reportsCount: comment.reports_count || 0,
+  rootCommentId: comment.root_comment_id || 0,
+  thanked: comment.thanked,
+  thanksCount: comment.thanks_count || 0,
+  user: {
+    userId: comment.user.user_id ? String(comment.user.user_id) : '',
+    firstName: comment.user.first_name || '',
+    lastName: comment.user.last_name || '',
+    profileImageUrl: comment.user.profile_image_url || '',
+    hours: comment.user.hours || 0,
+    joined: comment.user.joined || '',
+    rank: comment.user.rank || 0,
+    role: comment.user.role || '',
+    roleId: Number(comment.user.role_id || 0),
+    scholarshipPoints: comment.user.scholarship_points || 0,
+    schoolId: comment.user.school_id || 0,
+    state: comment.user.state || '',
+    isOnline: comment.user.is_online
+  }
+});
+
 export const commentsToCamelCase = (comments: APIComments): Comments => ({
   parentCommentsCount: comments.parent_comments_count || 0,
-  comments: comments.comments.map((item: APIComment) => ({
-    accepted: item.accepted,
-    comment: item.comment || '',
-    created: item.created || '',
-    id: item.id || 0,
-    parentCommentId: item.parent_comment_id || 0,
-    reportsCount: item.reports_count || 0,
-    rootCommentId: item.root_comment_id || 0,
-    thanked: item.thanked,
-    thanksCount: item.thanks_count || 0,
-    user: {
-      userId: item.user.user_id ? String(item.user.user_id) : '',
-      firstName: item.user.first_name || '',
-      lastName: item.user.last_name || '',
-      profileImageUrl: item.user.profile_image_url || '',
-      hours: item.user.hours || 0,
-      joined: item.user.joined || '',
-      rank: item.user.rank || 0,
-      role: item.user.role || '',
-      roleId: item.user.role_id || 0,
-      scholarshipPoints: item.user.scholarship_points || 0,
-      schoolId: item.user.school_id || 0,
-      state: item.user.state || '',
-      isOnline: item.user.is_online
-    }
-  }))
+  comments: comments.comments.map((item: APIComment) => commentToCamelCase(item))
 });
 
 export const userToCamelCase = (user: APIUser): User => ({
@@ -178,59 +180,71 @@ export const userToCamelCase = (user: APIUser): User => ({
   lmsUser: user.lms_user
 });
 
-export const feedToCamelCase = (posts: APIFeedItem[]): FeedItem[] =>
-  posts.map((item: APIFeedItem) => ({
-    userId: item.user_id ? String(item.user_id) : '',
-    numberOfNotes: item.pages_notes || 0,
-    bestAnswer: item.best_answer,
-    typeId: item.type_id || 0,
-    feedId: item.feed_id || 0,
-    postId: item.post_id || 0,
-    roleId: item.role_id || 1,
-    role: item.role || '',
-    courseDisplayName: item.course_display_name || '',
-    bookmarked: item.bookmarked,
-    deck: item.deck.map((d: APIFlashcard) => ({
-      answer: d.answer || '',
-      answerImageUrl: d.answer_image_url || '',
-      id: d.id,
-      question: d.question || '',
-      questionImageUrl: d.question_image_url || ''
-    })),
-    notes: item.notes.map((n: APINote) => ({
-      fullNoteUrl: n.full_note_url || '',
-      note: n.note || '',
-      noteUrl: n.note_url || ''
-    })),
-    uri: item.uri || '',
-    noteUrl: item.note_url || '',
-    name: item.name || '',
-    created: item.created || '',
-    userProfileUrl: item.user_profile_url || '',
-    rank: item.rank || 0,
-    classId: item.class_id || 0,
-    classroomName: item.classroom_name || '',
-    subject: item.subject || '',
-    title: item.title || '',
-    body: item.body || '',
-    readOnly: item.read_only,
-    thanked: item.thanked,
-    isOnline: item.is_online,
-    tags: item.tags.map((tag) => ({
-      description: tag.description || '',
-      id: tag.id || 0,
-      name: tag.name || ''
-    })),
-    postInfo: {
-      date: item.post_info.date || '',
-      feedId: item.post_info.feed_id || 0,
-      postId: item.post_info.post_id || 0,
-      questionsCount: item.post_info.questions_count || 0,
-      thanksCount: item.post_info.thanks_count || 0,
-      userId: item.post_info.user_id ? String(item.post_info.user_id) : '',
-      viewCount: item.post_info.view_count || 0
-    }
-  }));
+const feedDataToCamelCase = (feedData: APIFeedItem): TFeedItem => ({
+  userId: feedData.user_id ? String(feedData.user_id) : '',
+  numberOfNotes: feedData.pages_notes || 0,
+  bestAnswer: feedData.best_answer,
+  typeId: feedData.type_id || 0,
+  feedId: feedData.feed_id || 0,
+  postId: feedData.post_id || 0,
+  roleId: feedData.role_id || 1,
+  role: feedData.role || '',
+  courseDisplayName: feedData.course_display_name || '',
+  bookmarked: feedData.bookmarked,
+  deck: feedData.deck.map((d: APIFlashcard) => ({
+    answer: d.answer || '',
+    answerImageUrl: d.answer_image_url || '',
+    id: d.id,
+    question: d.question || '',
+    questionImageUrl: d.question_image_url || ''
+  })),
+  notes: feedData.notes.map((n: APINote) => ({
+    fullNoteUrl: n.full_note_url || '',
+    note: n.note || '',
+    noteUrl: n.note_url || ''
+  })),
+  uri: feedData.uri || '',
+  noteUrl: feedData.note_url || '',
+  name: feedData.name || '',
+  created: feedData.created || '',
+  userProfileUrl: feedData.user_profile_url || '',
+  rank: feedData.rank || 0,
+  classId: feedData.class_id || 0,
+  classroomName: feedData.classroom_name || '',
+  subject: feedData.subject || '',
+  title: feedData.title || '',
+  body: feedData.body || '',
+  readOnly: feedData.read_only,
+  thanked: feedData.thanked,
+  isOnline: feedData.is_online,
+  tags: feedData.tags.map((tag) => ({
+    description: tag.description || '',
+    id: tag.id || 0,
+    name: tag.name || ''
+  })),
+  postInfo: {
+    date: feedData.post_info.date || '',
+    feedId: feedData.post_info.feed_id || 0,
+    postId: feedData.post_info.post_id || 0,
+    questionsCount: feedData.post_info.questions_count || 0,
+    thanksCount: feedData.post_info.thanks_count || 0,
+    userId: feedData.post_info.user_id ? String(feedData.post_info.user_id) : '',
+    viewCount: feedData.post_info.view_count || 0
+  }
+});
+
+export const feedToCamelCase = (posts: APIFeedItem[]): TFeedItem[] =>
+  posts.map((feedItem: APIFeedItem) => feedDataToCamelCase(feedItem));
+
+export const feedToCamelCaseV2 = (posts: APIFeedItemV2[]): TFeedItem[] =>
+  posts.map((feedItem: APIFeedItemV2) => {
+    const feedData = feedItem[0];
+    const firstComment = feedItem[1];
+    return {
+      ...feedDataToCamelCase(feedData),
+      firstComment: firstComment ? commentToCamelCase(firstComment) : null
+    };
+  });
 
 export const generateFeedURL = ({
   userId,

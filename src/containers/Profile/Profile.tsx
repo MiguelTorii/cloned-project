@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
 import Hidden from '@material-ui/core/Hidden';
-import type { UserProfile, About, UserStatistic, FeedItem, StudyCircle } from '../../types/models';
+import type { UserProfile, About, UserStatistic, TFeedItem, StudyCircle } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import {
@@ -19,7 +19,7 @@ import {
   getStudyCircle
 } from '../../api/user';
 import { addToStudyCircle, removeFromStudyCircle } from '../../api/posts';
-import { fetchFeedv2 } from '../../api/feed';
+import { apiFetchFeedsV2 } from '../../api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import * as feedActions from '../../actions/feed';
@@ -83,8 +83,8 @@ type State = {
   userProfile: UserProfile;
   about: Array<About>;
   userStatistics: Array<UserStatistic>;
-  feed: Array<FeedItem>;
-  bookmarks: Array<FeedItem>;
+  feed: Array<TFeedItem>;
+  bookmarks: Array<TFeedItem>;
   isLoading: boolean;
   chatLoading: boolean;
   error: boolean;
@@ -225,9 +225,12 @@ class Profile extends React.PureComponent<Props, State> {
     const { userId } = this.props;
 
     if (userId !== '') {
-      fetchFeedv2({
-        userId: userId
-      }).then((feed) => {
+      apiFetchFeedsV2(
+        {
+          user_id: Number(userId)
+        },
+        null
+      ).then((feed) => {
         this.setState({
           feed
         });
@@ -244,11 +247,12 @@ class Profile extends React.PureComponent<Props, State> {
     } = this.props;
 
     if (ownId === userId && userId !== '') {
-      fetchFeedv2({
-        userId,
-        sectionId: 0,
-        bookmarked: true
-      }).then((bookmarks) => {
+      apiFetchFeedsV2(
+        {
+          bookmarked: true
+        },
+        null
+      ).then((bookmarks) => {
         this.setState({
           bookmarks
         });

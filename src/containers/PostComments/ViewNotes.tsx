@@ -19,7 +19,7 @@ import {
   updateComment
 } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
-import type { Comments } from '../../types/models';
+import type { Comments, TComment } from '../../types/models';
 import { processComments } from './utils';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { showNotification } from '../../actions/notifications';
@@ -58,6 +58,7 @@ type Props = {
   showNotification?: (...args: Array<any>) => any;
   isPost?: boolean;
   isCurrent?: boolean;
+  initialComment?: TComment;
 };
 type State = {
   comments: Comments | null | undefined;
@@ -82,10 +83,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
     isLoading: false,
     loadViewMoreComment: false,
     replyCommentId: 0
-  };
-
-  componentDidMount = () => {
-    this.loadData();
   };
 
   handlePostComment = async ({
@@ -284,7 +281,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   viewMoreComment = () => {
-    const { loadViewMoreComment } = this.state;
+    const { loadViewMoreComment, comments } = this.state;
+    if (!comments) {
+      this.loadData();
+    }
     this.setState({
       loadViewMoreComment: !loadViewMoreComment
     });
@@ -389,7 +389,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     );
   };
 
-  renderInitComment = () => {
+  renderInitComment = (comment: TComment) => {
     const {
       user: {
         data: { userId, profileImage, firstName, lastName }
@@ -400,30 +400,30 @@ class ViewNotes extends React.PureComponent<Props, State> {
       isOwner,
       classId
     } = this.props;
-    const { items, isLoading, replyCommentId } = this.state;
+    const { isLoading, replyCommentId } = this.state;
     const name = `${firstName} ${lastName}`;
     return (
-      <div key={items[0].id}>
+      <div key={comment.id}>
         <PostItemComment
-          id={items[0].id}
-          role={items[0].user.role}
-          roleId={items[0].user.roleId}
+          id={comment.id}
+          role={comment.user.role}
+          roleId={comment.user.roleId}
           ownProfileUrl={profileImage}
           ownName={name}
-          ownerId={items[0].user.userId}
-          firstName={items[0].user.firstName}
-          lastName={items[0].user.lastName}
-          profileImageUrl={items[0].user.profileImageUrl}
-          created={items[0].created}
-          comment={items[0].comment}
-          thanksCount={items[0].thanksCount}
-          thanked={items[0].thanked}
-          isOnline={items[0].user.isOnline}
-          rootCommentId={items[0].id}
-          accepted={items[0].accepted}
+          ownerId={comment.user.userId}
+          firstName={comment.user.firstName}
+          lastName={comment.user.lastName}
+          profileImageUrl={comment.user.profileImageUrl}
+          created={comment.created}
+          comment={comment.comment}
+          thanksCount={comment.thanksCount}
+          thanked={comment.thanked}
+          isOnline={comment.user.isOnline}
+          rootCommentId={comment.id}
+          accepted={comment.accepted}
           isLoading={isLoading}
           isQuestion={isQuestion}
-          isOwn={items[0].user.userId === userId}
+          isOwn={comment.user.userId === userId}
           readOnly={readOnly}
           hasBestAnswer={hasBestAnswer}
           isOwner={Boolean(isOwner)}
@@ -441,21 +441,29 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   renderLoadMoreComments = () => {
-    const { items, loadViewMoreComment } = this.state;
+    const { initialComment } = this.props;
+    const { items, loadViewMoreComment, comments } = this.state;
+
+    // If comments are not loaded in the beginning, it just displays initial comment.
+    if (!comments) {
+      return <ErrorBoundary>{this.renderInitComment(initialComment)}</ErrorBoundary>;
+    }
+
     return (
       <ErrorBoundary>
         {loadViewMoreComment
           ? items.map((item) => this.renderCommentItem(item))
-          : !!items.length && this.renderInitComment()}
+          : !!items.length && this.renderInitComment(items[0])}
       </ErrorBoundary>
     );
   };
 
   renderComments = () => {
-    const { classes } = this.props;
+    const { classes, initialComment } = this.props;
     const { comments, loadViewMoreComment } = this.state;
 
-    if (!comments) {
+    // If initialComment does not exist, it means there are no comments on the post.
+    if (!initialComment) {
       return null;
     }
 
@@ -464,7 +472,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
         {this.renderLoadMoreComments()}
         <ErrorBoundary>
           <div>
-            {comments.comments.length > 1 ? (
+            {!comments || comments.comments.length > 1 ? (
               <Button className={classes.viewMore} color="secondary" onClick={this.viewMoreComment}>
                 {!loadViewMoreComment ? 'View more comments' : 'View less comments'}
               </Button>

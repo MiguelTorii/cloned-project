@@ -16,11 +16,12 @@ import LoadImg from '../LoadImg/LoadImg';
 import EmptyState from './EmptyState';
 import FeedItem from './FeedItem';
 import styles from '../_styles/FeedList';
+import { TFeedItem } from '../../types/models';
 
 type Props = {
   classes?: Record<string, any>;
   userId?: string;
-  items?: Array<Record<string, any>>;
+  items?: Array<TFeedItem>;
   isLoading?: boolean;
   hasMore?: boolean;
   fromFeedId?: number | null | undefined;

@@ -1,17 +1,17 @@
 import { feedActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import type { FeedItem } from '../types/models';
+import type { TFeedItem } from '../types/models';
 import * as feedApi from '../api/feed';
 import * as postsApi from '../api/posts';
 import { FEEDS_PER_PAGE } from '../constants/app';
-import { apiFetchFeeds } from '../api/feed';
+import { apiFetchFeeds, apiFetchFeedsV2 } from '../api/feed';
 
 const requestFetchFeed = (): Action => ({
   type: feedActions.FETCH_FEED_REQUEST
 });
 
-const updateFeed = ({ feed, hasMore }: { feed: FeedItem[]; hasMore: boolean }): Action => ({
+const updateFeed = ({ feed, hasMore }: { feed: TFeedItem[]; hasMore: boolean }): Action => ({
   type: feedActions.FETCH_FEED_SUCCESS,
   payload: {
     feed,
@@ -43,7 +43,7 @@ const requestSearchFeed = (): Action => ({
   type: feedActions.SEARCH_FEED_REQUEST
 });
 
-const updateSearchFeed = ({ feed }: { feed: FeedItem[] }): Action => ({
+const updateSearchFeed = ({ feed }: { feed: TFeedItem[] }): Action => ({
   type: feedActions.SEARCH_FEED_SUCCESS,
   payload: {
     feed
@@ -247,7 +247,7 @@ export const updateFilterFields = (newFilter) => ({
 });
 export const actionFetchFeed = (params, cancelToken) => ({
   type: feedActions.FETCH_FEED,
-  apiCall: () => apiFetchFeeds(params, cancelToken)
+  apiCall: () => apiFetchFeedsV2(params, cancelToken)
 });
 export const actionDeleteFeed = (feedId) => ({
   type: feedActions.DELETE_FEED,

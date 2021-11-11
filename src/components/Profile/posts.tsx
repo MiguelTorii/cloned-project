@@ -3,15 +3,15 @@ import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import type { FeedItem as FeedItemState } from '../../types/models';
 import FeedItem from '../FeedList/FeedItem';
 import { styles } from '../_styles/Profile/posts';
+import { TFeedItem } from '../../types/models';
 
 type Props = {
   classes?: Record<string, any>;
   classList?: any;
   userId?: string;
-  posts?: Array<FeedItemState>;
+  posts?: Array<TFeedItem>;
   isMyProfile?: boolean;
   isBookmarks?: boolean;
   onShare?: (...args: Array<any>) => any;

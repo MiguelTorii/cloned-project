@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import store from 'store';
 import { signInActions, signUpActions, userActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { User, Announcement, FeedItem, UserClass } from '../types/models';
+import type { User, Announcement, TFeedItem, UserClass } from '../types/models';
 import { normalizeArray } from '../utils/helpers';
 
 export type UserClassList = {
@@ -19,7 +19,7 @@ export type EmptyState = {
 };
 
 export type FlashcardData = {
-  byId: Record<number, FeedItem>;
+  byId: Record<number, TFeedItem>;
   ids: Array<number>;
 };
 

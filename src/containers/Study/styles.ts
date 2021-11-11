@@ -20,17 +20,23 @@ export default makeStyles((theme) => ({
       marginTop: theme.spacing(2),
       marginBottom: 0
     },
+    '&:hover': {
+      backgroundColor: theme.circleIn.palette.hoverColor
+    },
     borderRadius: 10
   },
   studyAction: {
-    backgroundColor: theme.circleIn.palette.modalBackground,
+    backgroundColor: theme.circleIn.palette.feedBackground,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: theme.spacing(1.5),
     marginBottom: theme.spacing(2),
     width: '100%',
-    borderRadius: 10
+    borderRadius: 10,
+    '&:hover': {
+      backgroundColor: theme.circleIn.palette.hoverColor
+    }
   },
   studyActionText: {
     marginBottom: 0,
