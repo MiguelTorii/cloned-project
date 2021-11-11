@@ -2,6 +2,7 @@ import { APIFlashcard } from './APIFlashcard';
 import { APINote } from './APINote';
 import { APITag } from './APITag';
 import { APIPostInfo } from './APIPostInfo';
+import { APIComment } from './APIComment';
 
 export type APIFeedItem = {
   user_id: number;
@@ -29,7 +30,12 @@ export type APIFeedItem = {
   tags: Array<APITag>;
   uri: string;
   notes: APINote[];
-  best_answer: string;
+  best_answer: boolean;
   thanked: boolean;
   is_online: boolean;
+};
+
+export type APIFeedItemV2 = {
+  0: APIFeedItem;
+  1: APIComment;
 };

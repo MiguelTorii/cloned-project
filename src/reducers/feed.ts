@@ -1,14 +1,14 @@
 import update from 'immutability-helper';
 import { rootActions, feedActions } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { FeedItem } from '../types/models';
+import type { TFeedItem } from '../types/models';
 import { POST_WRITER } from '../constants/common';
 import { FEEDS_PER_PAGE } from '../constants/app';
-import { feedToCamelCase } from '../api/utils';
+import { feedToCamelCaseV2 } from '../api/utils';
 
 export type FeedState = {
   data: {
-    items: FeedItem[];
+    items: TFeedItem[];
     hasMore: boolean;
     lastIndex: number;
     filters: {
@@ -242,11 +242,11 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
     }
 
     case feedActions.FETCH_FEED: {
-      const posts = action.payload.posts || [];
+      const posts = action.payload || [];
       return update(state, {
         data: {
           items: {
-            $push: feedToCamelCase(posts)
+            $push: posts
           },
           hasMore: {
             $set: posts.length >= FEEDS_PER_PAGE

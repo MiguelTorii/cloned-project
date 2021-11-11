@@ -201,8 +201,11 @@ export type CommentUser = {
   scholarshipPoints: number;
   schoolId: number;
   state: string;
+  role: string;
+  roleId: number;
+  isOnline: boolean;
 };
-export type Comment = {
+export type TComment = {
   accepted: boolean;
   comment: string;
   created: string;
@@ -216,7 +219,7 @@ export type Comment = {
 };
 export type Comments = {
   parentCommentsCount: number;
-  comments: Array<Comment>;
+  comments: Array<TComment>;
 };
 export type PostResponse = {
   communityServiceHours: number;
@@ -339,7 +342,7 @@ export type BlockedUser = {
   name: string;
 };
 export type BlockedUsers = Array<BlockedUser>;
-export type FeedItem = {
+export type TFeedItem = {
   userId: string;
   typeId: number;
   numberOfNotes: number;
@@ -365,9 +368,10 @@ export type FeedItem = {
   tags: Array<Tag>;
   uri: string;
   notes: Array<Note>;
-  bestAnswer: string;
+  bestAnswer: boolean;
   thanked: boolean;
   isOnline: boolean;
+  firstComment?: TComment;
 };
 export type ToDo = {
   due: number;

@@ -52,6 +52,7 @@ import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import HoverPopup from '../HoverPopup/HoverPopup';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import type { State as StoreState } from '../../types/state';
+import { TFeedItem } from '../../types/models';
 
 const FeedTypes = {
   flashcards: {
@@ -87,7 +88,7 @@ const FeedTypes = {
 };
 
 type Props = {
-  data?: any;
+  data?: TFeedItem;
   newClassExperience?: any;
   handleShareClick?: any;
   onBookmark?: any;
@@ -607,6 +608,7 @@ const FeedItem = ({
           isOwner={data.userId === currentUserId}
           hasBestAnswer={data.bestAnswer}
           isCurrent={isCurrent}
+          initialComment={data.firstComment}
         />
       )}
     </Card>
