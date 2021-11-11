@@ -61,7 +61,6 @@ type Props = {
 
 type State = {
   open: boolean;
-  videoEnabled: boolean;
 };
 
 class Header extends React.PureComponent<Props, State> {
@@ -69,17 +68,7 @@ class Header extends React.PureComponent<Props, State> {
   fileInput: HTMLInputElement | null | undefined;
 
   state = {
-    open: false,
-    videoEnabled: false
-  };
-
-  componentWillMount = async () => {
-    const campaign = await getCampaign({
-      campaignId: 9
-    });
-    this.setState({
-      videoEnabled: campaign.variation_key && campaign.variation_key !== 'hidden'
-    });
+    open: false
   };
 
   renderNumbers = () => {
@@ -133,7 +122,6 @@ class Header extends React.PureComponent<Props, State> {
       onEditProfile,
       onSeePointsHistoryDetails
     } = this.props;
-    const { videoEnabled } = this.state;
     const name = `${firstName} ${lastName}`;
     const initials = getInitials(name);
     const bio = this.findAboutField(6);
@@ -243,7 +231,7 @@ class Header extends React.PureComponent<Props, State> {
                     message
                   </GradientButton>
                 </Grid>
-                <Grid item hidden={isMyProfile || isCirclein || !videoEnabled}>
+                <Grid item hidden={isMyProfile || isCirclein}>
                   <TransparentButton
                     startIcon={<Videocam />}
                     disabled={chatLoading}

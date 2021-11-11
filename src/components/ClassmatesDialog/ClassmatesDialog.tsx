@@ -4,7 +4,6 @@ import List from '@material-ui/core/List';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import SearchIcon from '@material-ui/icons/Search';
-import { getCampaign } from '../../api/campaign';
 import { getReferralProgram } from '../../api/referral';
 import { getClassmates } from '../../api/chat';
 import Dialog from '../Dialog/Dialog';
@@ -39,7 +38,6 @@ const ClassmatesDialog = ({
   const [searchKey, setSearchKey] = useState('');
   const [inviteVisible, setInviteVisible] = useState(false);
   const [referralProgram, setReferralProgram] = useState(null);
-  const [campaign, setCampaign] = useState(null);
   const title = useMemo(
     () => (meetingInvite ? 'Invite To Study Room' : expertMode ? 'Students' : 'Classmates'),
     [expertMode, meetingInvite]
@@ -112,10 +110,6 @@ const ClassmatesDialog = ({
         initStudents();
       }
 
-      const aCampaign = await getCampaign({
-        campaignId: 9
-      });
-      setCampaign(aCampaign);
       const res = await getReferralProgram();
       setReferralProgram(res);
     };
@@ -124,10 +118,6 @@ const ClassmatesDialog = ({
       init();
     }
   }, [searchKey, selectedClasses, selectedClasses.length, state, userClasses, userId]);
-
-  if (!campaign) {
-    return null;
-  }
 
   const Invite = () => {
     if (!referralProgram || !referralProgram.is_visible) {
@@ -165,8 +155,6 @@ const ClassmatesDialog = ({
       </div>
     );
   };
-
-  const videoEnabled = campaign.variation_key && campaign.variation_key !== 'hidden';
 
   const handleChange = (e) => {
     const currentClassMates = [...classmates];
@@ -216,7 +204,7 @@ const ClassmatesDialog = ({
             <Classmate
               meetingInvite={meetingInvite}
               courseDisplayName={courseDisplayName}
-              videoEnabled={meetingInvite ? videoEnabled : videoEnabled && !expertMode}
+              videoEnabled={meetingInvite ? true : !expertMode}
               key={c.userId}
               classmate={c}
             />

@@ -65,7 +65,6 @@ type Props = {
   fullName?: any;
   userProfileUrl?: any;
   initials?: any;
-  campaignState?: any;
   viewedOnboarding?: any;
   handleCreatePostMenuOpen?: any;
   updateFeed?: any;
@@ -95,7 +94,6 @@ const Drawer = ({
   fullName,
   userProfileUrl,
   initials,
-  campaignState,
   viewedOnboarding,
   handleCreatePostMenuOpen,
   updateFeed,
@@ -106,23 +104,8 @@ const Drawer = ({
   userClasses
 }) => {
   const classes: any = useStyles();
-  const [campaign, setCampaign] = useState(null);
-  const { chatLanding } = campaignState;
   const handleOpenOneTouchSend = useCallback(() => setOneTouchSend(true), [setOneTouchSend]);
-  useEffect(() => {
-    const init = async () => {
-      const aCampaign = await getCampaign({
-        campaignId: 9
-      });
-      setCampaign(aCampaign);
-    };
 
-    init();
-  }, []);
-  const visiabled = useMemo(
-    () => campaign?.variation_key && campaign?.variation_key !== 'hidden',
-    [campaign]
-  );
   const handleOpenTutorHelp = useCallback(() => {
     window.open('https://tutors.circleinapp.com/home', '_blank');
   }, []);
@@ -513,7 +496,6 @@ const Drawer = ({
       landingPageCampaign,
       newClassExperience,
       pathname,
-      visiabled,
       classes,
       newNotesScreen,
       qs,
@@ -560,8 +542,4 @@ const Drawer = ({
   );
 };
 
-const mapStateToProps = ({ campaign }: StoreState): {} => ({
-  campaignState: campaign
-});
-
-export default connect<{}, {}, Props>(mapStateToProps, null)(memo(Drawer));
+export default memo(Drawer);

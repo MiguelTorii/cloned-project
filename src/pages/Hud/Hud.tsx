@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
 import withRoot from '../../withRoot';
-import { styles } from '../../components/_styles/Hud/Hud';
+import { styles } from './HudStyles';
 import GoalsHudItem from '../../hud/goals/GoalsHudItem';
 import HudNavbar from '../../hud/navbar/HudNavbar';
 import NotesHudItem from '../../hud/notes/NotesHudItem';
