@@ -67,9 +67,10 @@ export const fetchAvatars = async (channel: Record<string, any>): Promise<Avatar
   const { members = [] } = channel;
   const result: AvatarData[] = [];
 
-  for (const member of members) {
-    const user = await member[1].getUserDescriptor();
-    const { identity = '', attributes = {} } = user;
+  const promises = members.map((member) => member[1].getUserDescriptor());
+  const userDescriptors: any[] = await Promise.all(promises);
+  for (const userDescriptor of userDescriptors) {
+    const { identity = '', attributes = {} } = userDescriptor;
     const { profileImageUrl = '' } = attributes;
     result.push({
       identity,
