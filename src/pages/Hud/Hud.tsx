@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
@@ -14,6 +15,9 @@ import ChatHudItem from '../../hud/chat/ChatHudItem';
 import Chat from '../../containers/MainChat/MainChat';
 import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 import HudAvatar from '../../containers/Hud/HudAvatar';
+import StoryMessage from '../../hud/story/StoryMessage';
+import conversations from '../../assets/hud-avatar/conversations';
+import useStorySequence from '../../hooks/useStorySequence';
 
 type Props = {
   classes: Record<string, any>;
@@ -56,6 +60,8 @@ const Hud = ({ classes }: Props) => {
 
   const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
 
+  useStorySequence(conversations.crushed);
+
   return (
     <main>
       <CssBaseline />
@@ -91,7 +97,7 @@ const Hud = ({ classes }: Props) => {
         </div>
         <div className={classes.storyCaption}>
           <div className={classes.storyCaptionContent}>
-            {`Hello, I'm Kobe. Welcome to CircleIn!`}
+            <StoryMessage classes={classes} />
           </div>
         </div>
         <div className={classes.experienceUpdates} />
