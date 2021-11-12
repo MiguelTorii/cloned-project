@@ -12,7 +12,6 @@ import { Message, Videocam, Create } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import _ from 'lodash';
 import Box from '@material-ui/core/Box';
-import { getCampaign } from '../../api/campaign';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import ImgEmptyCover from '../../assets/img/empty_cover.png';

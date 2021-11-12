@@ -16,7 +16,6 @@ import {
   getFileAttributes
 } from '../../utils/chat';
 import CreateChatChannelInput from '../../components/CreateChatChannelInput/CreateChatChannelInput';
-import { getCampaign } from '../../api/campaign';
 import { sendMessage } from '../../api/chat';
 import type { UserState } from '../../reducers/user';
 import ChatItem from '../../components/FloatingChat/ChatItem';
@@ -111,7 +110,6 @@ type State = {
   expanded: boolean;
   count: number;
   addMembers: boolean;
-  videoEnabled?: boolean;
   createMessage?: any;
 };
 
@@ -132,8 +130,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     expanded: false,
     count: 0,
     createMessage: null,
-    addMembers: false,
-    videoEnabled: false
+    addMembers: false
   };
 
   mounted: boolean;
@@ -180,19 +177,13 @@ class ChatChannel extends React.PureComponent<Props, State> {
       });
 
       try {
-        const [paginator, campaign] = await Promise.all([
-          channel.getMessages(10),
-          getCampaign({
-            campaignId: 9
-          })
-        ]);
+        const paginator = await channel.getMessages(10);
 
         if (paginator) {
           this.setState({
             messages: paginator.items,
             paginator,
-            hasMore: !(paginator.items.length < 10),
-            videoEnabled: campaign.variation_key && campaign.variation_key !== 'hidden'
+            hasMore: !(paginator.items.length < 10)
           });
         }
       } catch (err) {
@@ -636,8 +627,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       images,
       expanded,
       createMessage,
-      addMembers,
-      videoEnabled
+      addMembers
     } = this.state;
     const messageItems = processMessages({
       items: messages,
@@ -664,7 +654,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onStartVideoCall={this.handleStartVideoCall}
             onViewMembers={this.handleViewMembers}
             onExpand={this.handleExpand}
-            videoEnabled={videoEnabled}
             push={push}
           >
             <div

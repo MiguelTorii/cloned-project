@@ -21,7 +21,6 @@ import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user';
-import * as feedActions from '../../actions/feed';
 
 const Filters = {
   current: {
@@ -296,8 +295,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   );
 };
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  campaign,
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 
