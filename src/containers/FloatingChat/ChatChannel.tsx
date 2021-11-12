@@ -77,7 +77,7 @@ type Props = {
   classes?: Record<string, any>;
   user?: UserState;
   channels?: Array<any>;
-  channel?: Record<string, any>;
+  channel?: any;
   localChannel?: Record<string, any>;
   getMembers?: (...args: Array<any>) => any;
   onClose?: (...args: Array<any>) => any;
