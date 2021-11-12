@@ -41,7 +41,6 @@ export const styles = () => ({
     gridRow: 4
   },
   navigation: {
-    background: 'tan',
     gridColumn: 5,
     gridRow: '5 / -2'
   },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
@@ -18,10 +18,18 @@ import HudAvatar from '../../containers/Hud/HudAvatar';
 import StoryMessage from '../../hud/story/StoryMessage';
 import conversations from '../../assets/hud-avatar/conversations';
 import useStorySequence from '../../hooks/useStorySequence';
+import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-off.svg';
+import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
+import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-off.svg';
+import Avatar from '../../components/Avatar/Avatar';
+import { AppState } from '../../configureStore';
+import { User } from '../../types/models';
 
 type Props = {
   classes: Record<string, any>;
 };
+
+const ICON_SIZE = 30;
 
 const CALENDAR_NAV_ITEM_ID = 'calendar';
 const CLASSES_NAV_ITEM_ID = 'classes';
@@ -31,30 +39,27 @@ const GOALS_NAV_ITEM_ID = 'goals';
 const PROFILE_NAV_ITEM_ID = 'profile';
 
 const Hud = ({ classes }: Props) => {
+  const profile = useSelector<AppState, User>((state) => state.user.data);
   const navbarItems = [
     {
-      id: CALENDAR_NAV_ITEM_ID,
-      displayName: 'Calendar'
+      id: PROFILE_NAV_ITEM_ID,
+      displayName: 'Profile',
+      icon: <Avatar src={profile.profileImage} desktopSize={ICON_SIZE} mobileSize={ICON_SIZE} />
     },
     {
       id: CLASSES_NAV_ITEM_ID,
-      displayName: 'Classes'
+      displayName: 'Classes',
+      icon: <IconClasses />
     },
     {
       id: NOTES_NAV_ITEM_ID,
-      displayName: 'Notes'
-    },
-    {
-      id: CHAT_NAV_ITEM_ID,
-      displayName: 'Chat'
+      displayName: 'Study tools',
+      icon: <IconNotes />
     },
     {
       id: GOALS_NAV_ITEM_ID,
-      displayName: 'Goals'
-    },
-    {
-      id: PROFILE_NAV_ITEM_ID,
-      displayName: 'Profile'
+      displayName: 'Achievements',
+      icon: <IconLeaderboard />
     }
   ];
 
