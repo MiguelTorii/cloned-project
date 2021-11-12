@@ -2,7 +2,6 @@
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
 import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +10,6 @@ import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import { cypherClass } from '../../utils/crypto';
 import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -19,8 +17,6 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { CampaignState } from '../../reducers/campaign';
-import { buildPath } from '../../utils/helpers';
 
 const styles = (theme) => ({
   stackbar: {

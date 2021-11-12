@@ -28,7 +28,6 @@ type Props = {
   open?: boolean;
   unread?: number;
   expanded?: boolean;
-  videoEnabled?: boolean;
   onOpen?: (...args: Array<any>) => any;
   onClose?: (...args: Array<any>) => any;
   onDelete?: (...args: Array<any>) => any;
@@ -121,7 +120,6 @@ class ChatItem extends React.PureComponent<Props, State> {
       open,
       unread,
       expanded,
-      videoEnabled,
       newChannel,
       onOpen,
       onClose,
@@ -162,7 +160,7 @@ class ChatItem extends React.PureComponent<Props, State> {
                       <CollapseChatIcon className={classes.expandIcon} />
                     )}
                   </ButtonBase>
-                  {!newChannel && videoEnabled && (
+                  {!newChannel && (
                     <ButtonBase className={classes.iconButton} onClick={onStartVideoCall}>
                       <VideoCameraIcon className={classes.icon} />
                     </ButtonBase>

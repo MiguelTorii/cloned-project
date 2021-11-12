@@ -7,7 +7,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import findIndex from 'lodash/findIndex';
 import { sendMessage } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
-import { getCampaign } from '../../api/campaign';
 import MessageQuill from './MessageQuill';
 import ChatHeader from './ChatHeader';
 import EmptyMain from './EmptyMain';
@@ -94,7 +93,6 @@ const Main = ({
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState<{ [index: number]: Member }>({});
-  const [campaign, setCampaign] = useState(null);
   const [showError, setShowError] = useState(false);
   const [focusMessageBox, setFocusMessageBox] = useState(0);
   const [files, setFiles] = useState([]);
@@ -175,15 +173,11 @@ const Main = ({
 
       try {
         channel.setAllMessagesConsumed();
-        const [avatars, aCampaign, chatData] = await Promise.all([
+        const [avatars, chatData] = await Promise.all([
           fetchAvatars(channel),
-          getCampaign({
-            campaignId: 9
-          }),
           channel.getMessages(10)
         ]);
         setAvatars(avatars);
-        setCampaign(aCampaign);
 
         if (!chatData?.items?.length || selectedChannelId === chatData?.items?.[0]?.channel?.sid) {
           if (!chatData.hasNextPage) {
@@ -486,10 +480,7 @@ const Main = ({
   const startVideo = useCallback(() => {
     window.open(`/video-call/${channel.sid}`, '_blank');
   }, [channel]);
-  const videoEnabled = useMemo(
-    () => campaign && campaign.variation_key && campaign.variation_key !== 'hidden',
-    [campaign]
-  );
+
   const loadingConversation = useCallback(
     () => (
       <div className={classes.messageLoadingRoot}>
@@ -533,7 +524,6 @@ const Main = ({
           otherUser={otherUser}
           memberKeys={memberKeys}
           startVideo={startVideo}
-          videoEnabled={videoEnabled}
           local={local}
           onOpenRightPanel={setRightPanel}
           handleUpdateGroupName={handleUpdateGroupName}

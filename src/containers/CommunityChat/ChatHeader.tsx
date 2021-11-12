@@ -39,7 +39,6 @@ type Props = {
   otherUser?: any;
   rightSpace?: number;
   memberKeys?: Array<any>;
-  videoEnabled?: boolean;
   startVideo?: (...args: Array<any>) => any;
   local?: Record<string, any>;
   user?: Record<string, any>;
@@ -55,7 +54,6 @@ const ChatHeader = ({
   otherUser,
   rightSpace,
   memberKeys,
-  videoEnabled,
   startVideo,
   local,
   user,
@@ -293,7 +291,7 @@ const ChatHeader = ({
             {renderOtherMembers()}
           </Popover>
           <div className={classes.chatIcons}>
-            {(otherUser?.registered || memberKeys.length > 2) && videoEnabled && (
+            {(otherUser?.registered || memberKeys.length > 2) && (
               <IconButton aria-label="study-room" className={classes.chatIcon} onClick={startVideo}>
                 <ChatStudyRoom />
               </IconButton>

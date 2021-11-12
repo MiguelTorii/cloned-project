@@ -343,7 +343,6 @@ const MainLayout = ({
         handleOpenHowEarnPoints={handleOpenHowEarnPoints}
         landingPageCampaign={landingPageCampaign}
         userClasses={userClasses}
-        campaignState={undefined}
       />
     ),
     [

@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import { push as routePush } from 'connected-react-router';
 import { bindActionCreators } from 'redux';
-import { getCampaign } from '../../api/campaign';
 import withRoot from '../../withRoot';
 import LoadImg from '../LoadImg/LoadImg';
 import bookmarks from '../../assets/svg/bookmarks.svg';
@@ -27,28 +26,11 @@ type Props = {
 };
 
 const UseCases = ({ classes, onRedirect, push, userId }: Props) => {
-  const [campaign, setCampaign] = useState(null);
   const organizeText = useMemo(
     () =>
       'To make life easier, we all need reminders. Setup tasks and reminders to study, to review flashcards and to review notes your classmates posted',
     []
   );
-  useEffect(() => {
-    const init = async () => {
-      const aCampaign = await getCampaign({
-        campaignId: 9
-      });
-      setCampaign(aCampaign);
-    };
-
-    init();
-  }, []);
-
-  if (!campaign) {
-    return null;
-  }
-
-  const videoEnabled = campaign.variation_key && campaign.variation_key !== 'hidden';
 
   const Item = (
     {
@@ -115,17 +97,13 @@ const UseCases = ({ classes, onRedirect, push, userId }: Props) => {
           text="It feels terrible to struggle and not have immediate help. Post a question, your classmates get notified, and when you vote a student with “Best Answer”, they get 25,000 points for helping you out."
         >
           <Item imageUrl={question} title="Post a Question" to="/create/question" />
-          {videoEnabled && (
-            <Item imageUrl={videos} to="/video-call" title="Start a Chat or Group Chat" />
-          )}
+          <Item imageUrl={videos} to="/video-call" title="Start a Chat or Group Chat" />
         </UseCase>
         <UseCase
           title="Group Studying or Project"
           text="CircleIn makes group projects and studying so much easier. Don’t worry if someone is down the hall or across the country"
         >
-          {videoEnabled && (
-            <Item imageUrl={videos} to="/video-call" title="Create a Video Study Session" />
-          )}
+          <Item imageUrl={videos} to="/video-call" title="Create a Video Study Session" />
           <Item imageUrl={groupchat} onClick={onClickChat} title="Start a Chat or Group Chat" />
           <Item imageUrl={links} title="Share a link to a file or video" to="/create/sharelink" />
         </UseCase>

@@ -63,7 +63,11 @@ const MiniWorkflows = () => {
       <Grid container direction="column" spacing={2}>
         {tasks.map((task) => (
           <Grid item key={task.id}>
-            <Task title={task.title} dueDate={task.date} sectionId={task.sectionId} />
+            <Task
+              title={task.title}
+              dueDate={task.date}
+              sectionId={task.sectionId ? Number(task.sectionId) : 0}
+            />
           </Grid>
         ))}
         <Grid item>

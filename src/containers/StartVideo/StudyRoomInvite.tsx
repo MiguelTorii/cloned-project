@@ -35,7 +35,6 @@ const StudyRoomInvite = ({
 }) => {
   const classes: any = useStyles();
   const [searchKey, setSearchKey] = useState('');
-  const [campaign, setCampaign] = useState(null);
   const [classmates, setClassmates] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -66,20 +65,7 @@ const StudyRoomInvite = ({
       initSelectedClassesClassmates();
     }
   }, [classList.length, classList, userId]);
-  useEffect(() => {
-    const init = async () => {
-      const aCampaign = await getCampaign({
-        campaignId: 9
-      });
-      setCampaign(aCampaign);
-    };
 
-    init();
-  }, []);
-  const visiabled = useMemo(
-    () => campaign?.variation_key && campaign?.variation_key !== 'hidden',
-    [campaign]
-  );
   const handleChange = useCallback(
     (e) => {
       setSearchKey(e.target.value.toLowerCase());
@@ -106,7 +92,7 @@ const StudyRoomInvite = ({
         onCancel={handleClose}
         maxWidth="sm"
         fullWidth
-        open={open && visiabled}
+        open={open}
         title="Invite to Study Room"
       >
         <div className={classes.searchWrapper}>
