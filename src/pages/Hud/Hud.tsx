@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 import cx from 'classnames';
+import IconChat from '@material-ui/icons/Chat';
+import IconCalendar from '@material-ui/icons/CalendarToday';
 import withRoot from '../../withRoot';
 import { styles } from './HudStyles';
 import GoalsHudItem from '../../hud/goals/GoalsHudItem';
@@ -60,6 +62,16 @@ const Hud = ({ classes }: Props) => {
       id: GOALS_NAV_ITEM_ID,
       displayName: 'Achievements',
       icon: <IconLeaderboard />
+    },
+    {
+      id: CHAT_NAV_ITEM_ID,
+      displayName: 'Chat',
+      icon: <IconChat />
+    },
+    {
+      id: CALENDAR_NAV_ITEM_ID,
+      displayName: 'Calendar',
+      icon: <IconCalendar />
     }
   ];
 

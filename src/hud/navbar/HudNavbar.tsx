@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Button, IconButton } from '@material-ui/core';
+import { Grid, Button, IconButton, Tooltip } from '@material-ui/core';
 import { HudNavbarItem } from './HudNavbarItem';
 
 type Props = {
@@ -19,14 +19,15 @@ const HudNavbar = ({ classes, navbarItems, onSelectItem }: Props) => {
   return (
     <Grid container alignItems="center">
       {navbarItems.map((navbarItem: HudNavbarItem, index: number) => (
-        <IconButton
-          key={navbarItem.id}
-          color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
-          className={classes.button}
-          onClick={() => onNavbarItemSelected(navbarItem)}
-        >
-          {navbarItem.icon}
-        </IconButton>
+        <Tooltip key={navbarItem.id} title={navbarItem.displayName} arrow placement="top">
+          <IconButton
+            color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
+            className={classes.button}
+            onClick={() => onNavbarItemSelected(navbarItem)}
+          >
+            {navbarItem.icon}
+          </IconButton>
+        </Tooltip>
       ))}
     </Grid>
   );
