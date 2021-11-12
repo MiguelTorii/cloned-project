@@ -28,7 +28,7 @@ type Props = {
   selectedChannelId?: string;
   selectedChannel?: any;
   currentCommunity?: Record<string, any>;
-  channel?: Record<string, any>;
+  channel?: any;
   channelList?: Array<any>;
   startMessageLoading?: (...args: Array<any>) => any;
   newMessage?: Record<string, any>;

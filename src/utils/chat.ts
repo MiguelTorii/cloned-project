@@ -63,12 +63,18 @@ interface AvatarData {
   profileImageUrl: string;
 }
 
-export const fetchAvatars = async (channel: Record<string, any>): Promise<AvatarData[]> => {
-  const { members = [] } = channel;
+export const fetchAvatars = async (channel: {
+  members: Map<string, any>;
+}): Promise<AvatarData[]> => {
+  const { members } = channel;
   const result: AvatarData[] = [];
 
-  const promises = members.map((member) => member[1].getUserDescriptor());
-  const userDescriptors: any[] = await Promise.all(promises);
+  const memberPromises = [];
+  for (const member of members) {
+    memberPromises.push(member[1].getUserDescriptor());
+  }
+
+  const userDescriptors: any[] = await Promise.all(memberPromises);
   for (const userDescriptor of userDescriptors) {
     const { identity = '', attributes = {} } = userDescriptor;
     const { profileImageUrl = '' } = attributes;
