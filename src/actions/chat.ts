@@ -796,7 +796,7 @@ export const handleUpdateGroupPhoto =
 
     const result = await uploadMedia(userId, 5, image);
     const { readUrl, mediaId } = result;
-    await apiUpdateChat(channelSid, {
+    await apiUpdateChat({
       chat_id: channelSid,
       thumbnail: mediaId
     });

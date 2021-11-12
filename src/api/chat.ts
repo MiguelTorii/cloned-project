@@ -22,9 +22,9 @@ export const sendMessage = async ({
   isVideoNotification?: boolean;
   files?: any;
   source?: string;
-}) => {
+}): Promise<void> => {
   const token = await getToken();
-  const result = await axios.post(
+  await axios.post(
     `${API_ROUTES.SEND_MESSAGE}`,
     {
       message,
@@ -40,8 +40,6 @@ export const sendMessage = async ({
       }
     }
   );
-  const { data } = result;
-  return data;
 };
 
 export const editMessage = async ({
@@ -52,7 +50,7 @@ export const editMessage = async ({
   message: string;
   messageId: string;
   chatId: string;
-}) =>
+}): Promise<void> =>
   callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/message/${messageId}`,
     method: 'PUT',
@@ -61,7 +59,7 @@ export const editMessage = async ({
     }
   });
 
-export const apiDeleteMessage = async (chatId, messageId) =>
+export const apiDeleteMessage = async (chatId, messageId): Promise<void> =>
   callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/message/${messageId}`,
     method: 'DELETE',
@@ -70,7 +68,7 @@ export const apiDeleteMessage = async (chatId, messageId) =>
     }
   });
 
-export const removeUser = async (userId, chatId) =>
+export const removeUser = async (userId, chatId): Promise<boolean> =>
   callApi({
     url: `${API_ROUTES.CHAT}/${chatId}/class/members?chat_id=${userId}`,
     method: 'DELETE'
@@ -82,7 +80,7 @@ export const sendBatchMessage = async ({
 }: {
   message: string;
   chatIds: any[];
-}) => {
+}): Promise<boolean> => {
   const token = await getToken();
   const result = await axios.post(
     `${API_ROUTES.BATCH_MESSAGE}`,
@@ -125,6 +123,7 @@ export const getClassmates = async ({
     isOnline: m.is_online
   }));
 };
+
 export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<string> => {
   const token = await getToken();
   const result = await axios.get(`${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`, {
@@ -136,6 +135,7 @@ export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<
   const { accessToken = '' } = data;
   return accessToken;
 };
+
 export const createChannel = async ({
   users,
   groupName,
@@ -171,6 +171,7 @@ export const createChannel = async ({
     type: data.type || ''
   };
 };
+
 export const muteChannel = async (sid): Promise<Record<string, any>> => {
   const token = await getToken();
   const result = await axios.post(
@@ -185,6 +186,7 @@ export const muteChannel = async (sid): Promise<Record<string, any>> => {
   const { data = {} } = result;
   return data;
 };
+
 export const unmuteChannel = async (sid): Promise<Record<string, any>> => {
   const token = await getToken();
   const result = await axios.post(
@@ -199,6 +201,7 @@ export const unmuteChannel = async (sid): Promise<Record<string, any>> => {
   const { data = {} } = result;
   return data;
 };
+
 export const getChannels = async (): Promise<Record<string, any>> => {
   // CHAT_V1
   const token = await getToken();
@@ -239,6 +242,7 @@ export const getChannels = async (): Promise<Record<string, any>> => {
   });
   return local;
 };
+
 export const leaveChat = async ({ sid }: { sid: string }): Promise<Record<string, any>> => {
   const token = await getToken();
   const result = await axios.post(
@@ -273,6 +277,7 @@ export const blockChatUser = async ({
   const { data = {} } = result;
   return data;
 };
+
 export const getGroupMembers = async ({ chatId }: { chatId: string }): Promise<Array<ChatUser>> => {
   const token = await getToken();
   const result = await axios.get(`${API_ROUTES.CHAT}/${chatId}/members`, {
@@ -299,6 +304,7 @@ export const getGroupMembers = async ({ chatId }: { chatId: string }): Promise<A
     isOnline: user.is_online
   }));
 };
+
 export const addGroupMembers = async ({
   chatId,
   users
@@ -321,7 +327,8 @@ export const addGroupMembers = async ({
   const { data = {} } = result;
   return data;
 };
-export const getShareLink = async (chatId: string) => {
+
+export const getShareLink = async (chatId: string): Promise<string> => {
   const token = await getToken();
   const response = await axios.post(
     `${API_ROUTES.CHAT_SHARE_LINK}`,
@@ -336,8 +343,9 @@ export const getShareLink = async (chatId: string) => {
   );
   return get(response, 'data.url', '');
 };
+
 // Fetches chat id with the given hashed chat id
-export const getChatIdFromHash = async (hashId: string) => {
+export const getChatIdFromHash = async (hashId: string): Promise<string> => {
   const token = await getToken();
   const response = await axios.post(
     `${API_ROUTES.CHAT_JOIN_LINK}`,
@@ -352,17 +360,17 @@ export const getChatIdFromHash = async (hashId: string) => {
   );
   return get(response, 'data.chat_id', '');
 };
-export const apiUpdateChat = async (chatId: string, attributes: Record<string, any>) => {
+
+export const apiUpdateChat = async (attributes: Record<string, any>): Promise<void> => {
   const token = await getToken();
-  const response = await axios.put(`${API_ROUTES.CHAT}`, attributes, {
+  await axios.put(`${API_ROUTES.CHAT}`, attributes, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
-  return response.data;
 };
 
-export const apiGetCommunityShareLink = async (community_id) =>
+export const apiGetCommunityShareLink = async (community_id): Promise<{ url: string }> =>
   callApi({
     url: `${API_URL}/community/link`,
     method: 'POST',

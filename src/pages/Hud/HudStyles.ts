@@ -5,18 +5,18 @@ export const styles = () => ({
   },
   appWithHud: {
     display: 'grid',
-    gridTemplateColumns: '200px 150px 1fr 150px 200px',
-    gridTemplateRows: '0px 100px 2fr 1fr 50px 40px 40px 0px'
+    gridTemplateColumns: '250px 100px 1fr 200px 250px',
+    gridTemplateRows: '1fr 50px 80px'
   },
   mainAction: {
     gridColumn: '2 / -2',
-    gridRow: '1 / -5',
+    gridRow: '1',
     overflow: 'auto'
   },
   storyAvatar: {
     background: 'white',
-    gridColumn: 4,
-    gridRow: 2,
+    gridColumn: 2,
+    gridRow: ' 2 / -1',
     margin: 'auto',
     borderRadius: '75px',
     border: 'black solid 1px',
@@ -24,46 +24,29 @@ export const styles = () => ({
     padding: '7px',
     zIndex: 2
   },
-  miniMap: {
-    background: 'goldenRod',
-    gridColumn: 5,
-    gridRow: 2
-  },
-  questTasks: {
-    background: 'forestGreen',
-    gridColumn: 5,
-    gridRow: 3,
-    overflow: 'auto'
-  },
-  rewardUpdates: {
-    background: 'hotPink',
-    gridColumn: 5,
-    gridRow: 4
-  },
-  navigation: {
-    gridColumn: 5,
-    gridRow: '5 / -2'
-  },
   storyCaption: {
-    background: 'fireBrick',
-    gridColumn: '2 / -2',
-    gridRow: 5,
+    gridColumn: '3 / 4',
+    gridRow: 2,
     zIndex: 2,
     display: 'flex',
     justifyContent: 'center',
     opacity: 0.7
   },
-  experienceUpdates: {
-    gridColumn: '2 / -2',
-    gridRow: 6
-  },
   experienceProgress: {
-    gridColumn: '2 / -2',
-    gridRow: 7
+    gridColumn: 3,
+    gridRow: 3
+  },
+  navigation: {
+    gridColumn: 4,
+    gridRow: '2 / -1'
+  },
+  missions: {
+    gridColumn: 5,
+    gridRow: '1 / -1',
+    overflow: 'auto'
   },
   chat: {
-    background: 'purple',
     gridColumn: 1,
-    gridRow: '2 / -1'
+    gridRow: '1 / -1'
   }
 });

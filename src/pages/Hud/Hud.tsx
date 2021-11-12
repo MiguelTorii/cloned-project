@@ -96,15 +96,11 @@ const Hud = ({ classes }: Props) => {
 
           {currentNavbarItemId === PROFILE_NAV_ITEM_ID && <ProfileHudItem classes={classes} />}
         </div>
-        <div className={classes.storyAvatar}>
-          <HudAvatar />
-        </div>
-        <div className={classes.miniMap} />
-        <div className={classes.miniMap} />
-        <div className={classes.questTasks}>
+
+        <div className={classes.missions}>
           <MiniWorkflows />
         </div>
-        <div className={classes.rewardUpdates} />
+
         <div className={classes.navigation}>
           <HudNavbar
             onSelectItem={setCurrentNavbarItemId}
@@ -112,14 +108,17 @@ const Hud = ({ classes }: Props) => {
             classes={classes}
           />
         </div>
-        <div className={classes.storyCaption}>
-          <div className={classes.storyCaptionContent}>
-            <StoryMessage classes={classes} />
-          </div>
+
+        <div className={classes.storyAvatar}>
+          <HudAvatar />
         </div>
-        <div className={classes.experienceUpdates} />
+
+        <div className={classes.storyCaption}>
+          <StoryMessage classes={classes} />
+        </div>
+
         <div className={classes.experienceProgress} />
-        <div className={classes.playerModes} />
+
         <div className={classes.chat}>
           <ChatHudItem />
         </div>

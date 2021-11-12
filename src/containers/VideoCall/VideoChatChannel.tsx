@@ -62,7 +62,7 @@ type Props = {
   classes: Record<string, any>;
   user: User;
   open: boolean;
-  channel: Record<string, any>;
+  channel: any;
   onUnreadUpdate: (...args: Array<any>) => any;
 };
 type State = {
