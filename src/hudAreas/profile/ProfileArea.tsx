@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import HudNavbar from '../navbar/HudNavbar';
+import HudToolbar from '../../hud/navigation/HudToolbar';
 import Profile, { PROFILE_PAGES } from '../../containers/Profile/Profile';
 import withRoot from '../../withRoot';
-
-type Props = {
-  classes: Record<string, any>;
-};
+import { useStyles } from './ProfileAreaStyles';
 
 const PROFILE_NAV_ITEM_ID = 'profile';
 const POINTS_HISTORY_NAV_ITEM_ID = 'pointsHistory';
 
-const ProfileHudItem = ({ classes }: Props) => {
+const ProfileArea = (s) => {
+  const classes: any = useStyles();
+
   const navbarItems = [
     {
       id: PROFILE_NAV_ITEM_ID,
@@ -31,11 +30,7 @@ const ProfileHudItem = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <HudNavbar
-        onSelectItem={setCurrentNavbarItemId}
-        navbarItems={navbarItems}
-        classes={classes}
-      />
+      <HudToolbar onSelectItem={setCurrentNavbarItemId} navbarItems={navbarItems} />
 
       {currentNavbarItemId === PROFILE_NAV_ITEM_ID && (
         <Profile
@@ -60,4 +55,4 @@ const ProfileHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(ProfileHudItem);
+export default withRoot(ProfileArea);

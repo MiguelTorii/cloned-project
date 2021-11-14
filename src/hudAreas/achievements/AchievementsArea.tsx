@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import HudNavbar from '../navbar/HudNavbar';
 import Store from '../../containers/Store/Store';
 import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
 import WeeklyGoals from '../../containers/WeeklyGoals/WeeklyGoals';
-import withRoot from '../../withRoot';
-
-type Props = {
-  classes: Record<string, any>;
-};
+import HudToolbar from '../../hud/navigation/HudToolbar';
+import { useStyles } from './AchievementsAreaStyles';
 
 const GOALS_NAV_ITEM_ID = 'classes';
 const REWARDS_NAV_ITEM_ID = 'feeds';
 const LEADER_BOARD_NAV_ITEM_ID = 'leaderBoard';
 
-const GoalsHudItem = ({ classes }: Props) => {
+const AchievementsArea = () => {
+  const classes: any = useStyles();
+
   const navbarItems = [
     {
       id: GOALS_NAV_ITEM_ID,
@@ -33,11 +31,7 @@ const GoalsHudItem = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <HudNavbar
-        onSelectItem={setCurrentNavbarItemId}
-        navbarItems={navbarItems}
-        classes={classes}
-      />
+      <HudToolbar onSelectItem={setCurrentNavbarItemId} navbarItems={navbarItems} />
 
       {currentNavbarItemId === GOALS_NAV_ITEM_ID && <WeeklyGoals />}
 
@@ -48,4 +42,4 @@ const GoalsHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(GoalsHudItem);
+export default AchievementsArea;

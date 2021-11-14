@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import withRoot from '../../withRoot';
 import UserNotesContainer from '../../containers/UserNotes/UserNotesContainer';
 import { NotesContextProvider } from '../../hooks/useNotes';
-import HudNavbar from '../navbar/HudNavbar';
 import QuickNotes from '../../containers/QuickNotes/QuickNotes';
 import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
-
-type Props = {
-  classes: Record<string, any>;
-};
+import HudToolbar from '../../hud/navigation/HudToolbar';
+import { useStyles } from './NotebookAreaStyles';
 
 const CLASSES_NAV_ITEM_ID = 'classes';
 const QUICK_NOTES_NAV_ITEM_ID = 'quickNotes';
 const FLASHCARDS_NAV_ITEM_ID = 'flashcards';
 
-const NotesHudItem = ({ classes }: Props) => {
+const StudyToolsArea = () => {
+  const classes: any = useStyles();
+
   const navbarItems = [
     {
       id: CLASSES_NAV_ITEM_ID,
@@ -34,11 +32,7 @@ const NotesHudItem = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <HudNavbar
-        onSelectItem={setCurrentNavbarItemId}
-        navbarItems={navbarItems}
-        classes={classes}
-      />
+      <HudToolbar onSelectItem={setCurrentNavbarItemId} navbarItems={navbarItems} />
 
       {currentNavbarItemId === CLASSES_NAV_ITEM_ID && (
         <NotesContextProvider>
@@ -53,4 +47,4 @@ const NotesHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(NotesHudItem);
+export default StudyToolsArea;

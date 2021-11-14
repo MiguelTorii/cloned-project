@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
 import { Grid, Button, IconButton, Tooltip } from '@material-ui/core';
-import { HudNavbarItem } from './HudNavbarItem';
+import { HudTool } from './HudTool';
+import { useStyles } from './HudToolbarStyles';
 
 type Props = {
-  classes: Record<string, any>;
-  navbarItems: HudNavbarItem[];
+  navbarItems: HudTool[];
   onSelectItem: (navbarItemId: string) => void;
 };
 
-const HudNavbar = ({ classes, navbarItems, onSelectItem }: Props) => {
-  const [currentNavbarItem, setCurrentNavbarItem] = useState<HudNavbarItem>(navbarItems[0]);
+const HudToolbar = ({ navbarItems, onSelectItem }: Props) => {
+  const classes: any = useStyles();
 
-  const onNavbarItemSelected = (navbarItem: HudNavbarItem) => {
+  const [currentNavbarItem, setCurrentNavbarItem] = useState<HudTool>(navbarItems[0]);
+
+  const onNavbarItemSelected = (navbarItem: HudTool) => {
     setCurrentNavbarItem(navbarItem);
     onSelectItem(navbarItem.id);
   };
 
   return (
     <Grid container alignItems="center">
-      {navbarItems.map((navbarItem: HudNavbarItem, index: number) => (
+      {navbarItems.map((navbarItem: HudTool, index: number) => (
         <Tooltip key={navbarItem.id} title={navbarItem.displayName} arrow placement="top">
           {navbarItem.icon ? (
             <IconButton
               color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
-              className={classes.button}
+              className={classes.toolButton}
+              size="medium"
               onClick={() => onNavbarItemSelected(navbarItem)}
             >
               {navbarItem.icon}
@@ -32,7 +35,7 @@ const HudNavbar = ({ classes, navbarItems, onSelectItem }: Props) => {
             <Button
               key={navbarItem.id}
               color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
-              className={classes.button}
+              className={classes.toolButton}
               onClick={() => onNavbarItemSelected(navbarItem)}
             >
               {navbarItem.displayName}
@@ -44,4 +47,4 @@ const HudNavbar = ({ classes, navbarItems, onSelectItem }: Props) => {
   );
 };
 
-export default HudNavbar;
+export default HudToolbar;

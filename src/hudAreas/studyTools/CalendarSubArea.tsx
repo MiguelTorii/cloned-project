@@ -3,14 +3,11 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { isMobile } from 'react-device-detect';
-import withRoot from '../../withRoot';
 import Workflow from '../../containers/Workflow/Workflow';
+import { useStyles } from './NotebookAreaStyles';
 
-type Props = {
-  classes: Record<string, any>;
-};
-
-const CalendarHudItem = ({ classes }: Props) => {
+const CalendarSubArea = () => {
+  const classes: any = useStyles();
   const backend = isMobile ? TouchBackend : HTML5Backend;
 
   return (
@@ -22,4 +19,4 @@ const CalendarHudItem = ({ classes }: Props) => {
   );
 };
 
-export default withRoot(CalendarHudItem);
+export default CalendarSubArea;

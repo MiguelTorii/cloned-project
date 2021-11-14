@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export interface HudNavbarItem {
+export interface HudTool {
   id: string;
   displayName: string;
   icon?: ReactElement;
