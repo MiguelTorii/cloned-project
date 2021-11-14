@@ -13,7 +13,7 @@ import dialog from './dialog';
 import onboarding from './onboarding';
 import notes from './notes';
 import api from './api';
-import story from './story';
+import hudStory from '../hud/storyState/hudStoryReducers';
 
 const routerActions = {
   push: typeof push,
@@ -36,7 +36,7 @@ const reducers = {
   dialog,
   onboarding,
   notes,
-  story
+  hudStory
 };
 export type Reducers = typeof reducers;
 export default (history: BrowserHistory) =>

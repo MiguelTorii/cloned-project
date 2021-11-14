@@ -9,7 +9,7 @@ import CalendarSubArea from '../../hudAreas/studyTools/CalendarSubArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
 import Chat from '../../containers/MainChat/MainChat';
 import conversations from '../../assets/story/conversations';
-import useStorySequence from '../../hooks/useStorySequence';
+import useStorySequence from '../story/useStorySequence';
 import { AppState } from '../../configureStore';
 import { User } from '../../types/models';
 import HudMissions from '../missions/HudMissions';

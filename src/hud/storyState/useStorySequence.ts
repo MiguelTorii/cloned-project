@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setConversation } from '../actions/story';
+import { setConversation } from './hudStoryActions';
 
 const useStorySequence = (storySequence: string[]) => {
   const dispatch = useDispatch();
