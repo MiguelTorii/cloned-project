@@ -20,13 +20,24 @@ const HudNavbar = ({ classes, navbarItems, onSelectItem }: Props) => {
     <Grid container alignItems="center">
       {navbarItems.map((navbarItem: HudNavbarItem, index: number) => (
         <Tooltip key={navbarItem.id} title={navbarItem.displayName} arrow placement="top">
-          <IconButton
-            color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
-            className={classes.button}
-            onClick={() => onNavbarItemSelected(navbarItem)}
-          >
-            {navbarItem.icon}
-          </IconButton>
+          {navbarItem.icon ? (
+            <IconButton
+              color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
+              className={classes.button}
+              onClick={() => onNavbarItemSelected(navbarItem)}
+            >
+              {navbarItem.icon}
+            </IconButton>
+          ) : (
+            <Button
+              key={navbarItem.id}
+              color={navbarItem === currentNavbarItem ? 'primary' : 'default'}
+              className={classes.button}
+              onClick={() => onNavbarItemSelected(navbarItem)}
+            >
+              {navbarItem.displayName}
+            </Button>
+          )}
         </Tooltip>
       ))}
     </Grid>
