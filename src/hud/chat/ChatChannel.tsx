@@ -30,49 +30,51 @@ const ChatChannel = ({ channelId }: Props) => {
     dispatch(selectChannelId(channelId));
   };
 
+  if (!channel) {
+    return null;
+  }
+
   return (
-    (channel || null) && (
-      <ListItem
-        key={channel.id}
-        className={cx(classes.navLink)}
-        selected={selectedChannelId === channel.id}
+    <ListItem
+      key={channel.id}
+      className={cx(classes.navLink)}
+      selected={selectedChannelId === channel.id}
+      classes={{
+        selected: classes.selected,
+        button: classes.listItem
+      }}
+      onClick={setChannelId}
+      button
+    >
+      {/* Channel hash icon */}
+      <ListItemIcon
         classes={{
-          selected: classes.selected,
-          button: classes.listItem
+          root: classes.channelIcon
         }}
-        onClick={setChannelId}
-        button
       >
-        {/* Channel hash icon */}
-        <ListItemIcon
-          classes={{
-            root: classes.channelIcon
-          }}
-        >
-          {channel.unreadCount ? <UnreadMessageChannelIcon /> : <ChannelIcon />}
-        </ListItemIcon>
+        {channel.unreadCount ? <UnreadMessageChannelIcon /> : <ChannelIcon />}
+      </ListItemIcon>
 
-        {/* Channel name */}
-        <ListItemText
+      {/* Channel name */}
+      <ListItemText
+        classes={{
+          primary: cx(classes.channelName, channel.unreadCount && classes.unreadMessageChannel)
+        }}
+        primary={channel.displayName}
+      />
+
+      {/* Channel unread badge */}
+      <span />
+      {channel.unreadCount > -1 && (
+        <Badge
+          badgeContent={channel.unreadCount}
+          color="secondary"
           classes={{
-            primary: cx(classes.channelName, channel.unreadCount && classes.unreadMessageChannel)
+            badge: classes.badge
           }}
-          primary={channel.displayName}
         />
-
-        {/* Channel unread badge */}
-        <span />
-        {channel.unreadCount > -1 && (
-          <Badge
-            badgeContent={channel.unreadCount}
-            color="secondary"
-            classes={{
-              badge: classes.badge
-            }}
-          />
-        )}
-      </ListItem>
-    )
+      )}
+    </ListItem>
   );
 };
 

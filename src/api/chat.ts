@@ -132,18 +132,12 @@ export const getCommunityMembers = async ({
   classId: number;
   sectionId: number;
 }): Promise<Classmate[]> => {
-  const token = await getToken();
-  const result: { data: { members: APIClassmate[] } } = await axios.get(
-    `${API_ROUTES.CLASSES}/${classId}/${sectionId}/members`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
-  const {
-    data: { members }
-  } = result;
+  const result: { members: APIClassmate[] } = await callApi({
+    url: `${API_ROUTES.CLASSES}/${classId}/${sectionId}/members`,
+    method: 'GET'
+  });
+
+  const { members } = result;
   return members.map((m) => ({
     notRegistered: !m.registered,
     firstName: m.first_name,
