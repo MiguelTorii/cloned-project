@@ -31,70 +31,72 @@ const CommunityPick = ({ communityId }: Props) => {
     dispatch(selectCommunityId(communityId));
   };
 
+  if (!communityData) {
+    return null;
+  }
+
   return (
-    communityData && (
-      <Tooltip
-        title={communityData.displayName}
-        placement="top"
-        arrow
-        classes={{
-          tooltip: classes.tooltip
-        }}
-      >
-        {communityData.iconUrl ? (
-          <ListItem
-            button
-            onClick={setCommunityId}
-            selected={communityId === selectedCommunityId}
-            classes={{
-              root: classes.listItem,
-              selected: classes.selectedItem
-            }}
-          >
-            <StyledBadge max={99} badgeContent={communityData.unreadCount} color="secondary">
-              <ListItemIcon
-                classes={{
-                  root: classes.itemContent
-                }}
-              >
-                <LoadImg url={communityData.iconUrl} />
-              </ListItemIcon>
-            </StyledBadge>
-          </ListItem>
-        ) : (
-          <ListItem
-            button
-            onClick={setCommunityId}
-            selected={communityId === selectedCommunityId}
-            classes={{
-              root: classes.listItem,
-              selected: classes.selectedItem
-            }}
-            style={{
-              backgroundColor: communityData.color ? communityData.color : '#C45960'
-            }}
-          >
-            <StyledBadge
-              max={99}
+    <Tooltip
+      title={communityData.displayName}
+      placement="top"
+      arrow
+      classes={{
+        tooltip: classes.tooltip
+      }}
+    >
+      {communityData.iconUrl ? (
+        <ListItem
+          button
+          onClick={setCommunityId}
+          selected={communityId === selectedCommunityId}
+          classes={{
+            root: classes.listItem,
+            selected: classes.selectedItem
+          }}
+        >
+          <StyledBadge max={99} badgeContent={communityData.unreadCount} color="secondary">
+            <ListItemIcon
               classes={{
-                badge: communityData.unreadCount
-                  ? classes.unreadMessageCount
-                  : classes.emptyUnreadMessage
+                root: classes.itemContent
               }}
-              badgeContent={communityData.unreadCount}
-              color="secondary"
             >
-              <ListItemText
-                classes={{
-                  root: classes.itemContent
-                }}
-                primary={communityData.displayName.substring(0, 3).toUpperCase()}
-              />
-            </StyledBadge>
-          </ListItem>
-        )}
-      </Tooltip>
-    )
+              <LoadImg url={communityData.iconUrl} />
+            </ListItemIcon>
+          </StyledBadge>
+        </ListItem>
+      ) : (
+        <ListItem
+          button
+          onClick={setCommunityId}
+          selected={communityId === selectedCommunityId}
+          classes={{
+            root: classes.listItem,
+            selected: classes.selectedItem
+          }}
+          style={{
+            backgroundColor: communityData.color ? communityData.color : '#C45960'
+          }}
+        >
+          <StyledBadge
+            max={99}
+            classes={{
+              badge: communityData.unreadCount
+                ? classes.unreadMessageCount
+                : classes.emptyUnreadMessage
+            }}
+            badgeContent={communityData.unreadCount}
+            color="secondary"
+          >
+            <ListItemText
+              classes={{
+                root: classes.itemContent
+              }}
+              primary={communityData.displayName.substring(0, 3).toUpperCase()}
+            />
+          </StyledBadge>
+        </ListItem>
+      )}
+    </Tooltip>
   );
 };
 

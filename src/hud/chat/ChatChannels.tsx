@@ -17,26 +17,28 @@ const ChatChannels = () => {
     (state: { hudChat: HudChatState }) => state.hudChat.idToCommunity[selectedCommunityId]
   );
 
+  if (!community) {
+    return null;
+  }
+
   return (
-    (community || null) && (
-      <div className={classes.chatChannelsPane}>
-        <div className={classes.channelAndMemberList}>
-          {community.channelIdsInDisplayOrder.map((channelId: string) => (
-            <ChatChannel key={channelId} channelId={channelId} />
-          ))}
+    <div className={classes.chatChannelsPane}>
+      <div className={classes.channelAndMemberList}>
+        {community.channelIdsInDisplayOrder.map((channelId: string) => (
+          <ChatChannel key={channelId} channelId={channelId} />
+        ))}
 
-          <hr />
+        <hr />
 
-          {community.memberIdsInDisplayOrder.map((memberId: string) => (
-            <ChatMember key={memberId} memberId={memberId} />
-          ))}
-        </div>
-
-        <div className={classes.communityPicker}>
-          <CommunityPicker />
-        </div>
+        {community.memberIdsInDisplayOrder.map((memberId: string) => (
+          <ChatMember key={memberId} memberId={memberId} />
+        ))}
       </div>
-    )
+
+      <div className={classes.communityPicker}>
+        <CommunityPicker />
+      </div>
+    </div>
   );
 };
 

@@ -35,46 +35,41 @@ const ChatMember = ({ memberId }: Props) => {
       state.hudChat.idToCommunity[selectedCommunityId].idToMember[memberId]
   );
 
+  if (!member) {
+    return null;
+  }
+
   return (
-    (member || null) && (
-      <HoverPopup
-        userId={member.userId}
-        key={member.userId}
-        profileSource={PROFILE_PAGE_SOURCE.CHAT}
+    <HoverPopup userId={member.userId} key={member.userId} profileSource={PROFILE_PAGE_SOURCE.CHAT}>
+      <ListItem
+        component={MyLink}
+        disableGutters
+        link={buildPath(`/profile/${member.userId}`, {
+          from: PROFILE_PAGE_SOURCE.CHAT
+        })}
+        button
+        classes={{
+          secondaryAction: classes.secondaryAction
+        }}
       >
-        <ListItem
-          component={MyLink}
-          disableGutters
-          link={buildPath(`/profile/${member.userId}`, {
-            from: PROFILE_PAGE_SOURCE.CHAT
-          })}
-          button
-          classes={{
-            secondaryAction: classes.secondaryAction
-          }}
+        <ListItemAvatar>
+          <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.primaryBackground">
+            <Avatar alt={member.fullName} src={member.image}>
+              {getInitials(member.fullName)}
+            </Avatar>
+          </OnlineBadge>
+        </ListItemAvatar>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          className={classes.memberName}
         >
-          <ListItemAvatar>
-            <OnlineBadge
-              isOnline={member.isOnline}
-              bgColorPath="circleIn.palette.primaryBackground"
-            >
-              <Avatar alt={member.fullName} src={member.image}>
-                {getInitials(member.fullName)}
-              </Avatar>
-            </OnlineBadge>
-          </ListItemAvatar>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            className={classes.memberName}
-          >
-            {member.fullName}
-            {member.roleId !== 1 && <RoleBadge />}
-          </Box>
-        </ListItem>
-      </HoverPopup>
-    )
+          {member.fullName}
+          {member.roleId !== 1 && <RoleBadge />}
+        </Box>
+      </ListItem>
+    </HoverPopup>
   );
 };
 
