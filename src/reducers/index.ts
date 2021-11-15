@@ -16,7 +16,7 @@ import api from './api';
 import hudStory from '../hud/storyState/hudStoryReducers';
 import hudChat from '../hud/chatState/hudChatReducers';
 import hudNavigation from '../hud/navigationState/hudNavigationReducers';
-import experienceBarPoints from './experienceBar';
+import hudExperienceBar from '../hud/experienceBarState/hudExperienceBarReducers';
 
 const routerActions = {
   push: typeof push,
@@ -42,7 +42,7 @@ const reducers = {
   hudStory,
   hudChat,
   hudNavigation,
-  experienceBarPoints
+  hudExperienceBar
 };
 export type Reducers = typeof reducers;
 export default (history: BrowserHistory) =>
