@@ -14,6 +14,8 @@ import onboarding from './onboarding';
 import notes from './notes';
 import api from './api';
 import hudStory from '../hud/storyState/hudStoryReducers';
+import hudChat from '../hud/chatState/hudChatReducers';
+import hudNavigation from '../hud/navigationState/hudNavigationReducers';
 
 const routerActions = {
   push: typeof push,
@@ -36,7 +38,9 @@ const reducers = {
   dialog,
   onboarding,
   notes,
-  hudStory
+  hudStory,
+  hudChat,
+  hudNavigation
 };
 export type Reducers = typeof reducers;
 export default (history: BrowserHistory) =>
