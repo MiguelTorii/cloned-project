@@ -28,7 +28,6 @@ import Report from '../Report/Report';
 import DeletePost from '../DeletePost/DeletePost';
 import ProfileHeader from '../../components/Profile/header';
 import ProfilePosts from '../../components/Profile/posts';
-import ProfileEdit from '../../components/ProfileEdit/ProfileEdit';
 import StudyCircleDialog from '../../components/StudyCircleDialog/StudyCircleDialog';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { processSeasons } from './utils';
@@ -758,19 +757,6 @@ class Profile extends React.PureComponent<Props, State> {
               </Grid>
             </Grid>
           </Grid>
-
-          <ErrorBoundary>
-            <ProfileEdit
-              key={`${userId}-${userProfileUrl}`}
-              open={edit && userId === userData.userId}
-              about={about}
-              firstName={firstName}
-              lastName={lastName}
-              userProfileUrl={userProfileUrl}
-              onClose={this.handleCloseEdit}
-              onSubmit={this.handleSubmit}
-            />
-          </ErrorBoundary>
 
           <ErrorBoundary>
             <EditProfileModal

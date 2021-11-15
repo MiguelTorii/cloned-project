@@ -1,0 +1,49 @@
+import { Action } from '../../types/action';
+import { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
+
+export const hudChatActions = {
+  START_CHAT_LOAD: 'START_CHAT_LOAD',
+  SELECT_COMMUNITY_ID: 'SELECT_COMMUNITY_ID',
+  SET_COMMUNITIES_AND_CHANNELS: 'SET_COMMUNITIES_AND_CHANNELS',
+  START_CHANNEL_DATA_LOAD: 'START_CHANNEL_DATA_LOAD',
+  SELECT_CHANNEL_ID: 'SELECT_CHANNEL_ID'
+};
+
+export const startChatLoad = (): Action => ({
+  type: hudChatActions.START_CHAT_LOAD,
+  payload: {}
+});
+
+export const setCommunitiesAndChannels = (
+  builtCommunities: IBuiltCommunities,
+  builtChannels: IBuiltChannels
+): Action => ({
+  type: hudChatActions.SET_COMMUNITIES_AND_CHANNELS,
+  payload: {
+    builtCommunities,
+    builtChannels
+  }
+});
+
+export const selectCommunityId = (communityId: string): Action => ({
+  type: hudChatActions.SELECT_COMMUNITY_ID,
+  payload: {
+    communityId
+  }
+});
+
+// TODO use me
+export const startChannelLoad = (channelId: string): Action => ({
+  type: hudChatActions.START_CHANNEL_DATA_LOAD,
+  payload: {
+    channelId: channelId
+  }
+});
+
+// TODO use me
+export const selectChannelId = (channelId: string): Action => ({
+  type: hudChatActions.SELECT_CHANNEL_ID,
+  payload: {
+    channelId
+  }
+});
