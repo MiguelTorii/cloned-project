@@ -529,6 +529,20 @@ export type InviteCard = {
   };
   title: string;
 };
+export type Classmate = {
+  notRegistered: boolean;
+  firstName: string;
+  lastName: string;
+  userId: string;
+  image: string;
+  isOnline: boolean;
+  fullName: string;
+  roleId: number;
+};
+export type ClassmateGroup = {
+  communityId: number;
+  classmates: Classmate[];
+};
 export type CreateChat = {
   chatId: string;
   groupName: string;

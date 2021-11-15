@@ -1,28 +1,20 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import RightMenu from '../../containers/CommunityChat/RightMenu';
-import type { UserState } from '../../reducers/user';
-import { ChatState } from '../../reducers/chat';
-import { User } from '../../types/models';
+import ChatMessages from './ChatMessages';
+import ChatChannels from './ChatChannels';
+import useChat from '../chatState/useChat';
 import { useStyles } from './HudChatStyles';
 
 const HudChat = () => {
   const classes: any = useStyles();
 
-  const user: User = useSelector((state: { user: UserState }) => state.user.data);
-  const chat: ChatState = useSelector((state: { chat: ChatState }) => state.chat);
-
-  // TODO load chat data first
+  const { loadChat } = useChat();
+  loadChat();
 
   return (
     <div className={classes.container}>
-      <RightMenu
-        isCommunityChat
-        userId={user.userId}
-        schoolId={user.schoolId}
-        channel={chat.data.currentCommunityChannel}
-        local={chat.data.local}
-      />
+      <div className={classes.chatModule} />
+      <ChatMessages />
+      <ChatChannels />
     </div>
   );
 };

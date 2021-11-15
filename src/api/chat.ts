@@ -3,10 +3,11 @@ import axios from 'axios';
 import moment from 'moment';
 import get from 'lodash/get';
 import { API_ROUTES, API_URL } from '../constants/routes';
-import type { CreateChat, ChatUser } from '../types/models';
+import type { CreateChat, ChatUser, Classmate } from '../types/models';
 import { callApi } from './api_base';
 import { getToken } from './utils';
 import { APICreateChat } from './models/APICreateChat';
+import { APIClassmate } from './models/APIClassmate';
 
 export const sendMessage = async ({
   message,
@@ -121,6 +122,37 @@ export const getClassmates = async ({
     userId: m.user_id,
     image: m.profile_image_url,
     isOnline: m.is_online
+  }));
+};
+
+export const getCommunityMembers = async ({
+  classId,
+  sectionId
+}: {
+  classId: number;
+  sectionId: number;
+}): Promise<Classmate[]> => {
+  const token = await getToken();
+  const result: { data: { members: APIClassmate[] } } = await axios.get(
+    `${API_ROUTES.CLASSES}/${classId}/${sectionId}/members`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  const {
+    data: { members }
+  } = result;
+  return members.map((m) => ({
+    notRegistered: !m.registered,
+    firstName: m.first_name,
+    lastName: m.last_name,
+    userId: m.user_id ? String(m.user_id) : '',
+    image: m.profile_image_url,
+    isOnline: m.is_online,
+    fullName: `${m.first_name} ${m.last_name}`,
+    roleId: m.role_id
   }));
 };
 
