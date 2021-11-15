@@ -138,3 +138,7 @@ export const apiActions = {
   API_CALL_SUCCESS: 'API_CALL_SUCCESS',
   API_CALL_FAILURE: 'API_CALL_FAILURE'
 };
+
+export const experienceBarActions = {
+  SET_EXPERIENCE_POINTS: 'SET_EXPERIENCE_POINTS'
+};
