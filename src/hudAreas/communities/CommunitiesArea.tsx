@@ -1,32 +1,26 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Grid, Hidden } from '@material-ui/core';
-import HudToolbar from '../../hud/navigation/HudToolbar';
 import { decypherClass } from '../../utils/crypto';
 import Classes from '../../containers/ClassesGrid/Classes';
 import FeedResources from '../../containers/FeedResources/FeedResources';
 import Feed from '../../containers/Feed/Feed';
 import Recommendations from '../../containers/Recommendations/Recommendations';
-import { HudTool } from '../../hud/navigation/HudTool';
 import { useStyles } from './CommunitiesAreaStyles';
-
-const CLASSES_NAV_ITEM_ID = 'classes';
-const FEED_NAV_ITEM_ID = 'feeds';
+import { CLASSES_AREA, FEEDS_AREA } from '../../hud/navigationState/hudNavigation';
+import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 
 const CommunitiesArea = () => {
   const classes: any = useStyles();
 
-  const navbarItems: HudTool[] = [
-    {
-      id: CLASSES_NAV_ITEM_ID,
-      displayName: 'Classes'
-    },
-    {
-      id: FEED_NAV_ITEM_ID,
-      displayName: 'Feeds'
-    }
-  ];
+  const selectedMainArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
 
-  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
+  const selectedMainSubArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
+  );
 
   const gridRef = useRef(null);
   const feedId = 0;
@@ -35,11 +29,9 @@ const CommunitiesArea = () => {
 
   return (
     <div className={classes.container}>
-      <HudToolbar onSelectItem={setCurrentNavbarItemId} navbarItems={navbarItems} />
+      {selectedMainSubArea === CLASSES_AREA && <Classes />}
 
-      {currentNavbarItemId === CLASSES_NAV_ITEM_ID && <Classes />}
-
-      {currentNavbarItemId === FEED_NAV_ITEM_ID && (
+      {selectedMainSubArea === FEEDS_AREA && (
         <Grid container spacing={2}>
           <Hidden lgUp>
             <Grid item xs={12}>

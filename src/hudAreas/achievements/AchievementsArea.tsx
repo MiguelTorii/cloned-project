@@ -1,43 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Store from '../../containers/Store/Store';
 import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
 import WeeklyGoals from '../../containers/WeeklyGoals/WeeklyGoals';
-import HudToolbar from '../../hud/navigation/HudToolbar';
 import { useStyles } from './AchievementsAreaStyles';
-
-const GOALS_NAV_ITEM_ID = 'classes';
-const REWARDS_NAV_ITEM_ID = 'feeds';
-const LEADER_BOARD_NAV_ITEM_ID = 'leaderBoard';
+import { BADGES_AREA, GOALS_AREA, LEADERBOARD_AREA } from '../../hud/navigationState/hudNavigation';
+import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 
 const AchievementsArea = () => {
   const classes: any = useStyles();
 
-  const navbarItems = [
-    {
-      id: GOALS_NAV_ITEM_ID,
-      displayName: 'Goals'
-    },
-    {
-      id: REWARDS_NAV_ITEM_ID,
-      displayName: 'Rewards'
-    },
-    {
-      id: LEADER_BOARD_NAV_ITEM_ID,
-      displayName: 'LeaderBoard'
-    }
-  ];
+  const selectedMainArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
 
-  const [currentNavbarItemId, setCurrentNavbarItemId] = useState<string>(navbarItems[0].id);
+  const selectedMainSubArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
+  );
 
   return (
     <div className={classes.container}>
-      <HudToolbar onSelectItem={setCurrentNavbarItemId} navbarItems={navbarItems} />
+      {selectedMainSubArea === GOALS_AREA && <WeeklyGoals />}
 
-      {currentNavbarItemId === GOALS_NAV_ITEM_ID && <WeeklyGoals />}
+      {selectedMainSubArea === BADGES_AREA && <Store />}
 
-      {currentNavbarItemId === REWARDS_NAV_ITEM_ID && <Store />}
-
-      {currentNavbarItemId === LEADER_BOARD_NAV_ITEM_ID && <LeaderBoards />}
+      {selectedMainSubArea === LEADERBOARD_AREA && <LeaderBoards />}
     </div>
   );
 };

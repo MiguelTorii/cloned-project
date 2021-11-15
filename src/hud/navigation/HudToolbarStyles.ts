@@ -5,5 +5,12 @@ export const useStyles = makeStyles((theme: any) => ({
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
     }
+  },
+  textIconButton: {
+    width: '30px',
+    height: '30px',
+    '&:hover': {
+      backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
+    }
   }
 }));

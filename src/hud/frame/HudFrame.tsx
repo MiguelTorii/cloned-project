@@ -1,40 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
 import { useStyles } from './HudFrameStyles';
-import StudyToolsArea from '../../hudAreas/studyTools/NotebookArea';
+import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
-import CalendarSubArea from '../../hudAreas/studyTools/CalendarSubArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
-import Chat from '../../containers/MainChat/MainChat';
 import conversations from '../../assets/story/conversations';
-import useStorySequence from '../story/useStorySequence';
-import { AppState } from '../../configureStore';
-import { User } from '../../types/models';
+import useStorySequence from '../storyState/useStorySequence';
 import HudMissions from '../missions/HudMissions';
-import HudToolbar from '../navigation/HudToolbar';
 import HudStoryAvatar from '../story/HudStoryAvatar';
 import HudStoryMessage from '../story/HudStoryMessage';
 import HudChat from '../chat/HudChat';
 import HudExperienceBar from '../experienceBar/HudExperienceBar';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
-import rootNavigation, {
-  ACHIEVEMENTS_AREA_ID,
-  CHAT_AREA_ID,
-  COMMUNITIES_AREA_ID,
-  PROFILE_AREA_ID,
-  STUDY_TOOLS_AREA_ID,
-  WORKFLOW_SUBAREA_ID
-} from '../navigation/HudNavigation';
+import HudMainNavigation from '../navigation/HudMainNavigation';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
+import {
+  MORE_MAIN_AREA,
+  PROFILE_MAIN_AREA,
+  COMMUNITIES_MAIN_AREA,
+  STUDY_TOOLS_MAIN_AREA,
+  ACHIEVEMENTS_MAIN_AREA
+} from '../navigationState/hudNavigation';
+import MoreArea from '../../hudAreas/moreArea/MoreArea';
 
 const HudFrame = () => {
   const classes: any = useStyles();
 
-  // TODO move these out to navigation once we have hud redux state.
-  const profile = useSelector<AppState, User>((state) => state.user.data);
-  const rootNavigationItems = rootNavigation(profile);
-  const [selectedArea, setSelectedArea] = useState<string>(rootNavigationItems[0].id);
+  const selectedMainArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
+
+  const selectedMainSubArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
+  );
 
   useStorySequence(conversations.crushed);
 
@@ -43,17 +44,15 @@ const HudFrame = () => {
       <CssBaseline />
       <div className={cx(classes.appWithHud)}>
         <div className={classes.mainAction}>
-          {selectedArea === PROFILE_AREA_ID && <ProfileArea />}
+          {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
-          {selectedArea === COMMUNITIES_AREA_ID && <CommunitiesArea />}
+          {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
 
-          {selectedArea === STUDY_TOOLS_AREA_ID && <StudyToolsArea />}
+          {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
 
-          {selectedArea === ACHIEVEMENTS_AREA_ID && <AchievementsArea />}
+          {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
 
-          {selectedArea === WORKFLOW_SUBAREA_ID && <CalendarSubArea />}
-
-          {selectedArea === CHAT_AREA_ID && <Chat />}
+          {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
         </div>
 
         <div className={classes.chat}>
@@ -73,7 +72,7 @@ const HudFrame = () => {
         </div>
 
         <div className={classes.navigation}>
-          <HudToolbar onSelectItem={setSelectedArea} navbarItems={rootNavigationItems} />
+          <HudMainNavigation />
         </div>
 
         <div className={classes.missions}>

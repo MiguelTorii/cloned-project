@@ -4,7 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { isMobile } from 'react-device-detect';
 import Workflow from '../../containers/Workflow/Workflow';
-import { useStyles } from './NotebookAreaStyles';
+import { useStyles } from '../studyTools/StudyToolsAreaStyles';
 
 const CalendarSubArea = () => {
   const classes: any = useStyles();
