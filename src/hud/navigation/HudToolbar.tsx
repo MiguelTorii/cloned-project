@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Grid, Button, IconButton, Tooltip } from '@material-ui/core';
+import { Button, IconButton, Tooltip } from '@material-ui/core';
 import { HudTool } from './HudTool';
 import { useStyles } from './HudToolbarStyles';
 
 type Props = {
   navbarItems: HudTool[];
   onSelectItem: (navbarItemId: string) => void;
+  isVertical?: boolean;
 };
 
-const HudToolbar = ({ navbarItems, onSelectItem }: Props) => {
+const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
   const classes: any = useStyles();
 
   const [selectedTool, setSelectedTool] = useState<HudTool>(navbarItems[0]);
@@ -56,13 +57,13 @@ const HudToolbar = ({ navbarItems, onSelectItem }: Props) => {
   };
 
   return (
-    <Grid container alignItems="center">
+    <div className={isVertical ? classes.verticalToolbar : classes.horizontalToolbar}>
       {navbarItems.map((navbarItem: HudTool, index: number) => (
         <Tooltip key={navbarItem.id} title={navbarItem.displayName} arrow placement="top">
           {renderIconButton(navbarItem)}
         </Tooltip>
       ))}
-    </Grid>
+    </div>
   );
 };
 

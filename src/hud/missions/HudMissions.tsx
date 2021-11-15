@@ -1,19 +1,36 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 import { useStyles } from './HudMissionsStyles';
 import CalendarToday from '../../components/CalendarToday/CalendarToday';
+import { BOTTOM_RIGHT_SIDE_AREA, TOP_RIGHT_SIDE_AREA } from '../navigationState/hudNavigation';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const HudMissions = () => {
   const classes: any = useStyles();
 
+  const isTopVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[TOP_RIGHT_SIDE_AREA]
+  );
+
+  const isBottomVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[BOTTOM_RIGHT_SIDE_AREA]
+  );
+
   return (
     <div className={classes.container}>
-      <div className={classes.calendarContainer}>
-        <CalendarToday />
-      </div>
-      <MiniWorkflows />
-      Next missions and opportunities go here.
+      {isTopVisible && (
+        <>
+          <div className={classes.calendarContainer}>
+            <CalendarToday />
+          </div>
+          <MiniWorkflows />
+        </>
+      )}
+
+      {isBottomVisible && <div>Next missions and opportunities go here.</div>}
     </div>
   );
 };
