@@ -27,7 +27,7 @@ const HudExperienceBar = () => {
   };
 
   return (
-    <div className={classes.experienceBar}>
+    <div className={classes.experienceBarTrack}>
       <div style={experienceBarFillWidth} className={classes.experienceFiller}>
         <Typography className={classes.experienceLabel}>
           {experienceBarPoints}/{experiencePointTotal}

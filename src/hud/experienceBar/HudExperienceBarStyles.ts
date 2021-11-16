@@ -1,20 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
-import { ExperienceBarState } from '../experienceBarState/hudExperienceBarState';
-
-// const experienceBarPoints: number = useSelector(
-//   (state: { hudExperienceBar: ExperienceBarState }) => state.hudExperienceBar.experienceBarPoints
-// );
 
 export const useStyles = makeStyles((theme: any) => ({
-  experienceBar: {
+  experienceBarTrack: {
     backgroundColor: 'gray',
-    borderRadius: 50
+    borderRadius: '50px'
   },
   experienceFiller: {
     height: '100%',
     backgroundColor: '#3177E7',
-    borderRadius: 'inherit',
+    borderRadius: '50px 0px 0px 50px',
     textAlign: 'right',
     transition: 'width 1s ease-in-out'
   },
