@@ -1,36 +1,36 @@
 import { Typography } from '@material-ui/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { ExperienceBarState } from '../experienceBarState/hudExperienceBarState';
+import { ExperienceState } from '../experienceBarState/hudExperienceState';
 import { useStyles } from './HudExperienceBarStyles';
 
 const HudExperienceBar = () => {
   const classes: any = useStyles();
 
-  const experienceBarPoints: number = useSelector(
-    (state: { hudExperienceBar: ExperienceBarState }) => state.hudExperienceBar.experienceBarPoints
+  const experiencePoints: number = useSelector(
+    (state: { hudExperience: ExperienceState }) => state.hudExperience.experiencePoints
   );
 
   const experiencePointTotal: number = useSelector(
-    (state: { hudExperienceBar: ExperienceBarState }) => state.hudExperienceBar.experienceBarTotal
+    (state: { hudExperience: ExperienceState }) => state.hudExperience.experienceTotal
   );
 
-  const experienceBarPercent = () => {
-    if (!experienceBarPoints) {
+  const experiencePercent = () => {
+    if (!experiencePoints) {
       return 1;
     }
-    return (experienceBarPoints / experiencePointTotal) * 100;
+    return (experiencePoints / experiencePointTotal) * 100;
   };
 
   const experienceBarFillWidth = {
-    width: `${experienceBarPercent()}%`
+    width: `${experiencePercent()}%`
   };
 
   return (
     <div className={classes.experienceBarTrack}>
       <div style={experienceBarFillWidth} className={classes.experienceFiller}>
         <Typography className={classes.experienceLabel}>
-          {experienceBarPoints}/{experiencePointTotal}
+          {experiencePoints}/{experiencePointTotal}
         </Typography>
       </div>
     </div>

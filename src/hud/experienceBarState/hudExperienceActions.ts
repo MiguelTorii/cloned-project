@@ -1,17 +1,17 @@
-export const experienceBarActions = {
+export const experienceActions = {
   SET_EXPERIENCE_POINTS: 'SET_EXPERIENCE_POINTS',
   SET_EXPERIENCE_GOAL_TOTAL: 'SET_EXPERIENCE_GOAL_TOTAL'
 };
 
-export const setExperienceBarPoints = (experienceBarPoints: number) => ({
-  type: experienceBarActions.SET_EXPERIENCE_POINTS,
+export const setExperiencePoints = (experiencePoints: number) => ({
+  type: experienceActions.SET_EXPERIENCE_POINTS,
   payload: {
-    experienceBarPoints
+    experiencePoints
   }
 });
 
 export const setExperienceGoalTotal = (experienceGoalTotal: number) => ({
-  type: experienceBarActions.SET_EXPERIENCE_GOAL_TOTAL,
+  type: experienceActions.SET_EXPERIENCE_GOAL_TOTAL,
   payload: {
     experienceGoalTotal
   }
