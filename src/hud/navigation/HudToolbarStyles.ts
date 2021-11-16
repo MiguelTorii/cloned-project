@@ -12,5 +12,13 @@ export const useStyles = makeStyles((theme: any) => ({
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
     }
+  },
+  verticalToolbar: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  horizontalToolbar: {
+    display: 'flex',
+    flexDirection: 'row'
   }
 }));

@@ -23,6 +23,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     justifyContent: 'center',
     opacity: 0.7,
-    marginTop: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    overflow: 'hidden'
   }
 }));

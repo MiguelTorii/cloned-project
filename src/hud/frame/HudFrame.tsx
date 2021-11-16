@@ -9,21 +9,22 @@ import ProfileArea from '../../hudAreas/profile/ProfileArea';
 import conversations from '../../assets/story/conversations';
 import useStorySequence from '../storyState/useStorySequence';
 import HudMissions from '../missions/HudMissions';
-import HudStoryAvatar from '../story/HudStoryAvatar';
-import HudStoryMessage from '../story/HudStoryMessage';
 import HudChat from '../chat/HudChat';
-import HudExperienceBar from '../experienceBar/HudExperienceBar';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
-import HudMainNavigation from '../navigation/HudMainNavigation';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
   MORE_MAIN_AREA,
   PROFILE_MAIN_AREA,
   COMMUNITIES_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
-  ACHIEVEMENTS_MAIN_AREA
+  ACHIEVEMENTS_MAIN_AREA,
+  TOP_RIGHT_SIDE_AREA,
+  BOTTOM_RIGHT_SIDE_AREA,
+  TOP_LEFT_SIDE_AREA,
+  BOTTOM_LEFT_SIDE_AREA
 } from '../navigationState/hudNavigation';
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
+import HudControlPanel from '../controlPanel/HudControlPanel';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -32,9 +33,24 @@ const HudFrame = () => {
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
   );
 
-  const selectedMainSubArea: string = useSelector(
+  const isTopLeftPaneVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
+      state.hudNavigation.sideAreaToIsVisible[TOP_LEFT_SIDE_AREA]
+  );
+
+  const isBottomLeftPaneVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[BOTTOM_LEFT_SIDE_AREA]
+  );
+
+  const isTopRightPaneVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[TOP_RIGHT_SIDE_AREA]
+  );
+
+  const isBottomRightPaneVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[BOTTOM_RIGHT_SIDE_AREA]
   );
 
   useStorySequence(conversations.crushed);
@@ -43,41 +59,35 @@ const HudFrame = () => {
     <main>
       <CssBaseline />
       <div className={cx(classes.appWithHud)}>
-        <div className={classes.mainAction}>
-          {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
+        {(isTopLeftPaneVisible || isBottomLeftPaneVisible) && (
+          <div className={classes.chat}>
+            <HudChat />
+          </div>
+        )}
 
-          {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
+        <div className={classes.mainContainer}>
+          <div className={classes.mainAction}>
+            {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
-          {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
+            {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
 
-          {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
+            {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
 
-          {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
+            {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
+
+            {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
+          </div>
+
+          <div className={classes.mainControlPanel}>
+            <HudControlPanel />
+          </div>
         </div>
 
-        <div className={classes.chat}>
-          <HudChat />
-        </div>
-
-        <div className={classes.storyAvatar}>
-          <HudStoryAvatar />
-        </div>
-
-        <div className={classes.storyMessage}>
-          <HudStoryMessage />
-        </div>
-
-        <div className={classes.experienceBar}>
-          <HudExperienceBar />
-        </div>
-
-        <div className={classes.navigation}>
-          <HudMainNavigation />
-        </div>
-
-        <div className={classes.missions}>
-          <HudMissions />
-        </div>
+        {(isTopRightPaneVisible || isBottomRightPaneVisible) && (
+          <div className={classes.missions}>
+            <HudMissions />
+          </div>
+        )}
       </div>
     </main>
   );
