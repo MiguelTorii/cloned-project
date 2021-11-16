@@ -4,6 +4,6 @@ export type ExperienceState = {
 };
 
 export const defaultState: ExperienceState = {
-  experiencePoints: 4975,
+  experiencePoints: 3500,
   experienceTotal: 5000
 };
