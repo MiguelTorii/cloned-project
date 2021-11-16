@@ -7,13 +7,11 @@ export default (state: ExperienceState = defaultState, action: Action): Experien
     case experienceActions.SET_EXPERIENCE_POINTS:
       return {
         ...state,
-        experiencePoints: action.payload.experiencePoints,
-        experienceTotal: state.experienceTotal
+        experiencePoints: action.payload.experiencePoints
       };
     case experienceActions.SET_EXPERIENCE_GOAL_TOTAL:
       return {
         ...state,
-        experiencePoints: state.experiencePoints,
         experienceTotal: action.payload.experienceTotal
       };
     default:
