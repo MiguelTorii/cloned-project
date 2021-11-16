@@ -21,7 +21,6 @@ import CreateNotes from './pages/Create/CreateNotesPage';
 import CreateShareLink from './pages/Create/ShareLink';
 import CreatePost from './pages/Create/CreatePostPage';
 import Profile from './pages/Profile/ProfilePage';
-import Reminders from './pages/Reminders/RemindersPage';
 import VideoCall from './pages/VideoCall/VideoCallPage';
 import StartVideo from './pages/StartVideo/StartVideoPage';
 import FloatingChatContainer from './containers/FloatingChat/FloatingChatContainer';
@@ -109,7 +108,6 @@ const BrowserRoutes = () => (
             component={withTracker(CreateShareLink)}
           />
           <Route exact path="/profile/:userId/:tab?" component={withTracker(Profile)} />
-          <Route exact path="/reminders" component={withTracker(Reminders)} />
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCall)} />
           <Route exact path="/video-call" component={withTracker(StartVideo)} />
           <Route exact path="/new" component={withTracker(AuthRedirect)} />
