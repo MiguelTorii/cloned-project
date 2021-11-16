@@ -1,10 +1,40 @@
+import { Typography } from '@material-ui/core';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { ExperienceState } from '../experienceBarState/hudExperienceState';
 import { useStyles } from './HudExperienceBarStyles';
 
 const HudExperienceBar = () => {
   const classes: any = useStyles();
 
-  return <div className={classes.experienceBar}>Experience bar goes here.</div>;
+  const experiencePoints: number = useSelector(
+    (state: { hudExperience: ExperienceState }) => state.hudExperience.experiencePoints
+  );
+
+  const experiencePointTotal: number = useSelector(
+    (state: { hudExperience: ExperienceState }) => state.hudExperience.experienceTotal
+  );
+
+  const experiencePercent = () => {
+    if (!experiencePoints) {
+      return 1;
+    }
+    return (experiencePoints / experiencePointTotal) * 100;
+  };
+
+  const experienceBarFillWidth = {
+    width: `${experiencePercent()}%`
+  };
+
+  return (
+    <div className={classes.experienceBarTrack}>
+      <div style={experienceBarFillWidth} className={classes.experienceFiller}>
+        <Typography className={classes.experienceLabel}>
+          {experiencePoints}/{experiencePointTotal}
+        </Typography>
+      </div>
+    </div>
+  );
 };
 
 export default HudExperienceBar;

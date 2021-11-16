@@ -6,7 +6,7 @@ import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
-import conversations from '../../assets/story/conversations';
+import conversations from '../storyState/conversations';
 import useStorySequence from '../storyState/useStorySequence';
 import HudMissions from '../missions/HudMissions';
 import HudChat from '../chat/HudChat';
