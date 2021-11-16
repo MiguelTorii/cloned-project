@@ -6,5 +6,8 @@ export const useStyles = makeStyles((theme: any) => ({
     height: '100%',
     overflow: 'auto',
     padding: theme.spacing(2)
+  },
+  signOut: {
+    zIndex: 10
   }
 }));
