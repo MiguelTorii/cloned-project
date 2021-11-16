@@ -16,15 +16,17 @@ export const useStyles = makeStyles((theme: any) => ({
     alignItems: 'center'
   },
   storyAvatar: {
-    width: '100%',
-    height: '100%'
+    flexGrow: 1
   },
   storyMessage: {
     display: 'flex',
     justifyContent: 'center',
     opacity: 0.7,
     marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(1),
+    backgroundColor: theme.circleIn.palette.gray3,
+    borderRadius: '4px',
+    marginTop: theme.spacing(2),
+    paddingLeft: '60px',
     overflow: 'hidden'
   }
 }));

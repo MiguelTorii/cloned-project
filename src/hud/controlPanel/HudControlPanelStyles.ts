@@ -19,21 +19,9 @@ export const useStyles = makeStyles((theme: any) => ({
     zIndex: 2
   },
   storyMessage: {
-    gridColumn: 4,
-    gridRow: 1,
-    overflow: 'hidden',
-    zIndex: 2,
-    marginTop: theme.spacing(2)
-  },
-  storyMessageBackground: {
     gridColumn: '3 / 5',
-    gridRow: 1,
-    overflow: 'hidden',
-    backgroundColor: theme.circleIn.palette.gray3,
-    opacity: 0.7,
-    borderRadius: '4px',
-    marginTop: theme.spacing(2),
-    marginBottom: -theme.spacing(1)
+    gridRow: '1 / -1',
+    overflow: 'hidden'
   },
   experienceBar: {
     gridColumn: 4,

@@ -16,8 +16,6 @@ const HudControlPanel = () => {
         <HudLeftNavigation />
       </div>
 
-      <div className={classes.storyMessageBackground} />
-
       <div className={classes.storyAvatar}>
         <HudStoryAvatar />
       </div>
