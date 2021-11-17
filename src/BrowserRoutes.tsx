@@ -103,6 +103,7 @@ const BrowserRoutes = () => (
             path="/edit/sharelink/:sharelinkId"
             component={withTracker(CreateShareLink)}
           />
+          <Route exact path="/study" component={withTracker(StudyPage)} />
 
           {/* WHAT ARE THESE? */}
           <Route
@@ -111,7 +112,6 @@ const BrowserRoutes = () => (
             component={withTracker(FlashcardsPage)}
           />
           <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
-          <Route exact path="/study" component={withTracker(StudyPage)} />
           <Route exact path="/notifications" component={withTracker(NotificationsPage)} />
           <Route exact path="/share/:code" component={withTracker(SharePage)} />
 
