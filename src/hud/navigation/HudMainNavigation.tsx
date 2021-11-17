@@ -3,6 +3,26 @@ import { useSelector } from 'react-redux';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-off.svg';
 import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-off.svg';
+import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
+import { ReactComponent as IconAboutMe } from '../../assets/svg/about_me.svg';
+import { ReactComponent as IconPosts } from '../../assets/svg/posts.svg';
+import { ReactComponent as IconBookmarkedPosts } from '../../assets/svg/bookmarked_posts.svg';
+import { ReactComponent as IconPointsHistory } from '../../assets/svg/points_history.svg';
+import { ReactComponent as IconMyClasses } from '../../assets/svg/my_classes.svg';
+import { ReactComponent as IconClassesOverview } from '../../assets/svg/classes_overview.svg';
+import { ReactComponent as IconClassFeed } from '../../assets/svg/class_feed.svg';
+import { ReactComponent as IconMyPosts } from '../../assets/svg/my_posts.svg';
+import { ReactComponent as IconStudyTools } from '../../assets/svg/study_tools.svg';
+import { ReactComponent as IconFlashcards } from '../../assets/svg/flashcards.svg';
+import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow.svg';
+import { ReactComponent as IconStudyingOnCircleIn } from '../../assets/svg/studying_on_circlein.svg';
+import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
+import { ReactComponent as IconStudyGoals } from '../../assets/svg/study_goals.svg';
+import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
+import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
+import { ReactComponent as IconMobileApp } from '../../assets/svg/mobile_app.svg';
+import { ReactComponent as IconUnblockClassMates } from '../../assets/svg/unblock_classmates.svg';
+
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import { useStyles } from './HudNavigationStyles';
@@ -68,14 +88,15 @@ const HudMainNavigation = () => {
     {
       id: MORE_MAIN_AREA,
       displayName: areaToDisplayName[MORE_MAIN_AREA],
-      iconText: '...'
+      icon: <IconMore />
     }
   ];
 
   const leafNavigationItems = mainSubAreasInOrder[selectedMainArea].map((subArea: string) => ({
     id: subArea,
     displayName: areaToDisplayName[subArea],
-    iconText: areaToDisplayName[subArea][0]
+    icon: <IconStudyGoals />
+    // iconText: areaToDisplayName[subArea][0]
   }));
 
   return (
