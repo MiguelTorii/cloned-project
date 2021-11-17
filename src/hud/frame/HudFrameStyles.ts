@@ -16,13 +16,15 @@ export const useStyles = makeStyles((theme: any) => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    height: '100%'
   },
   mainAction: {
     flexGrow: 1,
     overflow: 'hidden'
   },
   mainControlPanel: {
+    flexShrink: 0,
     height: '120px',
     overflow: 'hidden'
   },
