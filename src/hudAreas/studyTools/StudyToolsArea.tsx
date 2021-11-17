@@ -6,7 +6,7 @@ import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
 import { useStyles } from './StudyToolsAreaStyles';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 import {
-  CALENDAR_AREA,
+  WORKFLOW_AREA,
   FLASHCARDS_AREA,
   NOTES_AREA,
   STUDY_TIPS_AREA
@@ -35,10 +35,8 @@ const StudyToolsArea = () => {
       )}
 
       {selectedMainSubArea === FLASHCARDS_AREA && <FlashcardsList />}
-
-      {selectedMainSubArea === CALENDAR_AREA && <CalendarSubArea />}
-
       {selectedMainSubArea === STUDY_TIPS_AREA && <StudyCircle />}
+      {selectedMainSubArea === WORKFLOW_AREA && <CalendarSubArea />}
     </div>
   );
 };

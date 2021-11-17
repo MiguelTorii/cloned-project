@@ -34,7 +34,7 @@ import {
   ACHIEVEMENTS_MAIN_AREA,
   BADGES_AREA,
   BOOKMARKED_POSTS_AREA,
-  CALENDAR_AREA,
+  WORKFLOW_AREA,
   CLASSES_AREA,
   CLASSMATES_AREA,
   COMMUNITIES_MAIN_AREA,
@@ -74,7 +74,6 @@ const HudMainNavigation = () => {
       icon: <Avatar src={profile.profileImage} desktopSize={ICON_SIZE} mobileSize={ICON_SIZE} />
     },
     [ABOUT_ME_AREA]: { name: 'About Me', icon: <IconAboutMe /> },
-    // todo add routes for both of these
     [REWARDS_STORE_AREA]: { name: 'Rewards Store', icon: <IconRewardStore /> },
     [POINTS_HISTORY_AREA]: { name: 'Points History', icon: <IconPointsHistory /> },
 
@@ -87,7 +86,7 @@ const HudMainNavigation = () => {
     [STUDY_TOOLS_MAIN_AREA]: { name: 'Study Tools', icon: <IconStudyTools /> },
     [FLASHCARDS_AREA]: { name: 'Flashcards', icon: <IconFlashcards /> },
     [NOTES_AREA]: { name: 'Notes', icon: <IconNotes /> },
-    [CALENDAR_AREA]: { name: 'Workflow', icon: <IconWorkflow /> },
+    [WORKFLOW_AREA]: { name: 'Workflow', icon: <IconWorkflow /> },
     [STUDY_TIPS_AREA]: { name: 'Studying on CircleIn', icon: <IconStudyingOnCircleIn /> },
 
     [ACHIEVEMENTS_MAIN_AREA]: { name: 'Achievements', icon: <IconAchievements /> },
