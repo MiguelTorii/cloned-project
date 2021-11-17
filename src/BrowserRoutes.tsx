@@ -47,7 +47,7 @@ import FlashcardsListPage from './pages/Flashcards/FlashcardsListPage';
 import FlashcardsShowPage from './pages/Flashcards/FlashcardsShowPage';
 import FlashcardsEditPage from './pages/Flashcards/FlashcardsEditPage';
 import FlashcardsPage from './pages/View/FlashcardsPage';
-import HomePage from './pages/Home/Home';
+import HomePage from './pages/Home/HomePage';
 import Gondor from './containers/Auth/Gondor';
 import JoinCommunity from './pages/JoinCommunity/JoinCommunity';
 
@@ -57,30 +57,34 @@ const BrowserRoutes = () => (
       <div>
         <FloatingChatContainer />
         <Switch>
+          {/* Redirect to a default route based on context */}
           <Route exact path="/" component={withTracker(Home)} />
+
+          {/* Signed in routes: Community routes */}
           <Route exact path="/create_post" component={withTracker(CreatePostPage)} />
-          <Route exact path="/notes" component={withTracker(UserNotes)} />
           <Route exact path="/classes" component={withTracker(ClassesPage)} />
           <Route exact path="/feed" component={withTracker(FeedPage)} />
-          <Route exact path="/workflow" component={withTracker(WorkflowPage)} />
-          <Route exact path="/chat/:hashId" component={withTracker(ChatChannelPage)} />
-          <Route exact path="/chat" component={withTracker(ChatPage)} />
-          <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
           <Route exact path="/bookmarks" component={withTracker(FeedPage)} />
           <Route exact path="/my_posts" component={withTracker(FeedPage)} />
-          <Route exact path="/study" component={withTracker(StudyPage)} />
-          <Route exact path="/store" component={withTracker(StorePage)} />
-          <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
-          <Route exact path="/notifications" component={withTracker(NotificationsPage)} />
-          <Route exact path="/share/:code" component={withTracker(SharePage)} />
-          <Route exact path="/home" component={withTracker(HomePage)} />
+
+          {/* Signed in routes: Study Tools routes */}
+          <Route exact path="/notes" component={withTracker(UserNotes)} />
+          <Route exact path="/workflow" component={withTracker(WorkflowPage)} />
           <Route exact path="/flashcards" component={withTracker(FlashcardsListPage)} />
-          <Route exact path="/flashcards/old/:flashcardId" component={withTracker(FlashcardsPage)} />
           <Route
             exact
             path="/flashcards/:flashcardId"
             component={withTracker(FlashcardsShowPage)}
           />
+          <Route exact path="/create/flashcards" component={withTracker(CreateFlashcards)} />
+          <Route
+            exact
+            path="/edit/flashcards/:flashcardId"
+            component={withTracker(FlashcardsEditPage)}
+          />
+          <Route exact path="/create/notes" component={withTracker(CreateNotes)} />
+          <Route exact path="/edit/notes/:noteId" component={withTracker(CreateNotes)} />
+
           <Route exact path="/post/:postId" component={withTracker(Post)} />
           <Route exact path="/edit/post/:postId" component={withTracker(CreatePostPage)} />
           <Route exact path="/notes/:noteId" component={withTracker(PostPage)} />
@@ -91,25 +95,43 @@ const BrowserRoutes = () => (
             component={withTracker(CreateShareLink)}
           />
           <Route exact path="/question/:questionId" component={withTracker(Question)} />
-          <Route exact path="/create/flashcards" component={withTracker(CreateFlashcards)} />
-          <Route
-            exact
-            path="/edit/flashcards/:flashcardId"
-            component={withTracker(FlashcardsEditPage)}
-          />
           <Route exact path="/create/question" component={withTracker(CreateQuestion)} />
           <Route exact path="/edit/question/:questionId" component={withTracker(CreateQuestion)} />
-          <Route exact path="/create/notes" component={withTracker(CreateNotes)} />
-          <Route exact path="/edit/notes/:noteId" component={withTracker(CreateNotes)} />
           <Route exact path="/create/sharelink" component={withTracker(CreateShareLink)} />
           <Route
             exact
             path="/edit/sharelink/:sharelinkId"
             component={withTracker(CreateShareLink)}
           />
+
+          {/* WHAT ARE THESE? */}
+          <Route
+            exact
+            path="/flashcards/old/:flashcardId"
+            component={withTracker(FlashcardsPage)}
+          />
+          <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
+          <Route exact path="/study" component={withTracker(StudyPage)} />
+          <Route exact path="/notifications" component={withTracker(NotificationsPage)} />
+          <Route exact path="/share/:code" component={withTracker(SharePage)} />
+
+          {/* Signed in routes: Home routes */}
+          <Route exact path="/home" component={withTracker(HomePage)} />
+
+          {/* Signed in routes: Achievements routes */}
+          <Route exact path="/leaderboard" component={withTracker(LeaderBoard)} />
+
+          {/* Signed in routes: Profile routes */}
           <Route exact path="/profile/:userId/:tab?" component={withTracker(ProfilePage)} />
+          <Route exact path="/store" component={withTracker(StorePage)} />
+
+          {/* Signed in routes: Chat routes */}
+          <Route exact path="/chat/:hashId" component={withTracker(ChatChannelPage)} />
+          <Route exact path="/chat" component={withTracker(ChatPage)} />
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
           <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
+
+          {/* Non-signed in routes */}
           <Route exact path="/new" component={withTracker(AuthRedirectPage)} />
           <Route exact path="/oauth" component={withTracker(OAuthPage)} />
           <Route exact path="/auth" component={withTracker(AuthRedirectPage)} />
@@ -126,7 +148,11 @@ const BrowserRoutes = () => (
           <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
           <Route exact path="/redirect" component={RedirectPage} />
           <Route exact path="/sandbox" component={Sandbox} />
+
+          {/* TODO REMOVE */}
           <Route exact path="/hud" component={withTracker(HudFrame)} />
+
+          {/* Show a message and then in 1 sec redirect to "/" */}
           <Route component={Miss} />
         </Switch>
       </div>

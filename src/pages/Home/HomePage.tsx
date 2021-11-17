@@ -8,7 +8,7 @@ import ClassmateQuestions from '../../containers/ClassmateQuestions/ClassmateQue
 import useStyles from './styles';
 import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 
-const Home = () => {
+const HomePage = () => {
   const classes: any = useStyles();
   return (
     <main>
@@ -40,4 +40,4 @@ const Home = () => {
   );
 };
 
-export default withRoot(Home);
+export default withRoot(HomePage);
