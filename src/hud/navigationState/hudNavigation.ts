@@ -10,6 +10,8 @@ export const REWARDS_STORE_AREA = 'REWARDS_STORE_AREA';
 
 export const COMMUNITIES_MAIN_AREA = 'COMMUNITIES_MAIN_AREA';
 export const CLASSES_AREA = 'CLASSES_AREA';
+export const BOOKMARKED_POSTS_AREA = 'BOOKMARKED_POSTS_AREA';
+export const CLASSMATES_AREA = 'CLASSMATES_AREA';
 export const FEEDS_AREA = 'FEEDS_AREA';
 
 export const STUDY_TOOLS_MAIN_AREA = 'STUDY_TOOLS_MAIN_AREA';
@@ -43,37 +45,4 @@ export const mainSubAreasInOrder: Record<string, string[]> = {
   [STUDY_TOOLS_MAIN_AREA]: [NOTES_AREA, FLASHCARDS_AREA, CALENDAR_AREA, STUDY_TIPS_AREA],
   [ACHIEVEMENTS_MAIN_AREA]: [GOALS_AREA, BADGES_AREA, LEADERBOARD_AREA, SCHOLARSHIPS_AREA],
   [MORE_MAIN_AREA]: [SUPPORT_AREA, GIVE_FEEDBACK_AREA, GET_THE_MOBILE_APP_AREA]
-};
-
-export const areaToDisplayName: Record<string, string> = {
-  [BOTTOM_LEFT_SIDE_AREA]: 'Chat Channels',
-  [TOP_LEFT_SIDE_AREA]: 'Chat Messages',
-  [BOTTOM_RIGHT_SIDE_AREA]: 'Next Missions',
-  [TOP_RIGHT_SIDE_AREA]: 'Current Missions',
-
-  [PROFILE_MAIN_AREA]: 'Profile',
-  [ABOUT_ME_AREA]: 'About Me',
-  [POINTS_HISTORY_AREA]: 'Points History',
-  [REWARDS_STORE_AREA]: 'Rewards Store',
-
-  [COMMUNITIES_MAIN_AREA]: 'Communities',
-  [CLASSES_AREA]: 'Classes',
-  [FEEDS_AREA]: 'Class Feeds',
-
-  [STUDY_TOOLS_MAIN_AREA]: 'Study Tools',
-  [NOTES_AREA]: 'Notes',
-  [FLASHCARDS_AREA]: 'Flashcards',
-  [CALENDAR_AREA]: 'Calendar',
-  [STUDY_TIPS_AREA]: 'Study Tips',
-
-  [ACHIEVEMENTS_MAIN_AREA]: 'Achievements',
-  [GOALS_AREA]: 'Goals',
-  [BADGES_AREA]: 'Badges',
-  [LEADERBOARD_AREA]: 'Leaderboard',
-  [SCHOLARSHIPS_AREA]: 'Scholarships',
-
-  [MORE_MAIN_AREA]: 'More...',
-  [SUPPORT_AREA]: 'Support',
-  [GIVE_FEEDBACK_AREA]: 'Give Feedback',
-  [GET_THE_MOBILE_APP_AREA]: 'Get the Mobile App'
 };
