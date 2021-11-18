@@ -4,12 +4,21 @@ import Profile, { PROFILE_PAGES } from '../../containers/Profile/Profile';
 import withRoot from '../../withRoot';
 import { useStyles } from './ProfileAreaStyles';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
-import { ABOUT_ME_AREA, POINTS_HISTORY_AREA } from '../../hud/navigationState/hudNavigation';
+import {
+  ABOUT_ME_AREA,
+  POINTS_HISTORY_AREA,
+  REWARDS_STORE_AREA
+} from '../../hud/navigationState/hudNavigation';
+import Store from '../../containers/Store/Store';
 import TransparentButton from '../../components/Basic/Buttons/TransparentButton';
 import { signOut } from '../../actions/sign-in';
+import { UserState } from '../../reducers/user';
 
-const ProfileArea = (s) => {
+const profilePathFormat = /^[/]profile[/]([^/]*)/;
+
+const ProfileArea = () => {
   const dispatch = useDispatch();
+
   const classes: any = useStyles();
 
   const selectedMainArea: string = useSelector(
@@ -21,14 +30,25 @@ const ProfileArea = (s) => {
       state.hudNavigation.selectedMainSubAreas[selectedMainArea]
   );
 
+  const currentUserId: string = useSelector((state: { user: UserState }) => state.user.data.userId);
+
+  const pathname: string = useSelector((state: any) => state.router.location.pathname);
+
+  // TODO fixup source
+  const source = '';
+  let userId: string = currentUserId;
+  let edit = true;
+
+  const matchResult = pathname.match(profilePathFormat);
+  const userIdFromPath = matchResult && matchResult[1];
+  if (userIdFromPath) {
+    userId = userIdFromPath;
+    edit = false;
+  }
+
   const handleSignOut = () => {
     dispatch(signOut());
   };
-
-  // TODO unhardcode
-  const userId = '1041028';
-  const source = '';
-  const edit = true;
 
   return (
     <div className={classes.container}>
@@ -54,6 +74,8 @@ const ProfileArea = (s) => {
           defaultPage={PROFILE_PAGES.points_history}
         />
       )}
+
+      {selectedMainSubArea === REWARDS_STORE_AREA && <Store />}
     </div>
   );
 };

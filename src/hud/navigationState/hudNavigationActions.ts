@@ -13,13 +13,13 @@ export const toggleSideAreaVisibility = (sideArea: string): Action => ({
   }
 });
 
-export const setSelectedMainArea = (mainArea: string): Action => ({
-  type: hudNavigationActions.SET_SELECTED_MAIN_AREA,
-  payload: {
-    mainArea
-  }
-});
-
+/**
+ * This should only be called by useHudRoutes hook.
+ * If you are looking to change the main navigation of the hud,
+ * use
+ * `const setHudAreas = useHudRoutes(); setHudAreas(mainArea, mainSubArea);`
+ * instead to ensure that the navigation and the routing stays in sync.
+ */
 export const setSelectedMainSubArea = (mainArea: string, mainSubArea: string): Action => ({
   type: hudNavigationActions.SET_SELECTED_MAIN_SUBAREA,
   payload: {

@@ -2,7 +2,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import parse from 'html-react-parser';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
@@ -28,6 +28,7 @@ import { truncate } from '../../utils/helpers';
 import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { CampaignState } from '../../reducers/campaign';
 
 const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
 
@@ -211,6 +212,10 @@ const FloatingChat = ({
     return content;
   };
 
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   useEffect(() => {
     if (local) {
       let unread = 0;
@@ -382,7 +387,7 @@ const FloatingChat = ({
     setCreateChat(null);
   };
 
-  if (pathname === '/chat' || pathname === '/hud' || userId === '' || !client) {
+  if (pathname === '/chat' || isHud === null || isHud === true || userId === '' || !client) {
     return null;
   }
 

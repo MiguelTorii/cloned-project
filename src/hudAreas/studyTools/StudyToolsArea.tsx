@@ -8,9 +8,11 @@ import { HudNavigationState } from '../../hud/navigationState/hudNavigationState
 import {
   CALENDAR_AREA,
   FLASHCARDS_AREA,
-  NOTES_AREA
+  NOTES_AREA,
+  STUDY_TIPS_AREA
 } from '../../hud/navigationState/hudNavigation';
 import CalendarSubArea from '../calendar/CalendarSubArea';
+import StudyCircle from '../../containers/StudyCircle/StudyCircle';
 
 const StudyToolsArea = () => {
   const classes: any = useStyles();
@@ -35,6 +37,8 @@ const StudyToolsArea = () => {
       {selectedMainSubArea === FLASHCARDS_AREA && <FlashcardsList />}
 
       {selectedMainSubArea === CALENDAR_AREA && <CalendarSubArea />}
+
+      {selectedMainSubArea === STUDY_TIPS_AREA && <StudyCircle />}
     </div>
   );
 };

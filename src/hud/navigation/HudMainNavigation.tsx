@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Action, Dispatch } from 'redux';
+import { useSelector } from 'react-redux';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-off.svg';
 import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-off.svg';
@@ -18,11 +17,8 @@ import {
   PROFILE_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA
 } from '../navigationState/hudNavigation';
-import {
-  setSelectedMainArea,
-  setSelectedMainSubArea
-} from '../navigationState/hudNavigationActions';
 import { UserState } from '../../reducers/user';
+import useHudRoutes from '../frame/useHudRoutes';
 
 const ICON_SIZE = 30;
 
@@ -30,21 +26,21 @@ const HudMainNavigation = () => {
   // TODO add this to make the icons all the same size.
   const classes: any = useStyles();
 
-  const dispatch: Dispatch<Action> = useDispatch();
-
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
+
+  const setHudAreas = useHudRoutes();
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
   );
   const selectRoot = (mainArea: string) => {
-    dispatch(setSelectedMainArea(mainArea));
+    setHudAreas(mainArea);
   };
 
   const selectLeaf = (mainSubArea: string) => {
     const validSubAreas = mainSubAreasInOrder[selectedMainArea];
     if (validSubAreas.includes(mainSubArea)) {
-      dispatch(setSelectedMainSubArea(selectedMainArea, mainSubArea));
+      setHudAreas(selectedMainArea, mainSubArea);
     }
   };
 
