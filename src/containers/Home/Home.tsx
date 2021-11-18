@@ -19,6 +19,8 @@ import AuthRedirect from '../../pages/AuthRedirect/AuthRedirectPage';
 import type { State as StoreState } from '../../types/state';
 import { isApiCalling } from '../../utils/helpers';
 import { campaignActions } from '../../constants/action-types';
+import { CampaignState } from '../../reducers/campaign';
+import HudFrame from '../../hud/frame/HudFrame';
 
 const styles = () => ({
   loading: {
@@ -47,6 +49,10 @@ const Home = ({ campaign, classes, user }: Props) => {
     () => !userId && 'https://widget.freshworks.com/widgets/67000003041.js',
     [userId]
   );
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   const widgetId = useMemo(() => !userId && 67000003041, [userId]);
   const status = useScript(widgetUrl);
   useEffect(() => {
@@ -79,7 +85,10 @@ const Home = ({ campaign, classes, user }: Props) => {
     hideWidget();
   }, [widgetId, widgetUrl, status, userId]);
 
-  if (isLoadingCampaign || (isLoading && !userId)) {
+  if (isLoadingCampaign || (isLoading && !userId) || isHud === null) {
+    // The campaign is still loading, so wait until
+    // the campaign is fully loaded to avoid flashing
+    // the wrong UI.
     return (
       <div className={classes.loading}>
         <CircularProgress />
@@ -89,6 +98,10 @@ const Home = ({ campaign, classes, user }: Props) => {
 
   if (!userId) {
     return <AuthRedirect />;
+  }
+
+  if (isHud) {
+    return <HudFrame />;
   }
 
   if (expertMode) {
