@@ -10,15 +10,6 @@ export default makeStyles((theme: any) => ({
   feedback: {
     cursor: 'pointer'
   },
-  betaTag: {
-    position: 'absolute',
-    top: 145,
-    right: 40,
-    backgroundColor: theme.circleIn.palette.betaTag,
-    color: theme.circleIn.palette.primaryBackground,
-    borderRadius: theme.spacing(1 / 2),
-    fontWeight: 700
-  },
   emptyContent: {
     maxWidth: 570,
     textAlign: 'center'

@@ -21,16 +21,9 @@ const HudMissions = () => {
 
   return (
     <div className={classes.container}>
-      {isTopVisible && (
-        <>
-          <div className={classes.calendarContainer}>
-            <CalendarToday />
-          </div>
-          <MiniWorkflows />
-        </>
-      )}
+      {isTopVisible && <MiniWorkflows />}
 
-      {isBottomVisible && <div>Next missions and opportunities go here.</div>}
+      {isBottomVisible && <div />}
     </div>
   );
 };
