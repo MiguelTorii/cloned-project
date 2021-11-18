@@ -84,7 +84,7 @@ const MiniWorkflows = () => {
   return (
     <Paper className={classes.root} elevation={0} square={false}>
       <Typography className={classes.title} variant="h6" paragraph>
-        🗓 Your Upcoming Tasks
+        🗓 Current Missions
       </Typography>
       {renderBody()}
     </Paper>

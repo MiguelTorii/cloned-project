@@ -183,7 +183,6 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
           <GradientButton onClick={handleCreate}>Create</GradientButton>
         </Grid>
       </Grid>
-      <Chip className={classes.betaTag} label="BETA" />
 
       {/* Deck Filter */}
       <Box mt={4}>
