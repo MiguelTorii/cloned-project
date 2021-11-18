@@ -34,7 +34,7 @@ import {
   ACHIEVEMENTS_MAIN_AREA,
   BADGES_AREA,
   BOOKMARKED_POSTS_AREA,
-  WORKFLOW_AREA,
+  CALENDAR_AREA,
   CLASSES_AREA,
   CLASSMATES_AREA,
   COMMUNITIES_MAIN_AREA,
@@ -86,7 +86,7 @@ const HudMainNavigation = () => {
     [STUDY_TOOLS_MAIN_AREA]: { name: 'Study Tools', icon: <IconStudyTools /> },
     [FLASHCARDS_AREA]: { name: 'Flashcards', icon: <IconFlashcards /> },
     [NOTES_AREA]: { name: 'Notes', icon: <IconNotes /> },
-    [WORKFLOW_AREA]: { name: 'Workflow', icon: <IconWorkflow /> },
+    [CALENDAR_AREA]: { name: 'Workflow', icon: <IconWorkflow /> },
     [STUDY_TIPS_AREA]: { name: 'Studying on CircleIn', icon: <IconStudyingOnCircleIn /> },
 
     [ACHIEVEMENTS_MAIN_AREA]: { name: 'Achievements', icon: <IconAchievements /> },
