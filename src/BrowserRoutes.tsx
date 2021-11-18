@@ -106,11 +106,6 @@ const BrowserRoutes = () => (
           <Route exact path="/study" component={withTracker(StudyPage)} />
 
           {/* WHAT ARE THESE? */}
-          <Route
-            exact
-            path="/flashcards/old/:flashcardId"
-            component={withTracker(FlashcardsPage)}
-          />
           <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
           <Route exact path="/notifications" component={withTracker(NotificationsPage)} />
           <Route exact path="/share/:code" component={withTracker(SharePage)} />
@@ -148,9 +143,6 @@ const BrowserRoutes = () => (
           <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
           <Route exact path="/redirect" component={RedirectPage} />
           <Route exact path="/sandbox" component={Sandbox} />
-
-          {/* TODO REMOVE */}
-          <Route exact path="/hud" component={withTracker(HudFrame)} />
 
           {/* Show a message and then in 1 sec redirect to "/" */}
           <Route component={Miss} />
