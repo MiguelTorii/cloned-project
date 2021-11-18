@@ -1,7 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
+import moment from 'moment';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
@@ -25,8 +26,12 @@ import {
 } from '../navigationState/hudNavigation';
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
+import { fetchGreetings } from '../../api/home';
+import { setConversation } from '../storyState/hudStoryActions';
 
 const HudFrame = () => {
+  const dispatch = useDispatch();
+
   const classes: any = useStyles();
 
   const selectedMainArea: string = useSelector(
@@ -53,7 +58,8 @@ const HudFrame = () => {
       state.hudNavigation.sideAreaToIsVisible[BOTTOM_RIGHT_SIDE_AREA]
   );
 
-  useStorySequence(conversations.crushed);
+  const loadStory = useStorySequence();
+  loadStory();
 
   return (
     <main>

@@ -9,6 +9,11 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
         ...state,
         conversation: action.payload.conversation
       };
+    case hudStoryActions.INITIAL_STORY_LOAD:
+      return {
+        ...state,
+        initialLoadTriggered: true
+      };
     default:
       return state;
   }
