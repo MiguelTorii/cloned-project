@@ -10,9 +10,11 @@ import { PERMISSIONS } from '../constants/common';
 import { signInActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import type { User } from '../types/models';
+import type { TLoginError, User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
 import { apiSetExpertMode, apiGetExpertMode } from '../api/user';
+import { showErrorModal } from './dialog';
+import { INSIGHTS_DASHBOARD_URI } from '../constants/app';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -162,24 +164,20 @@ export const samlLogin =
       );
     } catch (err: any) {
       const { response = {} } = err;
-      const { data = {} } = response;
+      const errorData: TLoginError = response.data;
 
-      if (data.code === 401) {
-        return dispatch(
-          setError({
-            title: "Something doesn't look right",
-            body: data.message,
-            showSignup: true
+      if (errorData.should_redirect) {
+        window.location.href = `${INSIGHTS_DASHBOARD_URI}/gondor?jwt=${token}`;
+      } else {
+        dispatch(
+          showErrorModal({
+            code: response.status,
+            text: errorData.result
           })
         );
-      }
 
-      return dispatch(
-        setError({
-          title: 'Unknown error',
-          body: 'Please contact us'
-        })
-      );
+        dispatch(push('/'));
+      }
     }
   };
 export const clearSignInError = () => async (dispatch: Dispatch) => dispatch(clearError());

@@ -41,6 +41,10 @@ export const ANDROID_REDIRECT_URI =
   process.env.REACT_APP_STAGE === 'production'
     ? 'circleinapp://app.circleinapp.com/oauth'
     : 'circleinapp://dev-app2.circleinapp.com/oauth';
+export const INSIGHTS_DASHBOARD_URI =
+  process.env.REACT_APP_STAGE === 'production'
+    ? 'https://insights.circleinapp.com'
+    : 'https://insights-dev.circleinapp.com';
 export const RELEASE = 'V2.0.30';
 export const TIME_ZONE = 'America/New_York';
 export const INTERVAL = {

@@ -624,3 +624,12 @@ export type ChatMessageItem = {
   firstName: string;
   lastName: string;
 };
+export type TErrorModalData = {
+  code: number;
+  text: string;
+};
+export type TLoginError = {
+  result: string;
+  session_id: string;
+  should_redirect: boolean;
+};

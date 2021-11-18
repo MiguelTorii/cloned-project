@@ -197,3 +197,8 @@ export const MessageItemType = {
   MESSAGE: 'message',
   END: 'end'
 };
+export const ERROR_MODAL_TITLE = {
+  404: 'Not Found',
+  401: 'Not Authorized',
+  500: 'Something went wrong!'
+};
