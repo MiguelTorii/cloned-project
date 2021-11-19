@@ -1,17 +1,15 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { useStyles } from './HudNavigationStyles';
 import HudToolbar from './HudToolbar';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
-import { BOTTOM_RIGHT_SIDE_AREA, TOP_RIGHT_SIDE_AREA } from '../navigationState/hudNavigation';
+import {
+  areaToDisplayName,
+  BOTTOM_RIGHT_SIDE_AREA,
+  TOP_RIGHT_SIDE_AREA
+} from '../navigationState/hudNavigation';
 import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
-import { ReactComponent as IconPosts } from '../../assets/svg/posts.svg';
-
-const areaToDisplayName: Record<string, { name: string; icon: ReactElement }> = {
-  [BOTTOM_RIGHT_SIDE_AREA]: { name: 'Next Missions', icon: <IconPosts /> },
-  [TOP_RIGHT_SIDE_AREA]: { name: 'Current Missions', icon: <IconPosts /> }
-};
 
 const HudRightNavigation = () => {
   const classes: any = useStyles();
@@ -36,12 +34,12 @@ const HudRightNavigation = () => {
   const chatNavigationItems = [
     {
       id: TOP_RIGHT_SIDE_AREA,
-      displayName: areaToDisplayName[TOP_RIGHT_SIDE_AREA].name,
+      displayName: areaToDisplayName[TOP_RIGHT_SIDE_AREA],
       iconText: 'C'
     },
     {
       id: BOTTOM_RIGHT_SIDE_AREA,
-      displayName: areaToDisplayName[BOTTOM_RIGHT_SIDE_AREA].name,
+      displayName: areaToDisplayName[BOTTOM_RIGHT_SIDE_AREA],
       iconText: 'N'
     }
   ];

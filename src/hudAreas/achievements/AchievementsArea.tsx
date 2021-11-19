@@ -4,13 +4,12 @@ import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
 import WeeklyGoals from '../../containers/WeeklyGoals/WeeklyGoals';
 import { useStyles } from './AchievementsAreaStyles';
 import {
-  REWARDS_STORE_AREA,
+  BADGES_AREA,
   GOALS_AREA,
   LEADERBOARD_AREA,
   SCHOLARSHIPS_AREA
 } from '../../hud/navigationState/hudNavigation';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
-import Store from '../../containers/Store/Store';
 
 const AchievementsArea = () => {
   const classes: any = useStyles();
@@ -28,7 +27,7 @@ const AchievementsArea = () => {
     <div className={classes.container}>
       {selectedMainSubArea === GOALS_AREA && <WeeklyGoals />}
 
-      {selectedMainSubArea === REWARDS_STORE_AREA && <Store />}
+      {selectedMainSubArea === BADGES_AREA && <div>BADGES COMING SOON</div>}
 
       {selectedMainSubArea === LEADERBOARD_AREA && <LeaderBoards />}
 

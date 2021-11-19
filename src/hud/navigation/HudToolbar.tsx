@@ -22,26 +22,26 @@ const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
   const renderIconButton = (navbarItem: HudTool) => {
     if (navbarItem.icon) {
       return (
-        <Button
+        <IconButton
           color={navbarItem === selectedTool ? 'primary' : 'default'}
           className={classes.toolButton}
           size="medium"
           onClick={() => selectTool(navbarItem)}
         >
           {navbarItem.icon}
-        </Button>
+        </IconButton>
       );
     }
     if (navbarItem.iconText) {
       return (
-        <Button
+        <IconButton
           color={'secondary'}
           className={classes.toolButton}
           size="medium"
           onClick={() => selectTool(navbarItem)}
         >
           {navbarItem.iconText}
-        </Button>
+        </IconButton>
       );
     }
     return (

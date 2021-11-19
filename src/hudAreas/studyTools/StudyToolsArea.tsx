@@ -35,8 +35,10 @@ const StudyToolsArea = () => {
       )}
 
       {selectedMainSubArea === FLASHCARDS_AREA && <FlashcardsList />}
-      {selectedMainSubArea === STUDY_TIPS_AREA && <StudyCircle />}
+
       {selectedMainSubArea === CALENDAR_AREA && <CalendarSubArea />}
+
+      {selectedMainSubArea === STUDY_TIPS_AREA && <StudyCircle />}
     </div>
   );
 };
