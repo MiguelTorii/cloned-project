@@ -5,7 +5,6 @@ export const useStyles = makeStyles((theme: any) => ({
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
     }
-    // padding: '3px'
   },
   textIconButton: {
     width: '30px',
