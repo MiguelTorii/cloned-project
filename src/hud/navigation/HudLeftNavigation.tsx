@@ -32,15 +32,17 @@ const HudLeftNavigation = () => {
   );
 
   const selectSideItem = (sideArea: string) => {
-    dispatch(toggleSideAreaVisibility(sideArea));
+    // TODO combine these
+    dispatch(toggleSideAreaVisibility(TOP_LEFT_SIDE_AREA));
+    dispatch(toggleSideAreaVisibility(BOTTOM_LEFT_SIDE_AREA));
   };
 
   const chatNavigationItems = [
-    {
-      id: TOP_LEFT_SIDE_AREA,
-      displayName: areaToDisplayName[TOP_LEFT_SIDE_AREA].name,
-      icon: <IconChat />
-    },
+    // {
+    //   id: TOP_LEFT_SIDE_AREA,
+    //   displayName: areaToDisplayName[TOP_LEFT_SIDE_AREA].name,
+    //   icon: <IconChat />
+    // },
     {
       id: BOTTOM_LEFT_SIDE_AREA,
       displayName: areaToDisplayName[BOTTOM_LEFT_SIDE_AREA].name,

@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
+import { CalendarToday } from '@material-ui/icons';
 import { useStyles } from './HudNavigationStyles';
 import HudToolbar from './HudToolbar';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
@@ -30,23 +31,27 @@ const HudRightNavigation = () => {
   );
 
   const selectSideItem = (sideArea: string) => {
-    dispatch(toggleSideAreaVisibility(sideArea));
+    // TODO combine these
+    dispatch(toggleSideAreaVisibility(TOP_RIGHT_SIDE_AREA));
+    dispatch(toggleSideAreaVisibility(BOTTOM_RIGHT_SIDE_AREA));
   };
 
-  const chatNavigationItems = [
-    {
-      id: TOP_RIGHT_SIDE_AREA,
-      displayName: areaToDisplayName[TOP_RIGHT_SIDE_AREA].name,
-      iconText: 'C'
-    },
+  const missionNavigationItems = [
+    // {
+    //   id: TOP_RIGHT_SIDE_AREA,
+    //   displayName: areaToDisplayName[TOP_RIGHT_SIDE_AREA].name,
+    //   iconText: 'C'
+    // },
     {
       id: BOTTOM_RIGHT_SIDE_AREA,
       displayName: areaToDisplayName[BOTTOM_RIGHT_SIDE_AREA].name,
-      iconText: 'N'
+      icon: <CalendarToday />
     }
   ];
 
-  return <HudToolbar onSelectItem={selectSideItem} navbarItems={chatNavigationItems} isVertical />;
+  return (
+    <HudToolbar onSelectItem={selectSideItem} navbarItems={missionNavigationItems} isVertical />
+  );
 };
 
 export default HudRightNavigation;
