@@ -103,10 +103,3 @@ export const getLeaderboardAndSupportCenterVisibilityCampaign = () => ({
       campaignId: CAMPAIGN_IDS.LEADERBOARD_AND_SUPPORTCENTER_VISIBILITY
     })
 });
-export const getHudCampaign = () => ({
-  type: campaignActions.GET_HUD_CAMPAIGN,
-  apiCall: () =>
-    getCampaign({
-      campaignId: CAMPAIGN_IDS.HUD
-    })
-});

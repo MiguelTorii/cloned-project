@@ -113,8 +113,7 @@ export const CIRCLEIN_EVENT_NAMES = [
 export const CAMPAIGN_IDS = {
   FLASHCARD_VERSION: 14,
   CHAT_LANDING: 16,
-  LEADERBOARD_AND_SUPPORTCENTER_VISIBILITY: 17, // Leaderboard and Support Center Visibility
-  HUD: 18
+  LEADERBOARD_AND_SUPPORTCENTER_VISIBILITY: 17 // Leaderboard and Support Center Visibility
 };
 export const MEMBER_ROLES = {
   STUDENT: 'Student',

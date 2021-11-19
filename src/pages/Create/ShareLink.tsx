@@ -27,6 +27,9 @@ const CreateShareLinkPage = (props: Props) => {
           <Grid item xs={12} sm={12} md={12}>
             <CreateShareLink sharelinkId={sharelinkId} />
           </Grid>
+          {/* <Grid item xs={12} sm={12} md={3}>
+           <PostTips type="shareLink" />
+          </Grid> */}
         </Grid>
       </Layout>
     </main>
