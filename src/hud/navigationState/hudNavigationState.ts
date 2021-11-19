@@ -23,10 +23,10 @@ export type HudNavigationState = {
 
 export const defaultState: HudNavigationState = {
   sideAreaToIsVisible: {
-    [BOTTOM_LEFT_SIDE_AREA]: true,
-    [BOTTOM_RIGHT_SIDE_AREA]: true,
-    [TOP_LEFT_SIDE_AREA]: true,
-    [TOP_RIGHT_SIDE_AREA]: true
+    [BOTTOM_LEFT_SIDE_AREA]: false,
+    [BOTTOM_RIGHT_SIDE_AREA]: false,
+    [TOP_LEFT_SIDE_AREA]: false,
+    [TOP_RIGHT_SIDE_AREA]: false
   },
   selectedMainArea: PROFILE_MAIN_AREA,
   selectedMainSubAreas: {
