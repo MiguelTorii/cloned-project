@@ -22,7 +22,6 @@ export default (state: HudNavigationState = defaultState, action: Action): HudNa
     case hudNavigationActions.SET_SELECTED_MAIN_SUBAREA:
       return {
         ...state,
-        selectedMainArea: action.payload.mainArea,
         selectedMainSubAreas: {
           ...state.selectedMainSubAreas,
           [action.payload.mainArea]: action.payload.mainSubArea
