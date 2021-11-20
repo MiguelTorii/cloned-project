@@ -28,6 +28,7 @@ import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import { fetchGreetings } from '../../api/home';
 import { setConversation } from '../storyState/hudStoryActions';
+import HudDisplay from '../display/HudDisplay';
 
 const HudFrame = () => {
   const dispatch = useDispatch();
@@ -72,6 +73,9 @@ const HudFrame = () => {
         )}
 
         <div className={classes.mainContainer}>
+          <div className={classes.mainControlPanel}>
+            <HudControlPanel />
+          </div>
           <div className={classes.mainAction}>
             {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
@@ -83,9 +87,8 @@ const HudFrame = () => {
 
             {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
           </div>
-
-          <div className={classes.mainControlPanel}>
-            <HudControlPanel />
+          <div className={classes.mainHudDisplay}>
+            <HudDisplay />
           </div>
         </div>
 

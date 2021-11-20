@@ -50,7 +50,7 @@ const HudLeftNavigation = () => {
     }
   ];
 
-  return <HudToolbar onSelectItem={selectSideItem} navbarItems={chatNavigationItems} isVertical />;
+  return <HudToolbar onSelectItem={selectSideItem} navbarItems={chatNavigationItems} />;
 };
 
 export default HudLeftNavigation;

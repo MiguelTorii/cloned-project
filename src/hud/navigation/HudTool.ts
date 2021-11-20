@@ -5,4 +5,5 @@ export interface HudTool {
   displayName: string;
   icon?: ReactElement;
   iconText?: string;
+  childTools?: HudTool[];
 }

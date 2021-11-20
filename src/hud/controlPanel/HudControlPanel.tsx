@@ -11,21 +11,9 @@ const HudControlPanel = () => {
   const classes: any = useStyles();
 
   return (
-    <div className={classes.controlPanelGrid}>
+    <div className={classes.controlPanel}>
       <div className={classes.chatNavigation}>
         <HudLeftNavigation />
-      </div>
-
-      <div className={classes.storyAvatar}>
-        <HudStoryAvatar />
-      </div>
-
-      <div className={classes.storyMessage}>
-        <HudStoryMessage />
-      </div>
-
-      <div className={classes.experienceBar}>
-        <HudExperienceBar />
       </div>
 
       <div className={classes.mainNavigation}>

@@ -1,42 +1,22 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  controlPanelGrid: {
-    display: 'grid',
-    gridTemplateColumns: '60px 60px 60px 1fr 320px 60px',
-    gridTemplateRows: '60px 60px',
+  controlPanel: {
+    backgroundColor: theme.circleIn.palette.appBar,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     overflow: 'hidden'
   },
   chatNavigation: {
-    gridColumn: 1,
-    gridRow: '1 / -1',
+    flexShrink: 0,
     overflow: 'hidden'
-  },
-  storyAvatar: {
-    gridColumn: '2 / 4',
-    gridRow: '1 / -1',
-    overflow: 'hidden',
-    zIndex: 2
-  },
-  storyMessage: {
-    gridColumn: '3 / 5',
-    gridRow: '1 / -1',
-    overflow: 'hidden'
-  },
-  experienceBar: {
-    gridColumn: 4,
-    gridRow: 2,
-    overflow: 'hidden',
-    marginTop: theme.spacing(2)
   },
   mainNavigation: {
-    gridColumn: 5,
-    gridRow: '1 / -1',
     overflow: 'hidden'
   },
   missionNavigation: {
-    gridColumn: 6,
-    gridRow: '1 / -1',
+    flexShrink: 0,
     overflow: 'hidden'
   }
 }));

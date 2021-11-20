@@ -49,9 +49,7 @@ const HudRightNavigation = () => {
     }
   ];
 
-  return (
-    <HudToolbar onSelectItem={selectSideItem} navbarItems={missionNavigationItems} isVertical />
-  );
+  return <HudToolbar onSelectItem={selectSideItem} navbarItems={missionNavigationItems} />;
 };
 
 export default HudRightNavigation;
