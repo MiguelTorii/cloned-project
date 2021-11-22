@@ -6,7 +6,10 @@ export const useStyles = makeStyles((theme: any) => ({
     height: '100%',
     overflow: 'auto',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    backgroundColor: theme.circleIn.palette.formBackground,
+    borderRadius: 10,
+    padding: theme.spacing(1)
   },
   chatMessagesPane: {
     display: 'flex',
@@ -24,8 +27,7 @@ export const useStyles = makeStyles((theme: any) => ({
     flexShrink: 1,
     justifyContent: 'flex-end',
     overflowY: 'auto',
-    maxHeight: '100%',
-    borderTop: `1px solid ${theme.circleIn.palette.modalBackground}`
+    maxHeight: '100%'
   },
   channelAndMemberList: {
     overflowY: 'auto'
