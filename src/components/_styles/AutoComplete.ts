@@ -117,5 +117,27 @@ export default (theme: any): any => ({
     background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.25)',
     borderRadius: 20
+  },
+  schoolSearchPlaceholder: {
+    color: theme.circleIn.palette.primaryText2,
+    fontSize: 18
+  },
+  schoolSearchTextField: {
+    borderRadius: 10,
+    border: 'solid 1px rgba(0, 0, 0, 0.5)',
+    background: 'white',
+    '& > div:before, & > div:after': {
+      borderBottom: 'none !important'
+    }
+  },
+  schoolSearchInput: {
+    color: theme.circleIn.palette.primaryBackground,
+    fontSize: 20
+  },
+  schoolSearchValue: {
+    '& > p': {
+      fontSize: 20,
+      color: theme.circleIn.palette.primaryBackground
+    }
   }
 });

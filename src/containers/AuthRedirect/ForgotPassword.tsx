@@ -1,10 +1,12 @@
 import React, { memo, useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Box } from '@material-ui/core';
 import { recoverPassword } from '../../api/sign-in';
+import AuthTitle from './AuthTitle';
+import SemiBoldTypography from '../../components/SemiBoldTypography/SemiBoldTypography';
+import AuthTextInput from './AuthTextInput';
+import AuthButton from './AuthButton';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -12,8 +14,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
-    flexDirection: 'column',
-    marginTop: theme.spacing(2)
+    flexDirection: 'column'
   },
   textField: {
     margin: theme.spacing(2)
@@ -88,10 +89,11 @@ const ForgotPassword = ({ updateError, setScreen }) => {
     return (
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
-          <Typography component="h1" variant="h5" align="center">
-            Reset Password
-          </Typography>
-          <TextField
+          <AuthTitle paragraph>Reset your password</AuthTitle>
+          <SemiBoldTypography paragraph variant="h6" align="center">
+            Enter your school email below to reset your password
+          </SemiBoldTypography>
+          <AuthTextInput
             id="email-login"
             className={classes.textField}
             value={email}
@@ -100,7 +102,7 @@ const ForgotPassword = ({ updateError, setScreen }) => {
             fullWidth
             placeholder="Email"
           />
-          <Button
+          <AuthButton
             className={classes.loginButton}
             disabled={!validateEmail(email) || loading}
             variant="contained"
@@ -108,8 +110,13 @@ const ForgotPassword = ({ updateError, setScreen }) => {
             onClick={onSubmitEmail}
             color="primary"
           >
-            {loading ? <CircularProgress size={20} color="secondary" /> : 'Send Code'}
-          </Button>
+            {loading ? <CircularProgress size={20} color="secondary" /> : 'Submit'}
+          </AuthButton>
+          <Box mt={5}>
+            <SemiBoldTypography align="center">
+              Check your inbox for the password reset link
+            </SemiBoldTypography>
+          </Box>
         </form>
       </div>
     );
@@ -118,9 +125,9 @@ const ForgotPassword = ({ updateError, setScreen }) => {
   return (
     <div className={classes.container}>
       <form className={classes.form}>
-        <Typography align="center">
+        <SemiBoldTypography variant="h6">
           If your email is connected to a account, a reset link was sent to it.
-        </Typography>
+        </SemiBoldTypography>
       </form>
     </div>
   );

@@ -5,13 +5,17 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import auth0 from 'auth0-js';
 import Link from '@material-ui/core/Link';
+import { Box, Grid } from '@material-ui/core';
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, GONDOR_URL } from '../../constants/app';
 import { searchSchools } from '../../api/sign-in';
 import AutoComplete from '../../components/AutoComplete/AutoComplete';
+import SemiBoldTypography from '../../components/SemiBoldTypography/SemiBoldTypography';
+import AuthButton from './AuthButton';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
@@ -25,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     fontSize: 12,
-    marginTop: theme.spacing(3)
+    fontWeight: 600,
+    marginTop: theme.spacing(4)
   },
   externalUser: {
     marginTop: theme.spacing(2),
@@ -185,14 +190,19 @@ const SelectSchool = ({
   );
   return (
     <div className={classes.container}>
-      <Typography component="h1" variant="h5" align="center">
-        Find your school
-      </Typography>
+      <Box mb={4}>
+        <Typography component="h1" variant="h4" align="center">
+          <b>{"Glad you're here!"}</b>
+        </Typography>
+      </Box>
+      <SemiBoldTypography variant="h6" align="center">
+        Please enter your school name to login
+      </SemiBoldTypography>
       <form onSubmit={onSubmit} className={classes.schools}>
         <AutoComplete
           inputValue=""
           label=""
-          placeholder="Search your school/college"
+          placeholder="School Name"
           error={error}
           values={school}
           errorText="You must select an option"
@@ -201,29 +211,36 @@ const SelectSchool = ({
           onLoadOptions={onLoad}
         />
       </form>
-      <Button
-        variant="contained"
-        onClick={onClick}
-        disabled={!school?.id || loading}
-        color="primary"
-      >
-        {loading ? <CircularProgress size={20} color="secondary" /> : 'Select School'}
-      </Button>
+      <Box mt={3}>
+        <AuthButton variant="contained" onClick={onClick} disabled={!school?.id || loading}>
+          {loading ? <CircularProgress size={20} color="secondary" /> : 'Select School'}
+        </AuthButton>
+      </Box>
 
-      <Button onClick={loginAsExternal} className={classes.externalUser} color="primary">
-        Login as an external user
-      </Button>
-
-      <Typography variant="subtitle1" className={classes.link} align="center">
-        {"By searching for and selecting your school, I agree to CircleIn's  "}
-        <Link href="https://s3.amazonaws.com/myqvo/terms_of_use.pdf" target="_blank">
-          Terms of Service
-        </Link>
-        {' and '}
-        <Link href="https://s3.amazonaws.com/myqvo/privacy_policy.pdf" target="_blank">
-          Privacy Policy
-        </Link>
-      </Typography>
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={6}>
+          <Typography variant="subtitle1" className={classes.link} align="center">
+            {"By searching for and selecting your school, I agree to CircleIn's  "}
+            <Link
+              href="https://s3.amazonaws.com/myqvo/terms_of_use.pdf"
+              target="_blank"
+              color="inherit"
+              underline="always"
+            >
+              Terms of Service
+            </Link>
+            {' and '}
+            <Link
+              href="https://s3.amazonaws.com/myqvo/privacy_policy.pdf"
+              target="_blank"
+              color="inherit"
+              underline="always"
+            >
+              Privacy Policy
+            </Link>
+          </Typography>
+        </Grid>
+      </Grid>
     </div>
   );
 };

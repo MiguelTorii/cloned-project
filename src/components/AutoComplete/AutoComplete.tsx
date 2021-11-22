@@ -16,6 +16,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import ClearIcon from '@material-ui/icons/Clear';
+import clsx from 'clsx';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
 import styles from '../_styles/AutoComplete';
@@ -60,13 +61,17 @@ function Control({ selectProps, innerProps, innerRef, children }) {
     autoFocus,
     textFieldProps: { relative, ...otherTextFieldProps },
     searchClassmate,
-    classes
+    classes,
+    isSchoolSearch
   } = selectProps;
   return (
     <TextField
       fullWidth
       classes={{
-        root: searchClassmate && classes.searchInput
+        root: clsx(
+          searchClassmate && classes.searchInput,
+          isSchoolSearch && classes.schoolSearchTextField
+        )
       }}
       variant="outlined"
       disabled={isDisabled}
@@ -85,7 +90,10 @@ function Control({ selectProps, innerProps, innerRef, children }) {
         ),
         inputProps: {
           autoFocus,
-          className: searchClassmate ? classes.addClassmateInput : classes.input,
+          className: clsx(
+            searchClassmate ? classes.addClassmateInput : classes.input,
+            isSchoolSearch && classes.schoolSearchInput
+          ),
           inputRef: innerRef,
           children: children[0],
           ...innerProps
@@ -152,11 +160,14 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data })
 }
 
 function Placeholder({ selectProps, innerProps, children }) {
-  const { isDisabled, classes, searchClassmate } = selectProps;
+  const { isDisabled, classes, searchClassmate, isSchoolSearch } = selectProps;
   return (
     <Typography
       color={isDisabled ? 'textSecondary' : 'textPrimary'}
-      className={searchClassmate ? classes.addClassmatePlaceholder : classes.placeholder}
+      className={clsx(
+        searchClassmate ? classes.addClassmatePlaceholder : classes.placeholder,
+        isSchoolSearch && classes.schoolSearchPlaceholder
+      )}
       {...innerProps}
     >
       {children}
@@ -165,7 +176,12 @@ function Placeholder({ selectProps, innerProps, children }) {
 }
 
 function ValueContainer({ selectProps, children }) {
-  return <div className={selectProps.classes.valueContainer}>{children}</div>;
+  const { isSchoolSearch, classes } = selectProps;
+  return (
+    <div className={clsx(classes.valueContainer, isSchoolSearch && classes.schoolSearchValue)}>
+      {children}
+    </div>
+  );
 }
 
 function SingleValue({ selectProps, innerProps, children }) {
@@ -319,7 +335,7 @@ const AutoComplete = ({
   const selectStyles = {
     input: (base) => ({
       ...base,
-      color: theme.palette.text.primary,
+      color: isSchoolSearch ? theme.circleIn.palette.backup : theme.palette.text.primary,
       '& input': {
         font: 'inherit'
       }

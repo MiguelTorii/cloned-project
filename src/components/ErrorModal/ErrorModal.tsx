@@ -5,21 +5,11 @@ import parse from 'html-react-parser';
 import { AppState } from '../../configureStore';
 import { TErrorModalData } from '../../types/models';
 import Dialog from '../Dialog/Dialog';
-import { ReactComponent as Image400 } from '../../assets/svg/error-modal-400.svg';
-import { ReactComponent as Image500 } from '../../assets/svg/error-modal-500.svg';
+import { ReactComponent as ImageError } from '../../assets/svg/error-modal.svg';
 import { closeErrorModal } from '../../actions/dialog';
 import { ERROR_MODAL_TITLE } from '../../constants/common';
 import useStyles from './styles';
-
-const getErrorImage = (errorCode: number) => {
-  if (errorCode >= 400 && errorCode < 500) {
-    return <Image400 />;
-  }
-  if (errorCode >= 500 && errorCode < 600) {
-    return <Image500 />;
-  }
-  return null;
-};
+import SemiBoldTypography from '../SemiBoldTypography/SemiBoldTypography';
 
 const ErrorModal: FC = ({ children }) => {
   const classes = useStyles();
@@ -35,6 +25,11 @@ const ErrorModal: FC = ({ children }) => {
       {children}
       <Dialog
         className={classes.modal}
+        classes={{
+          title: classes.title,
+          closeIcon: classes.closeIcon,
+          hr: classes.hr
+        }}
         open={!!errorData}
         title={errorData ? ERROR_MODAL_TITLE[errorData.code] : ''}
         onCancel={handleCloseModal}
@@ -49,13 +44,17 @@ const ErrorModal: FC = ({ children }) => {
               justifyContent="center"
               alignItems="center"
             >
-              <Typography className={classes.errorText}>
+              <Typography className={classes.errorTitle}>
                 {Math.floor(errorData.code / 100)}
               </Typography>
-              <Box className={classes.image}>{getErrorImage(errorData.code)}</Box>
-              <Typography className={classes.errorText}>{errorData.code % 10}</Typography>
+              <Box className={classes.image}>
+                <ImageError />
+              </Box>
+              <Typography className={classes.errorTitle}>{errorData.code % 10}</Typography>
             </Box>
-            <Typography>{parse(errorData.text)}</Typography>
+            <SemiBoldTypography className={classes.errorText} align="center">
+              {parse(errorData.text)}
+            </SemiBoldTypography>
           </Box>
         )}
       </Dialog>

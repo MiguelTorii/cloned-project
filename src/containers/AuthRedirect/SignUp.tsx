@@ -4,7 +4,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { FormControl, FormHelperText } from '@material-ui/core';
 import { sendCode, verifyCode } from '../../api/sign-up';
+import AuthTextInput from './AuthTextInput';
+import AuthButton from './AuthButton';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -12,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
-    flexDirection: 'column',
-    marginTop: theme.spacing(2)
+    flexDirection: 'column'
   },
   login: {
     marginTop: theme.spacing(2),
@@ -159,71 +161,73 @@ const SignUp = ({ school, updateError, setScreen, signUp }: Props) => {
     () => (
       <div className={classes.container}>
         <form className={classes.form} onSubmit={onSubmit}>
-          <TextField
+          <AuthTextInput
             className={classes.textField}
             onChange={updateSignup('firstName')}
             error={state.error && !state.firstName}
-            helperText={state.error && !state.firstName && 'Required'}
             value={state.firstName}
             fullWidth
             placeholder="First Name"
           />
-          <TextField
+          {state.error && !state.firstName && <FormHelperText>Required</FormHelperText>}
+          <AuthTextInput
             className={classes.textField}
             onChange={updateSignup('lastName')}
             value={state.lastName}
             error={state.error && !state.lastName}
-            helperText={state.error && !state.lastName && 'Required'}
             fullWidth
             placeholder="Last Name"
           />
-          <TextField
+          {state.error && !state.lastName && <FormHelperText>Required</FormHelperText>}
+          <AuthTextInput
             className={classes.textField}
             onChange={updateSignup('email')}
             error={state.error && !validateEmail(state.email)}
             value={state.email}
-            helperText={state.error && !validateEmail(state.email) && 'Invalid Email'}
             fullWidth
             autoComplete="new=email"
             placeholder="Email"
           />
-          <TextField
+          {state.error && !validateEmail(state.email) && (
+            <FormHelperText>Invalid Email</FormHelperText>
+          )}
+          <AuthTextInput
             className={classes.textField}
             onChange={updateSignup('confirmEmail')}
             error={state.error && state.email !== state.confirmEmail}
             value={state.confirmEmail}
-            helperText={
-              state.error && state.email !== state.confirmEmail && 'Must be equal to email'
-            }
             autoComplete="new-email"
             fullWidth
             placeholder="Confirm Email"
           />
-          <TextField
+          {state.error && state.email !== state.confirmEmail && (
+            <FormHelperText>Must be equal to email</FormHelperText>
+          )}
+          <AuthTextInput
             className={classes.textField}
             onChange={updateSignup('password')}
             error={state.error && !state.password}
-            helperText={state.error && !state.password && 'Required'}
             value={state.password}
             type="password"
             autoComplete="new-password"
             fullWidth
             placeholder="Password"
           />
-          <TextField
+          {state.error && !state.password && <FormHelperText>Required</FormHelperText>}
+          <AuthTextInput
             className={classes.textField}
             onChange={updateSignup('confirmPassword')}
             error={state.error && state.password !== state.confirmPassword}
-            helperText={
-              state.error && state.password !== state.confirmPassword && 'Must be equal to password'
-            }
             value={state.confirmPassword}
             type="password"
             autoComplete="new-password"
             placeholder="Confirm Password"
             fullWidth
           />
-          <Button
+          {state.error && state.password !== state.confirmPassword && (
+            <FormHelperText>Must be equal to password</FormHelperText>
+          )}
+          <AuthButton
             className={classes.createButton}
             variant="contained"
             type="submit"
@@ -232,7 +236,7 @@ const SignUp = ({ school, updateError, setScreen, signUp }: Props) => {
             color="primary"
           >
             {state.loading ? <CircularProgress size={30} /> : 'Create Account'}
-          </Button>
+          </AuthButton>
         </form>
         <div className={classes.login}>
           <Typography>Or ,</Typography>

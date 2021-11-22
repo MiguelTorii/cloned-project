@@ -5,6 +5,9 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { recoverPassword } from '../../api/sign-in';
+import AuthTitle from './AuthTitle';
+import AuthTextInput from './AuthTextInput';
+import AuthButton from './AuthButton';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -12,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
-    flexDirection: 'column',
-    marginTop: theme.spacing(2)
+    flexDirection: 'column'
   },
   textField: {
     margin: theme.spacing(2)
@@ -29,15 +31,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '100%'
   },
-  title: {
-    marginBottom: theme.spacing(2)
-  },
-  subtext: {
-    fontSize: 14,
-    fontWeight: 400
-  },
   endtext: {
-    paddingTop: theme.spacing(2)
+    marginTop: theme.spacing(4)
   }
 }));
 
@@ -98,20 +93,15 @@ const FirstTime = ({ updateError, setScreen }) => {
     return (
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
-          <Typography component="h1" variant="h5" align="center" className={classes.title}>
-            Activate your Account
-          </Typography>
-          <Typography align="center" className={classes.subtext}>
+          <AuthTitle paragraph>Activate your Account</AuthTitle>
+          <Typography variant="h6" align="center">
             Hi!{' '}
             <span role="img" aria-label="hi">
               👋
             </span>{' '}
-            Your school created an account for
+            Your school created an account for you, we just need to make sure it’s you!
           </Typography>
-          <Typography align="center" className={classes.subtext}>
-            you, we just need to make sure it’s you!
-          </Typography>
-          <TextField
+          <AuthTextInput
             id="email-login"
             className={classes.textField}
             value={email}
@@ -120,7 +110,7 @@ const FirstTime = ({ updateError, setScreen }) => {
             fullWidth
             placeholder="Enter your school email here"
           />
-          <Button
+          <AuthButton
             className={classes.loginButton}
             disabled={!validateEmail(email) || loading}
             variant="contained"
@@ -129,7 +119,7 @@ const FirstTime = ({ updateError, setScreen }) => {
             color="primary"
           >
             {loading ? <CircularProgress size={20} color="secondary" /> : 'Set password'}
-          </Button>
+          </AuthButton>
           <Typography align="center" className={classes.endtext}>
             We’ll send an email to set your password!
           </Typography>

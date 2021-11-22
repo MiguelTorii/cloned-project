@@ -10,10 +10,10 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import TextField from '@material-ui/core/TextField';
-import loginBackground from '../../assets/svg/new-auth-bg.svg';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
-import CircleInPhone from '../../assets/img/CircleInPhone.png';
-import authImage from '../../assets/img/new-auth.png';
+import loginBackgroundDesktop from '../../assets/svg/auth-ui-background-desktop.svg';
+import loginBackgroundMobile from '../../assets/svg/auth-ui-background-mobile.svg';
+import ImageContentDesktop from '../../assets/img/auth-ui-content-desktop.png';
+import ImageContentMobile from '../../assets/img/auth-ui-content-mobile.png';
 import SelectSchool from './SelectSchool';
 import Login from './Login';
 import SignUp from './SignUp';
@@ -35,14 +35,17 @@ const styles = (theme) => ({
     minHeight: '100vh',
     justifyContent: 'center',
     display: 'flex',
-    backgroundImage: `url(${loginBackground})`,
+    backgroundColor: 'white',
+    backgroundImage: `url(${loginBackgroundDesktop})`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: '50% 0',
-    '-ms-background-size': 'cover',
-    '-o-background-size': 'cover',
-    '-moz-background-size': 'cover',
-    '-webkit-background-size': 'cover',
-    backgroundSize: 'cover'
+    '-ms-background-size': '100% 100%',
+    '-o-background-size': '100% 100%',
+    '-moz-background-size': '100% 100%',
+    '-webkit-background-size': '100% 100%',
+    backgroundSize: '100% 100%',
+    [theme.breakpoints.down('sm')]: {
+      backgroundImage: `url(${loginBackgroundMobile})`
+    }
   },
   deeplinkBlankPage: {
     position: 'absolute',
@@ -65,10 +68,29 @@ const styles = (theme) => ({
     flexDirection: 'column'
   },
   paper: {
+    backgroundColor: '#03A9F4',
+    color: 'black',
+    backgroundImage: `url(${ImageContentDesktop})`,
+    backgroundRepeat: 'no-repeat',
+    '-ms-background-size': '100% 100%',
+    '-o-background-size': '100% 100%',
+    '-moz-background-size': '100% 100%',
+    '-webkit-background-size': '100% 100%',
+    position: 'absolute',
+    width: 740,
+    height: 511,
+    maxWidth: 'calc(100% - 40px)',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(2, 4, 4, 4)
+    borderRadius: 30,
+    padding: theme.spacing(7, 10),
+    [theme.breakpoints.down('xs')]: {
+      backgroundImage: `url(${ImageContentMobile})`
+    }
   },
   container: {
     height: '100vh'
@@ -90,8 +112,14 @@ const styles = (theme) => ({
   backButton: {
     position: 'absolute',
     minWidth: 0,
-    left: 0,
-    top: 0
+    left: 30,
+    top: 60,
+    '& svg': {
+      color: 'black'
+    },
+    [theme.breakpoints.down('sm')]: {
+      top: 55
+    }
   },
   imgContainer: {
     flexDirection: 'column',
@@ -318,40 +346,10 @@ const Auth = ({
           <Typography variant="body1">Taking you to login...</Typography>
         </div>
       )}
-      <Grid
-        container
-        item
-        xs={12}
-        md={10}
-        spacing={2}
-        alignItems="center"
-        className={classes.container}
-      >
-        <Grid item xs={12} md={6} className={classes.imgContainer}>
-          <LoadImg url={isPhone ? CircleInPhone : authImage} className={classes.img} />
-          <Typography
-            color="textPrimary"
-            className={cx(isPhone && classes.imgPhone, classes.imgText)}
-          >
-            CircleIn is an all-in-one studying app to connect with classmates instantly, take notes,
-            make flashcards and organize all your schoolwork and win gift cards for studying!
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper className={classes.paper}>
-            <div className={classes.grid}>
-              {renderBack}
-              <AppLogo
-                style={{
-                  maxHeight: 100,
-                  maxWidth: 200
-                }}
-              />
-              {renderScreen}
-            </div>
-          </Paper>
-        </Grid>
-      </Grid>
+      <Paper className={classes.paper}>
+        {renderBack}
+        {renderScreen}
+      </Paper>
       <Dialog
         open={screen === 'walk'}
         className={classes.walkthrough}
