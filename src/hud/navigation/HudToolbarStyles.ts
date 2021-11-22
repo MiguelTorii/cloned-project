@@ -7,8 +7,8 @@ export const useStyles = makeStyles((theme: any) => ({
     }
   },
   textIconButton: {
-    width: '30px',
-    height: '30px',
+    width: '60px',
+    height: '60px',
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
     }
@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   horizontalToolbar: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    height: '100%'
   }
 }));
