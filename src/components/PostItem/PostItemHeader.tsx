@@ -35,6 +35,7 @@ import { styles } from '../_styles/PostItem/PostItemHeader';
 import HoverPopup from '../HoverPopup/HoverPopup';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import type { State as StoreState } from '../../types/state';
+import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
 const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
@@ -198,7 +199,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
     const pastClassIds = getPastClassIds(classList);
     const date = moment(created);
     const fromNow = date ? date.fromNow() : '';
-    const from = new URLSearchParams(router.location.query).get('from'); // This indicates where the feed came from.
+    const from = new URLSearchParams(router.location.query).get(PROFILE_SOURCE_KEY); // This indicates where the feed came from.
 
     let navigationTitle = '';
 

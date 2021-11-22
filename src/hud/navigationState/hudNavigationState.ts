@@ -1,8 +1,6 @@
 import {
   ABOUT_ME_AREA,
   ACHIEVEMENTS_MAIN_AREA,
-  BOTTOM_LEFT_SIDE_AREA,
-  BOTTOM_RIGHT_SIDE_AREA,
   CLASSES_AREA,
   COMMUNITIES_MAIN_AREA,
   GOALS_AREA,
@@ -11,8 +9,8 @@ import {
   PROFILE_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
   SUPPORT_AREA,
-  TOP_LEFT_SIDE_AREA,
-  TOP_RIGHT_SIDE_AREA
+  LEFT_SIDE_AREA,
+  RIGHT_SIDE_AREA
 } from './hudNavigation';
 
 export type HudNavigationState = {
@@ -23,10 +21,8 @@ export type HudNavigationState = {
 
 export const defaultState: HudNavigationState = {
   sideAreaToIsVisible: {
-    [BOTTOM_LEFT_SIDE_AREA]: false,
-    [BOTTOM_RIGHT_SIDE_AREA]: false,
-    [TOP_LEFT_SIDE_AREA]: false,
-    [TOP_RIGHT_SIDE_AREA]: false
+    [LEFT_SIDE_AREA]: true,
+    [RIGHT_SIDE_AREA]: true
   },
   selectedMainArea: PROFILE_MAIN_AREA,
   selectedMainSubAreas: {

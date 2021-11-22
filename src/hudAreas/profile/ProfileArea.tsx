@@ -1,15 +1,20 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import Profile, { PROFILE_PAGES } from '../../containers/Profile/Profile';
-import withRoot from '../../withRoot';
 import { useStyles } from './ProfileAreaStyles';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
-import { ABOUT_ME_AREA, POINTS_HISTORY_AREA } from '../../hud/navigationState/hudNavigation';
-import TransparentButton from '../../components/Basic/Buttons/TransparentButton';
-import { signOut } from '../../actions/sign-in';
+import {
+  ABOUT_ME_AREA,
+  POINTS_HISTORY_AREA,
+  REWARDS_STORE_AREA
+} from '../../hud/navigationState/hudNavigation';
+import Store from '../../containers/Store/Store';
+import { UserState } from '../../reducers/user';
+import AboutMeSubarea from '../aboutMe/AboutMeSubarea';
+import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
-const ProfileArea = (s) => {
-  const dispatch = useDispatch();
+const ProfileArea = () => {
   const classes: any = useStyles();
 
   const selectedMainArea: string = useSelector(
@@ -21,41 +26,43 @@ const ProfileArea = (s) => {
       state.hudNavigation.selectedMainSubAreas[selectedMainArea]
   );
 
-  const handleSignOut = () => {
-    dispatch(signOut());
-  };
+  const currentUserId: string = useSelector((state: { user: UserState }) => state.user.data.userId);
 
-  // TODO unhardcode
-  const userId = '1041028';
-  const source = '';
-  const edit = true;
+  const query: string = useSelector((state: any) => state.router.location.query);
+  const from = query[PROFILE_SOURCE_KEY];
+
+  const { userId } = useParams();
+  const userIdFromPath = userId;
+
+  const userIdToDisplay: string = userIdFromPath || currentUserId;
+  const canEdit: boolean = userIdToDisplay === currentUserId;
 
   return (
     <div className={classes.container}>
-      <TransparentButton className={classes.signOut} onClick={handleSignOut}>
-        Sign Out
-      </TransparentButton>
+      {/* Even though this is not a loop, the key is required to make sure the profile renders correctly when the userId to show changes */}
       {selectedMainSubArea === ABOUT_ME_AREA && (
-        <Profile
-          key={`${userId}index`}
-          userId={userId}
-          edit={edit}
-          from={source}
-          defaultPage={PROFILE_PAGES.index}
+        <AboutMeSubarea
+          key={userIdToDisplay}
+          userIdToDisplay={userIdToDisplay}
+          canEdit={canEdit}
+          from={from}
         />
       )}
 
+      {/* Even though this is not a loop, the key is required to make sure the profile renders correctly when the userId to show changes */}
       {selectedMainSubArea === POINTS_HISTORY_AREA && (
         <Profile
-          key={`${userId}history`}
-          userId={userId}
-          edit={edit}
-          from={source}
+          key={userIdToDisplay}
+          userId={userIdToDisplay}
+          edit={canEdit}
+          from={from}
           defaultPage={PROFILE_PAGES.points_history}
         />
       )}
+
+      {selectedMainSubArea === REWARDS_STORE_AREA && <Store />}
     </div>
   );
 };
 
-export default withRoot(ProfileArea);
+export default ProfileArea;

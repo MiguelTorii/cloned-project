@@ -22,7 +22,7 @@ import OnboardingPopup from './containers/OnboardingPopup/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame/MasqueradeFrame';
 import { theme } from './withRoot';
 import ProviderGroup from './providers';
-import BrowserRoutes from './BrowserRoutes';
+import Routes from './Routes';
 
 defaultKatexRender('White');
 ReactGA.initialize(GOOGLE_ANALYTICS);
@@ -47,7 +47,7 @@ ReactDOM.render(
               <OnboardingPopup />
               <UserInitializer />
               <MasqueradeFrame />
-              <BrowserRoutes />
+              <Routes />
             </ProviderGroup>
           </SnackbarProvider>
         </MuiPickersUtilsProvider>

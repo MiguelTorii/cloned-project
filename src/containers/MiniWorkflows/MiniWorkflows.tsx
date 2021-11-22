@@ -1,19 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Paper, Typography, Grid, Box } from '@material-ui/core';
 import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ImgEmptyTask from '../../assets/svg/empty-tasks.svg';
 import useStyles from './styles';
 import { getTodos } from '../../api/workflow';
 import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import Task from './Task';
+import { CampaignState } from '../../reducers/campaign';
+
+const WORKFLOW_HEADING = '🗓 Your Upcoming Tasks';
+const HUD_WORKFLOW_HEADING = '🗓 Current Missions';
 
 const MiniWorkflows = () => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   useEffect(() => {
     setLoading(true);
     getTodos({
@@ -84,7 +93,7 @@ const MiniWorkflows = () => {
   return (
     <Paper className={classes.root} elevation={0} square={false}>
       <Typography className={classes.title} variant="h6" paragraph>
-        🗓 Current Missions
+        {isHud ? HUD_WORKFLOW_HEADING : WORKFLOW_HEADING}
       </Typography>
       {renderBody()}
     </Paper>
