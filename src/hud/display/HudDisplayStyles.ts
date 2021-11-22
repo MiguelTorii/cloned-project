@@ -1,29 +1,35 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
-  displayGrid: {
-    display: 'grid',
-    gridTemplateColumns: '60px 60px 1fr',
-    gridTemplateRows: '60px 60px',
-    maxWidth: '600px',
+  storyAvatarExperienceContainer: {
+    overflow: 'hidden',
     margin: 'auto',
-    overflow: 'hidden'
+    display: 'grid',
+    justifyContent: 'center'
+  },
+  storyAvatarAndMessage: {
+    display: 'grid',
+    gridTemplateColumns: '35px 35px 35px 600px'
   },
   storyAvatar: {
     gridColumn: '1 / 3',
-    gridRow: '1 / -1',
-    overflow: 'hidden',
-    zIndex: 2
+    zIndex: 2,
+    gridRow: '1 / 3',
+    transition: '1s ease-in-out',
+    height: '100%',
+    width: '100%',
+    justifySelf: 'right'
   },
   storyMessage: {
-    gridColumn: '2 / 4',
-    gridRow: '1 / -1',
+    gridColumn: '2 / 5',
+    gridRow: '1',
     overflow: 'hidden'
   },
   experienceBar: {
-    gridColumn: 3,
-    gridRow: 2,
     overflow: 'hidden',
-    marginTop: theme.spacing(2)
+    width: '100%',
+    height: '20px',
+    marginBottom: '2px',
+    gridColumn: '3 / 5'
   }
 }));

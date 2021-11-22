@@ -7,10 +7,11 @@ import { HudStoryState } from './hudStoryState';
 const useStorySequence = () => {
   const dispatch = useDispatch();
   const startConversation = (storySequence: string[]) => {
+    storySequence.push('');
     storySequence.forEach((storyMessage, index) => {
       setTimeout(() => {
         dispatch(setConversation(storyMessage));
-      }, 5000 * index);
+      }, 7000 * index);
     });
   };
 
@@ -23,7 +24,7 @@ const useStorySequence = () => {
       fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss')).then((welcomeMessage) => {
         const storySequence = [welcomeMessage.greetings.title, welcomeMessage.greetings.body];
         startConversation(storySequence);
-        setInitialLoad(true);
+        dispatch(setInitialLoad());
       });
     }
   };

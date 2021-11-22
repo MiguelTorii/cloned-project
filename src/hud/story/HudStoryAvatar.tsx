@@ -3,8 +3,6 @@ import Avatar from '../../components/Avatar/Avatar';
 import avatarImg from '../../assets/img/circlein-web-notification.png';
 import { useStyles } from './HudStoryStyles';
 
-const STORY_AVATAR_LENGTH = 100;
-
 const StoryAvatar = () => {
   const classes: any = useStyles();
 
@@ -13,7 +11,8 @@ const StoryAvatar = () => {
       <div className={classes.storyAvatarBackground}>
         <Avatar
           className={classes.storyAvatar}
-          desktopSize={STORY_AVATAR_LENGTH}
+          desktopSize="100%"
+          mobileSize="100%"
           alt="story-avatar"
           src={avatarImg}
         />

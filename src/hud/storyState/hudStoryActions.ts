@@ -12,9 +12,7 @@ export const setConversation = (conversation: string): Action => ({
   }
 });
 
-export const setInitialLoad = (initialLoadTriggered: boolean): Action => ({
+export const setInitialLoad = (): Action => ({
   type: hudStoryActions.INITIAL_STORY_LOAD,
-  payload: {
-    initialLoadTriggered: true
-  }
+  payload: {}
 });
