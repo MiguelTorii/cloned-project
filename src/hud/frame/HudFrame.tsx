@@ -2,12 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
-import moment from 'moment';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
-import conversations from '../storyState/conversations';
 import useStorySequence from '../storyState/useStorySequence';
 import HudMissions from '../missions/HudMissions';
 import HudChat from '../chat/HudChat';
@@ -19,15 +17,11 @@ import {
   COMMUNITIES_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
   ACHIEVEMENTS_MAIN_AREA,
-  TOP_RIGHT_SIDE_AREA,
-  BOTTOM_RIGHT_SIDE_AREA,
-  TOP_LEFT_SIDE_AREA,
-  BOTTOM_LEFT_SIDE_AREA
+  RIGHT_SIDE_AREA,
+  LEFT_SIDE_AREA
 } from '../navigationState/hudNavigation';
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
-import { fetchGreetings } from '../../api/home';
-import { setConversation } from '../storyState/hudStoryActions';
 import HudDisplay from '../display/HudDisplay';
 
 const HudFrame = () => {
@@ -39,24 +33,14 @@ const HudFrame = () => {
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
   );
 
-  const isTopLeftPaneVisible: boolean = useSelector(
+  const isLeftPaneVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[TOP_LEFT_SIDE_AREA]
+      state.hudNavigation.sideAreaToIsVisible[LEFT_SIDE_AREA]
   );
 
-  const isBottomLeftPaneVisible: boolean = useSelector(
+  const isRightPaneVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[BOTTOM_LEFT_SIDE_AREA]
-  );
-
-  const isTopRightPaneVisible: boolean = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[TOP_RIGHT_SIDE_AREA]
-  );
-
-  const isBottomRightPaneVisible: boolean = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[BOTTOM_RIGHT_SIDE_AREA]
+      state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
   );
 
   const loadStory = useStorySequence();
@@ -66,7 +50,7 @@ const HudFrame = () => {
     <main>
       <CssBaseline />
       <div className={cx(classes.appWithHud)}>
-        {(isTopLeftPaneVisible || isBottomLeftPaneVisible) && (
+        {isLeftPaneVisible && (
           <div className={classes.chat}>
             <HudChat />
           </div>
@@ -92,7 +76,7 @@ const HudFrame = () => {
           </div>
         </div>
 
-        {(isTopRightPaneVisible || isBottomRightPaneVisible) && (
+        {isRightPaneVisible && (
           <div className={classes.missions}>
             <HudMissions />
           </div>

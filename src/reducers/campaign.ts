@@ -10,6 +10,15 @@ export type CampaignState = {
   showScholarshipTracker: boolean;
   showSupportCenter: boolean;
   newClassExperience: boolean;
+
+  /**
+   * If the campaign has not yet loaded, return null.
+   * Once the campaign has loaded, return true or false.
+   * Don't return false before the campaign has loaded otherwise
+   * if the campaign is set to true, the wrong UI layout will flash
+   * and then disappear when the campaign finally loads.
+   */
+  hud: boolean | null;
 };
 
 const VARIATION_KEY = {
@@ -23,7 +32,8 @@ const defaultState = {
   newNotesScreen: null,
   showScholarshipTracker: false,
   showSupportCenter: false,
-  newClassExperience: false
+  newClassExperience: false,
+  hud: null
 };
 
 export default (state: CampaignState = defaultState, action: Action): CampaignState => {
@@ -47,6 +57,14 @@ export default (state: CampaignState = defaultState, action: Action): CampaignSt
       return update(state, {
         chatLanding: {
           $set: action.payload.variation_key === 'chat'
+        }
+      });
+    }
+
+    case campaignActions.GET_HUD_CAMPAIGN: {
+      return update(state, {
+        hud: {
+          $set: action.payload.variation_key === 'visible'
         }
       });
     }

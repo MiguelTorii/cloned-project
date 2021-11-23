@@ -3,7 +3,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
-import CreateQuestion from '../../containers/CreatePostLayout/CreatePostLayout';
+import CreatePostLayout from '../../containers/CreatePostLayout/CreatePostLayout';
 
 type Props = {
   match: {
@@ -25,11 +25,8 @@ const CreateQuestionPage = (props: Props) => {
       <Layout>
         <Grid container>
           <Grid item xs={12} sm={12} md={12}>
-            <CreateQuestion questionId={questionId} />
+            <CreatePostLayout questionId={questionId} />
           </Grid>
-          {/* <Grid item xs={12} sm={12} md={3}>
-           <PostTips type="question" />
-          </Grid> */}
         </Grid>
       </Layout>
     </main>

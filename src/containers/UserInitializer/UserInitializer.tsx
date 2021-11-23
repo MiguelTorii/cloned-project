@@ -32,8 +32,10 @@ import * as signInActions from '../../actions/sign-in';
 import {
   getChatLandingCampaign,
   getFlashcardsCampaign,
+  getHudCampaign,
   getLeaderboardAndSupportCenterVisibilityCampaign
 } from '../../actions/campaign';
+import useHudRoutes from '../../hud/frame/useHudRoutes';
 
 const styles = (theme) => ({
   root: {
@@ -79,6 +81,9 @@ const UserInitializer = ({
   const dispatch = useDispatch();
   const viewedOnboarding = useSelector((state) => (state as any).user.syncData.viewedOnboarding);
   const chatLanding = useSelector((state) => (state as any).campaign.chatLanding);
+
+  useHudRoutes();
+
   // Check to show onboarding popup or not.
   // This got complex after chat landing campaign. (5 seconds delay)
   useEffect(() => {
@@ -190,10 +195,12 @@ const UserInitializer = ({
     init();
     return () => window.removeEventListener('resize', updateDimensions); // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     if (userId !== '') {
       dispatch(getFlashcardsCampaign());
       dispatch(getChatLandingCampaign());
+      dispatch(getHudCampaign());
       dispatch(getLeaderboardAndSupportCenterVisibilityCampaign());
     }
   }, [dispatch, userId]);

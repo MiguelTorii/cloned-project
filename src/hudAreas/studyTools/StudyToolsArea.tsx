@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import UserNotesContainer from '../../containers/UserNotes/UserNotesContainer';
 import { NotesContextProvider } from '../../hooks/useNotes';
-import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
 import { useStyles } from './StudyToolsAreaStyles';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 import {
@@ -12,7 +11,8 @@ import {
   STUDY_TIPS_AREA
 } from '../../hud/navigationState/hudNavigation';
 import CalendarSubArea from '../calendar/CalendarSubArea';
-import StudyCircle from '../../containers/StudyCircle/StudyCircle';
+import Study from '../../containers/Study/Study';
+import FlashcardsSubArea from '../flashcards/FlashcardsSubArea';
 
 const StudyToolsArea = () => {
   const classes: any = useStyles();
@@ -34,9 +34,9 @@ const StudyToolsArea = () => {
         </NotesContextProvider>
       )}
 
-      {selectedMainSubArea === FLASHCARDS_AREA && <FlashcardsList />}
+      {selectedMainSubArea === FLASHCARDS_AREA && <FlashcardsSubArea />}
 
-      {selectedMainSubArea === STUDY_TIPS_AREA && <StudyCircle />}
+      {selectedMainSubArea === STUDY_TIPS_AREA && <Study />}
 
       {selectedMainSubArea === CALENDAR_AREA && <CalendarSubArea />}
     </div>

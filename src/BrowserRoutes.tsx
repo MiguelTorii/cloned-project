@@ -37,7 +37,6 @@ import CanvasPage from './pages/Canvas/CanvasPage';
 import TermsOfUsePage from './pages/TermsOfUse/TermsOfUsePage';
 import RedirectPage from './pages/Redirect/RedirectPage';
 import Sandbox from './pages/Sandbox/Sandbox';
-import HudFrame from './hud/frame/HudFrame';
 import Miss from './pages/Miss/Miss';
 import UserNotes from './pages/UserNotes/UserNotes';
 import withTracker from './withTracker';
@@ -46,7 +45,6 @@ import ChatChannelPage from './pages/ChatChannel/ChatChannelPage';
 import FlashcardsListPage from './pages/Flashcards/FlashcardsListPage';
 import FlashcardsShowPage from './pages/Flashcards/FlashcardsShowPage';
 import FlashcardsEditPage from './pages/Flashcards/FlashcardsEditPage';
-import FlashcardsPage from './pages/View/FlashcardsPage';
 import HomePage from './pages/Home/HomePage';
 import Gondor from './containers/Auth/Gondor';
 import JoinCommunity from './pages/JoinCommunity/JoinCommunity';
@@ -106,11 +104,6 @@ const BrowserRoutes = () => (
           <Route exact path="/study" component={withTracker(StudyPage)} />
 
           {/* WHAT ARE THESE? */}
-          <Route
-            exact
-            path="/flashcards/old/:flashcardId"
-            component={withTracker(FlashcardsPage)}
-          />
           <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
           <Route exact path="/notifications" component={withTracker(NotificationsPage)} />
           <Route exact path="/share/:code" component={withTracker(SharePage)} />
@@ -148,9 +141,6 @@ const BrowserRoutes = () => (
           <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
           <Route exact path="/redirect" component={RedirectPage} />
           <Route exact path="/sandbox" component={Sandbox} />
-
-          {/* TODO REMOVE */}
-          <Route exact path="/hud" component={withTracker(HudFrame)} />
 
           {/* Show a message and then in 1 sec redirect to "/" */}
           <Route component={Miss} />

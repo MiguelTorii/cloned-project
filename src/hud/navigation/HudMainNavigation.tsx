@@ -5,7 +5,7 @@ import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard.svg';
 import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
 import { ReactComponent as IconAboutMe } from '../../assets/svg/about_me.svg';
-import { ReactComponent as IconPosts } from '../../assets/svg/posts.svg';
+import { ReactComponent as IconChatMembers } from '../../assets/svg/chat-studyroom-members.svg';
 import { ReactComponent as IconBookmarkedPosts } from '../../assets/svg/bookmarked_posts.svg';
 import { ReactComponent as IconPointsHistory } from '../../assets/svg/points_history.svg';
 import { ReactComponent as IconMyClasses } from '../../assets/svg/classes_overview.svg';
@@ -15,12 +15,10 @@ import { ReactComponent as IconFlashcards } from '../../assets/svg/flashcards-me
 import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow.svg';
 import { ReactComponent as IconStudyingOnCircleIn } from '../../assets/svg/studying_on_circlein.svg';
 import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
-import { ReactComponent as IconStudyGoals } from '../../assets/svg/study_goals.svg';
 import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
 import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
 import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
 import { ReactComponent as IconRewardStore } from '../../assets/svg/rewards-icon-off.svg';
-
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import { useStyles } from './HudNavigationStyles';
@@ -36,14 +34,12 @@ import {
   FLASHCARDS_AREA,
   GET_THE_MOBILE_APP_AREA,
   GIVE_FEEDBACK_AREA,
-  GOALS_AREA,
   LEADERBOARD_AREA,
   MORE_MAIN_AREA,
   NOTES_AREA,
   POINTS_HISTORY_AREA,
   PROFILE_MAIN_AREA,
   REWARDS_STORE_AREA,
-  SCHOLARSHIPS_AREA,
   STUDY_TIPS_AREA,
   STUDY_TOOLS_MAIN_AREA,
   SUPPORT_AREA
@@ -98,19 +94,19 @@ const HudMainNavigation = () => {
     {
       id: CLASSMATES_AREA,
       displayName: 'Classmates',
-      icon: <IconPosts />
+      icon: <IconChatMembers />
     }
   ];
 
   const studyToolsNavigationItems: HudTool[] = [
     {
       id: FLASHCARDS_AREA,
-      displayName: 'Study Tools',
+      displayName: 'Flashcards',
       icon: <IconFlashcards />
     },
     {
       id: NOTES_AREA,
-      displayName: 'Flashcards',
+      displayName: 'Notes',
       icon: <IconNotes />
     },
     {
@@ -127,19 +123,9 @@ const HudMainNavigation = () => {
 
   const achievementsNavigationItems: HudTool[] = [
     {
-      id: GOALS_AREA,
-      displayName: 'Study Goals',
-      icon: <IconStudyGoals />
-    },
-    {
       id: LEADERBOARD_AREA,
       displayName: 'Leaderboard',
       icon: <IconLeaderboard />
-    },
-    {
-      id: SCHOLARSHIPS_AREA,
-      displayName: 'Scholarships',
-      icon: <IconPosts />
     }
   ];
 

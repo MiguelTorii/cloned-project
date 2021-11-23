@@ -14,6 +14,7 @@ import DeletePost from '../DeletePost/DeletePost';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import ReportIssue from '../../components/Report/ReportIssue';
+import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
 const Recommendations = () => {
   const classes: any = useStyles();
@@ -66,7 +67,7 @@ const Recommendations = () => {
             throw new Error('unknown feed type');
         }
 
-        url = `${url}?from=recommendation`;
+        url = `${url}?${PROFILE_SOURCE_KEY}=recommendation`;
         dispatch(push(url));
       },
     [dispatch]

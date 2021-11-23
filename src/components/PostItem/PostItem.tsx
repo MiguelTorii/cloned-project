@@ -17,6 +17,7 @@ import { styles } from '../_styles/PostItem';
 import Recommendations from '../../containers/Recommendations/Recommendations';
 import RecommendationsFeedback from '../RecommendationsFeedback/RecommendationsFeedback';
 import { POST_SOURCE } from '../../constants/app';
+import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
 const timeout = TIMEOUT.POST_ITEM;
 const MyLink = React.forwardRef<any, any>(
@@ -41,7 +42,7 @@ const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
   const location = useLocation();
   const from = useMemo(() => {
     const query = new URLSearchParams(location.search);
-    return query.get('from');
+    return query.get(PROFILE_SOURCE_KEY);
   }, [location]);
 
   const handleOnActive = () => {

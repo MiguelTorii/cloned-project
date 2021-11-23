@@ -110,7 +110,7 @@ class Feed extends React.PureComponent<Props, State> {
   componentDidMount = () => {
     const {
       router: {
-        location: { search }
+        location: { pathname, search }
       }
     } = this.props;
     const { sectionId, replace, feed, updateScrollData, user } = this.props;
@@ -155,7 +155,11 @@ class Feed extends React.PureComponent<Props, State> {
 
     // If there was parameters in the url, it removes all url params.
     if (search) {
-      replace('/feed');
+      // Hacky check to prevent feed from overtaking other important URLs.
+      // TODO find more holistic fix.
+      if (!pathname.startsWith('/profile')) {
+        replace('/feed');
+      }
     }
 
     this.cancelSource = axios.CancelToken.source();

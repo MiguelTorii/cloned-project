@@ -39,6 +39,7 @@ import { updateProfileImage, uploadMedia } from '../../actions/user';
 import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import { LOG_EVENT_CATEGORY, LOG_EVENT_TYPE, PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
+import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
 const styles = (theme) => ({
   root: {
@@ -551,7 +552,7 @@ class Profile extends React.PureComponent<Props, State> {
           throw new Error('unknown post type');
       }
 
-      push(`${url}?from=profile`);
+      push(`${url}?${PROFILE_SOURCE_KEY}=profile`);
     };
 
   updateAvatar = async (imageData) => {
