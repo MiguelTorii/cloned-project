@@ -21,5 +21,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     flexDirection: 'row',
     height: '100%'
+  },
+  selectedButton: {
+    backgroundColor: theme.circleIn.palette.gray1
   }
 }));

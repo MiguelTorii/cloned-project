@@ -5,14 +5,13 @@ export const useStyles = makeStyles((theme: any) => ({
     position: 'absolute',
     inset: 0,
     display: 'flex',
-    overflow: 'hidden',
-    padding: theme.spacing(2)
+    overflow: 'hidden'
   },
   chat: {
     width: '270px',
     flexShrink: 0,
     overflow: 'hidden',
-    paddingRight: theme.spacing(2)
+    padding: theme.spacing(2)
   },
   mainContainer: {
     flexGrow: 1,
@@ -39,6 +38,6 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '270px',
     flexShrink: 0,
     overflow: 'hidden',
-    paddingLeft: theme.spacing(2)
+    padding: theme.spacing(2)
   }
 }));

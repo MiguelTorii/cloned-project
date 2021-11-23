@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Button, IconButton, Tooltip } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import clsx from 'clsx';
 import { HudTool } from './HudTool';
 import { useStyles } from './HudToolbarStyles';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 type Props = {
   navbarItems: HudTool[];
@@ -14,17 +17,27 @@ const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
 
   const [selectedTool, setSelectedTool] = useState<HudTool>(navbarItems[0]);
 
+  const selectedMainArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
+
+  const selectedMainSubAreas: Record<string, string> = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainSubAreas
+  );
+
   const selectTool = (tool: HudTool) => {
     setSelectedTool(tool);
     onSelectItem(tool.id);
   };
 
   const renderIconButton = (navbarItem: HudTool) => {
+    const isActive = navbarItem.id === selectedMainSubAreas[selectedMainArea];
+
     if (navbarItem.icon) {
       return (
         <Button
           color={navbarItem === selectedTool ? 'primary' : 'default'}
-          className={classes.toolButton}
+          className={clsx(classes.toolButton, isActive && classes.selectedButton)}
           size="medium"
           onClick={() => selectTool(navbarItem)}
         >
@@ -36,7 +49,7 @@ const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
       return (
         <Button
           color={'secondary'}
-          className={classes.toolButton}
+          className={clsx(classes.toolButton, isActive && classes.selectedButton)}
           size="medium"
           onClick={() => selectTool(navbarItem)}
         >
@@ -48,7 +61,7 @@ const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
       <Button
         key={navbarItem.id}
         color={navbarItem === selectedTool ? 'primary' : 'default'}
-        className={classes.textIconButton}
+        className={clsx(classes.textIconButton, isActive && classes.selectedButton)}
         onClick={() => selectTool(navbarItem)}
       >
         {navbarItem.displayName}
