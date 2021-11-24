@@ -4,6 +4,7 @@ const useStyles = makeStyles((theme: any) => ({
   communityMenu: {
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     paddingBottom: theme.spacing(1),
     paddingTop: theme.spacing(1)
   },
@@ -14,7 +15,8 @@ const useStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   },
   itemContent: {
     display: 'flex',

@@ -16,7 +16,6 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'column',
     flexGrow: 1,
     flexShrink: 1,
-    justifyContent: 'flex-end',
     overflowY: 'auto',
     maxHeight: '100%'
   },
@@ -25,9 +24,13 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'column',
     flexGrow: 1,
     flexShrink: 1,
-    justifyContent: 'flex-end',
     overflowY: 'auto',
     maxHeight: '100%'
+  },
+  filterTabs: {
+    width: '100%',
+    borderTop: `1px solid ${theme.circleIn.palette.menuDivider}`,
+    borderBottom: `1px solid ${theme.circleIn.palette.menuDivider}`
   },
   channelAndMemberList: {
     overflowY: 'auto'
@@ -64,7 +67,5 @@ export const useStyles = makeStyles((theme: any) => ({
     color: 'white',
     fontWeight: 700
   },
-  communityPicker: {
-    borderTop: `2px solid ${theme.circleIn.palette.white}`
-  }
+  communityPicker: {}
 }));
