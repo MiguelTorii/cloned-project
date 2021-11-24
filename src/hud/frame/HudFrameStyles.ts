@@ -31,7 +31,6 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   mainHudDisplay: {
     flexShrink: 0,
-    // height: '100px',
     overflow: 'hidden'
   },
   missions: {

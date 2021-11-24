@@ -17,6 +17,7 @@ export const useStyles = makeStyles((theme: any) => ({
     color: theme.circleIn.palette.white,
     fontWeight: 'bold',
     lineHeight: '20px',
-    margin: '0px 6px 0px 6px'
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1)
   }
 }));

@@ -15,7 +15,6 @@ export const useStyles = makeStyles((theme: any) => ({
     gridColumn: '1 / 3',
     zIndex: 2,
     gridRow: '1 / 3',
-    transition: '1s ease-in-out',
     height: '100%',
     width: '100%',
     justifySelf: 'right'
@@ -29,7 +28,7 @@ export const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden',
     width: '100%',
     height: '20px',
-    marginBottom: '2px',
+    marginBottom: theme.spacing(2),
     gridColumn: '3 / 5'
   }
 }));
