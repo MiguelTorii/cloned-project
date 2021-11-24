@@ -4,7 +4,8 @@ export const useStyles = makeStyles((theme: any) => ({
   experienceBarTrack: {
     backgroundColor: theme.circleIn.palette.gray1,
     borderRadius: '50px',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    height: '100%'
   },
   experienceFiller: {
     height: '100%',
@@ -13,8 +14,10 @@ export const useStyles = makeStyles((theme: any) => ({
     transition: 'width 1s ease-in-out'
   },
   experienceLabel: {
-    padding: '5px',
     color: theme.circleIn.palette.white,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    lineHeight: '20px',
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1)
   }
 }));

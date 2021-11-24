@@ -4,13 +4,16 @@ import { fetchGreetings } from '../../api/home';
 import { setConversation, setInitialLoad } from './hudStoryActions';
 import { HudStoryState } from './hudStoryState';
 
+const storySequenceDelay = 7000;
+
 const useStorySequence = () => {
   const dispatch = useDispatch();
   const startConversation = (storySequence: string[]) => {
-    storySequence.forEach((storyMessage, index) => {
+    const storySequenceWithEndMarker = [...storySequence, ''];
+    storySequenceWithEndMarker.forEach((storyMessage, index) => {
       setTimeout(() => {
         dispatch(setConversation(storyMessage));
-      }, 5000 * index);
+      }, storySequenceDelay * index);
     });
   };
 
@@ -23,7 +26,7 @@ const useStorySequence = () => {
       fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss')).then((welcomeMessage) => {
         const storySequence = [welcomeMessage.greetings.title, welcomeMessage.greetings.body];
         startConversation(storySequence);
-        setInitialLoad(true);
+        dispatch(setInitialLoad());
       });
     }
   };
