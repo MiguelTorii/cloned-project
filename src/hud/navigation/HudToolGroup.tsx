@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import HudToolbar from './HudToolbar';
 import { HudTool } from './HudTool';
 import { useStyles } from './HudNavigationStyles';
+import { SUPPORT_AREA } from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 
 type Props = {
@@ -15,7 +16,12 @@ const HudToolGroup = ({ parentNavigationItem }: Props) => {
   const setHudArea = useHudRoutes();
 
   const selectLeaf = (mainSubArea: string) => {
-    setHudArea(parentNavigationItem.id, mainSubArea);
+    if (mainSubArea === SUPPORT_AREA) {
+      // Open support window
+      window.open('https://tutors.circleinapp.com/home', '_blank');
+    } else {
+      setHudArea(parentNavigationItem.id, mainSubArea);
+    }
   };
   return (
     <div className={classes.controlPanelMainSectionGroup}>

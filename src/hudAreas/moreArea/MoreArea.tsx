@@ -7,6 +7,8 @@ import {
 } from '../../hud/navigationState/hudNavigation';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 import { useStyles } from './MoreAreaStyles';
+import GiveFeedback from './GiveFeedback';
+import GetMobileApp from './GetMobileApp';
 
 const MoreArea = () => {
   const classes: any = useStyles();
@@ -24,9 +26,9 @@ const MoreArea = () => {
     <div className={classes.container}>
       {selectedMainSubArea === SUPPORT_AREA && 'SUPPORT_AREA'}
 
-      {selectedMainSubArea === GIVE_FEEDBACK_AREA && 'GIVE_FEEDBACK_AREA'}
+      {selectedMainSubArea === GIVE_FEEDBACK_AREA && <GiveFeedback />}
 
-      {selectedMainSubArea === GET_THE_MOBILE_APP_AREA && 'GET_THE_MOBILE_APP_AREA'}
+      {selectedMainSubArea === GET_THE_MOBILE_APP_AREA && <GetMobileApp />}
     </div>
   );
 };
