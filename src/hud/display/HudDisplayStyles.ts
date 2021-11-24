@@ -9,7 +9,9 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   storyAvatarAndMessage: {
     display: 'grid',
-    gridTemplateColumns: '35px 35px 35px 600px'
+    gridTemplateColumns: '35px 35px 35px 600px',
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   storyAvatar: {
     gridColumn: '1 / 3',
@@ -28,7 +30,6 @@ export const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden',
     width: '100%',
     height: '20px',
-    marginBottom: theme.spacing(2),
     gridColumn: '3 / 5'
   }
 }));

@@ -4,6 +4,7 @@ import { fetchGreetings } from '../../api/home';
 import { setConversation, setInitialLoad } from './hudStoryActions';
 import { HudStoryState } from './hudStoryState';
 
+// story sequence delay in milliseconds
 const storySequenceDelay = 7000;
 
 const useStorySequence = () => {

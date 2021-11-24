@@ -25,8 +25,6 @@ import HudControlPanel from '../controlPanel/HudControlPanel';
 import HudDisplay from '../display/HudDisplay';
 
 const HudFrame = () => {
-  const dispatch = useDispatch();
-
   const classes: any = useStyles();
 
   const selectedMainArea: string = useSelector(
@@ -56,10 +54,10 @@ const HudFrame = () => {
           </div>
         )}
 
+        <div className={classes.mainControlPanel}>
+          <HudControlPanel />
+        </div>
         <div className={classes.mainContainer}>
-          <div className={classes.mainControlPanel}>
-            <HudControlPanel />
-          </div>
           <div className={classes.mainAction}>
             {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
