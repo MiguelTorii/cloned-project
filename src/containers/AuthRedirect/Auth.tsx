@@ -1,19 +1,18 @@
 import React, { useEffect, memo, useCallback, useMemo, useState } from 'react';
-import cx from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import TextField from '@material-ui/core/TextField';
-import loginBackgroundDesktop from '../../assets/svg/auth-ui-background-desktop.svg';
-import loginBackgroundMobile from '../../assets/svg/auth-ui-background-mobile.svg';
-import ImageContentDesktop from '../../assets/img/auth-ui-content-desktop.png';
-import ImageContentMobile from '../../assets/img/auth-ui-content-mobile.png';
+import { Box } from '@material-ui/core';
+import ImageBackgroundDesktop from '../../assets/img/auth-ui-bg-desktop.png';
+import ImageBackgroundMobile from '../../assets/img/auth-ui-bg-mobile.png';
+import ImageContentLeft from '../../assets/img/auth-ui-content-people-left.png';
+import ImageContentRight from '../../assets/img/auth-ui-content-people-right.png';
 import SelectSchool from './SelectSchool';
 import Login from './Login';
 import SignUp from './SignUp';
@@ -21,7 +20,6 @@ import WalkThrough from './WalkThrough';
 import ForgotPassword from './ForgotPassword';
 import FirstTime from './FirstTime';
 import NewPassword from './NewPassword';
-import LoadImg from '../../components/LoadImg/LoadImg';
 import Dialog from '../../components/Dialog/Dialog';
 import { emailRequest, getSchool } from '../../api/sign-in';
 import * as signInActions from '../../actions/sign-in';
@@ -36,15 +34,11 @@ const styles = (theme) => ({
     justifyContent: 'center',
     display: 'flex',
     backgroundColor: 'white',
-    backgroundImage: `url(${loginBackgroundDesktop})`,
+    backgroundImage: `url(${ImageBackgroundDesktop})`,
     backgroundRepeat: 'no-repeat',
-    '-ms-background-size': '100% 100%',
-    '-o-background-size': '100% 100%',
-    '-moz-background-size': '100% 100%',
-    '-webkit-background-size': '100% 100%',
-    backgroundSize: '100% 100%',
-    [theme.breakpoints.down('sm')]: {
-      backgroundImage: `url(${loginBackgroundMobile})`
+    backgroundPositionX: 'center',
+    [theme.breakpoints.down('xs')]: {
+      backgroundImage: `url(${ImageBackgroundMobile})`
     }
   },
   deeplinkBlankPage: {
@@ -68,9 +62,8 @@ const styles = (theme) => ({
     flexDirection: 'column'
   },
   paper: {
-    backgroundColor: '#03A9F4',
+    backgroundColor: theme.circleIn.palette.errorPopupBackground,
     color: 'black',
-    backgroundImage: `url(${ImageContentDesktop})`,
     backgroundRepeat: 'no-repeat',
     '-ms-background-size': '100% 100%',
     '-o-background-size': '100% 100%',
@@ -87,10 +80,7 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     borderRadius: 30,
-    padding: theme.spacing(7, 10),
-    [theme.breakpoints.down('xs')]: {
-      backgroundImage: `url(${ImageContentMobile})`
-    }
+    padding: theme.spacing(7, 10)
   },
   container: {
     height: '100vh'
@@ -141,6 +131,25 @@ const styles = (theme) => ({
   },
   body: {
     marginBottom: theme.spacing(2)
+  },
+  imageLeft: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: '80%'
+  },
+  imageRight: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    height: '80%',
+    userSelect: 'none',
+    zIndex: -1
+  },
+  screenContainer: {
+    width: '100%',
+    height: '100%',
+    zIndex: 2
   }
 });
 
@@ -347,8 +356,10 @@ const Auth = ({
         </div>
       )}
       <Paper className={classes.paper}>
+        <img className={classes.imageLeft} src={ImageContentLeft} alt="background on left" />
+        <img className={classes.imageRight} src={ImageContentRight} alt="background on right" />
         {renderBack}
-        {renderScreen}
+        <Box className={classes.screenContainer}>{renderScreen}</Box>
       </Paper>
       <Dialog
         open={screen === 'walk'}

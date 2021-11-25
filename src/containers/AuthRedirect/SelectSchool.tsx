@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4)
   },
   externalUser: {
+    color: theme.circleIn.palette.black,
+    fontWeight: 600,
     marginTop: theme.spacing(2),
     textTransform: 'inherit',
     '& span': {
@@ -216,6 +218,10 @@ const SelectSchool = ({
           {loading ? <CircularProgress size={20} color="secondary" /> : 'Select School'}
         </AuthButton>
       </Box>
+
+      <Button onClick={loginAsExternal} className={classes.externalUser} color="primary">
+        Login as an external user
+      </Button>
 
       <Grid container justifyContent="center">
         <Grid item xs={12} md={6}>
