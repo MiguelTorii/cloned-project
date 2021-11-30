@@ -58,7 +58,11 @@ export const useStyles = makeStyles((theme: any) => ({
     right: theme.spacing()
   },
   channelName: {
-    fontSize: 14
+    fontSize: 14,
+    textOverflow: 'ellipsis',
+    height: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap'
   },
   selected: {
     backgroundColor: `${theme.circleIn.palette.modalBackground} !important`

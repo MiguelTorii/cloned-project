@@ -15,7 +15,8 @@ export default (state: HudChatState = defaultState, action: Action): HudChatStat
         ...state,
         idToCommunity: action.payload.builtCommunities.idToCommunity,
         communityIdsInDisplayOrder: action.payload.builtCommunities.communityIdsInDisplayOrder,
-        idToChannel: action.payload.builtChannels.idToChannel
+        idToChannel: action.payload.builtChannels.idToChannel,
+        selectedCommunityId: action.payload.selectedCommunityId
       };
 
     case hudChatActions.SELECT_COMMUNITY_ID:

@@ -1,70 +1,141 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Action, Dispatch, combineReducers } from 'redux';
-import { getCommunities, getCommunityChannels } from '../../api/community';
+import { Action, Dispatch } from 'redux';
+import { Client } from 'twilio-chat';
+import { Channel } from 'twilio-chat/lib/channel';
+import { getCommunities } from '../../api/community';
 import { APICommunities } from '../../api/models/APICommunities';
 import { APICommunityChannelGroups } from '../../api/models/APICommunityChannelGroups';
-import { APICommunity } from '../../api/models/APICommunity';
 import {
   buildChannels,
   buildCommunities,
   IBuiltChannels,
   IBuiltCommunities
 } from './chatDataBuilder';
-import { getCommunityMembers } from '../../api/chat';
-import { Classmate, ClassmateGroup } from '../../types/models';
+import { ClassmateGroup, User } from '../../types/models';
 import { setCommunitiesAndChannels, startChatLoad } from './hudChatActions';
 import { HudChatState } from './hudChatState';
+import { fetchCommunityChannels, fetchCommunityMembers } from './hudChatRESTApi';
+import { loadChatClient, loadLocalChannels, loadSubscribedChannels } from './hudChatSocketApi';
+import { UserState } from '../../reducers/user';
+import { getChannelMetadata, renewTwilioToken } from '../../api/chat';
+import { APIChat } from '../../api/models/APIChat';
 
 export interface IChatLoadOptions {
   channelId: string;
 }
 
-const triggerLoadChat = async (dispatch: Dispatch<Action>) => {
+export interface ChatSocketData {
+  client: Client;
+  channels: Channel[];
+}
+
+export interface CommunityChannelData {
+  builtCommunities: IBuiltCommunities;
+  builtChannels: IBuiltChannels;
+}
+
+const triggerLoadChat = async (dispatch: Dispatch<Action>, userId: string) => {
   dispatch(startChatLoad());
+
+  const [communityChannelData, chatSocketData]: [CommunityChannelData, ChatSocketData] =
+    await Promise.all([loadCommunities(userId), loadClientAndChannels(userId)]);
+
+  const firstNonDirectChatCommunityId =
+    communityChannelData.builtCommunities.communityIdsInDisplayOrder[1];
+
+  dispatch(
+    setCommunitiesAndChannels(
+      communityChannelData.builtCommunities,
+      communityChannelData.builtChannels,
+      firstNonDirectChatCommunityId
+    )
+  );
+};
+
+const loadCommunities = async (userId: string): Promise<CommunityChannelData> => {
   const { communities }: APICommunities = await getCommunities();
   const builtCommunities: IBuiltCommunities = buildCommunities(communities);
 
-  const [channelGroups, memberGroups]: [APICommunityChannelGroups[], ClassmateGroup[]] =
-    await Promise.all([fetchCommunityChannels(communities), fetchCommunityMembers(communities)]);
+  const [directChats, channelGroups, memberGroups]: [
+    APIChat[],
+    APICommunityChannelGroups[],
+    ClassmateGroup[]
+  ] = await Promise.all([
+    getChannelMetadata(),
+    fetchCommunityChannels(communities),
+    fetchCommunityMembers(communities)
+  ]);
 
   const builtChannels: IBuiltChannels = buildChannels(
+    directChats,
     channelGroups,
     memberGroups,
     builtCommunities.idToCommunity
   );
 
-  dispatch(setCommunitiesAndChannels(builtCommunities, builtChannels));
+  return {
+    builtCommunities,
+    builtChannels
+  };
 };
 
-const fetchCommunityChannels = (
-  communities: APICommunity[]
-): Promise<APICommunityChannelGroups[]> => {
-  const promises: Promise<APICommunityChannelGroups>[] = communities.map(
-    (community: APICommunity) =>
-      getCommunityChannels({
-        communityId: community.community.id
-      })
-  );
+const loadClientAndChannels = async (userId: string): Promise<ChatSocketData> => {
+  const client: Client = await loadChatClient(userId);
+  await loadSubscribedChannels(client);
+  const channels: Channel[] = await loadLocalChannels(client);
 
-  return Promise.all(promises);
+  registerForClientEvents(client, userId);
+
+  // TODO initialize and track unread counts
+
+  return {
+    client,
+    channels
+  };
 };
 
-const fetchCommunityMembers = (communities: APICommunity[]): Promise<ClassmateGroup[]> => {
-  const promises: Promise<ClassmateGroup>[] = communities.map((community: APICommunity) =>
-    getCommunityMembers({
-      classId: community.community.class_id,
-      sectionId: community.community.section_id
-    }).then((classmates: Classmate[]) => ({
-      communityId: community.community.id,
-      classmates
-    }))
-  );
+const registerForClientEvents = (client: Client, userId: string) => {
+  client.on('channelJoined', async (channel) => {
+    // TODO update members -- how can we guarantee that the REST API
+    // is up to date without using a timeout?
+  });
+  client.on('channelLeft', async (channel) => {
+    // TODO remove channel
+  });
+  client.on('memberJoined', (member) => {
+    // TODO update members -- how can we guarantee that the REST API
+    // is up to date without using a timeout?
+  });
+  client.on('memberLeft', async (member) => {
+    // TODO remove member
+  });
+  client.on('channelUpdated', async ({ channel }) => {
+    // TODO update unread count
+  });
+  client.on('messageAdded', async (message) => {
+    // TODO update unread count and channel last message
+  });
+  client.on('tokenAboutToExpire', async () => {
+    try {
+      const newToken = await renewTwilioToken({
+        userId
+      });
 
-  return Promise.all(promises);
+      if (!newToken || (newToken && newToken === '')) {
+        return;
+      }
+
+      await client.updateToken(newToken);
+    } catch (e) {
+      // TODO add error handling
+    }
+  });
 };
 
 const useChat = () => {
   const dispatch: Dispatch<Action> = useDispatch();
+
+  const currentUser: User = useSelector((state: { user: UserState }) => state.user.data);
 
   const initialLoadTriggered: boolean = useSelector(
     (state: { hudChat: HudChatState }) => state.hudChat.initialLoadTriggered
@@ -72,7 +143,7 @@ const useChat = () => {
 
   const loadChat = () => {
     if (!initialLoadTriggered) {
-      triggerLoadChat(dispatch);
+      triggerLoadChat(dispatch, currentUser.userId);
     }
   };
 

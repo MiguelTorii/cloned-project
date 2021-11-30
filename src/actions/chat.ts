@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import uuidv4 from 'uuid/v4';
-import Chat from 'twilio-chat';
+import Chat, { Client } from 'twilio-chat';
 import update from 'immutability-helper';
 import { push } from 'connected-react-router';
 import moment from 'moment';
@@ -624,7 +624,7 @@ export const handleInitChat =
         return;
       }
 
-      const client = await Chat.create(accessToken, {
+      const client: Client = await Chat.create(accessToken, {
         logLevel: 'silent'
       });
       let paginator = await client.getSubscribedChannels();
@@ -661,7 +661,6 @@ export const handleInitChat =
       const unreadMessages = await Promise.all(promises);
       channels.forEach((c, key) => {
         local[c.sid] = {
-          // unread: unreadCount(c),
           unread: unreadMessages[key][c.sid],
           twilioChannel: c
         };

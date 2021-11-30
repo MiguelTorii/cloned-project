@@ -8,6 +8,7 @@ import { callApi } from './api_base';
 import { getToken } from './utils';
 import { APICreateChat } from './models/APICreateChat';
 import { APIClassmate } from './models/APIClassmate';
+import { APIChat } from './models/APIChat';
 
 export const sendMessage = async ({
   message,
@@ -148,6 +149,15 @@ export const getCommunityMembers = async ({
     fullName: `${m.first_name} ${m.last_name}`,
     roleId: m.role_id
   }));
+};
+
+export const getChannelMetadata = async (): Promise<APIChat[]> => {
+  const result: { chats: APIChat[] } = await callApi({
+    url: `${API_ROUTES.CHAT_V1}`,
+    method: 'GET'
+  });
+
+  return result.chats;
 };
 
 export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<string> => {

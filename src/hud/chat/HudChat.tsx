@@ -13,9 +13,8 @@ const HudChat = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.chatModule} />
-      <ChatMessages />
       <ChatChannels />
+      <ChatMessages />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { APIChat } from '../../api/models/APIChat';
 import { APICommunity } from '../../api/models/APICommunity';
 import { APICommunityChannel } from '../../api/models/APICommunityChannel';
 import { APICommunityChannelGroup } from '../../api/models/APICommunityChannelGroup';
@@ -54,6 +55,7 @@ export interface IBuiltChannels {
 }
 
 export const buildChannels = (
+  directChats: APIChat[],
   communityChannelGroups: APICommunityChannelGroups[],
   communityMemberGroups: ClassmateGroup[],
   idToCommunity: Record<string, CommunityData>
@@ -84,6 +86,20 @@ export const buildChannels = (
         }
       });
     }
+  });
+
+  // Update the direct chat so it can list its associated channels.
+  const directChatCommunity: CommunityData = idToCommunity[DEFAULT_COMMUNITY_MENU_ITEMS.id];
+  directChats.forEach((directChat: APIChat) => {
+    const channelData: ChannelData = {
+      id: directChat.id,
+      isLoading: false,
+      unreadCount: 0,
+      displayName: directChat.group_name
+    };
+    idToChannel[directChat.id] = channelData;
+
+    directChatCommunity.channelIdsInDisplayOrder.push(directChat.id);
   });
 
   communityMemberGroups.forEach((memberGroup: ClassmateGroup) => {
