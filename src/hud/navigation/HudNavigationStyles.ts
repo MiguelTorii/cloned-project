@@ -19,8 +19,8 @@ export const useStyles = makeStyles((theme: any) => ({
     height: '30px',
     width: '30px',
     alignItems: 'center',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2)
+    marginLeft: theme.spacing(1 / 2),
+    marginRight: theme.spacing(1 / 2)
   },
   parentNavigationMenu: {
     marginTop: theme.spacing(4)

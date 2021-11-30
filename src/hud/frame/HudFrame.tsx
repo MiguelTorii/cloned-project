@@ -13,6 +13,7 @@ import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
   MORE_MAIN_AREA,
+  CHAT_MAIN_AREA,
   PROFILE_MAIN_AREA,
   COMMUNITIES_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
@@ -23,6 +24,7 @@ import {
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import HudDisplay from '../display/HudDisplay';
+import ChatPage from '../../containers/CommunityChat/ChatPage';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -48,37 +50,35 @@ const HudFrame = () => {
     <main>
       <CssBaseline />
       <div className={cx(classes.appWithHud)}>
-        {isLeftPaneVisible && (
-          <div className={classes.chat}>
-            <HudChat />
-          </div>
-        )}
-
-        <div className={classes.mainControlPanel}>
+        <div className={classes.appNavbar}>
           <HudControlPanel />
         </div>
-        <div className={classes.mainContainer}>
-          <div className={classes.mainAction}>
-            {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
+        <div className={classes.appContent}>
+          <div className={classes.mainContainer}>
+            <div className={classes.mainAction}>
+              {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
-            {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
+              {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
 
-            {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
+              {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
 
-            {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
+              {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
 
-            {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
+              {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
+
+              {selectedMainArea === CHAT_MAIN_AREA && <ChatPage />}
+            </div>
+            <div className={classes.mainHudDisplay}>
+              <HudDisplay />
+            </div>
           </div>
-          <div className={classes.mainHudDisplay}>
-            <HudDisplay />
-          </div>
+
+          {isRightPaneVisible && (
+            <div className={classes.missions}>
+              <HudMissions />
+            </div>
+          )}
         </div>
-
-        {isRightPaneVisible && (
-          <div className={classes.missions}>
-            <HudMissions />
-          </div>
-        )}
       </div>
     </main>
   );
