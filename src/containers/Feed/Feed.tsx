@@ -126,14 +126,15 @@ class Feed extends React.PureComponent<Props, State> {
       filter.userClasses = [Number(sectionId)];
     } else if (lodash.isEmpty(userClasses)) {
       // If no classes are selected, select all classes by default.
-      const { classList } = user.userClasses;
+      const { classList, pastClasses } = user.userClasses;
+      const classes = filter.pastFilter ? pastClasses : classList;
 
-      if (!classList?.length) {
+      if (!classes?.length) {
         forceReload = true;
       }
 
       // Filter valid Section IDs
-      filter.userClasses = (classList || [])
+      filter.userClasses = (classes || [])
         .map((classData) => classData.section?.[0].sectionId)
         .filter((sectionId) => !!sectionId);
     }
@@ -449,14 +450,14 @@ class Feed extends React.PureComponent<Props, State> {
       push,
       user: {
         data: { userId, schoolId, firstName },
-        userClasses: { classList },
+        userClasses: { classList: activeClasses, pastClasses },
         expertMode
       },
       feed: {
         data: {
           items,
           hasMore,
-          filters: { postTypes, query, from, userClasses, fromDate, toDate }
+          filters: { postTypes, query, from, userClasses, fromDate, toDate, pastFilter }
         }
       },
       router: {
@@ -467,6 +468,7 @@ class Feed extends React.PureComponent<Props, State> {
       api
     } = this.props;
     const { activeAction, activeTab, openClassmates, isFiltering } = this.state;
+    const classList = pastFilter ? pastClasses : activeClasses;
     let courseName = '';
 
     if (items.length > 0) {

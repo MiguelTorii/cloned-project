@@ -57,7 +57,7 @@ export type UserState = {
   };
   userClasses: {
     classList: Array<UserClass> | null | undefined;
-    pastClasses?: Array<Record<string, any>> | null | undefined;
+    pastClasses?: Array<UserClass> | null | undefined;
     canAddClasses: boolean;
     emptyState: {
       body: string;
