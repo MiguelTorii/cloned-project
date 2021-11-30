@@ -1,8 +1,10 @@
+import Client from 'twilio-chat';
 import { Action } from '../../types/action';
 import { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
 
 export const hudChatActions = {
   START_CHAT_LOAD: 'START_CHAT_LOAD',
+  INIT_CHAT_SOCKET: 'INIT_CHAT_SOCKET',
   SELECT_COMMUNITY_ID: 'SELECT_COMMUNITY_ID',
   SET_COMMUNITIES_AND_CHANNELS: 'SET_COMMUNITIES_AND_CHANNELS',
   START_CHANNEL_DATA_LOAD: 'START_CHANNEL_DATA_LOAD',
@@ -14,14 +16,23 @@ export const startChatLoad = (): Action => ({
   payload: {}
 });
 
+export const initChatSocket = (socketClient: Client): Action => ({
+  type: hudChatActions.INIT_CHAT_SOCKET,
+  payload: {
+    socketClient
+  }
+});
+
 export const setCommunitiesAndChannels = (
   builtCommunities: IBuiltCommunities,
-  builtChannels: IBuiltChannels
+  builtChannels: IBuiltChannels,
+  selectedCommunityId: string
 ): Action => ({
   type: hudChatActions.SET_COMMUNITIES_AND_CHANNELS,
   payload: {
     builtCommunities,
-    builtChannels
+    builtChannels,
+    selectedCommunityId
   }
 });
 

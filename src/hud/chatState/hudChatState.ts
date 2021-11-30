@@ -1,5 +1,5 @@
+import Client from 'twilio-chat';
 import { Classmate } from '../../types/models';
-import DEFAULT_COMMUNITY_MENU_ITEMS from '../../containers/CommunityChat/constants';
 
 export type ChannelData = {
   id: string;
@@ -30,13 +30,15 @@ export type HudChatState = {
   selectedCommunityId: string;
   idToChannel: Record<string, ChannelData>;
   selectedChannelId: string;
+  socketClient: Client | null;
 };
 
 export const defaultState: HudChatState = {
   initialLoadTriggered: false,
   idToCommunity: {},
   communityIdsInDisplayOrder: [],
-  selectedCommunityId: DEFAULT_COMMUNITY_MENU_ITEMS.id,
+  selectedCommunityId: '',
   idToChannel: {},
-  selectedChannelId: ''
+  selectedChannelId: '',
+  socketClient: null
 };

@@ -8,7 +8,12 @@ import uuidv4 from 'uuid/v4';
 import parse from 'html-react-parser';
 import type { ChatMessages } from '../types/models';
 
-export const getTitle = (channel: Record<string, any>, userId: string, members: any[]) => {
+/**
+ * Use any type for channel because channelState is a private property
+ * that we should not be accessing.
+ * TODO remove twilio or figure out the proper (i.e. public) way to do this.
+ */
+export const getTitle = (channel: any, userId: string, members: any[]) => {
   try {
     const {
       state,

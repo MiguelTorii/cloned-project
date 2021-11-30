@@ -233,7 +233,7 @@ const CommunityChatMessageItem = ({
       return (
         <>
           <MessageQuill
-            isCommunityChat
+            isNamedChannel
             userId={myUserId}
             value={value}
             setValue={setValue}

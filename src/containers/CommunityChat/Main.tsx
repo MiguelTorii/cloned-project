@@ -461,21 +461,6 @@ const Main = ({
       setValue(currentValue);
     }
   }, []);
-  const handleClick = useCallback(
-    (quill) => async () => {
-      if (value.trim() === '' || !value) {
-        setShowError(true);
-      } else {
-        await onSendMessage(value.replaceAll('<p><br></p>', ''));
-        setValue('');
-
-        if (quill) {
-          quill.setText('');
-        }
-      }
-    },
-    [onSendMessage, value]
-  );
   const handleImageClose = useCallback(() => setImages([]), []);
   const startVideo = useCallback(() => {
     window.open(`/video-call/${channel.sid}`, '_blank');
@@ -585,7 +570,7 @@ const Main = ({
 
         {channel && (
           <MessageQuill
-            isCommunityChat={isCommunityChat}
+            isNamedChannel={isCommunityChat}
             value={value}
             userId={userId}
             setFiles={setFiles}
@@ -595,7 +580,6 @@ const Main = ({
             onChange={handleRTEChange}
             showNotification={showNotification}
             setValue={setValue}
-            handleClick={handleClick}
             onTyping={onTyping}
             showError={showError}
           />

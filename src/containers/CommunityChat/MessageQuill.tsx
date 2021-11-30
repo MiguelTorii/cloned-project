@@ -4,7 +4,6 @@ import cx from 'classnames';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
@@ -29,8 +28,7 @@ type Props = {
   showNotification?: any;
   setFiles?: any;
   files?: any;
-  isCommunityChat?: any;
-  handleClick?: any;
+  isNamedChannel?: any;
 };
 
 const MessageQuill = ({
@@ -46,8 +44,7 @@ const MessageQuill = ({
   showNotification,
   setFiles,
   files,
-  isCommunityChat,
-  handleClick
+  isNamedChannel
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
@@ -135,7 +132,7 @@ const MessageQuill = ({
     },
     scrollingContainer: 'editor',
     formats,
-    placeholder: isCommunityChat ? 'Send a message to channel' : 'Send a message',
+    placeholder: isNamedChannel ? 'Send a message to channel' : 'Send a message',
     preserveWhitespace: true
   } as any);
 
