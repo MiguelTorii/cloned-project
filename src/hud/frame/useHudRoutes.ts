@@ -27,7 +27,11 @@ import {
   SCHOLARSHIPS_AREA,
   STUDY_TIPS_AREA,
   STUDY_TOOLS_MAIN_AREA,
-  SUPPORT_AREA
+  SUPPORT_AREA,
+  CREATE_A_POST_AREA,
+  ASK_A_QUESTION_AREA,
+  SHARE_RESOURCES_AREA,
+  SHARE_NOTES_AREA
 } from '../navigationState/hudNavigation';
 import { setSelectedMainSubArea } from '../navigationState/hudNavigationActions';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
@@ -99,7 +103,11 @@ const areasToUrl: Record<string, Record<string, string>> = {
   },
   [COMMUNITIES_MAIN_AREA]: {
     [CLASSES_AREA]: '/classes',
-    [FEEDS_AREA]: '/feed'
+    [FEEDS_AREA]: '/feed',
+    [CREATE_A_POST_AREA]: '/create_post?tab=0',
+    [ASK_A_QUESTION_AREA]: '/create_post?tab=1',
+    [SHARE_NOTES_AREA]: '/create_post?tab=2',
+    [SHARE_RESOURCES_AREA]: '/create_post?tab=3'
   },
   [STUDY_TOOLS_MAIN_AREA]: {
     [NOTES_AREA]: '/notes',
