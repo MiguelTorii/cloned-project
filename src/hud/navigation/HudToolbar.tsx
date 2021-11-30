@@ -2,20 +2,19 @@ import React, { useState } from 'react';
 import { Button, IconButton, Tooltip } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { HudTool } from './HudTool';
+import { HudToolData } from './HudToolData';
 import { useStyles } from './HudToolbarStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+import HudTool from './HudTool';
 
 type Props = {
-  navbarItems: HudTool[];
+  navbarItems: HudToolData[];
   onSelectItem: (navbarItemId: string) => void;
   isVertical?: boolean;
 };
 
 const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
   const classes: any = useStyles();
-
-  const [selectedTool, setSelectedTool] = useState<HudTool>(navbarItems[0]);
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
@@ -25,56 +24,19 @@ const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainSubAreas
   );
 
-  const selectTool = (tool: HudTool) => {
-    setSelectedTool(tool);
+  const selectTool = (tool: HudToolData) => {
     onSelectItem(tool.id);
-  };
-
-  const renderIconButton = (navbarItem: HudTool) => {
-    const isActive = navbarItem.id === selectedMainSubAreas[selectedMainArea];
-
-    if (navbarItem.icon) {
-      return (
-        <Button
-          color={navbarItem === selectedTool ? 'primary' : 'default'}
-          className={clsx(classes.toolButton, isActive && classes.selectedButton)}
-          size="medium"
-          onClick={() => selectTool(navbarItem)}
-        >
-          {navbarItem.icon}
-        </Button>
-      );
-    }
-    if (navbarItem.iconText) {
-      return (
-        <Button
-          color={'secondary'}
-          className={clsx(classes.toolButton, isActive && classes.selectedButton)}
-          size="medium"
-          onClick={() => selectTool(navbarItem)}
-        >
-          {navbarItem.iconText}
-        </Button>
-      );
-    }
-    return (
-      <Button
-        key={navbarItem.id}
-        color={navbarItem === selectedTool ? 'primary' : 'default'}
-        className={clsx(classes.textIconButton, isActive && classes.selectedButton)}
-        onClick={() => selectTool(navbarItem)}
-      >
-        {navbarItem.displayName}
-      </Button>
-    );
   };
 
   return (
     <div className={isVertical ? classes.verticalToolbar : classes.horizontalToolbar}>
-      {navbarItems.map((navbarItem: HudTool, index: number) => (
-        <Tooltip key={navbarItem.id} title={navbarItem.displayName} arrow placement="top">
-          {renderIconButton(navbarItem)}
-        </Tooltip>
+      {navbarItems.map((navbarItem: HudToolData) => (
+        <HudTool
+          key={navbarItem.id}
+          navbarItem={navbarItem}
+          onSelectItem={() => selectTool(navbarItem)}
+          isSelected={navbarItem.id === selectedMainSubAreas[selectedMainArea]}
+        />
       ))}
     </div>
   );

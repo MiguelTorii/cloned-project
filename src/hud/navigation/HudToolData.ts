@@ -1,9 +1,10 @@
 import { ReactElement } from 'react';
 
-export interface HudTool {
+export interface HudToolData {
   id: string;
   displayName: string;
   icon?: ReactElement;
   iconText?: string;
-  childTools?: HudTool[];
+  childTools?: HudToolData[];
+  showIconOnly?: boolean;
 }

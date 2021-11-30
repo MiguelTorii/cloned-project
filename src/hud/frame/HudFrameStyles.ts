@@ -11,14 +11,16 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '270px',
     flexShrink: 0,
     overflow: 'hidden',
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(7)
   },
   mainContainer: {
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-    height: '100%'
+    height: '100%',
+    marginTop: theme.spacing(8)
   },
   mainAction: {
     flexGrow: 1,
@@ -26,8 +28,9 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   mainControlPanel: {
     flexShrink: 0,
-    height: '120px',
-    overflow: 'hidden'
+    width: '100%',
+    overflow: 'hidden',
+    position: 'absolute'
   },
   mainHudDisplay: {
     flexShrink: 0,
@@ -37,6 +40,7 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '270px',
     flexShrink: 0,
     overflow: 'hidden',
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(7)
   }
 }));

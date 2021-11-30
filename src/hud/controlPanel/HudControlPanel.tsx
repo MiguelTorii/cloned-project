@@ -1,8 +1,5 @@
 import React from 'react';
 import { useStyles } from './HudControlPanelStyles';
-import HudStoryAvatar from '../story/HudStoryAvatar';
-import HudStoryMessage from '../story/HudStoryMessage';
-import HudExperienceBar from '../experienceBar/HudExperienceBar';
 import HudMainNavigation from '../navigation/HudMainNavigation';
 import HudLeftNavigation from '../navigation/HudLeftNavigation';
 import HudRightNavigation from '../navigation/HudRightNavigation';

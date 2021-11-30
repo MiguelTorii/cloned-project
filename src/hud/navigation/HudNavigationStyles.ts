@@ -3,29 +3,33 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles((theme: any) => ({
   controlPanelMainSection: {
     display: 'flex',
-    flexDirection: 'row',
-    borderColor: theme.circleIn.palette.white,
-    borderLeft: '1px solid',
-    borderRight: '1px solid'
+    flexDirection: 'row'
   },
-  controlPanelMainSectionGroup: {
-    display: 'grid',
-    borderColor: theme.circleIn.palette.white,
-    borderLeft: '1px solid',
-    borderRight: '1px solid'
+  parentNavigationItemText: {
+    fontWeight: 'bold'
   },
-  toolGroup: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginLeft: theme.spacing(),
-    marginRight: theme.spacing()
+  parentNavigationItem: {
+    padding: theme.spacing(2),
+    height: '100%',
+    '&:hover': {
+      backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
+    }
   },
-  controlPanelLabel: {
-    marginLeft: theme.spacing()
-  },
-  navigationIcon: {
+  parentNavigationIcon: {
+    height: '30px',
     width: '30px',
-    height: '30px'
+    alignItems: 'center',
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2)
+  },
+  parentNavigationMenu: {
+    marginTop: theme.spacing(4)
+  },
+  childToolItem: {
+    alignItems: 'left',
+    width: '200px'
+  },
+  childToolIcon: {
+    width: '30px'
   }
 }));
