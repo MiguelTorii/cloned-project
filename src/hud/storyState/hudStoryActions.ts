@@ -2,7 +2,8 @@ import { Action } from '../../types/action';
 
 export const hudStoryActions = {
   SET_CONVERSATION: 'SET_CONVERSATION',
-  INITIAL_STORY_LOAD: 'INITIAL_STORY_LOAD'
+  INITIAL_STORY_LOAD: 'INITIAL_STORY_LOAD',
+  RESTART_INITIAL_STORY_LOAD: 'RESTART_INITIAL_STORY_LOAD'
 };
 
 export const setConversation = (conversation: string): Action => ({
@@ -13,6 +14,11 @@ export const setConversation = (conversation: string): Action => ({
 });
 
 export const setInitialLoad = (): Action => ({
-  type: hudStoryActions.INITIAL_STORY_LOAD,
+  type: hudStoryActions.RESTART_INITIAL_STORY_LOAD,
+  payload: {}
+});
+
+export const restartInitialLoad = (): Action => ({
+  type: hudStoryActions.RESTART_INITIAL_STORY_LOAD,
   payload: {}
 });

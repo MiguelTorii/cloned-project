@@ -7,6 +7,13 @@ import { HudStoryState } from './hudStoryState';
 // story sequence delay in milliseconds
 const storySequenceDelay = 7000;
 
+const storyTimeout = (storyMessage, index) => {
+  const dispatch = useDispatch();
+  setTimeout(() => {
+    dispatch(setConversation(storyMessage));
+  }, storySequenceDelay * index);
+};
+
 const useStorySequence = () => {
   const dispatch = useDispatch();
   const startConversation = (storySequence: string[]) => {

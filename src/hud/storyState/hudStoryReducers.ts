@@ -14,6 +14,11 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
         ...state,
         initialLoadTriggered: true
       };
+    case hudStoryActions.RESTART_INITIAL_STORY_LOAD:
+      return {
+        ...state,
+        initialLoadTriggered: false
+      };
     default:
       return state;
   }

@@ -73,7 +73,7 @@ const StudyCircleIn = ({ user }: Props) => {
     <Box>
       <Box>
         <Typography className={classes.pageTitle} variant="h5" paragraph>
-          Study Circle
+          Study Tips
         </Typography>
         <Typography className={classes.body} variant="body1" paragraph>
           We get it. Studying can be hard and overwhelming. Sometimes you don’t know where to start.
