@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { CalendarToday } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
+import IconChat from '@material-ui/icons/Chat';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
 import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
@@ -18,14 +20,14 @@ import { ReactComponent as IconAchievements } from '../../assets/svg/achievement
 import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
 import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
 import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
-import HudToolbar from './HudToolbar';
-
 import { useStyles } from './HudNavigationStyles';
 import {
   ABOUT_ME_AREA,
   ACHIEVEMENTS_MAIN_AREA,
   BOOKMARKED_POSTS_AREA,
   CALENDAR_AREA,
+  CHAT_MAIN_AREA,
+  CHAT_AREA,
   CLASSES_AREA,
   CLASSMATES_AREA,
   COMMUNITIES_MAIN_AREA,
@@ -59,6 +61,14 @@ const HudMainNavigation = () => {
     (state: { hudNavigation: HudNavigationState }) =>
       state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
   );
+
+  const chatNavigationItems: HudToolData[] = [
+    {
+      id: CHAT_AREA,
+      displayName: 'Chat',
+      icon: <IconChat />
+    }
+  ];
 
   const classesNavigationItems: HudToolData[] = [
     {
@@ -136,6 +146,13 @@ const HudMainNavigation = () => {
     dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
   };
 
+  const chatNavigationItem: HudToolData = {
+    id: CHAT_MAIN_AREA,
+    displayName: 'chat',
+    icon: <IconChat />,
+    childTools: chatNavigationItems
+  };
+
   const classesNavigationItem: HudToolData = {
     id: COMMUNITIES_MAIN_AREA,
     displayName: 'Classes',
@@ -162,6 +179,7 @@ const HudMainNavigation = () => {
   };
 
   const rootNavigationItems: HudToolData[] = [
+    chatNavigationItem,
     classesNavigationItem,
     studyToolsNavigationItem,
     achievementsNavigationItem

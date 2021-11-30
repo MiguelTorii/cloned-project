@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button, Tooltip } from '@material-ui/core';
-import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudToolbarStyles';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 type Props = {
   navbarItem: HudToolData;
@@ -14,10 +12,6 @@ type Props = {
 
 const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
   const classes: any = useStyles();
-
-  const selectedMainSubAreas: Record<string, string> = useSelector(
-    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainSubAreas
-  );
 
   const renderIconButton = () => {
     if (navbarItem.icon) {

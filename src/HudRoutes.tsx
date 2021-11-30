@@ -83,8 +83,8 @@ const HudRoutes = () => (
           <Route exact path="/getTheMobileApp" component={withTracker(HudFrame)} />
 
           {/* Signed in routes: Chat routes */}
-          <Route exact path="/chat/:hashId" component={withTracker(ChatChannelPage)} />
-          <Route exact path="/chat" component={withTracker(ChatPage)} />
+          <Route exact path="/chat/:hashId" component={withTracker(HudFrame)} />
+          <Route exact path="/chat" component={withTracker(HudFrame)} />
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
           <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
           <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />

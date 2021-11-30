@@ -5,6 +5,8 @@ import { Action } from 'redux';
 import { CampaignState } from '../../reducers/campaign';
 import { CREATE_POST_PATHNAME, EDIT_POST_PATHNAME_PREFIX } from '../../routeConstants';
 import {
+  CHAT_MAIN_AREA,
+  CHAT_AREA,
   ABOUT_ME_AREA,
   ACHIEVEMENTS_MAIN_AREA,
   BADGES_AREA,
@@ -62,6 +64,9 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/edit/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/create/notes': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
 
+  // CHAT_MAIN_AREA
+  '/chat': { mainArea: CHAT_MAIN_AREA, mainSubArea: CHAT_AREA },
+
   // STUDY_TOOLS_MAIN_AREA
   '/notes': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: NOTES_AREA },
   '/workflow': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: CALENDAR_AREA },
@@ -88,6 +93,9 @@ const areasToUrl: Record<string, Record<string, string>> = {
     [ABOUT_ME_AREA]: '/profile',
     [POINTS_HISTORY_AREA]: '/pointsHistory',
     [REWARDS_STORE_AREA]: '/store'
+  },
+  [CHAT_MAIN_AREA]: {
+    [CHAT_AREA]: '/chat'
   },
   [COMMUNITIES_MAIN_AREA]: {
     [CLASSES_AREA]: '/classes',
