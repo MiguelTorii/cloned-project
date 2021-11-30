@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
+import { CalendarToday } from '@material-ui/icons';
 import { useStyles } from './HudNavigationStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
@@ -18,11 +19,15 @@ import { ReactComponent as IconPointsHistory } from '../../assets/svg/points_his
 import { ReactComponent as IconRewardStore } from '../../assets/svg/rewards-icon-off.svg';
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
+import HudTool from './HudTool';
+import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
 
 const ICON_SIZE = 30;
 
 const HudRightNavigation = () => {
   const classes: any = useStyles();
+
+  const dispatch: Dispatch<Action> = useDispatch();
 
   // TODO show icon state
   const isVisible: boolean = useSelector(
@@ -58,7 +63,26 @@ const HudRightNavigation = () => {
     showIconOnly: true
   };
 
-  return <HudToolWithDropdown parentNavigationItem={profileNavigationItem} />;
+  const missionNavigationItem = {
+    id: RIGHT_SIDE_AREA,
+    displayName: 'Missions',
+    icon: <CalendarToday />
+  };
+
+  const selectSideItem = () => {
+    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
+  };
+
+  return (
+    <div className={classes.controlPanelMainSection}>
+      <HudTool
+        onSelectItem={selectSideItem}
+        navbarItem={missionNavigationItem}
+        isSelected={isVisible}
+      />
+      <HudToolWithDropdown parentNavigationItem={profileNavigationItem} />;
+    </div>
+  );
 };
 
 export default HudRightNavigation;

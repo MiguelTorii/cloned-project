@@ -8,8 +8,6 @@ import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-
 import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
 import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
-import { ReactComponent as IconChatMembers } from '../../assets/svg/chat-studyroom-members.svg';
-import { ReactComponent as IconBookmarkedPosts } from '../../assets/svg/bookmarked_posts.svg';
 import { ReactComponent as IconMyClasses } from '../../assets/svg/classes_overview.svg';
 import { ReactComponent as IconClassFeed } from '../../assets/svg/class_feed.svg';
 import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
@@ -20,16 +18,17 @@ import { ReactComponent as IconAchievements } from '../../assets/svg/achievement
 import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
 import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
 import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
+import { ReactComponent as QuestionIcon } from '../../assets/svg/question-mark.svg';
+import { ReactComponent as ResourceIcon } from '../../assets/svg/resource-mark.svg';
+import { ReactComponent as ShareNotesIcon } from '../../assets/svg/note-mark.svg';
+import { ReactComponent as CreatePostIcon } from '../../assets/svg/message-mark.svg';
 import { useStyles } from './HudNavigationStyles';
 import {
-  ABOUT_ME_AREA,
   ACHIEVEMENTS_MAIN_AREA,
-  BOOKMARKED_POSTS_AREA,
   CALENDAR_AREA,
   CHAT_MAIN_AREA,
   CHAT_AREA,
   CLASSES_AREA,
-  CLASSMATES_AREA,
   COMMUNITIES_MAIN_AREA,
   FEEDS_AREA,
   FLASHCARDS_AREA,
@@ -38,29 +37,20 @@ import {
   LEADERBOARD_AREA,
   MORE_MAIN_AREA,
   NOTES_AREA,
-  POINTS_HISTORY_AREA,
-  PROFILE_MAIN_AREA,
-  REWARDS_STORE_AREA,
-  RIGHT_SIDE_AREA,
   STUDY_TIPS_AREA,
   STUDY_TOOLS_MAIN_AREA,
-  SUPPORT_AREA
+  SUPPORT_AREA,
+  ASK_A_QUESTION_AREA,
+  SHARE_RESOURCES_AREA,
+  SHARE_NOTES_AREA,
+  CREATE_A_POST_AREA
 } from '../navigationState/hudNavigation';
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
-import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
-import HudTool from './HudTool';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const HudMainNavigation = () => {
   // TODO add this to make the icons all the same size.
   const classes: any = useStyles();
-  const dispatch: Dispatch<Action> = useDispatch();
-
-  const missionsVisible: boolean = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
-  );
 
   const chatNavigationItems: HudToolData[] = [
     {
@@ -82,14 +72,24 @@ const HudMainNavigation = () => {
       icon: <IconClassFeed />
     },
     {
-      id: BOOKMARKED_POSTS_AREA,
-      displayName: 'Bookmarked Posts',
-      icon: <IconBookmarkedPosts />
+      id: CREATE_A_POST_AREA,
+      displayName: 'Create a post',
+      icon: <CreatePostIcon />
     },
     {
-      id: CLASSMATES_AREA,
-      displayName: 'Classmates',
-      icon: <IconChatMembers />
+      id: ASK_A_QUESTION_AREA,
+      displayName: 'Ask a question',
+      icon: <QuestionIcon />
+    },
+    {
+      id: SHARE_NOTES_AREA,
+      displayName: 'Share notes',
+      icon: <ShareNotesIcon />
+    },
+    {
+      id: SHARE_RESOURCES_AREA,
+      displayName: 'Share resources',
+      icon: <ResourceIcon />
     }
   ];
 
@@ -142,10 +142,6 @@ const HudMainNavigation = () => {
     }
   ];
 
-  const selectSideItem = (sideArea: string) => {
-    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
-  };
-
   const chatNavigationItem: HudToolData = {
     id: CHAT_MAIN_AREA,
     displayName: 'chat',
@@ -185,12 +181,6 @@ const HudMainNavigation = () => {
     achievementsNavigationItem
   ];
 
-  const missionNavigationItem = {
-    id: RIGHT_SIDE_AREA,
-    displayName: 'Missions',
-    icon: <CalendarToday />
-  };
-
   return (
     <div className={classes.controlPanelMainSection}>
       {rootNavigationItems.map((rootNavigationItem) => (
@@ -199,11 +189,6 @@ const HudMainNavigation = () => {
           key={rootNavigationItem.id}
         />
       ))}
-      <HudTool
-        onSelectItem={selectSideItem}
-        navbarItem={missionNavigationItem}
-        isSelected={missionsVisible}
-      />
     </div>
   );
 };
