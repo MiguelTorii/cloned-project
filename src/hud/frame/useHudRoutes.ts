@@ -41,7 +41,7 @@ type TAreaIds = {
   mainSubArea: string;
 };
 
-const landingPage: TAreaIds = {
+export const landingPage: TAreaIds = {
   mainArea: COMMUNITIES_MAIN_AREA,
   mainSubArea: FEEDS_AREA
 };

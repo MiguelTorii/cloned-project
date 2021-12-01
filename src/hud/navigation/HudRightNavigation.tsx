@@ -9,7 +9,8 @@ import {
   POINTS_HISTORY_AREA,
   PROFILE_MAIN_AREA,
   REWARDS_STORE_AREA,
-  RIGHT_SIDE_AREA
+  RIGHT_SIDE_AREA,
+  SIGN_OUT_BUTTON
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -52,6 +53,11 @@ const HudRightNavigation = () => {
       id: REWARDS_STORE_AREA,
       displayName: 'Rewards Store',
       icon: <IconRewardStore />
+    },
+    {
+      id: SIGN_OUT_BUTTON,
+      displayName: 'Sign Out'
+      // icon: <IconRewardStore />
     }
   ];
 

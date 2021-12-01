@@ -14,7 +14,7 @@ export const setConversation = (conversation: string): Action => ({
 });
 
 export const setInitialLoad = (): Action => ({
-  type: hudStoryActions.RESTART_INITIAL_STORY_LOAD,
+  type: hudStoryActions.INITIAL_STORY_LOAD,
   payload: {}
 });
 
