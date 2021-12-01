@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudNavigationStyles';
 import { SIGN_OUT_BUTTON, SUPPORT_AREA } from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -17,6 +19,12 @@ const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
   const dispatch = useDispatch();
 
   const setHudArea = useHudRoutes();
+
+  const selectedMainArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
+
+  const isSelected = parentNavigationItem.id === selectedMainArea;
 
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === SUPPORT_AREA) {
@@ -46,7 +54,7 @@ const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
     <div id={parentNavigationItem.id} className={classes.controlPanelMainSectionGroup}>
       {parentNavigationItem.childTools.length === 1 ? (
         <Button
-          className={classes.parentNavigationItem}
+          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
           onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
         >
           <ListItemIcon className={classes.parentNavigationIcon}>
@@ -60,7 +68,10 @@ const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
         </Button>
       ) : (
         <>
-          <Button className={classes.parentNavigationItem} onClick={onMenuClick}>
+          <Button
+            className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+            onClick={onMenuClick}
+          >
             <ListItemIcon className={classes.parentNavigationIcon}>
               {parentNavigationItem.icon}
             </ListItemIcon>

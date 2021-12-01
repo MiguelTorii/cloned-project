@@ -13,7 +13,11 @@ export const useStyles = makeStyles((theme: any) => ({
     height: '100%',
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
-    }
+    },
+    borderRadius: 0
+  },
+  selectedButton: {
+    backgroundColor: theme.circleIn.palette.gray1
   },
   parentNavigationIcon: {
     height: '30px',

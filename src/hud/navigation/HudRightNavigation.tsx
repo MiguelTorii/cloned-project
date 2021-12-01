@@ -30,7 +30,6 @@ const HudRightNavigation = () => {
 
   const dispatch: Dispatch<Action> = useDispatch();
 
-  // TODO show icon state
   const isVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>
       state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
@@ -71,7 +70,7 @@ const HudRightNavigation = () => {
 
   const missionNavigationItem = {
     id: RIGHT_SIDE_AREA,
-    displayName: 'Missions',
+    displayName: 'Upcoming tasks',
     icon: <CalendarToday />
   };
 

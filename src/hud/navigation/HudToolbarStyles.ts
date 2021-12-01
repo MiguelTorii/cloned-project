@@ -4,7 +4,8 @@ export const useStyles = makeStyles((theme: any) => ({
   toolButton: {
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
-    }
+    },
+    borderRadius: 0
   },
   textIconButton: {
     width: '60px',

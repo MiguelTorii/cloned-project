@@ -16,17 +16,21 @@ const useStyles = makeStyles((theme: any) => ({
     height: '100%',
     boxSizing: 'border-box',
     backgroundColor: theme.circleIn.palette.navbarBackgroundColor,
-    border: `1px solid ${theme.circleIn.palette.navbarBorderColor}`
+    borderLeft: `1px solid ${theme.circleIn.palette.navbarBorderColor}`,
+    borderRight: `1px solid ${theme.circleIn.palette.navbarBorderColor}`,
+    borderBottom: `1px solid ${theme.circleIn.palette.navbarBorderColor}`
   },
   main: {
     display: 'flex',
     position: 'relative',
-    borderRight: '1px solid rgba(255,255,255,0.15)',
     height: '100%'
   },
   right: {
     height: '100%',
-    overflow: 'auto'
+    overflow: 'auto',
+    borderLeft: `1px solid ${theme.circleIn.palette.navbarBorderColor}`,
+    borderRight: `1px solid ${theme.circleIn.palette.navbarBorderColor}`,
+    borderBottom: `1px solid ${theme.circleIn.palette.navbarBorderColor}`
   },
   hidden: {
     border: 'none',
