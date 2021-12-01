@@ -80,7 +80,7 @@ const HudRightNavigation = () => {
         navbarItem={missionNavigationItem}
         isSelected={isVisible}
       />
-      <HudToolWithDropdown parentNavigationItem={profileNavigationItem} />;
+      <HudToolWithDropdown parentNavigationItem={profileNavigationItem} />
     </div>
   );
 };
