@@ -142,6 +142,7 @@ const LeftMenu = ({
             inputProps={{
               'aria-label': 'search'
             }}
+            fullWidth
           />
         </div>
       </Grid>
