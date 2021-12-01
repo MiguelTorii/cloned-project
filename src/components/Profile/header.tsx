@@ -163,16 +163,18 @@ class Header extends React.PureComponent<Props, State> {
                 bgColorPath="circleIn.palette.feedBackground"
                 fromChat={false}
               >
-                <Avatar
-                  alt={initials}
-                  src={userProfileUrl}
-                  className={classes.bigAvatar}
-                  classes={{
-                    img: classes.img
-                  }}
-                >
-                  {initials}
-                </Avatar>
+                <div className={classes.profileBackground}>
+                  <Avatar
+                    alt={initials}
+                    src={userProfileUrl}
+                    className={classes.bigAvatar}
+                    classes={{
+                      img: classes.img
+                    }}
+                  >
+                    {initials}
+                  </Avatar>
+                </div>
               </OnlineBadge>
             </div>
           </div>

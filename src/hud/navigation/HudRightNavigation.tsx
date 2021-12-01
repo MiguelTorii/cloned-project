@@ -4,7 +4,7 @@ import { Action, Dispatch } from 'redux';
 import { CalendarToday } from '@material-ui/icons';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { push } from 'connected-react-router';
-import { Badge } from '@material-ui/core';
+import { Badge, Typography } from '@material-ui/core';
 import { useStyles } from './HudNavigationStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
@@ -13,8 +13,7 @@ import {
   POINTS_HISTORY_AREA,
   PROFILE_MAIN_AREA,
   REWARDS_STORE_AREA,
-  RIGHT_SIDE_AREA,
-  SIGN_OUT_BUTTON
+  RIGHT_SIDE_AREA
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -28,8 +27,9 @@ import HudTool from './HudTool';
 import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
 import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
+import { getInitials } from '../../utils/chat';
 
-const ICON_SIZE = 30;
+const ICON_SIZE = '30px';
 
 const HudRightNavigation = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -60,18 +60,25 @@ const HudRightNavigation = () => {
       id: REWARDS_STORE_AREA,
       displayName: 'Rewards Store',
       icon: <IconRewardStore />
-    },
-    {
-      id: SIGN_OUT_BUTTON,
-      displayName: 'Sign Out'
-      // icon: <IconRewardStore />
     }
   ];
+
+  const initials = getInitials(`${profile.firstName} ${profile.lastName}`);
+
+  const profilePicture = profile.profileImage ? (
+    <div className={classes.profileBackground}>
+      <Avatar src={profile.profileImage} desktopSize={ICON_SIZE} mobileSize={ICON_SIZE} />
+    </div>
+  ) : (
+    <div className={classes.profileBackground}>
+      <Typography className={classes.initials}>{initials}</Typography>
+    </div>
+  );
 
   const profileNavigationItem: HudToolData = {
     id: PROFILE_MAIN_AREA,
     displayName: 'Profile',
-    icon: <Avatar src={profile.profileImage} desktopSize={ICON_SIZE} mobileSize={ICON_SIZE} />,
+    icon: profilePicture,
     childTools: profileNavigationItems,
     showIconOnly: true
   };

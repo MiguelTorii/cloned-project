@@ -36,5 +36,21 @@ export const useStyles = makeStyles((theme: any) => ({
   childToolIcon: {
     width: '30px',
     marginRight: theme.spacing(1)
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%'
+  },
+  initials: {
+    width: '100%'
+  },
+  profileBackground: {
+    backgroundColor: theme.circleIn.palette.profilebgColor,
+    borderRadius: '50%',
+    width: '30px',
+    height: '30px',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column'
   }
 }));
