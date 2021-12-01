@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { useDispatch } from 'react-redux';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudNavigationStyles';
-import { SUPPORT_AREA } from '../navigationState/hudNavigation';
+import { SIGN_OUT_BUTTON, SUPPORT_AREA } from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
+import { signOut } from '../../actions/sign-in';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -12,6 +14,7 @@ type Props = {
 
 const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
   const classes: any = useStyles();
+  const dispatch = useDispatch();
 
   const setHudArea = useHudRoutes();
 
@@ -19,6 +22,8 @@ const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
     if (mainSubArea === SUPPORT_AREA) {
       // Open support window
       window.open('https://tutors.circleinapp.com/home', '_blank');
+    } else if (mainSubArea === SIGN_OUT_BUTTON) {
+      dispatch(signOut());
     } else {
       setHudArea(parentNavigationItem.id, mainSubArea);
     }

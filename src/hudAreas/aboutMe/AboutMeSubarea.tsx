@@ -12,22 +12,10 @@ type Props = {
 };
 
 const AboutMeSubarea = ({ userIdToDisplay, from, canEdit }: Props) => {
-  const dispatch = useDispatch();
-
   const classes: any = useStyles();
-
-  const handleSignOut = () => {
-    dispatch(signOut());
-  };
 
   return (
     <div className={classes.container}>
-      {canEdit && (
-        <TransparentButton className={classes.signOutButton} onClick={handleSignOut}>
-          Sign Out
-        </TransparentButton>
-      )}
-
       <Profile
         userId={userIdToDisplay}
         edit={canEdit}

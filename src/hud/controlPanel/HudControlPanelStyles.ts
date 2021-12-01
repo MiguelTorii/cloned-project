@@ -18,5 +18,13 @@ export const useStyles = makeStyles((theme: any) => ({
   missionNavigation: {
     flexShrink: 0,
     overflow: 'hidden'
+  },
+  circleInLogo: {
+    height: '100%'
+  },
+  circleInLogoContainer: {
+    '&:hover': {
+      backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
+    }
   }
 }));
