@@ -7,13 +7,13 @@ import { HudStoryState } from '../storyState/hudStoryState';
 const StoryMessage = () => {
   const classes: any = useStyles();
 
-  const conversation: string = useSelector(
-    (state: { hudStory: HudStoryState }) => state.hudStory.conversation
+  const currentStatement: string = useSelector(
+    (state: { hudStory: HudStoryState }) => state.hudStory.currentStatement
   );
 
   return (
     <div className={classes.storyMessage}>
-      <Typography variant="body1">{conversation}</Typography>
+      <Typography variant="body1">{currentStatement}</Typography>
     </div>
   );
 };
