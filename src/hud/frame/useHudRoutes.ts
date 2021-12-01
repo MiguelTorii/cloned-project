@@ -103,17 +103,16 @@ const areasToUrl: Record<string, Record<string, string>> = {
   },
   [COMMUNITIES_MAIN_AREA]: {
     [CLASSES_AREA]: '/classes',
-    [FEEDS_AREA]: '/feed',
-    [CREATE_A_POST_AREA]: '/create_post?tab=0',
-    [ASK_A_QUESTION_AREA]: '/create_post?tab=1',
-    [SHARE_NOTES_AREA]: '/create_post?tab=2',
-    [SHARE_RESOURCES_AREA]: '/create_post?tab=3'
+    [FEEDS_AREA]: '/feed'
   },
   [STUDY_TOOLS_MAIN_AREA]: {
     [NOTES_AREA]: '/notes',
     [FLASHCARDS_AREA]: '/flashcards',
     [CALENDAR_AREA]: '/workflow',
-    [STUDY_TIPS_AREA]: '/study'
+    [CREATE_A_POST_AREA]: '/create_post?tab=0',
+    [ASK_A_QUESTION_AREA]: '/create_post?tab=1',
+    [SHARE_NOTES_AREA]: '/create_post?tab=2',
+    [SHARE_RESOURCES_AREA]: '/create_post?tab=3'
   },
   [ACHIEVEMENTS_MAIN_AREA]: {
     [GOALS_AREA]: '/goals',
