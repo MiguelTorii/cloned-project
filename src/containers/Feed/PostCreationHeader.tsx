@@ -14,6 +14,8 @@ import IconNote from '../../assets/svg/notes-1.svg';
 import IconResource from '../../assets/svg/links.svg';
 import Tooltip from '../Tooltip/Tooltip';
 import useStyles from './styles';
+import { CampaignState } from '../../reducers/campaign';
+import { UserState } from '../../reducers/user';
 
 const POST_BUTTONS = [
   {
@@ -39,7 +41,12 @@ const POST_BUTTONS = [
 ];
 
 const PostCreationHeader = () => {
-  const me = useSelector((state) => (state as any).user.data);
+  const me = useSelector((state: { user: UserState }) => state.user.data);
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const handleGotoPostCreate = useCallback(
@@ -48,6 +55,11 @@ const PostCreationHeader = () => {
     },
     [dispatch]
   );
+
+  if (isHud) {
+    return null;
+  }
+
   return (
     <Box className={classes.postHeaderRoot}>
       <Paper className={classes.postHeaderPaper}>

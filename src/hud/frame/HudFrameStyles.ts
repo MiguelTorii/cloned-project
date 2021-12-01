@@ -18,7 +18,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     flexDirection: 'row',
     overflow: 'hidden',
-    width: '100%'
+    margin: 'auto',
+    maxWidth: '100%'
   },
   mainContainer: {
     flexGrow: 1,
@@ -39,7 +40,6 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '270px',
     flexShrink: 0,
     overflow: 'hidden',
-    padding: theme.spacing(2),
-    marginTop: theme.spacing(7)
+    padding: theme.spacing(2)
   }
 }));

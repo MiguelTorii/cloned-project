@@ -27,7 +27,7 @@ const StudyToolsArea = () => {
   );
 
   return (
-    <div className={classes.container}>
+    <>
       {selectedMainSubArea === NOTES_AREA && (
         <NotesContextProvider>
           <UserNotesContainer />
@@ -39,7 +39,7 @@ const StudyToolsArea = () => {
       {selectedMainSubArea === STUDY_TIPS_AREA && <Study />}
 
       {selectedMainSubArea === CALENDAR_AREA && <CalendarSubArea />}
-    </div>
+    </>
   );
 };
 

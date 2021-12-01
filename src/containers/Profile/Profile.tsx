@@ -818,6 +818,11 @@ class Profile extends React.PureComponent<Props, State> {
       user: { data: userData }
     } = this.props;
     const { userProfile } = this.state;
+
+    if (!userProfile.userId) {
+      return null;
+    }
+
     return (
       <div className={classes.root}>
         <PointsHistoryDetails
