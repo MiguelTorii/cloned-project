@@ -46,6 +46,7 @@ type Props = {
   isStudyCircleLoading?: boolean;
   isCirclein?: boolean;
   isOnline?: boolean;
+  isHud?: boolean;
   roleId?: number;
   role?: string;
   profile?: UserProfile;
@@ -87,6 +88,15 @@ class Header extends React.PureComponent<Props, State> {
     );
   };
 
+  renderPointsHistory = () => {
+    const { profile, onSeePointsHistoryDetails } = this.props;
+    return (
+      <Box mt={5}>
+        <PointsHistoryCard profile={profile} onSeeMore={onSeePointsHistoryDetails} />
+      </Box>
+    );
+  };
+
   findAboutField = (id) => {
     const { about } = this.props;
 
@@ -119,7 +129,8 @@ class Header extends React.PureComponent<Props, State> {
       onStartVideo,
       onChange,
       onEditProfile,
-      onSeePointsHistoryDetails
+      onSeePointsHistoryDetails,
+      isHud
     } = this.props;
     const name = `${firstName} ${lastName}`;
     const initials = getInitials(name);
@@ -243,11 +254,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
           </Grid>
         </Paper>
-        <Hidden lgUp>
-          <Box mt={5}>
-            <PointsHistoryCard profile={profile} onSeeMore={onSeePointsHistoryDetails} />
-          </Box>
-        </Hidden>
+        {isHud ? this.renderPointsHistory() : <Hidden lgUp>{this.renderPointsHistory()}</Hidden>}
         <Tabs
           value={tab}
           textColor="primary"

@@ -77,6 +77,7 @@ type Props = {
   updateProfileImage?: (...args: Array<any>) => any;
   match?: any;
   defaultPage?: string;
+  isHud?: boolean;
 };
 
 type State = {
@@ -611,6 +612,7 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       classes,
       push,
+      isHud,
       user: {
         data: userData,
         userClasses: { classList }
@@ -670,7 +672,7 @@ class Profile extends React.PureComponent<Props, State> {
       <>
         <div className={classes.root}>
           <Grid container spacing={4}>
-            <Grid item xs={12} lg={8}>
+            <Grid item xs={12} lg={isHud ? 12 : 8}>
               <Grid container alignItems="stretch">
                 <Grid item xs={12} md={12}>
                   <ErrorBoundary>
@@ -705,6 +707,7 @@ class Profile extends React.PureComponent<Props, State> {
                       onSeePointsHistoryDetails={() =>
                         this.switchPage(PROFILE_PAGES.points_history)
                       }
+                      isHud={isHud}
                     />
                   </ErrorBoundary>
                 </Grid>
@@ -745,18 +748,20 @@ class Profile extends React.PureComponent<Props, State> {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} lg={4}>
-              <Grid container spacing={4}>
-                <Hidden mdDown>
-                  <Grid item xs={12}>
-                    <PointsHistoryCard
-                      profile={userProfile}
-                      onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
-                    />
-                  </Grid>
-                </Hidden>
+            {!isHud && (
+              <Grid item xs={12} lg={4}>
+                <Grid container spacing={4}>
+                  <Hidden mdDown>
+                    <Grid item xs={12}>
+                      <PointsHistoryCard
+                        profile={userProfile}
+                        onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
+                      />
+                    </Grid>
+                  </Hidden>
+                </Grid>
               </Grid>
-            </Grid>
+            )}
           </Grid>
 
           <ErrorBoundary>
