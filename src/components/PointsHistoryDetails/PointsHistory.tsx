@@ -22,7 +22,8 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const [records, setRecords] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
+
   const isLoadingData = useSelector(isApiCalling(userActions.GET_POINTS_HISTORY));
 
   const fetchRecords = (count) => {
@@ -39,7 +40,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   };
 
   useEffect(() => {
-    fetchRecords(10); // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchRecords(10);
   }, []);
 
   const renderRecords = (isMobile) => (

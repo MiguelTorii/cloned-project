@@ -20,8 +20,6 @@ import TermsOfUsePage from './pages/TermsOfUse/TermsOfUsePage';
 import RedirectPage from './pages/Redirect/RedirectPage';
 import Sandbox from './pages/Sandbox/Sandbox';
 import withTracker from './withTracker';
-import ChatPage from './pages/Chat/ChatPage';
-import ChatChannelPage from './pages/ChatChannel/ChatChannelPage';
 import Gondor from './containers/Auth/Gondor';
 import JoinCommunity from './pages/JoinCommunity/JoinCommunity';
 import HudFrame from './hud/frame/HudFrame';

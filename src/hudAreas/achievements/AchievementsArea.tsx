@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
 import { useStyles } from './AchievementsAreaStyles';
-import { LEADERBOARD_AREA, SCHOLARSHIPS_AREA } from '../../hud/navigationState/hudNavigation';
+import { LEADERBOARD_AREA } from '../../hud/navigationState/hudNavigation';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 
 const AchievementsArea = () => {
@@ -20,8 +20,6 @@ const AchievementsArea = () => {
   return (
     <div className={classes.container}>
       {selectedMainSubArea === LEADERBOARD_AREA && <LeaderBoards />}
-
-      {selectedMainSubArea === SCHOLARSHIPS_AREA && <div>SCHOLARSHIPS COMING SOON</div>}
     </div>
   );
 };

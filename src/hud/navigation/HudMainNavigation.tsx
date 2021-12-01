@@ -70,26 +70,6 @@ const HudMainNavigation = () => {
       id: FEEDS_AREA,
       displayName: 'Class Feeds',
       icon: <IconClassFeed />
-    },
-    {
-      id: CREATE_A_POST_AREA,
-      displayName: 'Create a post',
-      icon: <CreatePostIcon />
-    },
-    {
-      id: ASK_A_QUESTION_AREA,
-      displayName: 'Ask a question',
-      icon: <QuestionIcon />
-    },
-    {
-      id: SHARE_NOTES_AREA,
-      displayName: 'Share notes',
-      icon: <ShareNotesIcon />
-    },
-    {
-      id: SHARE_RESOURCES_AREA,
-      displayName: 'Share resources',
-      icon: <ResourceIcon />
     }
   ];
 
@@ -110,9 +90,24 @@ const HudMainNavigation = () => {
       icon: <IconWorkflow />
     },
     {
-      id: STUDY_TIPS_AREA,
-      displayName: 'Study Tips',
-      icon: <IconStudyingOnCircleIn />
+      id: CREATE_A_POST_AREA,
+      displayName: 'Create a post',
+      icon: <CreatePostIcon />
+    },
+    {
+      id: ASK_A_QUESTION_AREA,
+      displayName: 'Ask a question',
+      icon: <QuestionIcon />
+    },
+    {
+      id: SHARE_NOTES_AREA,
+      displayName: 'Share notes',
+      icon: <ShareNotesIcon />
+    },
+    {
+      id: SHARE_RESOURCES_AREA,
+      displayName: 'Share resources',
+      icon: <ResourceIcon />
     }
   ];
 

@@ -12,8 +12,10 @@ const Routes = () => {
   if (isHud) {
     return <HudRoutes />;
   }
-
-  return <BrowserRoutes />;
+  if (isHud === false) {
+    return <BrowserRoutes />;
+  }
+  return null;
 };
 
 export default Routes;

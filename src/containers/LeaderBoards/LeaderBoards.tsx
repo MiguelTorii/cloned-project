@@ -67,7 +67,7 @@ const LeaderBoards = ({
   return (
     <Grid xs={12} item>
       <Typography color="textPrimary" className={classes.title}>
-        {courseDisplayName ? `${courseDisplayName} Leaderboards` : 'Leaderboards'}
+        {courseDisplayName ? `${courseDisplayName} Leaderboard` : 'Leaderboard'}
       </Typography>
       <LeaderBoardTabs
         userId={userId}
