@@ -22,7 +22,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const [records, setRecords] = useState([]);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const isLoadingData = useSelector(isApiCalling(userActions.GET_POINTS_HISTORY));
 
