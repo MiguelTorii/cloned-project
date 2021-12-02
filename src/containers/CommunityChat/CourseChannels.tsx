@@ -37,7 +37,7 @@ const CourseChannels = ({
   const dispatch = useDispatch();
   const userClasses = useSelector((state) => (state as any).user.userClasses);
   const handleGoToFeed = useCallback(() => {
-    const communityClass = (userClasses.classList || []).find((item) =>
+    const communityClass = [...userClasses.classList, ...userClasses.pastClasses].find((item) =>
       (item.section || []).map((section) => section.sectionId).includes(currentCommunity.section_id)
     );
 
@@ -51,7 +51,7 @@ const CourseChannels = ({
         `/feed?class=${cypherClass({
           classId: communityClass.classId,
           sectionId: currentCommunity.section_id
-        })}`
+        })}&pastFilter=${communityClass.isCurrent ? 'false' : 'true'}`
       )
     );
   }, [currentCommunity, userClasses, dispatch]);
