@@ -19,6 +19,7 @@ export type HudNavigationState = {
   sideAreaToIsVisible: Record<string, boolean>;
   selectedMainArea: string;
   selectedMainSubAreas: Record<string, string>;
+  studyToolsOption: string;
 };
 
 export const defaultState: HudNavigationState = {
@@ -34,5 +35,6 @@ export const defaultState: HudNavigationState = {
     [STUDY_TOOLS_MAIN_AREA]: NOTES_AREA,
     [ACHIEVEMENTS_MAIN_AREA]: GOALS_AREA,
     [MORE_MAIN_AREA]: SUPPORT_AREA
-  }
+  },
+  studyToolsOption: ''
 };

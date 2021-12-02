@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
 import { useStyles } from './HudFrameStyles';
@@ -22,18 +23,38 @@ import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import HudDisplay from '../display/HudDisplay';
 import ChatArea from '../../hudAreas/chat/ChatArea';
+import {
+  STUDY_TOOLS_BOTTOM_OPTION,
+  STUDY_TOOLS_QUERY_KEY,
+  STUDY_TOOLS_TOP_OPTION
+} from '../../routeConstants';
+import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
+import HudStudyTools from '../missions/HudStudyTools';
 
 const HudFrame = () => {
   const classes: any = useStyles();
 
+  const dispatch: Dispatch<Action> = useDispatch();
+
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
+
+  const studyToolsOption: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.studyToolsOption
   );
 
   const isRightPaneVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>
       state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
   );
+
+  const query: string = useSelector((state: any) => state.router.location.query);
+  const newStudyToolsOption = query[STUDY_TOOLS_QUERY_KEY];
+
+  if (newStudyToolsOption) {
+    dispatch(setStudyToolsOption(newStudyToolsOption));
+  }
 
   return (
     <main>
@@ -63,8 +84,22 @@ const HudFrame = () => {
           </div>
 
           {isRightPaneVisible && (
-            <div className={classes.missions}>
-              <HudMissions />
+            <div className={classes.rightPanel}>
+              {studyToolsOption === STUDY_TOOLS_TOP_OPTION && (
+                <div className={classes.studyTools}>
+                  <HudStudyTools />
+                </div>
+              )}
+
+              <div className={classes.missions}>
+                <HudMissions />
+              </div>
+
+              {studyToolsOption === STUDY_TOOLS_BOTTOM_OPTION && (
+                <div className={classes.studyTools}>
+                  <HudStudyTools />
+                </div>
+              )}
             </div>
           )}
         </div>

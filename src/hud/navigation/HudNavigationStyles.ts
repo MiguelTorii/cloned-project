@@ -34,6 +34,7 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '200px'
   },
   childToolIcon: {
-    width: '30px'
+    width: '30px',
+    marginRight: theme.spacing(1)
   }
 }));

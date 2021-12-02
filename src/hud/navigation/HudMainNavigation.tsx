@@ -5,24 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import IconChat from '@material-ui/icons/Chat';
 import { Badge } from '@material-ui/core';
+import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow-mark.svg';
+import { ReactComponent as QuestionIcon } from '../../assets/svg/question-mark.svg';
+import { ReactComponent as ResourceIcon } from '../../assets/svg/resource-mark.svg';
+import { ReactComponent as ShareNotesIcon } from '../../assets/svg/share_notes.svg';
+import { ReactComponent as ActiveCreatePost } from '../../assets/svg/posts.svg';
+import { ReactComponent as FlashcardMark } from '../../assets/svg/flashcard-mark.svg';
+import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/note-mark.svg';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
-import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
 import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
 import { ReactComponent as IconMyClasses } from '../../assets/svg/classes_overview.svg';
 import { ReactComponent as IconClassFeed } from '../../assets/svg/class_feed.svg';
 import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
-import { ReactComponent as IconFlashcards } from '../../assets/svg/flashcards-menu.svg';
-import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow.svg';
-import { ReactComponent as IconStudyingOnCircleIn } from '../../assets/svg/studying_on_circlein.svg';
 import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
 import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
 import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
 import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
-import { ReactComponent as QuestionIcon } from '../../assets/svg/question-mark.svg';
-import { ReactComponent as ResourceIcon } from '../../assets/svg/resource-mark.svg';
-import { ReactComponent as ShareNotesIcon } from '../../assets/svg/note-mark.svg';
-import { ReactComponent as CreatePostIcon } from '../../assets/svg/message-mark.svg';
 import { useStyles } from './HudNavigationStyles';
 import {
   ACHIEVEMENTS_MAIN_AREA,
@@ -48,6 +47,10 @@ import {
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
 import { AppState } from '../../configureStore';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
+import { STUDY_TOOLS_BOTTOM_OPTION, STUDY_TOOLS_TOP_OPTION } from '../../routeConstants';
+
+const ICON_SIZE = { width: '44px', height: '44px' };
 
 const HudMainNavigation = () => {
   const classes: any = useStyles();
@@ -63,11 +66,18 @@ const HudMainNavigation = () => {
     return result;
   }, [local]);
 
+  const studyToolsOption: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.studyToolsOption
+  );
+
+  const showStudyTools =
+    studyToolsOption !== STUDY_TOOLS_TOP_OPTION && studyToolsOption !== STUDY_TOOLS_BOTTOM_OPTION;
+
   const chatNavigationItems: HudToolData[] = [
     {
       id: CHAT_AREA,
       displayName: 'Chat',
-      icon: <IconChat />
+      icon: <IconChat style={ICON_SIZE} />
     }
   ];
 
@@ -75,12 +85,12 @@ const HudMainNavigation = () => {
     {
       id: CLASSES_AREA,
       displayName: 'Classes',
-      icon: <IconMyClasses />
+      icon: <IconMyClasses style={ICON_SIZE} />
     },
     {
       id: FEEDS_AREA,
       displayName: 'Class Feeds',
-      icon: <IconClassFeed />
+      icon: <IconClassFeed style={ICON_SIZE} />
     }
   ];
 
@@ -88,37 +98,37 @@ const HudMainNavigation = () => {
     {
       id: FLASHCARDS_AREA,
       displayName: 'Flashcards',
-      icon: <IconFlashcards />
+      icon: <FlashcardMark style={ICON_SIZE} />
     },
     {
       id: NOTES_AREA,
-      displayName: 'Notes',
-      icon: <IconNotes />
+      displayName: 'Create notes',
+      icon: <PrivateNotesIcon style={ICON_SIZE} />
     },
     {
       id: CALENDAR_AREA,
       displayName: 'Workflow',
-      icon: <IconWorkflow />
+      icon: <IconWorkflow style={ICON_SIZE} />
     },
     {
       id: CREATE_A_POST_AREA,
       displayName: 'Create a post',
-      icon: <CreatePostIcon />
+      icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
       id: ASK_A_QUESTION_AREA,
       displayName: 'Ask a question',
-      icon: <QuestionIcon />
+      icon: <QuestionIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_NOTES_AREA,
       displayName: 'Share notes',
-      icon: <ShareNotesIcon />
+      icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_RESOURCES_AREA,
       displayName: 'Share resources',
-      icon: <ResourceIcon />
+      icon: <ResourceIcon style={ICON_SIZE} />
     }
   ];
 
@@ -126,7 +136,7 @@ const HudMainNavigation = () => {
     {
       id: LEADERBOARD_AREA,
       displayName: 'Leaderboard',
-      icon: <IconAchievements />
+      icon: <IconAchievements style={ICON_SIZE} />
     }
   ];
 
@@ -134,17 +144,17 @@ const HudMainNavigation = () => {
     {
       id: SUPPORT_AREA,
       displayName: 'Support',
-      icon: <IconSubmitSupportTicket />
+      icon: <IconSubmitSupportTicket style={ICON_SIZE} />
     },
     {
       id: GIVE_FEEDBACK_AREA,
       displayName: 'Give Feedback',
-      icon: <IconSubmitAnIdea />
+      icon: <IconSubmitAnIdea style={ICON_SIZE} />
     },
     {
       id: GET_THE_MOBILE_APP_AREA,
       displayName: 'Get the Mobile App',
-      icon: <IconMobileApp />
+      icon: <IconMobileApp style={ICON_SIZE} />
     }
   ];
 
@@ -184,13 +194,17 @@ const HudMainNavigation = () => {
     childTools: moreNavigationItems
   };
 
-  const rootNavigationItems: HudToolData[] = [
-    chatNavigationItem,
-    classesNavigationItem,
-    studyToolsNavigationItem,
-    achievementsNavigationItem
-  ];
-
+  let rootNavigationItems: HudToolData[];
+  if (showStudyTools) {
+    rootNavigationItems = [
+      chatNavigationItem,
+      classesNavigationItem,
+      studyToolsNavigationItem,
+      achievementsNavigationItem
+    ];
+  } else {
+    rootNavigationItems = [chatNavigationItem, classesNavigationItem, achievementsNavigationItem];
+  }
   return (
     <div className={classes.controlPanelMainSection}>
       {rootNavigationItems.map((rootNavigationItem) => (
