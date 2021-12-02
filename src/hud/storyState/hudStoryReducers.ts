@@ -4,20 +4,20 @@ import { defaultState, HudStoryState } from './hudStoryState';
 
 export default (state: HudStoryState = defaultState, action: Action): HudStoryState => {
   switch (action.type) {
-    case hudStoryActions.SET_CONVERSATION:
+    case hudStoryActions.SET_CURRENT_STATEMENT:
       return {
         ...state,
-        conversation: action.payload.conversation
+        currentStatement: action.payload.currentStatement
       };
-    case hudStoryActions.INITIAL_STORY_LOAD:
+    case hudStoryActions.GREETING_LOAD_TRIGGERED:
       return {
         ...state,
-        initialLoadTriggered: true
+        greetingLoadTriggered: true
       };
-    case hudStoryActions.RESTART_INITIAL_STORY_LOAD:
+    case hudStoryActions.SET_GREETING:
       return {
         ...state,
-        initialLoadTriggered: false
+        greetingStatements: action.payload.greetingStatements
       };
     default:
       return state;

@@ -1,9 +1,11 @@
 export type HudStoryState = {
-  conversation: string;
-  initialLoadTriggered: boolean;
+  currentStatement: string;
+  greetingLoadTriggered: boolean;
+  greetingStatements: string[];
 };
 
 export const defaultState: HudStoryState = {
-  conversation: '',
-  initialLoadTriggered: false
+  currentStatement: '',
+  greetingLoadTriggered: false,
+  greetingStatements: []
 };

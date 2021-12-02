@@ -1,12 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
-import useStorySequence from '../storyState/useStorySequence';
 import HudMissions from '../missions/HudMissions';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
@@ -17,8 +16,7 @@ import {
   COMMUNITIES_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
   ACHIEVEMENTS_MAIN_AREA,
-  RIGHT_SIDE_AREA,
-  LEFT_SIDE_AREA
+  RIGHT_SIDE_AREA
 } from '../navigationState/hudNavigation';
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
@@ -32,18 +30,10 @@ const HudFrame = () => {
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
   );
 
-  const isLeftPaneVisible: boolean = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[LEFT_SIDE_AREA]
-  );
-
   const isRightPaneVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>
       state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
   );
-
-  const loadStory = useStorySequence();
-  loadStory();
 
   return (
     <main>
