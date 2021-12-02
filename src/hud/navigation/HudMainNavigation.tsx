@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { CalendarToday } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import IconChat from '@material-ui/icons/Chat';
+import { Badge } from '@material-ui/core';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
 import { ReactComponent as IconNotes } from '../../assets/svg/notes-icon-off.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
@@ -46,9 +47,21 @@ import {
 } from '../navigationState/hudNavigation';
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
+import { AppState } from '../../configureStore';
 
 const HudMainNavigation = () => {
   const classes: any = useStyles();
+  const local = useSelector<AppState, Record<string, any>>((state) => state.chat.data.local);
+
+  const unreadMessageCount = useMemo(() => {
+    let result = 0;
+    Object.keys(local).forEach((l) => {
+      if (local[l]?.unread) {
+        result += Number(local[l].unread);
+      }
+    });
+    return result;
+  }, [local]);
 
   const chatNavigationItems: HudToolData[] = [
     {
@@ -138,7 +151,11 @@ const HudMainNavigation = () => {
   const chatNavigationItem: HudToolData = {
     id: CHAT_MAIN_AREA,
     displayName: 'chat',
-    icon: <IconChat />,
+    icon: (
+      <Badge badgeContent={unreadMessageCount} color="secondary">
+        <IconChat />
+      </Badge>
+    ),
     childTools: chatNavigationItems
   };
 
