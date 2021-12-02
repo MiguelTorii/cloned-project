@@ -37,7 +37,6 @@ import {
   LEADERBOARD_AREA,
   MORE_MAIN_AREA,
   NOTES_AREA,
-  STUDY_TIPS_AREA,
   STUDY_TOOLS_MAIN_AREA,
   SUPPORT_AREA,
   ASK_A_QUESTION_AREA,
@@ -49,7 +48,6 @@ import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
 
 const HudMainNavigation = () => {
-  // TODO add this to make the icons all the same size.
   const classes: any = useStyles();
 
   const chatNavigationItems: HudToolData[] = [

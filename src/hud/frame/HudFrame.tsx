@@ -8,7 +8,6 @@ import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
 import useStorySequence from '../storyState/useStorySequence';
 import HudMissions from '../missions/HudMissions';
-import HudChat from '../chat/HudChat';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
@@ -24,7 +23,7 @@ import {
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import HudDisplay from '../display/HudDisplay';
-import ChatPage from '../../containers/CommunityChat/ChatPage';
+import ChatArea from '../../hudAreas/chat/ChatArea';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -66,7 +65,7 @@ const HudFrame = () => {
 
               {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
 
-              {selectedMainArea === CHAT_MAIN_AREA && <ChatPage />}
+              {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
             </div>
             <div className={classes.mainHudDisplay}>
               <HudDisplay />

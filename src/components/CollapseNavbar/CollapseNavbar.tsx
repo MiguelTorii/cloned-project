@@ -31,7 +31,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: `${theme.circleIn.palette.modalBackground} !important`
   },
   channelName: {
-    fontSize: 14
+    fontSize: 14,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap'
   },
   channelIcon: {
     minWidth: 16

@@ -25,6 +25,7 @@ export const useStyles = makeStyles((theme: any) => ({
   circleInLogoContainer: {
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
-    }
+    },
+    borderRadius: 0
   }
 }));
