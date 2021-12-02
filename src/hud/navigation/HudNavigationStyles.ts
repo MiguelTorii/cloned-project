@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: any) => ({
     borderRadius: 0
   },
   selectedButton: {
-    backgroundColor: theme.circleIn.palette.gray1
+    backgroundColor: theme.circleIn.palette.gray2
   },
   parentNavigationIcon: {
     height: '30px',
@@ -52,5 +52,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column'
+  },
+  arrowDropdown: {
+    marginLeft: theme.spacing(-0.5)
   }
 }));

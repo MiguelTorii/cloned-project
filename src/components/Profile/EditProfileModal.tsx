@@ -63,19 +63,22 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
       <Grid container className={classes.root} spacing={4}>
         <Grid item xs={12}>
           <Box display="inline-block" position="relative">
-            <Avatar
-              mobileSize={DEFAULT_AVATAR_SIZE.desktop}
-              src={image}
-              initialText={getInitials(`${profile.firstName} ${profile.lastName}`)}
-            />
-            <Button
-              onClick={() => setIsEditingAvatar(true)}
-              classes={{
-                root: classes.penButton
-              }}
-            >
-              <Create />
-            </Button>
+            <div className={classes.profileBackground}>
+              <Avatar
+                className={classes.profilePicture}
+                mobileSize={DEFAULT_AVATAR_SIZE.desktop}
+                src={image}
+                initialText={getInitials(`${profile.firstName} ${profile.lastName}`)}
+              />
+              <Button
+                onClick={() => setIsEditingAvatar(true)}
+                classes={{
+                  root: classes.penButton
+                }}
+              >
+                <Create />
+              </Button>
+            </div>
           </Box>
         </Grid>
         <Grid item xs={12}>

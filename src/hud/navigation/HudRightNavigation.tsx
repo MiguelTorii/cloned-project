@@ -4,16 +4,20 @@ import { Action, Dispatch } from 'redux';
 import { CalendarToday } from '@material-ui/icons';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { push } from 'connected-react-router';
-import { Badge, Typography } from '@material-ui/core';
+import { Badge, Typography, IconButton } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import { useStyles } from './HudNavigationStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
   ABOUT_ME_AREA,
   NOTIFICATIONS_AREA,
+  GIVE_FEEDBACK_AREA,
   POINTS_HISTORY_AREA,
   PROFILE_MAIN_AREA,
   REWARDS_STORE_AREA,
-  RIGHT_SIDE_AREA
+  RIGHT_SIDE_AREA,
+  SIGN_OUT_BUTTON,
+  SUPPORT_AREA
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -21,6 +25,7 @@ import { HudToolData } from './HudToolData';
 import { ReactComponent as IconAboutMe } from '../../assets/svg/about_me.svg';
 import { ReactComponent as IconPointsHistory } from '../../assets/svg/points_history.svg';
 import { ReactComponent as IconRewardStore } from '../../assets/svg/rewards-icon-off.svg';
+import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
@@ -60,6 +65,21 @@ const HudRightNavigation = () => {
       id: REWARDS_STORE_AREA,
       displayName: 'Rewards Store',
       icon: <IconRewardStore />
+    },
+    {
+      id: GIVE_FEEDBACK_AREA,
+      displayName: 'Give Feedback',
+      icon: <IconSubmitAnIdea />
+    },
+    {
+      id: SUPPORT_AREA,
+      displayName: 'CircleIn Support',
+      icon: <HelpIcon />
+    },
+    {
+      id: SIGN_OUT_BUTTON,
+      displayName: 'Sign Out'
+      // icon: <IconRewardStore />
     }
   ];
 
@@ -154,7 +174,7 @@ const HudRightNavigation = () => {
         onSelectItem={handleOpenNotifications}
         isSelected={false}
       />
-      <HudToolWithDropdown parentNavigationItem={profileNavigationItem} />
+      <HudToolWithDropdown profile={profile} parentNavigationItem={profileNavigationItem} />
       <Notifications
         anchorEl={anchorEl}
         onClose={handleCloseNotifications}
