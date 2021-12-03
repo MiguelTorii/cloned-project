@@ -10,7 +10,6 @@ import {
   apiSetExpertMode,
   apiGetPointsHistory
 } from '../api/user';
-import * as feedActions from './feed';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { Announcement, SyncSuccessData } from '../types/models';
@@ -18,7 +17,7 @@ import { checkUserSession } from './sign-in';
 import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
-import { UserClassList, EmptyState, FlashcardData } from '../reducers/user';
+import { UserClassList, EmptyState } from '../reducers/user';
 import { APIFlashcardDeck } from '../api/models/APIFlashcardDeck';
 import { APIFetchFeedsParams } from '../api/params/APIFetchFeedsParams';
 
@@ -84,21 +83,6 @@ export const fetchClasses =
 
     if (expertMode) {
       store.remove('CLASSES_CACHE');
-      // TODO: figure out what we should be passing here.
-      // I changed `value` to `value[0]` so the types would work,
-      // but the UX here should be looked at more closely.
-      const value: string[] = classList.map((cl) =>
-        JSON.stringify({
-          classId: cl.classId,
-          sectionId: cl.section?.[0]?.sectionId
-        })
-      );
-      dispatch(
-        feedActions.updateFilter({
-          value: value as any,
-          field: 'userClasses'
-        })
-      );
     }
 
     if (!isEqual(userClasses.classList, classList) || userClasses.canAddClasses !== canAddClasses) {

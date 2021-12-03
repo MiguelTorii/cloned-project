@@ -55,7 +55,7 @@ const updateFeedFilterFieldRequest = ({
   value
 }: {
   field: string;
-  value: string | number;
+  value: string | number | string[] | number[];
 }) => ({
   type: feedActions.UPDATE_FEED_FILTER_FIELD_REQUEST,
   payload: {
@@ -190,7 +190,7 @@ export const searchFeed =
     }
   };
 export const updateFilter =
-  ({ field, value }: { field: string; value: string | number }) =>
+  ({ field, value }: { field: string; value: string | number | string[] | number[] }) =>
   async (dispatch: Dispatch) => {
     try {
       await dispatch(clearFeeds());

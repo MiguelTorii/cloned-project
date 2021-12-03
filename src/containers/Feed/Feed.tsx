@@ -107,6 +107,36 @@ class Feed extends React.PureComponent<Props, State> {
     });
   };
 
+  componentDidUpdate = (prevProps) => {
+    const oldClasses = prevProps.user.userClasses;
+    const {
+      user: { userClasses: newClasses }
+    } = this.props;
+
+    // If classes are loaded later, update selected classes to be all if no class had been selected.
+    if (
+      lodash.isEmpty([...oldClasses.classList, ...oldClasses.pastClasses]) &&
+      !lodash.isEmpty([...newClasses.classList, ...newClasses.pastClasses])
+    ) {
+      const {
+        feed: {
+          data: {
+            filters: { userClasses, pastFilter }
+          }
+        }
+      } = this.props;
+
+      if (lodash.isEmpty(userClasses)) {
+        const classes = pastFilter ? newClasses.pastClasses : newClasses.classList;
+        this.handleUpdateFilterFields({
+          userClasses: classes
+            .map((classData) => classData.section?.[0].sectionId)
+            .filter((sectionId) => !!sectionId)
+        });
+      }
+    }
+  };
+
   componentDidMount = () => {
     const {
       router: {
