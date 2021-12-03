@@ -12,6 +12,10 @@
   border-radius: 16px;
 }
 
+*::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
 * {
   scrollbar-color: #547686 rgba(0, 0, 0, 0);
 }
