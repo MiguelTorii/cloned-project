@@ -1,11 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { CalendarToday } from '@material-ui/icons';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { push } from 'connected-react-router';
+import { Badge } from '@material-ui/core';
 import { useStyles } from './HudNavigationStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
   ABOUT_ME_AREA,
+  NOTIFICATIONS_AREA,
   POINTS_HISTORY_AREA,
   PROFILE_MAIN_AREA,
   REWARDS_STORE_AREA,
@@ -22,10 +26,14 @@ import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
 import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
+import Notifications from '../../containers/Notifications/Feed';
+import { POST_TYPES } from '../../constants/app';
 
 const ICON_SIZE = 30;
 
 const HudRightNavigation = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(0);
   const classes: any = useStyles();
 
   const dispatch: Dispatch<Action> = useDispatch();
@@ -74,9 +82,58 @@ const HudRightNavigation = () => {
     icon: <CalendarToday />
   };
 
+  const notificationNavigationItem = {
+    id: NOTIFICATIONS_AREA,
+    displayName: 'Notifications',
+    icon: (
+      <Badge badgeContent={notificationCount} color="secondary">
+        <NotificationsIcon />
+      </Badge>
+    )
+  };
+
   const selectSideItem = () => {
     dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
   };
+
+  const handleOpenNotifications = (_, e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleCloseNotifications = () => {
+    setAnchorEl(null);
+  };
+
+  const handleUpdateNotificationsCount = (count) => {
+    console.log(count);
+    setNotificationCount(count);
+  };
+
+  const handleNotificationClick = useCallback(
+    ({ typeId, postId }: { typeId: number; postId: number }) => {
+      switch (typeId) {
+        case POST_TYPES.FLASHCARDS:
+          dispatch(push(`/flashcards/${postId}`));
+          break;
+
+        case POST_TYPES.NOTE:
+          dispatch(push(`/notes/${postId}`));
+          break;
+
+        case POST_TYPES.LINK:
+          dispatch(push(`/sharelink/${postId}`));
+          break;
+
+        case POST_TYPES.QUESTION:
+          dispatch(push(`/question/${postId}`));
+          break;
+
+        default:
+          break;
+      }
+    },
+    [dispatch]
+  );
 
   return (
     <div className={classes.controlPanelMainSection}>
@@ -85,7 +142,18 @@ const HudRightNavigation = () => {
         navbarItem={missionNavigationItem}
         isSelected={isVisible}
       />
+      <HudTool
+        navbarItem={notificationNavigationItem}
+        onSelectItem={handleOpenNotifications}
+        isSelected={false}
+      />
       <HudToolWithDropdown parentNavigationItem={profileNavigationItem} />
+      <Notifications
+        anchorEl={anchorEl}
+        onClose={handleCloseNotifications}
+        onUpdateUnreadCount={handleUpdateNotificationsCount}
+        onClick={handleNotificationClick}
+      />
     </div>
   );
 };

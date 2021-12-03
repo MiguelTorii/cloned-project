@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Button, Tooltip } from '@material-ui/core';
 import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
@@ -6,7 +6,7 @@ import { useStyles } from './HudToolbarStyles';
 
 type Props = {
   navbarItem: HudToolData;
-  onSelectItem: (navbarItemId: string) => void;
+  onSelectItem: (navbarItemId: string, event?: MouseEvent) => void;
   isSelected: boolean;
 };
 
@@ -19,7 +19,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
         <Button
           className={clsx(classes.toolButton, isSelected && classes.selectedButton)}
           size="medium"
-          onClick={() => onSelectItem(navbarItem.id)}
+          onClick={(e) => onSelectItem(navbarItem.id, e)}
         >
           {navbarItem.icon}
         </Button>
@@ -31,7 +31,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
           color={'secondary'}
           className={clsx(classes.toolButton, isSelected && classes.selectedButton)}
           size="medium"
-          onClick={() => onSelectItem(navbarItem.id)}
+          onClick={(e) => onSelectItem(navbarItem.id, e)}
         >
           {navbarItem.iconText}
         </Button>
@@ -41,7 +41,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
       <Button
         key={navbarItem.id}
         className={clsx(classes.textIconButton, isSelected && classes.selectedButton)}
-        onClick={() => onSelectItem(navbarItem.id)}
+        onClick={(e) => onSelectItem(navbarItem.id, e)}
       >
         {navbarItem.displayName}
       </Button>
