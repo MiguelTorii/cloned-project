@@ -54,7 +54,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
           isSelected && classes.selectedButton,
           isCompact && classes.toolButtonCompact
         )}
-        onClick={() => onSelectItem(navbarItem.id, e)}
+        onClick={(e) => onSelectItem(navbarItem.id, e)}
       >
         {navbarItem.displayName}
       </Button>
