@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Button, Tooltip } from '@material-ui/core';
 import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
@@ -6,7 +6,7 @@ import { useStyles } from './HudToolbarStyles';
 
 type Props = {
   navbarItem: HudToolData;
-  onSelectItem: (navbarItemId: string) => void;
+  onSelectItem: (navbarItemId: string, event?: MouseEvent) => void;
   isSelected: boolean;
   isCompact?: boolean;
 };
@@ -24,7 +24,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
             isCompact && classes.toolButtonCompact
           )}
           size="medium"
-          onClick={() => onSelectItem(navbarItem.id)}
+          onClick={(e) => onSelectItem(navbarItem.id, e)}
         >
           {navbarItem.icon}
         </Button>
@@ -40,7 +40,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
             isCompact && classes.toolButtonCompact
           )}
           size="medium"
-          onClick={() => onSelectItem(navbarItem.id)}
+          onClick={(e) => onSelectItem(navbarItem.id, e)}
         >
           {navbarItem.iconText}
         </Button>
@@ -54,7 +54,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
           isSelected && classes.selectedButton,
           isCompact && classes.toolButtonCompact
         )}
-        onClick={() => onSelectItem(navbarItem.id)}
+        onClick={() => onSelectItem(navbarItem.id, e)}
       >
         {navbarItem.displayName}
       </Button>
