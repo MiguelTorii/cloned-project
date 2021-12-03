@@ -144,9 +144,18 @@ export default makeStyles((theme: any) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 40,
-    height: 40,
+    width: '100%',
+    height: '100%',
     borderRadius: '50%'
+  },
+  profileBackground: {
+    backgroundColor: theme.circleIn.palette.profilebgColor,
+    borderRadius: '50%',
+    width: '40px',
+    height: '40px',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column'
   },
   tags: {
     display: 'flex',

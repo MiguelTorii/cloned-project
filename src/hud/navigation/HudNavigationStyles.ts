@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: any) => ({
     borderRadius: 0
   },
   selectedButton: {
-    backgroundColor: theme.circleIn.palette.gray1
+    backgroundColor: theme.circleIn.palette.gray2
   },
   parentNavigationIcon: {
     height: '30px',
@@ -36,5 +36,24 @@ export const useStyles = makeStyles((theme: any) => ({
   childToolIcon: {
     width: '30px',
     marginRight: theme.spacing(1)
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%'
+  },
+  initials: {
+    width: '100%'
+  },
+  profileBackground: {
+    backgroundColor: theme.circleIn.palette.profilebgColor,
+    borderRadius: '50%',
+    width: '30px',
+    height: '30px',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+  arrowDropdown: {
+    marginLeft: theme.spacing(-0.5)
   }
 }));

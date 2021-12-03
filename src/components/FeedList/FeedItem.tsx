@@ -522,9 +522,11 @@ const FeedItem = ({
                     bgColorPath="circleIn.palette.feedBackground"
                     fromChat
                   >
-                    <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                      {initials}
-                    </Avatar>
+                    <div className={classes.profileBackground}>
+                      <Avatar aria-label="Recipe" src={data.userProfileUrl}>
+                        {initials}
+                      </Avatar>
+                    </div>
                   </OnlineBadge>
                 </ButtonBase>
                 <Box marginLeft={1}>

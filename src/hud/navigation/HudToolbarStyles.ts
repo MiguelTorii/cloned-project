@@ -32,6 +32,6 @@ export const useStyles = makeStyles((theme: any) => ({
     height: '100%'
   },
   selectedButton: {
-    backgroundColor: theme.circleIn.palette.gray1
+    backgroundColor: theme.circleIn.palette.gray2
   }
 }));

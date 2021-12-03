@@ -7,5 +7,11 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   hidden: {
     display: 'none'
+  },
+  profileBackground: {
+    backgroundColor: theme.circleIn.palette.profilebgColor,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column'
   }
 }));

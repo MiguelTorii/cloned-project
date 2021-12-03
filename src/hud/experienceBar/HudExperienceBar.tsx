@@ -31,7 +31,7 @@ const HudExperienceBar = () => {
       <div style={experienceBarFillWidth} className={classes.experienceFiller}>
         <Typography className={classes.experienceLabel}>
           {/* todo make this look nicer with commas for the numbers */}
-          {experiencePoints}/{experiencePointTotal}
+          {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
         </Typography>
       </div>
     </div>

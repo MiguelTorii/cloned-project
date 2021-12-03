@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
   controlPanel: {
-    backgroundColor: theme.circleIn.palette.appBar,
+    backgroundColor: theme.circleIn.palette.feedBackground,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

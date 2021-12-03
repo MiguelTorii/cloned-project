@@ -192,5 +192,14 @@ export const styles = (theme) => ({
     marginRight: theme.spacing(),
     marginBottom: theme.spacing(2),
     height: 40
+  },
+  profileBackground: {
+    backgroundColor: theme.circleIn.palette.profilebgColor,
+    borderRadius: '50%',
+    width: '125px',
+    height: '125px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

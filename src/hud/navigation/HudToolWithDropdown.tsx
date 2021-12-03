@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,12 +9,14 @@ import { SIGN_OUT_BUTTON, SUPPORT_AREA } from '../navigationState/hudNavigation'
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+import { User } from '../../types/models';
 
 type Props = {
   parentNavigationItem: HudToolData;
+  profile?: User;
 };
 
-const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
+const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
 
@@ -26,10 +28,18 @@ const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
 
   const isSelected = parentNavigationItem.id === selectedMainArea;
 
+  // handles support window pop out
+  const handleOpenWidget = useCallback(() => {
+    (window as any)?.FreshworksWidget('identify', 'ticketForm', {
+      name: `${profile.firstName} ${profile.lastName}`,
+      email: profile.email
+    });
+    (window as any)?.FreshworksWidget('open');
+  }, []);
+
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === SUPPORT_AREA) {
-      // Open support window
-      window.open('https://tutors.circleinapp.com/home', '_blank');
+      handleOpenWidget();
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {
@@ -80,7 +90,7 @@ const HudToolWithDropdown = ({ parentNavigationItem }: Props) => {
                 {parentNavigationItem.displayName}
               </Typography>
             )}
-            <ArrowDropDownIcon />
+            <ArrowDropDownIcon className={classes.arrowDropdown} />
           </Button>
           <Menu
             className={classes.parentNavigationMenu}
