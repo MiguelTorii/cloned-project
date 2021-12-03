@@ -36,6 +36,7 @@ const HudToolbar = ({ navbarItems, onSelectItem, isVertical }: Props) => {
           navbarItem={navbarItem}
           onSelectItem={() => selectTool(navbarItem)}
           isSelected={navbarItem.id === selectedMainSubAreas[selectedMainArea]}
+          isCompact
         />
       ))}
     </div>

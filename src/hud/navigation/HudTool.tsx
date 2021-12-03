@@ -8,16 +8,21 @@ type Props = {
   navbarItem: HudToolData;
   onSelectItem: (navbarItemId: string, event?: MouseEvent) => void;
   isSelected: boolean;
+  isCompact?: boolean;
 };
 
-const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
+const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => {
   const classes: any = useStyles();
 
   const renderIconButton = () => {
     if (navbarItem.icon) {
       return (
         <Button
-          className={clsx(classes.toolButton, isSelected && classes.selectedButton)}
+          className={clsx(
+            classes.toolButton,
+            isSelected && classes.selectedButton,
+            isCompact && classes.toolButtonCompact
+          )}
           size="medium"
           onClick={(e) => onSelectItem(navbarItem.id, e)}
         >
@@ -29,7 +34,11 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
       return (
         <Button
           color={'secondary'}
-          className={clsx(classes.toolButton, isSelected && classes.selectedButton)}
+          className={clsx(
+            classes.toolButton,
+            isSelected && classes.selectedButton,
+            isCompact && classes.toolButtonCompact
+          )}
           size="medium"
           onClick={(e) => onSelectItem(navbarItem.id, e)}
         >
@@ -40,8 +49,12 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected }: Props) => {
     return (
       <Button
         key={navbarItem.id}
-        className={clsx(classes.textIconButton, isSelected && classes.selectedButton)}
-        onClick={(e) => onSelectItem(navbarItem.id, e)}
+        className={clsx(
+          classes.textIconButton,
+          isSelected && classes.selectedButton,
+          isCompact && classes.toolButtonCompact
+        )}
+        onClick={() => onSelectItem(navbarItem.id, e)}
       >
         {navbarItem.displayName}
       </Button>

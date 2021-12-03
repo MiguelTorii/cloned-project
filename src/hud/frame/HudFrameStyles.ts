@@ -36,10 +36,25 @@ export const useStyles = makeStyles((theme: any) => ({
     flexShrink: 0,
     overflow: 'hidden'
   },
-  missions: {
+  rightPanel: {
     width: '270px',
     flexShrink: 0,
     overflow: 'hidden',
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%'
+  },
+  studyTools: {
+    flexShrink: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    overflow: 'hidden'
+  },
+  missions: {
+    flexGrow: 1,
+    overflow: 'auto'
   }
 }));

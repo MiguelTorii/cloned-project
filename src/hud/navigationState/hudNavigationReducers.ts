@@ -29,6 +29,12 @@ export default (state: HudNavigationState = defaultState, action: Action): HudNa
         }
       };
 
+    case hudNavigationActions.SET_STUDY_TOOLS_OPTION:
+      return {
+        ...state,
+        studyToolsOption: action.payload.studyToolsOption
+      };
+
     default:
       return state;
   }

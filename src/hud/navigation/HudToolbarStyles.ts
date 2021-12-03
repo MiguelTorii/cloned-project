@@ -7,9 +7,17 @@ export const useStyles = makeStyles((theme: any) => ({
     },
     borderRadius: 0
   },
+  toolButtonCompact: {
+    width: '56px',
+    height: '56px',
+    minWidth: '56px',
+    minHeight: '56px',
+    padding: 0,
+    borderRadius: '50%'
+  },
   textIconButton: {
-    width: '60px',
-    height: '60px',
+    width: '44px',
+    height: '44px',
     '&:hover': {
       backgroundColor: `${theme.circleIn.palette.hoverColor} !important`
     }

@@ -3,7 +3,8 @@ import { Action } from '../../types/action';
 export const hudNavigationActions = {
   TOGGLE_SIDE_AREA_VISIBILITY: 'TOGGLE_SIDE_AREA_VISIBILITY',
   SET_SELECTED_MAIN_AREA: 'SET_SELECTED_MAIN_AREA',
-  SET_SELECTED_MAIN_SUBAREA: 'SET_SELECTED_MAIN_SUBAREA'
+  SET_SELECTED_MAIN_SUBAREA: 'SET_SELECTED_MAIN_SUBAREA',
+  SET_STUDY_TOOLS_OPTION: 'SET_STUDY_TOOLS_OPTION'
 };
 
 export const toggleSideAreaVisibility = (sideArea: string): Action => ({
@@ -25,5 +26,12 @@ export const setSelectedMainSubArea = (mainArea: string, mainSubArea: string): A
   payload: {
     mainArea,
     mainSubArea
+  }
+});
+
+export const setStudyToolsOption = (studyToolsOption: string): Action => ({
+  type: hudNavigationActions.SET_STUDY_TOOLS_OPTION,
+  payload: {
+    studyToolsOption
   }
 });
