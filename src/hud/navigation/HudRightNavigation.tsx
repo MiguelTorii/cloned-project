@@ -31,6 +31,7 @@ import HudTool from './HudTool';
 import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
 import { getInitials } from '../../utils/chat';
+import { PERMISSIONS } from '../../constants/common';
 
 const ICON_SIZE = '30px';
 
@@ -42,6 +43,16 @@ const HudRightNavigation = () => {
   const dispatch: Dispatch<Action> = useDispatch();
 
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
+
+  // should show if has expert mode permission
+  const isExpert =
+    profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
+    profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
+
+  // should show if currently in expert mode
+  const isTutor =
+    profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
+    profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
 
   const profileNavigationItems: HudToolData[] = [
     {
