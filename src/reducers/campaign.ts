@@ -5,7 +5,6 @@ import type { Action } from '../types/action';
 export type CampaignState = {
   chatLanding: boolean;
   landingPageCampaign: any;
-  newFlashcardsExperience: boolean;
   newNotesScreen: any;
   showScholarshipTracker: boolean;
   showSupportCenter: boolean;
@@ -28,7 +27,6 @@ const VARIATION_KEY = {
 const defaultState = {
   chatLanding: false,
   landingPageCampaign: null,
-  newFlashcardsExperience: true,
   newNotesScreen: null,
   showScholarshipTracker: false,
   showSupportCenter: false,
@@ -44,15 +42,6 @@ export default (state: CampaignState = defaultState, action: Action): CampaignSt
           $set: action.payload.active
         }
       });
-
-    case campaignActions.GET_FLASHCARDS_CAMPAIGN: {
-      return update(state, {
-        newFlashcardsExperience: {
-          $set: action.payload.variation_key === 'visible'
-        }
-      });
-    }
-
     case campaignActions.GET_CHAT_LANDING_CAMPAIGN: {
       return update(state, {
         chatLanding: {

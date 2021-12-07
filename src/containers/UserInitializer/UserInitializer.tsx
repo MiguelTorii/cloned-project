@@ -31,7 +31,6 @@ import * as userActions from '../../actions/user';
 import * as signInActions from '../../actions/sign-in';
 import {
   getChatLandingCampaign,
-  getFlashcardsCampaign,
   getHudCampaign,
   getLeaderboardAndSupportCenterVisibilityCampaign
 } from '../../actions/campaign';
@@ -198,7 +197,6 @@ const UserInitializer = ({
 
   useEffect(() => {
     if (userId !== '') {
-      dispatch(getFlashcardsCampaign());
       dispatch(getChatLandingCampaign());
       dispatch(getHudCampaign());
       dispatch(getLeaderboardAndSupportCenterVisibilityCampaign());

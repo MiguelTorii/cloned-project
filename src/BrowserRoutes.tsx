@@ -15,7 +15,6 @@ import Post from './pages/View/Post';
 import PostPage from './pages/View/PostPage';
 import ShareLinkPage from './pages/View/ShareLinkPage';
 import Question from './pages/View/QuestionPage';
-import CreateFlashcards from './pages/Create/CreateShareLinkPage';
 import CreateQuestion from './pages/Create/CreateQuestionPage';
 import CreateNotes from './pages/Create/CreateNotesPage';
 import CreateShareLink from './pages/Create/ShareLink';
@@ -74,7 +73,6 @@ const BrowserRoutes = () => (
             path="/flashcards/:flashcardId"
             component={withTracker(FlashcardsShowPage)}
           />
-          <Route exact path="/create/flashcards" component={withTracker(CreateFlashcards)} />
           <Route
             exact
             path="/edit/flashcards/:flashcardId"

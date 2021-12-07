@@ -79,13 +79,6 @@ export const requestCampaign =
 
     return null;
   };
-export const getFlashcardsCampaign = () => ({
-  type: campaignActions.GET_FLASHCARDS_CAMPAIGN,
-  apiCall: () =>
-    getCampaign({
-      campaignId: CAMPAIGN_IDS.FLASHCARD_VERSION
-    })
-});
 export const getChatLandingCampaign = () => ({
   type: campaignActions.GET_CHAT_LANDING_CAMPAIGN,
   apiCall: () =>
