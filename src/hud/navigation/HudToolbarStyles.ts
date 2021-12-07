@@ -33,5 +33,8 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   selectedButton: {
     backgroundColor: theme.circleIn.palette.gray2
+  },
+  tooltip: {
+    fontSize: 12
   }
 }));

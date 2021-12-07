@@ -62,7 +62,15 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
   };
 
   return (
-    <Tooltip key={navbarItem.id} title={navbarItem.displayName} arrow placement="top">
+    <Tooltip
+      classes={{
+        tooltip: classes.tooltip
+      }}
+      key={navbarItem.id}
+      title={navbarItem.displayName}
+      arrow
+      placement="top"
+    >
       {renderIconButton()}
     </Tooltip>
   );
