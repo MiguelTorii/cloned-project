@@ -18,5 +18,17 @@ export const styles = (theme) => ({
     flex: 1,
     justifyContent: 'space-between',
     overflowY: 'auto'
+  },
+  hudRoot: {
+    ...gutterStyle(theme),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    marginBottom: theme.spacing(8),
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-between',
+    overflowY: 'auto'
   }
 });

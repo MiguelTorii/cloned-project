@@ -21,7 +21,7 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '100%',
     justifySelf: 'right'
   },
-  storyMessage: {
+  storyMessageContainer: {
     gridColumn: '2 / 5',
     gridRow: '1',
     overflow: 'hidden'

@@ -11,11 +11,9 @@ const CalendarSubArea = () => {
   const backend = isMobile ? TouchBackend : HTML5Backend;
 
   return (
-    <div className={classes.container}>
-      <DndProvider backend={backend as any}>
-        <Workflow />
-      </DndProvider>
-    </div>
+    <DndProvider backend={backend as any}>
+      <Workflow />
+    </DndProvider>
   );
 };
 

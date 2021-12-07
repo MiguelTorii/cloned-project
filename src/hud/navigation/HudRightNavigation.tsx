@@ -79,7 +79,6 @@ const HudRightNavigation = () => {
     {
       id: SIGN_OUT_BUTTON,
       displayName: 'Sign Out'
-      // icon: <IconRewardStore />
     }
   ];
 
@@ -132,7 +131,6 @@ const HudRightNavigation = () => {
   };
 
   const handleUpdateNotificationsCount = (count) => {
-    console.log(count);
     setNotificationCount(count);
   };
 

@@ -101,7 +101,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
             {parentNavigationItem.childTools.map((childTool) => (
               <div key={childTool.id}>
                 <MenuItem
-                  className={classes.childToolItem}
+                  className={clsx(classes.childToolItem)}
                   onClick={() => onMenuItemClick(childTool.id)}
                 >
                   <ListItemIcon className={classes.childToolIcon}>{childTool.icon}</ListItemIcon>

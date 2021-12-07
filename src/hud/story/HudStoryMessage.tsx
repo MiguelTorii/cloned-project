@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useStyles } from './HudStoryStyles';
 import { HudStoryState } from '../storyState/hudStoryState';
 
-const StoryMessage = () => {
+const HudStoryMessage = () => {
   const classes: any = useStyles();
 
   const currentStatement: string = useSelector(
@@ -18,4 +18,4 @@ const StoryMessage = () => {
   );
 };
 
-export default StoryMessage;
+export default HudStoryMessage;

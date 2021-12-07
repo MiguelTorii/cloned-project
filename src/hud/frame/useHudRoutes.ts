@@ -58,15 +58,11 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/post': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/post': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/share': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
-  [CREATE_POST_PATHNAME]: { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   [EDIT_POST_PATHNAME_PREFIX]: { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
-  '/create/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
-  '/create/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
-  '/create/notes': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
 
   // CHAT_MAIN_AREA
   '/chat': { mainArea: CHAT_MAIN_AREA, mainSubArea: CHAT_AREA },
@@ -77,6 +73,10 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/flashcards': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: FLASHCARDS_AREA },
   '/edit/flashcards': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: FLASHCARDS_AREA },
   '/study': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: STUDY_TIPS_AREA },
+  '/create/question': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: ASK_A_QUESTION_AREA },
+  '/create/sharelink': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: SHARE_RESOURCES_AREA },
+  '/create/notes': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: SHARE_NOTES_AREA },
+  [CREATE_POST_PATHNAME]: { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: CREATE_A_POST_AREA },
 
   // ACHIEVEMENTS_MAIN_AREA
   '/leaderboard': { mainArea: ACHIEVEMENTS_MAIN_AREA, mainSubArea: LEADERBOARD_AREA },
@@ -109,10 +109,10 @@ const areasToUrl: Record<string, Record<string, string>> = {
     [NOTES_AREA]: '/notes',
     [FLASHCARDS_AREA]: '/flashcards',
     [CALENDAR_AREA]: '/workflow',
-    [CREATE_A_POST_AREA]: '/create_post?tab=0',
-    [ASK_A_QUESTION_AREA]: '/create_post?tab=1',
-    [SHARE_NOTES_AREA]: '/create_post?tab=2',
-    [SHARE_RESOURCES_AREA]: '/create_post?tab=3'
+    [CREATE_A_POST_AREA]: '/create_post',
+    [ASK_A_QUESTION_AREA]: '/create/question',
+    [SHARE_NOTES_AREA]: '/create/notes',
+    [SHARE_RESOURCES_AREA]: '/create/sharelink'
   },
   [ACHIEVEMENTS_MAIN_AREA]: {
     [GOALS_AREA]: '/goals',
@@ -132,6 +132,7 @@ const areasToUrl: Record<string, Record<string, string>> = {
  */
 const useHudRoutes = () => {
   const pathname: string = useSelector((state: any) => state.router.location.pathname);
+  const query = useSelector((state: any) => state.router.location.query);
 
   const isHud: boolean | null = useSelector(
     (state: { campaign: CampaignState }) => state.campaign.hud
@@ -151,7 +152,19 @@ const useHudRoutes = () => {
       const firstItemIndex = 1;
       const secondItemIndex = 2;
       const pathParts = pathname.split('/');
-      const onePartPathSection = `/${pathParts[firstItemIndex] || ''}`;
+      let onePartPathSection = `/${pathParts[firstItemIndex] || ''}`;
+
+      // Hack to fixup URL for create post links
+      if (onePartPathSection === '/create_post') {
+        const { tab } = query;
+        if (tab === '1') {
+          onePartPathSection = '/create/question';
+        } else if (tab === '2') {
+          onePartPathSection = '/create/notes';
+        } else if (tab === '3') {
+          onePartPathSection = '/create/sharelink';
+        }
+      }
 
       let areaIds: TAreaIds = pathnameToAreaIds[onePartPathSection];
       if (!areaIds) {
@@ -163,7 +176,7 @@ const useHudRoutes = () => {
         dispatch(setSelectedMainSubArea(areaIds.mainArea, areaIds.mainSubArea));
       }
     }
-  }, [pathname, isHud]);
+  }, [pathname, isHud, query]);
 
   const setHudArea = (mainArea: string, mainSubArea?: string) => {
     const url = areasToUrl[mainArea][mainSubArea || selectedMainSubAreas[mainArea]];

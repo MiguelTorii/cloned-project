@@ -6,5 +6,11 @@ export const useStyles = makeStyles((theme: any) => ({
     height: '100%',
     overflow: 'auto',
     padding: theme.spacing(2)
+  },
+  workflowContainer: {
+    flexGrow: 0,
+    height: '100%',
+    overflow: 'auto',
+    padding: theme.spacing(2)
   }
 }));

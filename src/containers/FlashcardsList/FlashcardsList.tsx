@@ -22,6 +22,7 @@ import { userActions } from '../../constants/action-types';
 import { getFlashcards, confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import useStyles from './styles';
 import type { State as StoreState } from '../../types/state';
+import { CampaignState } from '../../reducers/campaign';
 
 const Filters = {
   mine: {
@@ -49,6 +50,11 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
   const pastClasses = useSelector((state) => (state as any).user.userClasses.pastClasses);
   const location = useLocation();
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   // Internal states
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const pastClassIds = useMemo(() => getPastClassIds(pastClasses), [pastClasses]);
@@ -167,7 +173,7 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
 
   // Rendering
   return (
-    <div className={classes.container}>
+    <div className={isHud && classes.container}>
       <OnboardingFlashcards
         userId={me.userId}
         updateOnboarding={updateOnboarding}
@@ -175,23 +181,40 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
       />
 
       {/* Title Section */}
-      <Grid container justifyContent="flex-start" alignItems="center" spacing={3}>
-        <Grid item>
-          <Typography variant="h5">Flashcards</Typography>
+      {!isHud && (
+        <Grid container justifyContent="flex-start" alignItems="center" spacing={3}>
+          <Grid item>
+            <Typography variant="h5">Flashcards</Typography>
+          </Grid>
+          <Grid item>
+            <GradientButton onClick={handleCreate}>Create</GradientButton>
+          </Grid>
         </Grid>
-        <Grid item>
-          <GradientButton onClick={handleCreate}>Create</GradientButton>
-        </Grid>
-      </Grid>
+      )}
 
       {/* Deck Filter */}
-      <Box mt={4}>
-        <FiltersBar
-          data={arrFilters}
-          activeValue={currentFilter}
-          onSelectItem={handleSelectFilter}
-        />
-      </Box>
+      {isHud ? (
+        <Grid container justifyContent="flex-start" spacing={3}>
+          <Grid item>
+            <GradientButton onClick={handleCreate}>Create</GradientButton>
+          </Grid>
+          <Grid item>
+            <FiltersBar
+              data={arrFilters}
+              activeValue={currentFilter}
+              onSelectItem={handleSelectFilter}
+            />
+          </Grid>
+        </Grid>
+      ) : (
+        <Box mt={4}>
+          <FiltersBar
+            data={arrFilters}
+            activeValue={currentFilter}
+            onSelectItem={handleSelectFilter}
+          />
+        </Box>
+      )}
 
       {/* Render decks */}
       <Box mt={3}>{renderContent()}</Box>

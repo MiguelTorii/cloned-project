@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
@@ -28,6 +28,7 @@ import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import Tips from '../../components/Workflow/Tips';
 import { WorkflowProvider } from './WorkflowContext';
 import * as notificationsActions from '../../actions/notifications';
+import { CampaignState } from '../../reducers/campaign';
 
 const createSnackbar = (message, style, variant) => ({
   notification: {
@@ -194,6 +195,11 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [calendarView, setCalendarView] = useState(false);
   const [tips, setTips] = useState(false);
   const [currentCalendarView, setCurrentCalendarView] = useState('dayGridMonth');
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   const openTips = useCallback(() => setTips(true), []);
   const closeTips = useCallback(() => setTips(false), []);
   const showBoardView = useCallback(() => {
@@ -488,14 +494,16 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
       <Grid container direction="column" spacing={0} className={classes.container}>
         <ErrorBoundary>
           <Tips open={tips} close={closeTips} />
-          <Box display="flex" alignItems="center">
-            <Typography component="span" color="textPrimary" className={classes.title}>
-              Workflow
-            </Typography>
-            <IconButton onClick={init} color="primary" aria-label="refresh" component="span">
-              <RefreshIcon />
-            </IconButton>
-          </Box>
+          {!isHud && (
+            <Box display="flex" alignItems="center">
+              <Typography component="span" color="textPrimary" className={classes.title}>
+                Workflow
+              </Typography>
+              <IconButton onClick={init} color="primary" aria-label="refresh" component="span">
+                <RefreshIcon />
+              </IconButton>
+            </Box>
+          )}
           <Grid container alignItems="center">
             <Button
               color={cx(!listView && !calendarView ? 'primary' : 'default') as any}
@@ -522,6 +530,12 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
             <Button color="default" onClick={openTips} className={classes.button}>
               Tips & Tricks
             </Button>
+
+            {isHud && (
+              <IconButton onClick={init} color="primary" aria-label="refresh" component="span">
+                <RefreshIcon />
+              </IconButton>
+            )}
           </Grid>
           {calendarView && (
             <Paper elevation={0} className={classes.bodyCalendar}>

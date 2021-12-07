@@ -57,7 +57,11 @@ const ClassFeedSubArea = () => {
     return <CreatePostLayout questionId={questionId} />;
   }
 
-  if (pathname.startsWith('/edit/sharelink/') || pathname.startsWith('/create/sharelink')) {
+  if (pathname.startsWith('/create/sharelink')) {
+    return <CreatePostLayout />;
+  }
+
+  if (pathname.startsWith('/edit/sharelink/')) {
     return <CreateShareLink sharelinkId={sharelinkId} />;
   }
 
