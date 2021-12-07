@@ -1,5 +1,13 @@
 import React, { useCallback } from 'react';
-import { Button, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@material-ui/core';
+import {
+  Button,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography
+} from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -33,8 +41,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
 
   const isSelected = parentNavigationItem.id === selectedMainArea;
 
-  // handles support window pop out
-  const handleOpenWidget = useCallback(() => {
+  const handleOpenCircleInSupportWidget = useCallback(() => {
     (window as any)?.FreshworksWidget('identify', 'ticketForm', {
       name: `${profile.firstName} ${profile.lastName}`,
       email: profile.email
@@ -44,7 +51,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
 
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === SUPPORT_AREA) {
-      handleOpenWidget();
+      handleOpenCircleInSupportWidget();
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {
@@ -68,35 +75,74 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   return (
     <div id={parentNavigationItem.id} className={classes.controlPanelMainSectionGroup}>
       {parentNavigationItem.childTools.length === 1 ? (
-        <Button
-          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-          onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
-        >
-          <ListItemIcon className={classes.parentNavigationIcon}>
-            {parentNavigationItem.icon}
-          </ListItemIcon>
-          {!parentNavigationItem.showIconOnly && (
-            <Typography className={classes.parentNavigationItemText}>
-              {parentNavigationItem.displayName}
-            </Typography>
+        <>
+          {parentNavigationItem.tooltip ? (
+            <Tooltip arrow title={parentNavigationItem.displayName}>
+              <Button
+                className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+                onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
+              >
+                <ListItemIcon className={classes.parentNavigationIcon}>
+                  {parentNavigationItem.icon}
+                </ListItemIcon>
+                {!parentNavigationItem.showIconOnly && (
+                  <Typography className={classes.parentNavigationItemText}>
+                    {parentNavigationItem.displayName}
+                  </Typography>
+                )}
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button
+              className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+              onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
+            >
+              <ListItemIcon className={classes.parentNavigationIcon}>
+                {parentNavigationItem.icon}
+              </ListItemIcon>
+              {!parentNavigationItem.showIconOnly && (
+                <Typography className={classes.parentNavigationItemText}>
+                  {parentNavigationItem.displayName}
+                </Typography>
+              )}
+            </Button>
           )}
-        </Button>
+        </>
       ) : (
         <>
-          <Button
-            className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-            onClick={onMenuClick}
-          >
-            <ListItemIcon className={classes.parentNavigationIcon}>
-              {parentNavigationItem.icon}
-            </ListItemIcon>
-            {!parentNavigationItem.showIconOnly && (
-              <Typography className={classes.parentNavigationItemText}>
-                {parentNavigationItem.displayName}
-              </Typography>
-            )}
-            <ArrowDropDownIcon className={classes.arrowDropdown} />
-          </Button>
+          {parentNavigationItem.tooltip ? (
+            <Tooltip arrow title={parentNavigationItem.displayName}>
+              <Button
+                className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+                onClick={onMenuClick}
+              >
+                <ListItemIcon className={classes.parentNavigationIcon}>
+                  {parentNavigationItem.icon}
+                </ListItemIcon>
+                {!parentNavigationItem.showIconOnly && (
+                  <Typography className={classes.parentNavigationItemText}>
+                    {parentNavigationItem.displayName}
+                  </Typography>
+                )}
+                <ArrowDropDownIcon className={classes.arrowDropdown} />
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button
+              className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+              onClick={onMenuClick}
+            >
+              <ListItemIcon className={classes.parentNavigationIcon}>
+                {parentNavigationItem.icon}
+              </ListItemIcon>
+              {!parentNavigationItem.showIconOnly && (
+                <Typography className={classes.parentNavigationItemText}>
+                  {parentNavigationItem.displayName}
+                </Typography>
+              )}
+              <ArrowDropDownIcon className={classes.arrowDropdown} />
+            </Button>
+          )}
           <Menu
             className={classes.parentNavigationMenu}
             anchorEl={anchorElement}

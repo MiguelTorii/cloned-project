@@ -106,7 +106,8 @@ const HudRightNavigation = () => {
     displayName: 'Profile',
     icon: profilePicture,
     childTools: profileNavigationItems,
-    showIconOnly: true
+    showIconOnly: true,
+    tooltip: true
   };
 
   const missionNavigationItem = {
