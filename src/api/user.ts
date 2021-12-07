@@ -14,7 +14,8 @@ import type {
   CurrentSeasonCard,
   InviteCard,
   SyncSuccessData,
-  UserClass
+  UserClass,
+  TExperiencePointsData
 } from '../types/models';
 import { getToken } from './utils';
 import callApi from './api_base';
@@ -702,4 +703,8 @@ export const apiGetPointsHistory = async (userId: string, params: object): Promi
   callApi({
     url: `${API_ROUTES.USER}/${userId}/points_history`,
     params
+  });
+export const apiGetExperiencePoints = async (): Promise<TExperiencePointsData> =>
+  callApi({
+    url: `${API_ROUTES.USER}/points`
   });

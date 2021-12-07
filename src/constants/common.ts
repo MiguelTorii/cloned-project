@@ -202,3 +202,4 @@ export const ERROR_MODAL_TITLE = {
   401: 'Not Authorized',
   500: 'Something went wrong!'
 };
+export const FETCH_POINTS_INTERVAL = 15 * 60 * 1000;

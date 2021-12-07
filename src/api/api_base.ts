@@ -1,6 +1,8 @@
 import BaseAxios from 'axios';
 import qs from 'query-string';
 import { getToken } from './utils';
+import { experienceActions } from '../hud/experienceBarState/hudExperienceActions';
+import reduxStore from '../configureStore';
 
 const axios = BaseAxios.create({
   timeout: 60000
@@ -21,6 +23,15 @@ export const callApi = async (apiConfig) => {
       headers,
       ...apiConfig
     });
+
+    if (response.data?.points) {
+      reduxStore.dispatch({
+        type: experienceActions.ADD_EXPERIENCE_POINTS,
+        payload: {
+          experiencePoints: response.data?.points
+        }
+      });
+    }
     return response.data;
   } catch (error) {
     throw error;

@@ -763,27 +763,19 @@ export const createComment = async ({
   anonymous: boolean;
   rootCommentId: number | null | undefined;
   parentCommentId: number | null | undefined;
-}) => {
-  const token = await getToken();
-  const result = await axios.post(
-    `${API_ROUTES.FEED}/${postId}/comment`,
-    {
+}) =>
+  callApi({
+    url: `${API_ROUTES.FEED}/${postId}/comment`,
+    method: 'POST',
+    data: {
       user_id: Number(userId),
       type_id: typeId,
       comment,
       anonymous,
       root_comment_id: rootCommentId,
       parent_comment_id: parentCommentId
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
     }
-  );
-  const { data } = result;
-  return data;
-};
+  });
 export const createShareURL = async ({ userId, feedId }: { userId: string; feedId: number }) => {
   const token = await getToken();
   const result = await axios.post(

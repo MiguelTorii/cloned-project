@@ -14,6 +14,11 @@ export default (state: ExperienceState = defaultState, action: Action): Experien
         ...state,
         experienceTotal: action.payload.experienceTotal
       };
+    case experienceActions.ADD_EXPERIENCE_POINTS:
+      return {
+        ...state,
+        experiencePoints: (state.experiencePoints || 0) + action.payload.experiencePoints
+      };
     default:
       return state;
   }

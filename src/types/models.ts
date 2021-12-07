@@ -633,3 +633,6 @@ export type TLoginError = {
   session_id: string;
   should_redirect: boolean;
 };
+export type TExperiencePointsData = {
+  points: number;
+};
