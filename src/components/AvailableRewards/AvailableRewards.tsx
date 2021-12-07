@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { AvailableReward } from '../../types/models';
-import Item from './item';
+import AvailableRewardsItem from './AvailableRewardsItem';
 import { styles } from '../_styles/AvailableRewards';
 
 type Props = {
@@ -27,7 +27,7 @@ class AvailableRewards extends React.PureComponent<Props> {
     return (
       <div className={classes.root}>
         {rewards.map((item) => (
-          <Item
+          <AvailableRewardsItem
             key={item.rewardId}
             rewardId={item.rewardId}
             bgColor={item.bgColor}

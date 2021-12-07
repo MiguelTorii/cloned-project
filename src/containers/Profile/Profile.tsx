@@ -670,115 +670,111 @@ class Profile extends React.PureComponent<Props, State> {
     const seasons = processSeasons(userStatistics);
     return (
       <>
-        <div className={classes.root}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} lg={isHud ? 12 : 8}>
-              <Grid container alignItems="stretch">
-                <Grid item xs={12} md={12}>
-                  <ErrorBoundary>
-                    <ProfileHeader
-                      about={about}
-                      isMyProfile={userId === userData.userId}
-                      firstName={firstName}
-                      lastName={lastName}
-                      userProfileUrl={userProfileUrl}
-                      points={points}
-                      thanks={seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0}
-                      bestAnswers={seasons.length > 0 ? seasons[seasons.length - 1].bestAnswers : 0}
-                      school={school}
-                      state={state}
-                      segment={segment}
-                      grade={grade}
-                      joined={joined}
-                      chatLoading={chatLoading}
-                      tab={tab}
-                      inStudyCircle={false}
-                      isStudyCircleLoading={isStudyCircleLoading}
-                      isCirclein={userId === '0'}
-                      isOnline={isOnline}
-                      role={role}
-                      roleId={roleId}
-                      profile={userProfile as UserProfile}
-                      onStartChat={this.handleStartChat}
-                      onStartVideo={this.handleStartVideo}
-                      onChange={this.handleTabChange}
-                      onStudyCircle={this.handleStudyCircle}
-                      onEditProfile={this.handleEditProfileOpen}
-                      onSeePointsHistoryDetails={() =>
-                        this.switchPage(PROFILE_PAGES.points_history)
-                      }
-                      isHud={isHud}
-                    />
-                  </ErrorBoundary>
-                </Grid>
-                <Grid item xs={12} md={12} hidden={tab !== 1}>
-                  <ErrorBoundary>
-                    <ProfilePosts
-                      userId={userData.userId}
-                      posts={feed}
-                      isMyProfile={userId === userData.userId}
-                      onShare={this.handleShare}
-                      onPostClick={this.handlePostClick}
-                      onBookmark={this.handleBookmark}
-                      onReport={this.handleReport}
-                      pushTo={push}
-                      onDelete={this.handleDelete}
-                      onUserClick={this.handleUserClick}
-                      classList={classList}
-                    />
-                  </ErrorBoundary>
-                </Grid>
-                <Grid item xs={12} md={12} hidden={tab !== 2}>
-                  <ErrorBoundary>
-                    <ProfilePosts
-                      userId={userData.userId}
-                      posts={bookmarks}
-                      pushTo={push}
-                      isMyProfile={userId === userData.userId}
-                      isBookmarks
-                      onShare={this.handleShare}
-                      onPostClick={this.handlePostClick}
-                      onBookmark={this.handleBookmark}
-                      onReport={this.handleReport}
-                      onDelete={this.handleDelete}
-                      onUserClick={this.handleUserClick}
-                      classList={classList}
-                    />
-                  </ErrorBoundary>
-                </Grid>
+        <Grid container spacing={4}>
+          <Grid item xs={12} lg={isHud ? 12 : 8}>
+            <Grid container alignItems="stretch">
+              <Grid item xs={12} md={12}>
+                <ErrorBoundary>
+                  <ProfileHeader
+                    about={about}
+                    isMyProfile={userId === userData.userId}
+                    firstName={firstName}
+                    lastName={lastName}
+                    userProfileUrl={userProfileUrl}
+                    points={points}
+                    thanks={seasons.length > 0 ? seasons[seasons.length - 1].thanks : 0}
+                    bestAnswers={seasons.length > 0 ? seasons[seasons.length - 1].bestAnswers : 0}
+                    school={school}
+                    state={state}
+                    segment={segment}
+                    grade={grade}
+                    joined={joined}
+                    chatLoading={chatLoading}
+                    tab={tab}
+                    inStudyCircle={false}
+                    isStudyCircleLoading={isStudyCircleLoading}
+                    isCirclein={userId === '0'}
+                    isOnline={isOnline}
+                    role={role}
+                    roleId={roleId}
+                    profile={userProfile as UserProfile}
+                    onStartChat={this.handleStartChat}
+                    onStartVideo={this.handleStartVideo}
+                    onChange={this.handleTabChange}
+                    onStudyCircle={this.handleStudyCircle}
+                    onEditProfile={this.handleEditProfileOpen}
+                    onSeePointsHistoryDetails={() => this.switchPage(PROFILE_PAGES.points_history)}
+                    isHud={isHud}
+                  />
+                </ErrorBoundary>
+              </Grid>
+              <Grid item xs={12} md={12} hidden={tab !== 1}>
+                <ErrorBoundary>
+                  <ProfilePosts
+                    userId={userData.userId}
+                    posts={feed}
+                    isMyProfile={userId === userData.userId}
+                    onShare={this.handleShare}
+                    onPostClick={this.handlePostClick}
+                    onBookmark={this.handleBookmark}
+                    onReport={this.handleReport}
+                    pushTo={push}
+                    onDelete={this.handleDelete}
+                    onUserClick={this.handleUserClick}
+                    classList={classList}
+                  />
+                </ErrorBoundary>
+              </Grid>
+              <Grid item xs={12} md={12} hidden={tab !== 2}>
+                <ErrorBoundary>
+                  <ProfilePosts
+                    userId={userData.userId}
+                    posts={bookmarks}
+                    pushTo={push}
+                    isMyProfile={userId === userData.userId}
+                    isBookmarks
+                    onShare={this.handleShare}
+                    onPostClick={this.handlePostClick}
+                    onBookmark={this.handleBookmark}
+                    onReport={this.handleReport}
+                    onDelete={this.handleDelete}
+                    onUserClick={this.handleUserClick}
+                    classList={classList}
+                  />
+                </ErrorBoundary>
               </Grid>
             </Grid>
-            {!isHud && (
-              <Grid item xs={12} lg={4}>
-                <Grid container spacing={4}>
-                  <Hidden mdDown>
-                    <Grid item xs={12}>
-                      <PointsHistoryCard
-                        profile={userProfile}
-                        onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
-                      />
-                    </Grid>
-                  </Hidden>
-                </Grid>
-              </Grid>
-            )}
           </Grid>
+          {!isHud && (
+            <Grid item xs={12} lg={4}>
+              <Grid container spacing={4}>
+                <Hidden mdDown>
+                  <Grid item xs={12}>
+                    <PointsHistoryCard
+                      profile={userProfile}
+                      onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
+                    />
+                  </Grid>
+                </Hidden>
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
 
-          <ErrorBoundary>
-            <EditProfileModal
-              open={isEditingProfile}
-              profile={userProfile}
-              isSaving={isUpdatingProfile}
-              about={about}
-              onClose={() =>
-                this.setState({
-                  isEditingProfile: false
-                })
-              }
-              onSave={this.handleSaveProfile}
-            />
-          </ErrorBoundary>
-        </div>
+        <ErrorBoundary>
+          <EditProfileModal
+            open={isEditingProfile}
+            profile={userProfile}
+            isSaving={isUpdatingProfile}
+            about={about}
+            onClose={() =>
+              this.setState({
+                isEditingProfile: false
+              })
+            }
+            onSave={this.handleSaveProfile}
+          />
+        </ErrorBoundary>
         <ErrorBoundary>
           <SharePost feedId={feedId} open={Boolean(feedId)} onClose={this.handleShareClose} />
         </ErrorBoundary>
@@ -824,13 +820,11 @@ class Profile extends React.PureComponent<Props, State> {
     }
 
     return (
-      <div className={classes.root}>
-        <PointsHistoryDetails
-          isMyProfile={userProfile.userId === userData.userId}
-          profile={userProfile}
-          onGoBack={() => this.switchPage(PROFILE_PAGES.index)}
-        />
-      </div>
+      <PointsHistoryDetails
+        isMyProfile={userProfile.userId === userData.userId}
+        profile={userProfile}
+        onGoBack={() => this.switchPage(PROFILE_PAGES.index)}
+      />
     );
   }
 

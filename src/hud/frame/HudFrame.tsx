@@ -21,7 +21,6 @@ import {
 } from '../navigationState/hudNavigation';
 import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
-import HudDisplay from '../display/HudDisplay';
 import ChatArea from '../../hudAreas/chat/ChatArea';
 import {
   STUDY_TOOLS_BOTTOM_OPTION,
@@ -30,6 +29,8 @@ import {
 } from '../../routeConstants';
 import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
 import HudStudyTools from '../missions/HudStudyTools';
+import HudTitle from '../title/HudTitle';
+import HudExperienceBar from '../experienceBar/HudExperienceBar';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -55,7 +56,6 @@ const HudFrame = () => {
   if (newStudyToolsOption) {
     dispatch(setStudyToolsOption(newStudyToolsOption));
   }
-
   return (
     <main>
       <CssBaseline />
@@ -65,6 +65,9 @@ const HudFrame = () => {
         </div>
         <div className={classes.appContent}>
           <div className={classes.mainContainer}>
+            <div className={classes.titleAndStoryArea}>
+              <HudTitle />
+            </div>
             <div className={classes.mainAction}>
               {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
@@ -78,8 +81,8 @@ const HudFrame = () => {
 
               {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
             </div>
-            <div className={classes.mainHudDisplay}>
-              <HudDisplay />
+            <div className={classes.experienceBarContainer}>
+              <HudExperienceBar />
             </div>
           </div>
 

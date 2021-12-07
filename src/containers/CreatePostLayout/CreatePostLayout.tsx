@@ -27,6 +27,7 @@ import Appbar from './Appbar';
 import { buildPath } from '../../utils/helpers';
 import { cypherClass } from '../../utils/crypto';
 import { AppState } from '../../configureStore';
+import { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   item: {
@@ -41,10 +42,7 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(4),
     fontWeight: 'bold'
   },
-  container: {
-    marginTop: theme.spacing(3),
-    padding: theme.spacing()
-  },
+  container: {},
   paperRoot: {
     flexGrow: 1,
     boxShadow: 'none',
@@ -110,6 +108,11 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [isPosting, setIsPosting] = useState(false);
   const [images, setImages] = useState([]);
   const location = useLocation();
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   useEffect(
     () => () => {
       localStorage.removeItem('postSt');
@@ -125,8 +128,15 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
 
     if (tab !== null) {
       setValue(Number(tab));
+    } else if (location.pathname === '/create/question') {
+      setValue(1);
+    } else if (location.pathname === '/create/notes') {
+      setValue(2);
+    } else if (location.pathname === '/create/sharelink') {
+      setValue(3);
     }
   }, [location]);
+
   useEffect(() => {
     if (postId) {
       setValue(0);
@@ -235,13 +245,15 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid justifyContent="flex-start" className={classes.container} container spacing={2}>
-        <Grid item xs={12} md={9}>
-          <div className={classes.title}>
-            <Typography component="h1" variant="h4" color="textPrimary">
-              Create New Post
-            </Typography>
-          </div>
-        </Grid>
+        {!isHud && (
+          <Grid item xs={12} md={9}>
+            <div className={classes.title}>
+              <Typography component="h1" variant="h4" color="textPrimary">
+                Create New Post
+              </Typography>
+            </div>
+          </Grid>
+        )}
         <Grid item xs={12} md={9}>
           {canBatchPost ? (
             <ClassMultiSelect
@@ -265,7 +277,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         </Grid>
         <Grid item xs={12} lg={9}>
           <div className={classes.paperRoot}>
-            <Appbar value={value} handleChange={handleChange} />
+            {!isHud && <Appbar value={value} handleChange={handleChange} />}
             <TabPanel key="create-post" value={value} index={0} {...a11yProps(0)}>
               <CreatePostSt
                 classList={selectedClasses}

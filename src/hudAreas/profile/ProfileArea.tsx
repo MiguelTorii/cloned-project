@@ -9,10 +9,10 @@ import {
   POINTS_HISTORY_AREA,
   REWARDS_STORE_AREA
 } from '../../hud/navigationState/hudNavigation';
-import Store from '../../containers/Store/Store';
 import { UserState } from '../../reducers/user';
 import AboutMeSubarea from '../aboutMe/AboutMeSubarea';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
+import RewardsStoreSubArea from '../rewardsStore/RewardsStoreSubArea';
 
 const ProfileArea = () => {
   const classes: any = useStyles();
@@ -61,7 +61,7 @@ const ProfileArea = () => {
         />
       )}
 
-      {selectedMainSubArea === REWARDS_STORE_AREA && <Store />}
+      {selectedMainSubArea === REWARDS_STORE_AREA && <RewardsStoreSubArea />}
     </div>
   );
 };

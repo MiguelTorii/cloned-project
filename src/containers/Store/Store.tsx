@@ -1,17 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import debounce from 'lodash/debounce';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-import lodash from 'lodash';
 import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
 import type { AvailableReward, Slot } from '../../types/models';
 import { getRewards, updateRewards } from '../../api/store';
 import StoreLayout from '../../components/StoreLayout/StoreLayout';
 import SelectedRewards from '../../components/SelectedRewards/SelectedRewards';
 import AvailableRewards from '../../components/AvailableRewards/AvailableRewards';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { User } from '../../types/models';
 
 const styles = (theme) => ({
   divider: {
@@ -22,57 +21,22 @@ const styles = (theme) => ({
 
 type Props = {
   classes?: Record<string, any>;
-  user?: UserState;
-};
-type State = {
-  availableRewards: Array<AvailableReward>;
-  slots: Array<Slot>;
-  loading: boolean;
 };
 
-class Store extends React.PureComponent<Props, State> {
-  state = {
-    availableRewards: [],
-    slots: [],
-    loading: false
-  };
+const Store = ({ classes }: Props) => {
+  const [mounted, setMounted] = useState(false);
+  const [availableRewards, setAvailableRewards] = useState<AvailableReward[]>([]);
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  mounted: boolean;
+  const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
-  componentDidMount = () => {
-    window.addEventListener('offline', () => {
-      if (this.handleFetchRewards.cancel && typeof this.handleFetchRewards.cancel === 'function') {
-        this.handleFetchRewards.cancel();
-      }
-    });
-    window.addEventListener('online', () => {
-      this.handleFetchRewards();
-    });
-    this.mounted = true;
-    this.handleFetchRewards = debounce(this.handleFetchRewards, 250);
-    this.handleFetchRewards();
-  };
+  const userId = user?.userId;
 
-  componentWillUnmount = () => {
-    this.mounted = false;
-
-    if (this.handleFetchRewards.cancel && typeof this.handleFetchRewards.cancel === 'function') {
-      this.handleFetchRewards.cancel();
-    }
-  };
-
-  handleFetchRewards: any = async () => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-
-    if (userId !== '') {
-      if (this.mounted) {
-        this.setState({
-          loading: true
-        });
+  const handleFetchRewardsInternal: any = async () => {
+    if (userId) {
+      if (mounted) {
+        setLoading(true);
       }
 
       try {
@@ -80,33 +44,22 @@ class Store extends React.PureComponent<Props, State> {
           userId
         });
 
-        if (this.mounted) {
-          this.setState({
-            availableRewards,
-            slots
-          });
+        if (mounted) {
+          setAvailableRewards(availableRewards);
+          setSlots(slots);
         }
       } finally {
-        if (this.mounted) {
-          this.setState({
-            loading: false
-          });
+        if (mounted) {
+          setLoading(false);
         }
       }
     } else {
-      this.handleFetchRewards();
+      handleFetchRewardsInternal();
     }
   };
 
-  handleSelection = async ({ rewardId, slot }: { rewardId: number; slot: number }) => {
-    this.setState({
-      loading: true
-    });
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
+  const handleSelection = async ({ rewardId, slot }: { rewardId: number; slot: number }) => {
+    setLoading(true);
 
     try {
       await updateRewards({
@@ -114,43 +67,51 @@ class Store extends React.PureComponent<Props, State> {
         rewardId,
         slot
       });
-      this.handleFetchRewards();
+      handleFetchRewardsInternal();
     } catch (err) {
-      this.setState({
-        loading: false
-      });
+      setLoading(false);
     }
   };
 
-  render() {
-    const { classes } = this.props;
-    const { availableRewards, slots, loading } = this.state;
-    return (
-      <div className={classes.root}>
-        <StoreLayout>
-          <ErrorBoundary>
-            <SelectedRewards
-              slots={slots}
-              loading={loading}
-              rewardsCount={availableRewards.length}
-            />
-          </ErrorBoundary>
-          <Divider light className={classes.divider} />
-          <ErrorBoundary>
-            <AvailableRewards
-              rewards={availableRewards}
-              loading={loading}
-              onClick={this.handleSelection}
-            />
-          </ErrorBoundary>
-        </StoreLayout>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    window.addEventListener('offline', () => {
+      if (
+        handleFetchRewardsInternal.cancel &&
+        typeof handleFetchRewardsInternal.cancel === 'function'
+      ) {
+        handleFetchRewardsInternal.cancel();
+      }
+    });
+    window.addEventListener('online', () => {
+      handleFetchRewardsInternal();
+    });
+    setMounted(true);
+    const handleFetchRewards = debounce(handleFetchRewardsInternal, 250);
+    handleFetchRewards();
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
-});
+    return () => {
+      setMounted(false);
 
-export default connect<{}, {}, Props>(mapStateToProps, null)(withStyles(styles as any)(Store));
+      if (
+        handleFetchRewardsInternal.cancel &&
+        typeof handleFetchRewardsInternal.cancel === 'function'
+      ) {
+        handleFetchRewardsInternal.cancel();
+      }
+    };
+  }, [mounted]);
+
+  return (
+    <StoreLayout>
+      <ErrorBoundary>
+        <SelectedRewards slots={slots} loading={loading} rewardsCount={availableRewards.length} />
+      </ErrorBoundary>
+      <Divider light className={classes.divider} />
+      <ErrorBoundary>
+        <AvailableRewards rewards={availableRewards} loading={loading} onClick={handleSelection} />
+      </ErrorBoundary>
+    </StoreLayout>
+  );
+};
+
+export default withStyles(styles as any)(Store);

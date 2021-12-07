@@ -3,7 +3,7 @@ export const styles = (theme) => ({
     width: '100%'
   },
   container: {
-    margin: '32px auto 40px auto',
+    margin: '0 auto 40px auto',
     paddingBottom: 20,
     backgroundColor: theme.circleIn.palette.modalBackground,
     borderRadius: 16,

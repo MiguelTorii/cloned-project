@@ -2,19 +2,24 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { useSelector } from 'react-redux';
 import { styles } from '../_styles/StoreLayout';
+import { CampaignState } from '../../reducers/campaign';
 
 type Props = {
   classes: Record<string, any>;
   children: React.ReactNode;
 };
 
-class StoreLayout extends React.PureComponent<Props> {
-  render() {
-    const { classes, children } = this.props;
-    return (
-      <div className={classes.container}>
-        <Paper className={classes.root} elevation={0}>
+const StoreLayout = ({ classes, children }: Props) => {
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
+  return (
+    <Paper className={isHud ? classes.hudRoot : classes.root} elevation={0}>
+      {!isHud && (
+        <>
           <Typography variant="h3" paragraph>
             Welcome to the Rewards Store
           </Typography>
@@ -24,14 +29,14 @@ class StoreLayout extends React.PureComponent<Props> {
             monthly reward. Select three rewards below and if you’re selected as a winner, we’ll
             send you an e-giftcard for one of your choices!
           </Typography>
-          <Typography variant="subtitle1" paragraph>
-            Your Monthly Rewards Selections
-          </Typography>
-          {children}
-        </Paper>
-      </div>
-    );
-  }
-}
+        </>
+      )}
+      <Typography variant="subtitle1" paragraph>
+        Monthly Rewards Selections
+      </Typography>
+      {children}
+    </Paper>
+  );
+};
 
 export default withStyles(styles as any)(StoreLayout);

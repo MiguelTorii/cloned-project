@@ -5,7 +5,6 @@ import HudStoryAvatar from '../story/HudStoryAvatar';
 import HudStoryMessage from '../story/HudStoryMessage';
 import HudExperienceBar from '../experienceBar/HudExperienceBar';
 import { HudStoryState } from '../storyState/hudStoryState';
-import useStorySequence from '../storyState/useStorySequence';
 
 const talkingStoryAvatarSize = '70px';
 const silentStoryAvatarSize = '0px';
@@ -32,7 +31,7 @@ const HudDisplay = () => {
             <div style={storyAvatarSize()} className={classes.storyAvatar}>
               <HudStoryAvatar />
             </div>
-            <div className={classes.storyMessage}>
+            <div className={classes.storyMessageContainer}>
               <HudStoryMessage />
             </div>
           </>

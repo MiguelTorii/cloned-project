@@ -3,12 +3,13 @@ import { push } from 'connected-react-router';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import { decypherClass } from '../../utils/crypto';
 import type { State as StoreState } from '../../types/state';
 import LeaderBoardTabs from '../../components/LeaderBoardTabs/LeaderBoardTabs';
 import leaderboardActions from '../../actions/leaderboard';
+import { CampaignState } from '../../reducers/campaign';
 
 type Props = {
   classes?: any;
@@ -26,6 +27,7 @@ type Props = {
 const styles = (theme) => ({
   title: {
     marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     fontWeight: 700,
     fontSize: 28
   }
@@ -49,6 +51,10 @@ const LeaderBoards = ({
   }, [updateLeaderboards]);
   const { sectionId, classId } = decypherClass();
 
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   const getCourseDisplayName = () => {
     if (classId && classList) {
       const c = classList.find((cl) => cl.classId === Number(classId));
@@ -64,6 +70,21 @@ const LeaderBoards = ({
   useEffect(() => {
     setCourseDisplayname(getCourseDisplayName()); // eslint-disable-next-line
   }, [classList, search]);
+
+  if (isHud) {
+    return (
+      <LeaderBoardTabs
+        userId={userId}
+        leaderboard={leaderboard}
+        sectionId={sectionId}
+        updateLeaderboardGrandInfo={updateLeaderboardGrandInfo}
+        updateTuesdayLeaderboard={updateTuesdayLeaderboard}
+        updateGrandLeaderboards={updateGrandLeaderboards}
+        pushTo={pushTo}
+      />
+    );
+  }
+
   return (
     <Grid xs={12} item>
       <Typography color="textPrimary" className={classes.title}>

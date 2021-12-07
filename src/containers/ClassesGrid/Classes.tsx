@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +21,7 @@ import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user';
+import { CampaignState } from '../../reducers/campaign';
 
 const Filters = {
   current: {
@@ -89,6 +90,11 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [emptyBody, setEmptyBody] = useState('');
   const [currentFilter, setCurrentFilter] = useState('current');
   const [loading, setLoading] = useState(false);
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   const arrFilters = useMemo(
     () =>
       Object.keys(Filters).map((key) => ({
@@ -198,37 +204,49 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     setCurrentFilter(item);
   }, []);
   return (
-    <div className={classes.wrapper}>
-      <Grid item>
-        <Typography variant="h5">My Classes</Typography>
-      </Grid>
-      <Grid item className={classes.pastNote}>
-        {currentFilter === 'current' ? (
-          <Typography variant="body1">
-            Hey!&nbsp;
-            <span role="img" aria-label="Clap">
-              👋
-            </span>
-            These are the current classes you are enrolled in on CircleIn. Click on the classes
-            below to see the Class Feed where you can connect with your classmates, ask questions
-            and share study materials!
-          </Typography>
-        ) : (
-          <Typography variant="body1">
-            You can access the materials from past classes, but keep in mind this is read-only, you
-            cannot post new comments, or share posts on this feed.
-          </Typography>
-        )}
-      </Grid>
-      <Grid item>
-        <Box mt={4}>
+    <div className={!isHud && classes.wrapper}>
+      {isHud ? (
+        <Grid item>
           <FiltersBar
             data={arrFilters}
             activeValue={currentFilter}
             onSelectItem={handleSelectFilter}
           />
-        </Box>
-      </Grid>
+        </Grid>
+      ) : (
+        <>
+          <Grid item>
+            <Typography variant="h5">Classes</Typography>
+          </Grid>
+          <Grid item className={classes.pastNote}>
+            {currentFilter === 'current' ? (
+              <Typography variant="body1">
+                Hey!&nbsp;
+                <span role="img" aria-label="Clap">
+                  👋
+                </span>
+                These are the current classes you are enrolled in on CircleIn. Click on the classes
+                below to see the Class Feed where you can connect with your classmates, ask
+                questions and share study materials!
+              </Typography>
+            ) : (
+              <Typography variant="body1">
+                You can access the materials from past classes, but keep in mind this is read-only,
+                you cannot post new comments, or share posts on this feed.
+              </Typography>
+            )}
+          </Grid>
+          <Grid item>
+            <Box mt={4}>
+              <FiltersBar
+                data={arrFilters}
+                activeValue={currentFilter}
+                onSelectItem={handleSelectFilter}
+              />
+            </Box>
+          </Grid>
+        </>
+      )}
 
       <Grid
         justifyContent={classList?.length ? 'flex-start' : 'center'}

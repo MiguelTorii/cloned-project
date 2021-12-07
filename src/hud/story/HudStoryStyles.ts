@@ -16,8 +16,8 @@ export const useStyles = makeStyles((theme: any) => ({
     opacity: 0.7,
     backgroundColor: theme.circleIn.palette.gray3,
     borderRadius: '4px',
-    marginTop: theme.spacing(2),
-    paddingLeft: '40px',
-    overflow: 'hidden'
+    overflowX: 'hidden',
+    overflowY: 'auto',
+    paddingLeft: theme.spacing(6)
   }
 }));

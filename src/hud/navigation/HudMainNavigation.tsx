@@ -101,9 +101,9 @@ const HudMainNavigation = () => {
       icon: <FlashcardMark style={ICON_SIZE} />
     },
     {
-      id: NOTES_AREA,
-      displayName: 'Create notes',
-      icon: <PrivateNotesIcon style={ICON_SIZE} />
+      id: CREATE_A_POST_AREA,
+      displayName: 'Create a post',
+      icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
       id: CALENDAR_AREA,
@@ -111,19 +111,19 @@ const HudMainNavigation = () => {
       icon: <IconWorkflow style={ICON_SIZE} />
     },
     {
-      id: CREATE_A_POST_AREA,
-      displayName: 'Create a post',
-      icon: <ActiveCreatePost style={ICON_SIZE} />
-    },
-    {
-      id: ASK_A_QUESTION_AREA,
-      displayName: 'Ask a question',
-      icon: <QuestionIcon style={ICON_SIZE} />
+      id: NOTES_AREA,
+      displayName: 'Private notes',
+      icon: <PrivateNotesIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_NOTES_AREA,
       displayName: 'Share notes',
       icon: <ShareNotesIcon style={ICON_SIZE} />
+    },
+    {
+      id: ASK_A_QUESTION_AREA,
+      displayName: 'Ask a question',
+      icon: <QuestionIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_RESOURCES_AREA,

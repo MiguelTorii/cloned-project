@@ -21,7 +21,6 @@ const styles = (theme) => ({
     width: '100%'
   },
   root: {
-    padding: theme.spacing(2, 0),
     maxWidth: 400
   },
   newClass: {
