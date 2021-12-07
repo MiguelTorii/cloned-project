@@ -76,7 +76,6 @@ const HudRoutes = () => (
           <Route exact path="/store" component={withTracker(HudFrame)} />
 
           {/* Signed in routes: More routes */}
-          <Route exact path="/support" component={withTracker(HudFrame)} />
           <Route exact path="/feedback" component={withTracker(HudFrame)} />
           <Route exact path="/getTheMobileApp" component={withTracker(HudFrame)} />
 

@@ -60,10 +60,6 @@ export const useStyles = makeStyles((theme: any) => ({
     }
   },
   imagePhone: {
-    objectFit: 'scale-down',
-    width: 419,
-    [theme.breakpoints.down('sm')]: {
-      width: '40vw'
-    }
+    height: '200px'
   }
 }));

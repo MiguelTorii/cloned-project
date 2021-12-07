@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudNavigationStyles';
-import { SIGN_OUT_BUTTON, SUPPORT_AREA } from '../navigationState/hudNavigation';
+import {
+  GET_THE_MOBILE_APP_AREA,
+  GIVE_FEEDBACK_AREA,
+  SIGN_OUT_BUTTON,
+  SUPPORT_AREA
+} from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
@@ -40,8 +45,6 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === SUPPORT_AREA) {
       handleOpenWidget();
-    } else if (mainSubArea === SIGN_OUT_BUTTON) {
-      dispatch(signOut());
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {

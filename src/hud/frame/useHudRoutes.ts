@@ -85,18 +85,17 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/profile': { mainArea: PROFILE_MAIN_AREA, mainSubArea: ABOUT_ME_AREA },
   '/pointsHistory': { mainArea: PROFILE_MAIN_AREA, mainSubArea: POINTS_HISTORY_AREA },
   '/store': { mainArea: PROFILE_MAIN_AREA, mainSubArea: REWARDS_STORE_AREA },
-
-  // MORE_MAIN_AREA
-  '/support': { mainArea: MORE_MAIN_AREA, mainSubArea: SUPPORT_AREA },
-  '/feedback': { mainArea: MORE_MAIN_AREA, mainSubArea: GIVE_FEEDBACK_AREA },
-  '/getTheMobileApp': { mainArea: MORE_MAIN_AREA, mainSubArea: GET_THE_MOBILE_APP_AREA }
+  '/feedback': { mainArea: PROFILE_MAIN_AREA, mainSubArea: GIVE_FEEDBACK_AREA },
+  '/getTheMobileApp': { mainArea: PROFILE_MAIN_AREA, mainSubArea: GET_THE_MOBILE_APP_AREA }
 };
 
 const areasToUrl: Record<string, Record<string, string>> = {
   [PROFILE_MAIN_AREA]: {
     [ABOUT_ME_AREA]: '/profile',
     [POINTS_HISTORY_AREA]: '/pointsHistory',
-    [REWARDS_STORE_AREA]: '/store'
+    [REWARDS_STORE_AREA]: '/store',
+    [GIVE_FEEDBACK_AREA]: '/feedback',
+    [GET_THE_MOBILE_APP_AREA]: '/getTheMobileApp'
   },
   [CHAT_MAIN_AREA]: {
     [CHAT_AREA]: '/chat'
@@ -119,11 +118,6 @@ const areasToUrl: Record<string, Record<string, string>> = {
     [BADGES_AREA]: '/badges',
     [LEADERBOARD_AREA]: '/leaderboard',
     [SCHOLARSHIPS_AREA]: '/scholarships'
-  },
-  [MORE_MAIN_AREA]: {
-    [SUPPORT_AREA]: '/support',
-    [GIVE_FEEDBACK_AREA]: '/feedback',
-    [GET_THE_MOBILE_APP_AREA]: '/getTheMobileApp'
   }
 };
 
