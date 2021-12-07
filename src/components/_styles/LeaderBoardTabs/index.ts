@@ -76,6 +76,7 @@ export const styles = (theme) => ({
   },
   scoreContainer: {
     paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(2),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing()
   },
