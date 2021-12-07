@@ -17,7 +17,8 @@ import {
   REWARDS_STORE_AREA,
   RIGHT_SIDE_AREA,
   SIGN_OUT_BUTTON,
-  SUPPORT_AREA
+  SUPPORT_AREA,
+  GET_THE_MOBILE_APP_AREA
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -26,6 +27,7 @@ import { ReactComponent as IconAboutMe } from '../../assets/svg/about_me.svg';
 import { ReactComponent as IconPointsHistory } from '../../assets/svg/points_history.svg';
 import { ReactComponent as IconRewardStore } from '../../assets/svg/rewards-icon-off.svg';
 import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
+import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
@@ -75,6 +77,11 @@ const HudRightNavigation = () => {
       id: SUPPORT_AREA,
       displayName: 'CircleIn Support',
       icon: <HelpIcon />
+    },
+    {
+      id: GET_THE_MOBILE_APP_AREA,
+      displayName: 'Get the Mobile App',
+      icon: <IconMobileApp />
     },
     {
       id: SIGN_OUT_BUTTON,

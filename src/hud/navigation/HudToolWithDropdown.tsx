@@ -42,6 +42,8 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
       handleOpenWidget();
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
+    } else if (mainSubArea === SIGN_OUT_BUTTON) {
+      dispatch(signOut());
     } else {
       setHudArea(parentNavigationItem.id, mainSubArea);
     }
