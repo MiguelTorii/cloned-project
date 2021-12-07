@@ -14,10 +14,14 @@ import { ReactComponent as FlashcardMark } from '../../assets/svg/flashcard-mark
 import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/note-mark.svg';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
+import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
 import { ReactComponent as IconMyClasses } from '../../assets/svg/classes_overview.svg';
 import { ReactComponent as IconClassFeed } from '../../assets/svg/class_feed.svg';
 import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
 import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
+import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
+import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
+import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
 import { useStyles } from './HudNavigationStyles';
 import {
   ACHIEVEMENTS_MAIN_AREA,
