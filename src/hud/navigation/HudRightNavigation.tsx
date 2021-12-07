@@ -15,7 +15,8 @@ import {
   REWARDS_STORE_AREA,
   SIGN_OUT_BUTTON,
   SUPPORT_AREA,
-  GET_THE_MOBILE_APP_AREA
+  GET_THE_MOBILE_APP_AREA,
+  EXPERT_MODE_ACCESS
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -49,11 +50,28 @@ const HudRightNavigation = () => {
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
 
-  // should show if currently in expert mode
+  console.log(
+    '🚀 ~ file: HudRightNavigation.tsx ~ line 58 ~ HudRightNavigation ~ isExpert',
+    isExpert
+  );
+  // will show if only expert/tutor and not student
   const isTutor =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
 
+  let expertNavigationItem = {};
+  if (isExpert) {
+    expertNavigationItem = {
+      id: EXPERT_MODE_ACCESS,
+      displayName: 'Go to Expert Mode'
+      // icon: <IconAboutMe />
+    };
+  }
+
+  console.log(
+    '🚀 ~ file: HudRightNavigation.tsx ~ line 67 ~ HudRightNavigation ~ isTutor',
+    isTutor
+  );
   const profileNavigationItems: HudToolData[] = [
     {
       id: ABOUT_ME_AREA,
