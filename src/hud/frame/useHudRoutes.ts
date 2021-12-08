@@ -1,5 +1,5 @@
 import { push } from 'connected-react-router';
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action } from 'redux';
 import { CampaignState } from '../../reducers/campaign';
@@ -33,6 +33,7 @@ import {
 } from '../navigationState/hudNavigation';
 import { setSelectedMainSubArea } from '../navigationState/hudNavigationActions';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+import useHudEvents from '../events/useHudEvents';
 
 type TAreaIds = {
   mainArea: string;
@@ -132,6 +133,8 @@ const useHudRoutes = () => {
 
   const dispatch: Dispatch<Action> = useDispatch();
 
+  const { setHudAreaSync } = useHudEvents();
+
   const selectedMainSubAreas = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainSubAreas
   );
@@ -165,6 +168,7 @@ const useHudRoutes = () => {
       }
 
       if (areaIds) {
+        setHudAreaSync(areaIds.mainArea, areaIds.mainSubArea);
         dispatch(setSelectedMainSubArea(areaIds.mainArea, areaIds.mainSubArea));
       }
     }
@@ -173,6 +177,7 @@ const useHudRoutes = () => {
   const setHudArea = (mainArea: string, mainSubArea?: string) => {
     const url = areasToUrl[mainArea][mainSubArea || selectedMainSubAreas[mainArea]];
     if (url) {
+      setHudAreaSync(mainArea, mainSubArea);
       dispatch(push(url));
     }
   };

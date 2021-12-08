@@ -39,7 +39,15 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
   );
 
+  const highlightedNavigation = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
+  );
+
   const isSelected = parentNavigationItem.id === selectedMainArea;
+  const isRootHighlighted = parentNavigationItem.id === highlightedNavigation?.rootAreaId;
+
+  const isLeafHighlighted = (leafAreaId: string): boolean =>
+    leafAreaId === highlightedNavigation?.leafAreaId;
 
   const handleOpenCircleInSupportWidget = useCallback(() => {
     (window as any)?.FreshworksWidget('identify', 'ticketForm', {
@@ -76,7 +84,11 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     <>
       {multipleItems ? (
         <Button
-          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+          className={clsx(
+            classes.parentNavigationItem,
+            isSelected && classes.selectedButton,
+            isRootHighlighted && classes.highlightedButton
+          )}
           onClick={onMenuClick}
         >
           <ListItemIcon className={classes.parentNavigationIcon}>
@@ -91,7 +103,11 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
         </Button>
       ) : (
         <Button
-          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+          className={clsx(
+            classes.parentNavigationItem,
+            isSelected && classes.selectedButton,
+            isRootHighlighted && classes.highlightedButton
+          )}
           onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
         >
           <ListItemIcon className={classes.parentNavigationIcon}>
@@ -139,7 +155,10 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
             {parentNavigationItem.childTools.map((childTool) => (
               <div key={childTool.id}>
                 <MenuItem
-                  className={clsx(classes.childToolItem)}
+                  className={clsx(
+                    classes.childToolItem,
+                    isLeafHighlighted(childTool.id) && classes.highlightedButton
+                  )}
                   onClick={() => onMenuItemClick(childTool.id)}
                 >
                   <ListItemIcon className={classes.childToolIcon}>{childTool.icon}</ListItemIcon>

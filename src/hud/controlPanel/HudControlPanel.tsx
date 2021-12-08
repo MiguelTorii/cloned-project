@@ -7,14 +7,16 @@ import avatarImg from '../../assets/img/circlein-web-notification.png';
 import useHudRoutes from '../frame/useHudRoutes';
 import { COMMUNITIES_MAIN_AREA, FEEDS_AREA } from '../navigationState/hudNavigation';
 import useStorySequence from '../storyState/useStorySequence';
+import useOnboarding from '../storyState/useOnboarding';
 
 const HudControlPanel = () => {
   const classes: any = useStyles();
 
   const setHudArea = useHudRoutes();
 
-  const { loadStory, sayGreeting } = useStorySequence();
-  loadStory();
+  const { sayGreeting } = useStorySequence();
+
+  useOnboarding();
 
   const homepageReset = () => {
     setHudArea(COMMUNITIES_MAIN_AREA, FEEDS_AREA);

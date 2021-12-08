@@ -1,7 +1,12 @@
 import { Action, Dispatch } from 'redux';
 import { setCurrentStatement } from './hudStoryActions';
 
-const STORY_SEQUENCE_DELAY_IN_MS = 7000;
+const STORY_SEQUENCE_DELAY_IN_MS = 5000;
+
+export interface StorySequenceOptions {
+  statements: string[];
+  isPersistent: boolean;
+}
 
 /**
  * Tracks all the details of "where we are" in a story sequence.
@@ -15,6 +20,13 @@ export class StorySequence {
   private statements: string[];
 
   /**
+   * Function to call when the story completes.
+   * Note that this function will not be called if the story is cancelled
+   * and it ends early.
+   */
+  private completionCallback: () => void;
+
+  /**
    * A bookmark marking where we are in the story.
    */
   private statementIndex = 0;
@@ -25,8 +37,20 @@ export class StorySequence {
    */
   private timeoutId: any = null;
 
-  constructor(statements: string[]) {
+  /**
+   * A persistent story will continue to show the last message after the message
+   * delay has elapsed.
+   */
+  private isPersistent: any = null;
+
+  constructor({ statements, isPersistent }: StorySequenceOptions, completionCallback: () => void) {
     this.statements = statements;
+    this.completionCallback = completionCallback;
+    this.isPersistent = isPersistent;
+  }
+
+  public isReading(): boolean {
+    return !!this.timeoutId;
   }
 
   public startStory(dispatch: Dispatch<Action>): void {
@@ -38,6 +62,9 @@ export class StorySequence {
     const isAtEnd = !this.statements[this.statementIndex];
     if (isAtEnd) {
       this.endStory(dispatch);
+      if (this.completionCallback) {
+        this.completionCallback();
+      }
     } else {
       this.readStatement(dispatch);
     }
@@ -57,7 +84,9 @@ export class StorySequence {
   public endStory(dispatch: Dispatch<Action>): void {
     this.statementIndex = 0;
 
-    dispatch(setCurrentStatement(''));
+    if (!this.isPersistent) {
+      dispatch(setCurrentStatement(''));
+    }
 
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);

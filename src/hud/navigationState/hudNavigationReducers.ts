@@ -35,6 +35,21 @@ export default (state: HudNavigationState = defaultState, action: Action): HudNa
         studyToolsOption: action.payload.studyToolsOption
       };
 
+    case hudNavigationActions.SET_NAVIGATION_HIGHLIGHT:
+      return {
+        ...state,
+        highlightedNavigation: {
+          rootAreaId: action.payload.rootAreaId,
+          leafAreaId: action.payload.leafAreaId
+        }
+      };
+
+    case hudNavigationActions.CLEAR_NAVIGATION_HIGHLIGHT:
+      return {
+        ...state,
+        highlightedNavigation: null
+      };
+
     default:
       return state;
   }

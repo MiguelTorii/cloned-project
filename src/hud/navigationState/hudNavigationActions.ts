@@ -4,7 +4,9 @@ export const hudNavigationActions = {
   TOGGLE_SIDE_AREA_VISIBILITY: 'TOGGLE_SIDE_AREA_VISIBILITY',
   SET_SELECTED_MAIN_AREA: 'SET_SELECTED_MAIN_AREA',
   SET_SELECTED_MAIN_SUBAREA: 'SET_SELECTED_MAIN_SUBAREA',
-  SET_STUDY_TOOLS_OPTION: 'SET_STUDY_TOOLS_OPTION'
+  SET_STUDY_TOOLS_OPTION: 'SET_STUDY_TOOLS_OPTION',
+  SET_NAVIGATION_HIGHLIGHT: 'SET_NAVIGATION_HIGHLIGHT',
+  CLEAR_NAVIGATION_HIGHLIGHT: 'CLEAR_NAVIGATION_HIGHLIGHT'
 };
 
 export const toggleSideAreaVisibility = (sideArea: string): Action => ({
@@ -20,6 +22,9 @@ export const toggleSideAreaVisibility = (sideArea: string): Action => ({
  * use
  * `const setHudAreas = useHudRoutes(); setHudAreas(mainArea, mainSubArea);`
  * instead to ensure that the navigation and the routing stays in sync.
+ *
+ * Another option is to set the URL directly (useHudRoutes hook will detect
+ * the URL change and update the selected area and subarea accordingly).
  */
 export const setSelectedMainSubArea = (mainArea: string, mainSubArea: string): Action => ({
   type: hudNavigationActions.SET_SELECTED_MAIN_SUBAREA,
@@ -34,4 +39,17 @@ export const setStudyToolsOption = (studyToolsOption: string): Action => ({
   payload: {
     studyToolsOption
   }
+});
+
+export const setNavigationHighlight = (rootAreaId: string, leafAreaId: string): Action => ({
+  type: hudNavigationActions.SET_NAVIGATION_HIGHLIGHT,
+  payload: {
+    rootAreaId,
+    leafAreaId
+  }
+});
+
+export const clearNavigationHighlight = (): Action => ({
+  type: hudNavigationActions.CLEAR_NAVIGATION_HIGHLIGHT,
+  payload: {}
 });

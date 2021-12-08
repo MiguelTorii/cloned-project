@@ -9,16 +9,7 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
         ...state,
         currentStatement: action.payload.currentStatement
       };
-    case hudStoryActions.GREETING_LOAD_TRIGGERED:
-      return {
-        ...state,
-        greetingLoadTriggered: true
-      };
-    case hudStoryActions.SET_GREETING:
-      return {
-        ...state,
-        greetingStatements: action.payload.greetingStatements
-      };
+
     default:
       return state;
   }
