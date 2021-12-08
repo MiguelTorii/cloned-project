@@ -21,7 +21,9 @@ const subAreaToTitle = {
   NOTES_AREA: 'Private Notes',
   FLASHCARDS_AREA: 'Flashcards',
   CALENDAR_AREA: 'Workflow',
-  LEADERBOARD_AREA: 'Leaderboard'
+  LEADERBOARD_AREA: 'Leaderboard',
+  GIVE_FEEDBACK_AREA: 'Give Feedback',
+  GET_THE_MOBILE_APP_AREA: 'Get the Mobile App'
 };
 
 const HudTitle = () => {

@@ -72,76 +72,44 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     selectLeaf(childToolId);
   };
 
+  const renderParentNavButton = () => (
+    <Button
+      className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+      onClick={onMenuClick}
+    >
+      <ListItemIcon className={classes.parentNavigationIcon}>
+        {parentNavigationItem.icon}
+      </ListItemIcon>
+      {!parentNavigationItem.showIconOnly && (
+        <Typography className={classes.parentNavigationItemText}>
+          {parentNavigationItem.displayName}
+        </Typography>
+      )}
+      <ArrowDropDownIcon className={classes.arrowDropdown} />
+    </Button>
+  );
+
   return (
     <div id={parentNavigationItem.id} className={classes.controlPanelMainSectionGroup}>
+      {/* Checks if more than one item in childTools, if so adds a dropdown menu */}
       {parentNavigationItem.childTools.length === 1 ? (
         <>
           {parentNavigationItem.tooltip ? (
             <Tooltip arrow title={parentNavigationItem.displayName}>
-              <Button
-                className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-                onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
-              >
-                <ListItemIcon className={classes.parentNavigationIcon}>
-                  {parentNavigationItem.icon}
-                </ListItemIcon>
-                {!parentNavigationItem.showIconOnly && (
-                  <Typography className={classes.parentNavigationItemText}>
-                    {parentNavigationItem.displayName}
-                  </Typography>
-                )}
-              </Button>
+              {renderParentNavButton()}
             </Tooltip>
           ) : (
-            <Button
-              className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-              onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
-            >
-              <ListItemIcon className={classes.parentNavigationIcon}>
-                {parentNavigationItem.icon}
-              </ListItemIcon>
-              {!parentNavigationItem.showIconOnly && (
-                <Typography className={classes.parentNavigationItemText}>
-                  {parentNavigationItem.displayName}
-                </Typography>
-              )}
-            </Button>
+            renderParentNavButton()
           )}
         </>
       ) : (
         <>
           {parentNavigationItem.tooltip ? (
             <Tooltip arrow title={parentNavigationItem.displayName}>
-              <Button
-                className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-                onClick={onMenuClick}
-              >
-                <ListItemIcon className={classes.parentNavigationIcon}>
-                  {parentNavigationItem.icon}
-                </ListItemIcon>
-                {!parentNavigationItem.showIconOnly && (
-                  <Typography className={classes.parentNavigationItemText}>
-                    {parentNavigationItem.displayName}
-                  </Typography>
-                )}
-                <ArrowDropDownIcon className={classes.arrowDropdown} />
-              </Button>
+              {renderParentNavButton()}
             </Tooltip>
           ) : (
-            <Button
-              className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-              onClick={onMenuClick}
-            >
-              <ListItemIcon className={classes.parentNavigationIcon}>
-                {parentNavigationItem.icon}
-              </ListItemIcon>
-              {!parentNavigationItem.showIconOnly && (
-                <Typography className={classes.parentNavigationItemText}>
-                  {parentNavigationItem.displayName}
-                </Typography>
-              )}
-              <ArrowDropDownIcon className={classes.arrowDropdown} />
-            </Button>
+            renderParentNavButton()
           )}
           <Menu
             className={classes.parentNavigationMenu}

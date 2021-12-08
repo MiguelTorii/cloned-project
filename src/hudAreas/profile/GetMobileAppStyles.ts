@@ -46,14 +46,13 @@ export const useStyles = makeStyles((theme: any) => ({
     position: 'relative'
   },
   imageMessage: {
-    position: 'absolute',
-    bottom: 36,
     padding: theme.spacing(2),
+    marginTop: theme.spacing(3),
+    height: '120px',
     fontSize: 18,
-    left: 26,
     backgroundColor: theme.circleIn.palette.sendMessageButton,
     borderRadius: 20,
-    width: 188,
+    width: '188px',
     [theme.breakpoints.down('sm')]: {
       fontSize: 14,
       left: '10vw'

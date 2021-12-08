@@ -13,10 +13,10 @@ const GetMobileApp = () => {
   return (
     <div className={classes.container}>
       <div className={classes.imageContainer}>
-        <LoadImg url={ImageAppPhone} className={classes.imagePhone} />
         <Typography className={classes.imageMessage}>
           <b>Remember:</b> Allow Push Notifications to get messages!
         </Typography>
+        <LoadImg url={ImageAppPhone} className={classes.imagePhone} />
       </div>
       <div className={classes.containerText}>
         <Typography className={classes.title}>Get the Mobile App.</Typography>
