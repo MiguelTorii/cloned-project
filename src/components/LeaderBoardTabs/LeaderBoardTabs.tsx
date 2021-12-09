@@ -9,7 +9,8 @@ import withWidth from '@material-ui/core/withWidth';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import PrizeDialog from './PrizeDialog';
 import withRoot from '../../withRoot';
 import Table from './table';
@@ -52,6 +53,7 @@ const LeaderBoardTabs = ({
   const [dialogTitle, setDialogTitle] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [tuesdayPoints, setTuesdayPoints] = useState('');
+  const dispatch = useDispatch();
   const {
     amount,
     eligibility,
@@ -131,7 +133,7 @@ const LeaderBoardTabs = ({
   };
 
   const navigateToStore = () => {
-    window.location.pathname = '/store';
+    dispatch(push('/store'));
   };
 
   const handleCloseDialog = () => setOpenDialog(false);
