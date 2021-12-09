@@ -683,7 +683,10 @@ export const apiGetExpertMode = async (userId: string): Promise<boolean> => {
       Authorization: `Bearer ${token}`
     }
   });
-  console.log('🚀 ~ file: user.ts ~ line 684 ~ apiGetExpertMode ~ result', result);
+  console.log(
+    '🚀 ~ file: user.ts ~ line 684 ~ apiGetExpertMode ~ expert mode',
+    result.data.expert_mode
+  );
   return result.data.expert_mode;
 };
 export const apiSetExpertMode = async (userId: string, expert_mode: boolean): Promise<boolean> => {

@@ -14,8 +14,7 @@ import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudNavigationStyles';
 import {
-  GET_THE_MOBILE_APP_AREA,
-  GIVE_FEEDBACK_AREA,
+  EXPERT_MODE_ACCESS,
   SIGN_OUT_BUTTON,
   SUPPORT_AREA
 } from '../navigationState/hudNavigation';
@@ -23,6 +22,7 @@ import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
+import { toggleExpertMode } from '../../actions/user';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -60,6 +60,8 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === SUPPORT_AREA) {
       handleOpenCircleInSupportWidget();
+    } else if (mainSubArea === EXPERT_MODE_ACCESS) {
+      toggleExpertMode();
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {

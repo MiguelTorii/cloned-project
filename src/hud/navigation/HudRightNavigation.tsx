@@ -50,28 +50,17 @@ const HudRightNavigation = () => {
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
 
-  console.log(
-    '🚀 ~ file: HudRightNavigation.tsx ~ line 58 ~ HudRightNavigation ~ isExpert',
-    isExpert
-  );
   // will show if only expert/tutor and not student
   const isTutor =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
 
-  let expertNavigationItem = {};
-  if (isExpert) {
-    expertNavigationItem = {
-      id: EXPERT_MODE_ACCESS,
-      displayName: 'Go to Expert Mode'
-      // icon: <IconAboutMe />
-    };
-  }
+  const expertNavigationItem = {
+    id: EXPERT_MODE_ACCESS,
+    displayName: 'Go to Expert Mode'
+    // icon: <IconAboutMe />
+  };
 
-  console.log(
-    '🚀 ~ file: HudRightNavigation.tsx ~ line 67 ~ HudRightNavigation ~ isTutor',
-    isTutor
-  );
   const profileNavigationItems: HudToolData[] = [
     {
       id: ABOUT_ME_AREA,
@@ -103,6 +92,7 @@ const HudRightNavigation = () => {
       displayName: 'Get the Mobile App',
       icon: <IconMobileApp />
     },
+    isExpert ? expertNavigationItem : null,
     {
       id: SIGN_OUT_BUTTON,
       displayName: 'Sign Out'

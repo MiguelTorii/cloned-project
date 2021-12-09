@@ -113,8 +113,10 @@ export const toggleExpertMode =
       }
     } = getState();
     const newExpertMode = !expertMode;
+    console.log('🚀 ~ file: user.ts ~ line 116 ~ newExpertMode', newExpertMode);
     dispatch(setExpertModeAction(newExpertMode));
     const apiSuccess = await apiSetExpertMode(userId, newExpertMode);
+    console.log('🚀 ~ file: user.ts ~ line 118 ~ apiSuccess', apiSuccess);
 
     if (apiSuccess) {
       dispatch(fetchClasses(true));

@@ -86,6 +86,7 @@ export const updateUser =
       user.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
       user.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
     let expertMode = false;
+    console.log('🚀 ~ file: sign-in.ts ~ line 88 ~ user', user);
 
     if (isExpert) {
       expertMode = await apiGetExpertMode(user.userId);
