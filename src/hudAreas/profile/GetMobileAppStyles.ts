@@ -11,12 +11,6 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  title: {
-    fontSize: 48,
-    [theme.breakpoints.down('sm')]: {
-      fontSize: 24
-    }
-  },
   subtitle: {
     fontSize: 48,
     fontStyle: 'italic',

@@ -72,44 +72,63 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     selectLeaf(childToolId);
   };
 
-  const renderParentNavButton = () => (
-    <Button
-      className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-      onClick={onMenuClick}
-    >
-      <ListItemIcon className={classes.parentNavigationIcon}>
-        {parentNavigationItem.icon}
-      </ListItemIcon>
-      {!parentNavigationItem.showIconOnly && (
-        <Typography className={classes.parentNavigationItemText}>
-          {parentNavigationItem.displayName}
-        </Typography>
+  const renderParentNavButton = (multipleItems: boolean) => (
+    <>
+      {multipleItems ? (
+        <Button
+          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+          onClick={onMenuClick}
+        >
+          <ListItemIcon className={classes.parentNavigationIcon}>
+            {parentNavigationItem.icon}
+          </ListItemIcon>
+          {!parentNavigationItem.showIconOnly && (
+            <Typography className={classes.parentNavigationItemText}>
+              {parentNavigationItem.displayName}
+            </Typography>
+          )}
+          <ArrowDropDownIcon className={classes.arrowDropdown} />
+        </Button>
+      ) : (
+        <Button
+          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+          onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
+        >
+          <ListItemIcon className={classes.parentNavigationIcon}>
+            {parentNavigationItem.icon}
+          </ListItemIcon>
+          {!parentNavigationItem.showIconOnly && (
+            <Typography className={classes.parentNavigationItemText}>
+              {parentNavigationItem.displayName}
+            </Typography>
+          )}
+        </Button>
       )}
-      <ArrowDropDownIcon className={classes.arrowDropdown} />
-    </Button>
+    </>
   );
+
+  const hasMultipleItems = true;
 
   return (
     <div id={parentNavigationItem.id} className={classes.controlPanelMainSectionGroup}>
-      {/* Checks if more than one item in childTools, if so adds a dropdown menu */}
       {parentNavigationItem.childTools.length === 1 ? (
         <>
           {parentNavigationItem.tooltip ? (
             <Tooltip arrow title={parentNavigationItem.displayName}>
-              {renderParentNavButton()}
+              {renderParentNavButton(!hasMultipleItems)}
             </Tooltip>
           ) : (
-            renderParentNavButton()
+            renderParentNavButton(!hasMultipleItems)
           )}
         </>
       ) : (
         <>
           {parentNavigationItem.tooltip ? (
             <Tooltip arrow title={parentNavigationItem.displayName}>
-              {renderParentNavButton()}
+              {renderParentNavButton(hasMultipleItems)}
             </Tooltip>
           ) : (
-            renderParentNavButton()
+            renderParentNavButton(hasMultipleItems)
           )}
           <Menu
             className={classes.parentNavigationMenu}

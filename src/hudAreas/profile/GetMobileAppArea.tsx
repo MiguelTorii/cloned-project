@@ -19,7 +19,6 @@ const GetMobileApp = () => {
         <LoadImg url={ImageAppPhone} className={classes.imagePhone} />
       </div>
       <div className={classes.containerText}>
-        <Typography className={classes.title}>Get the Mobile App.</Typography>
         <Typography className={classes.subtitle}>
           <b>Message Instantly.</b>
         </Typography>
