@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import LoadImg from '../../components/LoadImg/LoadImg';
 import ImageAppPhone from '../../assets/img/getappphone.png';
@@ -12,15 +11,14 @@ import { MOBILE_APP_ANDROID_URL, MOBILE_APP_IOS_URL } from '../../constants/app'
 const GetMobileApp = () => {
   const classes = useStyles();
   return (
-    <Grid container className={classes.container} justifyContent="center">
-      <Grid item xs={12} md={6} lg={4} xl={3} className={classes.imageContainer}>
-        <LoadImg url={ImageAppPhone} className={classes.imagePhone} />
+    <div className={classes.container}>
+      <div className={classes.imageContainer}>
         <Typography className={classes.imageMessage}>
           <b>Remember:</b> Allow Push Notifications to get messages!
         </Typography>
-      </Grid>
-      <Grid item xs={12} md={6} lg={4} xl={3} className={classes.containerText}>
-        <Typography className={classes.title}>Get the Mobile App.</Typography>
+        <LoadImg url={ImageAppPhone} className={classes.imagePhone} />
+      </div>
+      <div className={classes.containerText}>
         <Typography className={classes.subtitle}>
           <b>Message Instantly.</b>
         </Typography>
@@ -32,18 +30,18 @@ const GetMobileApp = () => {
         <Typography className={classes.bold}>
           <b>Download the App</b>
         </Typography>
-        <Grid container justifyContent="center">
+        <div>
           <a href={MOBILE_APP_IOS_URL}>
             <LoadImg url={ImageAppIos} className={classes.image} />
           </a>
           <a href={MOBILE_APP_ANDROID_URL}>
             <LoadImg url={ImageAppAndroid} className={classes.image} />
           </a>
-        </Grid>
+        </div>
         <Typography className={classes.bold}>or scan the QR code</Typography>
         <LoadImg url={ImageQrCode} className={classes.qr} />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };
 

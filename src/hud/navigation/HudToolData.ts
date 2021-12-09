@@ -7,4 +7,5 @@ export interface HudToolData {
   iconText?: string;
   childTools?: HudToolData[];
   showIconOnly?: boolean;
+  tooltip?: boolean;
 }

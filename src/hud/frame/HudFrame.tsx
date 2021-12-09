@@ -11,7 +11,6 @@ import HudMissions from '../missions/HudMissions';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
-  MORE_MAIN_AREA,
   CHAT_MAIN_AREA,
   PROFILE_MAIN_AREA,
   COMMUNITIES_MAIN_AREA,
@@ -19,7 +18,6 @@ import {
   ACHIEVEMENTS_MAIN_AREA,
   RIGHT_SIDE_AREA
 } from '../navigationState/hudNavigation';
-import MoreArea from '../../hudAreas/moreArea/MoreArea';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import ChatArea from '../../hudAreas/chat/ChatArea';
 import {
@@ -76,8 +74,6 @@ const HudFrame = () => {
               {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
 
               {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
-
-              {selectedMainArea === MORE_MAIN_AREA && <MoreArea />}
 
               {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
             </div>

@@ -1,11 +1,24 @@
 import React, { useCallback } from 'react';
-import { Button, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@material-ui/core';
+import {
+  Button,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography
+} from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudNavigationStyles';
-import { SIGN_OUT_BUTTON, SUPPORT_AREA } from '../navigationState/hudNavigation';
+import {
+  GET_THE_MOBILE_APP_AREA,
+  GIVE_FEEDBACK_AREA,
+  SIGN_OUT_BUTTON,
+  SUPPORT_AREA
+} from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
@@ -28,8 +41,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
 
   const isSelected = parentNavigationItem.id === selectedMainArea;
 
-  // handles support window pop out
-  const handleOpenWidget = useCallback(() => {
+  const handleOpenCircleInSupportWidget = useCallback(() => {
     (window as any)?.FreshworksWidget('identify', 'ticketForm', {
       name: `${profile.firstName} ${profile.lastName}`,
       email: profile.email
@@ -39,7 +51,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
 
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === SUPPORT_AREA) {
-      handleOpenWidget();
+      handleOpenCircleInSupportWidget();
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {
@@ -60,9 +72,24 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     selectLeaf(childToolId);
   };
 
-  return (
-    <div id={parentNavigationItem.id} className={classes.controlPanelMainSectionGroup}>
-      {parentNavigationItem.childTools.length === 1 ? (
+  const renderParentNavButton = (multipleItems: boolean) => (
+    <>
+      {multipleItems ? (
+        <Button
+          className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
+          onClick={onMenuClick}
+        >
+          <ListItemIcon className={classes.parentNavigationIcon}>
+            {parentNavigationItem.icon}
+          </ListItemIcon>
+          {!parentNavigationItem.showIconOnly && (
+            <Typography className={classes.parentNavigationItemText}>
+              {parentNavigationItem.displayName}
+            </Typography>
+          )}
+          <ArrowDropDownIcon className={classes.arrowDropdown} />
+        </Button>
+      ) : (
         <Button
           className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
           onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
@@ -76,22 +103,33 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
             </Typography>
           )}
         </Button>
+      )}
+    </>
+  );
+
+  const hasMultipleItems = true;
+
+  return (
+    <div id={parentNavigationItem.id} className={classes.controlPanelMainSectionGroup}>
+      {parentNavigationItem.childTools.length === 1 ? (
+        <>
+          {parentNavigationItem.tooltip ? (
+            <Tooltip arrow title={parentNavigationItem.displayName}>
+              {renderParentNavButton(!hasMultipleItems)}
+            </Tooltip>
+          ) : (
+            renderParentNavButton(!hasMultipleItems)
+          )}
+        </>
       ) : (
         <>
-          <Button
-            className={clsx(classes.parentNavigationItem, isSelected && classes.selectedButton)}
-            onClick={onMenuClick}
-          >
-            <ListItemIcon className={classes.parentNavigationIcon}>
-              {parentNavigationItem.icon}
-            </ListItemIcon>
-            {!parentNavigationItem.showIconOnly && (
-              <Typography className={classes.parentNavigationItemText}>
-                {parentNavigationItem.displayName}
-              </Typography>
-            )}
-            <ArrowDropDownIcon className={classes.arrowDropdown} />
-          </Button>
+          {parentNavigationItem.tooltip ? (
+            <Tooltip arrow title={parentNavigationItem.displayName}>
+              {renderParentNavButton(hasMultipleItems)}
+            </Tooltip>
+          ) : (
+            renderParentNavButton(hasMultipleItems)
+          )}
           <Menu
             className={classes.parentNavigationMenu}
             anchorEl={anchorElement}

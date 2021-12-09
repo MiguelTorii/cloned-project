@@ -32,13 +32,9 @@ import {
   COMMUNITIES_MAIN_AREA,
   FEEDS_AREA,
   FLASHCARDS_AREA,
-  GET_THE_MOBILE_APP_AREA,
-  GIVE_FEEDBACK_AREA,
   LEADERBOARD_AREA,
-  MORE_MAIN_AREA,
   NOTES_AREA,
   STUDY_TOOLS_MAIN_AREA,
-  SUPPORT_AREA,
   ASK_A_QUESTION_AREA,
   SHARE_RESOURCES_AREA,
   SHARE_NOTES_AREA,
@@ -140,24 +136,6 @@ const HudMainNavigation = () => {
     }
   ];
 
-  const moreNavigationItems: HudToolData[] = [
-    {
-      id: SUPPORT_AREA,
-      displayName: 'Support',
-      icon: <IconSubmitSupportTicket style={ICON_SIZE} />
-    },
-    {
-      id: GIVE_FEEDBACK_AREA,
-      displayName: 'Give Feedback',
-      icon: <IconSubmitAnIdea style={ICON_SIZE} />
-    },
-    {
-      id: GET_THE_MOBILE_APP_AREA,
-      displayName: 'Get the Mobile App',
-      icon: <IconMobileApp style={ICON_SIZE} />
-    }
-  ];
-
   const chatNavigationItem: HudToolData = {
     id: CHAT_MAIN_AREA,
     displayName: 'chat',
@@ -186,12 +164,6 @@ const HudMainNavigation = () => {
     displayName: 'Leaderboard',
     icon: <IconLeaderboard />,
     childTools: achievementsNavigationItems
-  };
-  const moreNavigationItem: HudToolData = {
-    id: MORE_MAIN_AREA,
-    displayName: 'More...',
-    icon: <IconMore />,
-    childTools: moreNavigationItems
   };
 
   let rootNavigationItems: HudToolData[];
