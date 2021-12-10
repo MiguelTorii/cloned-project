@@ -20,6 +20,8 @@ import {
 } from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
+import type { Dispatch } from '../../types/store';
+import reduxStore from '../../configureStore';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';
@@ -31,7 +33,7 @@ type Props = {
 
 const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const classes: any = useStyles();
-  const dispatch = useDispatch();
+  const dispatch: Dispatch = useDispatch();
 
   const setHudArea = useHudRoutes();
 
@@ -61,7 +63,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     if (mainSubArea === SUPPORT_AREA) {
       handleOpenCircleInSupportWidget();
     } else if (mainSubArea === EXPERT_MODE_ACCESS) {
-      toggleExpertMode();
+      toggleExpertMode()(dispatch, reduxStore.getState);
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {

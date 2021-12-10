@@ -57,7 +57,7 @@ const HudRightNavigation = () => {
 
   const expertNavigationItem = {
     id: EXPERT_MODE_ACCESS,
-    displayName: 'Go to Expert Mode'
+    displayName: isExpert ? 'Go to Expert Mode' : 'Go to Student Mode'
     // icon: <IconAboutMe />
   };
 
