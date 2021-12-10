@@ -2,16 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { useStyles } from './HudTitleStyles';
-import HudStoryAvatar from '../story/HudStoryAvatar';
-import HudStoryMessage from '../story/HudStoryMessage';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
-import { HudStoryState } from '../storyState/hudStoryState';
 
 const subAreaToTitle = {
   ABOUT_ME_AREA: 'About Me',
   REWARDS_STORE_AREA: 'Rewards Store',
   POINTS_HISTORY_AREA: 'Points History',
-  CHAT_AREA: 'Chat',
+  CHAT_AREA: null,
   CLASSES_AREA: 'Classes',
   FEEDS_AREA: 'Class Feeds',
   CREATE_A_POST_AREA: 'Create a Post',
@@ -29,10 +26,6 @@ const subAreaToTitle = {
 const HudTitle = () => {
   const classes: any = useStyles();
 
-  const currentStatement: string = useSelector(
-    (state: { hudStory: HudStoryState }) => state.hudStory.currentStatement
-  );
-
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
   );
@@ -44,27 +37,13 @@ const HudTitle = () => {
 
   const title = subAreaToTitle[selectedMainSubArea] || '';
 
-  if (!currentStatement) {
-    return (
-      <div className={classes.titleAndStoryContainer}>
-        <div className={classes.largeTitleContainer}>
-          <Typography color="textPrimary" className={classes.largeTitle}>
-            {title}
-          </Typography>
-        </div>
-      </div>
-    );
+  if (!title) {
+    return null;
   }
 
   return (
-    <div className={classes.titleAndStoryContainer}>
-      <div className={classes.storyAvatar}>
-        <HudStoryAvatar />
-      </div>
-      <div className={classes.currentStatement}>
-        <HudStoryMessage />
-      </div>
-      <Typography color="textPrimary" className={classes.smallTitle}>
+    <div className={classes.largeTitleContainer}>
+      <Typography color="textPrimary" className={classes.largeTitle}>
         {title}
       </Typography>
     </div>

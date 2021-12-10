@@ -29,6 +29,7 @@ import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
 import HudStudyTools from '../missions/HudStudyTools';
 import HudTitle from '../title/HudTitle';
 import HudExperienceBar from '../experienceBar/HudExperienceBar';
+import HudDisplay from '../display/HudDisplay';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -63,7 +64,7 @@ const HudFrame = () => {
         </div>
         <div className={classes.appContent}>
           <div className={classes.mainContainer}>
-            <div className={classes.titleAndStoryArea}>
+            <div className={classes.mainHeader}>
               <HudTitle />
             </div>
             <div className={classes.mainAction}>
@@ -77,8 +78,8 @@ const HudFrame = () => {
 
               {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
             </div>
-            <div className={classes.experienceBarContainer}>
-              <HudExperienceBar />
+            <div className={classes.mainFooter}>
+              <HudDisplay />
             </div>
           </div>
 

@@ -28,17 +28,12 @@ export const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden',
     height: '100%'
   },
-  titleAndStoryArea: {
-    flexShrink: 0,
-    flexGrow: 0,
-    display: 'grid',
-    justifyContent: 'center'
-  },
+  mainHeader: {},
   mainAction: {
     flexGrow: 1,
     overflow: 'hidden'
   },
-  experienceBarContainer: {
+  mainFooter: {
     flexShrink: 0,
     overflow: 'hidden'
   },

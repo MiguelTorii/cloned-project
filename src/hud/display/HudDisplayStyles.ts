@@ -3,33 +3,38 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles((theme: any) => ({
   storyAvatarExperienceContainer: {
     overflow: 'hidden',
-    margin: 'auto',
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center'
   },
-  storyAvatarAndMessage: {
-    display: 'grid',
-    gridTemplateColumns: '35px 35px 35px 600px',
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2)
+  storyContainer: {
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative'
+  },
+  storyMessageBackground: {
+    position: 'absolute',
+    left: '35px',
+    top: theme.spacing(1 / 2),
+    bottom: theme.spacing(1 / 2),
+    right: 0,
+    backgroundColor: theme.circleIn.palette.white,
+    border: `solid 1px ${theme.circleIn.palette.success}`,
+    borderRadius: '4px'
   },
   storyAvatar: {
-    gridColumn: '1 / 3',
-    zIndex: 2,
-    gridRow: '1 / 3',
-    height: '100%',
-    width: '100%',
-    justifySelf: 'right'
+    height: '70px',
+    width: '70px',
+    flexShrink: 0,
+    zIndex: 2
   },
   storyMessageContainer: {
-    gridColumn: '2 / 5',
-    gridRow: '1',
-    overflow: 'hidden'
-  },
-  experienceBar: {
     overflow: 'hidden',
-    width: '100%',
-    height: '20px',
-    gridColumn: '3 / 5'
+    zIndex: 2
+  },
+  experienceBarContainer: {
+    overflow: 'hidden',
+    width: '100%'
   }
 }));

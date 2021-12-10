@@ -20,9 +20,6 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   storyMessage: {
     height: '100%',
-    backgroundColor: theme.circleIn.palette.white,
-    border: `solid 1px ${theme.circleIn.palette.success}`,
-    borderRadius: '4px',
     overflowX: 'hidden',
     overflowY: 'auto',
     color: 'black',

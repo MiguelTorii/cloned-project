@@ -5,7 +5,11 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.gray1,
     borderRadius: '50px',
     overflow: 'hidden',
-    margin: theme.spacing(1, 4)
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    width: '60%'
   },
   experienceFiller: {
     height: '100%',
