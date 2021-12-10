@@ -6,18 +6,30 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '100%'
   },
   storyAvatarBackground: {
-    background: theme.circleIn.palette.white,
+    background: theme.circleIn.palette.kobeBackground,
     borderRadius: '50%',
-    padding: '2px',
+    padding: '10px 2px',
     height: '100%',
-    width: '100%'
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  storyAvatar: {
+    height: '100%'
   },
   storyMessage: {
-    opacity: 0.7,
-    backgroundColor: theme.circleIn.palette.gray3,
+    height: '100%',
+    backgroundColor: theme.circleIn.palette.white,
+    border: `solid 1px ${theme.circleIn.palette.success}`,
     borderRadius: '4px',
     overflowX: 'hidden',
     overflowY: 'auto',
-    paddingLeft: theme.spacing(6)
+    color: 'black',
+    fontSize: 18,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '2px 4px 2px 36px'
   }
 }));

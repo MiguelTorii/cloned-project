@@ -1,6 +1,6 @@
 import React from 'react';
-import Avatar from '../../components/Avatar/Avatar';
-import avatarImg from '../../assets/img/circlein-web-notification.png';
+import { Avatar } from '@material-ui/core';
+import avatarImg from '../../assets/svg/icon-kobe.svg';
 import { useStyles } from './HudStoryStyles';
 
 const StoryAvatar = () => {
@@ -9,13 +9,7 @@ const StoryAvatar = () => {
   return (
     <div className={classes.storyAvatarContainer}>
       <div className={classes.storyAvatarBackground}>
-        <Avatar
-          className={classes.storyAvatar}
-          desktopSize="100%"
-          mobileSize="100%"
-          alt="story-avatar"
-          src={avatarImg}
-        />
+        <img src={avatarImg} alt="story-avatar" className={classes.storyAvatar} />
       </div>
     </div>
   );

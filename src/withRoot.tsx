@@ -76,7 +76,8 @@ const circleInTheme = {
   resourceTabBorder: '#6515CF',
   betaTag: '#F6CD3A',
   errorPopupBackground: '#C0E9FC',
-  errorPopupTitle: '#37474F'
+  errorPopupTitle: '#37474F',
+  kobeBackground: '#676767'
 };
 let theme = createTheme({
   circleIn: {
@@ -143,7 +144,8 @@ let theme = createTheme({
       resourceTabBorder: circleInTheme.resourceTabBorder,
       betaTag: circleInTheme.betaTag,
       errorPopupBackground: circleInTheme.errorPopupBackground,
-      errorPopupTitle: circleInTheme.errorPopupTitle
+      errorPopupTitle: circleInTheme.errorPopupTitle,
+      kobeBackground: circleInTheme.kobeBackground
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'
