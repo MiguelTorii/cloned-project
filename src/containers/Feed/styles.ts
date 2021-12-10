@@ -7,6 +7,13 @@ export default makeStyles((theme: any) => ({
   postHeaderPaper: {
     padding: theme.spacing(2, 3)
   },
+  hudFeedButtonsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  hudFeedButtonGroup: {
+    margin: theme.spacing(1 / 2)
+  },
   postAnyButton: {
     display: 'flex',
     justifyContent: 'start',

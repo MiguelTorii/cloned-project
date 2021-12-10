@@ -10,12 +10,27 @@ import Avatar from '../../components/Avatar/Avatar';
 import { getInitials } from '../../utils/chat';
 import IconPencil from '../../assets/svg/pencil.svg';
 import IconQuestion from '../../assets/svg/smile-green.svg';
+import QuestionIcon from '../../assets/svg/question-mark.svg';
+import FlashcardMark from '../../assets/svg/flashcard-mark.svg';
+import ShareNotesIcon from '../../assets/svg/share_notes.svg';
+import ActiveCreatePost from '../../assets/svg/posts.svg';
 import IconNote from '../../assets/svg/notes-1.svg';
 import IconResource from '../../assets/svg/links.svg';
 import Tooltip from '../Tooltip/Tooltip';
 import useStyles from './styles';
 import { CampaignState } from '../../reducers/campaign';
 import { UserState } from '../../reducers/user';
+import useHudRoutes from '../../hud/frame/useHudRoutes';
+import {
+  ASK_A_QUESTION_AREA,
+  CREATE_A_POST_AREA,
+  FLASHCARDS_AREA,
+  SHARE_NOTES_AREA,
+  SHARE_RESOURCES_AREA,
+  STUDY_TOOLS_MAIN_AREA
+} from '../../hud/navigationState/hudNavigation';
+
+const ICON_SIZE = { width: '36px', height: '36px' };
 
 const POST_BUTTONS = [
   {
@@ -40,6 +55,34 @@ const POST_BUTTONS = [
   }
 ];
 
+const HUD_POST_BUTTONS = [
+  {
+    value: CREATE_A_POST_AREA,
+    text: 'Write Post',
+    icon: ActiveCreatePost
+  },
+  {
+    value: ASK_A_QUESTION_AREA,
+    text: 'Ask a question',
+    icon: QuestionIcon
+  },
+  {
+    value: SHARE_NOTES_AREA,
+    text: 'Share Notes',
+    icon: ShareNotesIcon
+  },
+  {
+    value: SHARE_RESOURCES_AREA,
+    text: 'Share a resource',
+    icon: IconResource
+  },
+  {
+    value: FLASHCARDS_AREA,
+    text: 'Flashcards',
+    icon: FlashcardMark
+  }
+];
+
 const PostCreationHeader = () => {
   const me = useSelector((state: { user: UserState }) => state.user.data);
 
@@ -47,17 +90,41 @@ const PostCreationHeader = () => {
     (state: { campaign: CampaignState }) => state.campaign.hud
   );
 
+  const setHudArea = useHudRoutes();
+
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const handleGotoPostCreate = useCallback(
     (value = 0) => {
-      dispatch(push(`/create_post?tab=${value}`));
+      if (isHud) {
+        setHudArea(STUDY_TOOLS_MAIN_AREA, value);
+      } else {
+        dispatch(push(`/create_post?tab=${value}`));
+      }
     },
     [dispatch]
   );
 
   if (isHud) {
-    return null;
+    return (
+      <Box className={classes.postHeaderRoot}>
+        <Paper className={classes.postHeaderPaper}>
+          <div className={classes.hudFeedButtonsContainer}>
+            {HUD_POST_BUTTONS.map((item) => (
+              <div className={classes.hudFeedButtonGroup} key={item.value}>
+                <Button
+                  className={classes.postButton}
+                  startIcon={<img src={item.icon} alt={item.text} style={ICON_SIZE} />}
+                  onClick={() => handleGotoPostCreate(item.value)}
+                >
+                  {item.text}
+                </Button>
+              </div>
+            ))}
+          </div>
+        </Paper>
+      </Box>
+    );
   }
 
   return (
