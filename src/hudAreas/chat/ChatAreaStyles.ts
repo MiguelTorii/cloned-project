@@ -4,7 +4,6 @@ export const useStyles = makeStyles((theme: any) => ({
   container: {
     height: '100%',
     overflow: 'auto',
-    width: '1400px',
     maxWidth: '100%;'
   }
 }));
