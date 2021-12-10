@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useCallback, useMemo, memo } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Tooltip from '../Tooltip/Tooltip';
 import type { State as StoreState } from '../../types/state';
+import { CampaignState } from '../../reducers/campaign';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
@@ -57,6 +58,11 @@ const ClassMultiSelect = ({
   schoolId
 }: Props) => {
   const classes: any = useStyles();
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   const options = useMemo(() => {
     if (externalOptions) {
       return externalOptions;
@@ -144,6 +150,9 @@ const ClassMultiSelect = ({
         )}
         renderTags={(value, getTagProps) => {
           if (allSelected) {
+            if (isHud) {
+              return 'All Classes';
+            }
             return allLabel || 'All Classes Selected';
           }
 
