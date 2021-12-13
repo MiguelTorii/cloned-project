@@ -44,7 +44,7 @@ import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
 import { AppState } from '../../configureStore';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
-import { STUDY_TOOLS_BOTTOM_OPTION, STUDY_TOOLS_TOP_OPTION } from '../../routeConstants';
+import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 
@@ -66,8 +66,7 @@ const HudMainNavigation = () => {
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.studyToolsOption
   );
 
-  const showStudyTools =
-    studyToolsOption !== STUDY_TOOLS_TOP_OPTION && studyToolsOption !== STUDY_TOOLS_BOTTOM_OPTION;
+  const showStudyTools = studyToolsOption === STUDY_TOOLS_NAV_OPTION;
 
   const chatNavigationItems: HudToolData[] = [
     {

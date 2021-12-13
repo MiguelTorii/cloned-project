@@ -20,11 +20,7 @@ import {
 } from '../navigationState/hudNavigation';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import ChatArea from '../../hudAreas/chat/ChatArea';
-import {
-  STUDY_TOOLS_BOTTOM_OPTION,
-  STUDY_TOOLS_QUERY_KEY,
-  STUDY_TOOLS_TOP_OPTION
-} from '../../routeConstants';
+import { STUDY_TOOLS_QUERY_KEY, STUDY_TOOLS_TOP_OPTION } from '../../routeConstants';
 import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
 import HudStudyTools from '../missions/HudStudyTools';
 import HudTitle from '../title/HudTitle';
@@ -91,7 +87,7 @@ const HudFrame = () => {
 
           {isRightPaneVisible && (
             <div className={classes.rightPanel}>
-              {studyToolsOption === STUDY_TOOLS_TOP_OPTION && (
+              {(!studyToolsOption || studyToolsOption === STUDY_TOOLS_TOP_OPTION) && (
                 <div className={classes.studyTools}>
                   <HudStudyTools />
                 </div>
@@ -100,12 +96,6 @@ const HudFrame = () => {
               <div className={classes.missions}>
                 <HudMissions />
               </div>
-
-              {studyToolsOption === STUDY_TOOLS_BOTTOM_OPTION && (
-                <div className={classes.studyTools}>
-                  <HudStudyTools />
-                </div>
-              )}
             </div>
           )}
         </div>
