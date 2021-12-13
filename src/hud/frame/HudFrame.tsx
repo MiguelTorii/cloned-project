@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
+import { Hidden } from '@material-ui/core';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
@@ -28,7 +29,10 @@ import {
 import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
 import HudStudyTools from '../missions/HudStudyTools';
 import HudTitle from '../title/HudTitle';
+import HudExperienceBar from '../experienceBar/HudExperienceBar';
 import HudDisplay from '../display/HudDisplay';
+import MobileActions from '../mobileActions/MobileActions';
+import MobileMenu from '../mobileMenu/MobileMenu';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -109,6 +113,11 @@ const HudFrame = () => {
             </div>
           )}
         </div>
+
+        <Hidden mdUp>
+          <MobileMenu />
+          <MobileActions />
+        </Hidden>
       </div>
     </main>
   );

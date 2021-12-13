@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar, Button, Hidden } from '@material-ui/core';
 import { useStyles } from './HudControlPanelStyles';
 import HudMainNavigation from '../navigation/HudMainNavigation';
 import HudRightNavigation from '../navigation/HudRightNavigation';
@@ -29,9 +29,11 @@ const HudControlPanel = () => {
         <Avatar className={classes.circleInLogo} alt="CircleIn-Logo" src={avatarImg} />
       </Button>
 
-      <div className={classes.mainNavigation}>
-        <HudMainNavigation />
-      </div>
+      <Hidden smDown>
+        <div className={classes.mainNavigation}>
+          <HudMainNavigation />
+        </div>
+      </Hidden>
 
       <div className={classes.missionNavigation}>
         <HudRightNavigation />
