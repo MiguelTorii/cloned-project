@@ -10,8 +10,8 @@ export const PROFILE_SOURCE_KEY = 'from';
 
 // TODO remove after A/B testing of study tools
 export const STUDY_TOOLS_QUERY_KEY = 'studyTools';
+export const STUDY_TOOLS_NAV_OPTION = 'nav';
 export const STUDY_TOOLS_TOP_OPTION = 'top';
-export const STUDY_TOOLS_BOTTOM_OPTION = 'bottom';
 
 // TODO remove after testing with onboarding
 export const KEY_IS_FIRST_TIME = 'firstTime';
