@@ -42,7 +42,7 @@ const ProfileArea = () => {
   const canEdit: boolean = userIdToDisplay === currentUserId;
 
   return (
-    <div className={classes.container}>
+    <div className={classes.profileAreaContainer}>
       {/* Even though this is not a loop, the key is required to make sure the profile renders correctly when the userId to show changes */}
       {selectedMainSubArea === ABOUT_ME_AREA && (
         <AboutMeSubarea

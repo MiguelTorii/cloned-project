@@ -19,7 +19,13 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'row',
     overflow: 'hidden',
     margin: 'auto',
-    maxWidth: '100%'
+    width: '100%'
+  },
+  standardAppContent: {
+    maxWidth: '1200px'
+  },
+  wideAppContent: {
+    maxWidth: '1600px'
   },
   mainContainer: {
     flexGrow: 1,
