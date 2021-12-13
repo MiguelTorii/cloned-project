@@ -1,60 +1,64 @@
 import moment from 'moment';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGreetings } from '../../api/home';
-import { setGreeting, setGreetingLoadTriggered } from './hudStoryActions';
-import { HudStoryState } from './hudStoryState';
-import { StorySequence } from './StorySequence';
+import { StorySequence, StorySequenceOptions } from './StorySequence';
+import useHudEvents from '../events/useHudEvents';
+import { hudEventNames } from '../events/hudEventNames';
+import { UserState } from '../../reducers/user';
+import { User } from '../../types/models';
+
+let storySequence: StorySequence = null;
+let greetingLoadTriggered = false;
+let greetingStatements: string[] = [];
 
 const useStorySequence = () => {
   const dispatch = useDispatch();
 
-  const [storySequence, setStorySequence] = useState<StorySequence>(null);
+  const { postEvent } = useHudEvents();
 
-  const startConversation = (statements: string[]) => {
+  const user: User = useSelector((state: { user: UserState }) => state.user.data);
+
+  const startNextStory = (options: StorySequenceOptions): void => {
     // End the last story before starting the next story.
     if (storySequence) {
       storySequence.endStory(dispatch);
     }
 
     // Start the next story.
-    const nextStorySequence = new StorySequence(statements);
-    setStorySequence(nextStorySequence);
+    const nextStorySequence = new StorySequence(options, () =>
+      postEvent(hudEventNames.CURRENT_STORY_COMPLETED)
+    );
+    storySequence = nextStorySequence;
     nextStorySequence.startStory(dispatch);
   };
 
-  const greetingLoadTriggered: boolean = useSelector(
-    (state: { hudStory: HudStoryState }) => state.hudStory.greetingLoadTriggered
-  );
+  if (!greetingLoadTriggered && user) {
+    fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss')).then((welcomeMessage) => {
+      greetingStatements = [welcomeMessage.greetings.title, welcomeMessage.greetings.body];
 
-  const greetingStatements: string[] = useSelector(
-    (state: { hudStory: HudStoryState }) => state.hudStory.greetingStatements
-  );
+      // Don't say anything if we are already in some other conversation.
+      if (storySequence && storySequence.isReading()) {
+        return;
+      }
 
-  const loadStory = () => {
-    if (!greetingLoadTriggered) {
-      fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss')).then((welcomeMessage) => {
-        const statements = [welcomeMessage.greetings.title, welcomeMessage.greetings.body];
-        dispatch(setGreeting(statements));
-        startConversation(statements);
-      });
+      startNextStory({ statements: greetingStatements, isPersistent: true });
+    });
 
-      // Set the greeting load triggered state as soon as is requested,
-      // i.e. don't wait for the promise to return (this ensures that we
-      // don't put 2 requests in flight at the same time).
-      dispatch(setGreetingLoadTriggered());
-    }
-  };
+    // Set the greeting load triggered state as soon as is requested,
+    // i.e. don't wait for the promise to return (this ensures that we
+    // don't put 2 requests in flight at the same time).
+    greetingLoadTriggered = true;
+  }
 
   const sayGreeting = () => {
     if (greetingStatements) {
-      startConversation(greetingStatements);
+      startNextStory({ statements: greetingStatements, isPersistent: true });
     }
   };
 
   return {
-    loadStory,
-    sayGreeting
+    sayGreeting,
+    startNextStory
   };
 };
 

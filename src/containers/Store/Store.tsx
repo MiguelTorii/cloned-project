@@ -11,6 +11,11 @@ import SelectedRewards from '../../components/SelectedRewards/SelectedRewards';
 import AvailableRewards from '../../components/AvailableRewards/AvailableRewards';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { User } from '../../types/models';
+import useHudEvents from '../../hud/events/useHudEvents';
+import { CampaignState } from '../../reducers/campaign';
+import { hudEventNames } from '../../hud/events/hudEventNames';
+
+const REWARDS_SLOT_COUNT = 3;
 
 const styles = (theme) => ({
   divider: {
@@ -31,6 +36,8 @@ const Store = ({ classes }: Props) => {
 
   const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
+  const { postEvent } = useHudEvents();
+
   const userId = user?.userId;
 
   const handleFetchRewardsInternal: any = async () => {
@@ -47,6 +54,19 @@ const Store = ({ classes }: Props) => {
         if (mounted) {
           setAvailableRewards(availableRewards);
           setSlots(slots);
+
+          // We offer 3 slots, but if there is only 1 or 2 rewards available,
+          // users will be restricted to that number of reward slots.
+          const numberOfSlots = Math.min(REWARDS_SLOT_COUNT, availableRewards.length);
+          const slotsFilled = slots.length;
+
+          if (slotsFilled === 0) {
+            postEvent(hudEventNames.REWARDS_SELECTIONS_EMPTY);
+          } else if (slotsFilled < numberOfSlots) {
+            postEvent(hudEventNames.REWARDS_SELECTIONS_PARTIALLY_FILLED);
+          } else if (slotsFilled === numberOfSlots) {
+            postEvent(hudEventNames.REWARDS_SELECTIONS_FILLED);
+          }
         }
       } finally {
         if (mounted) {

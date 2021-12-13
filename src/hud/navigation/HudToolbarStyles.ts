@@ -34,6 +34,13 @@ export const useStyles = makeStyles((theme: any) => ({
   selectedButton: {
     backgroundColor: theme.circleIn.palette.gray2
   },
+  highlightedButton: {
+    backgroundColor: '#1E88E5',
+    '&:hover': {
+      background: `linear-gradient(
+        115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%);`
+    }
+  },
   tooltip: {
     fontSize: 12
   }
