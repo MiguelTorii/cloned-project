@@ -10,25 +10,21 @@ import {
 } from '../navigationState/hudNavigation';
 import { hudEventNames } from '../events/hudEventNames';
 
-const introToOnboarding: StorySection = {
-  triggerEventName: hudEventNames.START_ONBOARDING,
-  statements: ['Study with your classmates to earn points and win rewards.'],
-  completionEvent: hudEventNames.SHOW_NAVIGATION_TO_WORKFLOW,
-  isPersistent: true
-};
-
 const goToWorkflowNudge: StorySection = {
-  triggerEventName: hudEventNames.SHOW_NAVIGATION_TO_WORKFLOW,
+  triggerEventName: hudEventNames.START_ONBOARDING,
   highlightRootAreaId: STUDY_TOOLS_MAIN_AREA,
   highlightLeafAreaId: CALENDAR_AREA,
-  statements: ["Let's go to your Workflow study tool."],
+  statements: [
+    "Study with your classmates to earn points and win rewards.  Let's go to your Workflow study tool."
+  ],
   isPersistent: true
 };
 
 const workflowIntro: StorySection = {
+  triggerEventName: hudEventNames.NAVIGATED_TO_AREA,
   leafAreaId: CALENDAR_AREA,
   statements: ['Track your study progress using the Workflow board and earn points.'],
-  completionEvent: hudEventNames.SHOW_NAVIGATION_TO_LEADERBOARD,
+  completionEvent: hudEventNames.SHOW_NAVIGATION_TO_FLASHCARDS,
   isPersistent: true
 };
 
@@ -39,11 +35,14 @@ const goToFlashcardsNudge: StorySection = {
   statements: ["Let's go to Flashcards."],
   isPersistent: true
 };
+
 const flashcardsIntro: StorySection = {
+  triggerEventName: hudEventNames.NAVIGATED_TO_AREA,
   leafAreaId: FLASHCARDS_AREA,
   statements: [
     'You can create flashcards to help you study.  You can even use your own images to make the concepts more memorable.'
   ],
+  completionEvent: hudEventNames.SHOW_NAVIGATION_TO_LEADERBOARD,
   isPersistent: true
 };
 
@@ -58,11 +57,9 @@ const goToLeaderboardNudge: StorySection = {
 };
 
 const leaderboardIntro: StorySection = {
+  triggerEventName: hudEventNames.NAVIGATED_TO_AREA,
   leafAreaId: LEADERBOARD_AREA,
-  statements: [
-    'Your points for your Monthly Rewards and Scholarships opportunities are tracked here.',
-    'Once you earn 8 MVPs in one term, you are eligible for scholarships.'
-  ],
+  statements: ['Earn 8 MVPs in one term to be eligible for scholarships.'],
   completionEvent: hudEventNames.SHOW_NAVIGATION_TO_REWARDS_STORE,
   isPersistent: true
 };
@@ -77,36 +74,28 @@ const goToRewardsStoreNudge: StorySection = {
 
 const rewardsStoreNoSelections: StorySection = {
   triggerEventName: hudEventNames.REWARDS_SELECTIONS_EMPTY,
-  leafAreaId: REWARDS_STORE_AREA,
   statements: [
     'Select your favorite rewards stores below to receive e-gift cards to your favorite places when you earn rewards on CircleIn.'
   ],
+  canSkip: true,
   isPersistent: true
 };
 
 const rewardsStorePartialSelections: StorySection = {
   triggerEventName: hudEventNames.REWARDS_SELECTIONS_PARTIALLY_FILLED,
-  leafAreaId: REWARDS_STORE_AREA,
   statements: ['Great! You have picked your first reward.  What other rewards would you like?'],
+  canSkip: true,
   isPersistent: true
 };
 
 const rewardsStoreFullSelections: StorySection = {
   triggerEventName: hudEventNames.REWARDS_SELECTIONS_FILLED,
-  leafAreaId: REWARDS_STORE_AREA,
-  statements: ['Great job setting up your rewards!'],
+  statements: ['Great job!  You earned 100 points for completing CircleIn Onboarding.'],
   completionEvent: hudEventNames.ONBOARDING_COMPLETED,
   isPersistent: true
 };
 
-const onboardingCompleted: StorySection = {
-  triggerEventName: hudEventNames.ONBOARDING_COMPLETED,
-  statements: ['Congratulations!  You earned 100 points for completing CircleIn Onboarding.'],
-  isPersistent: true
-};
-
 export const onboardingStorySections: StorySection[] = [
-  introToOnboarding,
   goToWorkflowNudge,
   workflowIntro,
   goToFlashcardsNudge,
@@ -116,6 +105,5 @@ export const onboardingStorySections: StorySection[] = [
   goToRewardsStoreNudge,
   rewardsStoreNoSelections,
   rewardsStorePartialSelections,
-  rewardsStoreFullSelections,
-  onboardingCompleted
+  rewardsStoreFullSelections
 ];

@@ -1,43 +1,52 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
+import { hudEventNames } from './hudEventNames';
+
 export type HudEvent = {
   eventName: string;
   eventData: Record<string, string>;
-  rootAreaId: string;
-  leafAreaId: string;
 };
 
 export type HudEventHandler = (hudEvent: HudEvent) => void;
 
 const hudEventHandlers: HudEventHandler[] = [];
 const unsentHudEvents: HudEvent[] = [];
-let rootAreaId: string | null = null;
-let leafAreaId: string | null = null;
 
 const useHudEvents = () => {
+  const selectedMainArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
+
+  const selectedMainSubArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
+  );
+
+  useEffect(() => {
+    postEvent(hudEventNames.NAVIGATED_TO_AREA, {
+      mainAreaId: selectedMainArea,
+      leafAreaId: selectedMainSubArea
+    });
+  }, [selectedMainArea, selectedMainSubArea]);
+
   const postEvent = (eventName: string, eventData?: Record<string, string>): void => {
     const hudEvent = {
       eventName,
-      eventData,
-      rootAreaId,
-      leafAreaId
+      eventData
     };
     unsentHudEvents.push(hudEvent);
 
     hudEventHandlers.forEach((hudEventHandler: HudEventHandler) => {
       try {
         hudEventHandler(hudEvent);
-      } catch {
+      } catch (error) {
         // TODO better error handling
-        console.log('Unable to process hud event.', eventName);
+        console.log(`Unable to process hud event ${eventName}`, error);
       }
     });
 
     // TODO call API with bulk event message
-  };
-
-  // TODO find a better way to sync the event bus and the redux state
-  const setHudAreaSync = (nextRootAreaId: string, nextLeafAreaId?: string): void => {
-    rootAreaId = nextRootAreaId;
-    leafAreaId = nextLeafAreaId;
   };
 
   const listenToEvents = (hudEventHandler: HudEventHandler): void => {
@@ -45,7 +54,6 @@ const useHudEvents = () => {
   };
 
   return {
-    setHudAreaSync,
     postEvent,
     listenToEvents
   };

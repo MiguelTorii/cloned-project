@@ -8,7 +8,7 @@ import { useStyles } from './OnboardingModalStyles';
 import useStorySequence from '../storyState/useStorySequence';
 import { closeOnboardingPopup } from '../storyState/hudStoryActions';
 
-const onboardingIntroduction = "Hi, I'm Kobe, your study bot! How about a tour?";
+const onboardingIntroduction = "Hi, I'm Kobe, your study bot.  How about a tour?";
 
 const OnboardingModal = () => {
   const classes: any = useStyles();

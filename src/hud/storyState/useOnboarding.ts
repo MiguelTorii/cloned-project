@@ -13,9 +13,25 @@ import { HudStoryState } from './hudStoryState';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
+let nextStorySectionIndex = 0;
 
-let lastSelectedMainArea: string | null = null;
-let lastSelectedMainSubArea: string | null = null;
+const getNextStorySections = (): StorySection[] => {
+  const storySections: StorySection[] = [];
+
+  for (let i = nextStorySectionIndex; i < onboardingStorySections.length; i++) {
+    const nextStorySection = onboardingStorySections[i];
+    if (nextStorySection) {
+      storySections.push(nextStorySection);
+
+      if (!nextStorySection.canSkip) {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+  return storySections;
+};
 
 const useOnboarding = () => {
   const dispatch = useDispatch();
@@ -41,6 +57,7 @@ const useOnboarding = () => {
 
   const startStorySection = (storySection: StorySection): void => {
     currentStorySection = storySection;
+    nextStorySectionIndex += 1;
 
     // Go to a specific route, as required by the story section.
     if (storySection.startingRoute) {
@@ -65,13 +82,18 @@ const useOnboarding = () => {
       listenToEvents((hudEvent: HudEvent) => {
         if (hudEvent.eventName === hudEventNames.CURRENT_STORY_COMPLETED) {
           if (currentStorySection && currentStorySection.completionEvent) {
-            postEvent(currentStorySection.completionEvent);
+            const { completionEvent } = currentStorySection;
             currentStorySection = null;
+            postEvent(completionEvent);
           }
         } else {
-          onboardingStorySections.forEach((storySection: StorySection) => {
+          const nextStorySections = getNextStorySections();
+          nextStorySections.forEach((storySection: StorySection) => {
             if (storySection.triggerEventName === hudEvent.eventName) {
-              if (!storySection.leafAreaId || storySection.leafAreaId === hudEvent.leafAreaId) {
+              if (
+                !storySection.leafAreaId ||
+                storySection.leafAreaId === hudEvent.eventData?.leafAreaId
+              ) {
                 startStorySection(storySection);
               }
             }
@@ -82,30 +104,6 @@ const useOnboarding = () => {
       postEvent(hudEventNames.START_ONBOARDING);
     }
   }, [onboardingFlowTriggered]);
-
-  useEffect(() => {
-    if (!onboardingTriggered || !selectedLeafAreaId) {
-      return;
-    }
-
-    if (
-      lastSelectedMainArea === selectedMainArea &&
-      lastSelectedMainSubArea === selectedLeafAreaId
-    ) {
-      // There was no route change, so don't trigger any additional onboarding events.
-      return;
-    }
-
-    // TODO find a better way to synchronize the event bus and the redux state.
-    lastSelectedMainArea = selectedMainArea;
-    lastSelectedMainSubArea = selectedLeafAreaId;
-
-    onboardingStorySections.forEach((storySection: StorySection) => {
-      if (!storySection.triggerEventName && storySection.leafAreaId === selectedLeafAreaId) {
-        startStorySection(storySection);
-      }
-    });
-  }, [selectedMainArea, selectedLeafAreaId]);
 
   return {};
 };
