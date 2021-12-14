@@ -138,7 +138,7 @@ const AppbarComponent = ({ classes, value, handleChange }) => {
               <DeactiveCreateQuestion className={classes.mr1} />
             )
           }
-          label="Ask a question"
+          label="Ask a Question"
           style={{
             animation: animations.fadeIn
           }}
@@ -183,7 +183,7 @@ const AppbarComponent = ({ classes, value, handleChange }) => {
               <DeactiveCreateShare className={classes.mr1} />
             )
           }
-          label="Share a resource"
+          label="Share a Resource"
           style={{
             animation: animations.fadeIn
           }}

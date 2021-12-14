@@ -1,5 +1,7 @@
 .frame-right {
   top: 64px !important;
+  bottom: 0 !important;
+  max-height: 100% !important;
 }
 #launcher-frame {
   display: none !important;
