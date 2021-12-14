@@ -12,9 +12,7 @@ import { hudEventNames } from '../events/hudEventNames';
 
 const introToOnboarding: StorySection = {
   triggerEventName: hudEventNames.START_ONBOARDING,
-  statements: [
-    "Hi, I'm Kobe, your study bot.  Welcome to CircleIn where you can study with your classmates and earn rewards!"
-  ],
+  statements: ['Study with your classmates to earn points and win rewards.'],
   completionEvent: hudEventNames.SHOW_NAVIGATION_TO_WORKFLOW,
   isPersistent: true
 };
@@ -23,9 +21,7 @@ const goToWorkflowNudge: StorySection = {
   triggerEventName: hudEventNames.SHOW_NAVIGATION_TO_WORKFLOW,
   highlightRootAreaId: STUDY_TOOLS_MAIN_AREA,
   highlightLeafAreaId: CALENDAR_AREA,
-  statements: [
-    "Each study action completed in your course(s) earns points. Let's go to your Workflow study tool."
-  ],
+  statements: ["Let's go to your Workflow study tool."],
   isPersistent: true
 };
 

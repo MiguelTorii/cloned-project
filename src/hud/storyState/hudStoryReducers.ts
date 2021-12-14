@@ -10,6 +10,19 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
         currentStatement: action.payload.currentStatement
       };
 
+    case hudStoryActions.OPEN_ONBOARDING_POPUP:
+      return {
+        ...state,
+        isShowingOnboardingPopup: true
+      };
+
+    case hudStoryActions.CLOSE_ONBOARDING_POPUP:
+      return {
+        ...state,
+        isShowingOnboardingPopup: false,
+        onboardingFlowTriggered: action.payload.onboardingFlowTriggered
+      };
+
     default:
       return state;
   }

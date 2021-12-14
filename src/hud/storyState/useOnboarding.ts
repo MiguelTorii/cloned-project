@@ -9,7 +9,7 @@ import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { onboardingStorySections } from './onboardingStorySections';
 import { StorySection } from './StorySection';
 import { hudEventNames } from '../events/hudEventNames';
-import { KEY_IS_FIRST_TIME, KEY_IS_FIRST_TIME_OPTION_YES } from '../../routeConstants';
+import { HudStoryState } from './hudStoryState';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
@@ -35,8 +35,9 @@ const useOnboarding = () => {
       state.hudNavigation.selectedMainSubAreas[selectedMainArea]
   );
 
-  const query: string = useSelector((state: any) => state.router.location.query);
-  const isFirstTime = query[KEY_IS_FIRST_TIME];
+  const onboardingFlowTriggered: boolean = useSelector(
+    (state: { hudStory: HudStoryState }) => state.hudStory.onboardingFlowTriggered
+  );
 
   const startStorySection = (storySection: StorySection): void => {
     currentStorySection = storySection;
@@ -56,6 +57,31 @@ const useOnboarding = () => {
       );
     }
   };
+
+  useEffect(() => {
+    if (!onboardingTriggered && onboardingFlowTriggered) {
+      onboardingTriggered = true;
+
+      listenToEvents((hudEvent: HudEvent) => {
+        if (hudEvent.eventName === hudEventNames.CURRENT_STORY_COMPLETED) {
+          if (currentStorySection && currentStorySection.completionEvent) {
+            postEvent(currentStorySection.completionEvent);
+            currentStorySection = null;
+          }
+        } else {
+          onboardingStorySections.forEach((storySection: StorySection) => {
+            if (storySection.triggerEventName === hudEvent.eventName) {
+              if (!storySection.leafAreaId || storySection.leafAreaId === hudEvent.leafAreaId) {
+                startStorySection(storySection);
+              }
+            }
+          });
+        }
+      });
+
+      postEvent(hudEventNames.START_ONBOARDING);
+    }
+  }, [onboardingFlowTriggered]);
 
   useEffect(() => {
     if (!onboardingTriggered || !selectedLeafAreaId) {
@@ -80,29 +106,6 @@ const useOnboarding = () => {
       }
     });
   }, [selectedMainArea, selectedLeafAreaId]);
-
-  if (!onboardingTriggered && isFirstTime === KEY_IS_FIRST_TIME_OPTION_YES) {
-    onboardingTriggered = true;
-
-    listenToEvents((hudEvent: HudEvent) => {
-      if (hudEvent.eventName === hudEventNames.CURRENT_STORY_COMPLETED) {
-        if (currentStorySection && currentStorySection.completionEvent) {
-          postEvent(currentStorySection.completionEvent);
-          currentStorySection = null;
-        }
-      } else {
-        onboardingStorySections.forEach((storySection: StorySection) => {
-          if (storySection.triggerEventName === hudEvent.eventName) {
-            if (!storySection.leafAreaId || storySection.leafAreaId === hudEvent.leafAreaId) {
-              startStorySection(storySection);
-            }
-          }
-        });
-      }
-    });
-
-    postEvent(hudEventNames.START_ONBOARDING);
-  }
 
   return {};
 };
