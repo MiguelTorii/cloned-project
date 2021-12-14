@@ -35,6 +35,7 @@ import {
   getLeaderboardAndSupportCenterVisibilityCampaign
 } from '../../actions/campaign';
 import useHudRoutes from '../../hud/frame/useHudRoutes';
+import { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   root: {
@@ -81,12 +82,23 @@ const UserInitializer = ({
   const viewedOnboarding = useSelector((state) => (state as any).user.syncData.viewedOnboarding);
   const chatLanding = useSelector((state) => (state as any).campaign.chatLanding);
 
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   useHudRoutes();
 
   // Check to show onboarding popup or not.
   // This got complex after chat landing campaign. (5 seconds delay)
   useEffect(() => {
     let timeoutId = null;
+
+    if (isHud === true || isHud === null) {
+      // The hud has its own onboarding flow, so if we are in the HUD
+      // (or we aren't sure if we are in the HUD because the campaign
+      // hasn't loaded yet), then don't show the standard onboarding.
+      return;
+    }
 
     if (viewedOnboarding) {
       setOnboardingPopupOpen(false);
@@ -102,7 +114,7 @@ const UserInitializer = ({
     }
 
     return () => timeoutId && clearTimeout(timeoutId);
-  }, [chatLanding, viewedOnboarding]);
+  }, [chatLanding, viewedOnboarding, isHud]);
   const {
     data: { userId, schoolId, school, email, firstName }
   } = user;

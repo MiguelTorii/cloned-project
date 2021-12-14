@@ -10,6 +10,10 @@ import { onboardingStorySections } from './onboardingStorySections';
 import { StorySection } from './StorySection';
 import { hudEventNames } from '../events/hudEventNames';
 import { HudStoryState } from './hudStoryState';
+import { updateOnboardingAction } from '../../actions/user';
+import { logEventLocally } from '../../api/analytics';
+import { UserState } from '../../reducers/user';
+import { User } from '../../types/models';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
@@ -41,6 +45,8 @@ const useOnboarding = () => {
   const { startNextStory } = useStorySequence();
 
   useNavigationHighlighter();
+
+  const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
@@ -80,6 +86,15 @@ const useOnboarding = () => {
       onboardingTriggered = true;
 
       listenToEvents((hudEvent: HudEvent) => {
+        if (hudEvent.eventName === hudEventNames.ONBOARDING_COMPLETED) {
+          logEventLocally({
+            category: 'Onboarding',
+            objectId: user.userId,
+            type: 'Ended'
+          });
+          dispatch(updateOnboardingAction(true));
+        }
+
         if (hudEvent.eventName === hudEventNames.CURRENT_STORY_COMPLETED) {
           if (currentStorySection && currentStorySection.completionEvent) {
             const { completionEvent } = currentStorySection;
