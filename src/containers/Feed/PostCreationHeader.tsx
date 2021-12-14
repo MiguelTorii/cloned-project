@@ -35,12 +35,12 @@ const ICON_SIZE = { width: '36px', height: '36px' };
 const POST_BUTTONS = [
   {
     value: 0,
-    text: 'Write Post',
+    text: 'Write a Post',
     icon: IconPencil
   },
   {
     value: 1,
-    text: 'Ask a question',
+    text: 'Ask a Question',
     icon: IconQuestion
   },
   {
@@ -50,7 +50,7 @@ const POST_BUTTONS = [
   },
   {
     value: 3,
-    text: 'Share a resource',
+    text: 'Share a Resource',
     icon: IconResource
   }
 ];
@@ -58,12 +58,12 @@ const POST_BUTTONS = [
 const HUD_POST_BUTTONS = [
   {
     value: CREATE_A_POST_AREA,
-    text: 'Write Post',
+    text: 'Write a Post',
     icon: ActiveCreatePost
   },
   {
     value: ASK_A_QUESTION_AREA,
-    text: 'Ask a question',
+    text: 'Ask a Question',
     icon: QuestionIcon
   },
   {
@@ -73,7 +73,7 @@ const HUD_POST_BUTTONS = [
   },
   {
     value: SHARE_RESOURCES_AREA,
-    text: 'Share a resource',
+    text: 'Share a Resource',
     icon: IconResource
   },
   {

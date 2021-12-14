@@ -48,7 +48,7 @@ const HudStudyTools = () => {
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Create a post',
+      displayName: 'Create a Post',
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
@@ -58,7 +58,7 @@ const HudStudyTools = () => {
     },
     {
       id: NOTES_AREA,
-      displayName: 'Private notes',
+      displayName: 'Private Notes',
       icon: <PrivateNotesIcon style={ICON_SIZE} />
     }
   ];
@@ -66,22 +66,22 @@ const HudStudyTools = () => {
   const bottomStudyTools: HudToolData[] = [
     {
       id: SHARE_NOTES_AREA,
-      displayName: 'Share notes',
+      displayName: 'Share Notes',
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
       id: ASK_A_QUESTION_AREA,
-      displayName: 'Ask a question',
+      displayName: 'Ask a Question',
       icon: <QuestionIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_RESOURCES_AREA,
-      displayName: 'Share resources',
+      displayName: 'Share Resources',
       icon: <ResourceIcon style={ICON_SIZE} />
     },
     {
       id: CHAT_AREA,
-      displayName: 'chat',
+      displayName: 'Chat',
       icon: <CreatePostIcon style={ICON_SIZE} />
     }
   ];

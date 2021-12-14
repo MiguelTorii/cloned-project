@@ -97,7 +97,7 @@ const HudMainNavigation = () => {
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Create a post',
+      displayName: 'Create a Post',
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
@@ -107,12 +107,12 @@ const HudMainNavigation = () => {
     },
     {
       id: NOTES_AREA,
-      displayName: 'Private notes',
+      displayName: 'Private Notes',
       icon: <PrivateNotesIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_NOTES_AREA,
-      displayName: 'Share notes',
+      displayName: 'Share Notes',
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
@@ -122,7 +122,7 @@ const HudMainNavigation = () => {
     },
     {
       id: SHARE_RESOURCES_AREA,
-      displayName: 'Share resources',
+      displayName: 'Share Resources',
       icon: <ResourceIcon style={ICON_SIZE} />
     }
   ];
