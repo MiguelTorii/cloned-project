@@ -37,7 +37,7 @@ export interface StorySection {
    * then set their rewards, then go through onboarding.  We would expect that the
    * onboarding would not ask the user to set the rewards they have already set, so
    * we can skip the "empty selections" part of the story and go directly to the
-   * "selections completed" par of the story.
+   * "selections completed" part of the story.
    */
   canSkip?: boolean;
 
