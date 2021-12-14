@@ -1,9 +1,31 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
+  storyContainer: {
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'relative'
+  },
+  storyMessageBackground: {
+    position: 'absolute',
+    left: '35px',
+    top: theme.spacing(1 / 2),
+    bottom: theme.spacing(1 / 2),
+    right: 0,
+    backgroundColor: theme.circleIn.palette.white,
+    border: `solid 1px ${theme.circleIn.palette.success}`,
+    borderRadius: '4px'
+  },
   storyAvatarContainer: {
-    height: '100%',
-    width: '100%'
+    height: '70px',
+    width: '70px',
+    flexShrink: 0,
+    zIndex: 2
+  },
+  storyMessageContainer: {
+    overflow: 'hidden',
+    zIndex: 2
   },
   storyAvatarBackground: {
     background: theme.circleIn.palette.kobeBackground,
@@ -27,6 +49,6 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '2px 4px 2px 36px'
+    padding: theme.spacing(1 / 2, 2)
   }
 }));

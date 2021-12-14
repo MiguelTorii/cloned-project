@@ -24,6 +24,7 @@ import {
 import { HudToolData } from '../navigation/HudToolData';
 import HudToolbar from '../navigation/HudToolbar';
 import useHudRoutes from '../frame/useHudRoutes';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 

@@ -56,9 +56,14 @@ const useStorySequence = () => {
     }
   };
 
+  const sayStatement = (statement: string) => {
+    startNextStory({ statements: [statement], isPersistent: true });
+  };
+
   return {
     sayGreeting,
-    startNextStory
+    startNextStory,
+    sayStatement
   };
 };
 

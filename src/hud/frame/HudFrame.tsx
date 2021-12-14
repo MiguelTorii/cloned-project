@@ -21,19 +21,32 @@ import {
 } from '../navigationState/hudNavigation';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import ChatArea from '../../hudAreas/chat/ChatArea';
-import { STUDY_TOOLS_QUERY_KEY, STUDY_TOOLS_TOP_OPTION } from '../../routeConstants';
+import {
+  KEY_IS_FIRST_TIME,
+  KEY_IS_FIRST_TIME_OPTION_YES,
+  STUDY_TOOLS_QUERY_KEY,
+  STUDY_TOOLS_TOP_OPTION
+} from '../../routeConstants';
 import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
 import HudStudyTools from '../missions/HudStudyTools';
 import HudTitle from '../title/HudTitle';
-import HudExperienceBar from '../experienceBar/HudExperienceBar';
-import HudDisplay from '../display/HudDisplay';
 import MobileActions from '../mobileActions/MobileActions';
 import MobileMenu from '../mobileMenu/MobileMenu';
+import OnboardingModal from '../onboardingModal/OnboardingModal';
+import HudStory from '../story/HudStory';
+import HudExperienceBar from '../experienceBar/HudExperienceBar';
+import { HudStoryState } from '../storyState/hudStoryState';
+import { openOnboardingPopup } from '../storyState/hudStoryActions';
+import useOnboarding from '../storyState/useOnboarding';
+
+let onboardingPopupTriggered = false;
 
 const HudFrame = () => {
   const classes: any = useStyles();
 
   const dispatch: Dispatch<Action> = useDispatch();
+
+  useOnboarding();
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
@@ -48,12 +61,23 @@ const HudFrame = () => {
       state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
   );
 
-  const query: string = useSelector((state: any) => state.router.location.query);
-  const newStudyToolsOption = query[STUDY_TOOLS_QUERY_KEY];
+  const isShowingOnboardingPopup: boolean = useSelector(
+    (state: { hudStory: HudStoryState }) => state.hudStory.isShowingOnboardingPopup
+  );
 
+  const query: string = useSelector((state: any) => state.router.location.query);
+
+  const newStudyToolsOption = query[STUDY_TOOLS_QUERY_KEY];
   if (newStudyToolsOption) {
     dispatch(setStudyToolsOption(newStudyToolsOption));
   }
+
+  const isFirstTime = query[KEY_IS_FIRST_TIME];
+  if (!onboardingPopupTriggered && isFirstTime === KEY_IS_FIRST_TIME_OPTION_YES) {
+    onboardingPopupTriggered = true;
+    dispatch(openOnboardingPopup());
+  }
+
   return (
     <main>
       <CssBaseline />
@@ -61,48 +85,54 @@ const HudFrame = () => {
         <div className={classes.appNavbar}>
           <HudControlPanel />
         </div>
-        <div
-          className={cx(
-            classes.appContent,
-            selectedMainArea === CHAT_MAIN_AREA
-              ? classes.wideAppContent
-              : classes.standardAppContent
-          )}
-        >
-          <div className={classes.mainContainer}>
-            <div className={classes.mainHeader}>
-              <HudTitle />
-            </div>
-            <div className={classes.mainAction}>
-              {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
-              {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
+        {isShowingOnboardingPopup ? (
+          <OnboardingModal />
+        ) : (
+          <div
+            className={cx(
+              classes.appContent,
+              selectedMainArea === CHAT_MAIN_AREA
+                ? classes.wideAppContent
+                : classes.standardAppContent
+            )}
+          >
+            <div className={classes.mainContainer}>
+              <div className={classes.mainHeader}>
+                <HudTitle />
+              </div>
+              <div className={classes.mainAction}>
+                {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
 
-              {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
+                {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
 
-              {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
+                {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
 
-              {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
-            </div>
-            <div className={classes.mainFooter}>
-              <HudDisplay />
-            </div>
-          </div>
+                {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
 
-          {isRightPaneVisible && (
-            <div className={classes.rightPanel}>
-              {(!studyToolsOption || studyToolsOption === STUDY_TOOLS_TOP_OPTION) && (
-                <div className={classes.studyTools}>
-                  <HudStudyTools />
-                </div>
-              )}
-
-              <div className={classes.missions}>
-                <HudMissions />
+                {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
+              </div>
+              <div className={classes.mainFooter}>
+                <HudStory />
+                <HudExperienceBar />
               </div>
             </div>
-          )}
-        </div>
+
+            {isRightPaneVisible && (
+              <div className={classes.rightPanel}>
+                {(!studyToolsOption || studyToolsOption === STUDY_TOOLS_TOP_OPTION) && (
+                  <div className={classes.studyTools}>
+                    <HudStudyTools />
+                  </div>
+                )}
+
+                <div className={classes.missions}>
+                  <HudMissions />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         <Hidden mdUp>
           <MobileMenu />

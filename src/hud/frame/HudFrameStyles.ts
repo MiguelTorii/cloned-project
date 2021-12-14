@@ -41,7 +41,10 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   mainFooter: {
     flexShrink: 0,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   rightPanel: {
     width: '270px',
