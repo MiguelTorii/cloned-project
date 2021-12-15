@@ -74,6 +74,7 @@ type Props = {
       pathname: string;
     };
   };
+  wideLayout?: boolean;
 };
 
 const ClassesSelector = ({
@@ -89,7 +90,8 @@ const ClassesSelector = ({
   router: {
     location: { pathname }
   },
-  sectionId
+  sectionId,
+  wideLayout
 }: Props) => {
   const [userClasses, setUserClasses] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -187,7 +189,7 @@ const ClassesSelector = ({
   return (
     <>
       <ErrorBoundary>
-        <div className={classes.root}>
+        <div className={!wideLayout && classes.root}>
           <FormControl className={classes.classList} variant="outlined" fullWidth>
             <Autocomplete
               id="select-class"
