@@ -25,6 +25,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   storyMessageContainer: {
     overflow: 'hidden',
+    flexGrow: 1,
     zIndex: 2
   },
   storyAvatarBackground: {
@@ -50,5 +51,14 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing(1 / 2, 2)
+  },
+  closeIcon: {
+    color: theme.circleIn.palette.primaryText2,
+    zIndex: 2,
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1 / 2),
+    '&:hover': {
+      backgroundColor: theme.circleIn.palette.primaryText1
+    }
   }
 }));

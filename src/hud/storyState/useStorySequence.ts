@@ -6,10 +6,19 @@ import useHudEvents from '../events/useHudEvents';
 import { hudEventNames } from '../events/hudEventNames';
 import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
+import { currentStoryCompleted, setCurrentStatement } from './hudStoryActions';
+
+const STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS = 30000;
 
 let storySequence: StorySequence = null;
 let greetingLoadTriggered = false;
 let greetingStatements: string[] = [];
+
+/**
+ * Actually a number but specified as NodeJS.Timeout in the .dts file,
+ * so use `any` type to make typescript compiler happy.
+ */
+let storyCompletedTimeoutId: any = null;
 
 const useStorySequence = () => {
   const dispatch = useDispatch();
@@ -18,16 +27,35 @@ const useStorySequence = () => {
 
   const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
-  const startNextStory = (options: StorySequenceOptions): void => {
-    // End the last story before starting the next story.
+  const closeStory = () => {
     if (storySequence) {
       storySequence.endStory(dispatch);
     }
+    storySequence = null;
+    dispatch(setCurrentStatement(''));
+
+    if (storyCompletedTimeoutId) {
+      clearTimeout(storyCompletedTimeoutId);
+      storyCompletedTimeoutId = null;
+    }
+  };
+
+  const startNextStory = (options: StorySequenceOptions): void => {
+    // End the last story before starting the next story.
+    closeStory();
 
     // Start the next story.
-    const nextStorySequence = new StorySequence(options, () =>
-      postEvent(hudEventNames.CURRENT_STORY_COMPLETED)
-    );
+    const nextStorySequence = new StorySequence(options, () => {
+      dispatch(currentStoryCompleted());
+      postEvent(hudEventNames.CURRENT_STORY_COMPLETED);
+
+      if (storyCompletedTimeoutId) {
+        clearTimeout(storyCompletedTimeoutId);
+      }
+      storyCompletedTimeoutId = setTimeout(() => {
+        closeStory();
+      }, STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS);
+    });
     storySequence = nextStorySequence;
     nextStorySequence.startStory(dispatch);
   };
@@ -63,7 +91,8 @@ const useStorySequence = () => {
   return {
     sayGreeting,
     startNextStory,
-    sayStatement
+    sayStatement,
+    closeStory
   };
 };
 
