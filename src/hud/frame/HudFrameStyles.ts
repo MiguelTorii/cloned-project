@@ -14,8 +14,10 @@ export const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden'
   },
   appContent: {
+    position: 'relative',
     flexGrow: 1,
     display: 'flex',
+    justifyContent: 'center',
     flexDirection: 'row',
     overflow: 'hidden',
     margin: 'auto',
@@ -28,7 +30,6 @@ export const useStyles = makeStyles((theme: any) => ({
     maxWidth: '1600px'
   },
   mainContainer: {
-    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',

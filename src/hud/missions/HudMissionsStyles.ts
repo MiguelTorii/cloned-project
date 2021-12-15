@@ -5,5 +5,25 @@ export const useStyles = makeStyles((theme: any) => ({
     width: '100%',
     height: '100%',
     overflow: 'auto'
+  },
+  imageContainer: {
+    width: 48,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  image: {
+    maxWidth: '100%',
+    maxHeight: '100%'
+  },
+  missionText: {
+    fontSize: 14,
+    marginBottom: theme.spacing(1 / 2)
+  },
+  missionInfoIcon: {
+    fontSize: 16,
+    verticalAlign: 'middle',
+    marginLeft: theme.spacing(1 / 2),
+    color: theme.circleIn.palette.gray3
   }
 }));

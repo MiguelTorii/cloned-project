@@ -78,7 +78,9 @@ const circleInTheme = {
   errorPopupBackground: '#C0E9FC',
   errorPopupTitle: '#37474F',
   kobeBackground: '#676767',
-  toggleButtonBorder: '#28292C'
+  toggleButtonBorder: '#28292C',
+  rightPanelCardBackground: '#1F1F1F',
+  gray4: '#333333'
 };
 let theme = createTheme({
   circleIn: {
@@ -147,7 +149,9 @@ let theme = createTheme({
       errorPopupBackground: circleInTheme.errorPopupBackground,
       errorPopupTitle: circleInTheme.errorPopupTitle,
       kobeBackground: circleInTheme.kobeBackground,
-      toggleButtonBorder: circleInTheme.toggleButtonBorder
+      toggleButtonBorder: circleInTheme.toggleButtonBorder,
+      rightPanelCardBackground: circleInTheme.rightPanelCardBackground,
+      gray4: circleInTheme.gray4
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

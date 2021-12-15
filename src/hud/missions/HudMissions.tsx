@@ -1,22 +1,37 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
-import { useStyles } from './HudMissionsStyles';
-import { RIGHT_SIDE_AREA } from '../navigationState/hudNavigation';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Grid } from '@material-ui/core';
+import RightPanelCard from '../../components/RightPanelCard/RightPanelCard';
+import { apiGetMissions } from '../../api/user';
+import { setMissions } from '../rightPanelState/hudRightPanelActions';
+import { AppState } from '../../configureStore';
+import { TMission } from '../../types/models';
+import HudMission from './HudMission';
 
 const HudMissions = () => {
-  const classes: any = useStyles();
+  const dispatch = useDispatch();
+  const missions = useSelector<AppState, Array<TMission>>((state) => state.hudRightPanel.missions);
 
-  const isVisible: boolean = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
-  );
+  useEffect(() => {
+    apiGetMissions().then(({ missions }) => {
+      dispatch(setMissions(missions));
+    });
+  }, [dispatch]);
+
+  if (!missions) {
+    return null;
+  }
 
   return (
-    <div className={classes.container}>
-      <MiniWorkflows />
-    </div>
+    <RightPanelCard title="Rewards">
+      <Grid container spacing={2}>
+        {missions.map((mission) => (
+          <Grid key={mission.id} item xs={12}>
+            <HudMission data={mission} />
+          </Grid>
+        ))}
+      </Grid>
+    </RightPanelCard>
   );
 };
 

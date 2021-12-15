@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from 'store';
 import moment from 'moment';
-import { API_ROUTES } from '../constants/routes';
+import { API_ROUTES, API_URL } from '../constants/routes';
 import type {
   Profile,
   UserClasses,
@@ -15,7 +15,8 @@ import type {
   InviteCard,
   SyncSuccessData,
   UserClass,
-  TExperiencePointsData
+  TExperiencePointsData,
+  TGetMissionsData
 } from '../types/models';
 import { getToken } from './utils';
 import callApi from './api_base';
@@ -707,4 +708,8 @@ export const apiGetPointsHistory = async (userId: string, params: object): Promi
 export const apiGetExperiencePoints = async (): Promise<TExperiencePointsData> =>
   callApi({
     url: `${API_ROUTES.USER}/points`
+  });
+export const apiGetMissions = async (): Promise<TGetMissionsData> =>
+  callApi({
+    url: `${API_URL}/missions`
   });

@@ -636,3 +636,14 @@ export type TLoginError = {
 export type TExperiencePointsData = {
   points: number;
 };
+export type TMission = {
+  id: string;
+  numerator: number;
+  denominator: number;
+  title: string;
+  icon_url: string;
+  information: string;
+};
+export type TGetMissionsData = {
+  missions: Array<TMission>;
+};

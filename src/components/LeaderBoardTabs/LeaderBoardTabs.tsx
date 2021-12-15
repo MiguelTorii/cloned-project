@@ -15,7 +15,7 @@ import PrizeDialog from './PrizeDialog';
 import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
-import { styles } from '../_styles/LeaderBoardTabs/index';
+import { styles } from '../_styles/LeaderBoardTabs';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

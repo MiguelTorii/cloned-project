@@ -10,7 +10,6 @@ import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
 import ProfileArea from '../../hudAreas/profile/ProfileArea';
-import HudMissions from '../missions/HudMissions';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
@@ -26,14 +25,12 @@ import ChatArea from '../../hudAreas/chat/ChatArea';
 import {
   KEY_IS_FIRST_TIME,
   KEY_IS_FIRST_TIME_OPTION_YES,
-  STUDY_TOOLS_QUERY_KEY,
-  STUDY_TOOLS_TOP_OPTION
+  STUDY_TOOLS_QUERY_KEY
 } from '../../routeConstants';
 import {
   setStudyToolsOption,
   toggleSideAreaVisibility
 } from '../navigationState/hudNavigationActions';
-import HudStudyTools from '../missions/HudStudyTools';
 import HudTitle from '../title/HudTitle';
 import MobileActions from '../mobileActions/MobileActions';
 import MobileMenu from '../mobileMenu/MobileMenu';
@@ -42,6 +39,7 @@ import HudStory from '../story/HudStory';
 import HudExperienceBar from '../experienceBar/HudExperienceBar';
 import { HudStoryState } from '../storyState/hudStoryState';
 import { openOnboardingPopup } from '../storyState/hudStoryActions';
+import HudRightPanel from './HudRightPanel';
 import useOnboarding from '../storyState/useOnboarding';
 
 let onboardingPopupTriggered = false;
@@ -55,10 +53,6 @@ const HudFrame = () => {
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
-  );
-
-  const studyToolsOption: string = useSelector(
-    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.studyToolsOption
   );
 
   const isRightPaneVisible: boolean = useSelector(
@@ -127,27 +121,16 @@ const HudFrame = () => {
               </div>
             </div>
 
-            <Box position="relative" minWidth={isRightPaneVisible ? 'auto' : 20}>
-              <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
-                {isRightPaneVisible ? <IconRight /> : <IconLeft />}
-              </IconButton>
-              {isRightPaneVisible && (
-                <div className={classes.rightPanel}>
-                  {(!studyToolsOption || studyToolsOption === STUDY_TOOLS_TOP_OPTION) && (
-                    <div className={classes.studyTools}>
-                      <HudStudyTools />
-                    </div>
-                  )}
-
-                  <div className={classes.missions}>
-                    <HudMissions />
-                  </div>
-                </div>
-              )}
-            </Box>
+            <Hidden mdDown>
+              <Box position="relative" minWidth={isRightPaneVisible ? 'auto' : 20}>
+                <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
+                  {isRightPaneVisible ? <IconRight /> : <IconLeft />}
+                </IconButton>
+                <HudRightPanel />
+              </Box>
+            </Hidden>
           </div>
         )}
-
         <Hidden mdUp>
           <MobileMenu />
           <MobileActions />
