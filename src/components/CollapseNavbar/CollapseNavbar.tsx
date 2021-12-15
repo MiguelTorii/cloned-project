@@ -85,16 +85,22 @@ const CollapseNavbar = ({
   setCurrentCommunityChannel
 }: Props) => {
   const classes: any = useStyles();
-  const [subListOpen, setSubListOpen] = useState('');
-  useEffect(() => {
-    setSubListOpen('');
-  }, [channels]);
+  const [collapsedStates, setCollapsedStates] = useState({});
+
+  const handleSwitchCollapsedState = (channel) => {
+    // We decide `undefined` means collapsed.
+    setCollapsedStates({
+      ...collapsedStates,
+      [channel.id]: collapsedStates[channel.id] === false
+    });
+  };
+
+  const getCollapsedState = (channel) => collapsedStates[channel.id] !== false;
 
   const handleSubList = (parent, channel) => () => {
-    if (subListOpen === parent) {
-      setSubListOpen('');
-    } else {
-      setSubListOpen(parent);
+    // If current channel has children, switch the collapsed state.
+    if (channel.channels) {
+      handleSwitchCollapsedState(channel);
     }
 
     if (!channel?.channels && currentCommunityChannel.sid !== channel.chat_id) {
@@ -130,7 +136,7 @@ const CollapseNavbar = ({
                 root: classes.channelIcon
               }}
             >
-              {subListOpen === channel?.name ? <ExpandLess /> : <ExpandMore />}
+              {!getCollapsedState(channel) ? <ExpandLess /> : <ExpandMore />}
             </ListItemIcon>
           ) : local[channel.chat_id] ? (
             <ListItemIcon
@@ -181,18 +187,18 @@ const CollapseNavbar = ({
             </div>
           ) : null}
         </ListItem>,
-        channel?.channels && renderSubList(channel.channels, channel.name)
+        channel?.channels && renderSubList(channel.channels, channel)
       );
     });
     return content;
   };
 
-  const renderSubList = (childChannels, parentChannelName) => (
+  const renderSubList = (childChannels, parentChannel) => (
     <Collapse
-      in={subListOpen !== parentChannelName}
+      in={getCollapsedState(parentChannel)}
       timeout="auto"
       unmountOnExit
-      key={parentChannelName}
+      key={parentChannel.id}
     >
       <List component="div">{renderChannels(childChannels)}</List>
     </Collapse>
