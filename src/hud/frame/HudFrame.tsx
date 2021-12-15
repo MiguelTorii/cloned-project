@@ -64,6 +64,8 @@ const HudFrame = () => {
     (state: { hudStory: HudStoryState }) => state.hudStory.isShowingOnboardingPopup
   );
 
+  const viewedOnboarding = useSelector((state) => (state as any).user.syncData.viewedOnboarding);
+
   const query: string = useSelector((state: any) => state.router.location.query);
 
   const handleToggleRightPane = useCallback(() => {
@@ -75,8 +77,9 @@ const HudFrame = () => {
     dispatch(setStudyToolsOption(newStudyToolsOption));
   }
 
-  const isFirstTime = query[KEY_IS_FIRST_TIME];
-  if (!onboardingPopupTriggered && isFirstTime === KEY_IS_FIRST_TIME_OPTION_YES) {
+  const isFirstTime =
+    query[KEY_IS_FIRST_TIME] === KEY_IS_FIRST_TIME_OPTION_YES || viewedOnboarding === false;
+  if (!onboardingPopupTriggered && isFirstTime) {
     onboardingPopupTriggered = true;
     dispatch(openOnboardingPopup());
   }

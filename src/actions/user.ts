@@ -179,7 +179,7 @@ export const confirmTooltip = (tooltipId: number) => async (dispatch: Dispatch) 
   dispatch(confirmTooltipSuccessAction(tooltipId));
 };
 
-const updateOnboardingAction = (viewedOnboarding: boolean): Action => ({
+export const updateOnboardingAction = (viewedOnboarding: boolean): Action => ({
   type: userActions.UPDATE_ONBOARDING,
   payload: {
     viewedOnboarding
