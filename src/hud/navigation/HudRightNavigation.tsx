@@ -6,6 +6,8 @@ import { push } from 'connected-react-router';
 import { Badge, Typography } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { useStyles } from './HudNavigationStyles';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
+
 import {
   ABOUT_ME_AREA,
   NOTIFICATIONS_AREA,
@@ -33,6 +35,7 @@ import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
 import { getInitials } from '../../utils/chat';
 import { PERMISSIONS } from '../../constants/common';
+import { HudExpertState } from '../expertModeState/hudExpertState';
 
 const ICON_SIZE = '30px';
 
@@ -41,23 +44,25 @@ const HudRightNavigation = () => {
   const [notificationCount, setNotificationCount] = useState(0);
   const classes: any = useStyles();
 
+  const isExpertMode: boolean = useSelector(
+    (state: { hudExpert: HudExpertState }) => state.hudExpert.isExpert
+  );
+
   const dispatch: Dispatch<Action> = useDispatch();
 
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
 
-  // should show if has expert mode permission
-  const isExpert =
+  const hasExpertModeFunctionality =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
 
-  // will show if only expert/tutor and not student
-  const isTutor =
+  const isOnlyAnExpert =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
 
   const expertNavigationItem = {
     id: EXPERT_MODE_ACCESS,
-    displayName: isExpert ? 'Go to Expert Mode' : 'Go to Student Mode'
+    displayName: isExpertMode ? 'Go to Expert Mode' : 'Go to Student Mode'
     // icon: <IconAboutMe />
   };
 
@@ -92,7 +97,7 @@ const HudRightNavigation = () => {
       displayName: 'Get the Mobile App',
       icon: <IconMobileApp />
     },
-    isExpert ? expertNavigationItem : null,
+    hasExpertModeFunctionality ? expertNavigationItem : null,
     {
       id: SIGN_OUT_BUTTON,
       displayName: 'Sign Out'
