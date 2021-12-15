@@ -1,5 +1,5 @@
 import type { Action } from '../../types/action';
-import { hudStoryActions } from './hudStoryActions';
+import { hudStoryActions, setCurrentStatement } from './hudStoryActions';
 import { defaultState, HudStoryState } from './hudStoryState';
 
 export default (state: HudStoryState = defaultState, action: Action): HudStoryState => {
@@ -7,7 +7,14 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
     case hudStoryActions.SET_CURRENT_STATEMENT:
       return {
         ...state,
-        currentStatement: action.payload.currentStatement
+        currentStatement: action.payload.currentStatement,
+        isStoryInProgress: !!action.payload.currentStatement
+      };
+
+    case hudStoryActions.CURRENT_STORY_COMPLETED:
+      return {
+        ...state,
+        isStoryInProgress: false
       };
 
     case hudStoryActions.OPEN_ONBOARDING_POPUP:
