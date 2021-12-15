@@ -145,6 +145,7 @@ const FeedItem = ({
   const [moreAnchorEl, setAnchorEl] = useState(null);
   const [thanksCount, setThanksCount] = useState(0);
   const [thanked, setThanked] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
   const classList = useSelector((state) => (state as any).user.userClasses.classList);
   const isCurrent = useMemo(() => {
     const postClass = classList.find((classData) => classData.classId === data.classId);
@@ -160,6 +161,7 @@ const FeedItem = ({
   useEffect(() => {
     setThanked(data.thanked);
     setThanksCount(data.postInfo.thanksCount);
+    setCommentCount(data.postInfo.questionsCount);
   }, [data, setThanked]);
   const handleMenuOpen = useCallback((event) => {
     setAnchorEl(event.currentTarget);
@@ -252,6 +254,8 @@ const FeedItem = ({
     const cleanBody = body.replace(/<[^>]*>/g, '').replace(/\&nbsp;/g, ' ');
     return cleanBody;
   }, []);
+  const handleAddComment = useCallback(() => setCommentCount(commentCount + 1), [commentCount]);
+  const handleDeleteComment = useCallback(() => setCommentCount(commentCount - 1), [commentCount]);
   const getTitle = useCallback((data: Record<string, any>): string => data.title, []);
   const initials = useMemo(() => getInitials(data.name), [data.name]);
   const date = useMemo(() => moment(data.created), [data.created]);
@@ -583,7 +587,7 @@ const FeedItem = ({
           </Typography>
           <Typography component="p" variant="subtitle1" className={classes.actionIcons}>
             <img src={commentSvg} className={classes.actionIcon} alt="comment" />
-            <strong>{data.postInfo.questionsCount}</strong>
+            <strong>{commentCount}</strong>
           </Typography>
         </div>
         <Typography
@@ -611,6 +615,8 @@ const FeedItem = ({
           hasBestAnswer={data.bestAnswer}
           isCurrent={isCurrent}
           initialComment={data.firstComment}
+          onAddComment={handleAddComment}
+          onDeleteComment={handleDeleteComment}
         />
       )}
     </Card>

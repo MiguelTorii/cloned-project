@@ -59,6 +59,8 @@ type Props = {
   isPost?: boolean;
   isCurrent?: boolean;
   initialComment?: TComment;
+  onAddComment?: () => void;
+  onDeleteComment?: () => void;
 };
 type State = {
   comments: Comments | null | undefined;
@@ -106,7 +108,8 @@ class ViewNotes extends React.PureComponent<Props, State> {
       },
       postId,
       typeId,
-      showNotification
+      showNotification,
+      onAddComment
     } = this.props;
 
     if (rootCommentId) {
@@ -135,6 +138,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
           message: `Congratulations ${firstName}, you have just earned ${points} points. Good Work!`,
           variant: 'success'
         });
+      }
+
+      if (onAddComment) {
+        onAddComment();
       }
 
       await this.loadData();
@@ -217,12 +224,16 @@ class ViewNotes extends React.PureComponent<Props, State> {
       const {
         user: {
           data: { userId }
-        }
+        },
+        onDeleteComment
       } = this.props;
       await deleteComment({
         userId,
         id
       });
+      if (onDeleteComment) {
+        onDeleteComment();
+      }
       await this.loadData();
     } finally {
       this.setState({
