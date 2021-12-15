@@ -38,7 +38,10 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   childToolItem: {
     alignItems: 'left',
-    width: '200px'
+    width: '200px',
+    '&:hover': {
+      backgroundColor: theme.circleIn.palette.appBar
+    }
   },
   childToolIcon: {
     width: '30px',
