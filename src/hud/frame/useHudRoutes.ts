@@ -133,8 +133,6 @@ const useHudRoutes = () => {
 
   const dispatch: Dispatch<Action> = useDispatch();
 
-  const { setHudAreaSync } = useHudEvents();
-
   const selectedMainSubAreas = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainSubAreas
   );
@@ -168,7 +166,6 @@ const useHudRoutes = () => {
       }
 
       if (areaIds) {
-        setHudAreaSync(areaIds.mainArea, areaIds.mainSubArea);
         dispatch(setSelectedMainSubArea(areaIds.mainArea, areaIds.mainSubArea));
       }
     }
@@ -177,7 +174,6 @@ const useHudRoutes = () => {
   const setHudArea = (mainArea: string, mainSubArea?: string) => {
     const url = areasToUrl[mainArea][mainSubArea || selectedMainSubAreas[mainArea]];
     if (url) {
-      setHudAreaSync(mainArea, mainSubArea);
       dispatch(push(url));
     }
   };

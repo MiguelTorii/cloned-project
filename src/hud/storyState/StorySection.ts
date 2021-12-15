@@ -2,7 +2,7 @@ export interface StorySection {
   /**
    * The event that will trigger this story section.
    */
-  triggerEventName?: string;
+  triggerEventName: string;
 
   /**
    * The location where the user must be for this story section to be
@@ -28,6 +28,18 @@ export interface StorySection {
    * Whether the story's last word should stay up after the story is done.
    */
   isPersistent: boolean;
+
+  /**
+   * Whether this story section can be skipped, i.e. whether the current event could
+   * trigger this story section or the next story section.
+   * This is useful for cases where different story sections are designed for
+   * different application states.  For example, a student might skip onboarding,
+   * then set their rewards, then go through onboarding.  We would expect that the
+   * onboarding would not ask the user to set the rewards they have already set, so
+   * we can skip the "empty selections" part of the story and go directly to the
+   * "selections completed" part of the story.
+   */
+  canSkip?: boolean;
 
   /**
    * The root area id whose navigation should be highlighted at the
