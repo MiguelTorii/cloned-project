@@ -66,5 +66,17 @@ export const useStyles = makeStyles((theme: any) => ({
   missions: {
     flexGrow: 1,
     overflow: 'auto'
+  },
+  rightPaneToggle: {
+    position: 'absolute',
+    left: -20,
+    top: 40,
+    width: 40,
+    height: 40,
+    backgroundColor: theme.circleIn.palette.modalBackground,
+    border: `5px solid ${theme.circleIn.palette.toggleButtonBorder}`,
+    '&:hover, &:active': {
+      background: 'linear-gradient(115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%)'
+    }
   }
 }));

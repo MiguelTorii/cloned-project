@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
-import { Hidden } from '@material-ui/core';
+import { Box, Hidden, IconButton } from '@material-ui/core';
+import IconLeft from '@material-ui/icons/ArrowBack';
+import IconRight from '@material-ui/icons/ArrowForward';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
@@ -27,7 +29,10 @@ import {
   STUDY_TOOLS_QUERY_KEY,
   STUDY_TOOLS_TOP_OPTION
 } from '../../routeConstants';
-import { setStudyToolsOption } from '../navigationState/hudNavigationActions';
+import {
+  setStudyToolsOption,
+  toggleSideAreaVisibility
+} from '../navigationState/hudNavigationActions';
 import HudStudyTools from '../missions/HudStudyTools';
 import HudTitle from '../title/HudTitle';
 import MobileActions from '../mobileActions/MobileActions';
@@ -66,6 +71,10 @@ const HudFrame = () => {
   );
 
   const query: string = useSelector((state: any) => state.router.location.query);
+
+  const handleToggleRightPane = useCallback(() => {
+    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
+  }, [dispatch]);
 
   const newStudyToolsOption = query[STUDY_TOOLS_QUERY_KEY];
   if (newStudyToolsOption) {
@@ -118,19 +127,24 @@ const HudFrame = () => {
               </div>
             </div>
 
-            {isRightPaneVisible && (
-              <div className={classes.rightPanel}>
-                {(!studyToolsOption || studyToolsOption === STUDY_TOOLS_TOP_OPTION) && (
-                  <div className={classes.studyTools}>
-                    <HudStudyTools />
-                  </div>
-                )}
+            <Box position="relative" minWidth={isRightPaneVisible ? 'auto' : 20}>
+              <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
+                {isRightPaneVisible ? <IconRight /> : <IconLeft />}
+              </IconButton>
+              {isRightPaneVisible && (
+                <div className={classes.rightPanel}>
+                  {(!studyToolsOption || studyToolsOption === STUDY_TOOLS_TOP_OPTION) && (
+                    <div className={classes.studyTools}>
+                      <HudStudyTools />
+                    </div>
+                  )}
 
-                <div className={classes.missions}>
-                  <HudMissions />
+                  <div className={classes.missions}>
+                    <HudMissions />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </Box>
           </div>
         )}
 

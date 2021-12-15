@@ -1,13 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
-import { CalendarToday } from '@material-ui/icons';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { push } from 'connected-react-router';
-import { Badge, Typography, IconButton } from '@material-ui/core';
+import { Badge, Typography } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { useStyles } from './HudNavigationStyles';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
   ABOUT_ME_AREA,
   NOTIFICATIONS_AREA,
@@ -15,7 +13,6 @@ import {
   POINTS_HISTORY_AREA,
   PROFILE_MAIN_AREA,
   REWARDS_STORE_AREA,
-  RIGHT_SIDE_AREA,
   SIGN_OUT_BUTTON,
   SUPPORT_AREA,
   GET_THE_MOBILE_APP_AREA
@@ -31,7 +28,6 @@ import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
-import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
 import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
 import { getInitials } from '../../utils/chat';
@@ -44,11 +40,6 @@ const HudRightNavigation = () => {
   const classes: any = useStyles();
 
   const dispatch: Dispatch<Action> = useDispatch();
-
-  const isVisible: boolean = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
-  );
 
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
 
@@ -110,12 +101,6 @@ const HudRightNavigation = () => {
     tooltip: true
   };
 
-  const missionNavigationItem = {
-    id: RIGHT_SIDE_AREA,
-    displayName: 'Upcoming tasks',
-    icon: <CalendarToday />
-  };
-
   const notificationNavigationItem = {
     id: NOTIFICATIONS_AREA,
     displayName: 'Notifications',
@@ -124,10 +109,6 @@ const HudRightNavigation = () => {
         <NotificationsIcon />
       </Badge>
     )
-  };
-
-  const selectSideItem = () => {
-    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
   };
 
   const handleOpenNotifications = (_, e) => {
@@ -170,11 +151,6 @@ const HudRightNavigation = () => {
 
   return (
     <div className={classes.controlPanelMainSection}>
-      <HudTool
-        onSelectItem={selectSideItem}
-        navbarItem={missionNavigationItem}
-        isSelected={isVisible}
-      />
       <HudTool
         navbarItem={notificationNavigationItem}
         onSelectItem={handleOpenNotifications}
