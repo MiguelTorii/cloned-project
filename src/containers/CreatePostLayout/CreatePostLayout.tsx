@@ -49,6 +49,12 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(1),
     backgroundColor: theme.circleIn.palette.formBackground
   },
+  selectClassOuterContainer: {
+    padding: theme.spacing(5, 5, 0, 5)
+  },
+  selectClassInnerContainer: {
+    width: '100%'
+  },
   selectClassTxtContainer: {
     padding: theme.spacing(2, 0),
     maxWidth: 400
@@ -233,6 +239,57 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
     [newClassExperience, dispatch, canBatchPost]
   );
 
+  const renderClassSelector = () => (
+    <Grid item xs={12} md={9}>
+      {canBatchPost ? (
+        <ClassMultiSelect
+          noEmpty
+          variant="standard"
+          allLabel={`${firstName}'s Classes`}
+          containerStyle={classes.selectClassTxtContainer}
+          externalOptions={options}
+          placeholder="Select Classes..."
+          selected={selectedClasses}
+          onSelect={onSelect}
+        />
+      ) : (
+        <ClassSelector
+          classId={classId}
+          sectionId={sectionId}
+          variant="standard"
+          onChange={handleClassChange}
+        />
+      )}
+    </Grid>
+  );
+
+  const renderHudClassSelector = () => (
+    <div className={classes.selectClassOuterContainer}>
+      <div className={classes.selectClassInnerContainer}>
+        {canBatchPost ? (
+          <ClassMultiSelect
+            noEmpty
+            variant="standard"
+            allLabel={`All Classes`}
+            containerStyle={classes.selectClassTxtContainer}
+            externalOptions={options}
+            placeholder="Select Classes..."
+            selected={selectedClasses}
+            onSelect={onSelect}
+          />
+        ) : (
+          <ClassSelector
+            wideLayout
+            classId={classId}
+            sectionId={sectionId}
+            variant="standard"
+            onChange={handleClassChange}
+          />
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <ErrorBoundary>
       <Dialog
@@ -254,29 +311,10 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
             </div>
           </Grid>
         )}
-        <Grid item xs={12} md={9}>
-          {canBatchPost ? (
-            <ClassMultiSelect
-              noEmpty
-              variant="standard"
-              allLabel={`${firstName}'s Classes`}
-              containerStyle={classes.selectClassTxtContainer}
-              externalOptions={options}
-              placeholder="Select Classes..."
-              selected={selectedClasses}
-              onSelect={onSelect}
-            />
-          ) : (
-            <ClassSelector
-              classId={classId}
-              sectionId={sectionId}
-              variant="standard"
-              onChange={handleClassChange}
-            />
-          )}
-        </Grid>
+        {!isHud && renderClassSelector()}
         <Grid item xs={12} lg={9}>
           <div className={classes.paperRoot}>
+            {isHud && renderHudClassSelector()}
             {!isHud && <Appbar value={value} handleChange={handleChange} />}
             <TabPanel key="create-post" value={value} index={0} {...a11yProps(0)}>
               <CreatePostSt
