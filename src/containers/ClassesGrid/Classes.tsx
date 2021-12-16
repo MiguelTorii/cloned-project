@@ -25,10 +25,10 @@ import { CampaignState } from '../../reducers/campaign';
 
 const Filters = {
   current: {
-    text: 'Current Classes'
+    text: 'Current'
   },
   past: {
-    text: 'Past Classes'
+    text: 'Past'
   }
 };
 

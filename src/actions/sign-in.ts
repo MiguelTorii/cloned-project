@@ -77,9 +77,11 @@ export const updateUser =
         userId: user.userId
       })
     );
+    // both expert and student
     const isExpert =
       user.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
       user.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
+    // only expert/tutor
     const isTutor =
       user.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
       user.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;

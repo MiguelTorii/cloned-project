@@ -107,7 +107,7 @@ const Drawer = ({
     window.open('https://tutors.circleinapp.com/home', '_blank');
   }, []);
   const qs = useMemo(() => queryString.parse(search), [search]);
-  const button = useMemo(
+  const expertModeButton = useMemo(
     () => (
       <FormControlLabel
         control={
@@ -516,7 +516,7 @@ const Drawer = ({
           >
             <div className={classes.expertContainer}>
               <Typography className={classes.expertTitle}>Expert Mode</Typography>
-              {button}
+              {expertModeButton}
             </div>
           </Tooltip>
         )}

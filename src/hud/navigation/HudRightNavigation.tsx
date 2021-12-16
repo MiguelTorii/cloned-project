@@ -6,6 +6,8 @@ import { push } from 'connected-react-router';
 import { Badge, Typography } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { useStyles } from './HudNavigationStyles';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
+
 import {
   ABOUT_ME_AREA,
   NOTIFICATIONS_AREA,
@@ -15,7 +17,9 @@ import {
   REWARDS_STORE_AREA,
   SIGN_OUT_BUTTON,
   SUPPORT_AREA,
-  GET_THE_MOBILE_APP_AREA
+  GET_THE_MOBILE_APP_AREA,
+  EXPERT_MODE_ACCESS,
+  RIGHT_SIDE_AREA
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -31,6 +35,7 @@ import HudTool from './HudTool';
 import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
 import { getInitials } from '../../utils/chat';
+import { PERMISSIONS } from '../../constants/common';
 
 const ICON_SIZE = '30px';
 
@@ -38,10 +43,29 @@ const HudRightNavigation = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
   const classes: any = useStyles();
-
   const dispatch: Dispatch<Action> = useDispatch();
 
+  const isExpertMode: boolean = useSelector((state: { user: UserState }) => state.user.expertMode);
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
+
+  const hasExpertModeFunctionality =
+    profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
+    profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
+
+  const isOnlyAnExpert =
+    profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
+    profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
+
+  const isVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
+  );
+
+  const expertNavigationItem = {
+    id: EXPERT_MODE_ACCESS,
+    displayName: !isExpertMode ? 'Go to Expert Mode' : 'Go to Student Mode'
+    // icon: <IconAboutMe />
+  };
 
   const profileNavigationItems: HudToolData[] = [
     {
@@ -73,12 +97,16 @@ const HudRightNavigation = () => {
       id: GET_THE_MOBILE_APP_AREA,
       displayName: 'Get the Mobile App',
       icon: <IconMobileApp />
-    },
-    {
-      id: SIGN_OUT_BUTTON,
-      displayName: 'Sign Out'
     }
   ];
+
+  if (hasExpertModeFunctionality) {
+    profileNavigationItems.push(expertNavigationItem);
+  }
+  profileNavigationItems.push({
+    id: SIGN_OUT_BUTTON,
+    displayName: 'Sign Out'
+  });
 
   const initials = getInitials(`${profile.firstName} ${profile.lastName}`);
 

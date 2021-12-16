@@ -46,6 +46,7 @@ import HudRightPanel from './HudRightPanel';
 import useOnboarding from '../storyState/useOnboarding';
 
 let onboardingPopupTriggered = false;
+import UserDialog from '../../containers/UserDialog/UserDialog';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -97,6 +98,7 @@ const HudFrame = () => {
   return (
     <main>
       <CssBaseline />
+      <UserDialog />
       <div className={cx(classes.appWithHud)}>
         <div className={classes.appNavbar}>
           <HudControlPanel />

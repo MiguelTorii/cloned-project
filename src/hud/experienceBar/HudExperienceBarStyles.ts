@@ -23,5 +23,15 @@ export const useStyles = makeStyles((theme: any) => ({
     lineHeight: '20px',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1)
+  },
+  expertModeBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  expertModeText: {
+    fontWeight: 800,
+    fontSize: '18pt',
+    color: theme.circleIn.palette.darkActionBlue
   }
 }));
