@@ -54,6 +54,7 @@ const ViewNotes = ({ pop, classes, noteId, push, user, router }: Props) => {
     expertMode,
     data: { userId, firstName: myFirstName, lastName: myLastName, profileImage }
   } = user;
+
   const loadData = useCallback(async () => {
     const pn = await getNotes({
       userId,
