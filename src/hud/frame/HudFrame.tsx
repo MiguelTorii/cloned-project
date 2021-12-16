@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
 import { Box, Hidden, IconButton } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
+import { useTheme } from '@material-ui/core/styles';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
@@ -28,6 +30,7 @@ import {
   STUDY_TOOLS_QUERY_KEY
 } from '../../routeConstants';
 import {
+  hideSideArea,
   setStudyToolsOption,
   toggleSideAreaVisibility
 } from '../navigationState/hudNavigationActions';
@@ -46,8 +49,9 @@ let onboardingPopupTriggered = false;
 
 const HudFrame = () => {
   const classes: any = useStyles();
-
   const dispatch: Dispatch<Action> = useDispatch();
+  const theme = useTheme();
+  const isSmallWindow = useMediaQuery(theme.breakpoints.down('sm'));
 
   useOnboarding();
 
@@ -60,6 +64,16 @@ const HudFrame = () => {
       state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
   );
 
+  const handleToggleRightPane = useCallback(() => {
+    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isSmallWindow && isRightPaneVisible) {
+      dispatch(hideSideArea(RIGHT_SIDE_AREA));
+    }
+  }, [dispatch, isSmallWindow]);
+
   const isShowingOnboardingPopup: boolean = useSelector(
     (state: { hudStory: HudStoryState }) => state.hudStory.isShowingOnboardingPopup
   );
@@ -67,10 +81,6 @@ const HudFrame = () => {
   const viewedOnboarding = useSelector((state) => (state as any).user.syncData.viewedOnboarding);
 
   const query: string = useSelector((state: any) => state.router.location.query);
-
-  const handleToggleRightPane = useCallback(() => {
-    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
-  }, [dispatch]);
 
   const newStudyToolsOption = query[STUDY_TOOLS_QUERY_KEY];
   if (newStudyToolsOption) {
@@ -103,35 +113,35 @@ const HudFrame = () => {
                 : classes.standardAppContent
             )}
           >
-            <div className={classes.mainContainer}>
-              <div className={classes.mainHeader}>
-                <HudTitle />
+            {(!isSmallWindow || !isRightPaneVisible) && (
+              <div className={classes.mainContainer}>
+                <div className={classes.mainHeader}>
+                  <HudTitle />
+                </div>
+                <div className={classes.mainAction}>
+                  {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
+
+                  {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
+
+                  {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
+
+                  {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
+
+                  {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
+                </div>
+                <div className={classes.mainFooter}>
+                  <HudStory />
+                  <HudExperienceBar />
+                </div>
               </div>
-              <div className={classes.mainAction}>
-                {selectedMainArea === PROFILE_MAIN_AREA && <ProfileArea />}
+            )}
 
-                {selectedMainArea === COMMUNITIES_MAIN_AREA && <CommunitiesArea />}
-
-                {selectedMainArea === STUDY_TOOLS_MAIN_AREA && <StudyToolsArea />}
-
-                {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
-
-                {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
-              </div>
-              <div className={classes.mainFooter}>
-                <HudStory />
-                <HudExperienceBar />
-              </div>
-            </div>
-
-            <Hidden mdDown>
-              <Box position="relative" minWidth={isRightPaneVisible ? 'auto' : 20}>
-                <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
-                  {isRightPaneVisible ? <IconRight /> : <IconLeft />}
-                </IconButton>
-                <HudRightPanel />
-              </Box>
-            </Hidden>
+            <Box position="relative" minWidth={isRightPaneVisible ? 'auto' : 20}>
+              <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
+                {isRightPaneVisible ? <IconRight /> : <IconLeft />}
+              </IconButton>
+              <HudRightPanel />
+            </Box>
           </div>
         )}
         <Hidden mdUp>
