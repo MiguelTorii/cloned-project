@@ -20,10 +20,22 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.gray2
   },
   highlightedButton: {
-    backgroundColor: '#1E88E5',
+    backgroundColor: theme.circleIn.palette.navigationHighlightOpaque,
+    animation: '$storyRectanglePulse 2s infinite',
+    zIndex: 2,
     '&:hover': {
-      background: `linear-gradient(
-        115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%);`
+      background: theme.circleIn.palette.navigationHighlightOpaque
+    }
+  },
+  '@keyframes storyRectanglePulse': {
+    '0%': {
+      boxShadow: `0 0 0 0 ${theme.circleIn.palette.hoverMenuTranslucent} inset`
+    },
+    '70%': {
+      boxShadow: `0 0 0 32px ${theme.circleIn.palette.gray2} inset`
+    },
+    '100%': {
+      boxShadow: `0 0 0 0 ${theme.circleIn.palette.hoverMenuTranslucent} inset`
     }
   },
   parentNavigationIcon: {

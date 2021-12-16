@@ -61,8 +61,7 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     flexDirection: 'column',
     marginBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    overflow: 'hidden'
+    marginRight: theme.spacing(1)
   },
   missions: {
     flexGrow: 1,

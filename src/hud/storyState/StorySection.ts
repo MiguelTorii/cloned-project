@@ -1,4 +1,6 @@
-export interface StorySection {
+import { IStorySequenceOptions } from './StorySequence';
+
+export interface StorySection extends IStorySequenceOptions {
   /**
    * The event that will trigger this story section.
    */
