@@ -4,7 +4,8 @@ const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'absolute',
     right: theme.spacing(2),
-    bottom: 90
+    bottom: 90,
+    zIndex: 2
   }
 }));
 

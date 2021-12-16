@@ -3,7 +3,7 @@ import { Avatar, Button, Hidden } from '@material-ui/core';
 import { useStyles } from './HudControlPanelStyles';
 import HudMainNavigation from '../navigation/HudMainNavigation';
 import HudRightNavigation from '../navigation/HudRightNavigation';
-import avatarImg from '../../assets/img/circlein-web-notification.png';
+import avatarImg from '../../assets/svg/circlein_logo.svg';
 import useHudRoutes from '../frame/useHudRoutes';
 import { COMMUNITIES_MAIN_AREA, FEEDS_AREA } from '../navigationState/hudNavigation';
 import useStorySequence from '../storyState/useStorySequence';
@@ -23,7 +23,7 @@ const HudControlPanel = () => {
   return (
     <div className={classes.controlPanel}>
       <Button className={classes.circleInLogoContainer} onClick={() => homepageReset()}>
-        <Avatar className={classes.circleInLogo} alt="CircleIn-Logo" src={avatarImg} />
+        <img src={avatarImg} alt="CircleIn Logo" className={classes.circleInLogo} />
       </Button>
 
       <Hidden smDown>

@@ -47,12 +47,6 @@ const MobileMenu = () => {
       subId: LEADERBOARD_AREA,
       displayName: 'Leaderboard',
       icon: <IconAchievements style={ICON_STYLES} />
-    },
-    {
-      mainId: PROFILE_MAIN_AREA,
-      subId: ABOUT_ME_AREA,
-      displayName: 'Profile',
-      icon: <Avatar src={profile.profileImage} desktopSize={ICON_SIZE} mobileSize={ICON_SIZE} />
     }
   ];
 

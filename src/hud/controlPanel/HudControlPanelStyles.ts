@@ -20,7 +20,7 @@ export const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden'
   },
   circleInLogo: {
-    height: '100%'
+    maxWidth: 160
   },
   circleInLogoContainer: {
     '&:hover': {
