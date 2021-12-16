@@ -121,6 +121,10 @@ class Notifications extends React.PureComponent<Props, State> {
         open={open}
         anchorEl={anchorEl}
         onClose={onNotificationClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
       >
         {notificationPaper}
       </Popover>
