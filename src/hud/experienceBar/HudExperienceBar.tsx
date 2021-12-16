@@ -7,7 +7,7 @@ import { apiGetExperiencePoints } from '../../api/user';
 import { setIntervalWithFirstCall } from '../../utils/helpers';
 import { FETCH_POINTS_INTERVAL } from '../../constants/common';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
-import { HudExpertState } from '../expertModeState/hudExpertState';
+import { UserState } from '../../reducers/user';
 
 const HudExperienceBar = () => {
   const classes: any = useStyles();
@@ -28,9 +28,7 @@ const HudExperienceBar = () => {
     (state: { hudExperience: ExperienceState }) => state.hudExperience.experiencePoints
   );
 
-  const isExpertMode: boolean = useSelector(
-    (state: { hudExpert: HudExpertState }) => state.hudExpert.isExpert
-  );
+  const isExpertMode: boolean = useSelector((state: { user: UserState }) => state.user.expertMode);
 
   const experiencePointTotal: number = useSelector(
     (state: { hudExperience: ExperienceState }) => state.hudExperience.experienceTotal

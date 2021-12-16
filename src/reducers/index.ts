@@ -18,7 +18,6 @@ import hudChat from '../hud/chatState/hudChatReducers';
 import hudNavigation from '../hud/navigationState/hudNavigationReducers';
 import hudExperience from '../hud/experienceBarState/hudExperienceReducers';
 import hudRightPanel from '../hud/rightPanelState/hudRightPanelReducers';
-import hudExpert from '../hud/expertModeState/hudExpertReducers';
 
 const routerActions = {
   push: typeof push,
@@ -45,8 +44,7 @@ const reducers = {
   hudChat,
   hudNavigation,
   hudExperience,
-  hudRightPanel,
-  hudExpert
+  hudRightPanel
 };
 export type Reducers = typeof reducers;
 export default (history: BrowserHistory) =>

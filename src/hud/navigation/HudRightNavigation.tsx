@@ -36,7 +36,6 @@ import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
 import { getInitials } from '../../utils/chat';
 import { PERMISSIONS } from '../../constants/common';
-import { HudExpertState } from '../expertModeState/hudExpertState';
 
 const ICON_SIZE = '30px';
 
@@ -46,6 +45,7 @@ const HudRightNavigation = () => {
   const classes: any = useStyles();
   const dispatch: Dispatch<Action> = useDispatch();
 
+  const isExpertMode: boolean = useSelector((state: { user: UserState }) => state.user.expertMode);
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
 
   const hasExpertModeFunctionality =
@@ -55,10 +55,6 @@ const HudRightNavigation = () => {
   const isOnlyAnExpert =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
-
-  const isExpertMode: boolean = useSelector(
-    (state: { hudExpert: HudExpertState }) => state.hudExpert.isExpert
-  );
 
   const isVisible: boolean = useSelector(
     (state: { hudNavigation: HudNavigationState }) =>

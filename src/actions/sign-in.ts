@@ -1,6 +1,5 @@
 import { push } from 'connected-react-router';
 import store from 'store';
-import { setInitialExpertMode } from '../hud/expertModeState/hudExpertActions';
 import { LANDING_PAGE_CAMPAIGN } from '../constants/campaigns';
 import * as campaignActions from './campaign';
 import * as chatActions from './chat';
@@ -90,7 +89,6 @@ export const updateUser =
 
     if (isExpert) {
       expertMode = await apiGetExpertMode(user.userId);
-      dispatch(setInitialExpertMode(expertMode));
     }
 
     if (isTutor) {
