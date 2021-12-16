@@ -18,7 +18,6 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import { Emoji } from 'emoji-mart';
 import clsx from 'clsx';
 import { apiDeleteMessage, editMessage } from '../../api/chat';
 import { getInitials } from '../../utils/chat';
@@ -26,11 +25,10 @@ import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import EditFailedModal from '../EditFailedModal/EditFailedModal';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
-import { DEFAULT_EMOJI_REACTIONS, PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChatMessageItem } from '../../types/models';
 import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
-import { ReactComponent as IconAddReaction } from '../../assets/svg/add_reaction.svg';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 import MessageQuill from './EditMessageQuill';
 import { useDeleteModal } from '../../contexts/DeleteModalContext';
@@ -131,8 +129,6 @@ const CommunityChatMessageItem = ({
   const handleOpenBlockMemberModal = useCallback(() => {
     onBlockMember(authorUserId, name);
   }, [onBlockMember, authorUserId, name]);
-
-  const handleAddEmojiReaction = useCallback((emojiColons) => {}, []);
 
   const handleEdit = useCallback(
     (msgId, body) => {
@@ -388,18 +384,6 @@ const CommunityChatMessageItem = ({
             </Box>
             {isHover && (
               <Box className={classes.chatItemHoverMenu} hidden={!isHover}>
-                {DEFAULT_EMOJI_REACTIONS.map((emoji) => (
-                  <Button
-                    key={emoji}
-                    className={classes.hoverMenuItem}
-                    onClick={() => handleAddEmojiReaction(emoji)}
-                  >
-                    <Emoji emoji={emoji} size={HOVER_MENU_EMOJI_SIZE} />
-                  </Button>
-                ))}
-                <Button className={classes.hoverMenuItem}>
-                  <IconAddReaction />
-                </Button>
                 <Button className={classes.hoverMenuItem} onClick={handleOpenThreeDotsMenu}>
                   <MoreVerticalIcon />
                 </Button>
