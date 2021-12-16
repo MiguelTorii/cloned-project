@@ -8,11 +8,13 @@ import {
   ABOUT_ME_AREA,
   GET_THE_MOBILE_APP_AREA,
   GIVE_FEEDBACK_AREA,
-  POINTS_HISTORY_AREA
+  POINTS_HISTORY_AREA,
+  REWARDS_STORE_AREA
 } from '../../hud/navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import AboutMeSubarea from '../aboutMe/AboutMeSubarea';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
+import RewardsStoreSubArea from '../rewardsStore/RewardsStoreSubArea';
 import GiveFeedbackArea from './GiveFeedbackArea';
 import GetMobileAppArea from './GetMobileAppArea';
 
@@ -66,6 +68,8 @@ const ProfileArea = () => {
       {selectedMainSubArea === GIVE_FEEDBACK_AREA && <GiveFeedbackArea />}
 
       {selectedMainSubArea === GET_THE_MOBILE_APP_AREA && <GetMobileAppArea />}
+
+      {selectedMainSubArea === REWARDS_STORE_AREA && <RewardsStoreSubArea />}
     </div>
   );
 };
