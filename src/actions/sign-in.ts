@@ -1,5 +1,6 @@
 import { push } from 'connected-react-router';
 import store from 'store';
+import { setInitialExpertMode } from '../hud/expertModeState/hudExpertActions';
 import { LANDING_PAGE_CAMPAIGN } from '../constants/campaigns';
 import * as campaignActions from './campaign';
 import * as chatActions from './chat';
@@ -86,10 +87,10 @@ export const updateUser =
       user.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
       user.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
     let expertMode = false;
-    console.log('🚀 ~ file: sign-in.ts ~ line 88 ~ user', user);
 
     if (isExpert) {
       expertMode = await apiGetExpertMode(user.userId);
+      dispatch(setInitialExpertMode(expertMode));
     }
 
     if (isTutor) {

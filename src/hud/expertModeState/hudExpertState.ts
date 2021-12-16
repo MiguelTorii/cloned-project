@@ -3,5 +3,5 @@ export type HudExpertState = {
 };
 
 export const defaultState: HudExpertState = {
-  isExpert: false
+  isExpert: null
 };

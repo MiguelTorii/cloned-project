@@ -7,6 +7,7 @@ import { apiGetExperiencePoints } from '../../api/user';
 import { setIntervalWithFirstCall } from '../../utils/helpers';
 import { FETCH_POINTS_INTERVAL } from '../../constants/common';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
+import { HudExpertState } from '../expertModeState/hudExpertState';
 
 const HudExperienceBar = () => {
   const classes: any = useStyles();
@@ -25,6 +26,10 @@ const HudExperienceBar = () => {
 
   const experiencePoints: number = useSelector(
     (state: { hudExperience: ExperienceState }) => state.hudExperience.experiencePoints
+  );
+
+  const isExpertMode: boolean = useSelector(
+    (state: { hudExpert: HudExpertState }) => state.hudExpert.isExpert
   );
 
   const experiencePointTotal: number = useSelector(
@@ -47,13 +52,21 @@ const HudExperienceBar = () => {
   }
 
   return (
-    <div className={classes.experienceBarTrack}>
-      <div style={experienceBarFillWidth} className={classes.experienceFiller}>
-        <Typography className={classes.experienceLabel}>
-          {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
-        </Typography>
-      </div>
-    </div>
+    <>
+      {!isExpertMode ? (
+        <div className={classes.experienceBarTrack}>
+          <div style={experienceBarFillWidth} className={classes.experienceFiller}>
+            <Typography className={classes.experienceLabel}>
+              {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
+            </Typography>
+          </div>
+        </div>
+      ) : (
+        <div className={classes.expertModeBox}>
+          <div className={classes.expertModeText}>Expert Mode</div>
+        </div>
+      )}
+    </>
   );
 };
 

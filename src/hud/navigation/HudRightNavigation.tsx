@@ -18,7 +18,8 @@ import {
   SIGN_OUT_BUTTON,
   SUPPORT_AREA,
   GET_THE_MOBILE_APP_AREA,
-  EXPERT_MODE_ACCESS
+  EXPERT_MODE_ACCESS,
+  RIGHT_SIDE_AREA
 } from '../navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
@@ -43,11 +44,6 @@ const HudRightNavigation = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
   const classes: any = useStyles();
-
-  const isExpertMode: boolean = useSelector(
-    (state: { hudExpert: HudExpertState }) => state.hudExpert.isExpert
-  );
-
   const dispatch: Dispatch<Action> = useDispatch();
 
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
@@ -55,14 +51,27 @@ const HudRightNavigation = () => {
   const hasExpertModeFunctionality =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
+  console.log(
+    '🚀 ~ file: HudRightNavigation.tsx ~ line 55 ~ HudRightNavigation ~ hasExpertModeFunctionality',
+    hasExpertModeFunctionality
+  );
 
   const isOnlyAnExpert =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.indexOf(PERMISSIONS.MAIN_APPLICATION_ACCESS) === -1;
 
+  const isExpertMode: boolean = useSelector(
+    (state: { hudExpert: HudExpertState }) => state.hudExpert.isExpert
+  );
+
+  const isVisible: boolean = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.sideAreaToIsVisible[RIGHT_SIDE_AREA]
+  );
+
   const expertNavigationItem = {
     id: EXPERT_MODE_ACCESS,
-    displayName: isExpertMode ? 'Go to Expert Mode' : 'Go to Student Mode'
+    displayName: !isExpertMode ? 'Go to Expert Mode' : 'Go to Student Mode'
     // icon: <IconAboutMe />
   };
 
@@ -96,13 +105,16 @@ const HudRightNavigation = () => {
       id: GET_THE_MOBILE_APP_AREA,
       displayName: 'Get the Mobile App',
       icon: <IconMobileApp />
-    },
-    hasExpertModeFunctionality ? expertNavigationItem : null,
-    {
-      id: SIGN_OUT_BUTTON,
-      displayName: 'Sign Out'
     }
   ];
+
+  if (hasExpertModeFunctionality) {
+    profileNavigationItems.push(expertNavigationItem);
+  }
+  profileNavigationItems.push({
+    id: SIGN_OUT_BUTTON,
+    displayName: 'Sign Out'
+  });
 
   const initials = getInitials(`${profile.firstName} ${profile.lastName}`);
 

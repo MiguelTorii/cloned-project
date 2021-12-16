@@ -25,6 +25,7 @@ import reduxStore from '../../configureStore';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';
+import { hudToggleExpertMode } from '../expertModeState/hudExpertActions';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -64,6 +65,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
       handleOpenCircleInSupportWidget();
     } else if (mainSubArea === EXPERT_MODE_ACCESS) {
       toggleExpertMode()(dispatch, reduxStore.getState);
+      dispatch(hudToggleExpertMode());
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
     } else {

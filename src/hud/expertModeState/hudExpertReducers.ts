@@ -8,6 +8,10 @@ export default (state: HudExpertState = defaultState, action: Action): HudExpert
       return {
         isExpert: !state.isExpert
       };
+    case hudExpertActions.INITIAL_EXPERT_MODE:
+      return {
+        isExpert: action.payload.isExpert
+      };
     default:
       return state;
   }
