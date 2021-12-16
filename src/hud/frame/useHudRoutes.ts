@@ -33,7 +33,6 @@ import {
 } from '../navigationState/hudNavigation';
 import { setSelectedMainSubArea } from '../navigationState/hudNavigationActions';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
-import useHudEvents from '../events/useHudEvents';
 
 type TAreaIds = {
   mainArea: string;
