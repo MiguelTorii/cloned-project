@@ -51,10 +51,6 @@ const HudRightNavigation = () => {
   const hasExpertModeFunctionality =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
     profile.permission.includes(PERMISSIONS.MAIN_APPLICATION_ACCESS);
-  console.log(
-    '🚀 ~ file: HudRightNavigation.tsx ~ line 55 ~ HudRightNavigation ~ hasExpertModeFunctionality',
-    hasExpertModeFunctionality
-  );
 
   const isOnlyAnExpert =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
