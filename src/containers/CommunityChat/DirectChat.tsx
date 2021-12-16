@@ -308,7 +308,7 @@ const DirectChat = ({
             enqueueSnackbar={enqueueSnackbar}
             user={user}
             lastReadMessageIndex={
-              lastReadMessageInfo.channelId === currentChannel.sid
+              lastReadMessageInfo.channelId === currentChannel?.sid
                 ? lastReadMessageInfo.lastIndex
                 : null
             }
