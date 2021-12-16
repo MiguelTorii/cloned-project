@@ -62,6 +62,7 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/edit/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
+  '/notes/': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
 
   // CHAT_MAIN_AREA
   '/chat': { mainArea: CHAT_MAIN_AREA, mainSubArea: CHAT_AREA },
@@ -144,6 +145,7 @@ const useHudRoutes = () => {
       // then find just the `/notes` part.
       const firstItemIndex = 1;
       const secondItemIndex = 2;
+      const notesWithNotesIdPathnameLength = 3;
       const pathParts = pathname.split('/');
       let onePartPathSection = `/${pathParts[firstItemIndex] || ''}`;
 
@@ -157,6 +159,11 @@ const useHudRoutes = () => {
         } else if (tab === '3') {
           onePartPathSection = '/create/sharelink';
         }
+      } else if (
+        onePartPathSection === '/notes' &&
+        pathParts.length === notesWithNotesIdPathnameLength
+      ) {
+        onePartPathSection = '/notes/';
       }
 
       let areaIds: TAreaIds = pathnameToAreaIds[onePartPathSection];
