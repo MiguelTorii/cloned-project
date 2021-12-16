@@ -36,7 +36,8 @@ const StoreLayout = ({ classes, children }: Props) => {
       ) : (
         <>
           <Typography variant="subtitle1" paragraph>
-            As your points add up, at the end of every month, you’ll have a chance to win a reward.
+            As your points add up each month, you’ll have a chance to win an e-giftcard for one of
+            your top three choices below!
           </Typography>
         </>
       )}
