@@ -135,3 +135,4 @@ export const MOBILE_APP_IOS_URL =
   'https://apps.apple.com/us/app/circlein-circle-in-daily/id969803973';
 export const MOBILE_APP_ANDROID_URL =
   'https://play.google.com/store/apps/details?id=com.circlein.android&hl=en_US';
+export const SCHOLARSHIP_HELP_URL = 'https://support.circleinapp.com/scholarships';

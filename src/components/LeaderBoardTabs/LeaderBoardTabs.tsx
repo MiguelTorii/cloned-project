@@ -11,11 +11,11 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import PrizeDialog from './PrizeDialog';
 import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
 import { styles } from '../_styles/LeaderBoardTabs';
+import { SCHOLARSHIP_HELP_URL } from '../../constants/app';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,18 +50,9 @@ const LeaderBoardTabs = ({
   const [prizeText, setPrizeText] = useState('');
   const [prizeImgs, setPrizeImgs] = useState([]);
   const [rewardButtonText, setRewardButtonText] = useState('');
-  const [dialogTitle, setDialogTitle] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
   const [tuesdayPoints, setTuesdayPoints] = useState('');
   const dispatch = useDispatch();
-  const {
-    amount,
-    eligibility,
-    numberOfWinners,
-    text,
-    eligibilitySubtitleDialog,
-    eligibilityDialog
-  } = leaderboard.data.grandDialog;
+  const { amount, numberOfWinners, text } = leaderboard.data.grandDialog;
   useEffect(() => {
     updateTuesdayLeaderboard(sectionId);
     updateGrandLeaderboards(sectionId);
@@ -81,7 +72,6 @@ const LeaderBoardTabs = ({
       setGrandBoardName(data.grand.boardName);
       setScoreLabel(selected.scoreLabel);
       setStudents(selected.students);
-      setDialogTitle(data.grandDialog.text);
 
       if (selectedTab === 'grand') {
         setPrizeText(generalSelected.text);
@@ -136,9 +126,9 @@ const LeaderBoardTabs = ({
     dispatch(push('/store'));
   };
 
-  const handleCloseDialog = () => setOpenDialog(false);
-
-  const handleOpenDialog = () => setOpenDialog(true);
+  const handleClickInfo = () => {
+    window.open(SCHOLARSHIP_HELP_URL);
+  };
 
   const me = students.find((s) => s.userId === Number(userId)) || {};
   const imgStyle = {
@@ -149,15 +139,6 @@ const LeaderBoardTabs = ({
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <PrizeDialog
-          eligibilitySubtitleDialog={eligibilitySubtitleDialog}
-          handleCloseDialog={handleCloseDialog}
-          openDialog={openDialog}
-          amount={amount}
-          numberOfWinners={numberOfWinners}
-          dialogTitle={dialogTitle}
-          eligibilityDialog={eligibilityDialog}
-        />
         <Tabs
           variant="fullWidth"
           value={selectedTab}
@@ -221,7 +202,7 @@ const LeaderBoardTabs = ({
                 <div>
                   <Button
                     className={classes.infoButton}
-                    onClick={handleOpenDialog}
+                    onClick={handleClickInfo}
                     variant="outlined"
                   >
                     <Typography>Info</Typography>
@@ -302,7 +283,7 @@ const LeaderBoardTabs = ({
             <Button
               variant="outlined"
               color="primary"
-              onClick={selectedTab === 'grand' ? handleOpenDialog : navigateToStore}
+              onClick={selectedTab === 'grand' ? handleClickInfo : navigateToStore}
               className={classes.button}
             >
               {rewardButtonText}
