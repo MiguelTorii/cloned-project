@@ -33,7 +33,6 @@ import {
 } from '../navigationState/hudNavigation';
 import { setSelectedMainSubArea } from '../navigationState/hudNavigationActions';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
-import useHudEvents from '../events/useHudEvents';
 
 type TAreaIds = {
   mainArea: string;
@@ -62,7 +61,6 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/edit/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
-  '/notes/': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
 
   // CHAT_MAIN_AREA
   '/chat': { mainArea: CHAT_MAIN_AREA, mainSubArea: CHAT_AREA },

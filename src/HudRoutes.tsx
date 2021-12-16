@@ -25,6 +25,7 @@ import JoinCommunity from './pages/JoinCommunity/JoinCommunity';
 import HudFrame from './hud/frame/HudFrame';
 import Miss from './pages/Miss/Miss';
 import { CREATE_POST_PATHNAME } from './routeConstants';
+import SharePage from './pages/Share/SharePage';
 
 const HudRoutes = () => (
   <ConnectedRouter history={history}>
@@ -50,7 +51,7 @@ const HudRoutes = () => (
           <Route exact path="/edit/question/:questionId" component={withTracker(HudFrame)} />
           <Route exact path="/create/sharelink" component={withTracker(HudFrame)} />
           <Route exact path="/edit/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
-          <Route exact path="/share/:code" component={withTracker(HudFrame)} />
+          <Route exact path="/share/:code" component={withTracker(SharePage)} />
 
           {/* Signed in routes: Study Tools routes */}
           <Route exact path="/notes" component={withTracker(HudFrame)} />
