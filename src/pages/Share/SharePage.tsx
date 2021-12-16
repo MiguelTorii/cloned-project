@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useSelector } from 'react-redux';
 import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import { getPostInfo } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
+import { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   progress: {
@@ -25,97 +27,93 @@ type Props = {
     };
   };
 };
-type State = {
-  redirect: string;
-  error: boolean;
-};
 
-class SharePage extends React.PureComponent<Props, State> {
-  state = {
-    redirect: '',
-    error: false
-  };
+const SharePage = ({ classes, match }: Props) => {
+  const [redirect, setRedirect] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
 
-  componentDidMount = async () => {
-    const {
-      match: {
-        params: { code }
-      }
-    } = this.props;
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
 
-    try {
+  useEffect(() => {
+    const init = async () => {
       const {
-        typeId,
-        postInfo: { postId, feedId }
-      } = await getPostInfo({
-        hid: code
-      });
+        params: { code }
+      } = match;
 
-      switch (typeId) {
-        case 3:
-          this.setState({
-            redirect: `/flashcards/${postId}`
-          });
-          break;
+      try {
+        const {
+          typeId,
+          postInfo: { postId, feedId }
+        } = await getPostInfo({
+          hid: code
+        });
 
-        case 4:
-          this.setState({
-            redirect: `/notes/${postId}`
-          });
-          break;
+        switch (typeId) {
+          case 3:
+            setRedirect(`/flashcards/${postId}`);
+            break;
 
-        case 5:
-          this.setState({
-            redirect: `/sharelink/${postId}`
-          });
-          break;
+          case 4:
+            setRedirect(`/notes/${postId}`);
+            break;
 
-        case 6:
-          this.setState({
-            redirect: `/question/${postId}`
-          });
-          break;
+          case 5:
+            setRedirect(`/sharelink/${postId}`);
+            break;
 
-        default:
-          break;
-      }
+          case 6:
+            setRedirect(`/question/${postId}`);
+            break;
 
-      logEvent({
-        event: 'User- Opened Generated Link',
-        props: {
-          'Internal ID': feedId
+          default:
+            break;
         }
-      });
-    } catch (err) {
-      this.setState({
-        error: true
-      });
-    }
-  };
 
-  render() {
-    const { classes } = this.props;
-    const { redirect, error } = this.state;
+        logEvent({
+          event: 'User- Opened Generated Link',
+          props: {
+            'Internal ID': feedId
+          }
+        });
+      } catch (err) {
+        setError(true);
+      }
+    };
 
-    if (redirect !== '') {
-      return <Redirect to={redirect} />;
-    }
+    init();
+  }, []);
 
-    if (error) {
-      return <Redirect to="/" />;
-    }
+  if (redirect !== '') {
+    return <Redirect to={redirect} />;
+  }
 
+  if (error) {
+    return <Redirect to="/" />;
+  }
+
+  if (isHud) {
     return (
       <main>
         <CssBaseline />
-        <Layout>
-          <div className={classes.progress}>
-            <CircularProgress />
-          </div>
-        </Layout>
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
       </main>
     );
   }
-}
+
+  return (
+    <main>
+      <CssBaseline />
+      <Layout>
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      </Layout>
+    </main>
+  );
+};
 
 export default withRoot(withStyles(styles as any)(SharePage));
