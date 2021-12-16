@@ -35,10 +35,24 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.gray2
   },
   highlightedButton: {
-    backgroundColor: '#1E88E5',
+    animation: '$storyCirclePulse 2s infinite',
+    zIndex: 2,
     '&:hover': {
-      background: `linear-gradient(
-        115.22deg, #94DAF9 -9.12%, #1E88E5 90.34%);`
+      background: theme.circleIn.palette.navigationHighlightOpaque
+    }
+  },
+  '@keyframes storyCirclePulse': {
+    '0%': {
+      transform: `scale(0.95)`,
+      boxShadow: `0 0 0 0 ${theme.circleIn.palette.navigationHighlightTranslucent}`
+    },
+    '70%': {
+      transform: `scale(1)`,
+      boxShadow: `0 0 0 10px ${theme.circleIn.palette.navigationHighlightOpaque}`
+    },
+    '100%': {
+      transform: `scale(.95)`,
+      boxShadow: `0 0 0 0 ${theme.circleIn.palette.navigationHighlightTranslucent}`
     }
   },
   tooltip: {

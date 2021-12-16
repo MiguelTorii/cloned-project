@@ -3,9 +3,10 @@ import { setCurrentStatement } from './hudStoryActions';
 
 const STORY_SEQUENCE_DELAY_IN_MS = 5000;
 
-export interface StorySequenceOptions {
+export interface IStorySequenceOptions {
   statements: string[];
   isPersistent: boolean;
+  highlightLeafAreaId?: string;
 }
 
 /**
@@ -43,7 +44,7 @@ export class StorySequence {
    */
   private isPersistent: any = null;
 
-  constructor({ statements, isPersistent }: StorySequenceOptions, completionCallback: () => void) {
+  constructor({ statements, isPersistent }: IStorySequenceOptions, completionCallback: () => void) {
     this.statements = statements;
     this.completionCallback = completionCallback;
     this.isPersistent = isPersistent;

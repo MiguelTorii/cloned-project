@@ -1,12 +1,13 @@
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGreetings } from '../../api/home';
-import { StorySequence, StorySequenceOptions } from './StorySequence';
+import { StorySequence, IStorySequenceOptions } from './StorySequence';
 import useHudEvents from '../events/useHudEvents';
 import { hudEventNames } from '../events/hudEventNames';
 import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
 import { currentStoryCompleted, setCurrentStatement } from './hudStoryActions';
+import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS = 30000;
 
@@ -27,12 +28,15 @@ const useStorySequence = () => {
 
   const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
-  const closeStory = () => {
+  const highlightedNavigation = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
+  );
+
+  const closeStoryInternal = () => {
     if (storySequence) {
       storySequence.endStory(dispatch);
     }
     storySequence = null;
-    dispatch(setCurrentStatement(''));
 
     if (storyCompletedTimeoutId) {
       clearTimeout(storyCompletedTimeoutId);
@@ -40,9 +44,19 @@ const useStorySequence = () => {
     }
   };
 
-  const startNextStory = (options: StorySequenceOptions): void => {
+  const closeStory = () => {
+    if (highlightedNavigation) {
+      return;
+    }
+
+    closeStoryInternal();
+
+    dispatch(setCurrentStatement(''));
+  };
+
+  const startNextStory = (options: IStorySequenceOptions): void => {
     // End the last story before starting the next story.
-    closeStory();
+    closeStoryInternal();
 
     // Start the next story.
     const nextStorySequence = new StorySequence(options, () => {
@@ -52,9 +66,11 @@ const useStorySequence = () => {
       if (storyCompletedTimeoutId) {
         clearTimeout(storyCompletedTimeoutId);
       }
-      storyCompletedTimeoutId = setTimeout(() => {
-        closeStory();
-      }, STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS);
+      if (!options.highlightLeafAreaId) {
+        storyCompletedTimeoutId = setTimeout(() => {
+          closeStory();
+        }, STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS);
+      }
     });
     storySequence = nextStorySequence;
     nextStorySequence.startStory(dispatch);
