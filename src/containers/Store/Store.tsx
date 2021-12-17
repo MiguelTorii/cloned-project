@@ -60,10 +60,8 @@ const Store = ({ classes }: Props) => {
           const numberOfSlots = Math.min(REWARDS_SLOT_COUNT, availableRewards.length);
           const slotsFilled = slots.length;
 
-          if (slotsFilled === 0) {
-            postEvent(hudEventNames.REWARDS_SELECTIONS_EMPTY);
-          } else if (slotsFilled < numberOfSlots) {
-            postEvent(hudEventNames.REWARDS_SELECTIONS_PARTIALLY_FILLED);
+          if (slotsFilled < numberOfSlots) {
+            postEvent(hudEventNames.REWARDS_SELECTIONS_EMPTY_OR_PARTIALLY_FILLED);
           } else if (slotsFilled === numberOfSlots) {
             postEvent(hudEventNames.REWARDS_SELECTIONS_FILLED);
           }

@@ -1,12 +1,21 @@
 import { Action, Dispatch } from 'redux';
 import { setCurrentStatement } from './hudStoryActions';
 
-const STORY_SEQUENCE_DELAY_IN_MS = 5000;
+const DEFAULT_STORY_SEQUENCE_DELAY_IN_MS = 5000;
 
 export interface IStorySequenceOptions {
   statements: string[];
-  isPersistent: boolean;
   highlightLeafAreaId?: string;
+
+  /**
+   * Enable the auto close and close button behaviors.
+   */
+  canBeClosedByUser?: boolean;
+
+  /**
+   * Override the default sequence delay with a custom delay.
+   */
+  sequenceDelay?: number;
 }
 
 /**
@@ -39,15 +48,23 @@ export class StorySequence {
   private timeoutId: any = null;
 
   /**
-   * A persistent story will continue to show the last message after the message
-   * delay has elapsed.
+   * The sequence delay to use for this sequence.
    */
-  private isPersistent: any = null;
+  sequenceDelay: number;
 
-  constructor({ statements, isPersistent }: IStorySequenceOptions, completionCallback: () => void) {
+  /**
+   * Whether the auto close and close button behaviors are allowed for this sequence.
+   */
+  public readonly canBeClosedByUser: boolean;
+
+  constructor(
+    { statements, canBeClosedByUser, sequenceDelay }: IStorySequenceOptions,
+    completionCallback: () => void
+  ) {
     this.statements = statements;
+    this.canBeClosedByUser = canBeClosedByUser || false;
+    this.sequenceDelay = sequenceDelay || DEFAULT_STORY_SEQUENCE_DELAY_IN_MS;
     this.completionCallback = completionCallback;
-    this.isPersistent = isPersistent;
   }
 
   public isReading(): boolean {
@@ -55,14 +72,14 @@ export class StorySequence {
   }
 
   public startStory(dispatch: Dispatch<Action>): void {
-    this.endStory(dispatch);
+    this.endStory();
     this.readStory(dispatch);
   }
 
   private readStory(dispatch: Dispatch<Action>): void {
     const isAtEnd = !this.statements[this.statementIndex];
     if (isAtEnd) {
-      this.endStory(dispatch);
+      this.endStory();
       if (this.completionCallback) {
         this.completionCallback();
       }
@@ -79,15 +96,11 @@ export class StorySequence {
 
     this.timeoutId = setTimeout(() => {
       this.readStory(dispatch);
-    }, STORY_SEQUENCE_DELAY_IN_MS);
+    }, this.sequenceDelay);
   }
 
-  public endStory(dispatch: Dispatch<Action>): void {
+  public endStory(): void {
     this.statementIndex = 0;
-
-    if (!this.isPersistent) {
-      dispatch(setCurrentStatement(''));
-    }
 
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);

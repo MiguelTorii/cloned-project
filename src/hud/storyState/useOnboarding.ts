@@ -3,9 +3,11 @@ import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import useStorySequence from './useStorySequence';
 import useHudEvents, { HudEvent } from '../events/useHudEvents';
-import { setNavigationHighlight } from '../navigationState/hudNavigationActions';
+import {
+  clearNavigationHighlight,
+  setNavigationHighlight
+} from '../navigationState/hudNavigationActions';
 import useNavigationHighlighter from './useNavigationHighlighter';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { onboardingStorySections } from './onboardingStorySections';
 import { StorySection } from './StorySection';
 import { hudEventNames } from '../events/hudEventNames';
@@ -14,6 +16,7 @@ import { updateOnboardingAction } from '../../actions/user';
 import { logEventLocally } from '../../api/analytics';
 import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
+import { openOnboardingCompletedPopup } from './hudStoryActions';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
@@ -48,22 +51,13 @@ const useOnboarding = () => {
 
   const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
-  const selectedMainArea: string = useSelector(
-    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
-  );
-
-  const selectedLeafAreaId: string = useSelector(
-    (state: { hudNavigation: HudNavigationState }) =>
-      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
-  );
-
   const onboardingFlowTriggered: boolean = useSelector(
     (state: { hudStory: HudStoryState }) => state.hudStory.onboardingFlowTriggered
   );
 
   const startStorySection = (storySection: StorySection): void => {
     currentStorySection = storySection;
-    nextStorySectionIndex += 1;
+    nextStorySectionIndex = onboardingStorySections.indexOf(storySection) + 1;
 
     // Go to a specific route, as required by the story section.
     if (storySection.startingRoute) {
@@ -74,11 +68,15 @@ const useOnboarding = () => {
     startNextStory(storySection);
 
     // Highlight a navigation control if needed.
-    if (storySection.highlightRootAreaId && storySection.highlightLeafAreaId) {
-      dispatch(
-        setNavigationHighlight(storySection.highlightRootAreaId, storySection.highlightLeafAreaId)
-      );
-    }
+    // Use a timeout because the hud events can be dispatched before the
+    // redux state settles.
+    setTimeout(() => {
+      if (storySection.highlightRootAreaId || storySection.highlightLeafAreaId) {
+        dispatch(
+          setNavigationHighlight(storySection.highlightRootAreaId, storySection.highlightLeafAreaId)
+        );
+      }
+    }, 0);
   };
 
   useEffect(() => {
@@ -86,6 +84,11 @@ const useOnboarding = () => {
       onboardingTriggered = true;
 
       listenToEvents((hudEvent: HudEvent) => {
+        // Once the onboarding is complete, stop handling HUD events.
+        if (!onboardingFlowTriggered) {
+          return;
+        }
+
         if (hudEvent.eventName === hudEventNames.ONBOARDING_COMPLETED) {
           logEventLocally({
             category: 'Onboarding',
@@ -93,6 +96,8 @@ const useOnboarding = () => {
             type: 'Ended'
           });
           dispatch(updateOnboardingAction(true));
+          dispatch(openOnboardingCompletedPopup());
+          dispatch(clearNavigationHighlight());
         }
 
         if (hudEvent.eventName === hudEventNames.CURRENT_STORY_COMPLETED) {

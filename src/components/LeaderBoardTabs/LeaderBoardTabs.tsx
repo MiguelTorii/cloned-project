@@ -11,11 +11,14 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import cx from 'classnames';
 import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
 import { styles } from '../_styles/LeaderBoardTabs';
 import { SCHOLARSHIP_HELP_URL } from '../../constants/app';
+import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
+import { REWARDS_STORE_AREA } from '../../hud/navigationState/hudNavigation';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,6 +56,14 @@ const LeaderBoardTabs = ({
   const [tuesdayPoints, setTuesdayPoints] = useState('');
   const dispatch = useDispatch();
   const { amount, numberOfWinners, text } = leaderboard.data.grandDialog;
+
+  const highlightedNavigation = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
+  );
+
+  const isRewardsStoreHighlighted = (): boolean =>
+    REWARDS_STORE_AREA === highlightedNavigation?.leafAreaId;
+
   useEffect(() => {
     updateTuesdayLeaderboard(sectionId);
     updateGrandLeaderboards(sectionId);
@@ -284,7 +295,7 @@ const LeaderBoardTabs = ({
               variant="outlined"
               color="primary"
               onClick={selectedTab === 'grand' ? handleClickInfo : navigateToStore}
-              className={classes.button}
+              className={cx(classes.button, isRewardsStoreHighlighted && classes.highlightedButton)}
             >
               {rewardButtonText}
             </Button>

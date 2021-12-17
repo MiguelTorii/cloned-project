@@ -17,7 +17,7 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
         isStoryInProgress: false
       };
 
-    case hudStoryActions.OPEN_ONBOARDING_POPUP:
+    case hudStoryActions.OPEN_ONBOARDING_INTRO_POPUP:
       return {
         ...state,
         isShowingOnboardingPopup: true
@@ -28,6 +28,13 @@ export default (state: HudStoryState = defaultState, action: Action): HudStorySt
         ...state,
         isShowingOnboardingPopup: false,
         onboardingFlowTriggered: action.payload.onboardingFlowTriggered
+      };
+
+    case hudStoryActions.OPEN_ONBOARDING_COMPLETE_POPUP:
+      return {
+        ...state,
+        isShowingOnboardingPopup: true,
+        isCurrentSessionOnboardingComplete: true
       };
 
     default:

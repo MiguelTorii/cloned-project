@@ -16,7 +16,8 @@ import { useStyles } from './HudNavigationStyles';
 import {
   EXPERT_MODE_ACCESS,
   SIGN_OUT_BUTTON,
-  SUPPORT_AREA
+  SUPPORT_AREA,
+  CHAT_MAIN_AREA
 } from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
@@ -25,7 +26,6 @@ import reduxStore from '../../configureStore';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';
-import { UserState } from '../../reducers/user';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -37,8 +37,6 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const dispatch: Dispatch = useDispatch();
 
   const setHudArea = useHudRoutes();
-
-  const user = useSelector((state: { user: UserState }) => state.user);
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea

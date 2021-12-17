@@ -7,9 +7,8 @@ import { hudEventNames } from '../events/hudEventNames';
 import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
 import { currentStoryCompleted, setCurrentStatement } from './hudStoryActions';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 
-const STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS = 30000;
+const STORY_COMPLETION_DELAY_IN_MS = 30000;
 
 let storySequence: StorySequence = null;
 let greetingLoadTriggered = false;
@@ -28,13 +27,9 @@ const useStorySequence = () => {
 
   const user: User = useSelector((state: { user: UserState }) => state.user.data);
 
-  const highlightedNavigation = useSelector(
-    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
-  );
-
   const closeStoryInternal = () => {
     if (storySequence) {
-      storySequence.endStory(dispatch);
+      storySequence.endStory();
     }
     storySequence = null;
 
@@ -44,8 +39,10 @@ const useStorySequence = () => {
     }
   };
 
+  const canUserCloseStory = (): boolean => storySequence && storySequence.canBeClosedByUser;
+
   const closeStory = () => {
-    if (highlightedNavigation) {
+    if (!canUserCloseStory()) {
       return;
     }
 
@@ -66,10 +63,10 @@ const useStorySequence = () => {
       if (storyCompletedTimeoutId) {
         clearTimeout(storyCompletedTimeoutId);
       }
-      if (!options.highlightLeafAreaId) {
+      if (options.canBeClosedByUser) {
         storyCompletedTimeoutId = setTimeout(() => {
           closeStory();
-        }, STORY_COMPLETION_TO_CLOSE_DELAY_IN_MS);
+        }, STORY_COMPLETION_DELAY_IN_MS);
       }
     });
     storySequence = nextStorySequence;
@@ -85,7 +82,7 @@ const useStorySequence = () => {
         return;
       }
 
-      startNextStory({ statements: greetingStatements, isPersistent: true });
+      startNextStory({ statements: greetingStatements, canBeClosedByUser: true });
     });
 
     // Set the greeting load triggered state as soon as is requested,
@@ -96,18 +93,14 @@ const useStorySequence = () => {
 
   const sayGreeting = () => {
     if (greetingStatements) {
-      startNextStory({ statements: greetingStatements, isPersistent: true });
+      startNextStory({ statements: greetingStatements, canBeClosedByUser: true });
     }
-  };
-
-  const sayStatement = (statement: string) => {
-    startNextStory({ statements: [statement], isPersistent: true });
   };
 
   return {
     sayGreeting,
     startNextStory,
-    sayStatement,
+    canUserCloseStory,
     closeStory
   };
 };

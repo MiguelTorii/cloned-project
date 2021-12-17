@@ -25,5 +25,13 @@ export const useStyles = makeStyles((theme: any) => ({
     verticalAlign: 'middle',
     marginLeft: theme.spacing(1 / 2),
     color: theme.circleIn.palette.gray3
+  },
+  buttonGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: theme.spacing(1)
+  },
+  highlightedButtonGroup: {
+    boxShadow: `0 0 0 ${theme.spacing(1)}px ${theme.circleIn.palette.success}`
   }
 }));
