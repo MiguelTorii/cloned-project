@@ -41,13 +41,13 @@ const HudRightPanel = () => {
       )}
       <div className={classes.missions}>
         <HudMissions />
-      </div>
 
-      {selectedMainSubArea !== CALENDAR_AREA && (
-        <Box mt={2}>
-          <MiniWorkflows isHud />
-        </Box>
-      )}
+        {selectedMainSubArea !== CALENDAR_AREA && (
+          <Box mt={2}>
+            <MiniWorkflows isHud />
+          </Box>
+        )}
+      </div>
     </div>
   );
 };
