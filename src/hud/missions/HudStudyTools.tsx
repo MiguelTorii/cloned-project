@@ -53,22 +53,23 @@ const HudStudyTools = () => {
   const topStudyTools: HudToolData[] = [
     {
       id: FLASHCARDS_AREA,
-      displayName: 'Create, share and review your flashcards in multiple modes',
+      displayName: 'Flashcards: Create, share and review your flashcards in multiple modes',
       icon: <FlashcardMark style={ICON_SIZE} />
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Share an announcement or message in your class',
+      displayName: 'Write a Post: Share an announcement or message in your class',
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
       id: CALENDAR_AREA,
-      displayName: 'Manage your time by tracking your tasks, assignments, and important deadlines',
+      displayName:
+        'Workflow: Manage your time by tracking your tasks, assignments, and important deadlines',
       icon: <IconWorkflow style={ICON_SIZE} />
     },
     {
       id: NOTES_AREA,
-      displayName: 'Create private notes just for yourself',
+      displayName: 'Private Notes: Create private notes just for yourself',
       icon: <PrivateNotesIcon style={ICON_SIZE} />
     }
   ];
@@ -76,22 +77,24 @@ const HudStudyTools = () => {
   const bottomStudyTools: HudToolData[] = [
     {
       id: SHARE_NOTES_AREA,
-      displayName: 'Add your custom class notes and resources to keep everything in one place',
+      displayName:
+        'Notes: Add your custom class notes and resources to keep everything in one place',
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
       id: ASK_A_QUESTION_AREA,
-      displayName: 'Need help? Ask a question publicly or anonymously to your class',
+      displayName:
+        'Ask a Question: Need help? Ask a question publicly or anonymously to your class',
       icon: <QuestionIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_RESOURCES_AREA,
-      displayName: 'Share helpful resources, links, and more with your class',
+      displayName: 'Share a Resource: Share helpful resources, links, and more with your class',
       icon: <ResourceIcon style={ICON_SIZE} />
     },
     {
       id: CHAT_AREA,
-      displayName: 'Connect with peers and classmates anywhere, any time',
+      displayName: 'Chat: Connect with peers and classmates anywhere, any time',
       icon: <CreatePostIcon style={ICON_SIZE} />
     }
   ];
