@@ -15,12 +15,14 @@ import ProfileArea from '../../hudAreas/profile/ProfileArea';
 import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import {
+  CALENDAR_AREA,
   CHAT_MAIN_AREA,
   PROFILE_MAIN_AREA,
   COMMUNITIES_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
   ACHIEVEMENTS_MAIN_AREA,
-  RIGHT_SIDE_AREA
+  RIGHT_SIDE_AREA,
+  CHAT_AREA
 } from '../navigationState/hudNavigation';
 import HudControlPanel from '../controlPanel/HudControlPanel';
 import ChatArea from '../../hudAreas/chat/ChatArea';
@@ -58,6 +60,11 @@ const HudFrame = () => {
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea
+  );
+
+  const selectedMainSubArea: string = useSelector(
+    (state: { hudNavigation: HudNavigationState }) =>
+      state.hudNavigation.selectedMainSubAreas[selectedMainArea]
   );
 
   const isRightPaneVisible: boolean = useSelector(
@@ -110,7 +117,7 @@ const HudFrame = () => {
           <div
             className={cx(
               classes.appContent,
-              selectedMainArea === CHAT_MAIN_AREA
+              selectedMainSubArea === CHAT_AREA || selectedMainSubArea === CALENDAR_AREA
                 ? classes.wideAppContent
                 : classes.standardAppContent
             )}

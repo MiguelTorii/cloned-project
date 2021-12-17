@@ -33,7 +33,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-    height: '100%'
+    height: '100%',
+    flexGrow: 1
   },
   mainHeader: {},
   mainAction: {

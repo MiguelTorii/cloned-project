@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'column',
     width: 70,
     height: '100%',
-    overflow: 'auto',
+    overflowAnchorY: 'auto',
+    overflowX: 'hidden',
     position: 'relative',
     boxSizing: 'border-box'
   },

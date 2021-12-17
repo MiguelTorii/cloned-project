@@ -292,7 +292,10 @@ const LeaderBoardTabs = ({
               variant="outlined"
               color="primary"
               onClick={selectedTab === 'grand' ? handleClickInfo : navigateToStore}
-              className={cx(classes.button, isRewardsStoreHighlighted && classes.highlightedButton)}
+              className={cx(
+                classes.button,
+                isRewardsStoreHighlighted() && classes.highlightedButton
+              )}
             >
               {rewardButtonText}
             </Button>
