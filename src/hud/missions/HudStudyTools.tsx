@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import cx from 'classnames';
 import { useStyles } from './HudMissionsStyles';
 import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow-mark.svg';
 import { ReactComponent as QuestionIcon } from '../../assets/svg/question-mark.svg';
@@ -32,6 +33,14 @@ const HudStudyTools = () => {
   const classes: any = useStyles();
 
   const setHudArea = useHudRoutes();
+
+  const highlightedNavigation = useSelector(
+    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
+  );
+
+  const highlightStudyToolGroup =
+    highlightedNavigation?.rootAreaId === STUDY_TOOLS_MAIN_AREA &&
+    !highlightedNavigation?.leafAreaId;
 
   const selectLeaf = (mainSubArea: string) => {
     if (mainSubArea === CHAT_AREA) {
@@ -88,10 +97,12 @@ const HudStudyTools = () => {
   ];
 
   return (
-    <>
+    <div
+      className={cx(classes.buttonGroup, highlightStudyToolGroup && classes.highlightedButtonGroup)}
+    >
       <HudToolbar navbarItems={topStudyTools} onSelectItem={selectLeaf} />
       <HudToolbar navbarItems={bottomStudyTools} onSelectItem={selectLeaf} />
-    </>
+    </div>
   );
 };
 

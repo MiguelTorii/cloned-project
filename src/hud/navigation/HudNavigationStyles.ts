@@ -20,23 +20,8 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.gray2
   },
   highlightedButton: {
-    backgroundColor: theme.circleIn.palette.navigationHighlightOpaque,
-    animation: '$storyRectanglePulse 2s infinite',
-    zIndex: 2,
-    '&:hover': {
-      background: theme.circleIn.palette.navigationHighlightOpaque
-    }
-  },
-  '@keyframes storyRectanglePulse': {
-    '0%': {
-      boxShadow: `0 0 0 0 ${theme.circleIn.palette.hoverMenuTranslucent} inset`
-    },
-    '70%': {
-      boxShadow: `0 0 0 32px ${theme.circleIn.palette.gray2} inset`
-    },
-    '100%': {
-      boxShadow: `0 0 0 0 ${theme.circleIn.palette.hoverMenuTranslucent} inset`
-    }
+    zIndex: 2000,
+    boxShadow: `0 0 0 ${theme.spacing(1)}px inset ${theme.circleIn.palette.success}`
   },
   parentNavigationIcon: {
     height: '30px',

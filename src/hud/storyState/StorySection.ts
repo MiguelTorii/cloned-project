@@ -4,7 +4,7 @@ export interface StorySection extends IStorySequenceOptions {
   /**
    * The event that will trigger this story section.
    */
-  triggerEventName: string;
+  triggerEventName?: string;
 
   /**
    * The location where the user must be for this story section to be
@@ -27,9 +27,14 @@ export interface StorySection extends IStorySequenceOptions {
   statements: string[];
 
   /**
-   * Whether the story's last word should stay up after the story is done.
+   * Enable the auto close and close button behaviors.
    */
-  isPersistent: boolean;
+  canBeClosedByUser?: boolean;
+
+  /**
+   * Override the default sequence delay with a custom delay.
+   */
+  sequenceDelay?: number;
 
   /**
    * Whether this story section can be skipped, i.e. whether the current event could

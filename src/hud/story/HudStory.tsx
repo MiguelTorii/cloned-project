@@ -2,12 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import cx from 'classnames';
 import { useStyles } from './HudStoryStyles';
 import avatarImg from '../../assets/svg/icon-kobe.svg';
 import { HudStoryState } from '../storyState/hudStoryState';
 import useStorySequence from '../storyState/useStorySequence';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const HudStory = () => {
   const classes: any = useStyles();
@@ -20,13 +18,7 @@ const HudStory = () => {
     (state: { hudStory: HudStoryState }) => state.hudStory.isStoryInProgress
   );
 
-  const { closeStory } = useStorySequence();
-
-  const highlightedNavigation = useSelector(
-    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
-  );
-
-  const canClose = !highlightedNavigation && !isStoryInProgress;
+  const { canUserCloseStory, closeStory } = useStorySequence();
 
   if (!currentStatement) {
     return null;
@@ -36,12 +28,7 @@ const HudStory = () => {
     <div className={classes.storyContainer}>
       <div className={classes.storyMessageBackground} />
 
-      <div
-        className={cx(
-          classes.storyAvatarContainer,
-          !!highlightedNavigation && classes.storyAvatarContainerHighlightingNavigation
-        )}
-      >
+      <div className={classes.storyAvatarContainer}>
         <div className={classes.storyAvatarBackground}>
           <img src={avatarImg} alt="story-avatar" className={classes.storyAvatar} />
         </div>
@@ -49,11 +36,12 @@ const HudStory = () => {
 
       <div className={classes.storyMessageContainer}>
         <div className={classes.storyMessage}>
-          <Typography variant="body1">{currentStatement}</Typography>
+          {/** If this is ever used to display chat messages or other user based content, it should be updated to display a sanitized version of the message to prevent cross-site scripting attacks. */}
+          <Typography variant="body1" dangerouslySetInnerHTML={{ __html: currentStatement }} />
         </div>
       </div>
 
-      {canClose && <CloseIcon className={classes.closeIcon} onClick={closeStory} />}
+      {canUserCloseStory() && <CloseIcon className={classes.closeIcon} onClick={closeStory} />}
     </div>
   );
 };
