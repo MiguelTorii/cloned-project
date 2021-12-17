@@ -11,14 +11,14 @@ type Props = {
 
 const StyledLinearProgress = withStyles((theme) => ({
   root: {
-    height: 16,
+    height: 20,
     borderRadius: 48,
     backgroundColor: theme.circleIn.palette.rightPanelCardBackground,
     border: `solid 3px ${theme.circleIn.palette.rightPanelCardBackground}`
   },
   colorPrimary: {},
   bar: {
-    height: 10,
+    height: 14,
     borderRadius: 48,
     background: 'linear-gradient(89.93deg, #2075F5 0.55%, #74ABFF 95.9%)',
     position: 'relative'

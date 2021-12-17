@@ -8,10 +8,15 @@ import { getTodos } from '../../api/workflow';
 import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import Task from './Task';
+import RightPanelCard from '../../components/RightPanelCard/RightPanelCard';
 
-const WORKFLOW_HEADING = '🗓 Upcoming Tasks';
+const WORKFLOW_HEADING = 'Upcoming Tasks';
 
-const MiniWorkflows = () => {
+export type Props = {
+  isHud?: boolean;
+};
+
+const MiniWorkflows = ({ isHud = false }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const [tasks, setTasks] = useState([]);
@@ -83,6 +88,10 @@ const MiniWorkflows = () => {
       </Grid>
     );
   };
+
+  if (isHud) {
+    return <RightPanelCard title={WORKFLOW_HEADING}>{renderBody()}</RightPanelCard>;
+  }
 
   return (
     <Paper className={classes.root} elevation={0} square={false}>

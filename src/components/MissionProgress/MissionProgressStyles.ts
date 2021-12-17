@@ -9,9 +9,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   text: {
     color: 'white',
-    fontSize: 11,
+    fontSize: 14,
     position: 'absolute',
-    left: 8,
-    top: 1
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)'
   }
 }));

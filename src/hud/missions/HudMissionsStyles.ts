@@ -8,6 +8,8 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   imageContainer: {
     width: 48,
+    minWidth: 48,
+    maxWidth: 48,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -24,7 +26,8 @@ export const useStyles = makeStyles((theme: any) => ({
     fontSize: 16,
     verticalAlign: 'middle',
     marginLeft: theme.spacing(1 / 2),
-    color: theme.circleIn.palette.gray3
+    color: theme.circleIn.palette.gray3,
+    cursor: 'pointer'
   },
   buttonGroup: {
     display: 'flex',

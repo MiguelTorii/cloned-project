@@ -1,11 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Box } from '@material-ui/core';
 import { RIGHT_SIDE_AREA } from '../navigationState/hudNavigation';
 import { STUDY_TOOLS_TOP_OPTION } from '../../routeConstants';
 import HudStudyTools from '../missions/HudStudyTools';
 import HudMissions from '../missions/HudMissions';
 import { useStyles } from './HudFrameStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
 
 const HudRightPanel = () => {
   const classes = useStyles();
@@ -28,10 +30,12 @@ const HudRightPanel = () => {
           <HudStudyTools />
         </div>
       )}
-
       <div className={classes.missions}>
         <HudMissions />
       </div>
+      <Box mt={2}>
+        <MiniWorkflows isHud />
+      </Box>
     </div>
   );
 };

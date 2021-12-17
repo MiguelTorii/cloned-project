@@ -64,7 +64,6 @@ export const useStyles = makeStyles((theme: any) => ({
     marginRight: theme.spacing(1)
   },
   missions: {
-    flexGrow: 1,
     overflow: 'auto'
   },
   rightPaneToggle: {

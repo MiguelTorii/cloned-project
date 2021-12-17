@@ -14,7 +14,7 @@ const HudMission = ({ data }: Props) => {
 
   return (
     <Box display="flex" alignItems="center">
-      <Box className={classes.imageContainer}>
+      <Box className={classes.imageContainer} mr={1}>
         <img className={classes.image} src={data.icon_url} alt={data.title} />
       </Box>
       <Box flexGrow={1}>

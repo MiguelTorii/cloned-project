@@ -53,22 +53,22 @@ const HudStudyTools = () => {
   const topStudyTools: HudToolData[] = [
     {
       id: FLASHCARDS_AREA,
-      displayName: 'Flashcards',
+      displayName: 'Create, share and review your flashcards in multiple modes',
       icon: <FlashcardMark style={ICON_SIZE} />
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Create a Post',
+      displayName: 'Share an announcement or message in your class',
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
       id: CALENDAR_AREA,
-      displayName: 'Workflow',
+      displayName: 'Manage your time by tracking your tasks, assignments, and important deadlines',
       icon: <IconWorkflow style={ICON_SIZE} />
     },
     {
       id: NOTES_AREA,
-      displayName: 'Private Notes',
+      displayName: 'Create private notes just for yourself',
       icon: <PrivateNotesIcon style={ICON_SIZE} />
     }
   ];
@@ -76,22 +76,22 @@ const HudStudyTools = () => {
   const bottomStudyTools: HudToolData[] = [
     {
       id: SHARE_NOTES_AREA,
-      displayName: 'Share Notes',
+      displayName: 'Add your custom class notes and resources to keep everything in one place',
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
       id: ASK_A_QUESTION_AREA,
-      displayName: 'Ask a Question',
+      displayName: 'Need help? Ask a question publicly or anonymously to your class',
       icon: <QuestionIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_RESOURCES_AREA,
-      displayName: 'Share Resources',
+      displayName: 'Share helpful resources, links, and more with your class',
       icon: <ResourceIcon style={ICON_SIZE} />
     },
     {
       id: CHAT_AREA,
-      displayName: 'Chat',
+      displayName: 'Connect with peers and classmates anywhere, any time',
       icon: <CreatePostIcon style={ICON_SIZE} />
     }
   ];
