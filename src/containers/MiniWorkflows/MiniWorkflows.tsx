@@ -9,6 +9,7 @@ import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import Task from './Task';
 import RightPanelCard from '../../components/RightPanelCard/RightPanelCard';
+import TransparentButton from '../../components/Basic/Buttons/TransparentButton';
 
 const WORKFLOW_HEADING = 'Upcoming Tasks';
 
@@ -80,9 +81,9 @@ const MiniWorkflows = ({ isHud = false }: Props) => {
         ))}
         <Grid item>
           <Box display="flex" justifyContent="center">
-            <GradientButton compact onClick={handleGotoWorkflow}>
+            <TransparentButton compact onClick={handleGotoWorkflow}>
               Go to Workflow
-            </GradientButton>
+            </TransparentButton>
           </Box>
         </Grid>
       </Grid>

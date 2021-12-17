@@ -3,7 +3,6 @@ import {
   ACHIEVEMENTS_MAIN_AREA,
   REWARDS_STORE_AREA,
   LEADERBOARD_AREA,
-  PROFILE_MAIN_AREA,
   STUDY_TOOLS_MAIN_AREA,
   COMMUNITIES_MAIN_AREA,
   FEEDS_AREA,
@@ -13,6 +12,7 @@ import {
 import { hudEventNames } from '../events/hudEventNames';
 
 const STUDY_TOOL_HOVER_EXPERIENCE_DELAY_IN_MS = 10000;
+const CHAT_EXPERIENCE_DELAY_IN_MS = 15000;
 
 export const introToOnboarding: StorySection = {
   statements: ['Hi, I’m Kobe and I’ll give you a quick tour on how to use CircleIn.']
@@ -30,7 +30,6 @@ const initialIntroAndNudgeToLeaderboard: StorySection = {
 const leaderboardIntroAndNudgeToRewardsStore: StorySection = {
   triggerEventName: hudEventNames.NAVIGATED_TO_AREA,
   leafAreaId: LEADERBOARD_AREA,
-  highlightRootAreaId: PROFILE_MAIN_AREA,
   highlightLeafAreaId: REWARDS_STORE_AREA,
   statements: [
     'On the <strong>Leaderboard</strong>, you can see how close you and other students are to qualifying for the <strong>Monthly Rewards</strong> and <strong>Scholarships</strong>. Click the button above to set your preferences for your monthly rewards.'
@@ -80,13 +79,13 @@ const chatIntro: StorySection = {
   statements: [
     'Introduce yourself to meet your classmates and start crushing your studies this term! Share something about yourself like your favorite music to jam to or snack. 🎵🌯'
   ],
-  sequenceDelay: STUDY_TOOL_HOVER_EXPERIENCE_DELAY_IN_MS,
+  sequenceDelay: CHAT_EXPERIENCE_DELAY_IN_MS,
   completionEvent: hudEventNames.ONBOARDING_COMPLETED
 };
 
 export const onboardingCompleted: StorySection = {
   statements: [
-    'The tour is officially over, but if you want to learn more you can go to https://support.circleinapp.com/onboarding'
+    'You made it! The tour is officially over. If you want to learn more, visit https://support.circleinapp.com.'
   ]
 };
 

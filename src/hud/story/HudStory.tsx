@@ -14,10 +14,6 @@ const HudStory = () => {
     (state: { hudStory: HudStoryState }) => state.hudStory.currentStatement
   );
 
-  const isStoryInProgress: boolean = useSelector(
-    (state: { hudStory: HudStoryState }) => state.hudStory.isStoryInProgress
-  );
-
   const { canUserCloseStory, closeStory } = useStorySequence();
 
   if (!currentStatement) {
