@@ -170,9 +170,6 @@ const LeaderBoardTabs = ({
       <TabPanel value={selectedTab} index="grand">
         <div className={classes.scoreContainer}>
           <div className={classes.days}>
-            {timeLabel}:<span className={classes.count}>{time}</span>
-          </div>
-          <div className={classes.days}>
             MVPs earned:
             <span className={classes.count}>{leaderboard.data.general.grand.mvpCount}</span>
           </div>
