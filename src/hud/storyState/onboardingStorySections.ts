@@ -11,8 +11,8 @@ import {
 } from '../navigationState/hudNavigation';
 import { hudEventNames } from '../events/hudEventNames';
 
-const STUDY_TOOL_HOVER_EXPERIENCE_DELAY_IN_MS = 10000;
-const CHAT_EXPERIENCE_DELAY_IN_MS = 15000;
+export const STUDY_TOOL_HOVER_EXPERIENCE_DELAY_IN_MS = 10000;
+export const CHAT_EXPERIENCE_DELAY_IN_MS = 15000;
 
 export const introToOnboarding: StorySection = {
   statements: ['Hi, I’m Kobe and I’ll give you a quick tour on how to use CircleIn.']
@@ -77,7 +77,7 @@ const chatIntro: StorySection = {
   triggerEventName: hudEventNames.NAVIGATED_TO_AREA,
   leafAreaId: CHAT_AREA,
   statements: [
-    'Introduce yourself to meet your classmates and start crushing your studies this term! Share something about yourself like your favorite music to jam to or snack. 🎵🌯'
+    'Introduce yourself to meet your classmates! Share something about yourself like your favorite 🎵 music or 🌯 food.'
   ],
   sequenceDelay: CHAT_EXPERIENCE_DELAY_IN_MS,
   completionEvent: hudEventNames.ONBOARDING_COMPLETED
