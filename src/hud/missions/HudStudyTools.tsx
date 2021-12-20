@@ -62,20 +62,6 @@ const HudStudyTools = () => {
       icon: <CreatePostIcon style={ICON_SIZE} />
     },
     {
-      id: CALENDAR_AREA,
-      displayName:
-        'Workflow: Manage your time by tracking your tasks, assignments, and important deadlines',
-      icon: <IconWorkflow style={ICON_SIZE} />
-    },
-    {
-      id: NOTES_AREA,
-      displayName: 'Private Notes: Create private notes just for yourself',
-      icon: <PrivateNotesIcon style={ICON_SIZE} />
-    }
-  ];
-
-  const bottomStudyTools: HudToolData[] = [
-    {
       id: SHARE_NOTES_AREA,
       displayName:
         'Notes: Add your custom class notes and resources to keep everything in one place',
@@ -86,11 +72,25 @@ const HudStudyTools = () => {
       displayName:
         'Ask a Question: Need help? Ask a question publicly or anonymously to your class',
       icon: <QuestionIcon style={ICON_SIZE} />
-    },
+    }
+  ];
+
+  const bottomStudyTools: HudToolData[] = [
     {
       id: SHARE_RESOURCES_AREA,
       displayName: 'Share a Resource: Share helpful resources, links, and more with your class',
       icon: <ResourceIcon style={ICON_SIZE} />
+    },
+    {
+      id: CALENDAR_AREA,
+      displayName:
+        'Workflow: Manage your time by tracking your tasks, assignments, and important deadlines',
+      icon: <IconWorkflow style={ICON_SIZE} />
+    },
+    {
+      id: NOTES_AREA,
+      displayName: 'Private Notes: Create private notes just for yourself',
+      icon: <PrivateNotesIcon style={ICON_SIZE} />
     },
     {
       id: CHAT_AREA,

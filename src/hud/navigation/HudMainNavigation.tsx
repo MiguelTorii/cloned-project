@@ -101,16 +101,6 @@ const HudMainNavigation = () => {
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
-      id: CALENDAR_AREA,
-      displayName: 'Workflow',
-      icon: <IconWorkflow style={ICON_SIZE} />
-    },
-    {
-      id: NOTES_AREA,
-      displayName: 'Private Notes',
-      icon: <PrivateNotesIcon style={ICON_SIZE} />
-    },
-    {
       id: SHARE_NOTES_AREA,
       displayName: 'Share Notes',
       icon: <ShareNotesIcon style={ICON_SIZE} />
@@ -124,6 +114,16 @@ const HudMainNavigation = () => {
       id: SHARE_RESOURCES_AREA,
       displayName: 'Share Resources',
       icon: <ResourceIcon style={ICON_SIZE} />
+    },
+    {
+      id: CALENDAR_AREA,
+      displayName: 'Workflow',
+      icon: <IconWorkflow style={ICON_SIZE} />
+    },
+    {
+      id: NOTES_AREA,
+      displayName: 'Private Notes',
+      icon: <PrivateNotesIcon style={ICON_SIZE} />
     }
   ];
 
