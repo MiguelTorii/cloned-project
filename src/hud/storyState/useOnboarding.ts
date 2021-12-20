@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import useStorySequence from './useStorySequence';
@@ -17,16 +17,17 @@ import { logEventLocally } from '../../api/analytics';
 import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
 import { openOnboardingCompletedPopup } from './hudStoryActions';
+import { onboardingStorySectionsNoRewards } from './onboardingStorySectionsNoRewards';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
 let nextStorySectionIndex = 0;
 
-const getNextStorySections = (): StorySection[] => {
+const getNextStorySections = (allOnboardingStorySections: StorySection[]): StorySection[] => {
   const storySections: StorySection[] = [];
 
-  for (let i = nextStorySectionIndex; i < onboardingStorySections.length; i++) {
-    const nextStorySection = onboardingStorySections[i];
+  for (let i = nextStorySectionIndex; i < allOnboardingStorySections.length; i++) {
+    const nextStorySection = allOnboardingStorySections[i];
     if (nextStorySection) {
       storySections.push(nextStorySection);
 
@@ -47,6 +48,13 @@ const useOnboarding = () => {
 
   const { startNextStory } = useStorySequence();
 
+  // TODO do a different onboarding for folks that use the CircleIn rewards store
+  // and for folks who use their school's reward store.
+  const [rewardsAreAvailable, setRewardsAreAvailable] = useState(false);
+  const [allOnboardingStorySections, setAllOnboardingStorySections] = useState(
+    onboardingStorySectionsNoRewards
+  );
+
   useNavigationHighlighter();
 
   const user: User = useSelector((state: { user: UserState }) => state.user.data);
@@ -57,7 +65,7 @@ const useOnboarding = () => {
 
   const startStorySection = (storySection: StorySection): void => {
     currentStorySection = storySection;
-    nextStorySectionIndex = onboardingStorySections.indexOf(storySection) + 1;
+    nextStorySectionIndex = allOnboardingStorySections.indexOf(storySection) + 1;
 
     // Go to a specific route, as required by the story section.
     if (storySection.startingRoute) {
@@ -78,6 +86,14 @@ const useOnboarding = () => {
       }
     }, 0);
   };
+
+  useEffect(() => {
+    if (rewardsAreAvailable) {
+      setAllOnboardingStorySections(onboardingStorySections);
+    } else {
+      setAllOnboardingStorySections(onboardingStorySectionsNoRewards);
+    }
+  }, [rewardsAreAvailable]);
 
   useEffect(() => {
     if (!onboardingTriggered && onboardingFlowTriggered) {
@@ -107,7 +123,7 @@ const useOnboarding = () => {
             postEvent(completionEvent);
           }
         } else {
-          const nextStorySections = getNextStorySections();
+          const nextStorySections = getNextStorySections(allOnboardingStorySections);
           nextStorySections.forEach((storySection: StorySection) => {
             if (storySection.triggerEventName === hudEvent.eventName) {
               if (
