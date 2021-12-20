@@ -83,7 +83,8 @@ const circleInTheme = {
   gray4: '#333333',
   navigationHighlightTranslucent: '#1E88E544',
   navigationHighlightOpaque: '#1E88E5FF',
-  hoverMenuTranslucent: '#3A3B3B44'
+  hoverMenuTranslucent: '#3A3B3B44',
+  expBarBackground: '#404040'
 };
 let theme = createTheme({
   circleIn: {
@@ -157,7 +158,8 @@ let theme = createTheme({
       gray4: circleInTheme.gray4,
       navigationHighlightTranslucent: circleInTheme.navigationHighlightTranslucent,
       navigationHighlightOpaque: circleInTheme.navigationHighlightOpaque,
-      hoverMenuTranslucent: circleInTheme.hoverMenuTranslucent
+      hoverMenuTranslucent: circleInTheme.hoverMenuTranslucent,
+      expBarBackground: circleInTheme.expBarBackground
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'

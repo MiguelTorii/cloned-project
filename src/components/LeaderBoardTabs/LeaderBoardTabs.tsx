@@ -10,8 +10,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import { push } from 'connected-react-router';
+import qs from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 import cx from 'classnames';
+import { useLocation } from 'react-router';
 import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
@@ -43,7 +45,10 @@ const LeaderBoardTabs = ({
   const showScholarshipTracker = useSelector(
     (state) => (state as any).campaign.showScholarshipTracker
   );
-  const [selectedTab, setSelectedTab] = useState('tuesday');
+  const { search } = useLocation();
+  const [selectedTab, setSelectedTab] = useState<string>(
+    (qs.parse(search).tab as string) || 'tuesday'
+  );
   const [tuesdayBoardName, setTuesdayBoardName] = useState('');
   const [grandBoardName, setGrandBoardName] = useState('');
   const [time, setTime] = useState('');

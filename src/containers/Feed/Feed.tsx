@@ -185,12 +185,8 @@ class Feed extends React.PureComponent<Props, State> {
     });
 
     // If there was parameters in the url, it removes all url params.
-    if (search) {
-      // Hacky check to prevent feed from overtaking other important URLs.
-      // TODO find more holistic fix.
-      if (!pathname.startsWith('/profile')) {
-        replace('/feed');
-      }
+    if (pathname === '/feed' && search) {
+      replace('/feed');
     }
 
     this.cancelSource = axios.CancelToken.source();

@@ -1,6 +1,7 @@
 import { Typography } from '@material-ui/core';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { ExperienceState } from '../experienceBarState/hudExperienceState';
 import { useStyles } from './HudExperienceBarStyles';
 import { apiGetExperiencePoints } from '../../api/user';
@@ -8,10 +9,15 @@ import { setIntervalWithFirstCall } from '../../utils/helpers';
 import { FETCH_POINTS_INTERVAL } from '../../constants/common';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
 import { UserState } from '../../reducers/user';
+import { AppState } from '../../configureStore';
 
 const HudExperienceBar = () => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
+  const showExpBar = useSelector<AppState, boolean>(
+    (state) => state.campaign.showScholarshipTracker
+  );
+  const history = useHistory();
 
   const fetchPoints = useCallback(() => {
     apiGetExperiencePoints().then(({ points }) => {
@@ -45,17 +51,22 @@ const HudExperienceBar = () => {
     width: `${experiencePercent()}%`
   };
 
-  if (experiencePoints === null) {
+  const handleClickExpBar = () => {
+    history.push(`/leaderboard?tab=grand`);
+  };
+
+  if (experiencePoints === null || !showExpBar) {
     return null;
   }
 
   return (
     <>
       {!isExpertMode ? (
-        <div className={classes.experienceBarTrack}>
-          <div style={experienceBarFillWidth} className={classes.experienceFiller}>
+        <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
+          <div style={experienceBarFillWidth} className={classes.experienceFiller} />
+          <div className={classes.experienceLabelContainer}>
             <Typography className={classes.experienceLabel}>
-              {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
+              MVP: {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
             </Typography>
           </div>
         </div>
