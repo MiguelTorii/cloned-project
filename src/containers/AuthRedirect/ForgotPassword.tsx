@@ -1,10 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { recoverPassword } from '../../api/sign-in';
 import AuthTitle from './AuthTitle';
-import SemiBoldTypography from '../../components/SemiBoldTypography/SemiBoldTypography';
 import AuthTextInput from './AuthTextInput';
 import AuthButton from './AuthButton';
 
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loginButton: {
     marginTop: theme.spacing(2),
-    fontWeight: 'bold',
     width: 160
   },
   form: {
@@ -90,9 +88,9 @@ const ForgotPassword = ({ updateError, setScreen }) => {
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
           <AuthTitle paragraph>Reset your password</AuthTitle>
-          <SemiBoldTypography paragraph variant="h6" align="center">
+          <Typography paragraph variant="h6" align="center">
             Enter your school email below to reset your password
-          </SemiBoldTypography>
+          </Typography>
           <AuthTextInput
             id="email-login"
             className={classes.textField}
@@ -113,9 +111,7 @@ const ForgotPassword = ({ updateError, setScreen }) => {
             {loading ? <CircularProgress size={20} color="secondary" /> : 'Submit'}
           </AuthButton>
           <Box mt={5}>
-            <SemiBoldTypography align="center">
-              Check your inbox for the password reset link
-            </SemiBoldTypography>
+            <Typography align="center">Check your inbox for the password reset link</Typography>
           </Box>
         </form>
       </div>
@@ -125,9 +121,9 @@ const ForgotPassword = ({ updateError, setScreen }) => {
   return (
     <div className={classes.container}>
       <form className={classes.form}>
-        <SemiBoldTypography variant="h6">
+        <Typography variant="h6">
           If your email is connected to a account, a reset link was sent to it.
-        </SemiBoldTypography>
+        </Typography>
       </form>
     </div>
   );

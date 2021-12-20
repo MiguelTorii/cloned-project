@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   loginButton: {
     marginTop: theme.spacing(2),
-    fontWeight: 'bold',
     width: 160
   },
   form: {

@@ -5,8 +5,10 @@ export default withStyles((theme) => ({
     backgroundColor: 'white',
     color: theme.circleIn.palette.modalBackground,
     fontSize: 18,
-    fontWeight: 700,
     borderRadius: 10,
+    '&:hover': {
+      backgroundColor: theme.circleIn.palette.brand
+    },
     '&.Mui-disabled': {
       backgroundColor: 'white'
     }
