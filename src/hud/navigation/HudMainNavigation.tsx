@@ -15,7 +15,7 @@ import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/ic_in_app_n
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
 import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
-import { ReactComponent as IconMyClasses } from '../../assets/svg/classes_overview.svg';
+import { ReactComponent as IconMyClasses } from '../../assets/svg/ic_classes.svg';
 import { ReactComponent as IconClassFeed } from '../../assets/svg/class_feed.svg';
 import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
 import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
