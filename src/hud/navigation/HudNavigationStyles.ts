@@ -41,8 +41,9 @@ export const useStyles = makeStyles((theme: any) => ({
     }
   },
   childToolIcon: {
-    width: '30px',
-    marginRight: theme.spacing(1)
+    width: '35px',
+    marginRight: theme.spacing(0.25),
+    marginLeft: theme.spacing(-1)
   },
   avatarImage: {
     width: '100%',

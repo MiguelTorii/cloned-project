@@ -4,7 +4,6 @@ import { Action, Dispatch } from 'redux';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { push } from 'connected-react-router';
 import { Badge, Typography } from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
 import { useStyles } from './HudNavigationStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 
@@ -23,10 +22,13 @@ import {
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
-import { ReactComponent as IconAboutMe } from '../../assets/svg/about_me.svg';
-import { ReactComponent as IconPointsHistory } from '../../assets/svg/points_history.svg';
-import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
-import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
+import { ReactComponent as IconAboutMe } from '../../assets/svg/ic_profile.svg';
+import { ReactComponent as IconPointsHistory } from '../../assets/svg/ic_points_history.svg';
+import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/ic_feedback.svg';
+import { ReactComponent as IconSupport } from '../../assets/svg/ic_support.svg';
+import { ReactComponent as IconMobileApp } from '../../assets/svg/ic_get_mobile_app.svg';
+import { ReactComponent as IconExpertModeToggle } from '../../assets/svg/ic_go_to_expert_mode.svg';
+import { ReactComponent as IconSignOut } from '../../assets/svg/ic_logout.svg';
 import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
@@ -61,8 +63,8 @@ const HudRightNavigation = () => {
 
   const expertNavigationItem = {
     id: EXPERT_MODE_ACCESS,
-    displayName: !isExpertMode ? 'Go to Expert Mode' : 'Go to Student Mode'
-    // icon: <IconAboutMe />
+    displayName: !isExpertMode ? 'Go to Expert Mode' : 'Go to Student Mode',
+    icon: <IconExpertModeToggle />
   };
 
   const profileNavigationItems: HudToolData[] = [
@@ -84,7 +86,7 @@ const HudRightNavigation = () => {
     {
       id: SUPPORT_AREA,
       displayName: 'CircleIn Support',
-      icon: <HelpIcon />
+      icon: <IconSupport />
     },
     {
       id: GET_THE_MOBILE_APP_AREA,
@@ -98,7 +100,8 @@ const HudRightNavigation = () => {
   }
   profileNavigationItems.push({
     id: SIGN_OUT_BUTTON,
-    displayName: 'Sign Out'
+    displayName: 'Sign Out',
+    icon: <IconSignOut />
   });
 
   const initials = getInitials(`${profile.firstName} ${profile.lastName}`);
