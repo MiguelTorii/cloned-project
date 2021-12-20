@@ -57,14 +57,14 @@ const POST_BUTTONS = [
 
 const HUD_POST_BUTTONS = [
   {
+    value: FLASHCARDS_AREA,
+    text: 'Flashcards',
+    icon: FlashcardMark
+  },
+  {
     value: CREATE_A_POST_AREA,
     text: 'Write a Post',
     icon: ActiveCreatePost
-  },
-  {
-    value: ASK_A_QUESTION_AREA,
-    text: 'Ask a Question',
-    icon: QuestionIcon
   },
   {
     value: SHARE_NOTES_AREA,
@@ -72,14 +72,14 @@ const HUD_POST_BUTTONS = [
     icon: ShareNotesIcon
   },
   {
+    value: ASK_A_QUESTION_AREA,
+    text: 'Ask a Question',
+    icon: QuestionIcon
+  },
+  {
     value: SHARE_RESOURCES_AREA,
     text: 'Share a Resource',
     icon: IconResource
-  },
-  {
-    value: FLASHCARDS_AREA,
-    text: 'Flashcards',
-    icon: FlashcardMark
   }
 ];
 
