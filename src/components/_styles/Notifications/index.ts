@@ -4,7 +4,8 @@ export const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    maxHeight: '80vh'
   },
   list: {
     width: '100%',
