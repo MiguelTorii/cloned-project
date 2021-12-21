@@ -4,7 +4,10 @@ import { dialogStyle } from '../../components/Dialog/Dialog';
 export const useStyles = makeStyles((theme: any) => ({
   modalOverlay: {
     display: 'fixed',
-    inset: 0,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     backgroundColor: theme.circleIn.palette.primaryBackground,
     zIndex: 1000
   },
