@@ -85,21 +85,14 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     selectLeaf(childToolId);
   };
 
-  let parentNavigationItemClass = classes.parentNavigationItem;
-  if (parentNavigationItem.isCompact) {
-    parentNavigationItemClass = classes.compactParentNavigationItem;
-  }
-  let arrowDropdownClass = classes.arrowDropdown;
-  if (parentNavigationItem.isCompact) {
-    arrowDropdownClass = classes.compactArrowDropdown;
-  }
-
   const renderParentNavButton = (multipleItems: boolean) => (
     <>
       {multipleItems ? (
         <Button
           className={clsx(
-            parentNavigationItemClass,
+            parentNavigationItem.isCompact
+              ? classes.compactParentNavigationItem
+              : classes.parentNavigationItem,
             isSelected && classes.selectedButton,
             isRootHighlighted && classes.highlightedButton
           )}
@@ -113,12 +106,18 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
               {parentNavigationItem.displayName}
             </Typography>
           )}
-          <ArrowDropDownIcon className={arrowDropdownClass} />
+          <ArrowDropDownIcon
+            className={
+              parentNavigationItem.isCompact ? classes.compactArrowDropdown : classes.arrowDropdown
+            }
+          />
         </Button>
       ) : (
         <Button
           className={clsx(
-            parentNavigationItemClass,
+            parentNavigationItem.isCompact
+              ? classes.compactParentNavigationItem
+              : classes.parentNavigationItem,
             isSelected && classes.selectedButton,
             isRootHighlighted && classes.highlightedButton
           )}
