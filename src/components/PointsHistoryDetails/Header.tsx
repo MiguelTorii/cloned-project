@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
@@ -8,6 +9,7 @@ import withRoot from '../../withRoot';
 import Avatar from '../Avatar/Avatar';
 import { getPointsText } from '../../utils/helpers';
 import { useStyles } from '../_styles/PointsHistoryDetails/Header';
+import { CampaignState } from '../../reducers/campaign';
 
 type Props = {
   profile: UserProfile;
@@ -17,6 +19,11 @@ const Header = ({ profile }: Props) => {
   const classes: any = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
   return (
     <Paper className={classes.root}>
       <Grid container spacing={2} className={classes.mainContainer} alignItems="center">
@@ -31,9 +38,11 @@ const Header = ({ profile }: Props) => {
             <Grid item>
               <Typography variant="h5">{`${profile.firstName} ${profile.lastName}`}</Typography>
             </Grid>
-            <Grid item>
-              <Typography>Rank: #{profile.rank}</Typography>
-            </Grid>
+            {!isHud && (
+              <Grid item>
+                <Typography>Rank: #{profile.rank}</Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid item xs={12} md={6} container spacing={2}>
