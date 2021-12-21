@@ -10,6 +10,7 @@ import { userActions } from '../../constants/action-types';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
 import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
+import { CampaignState } from '../../reducers/campaign';
 
 type Props = {
   userId: string;
@@ -23,6 +24,10 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
   const dispatch = useDispatch();
   const [records, setRecords] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
 
   const isLoadingData = useSelector(isApiCalling(userActions.GET_POINTS_HISTORY));
 
@@ -73,6 +78,7 @@ const PointsHistory = ({ userId, isMyProfile, displayName }: Props) => {
             </Box>
           }
           dataLength={records.length}
+          scrollableTarget={isHud ? 'profile-scroll-container' : null}
         >
           {renderRecords(false)}
         </InfiniteScroll>

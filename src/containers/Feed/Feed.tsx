@@ -582,6 +582,7 @@ class Feed extends React.PureComponent<Props, State> {
                 onLoadMore={this.fetchMorePosts}
                 onUserClick={this.handleUserClick}
                 isFiltering={isFiltering}
+                isHud={campaign.hud}
               />
             </Tooltip>
           </div>

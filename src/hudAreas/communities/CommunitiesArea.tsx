@@ -19,7 +19,7 @@ const CommunitiesArea = () => {
   );
 
   return (
-    <div className={classes.container}>
+    <div id="community-scroll-container" className={classes.container}>
       {selectedMainSubArea === CLASSES_AREA && <Classes />}
 
       {selectedMainSubArea === FEEDS_AREA && <ClassFeedSubArea />}
