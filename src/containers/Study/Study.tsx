@@ -11,7 +11,7 @@ import type { State as StoreState } from '../../types/state';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import QuestionMark from '../../assets/svg/question-mark.svg';
 import MessageMark from '../../assets/svg/message-mark.svg';
-import ResourceMark from '../../assets/svg/resource-mark.svg';
+import ResourceMark from '../../assets/svg/ic_share_a_resource.svg';
 import FlashcardMark from '../../assets/svg/flashcard-mark.svg';
 import NoteMark from '../../assets/svg/note-mark.svg';
 import WorkflowMark from '../../assets/svg/workflow-mark.svg';

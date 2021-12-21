@@ -8,4 +8,5 @@ export interface HudToolData {
   childTools?: HudToolData[];
   showIconOnly?: boolean;
   tooltip?: boolean;
+  isCompact?: boolean;
 }

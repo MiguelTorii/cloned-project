@@ -90,7 +90,9 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
       {multipleItems ? (
         <Button
           className={clsx(
-            classes.parentNavigationItem,
+            parentNavigationItem.isCompact
+              ? classes.compactParentNavigationItem
+              : classes.parentNavigationItem,
             isSelected && classes.selectedButton,
             isRootHighlighted && classes.highlightedButton
           )}
@@ -104,12 +106,18 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
               {parentNavigationItem.displayName}
             </Typography>
           )}
-          <ArrowDropDownIcon className={classes.arrowDropdown} />
+          <ArrowDropDownIcon
+            className={
+              parentNavigationItem.isCompact ? classes.compactArrowDropdown : classes.arrowDropdown
+            }
+          />
         </Button>
       ) : (
         <Button
           className={clsx(
-            classes.parentNavigationItem,
+            parentNavigationItem.isCompact
+              ? classes.compactParentNavigationItem
+              : classes.parentNavigationItem,
             isSelected && classes.selectedButton,
             isRootHighlighted && classes.highlightedButton
           )}

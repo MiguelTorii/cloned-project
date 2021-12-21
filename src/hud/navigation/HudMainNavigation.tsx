@@ -1,27 +1,21 @@
 import React, { useMemo } from 'react';
 
-import { CalendarToday } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { Action, Dispatch } from 'redux';
 import IconChat from '@material-ui/icons/Chat';
 import { Badge } from '@material-ui/core';
 import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow-mark.svg';
 import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_question.svg';
-import { ReactComponent as ResourceIcon } from '../../assets/svg/resource-mark.svg';
+import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
 import { ReactComponent as ShareNotesIcon } from '../../assets/svg/ic_notes.svg';
 import { ReactComponent as ActiveCreatePost } from '../../assets/svg/posts.svg';
 import { ReactComponent as FlashcardMark } from '../../assets/svg/flashcard-mark.svg';
 import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/ic_in_app_notes.svg';
 import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
 import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
-import { ReactComponent as IconMore } from '../../assets/svg/more.svg';
 import { ReactComponent as IconMyClasses } from '../../assets/svg/ic_classes.svg';
-import { ReactComponent as IconClassFeed } from '../../assets/svg/class_feed.svg';
+import { ReactComponent as IconClassFeed } from '../../assets/svg/ic_class_feeds.svg';
 import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
 import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
-import { ReactComponent as IconSubmitSupportTicket } from '../../assets/svg/submit_support_ticket.svg';
-import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/submit_an_idea.svg';
-import { ReactComponent as IconMobileApp } from '../../assets/svg/get_the_mobile_app.svg';
 import { useStyles } from './HudNavigationStyles';
 import {
   ACHIEVEMENTS_MAIN_AREA,
