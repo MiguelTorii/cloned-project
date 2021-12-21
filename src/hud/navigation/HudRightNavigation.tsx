@@ -122,7 +122,8 @@ const HudRightNavigation = () => {
     icon: profilePicture,
     childTools: profileNavigationItems,
     showIconOnly: true,
-    tooltip: true
+    tooltip: true,
+    isCompact: true
   };
 
   const notificationNavigationItem = {
