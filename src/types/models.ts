@@ -643,6 +643,8 @@ export type TMission = {
   title: string;
   icon_url: string;
   information: string;
+  link: string;
+  label: string;
 };
 export type TGetMissionsData = {
   missions: Array<TMission>;

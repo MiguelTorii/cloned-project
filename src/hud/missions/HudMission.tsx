@@ -18,15 +18,13 @@ const HudMission = ({ data }: Props) => {
         <img className={classes.image} src={data.icon_url} alt={data.title} />
       </Box>
       <Box flexGrow={1}>
-        <Typography className={classes.missionText}>
-          {data.title}
-          {data.information && (
-            <Tooltip title={data.information} placement="top" arrow>
-              <IconInformation className={classes.missionInfoIcon} />
-            </Tooltip>
-          )}
-        </Typography>
-        <MissionProgress value={data.numerator} total={data.denominator} />
+        <Typography className={classes.missionText}>{data.title}</Typography>
+        <MissionProgress
+          value={data.numerator}
+          total={data.denominator}
+          label={data.label}
+          link={data.link}
+        />
       </Box>
     </Box>
   );

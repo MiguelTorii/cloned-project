@@ -332,6 +332,9 @@ let theme = createTheme({
       }
     },
     MuiTooltip: {
+      tooltip: {
+        fontSize: 12
+      },
       popper: {
         zIndex: 1250
       }

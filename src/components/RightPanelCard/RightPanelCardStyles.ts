@@ -8,10 +8,9 @@ export const useStyles = makeStyles((theme: any) => ({
   content: {
     padding: theme.spacing(2.5, 2)
   },
-  title: {
-    fontSize: 18,
-    position: 'relative',
+  header: {
     padding: theme.spacing(2, 3, 1, 3),
+    position: 'relative',
     '&:before': {
       content: '""',
       position: 'absolute',
@@ -21,5 +20,8 @@ export const useStyles = makeStyles((theme: any) => ({
       height: 1,
       background: `linear-gradient(90deg, ${theme.circleIn.palette.hoverColor} 0%, ${theme.circleIn.palette.rightPanelCardBackground} 99.07%)`
     }
+  },
+  title: {
+    fontSize: 18
   }
 }));
