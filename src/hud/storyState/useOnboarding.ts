@@ -18,6 +18,7 @@ import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
 import { openOnboardingCompletedPopup } from './hudStoryActions';
 import { onboardingStorySectionsNoRewards } from './onboardingStorySectionsNoRewards';
+import { CampaignState } from '../../reducers/campaign';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
@@ -48,9 +49,10 @@ const useOnboarding = () => {
 
   const { startNextStory } = useStorySequence();
 
-  // TODO do a different onboarding for folks that use the CircleIn rewards store
-  // and for folks who use their school's reward store.
-  const [rewardsAreAvailable, setRewardsAreAvailable] = useState(false);
+  const showScholarshipTracker: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.showScholarshipTracker
+  );
+
   const [allOnboardingStorySections, setAllOnboardingStorySections] = useState(
     onboardingStorySectionsNoRewards
   );
@@ -88,12 +90,12 @@ const useOnboarding = () => {
   };
 
   useEffect(() => {
-    if (rewardsAreAvailable) {
+    if (showScholarshipTracker) {
       setAllOnboardingStorySections(onboardingStorySections);
     } else {
       setAllOnboardingStorySections(onboardingStorySectionsNoRewards);
     }
-  }, [rewardsAreAvailable]);
+  }, [showScholarshipTracker]);
 
   useEffect(() => {
     if (!onboardingTriggered && onboardingFlowTriggered) {
