@@ -3,7 +3,6 @@ import { gutterStyle } from '../Gutter';
 export default (theme) => ({
   container: {
     maxHeight: 'inherit',
-    // display: 'flex',
     padding: theme.spacing(),
     position: 'relative',
     minHeight: 400
@@ -44,7 +43,6 @@ export default (theme) => ({
   },
   items: {
     overflowY: 'auto',
-    // maxHeight: 'calc(100vh - 250px)',
     flex: 1,
     marginTop: theme.spacing()
   },

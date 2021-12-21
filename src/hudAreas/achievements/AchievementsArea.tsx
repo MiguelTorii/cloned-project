@@ -18,7 +18,7 @@ const AchievementsArea = () => {
   );
 
   return (
-    <div className={classes.container}>
+    <div id="achievements-scroll-container" className={classes.container}>
       {selectedMainSubArea === LEADERBOARD_AREA && <LeaderBoards />}
     </div>
   );
