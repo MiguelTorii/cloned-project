@@ -8,11 +8,13 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import TextField from '@material-ui/core/TextField';
-import { Box } from '@material-ui/core';
+import { Box, Hidden } from '@material-ui/core';
 import ImageBackgroundDesktop from '../../assets/img/auth-ui-bg-desktop.png';
 import ImageBackgroundMobile from '../../assets/img/auth-ui-bg-mobile.png';
 import ImageContentLeft from '../../assets/img/auth-ui-content-people-left.png';
 import ImageContentRight from '../../assets/img/auth-ui-content-people-right.png';
+import ImageLogoText from '../../assets/img/logo-text.png';
+import ImageLogoIcon from '../../assets/img/logo-icon.png';
 import SelectSchool from './SelectSchool';
 import Login from './Login';
 import SignUp from './SignUp';
@@ -36,7 +38,11 @@ const styles = (theme) => ({
     backgroundColor: 'white',
     backgroundImage: `url(${ImageBackgroundDesktop})`,
     backgroundRepeat: 'no-repeat',
-    backgroundPositionX: 'center',
+    backgroundPosition: 'center center',
+    backgroundSize: '100% auto',
+    [theme.breakpoints.only('sm')]: {
+      backgroundSize: '200%'
+    },
     [theme.breakpoints.down('xs')]: {
       backgroundImage: `url(${ImageBackgroundMobile})`
     }
@@ -61,26 +67,42 @@ const styles = (theme) => ({
     position: 'relative',
     flexDirection: 'column'
   },
+  logoText: {
+    width: 225,
+    [theme.breakpoints.down('sm')]: {
+      width: 125,
+      marginTop: 10
+    }
+  },
+  logoIcon: {
+    width: 37
+  },
+  popupContainer: {
+    marginTop: 100,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 40
+    }
+  },
   paper: {
+    position: 'relative',
     backgroundColor: theme.circleIn.palette.errorPopupBackground,
     color: 'black',
-    backgroundRepeat: 'no-repeat',
-    '-ms-background-size': '100% 100%',
-    '-o-background-size': '100% 100%',
-    '-moz-background-size': '100% 100%',
-    '-webkit-background-size': '100% 100%',
-    position: 'absolute',
     width: 740,
     height: 511,
     maxWidth: 'calc(100% - 40px)',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     borderRadius: 30,
-    padding: theme.spacing(7, 10)
+    padding: theme.spacing(7, 10),
+    marginTop: 60,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 80
+    }
   },
   container: {
     height: '100vh'
@@ -143,8 +165,7 @@ const styles = (theme) => ({
     bottom: 0,
     right: 0,
     height: '80%',
-    userSelect: 'none',
-    zIndex: -1
+    userSelect: 'none'
   },
   screenContainer: {
     width: '100%',
@@ -355,12 +376,18 @@ const Auth = ({
           <Typography variant="body1">Taking you to login...</Typography>
         </div>
       )}
-      <Paper className={classes.paper}>
-        <img className={classes.imageLeft} src={ImageContentLeft} alt="background on left" />
-        <img className={classes.imageRight} src={ImageContentRight} alt="background on right" />
-        {renderBack}
-        <Box className={classes.screenContainer}>{renderScreen}</Box>
-      </Paper>
+      <Box className={classes.popupContainer}>
+        <Hidden mdUp>
+          <img src={ImageLogoIcon} alt="Logo Icon" className={classes.logoIcon} />
+        </Hidden>
+        <img src={ImageLogoText} alt="Logo Text" className={classes.logoText} />
+        <Paper className={classes.paper}>
+          <img className={classes.imageLeft} src={ImageContentLeft} alt="background on left" />
+          <img className={classes.imageRight} src={ImageContentRight} alt="background on right" />
+          {renderBack}
+          <Box className={classes.screenContainer}>{renderScreen}</Box>
+        </Paper>
+      </Box>
       <Dialog
         open={screen === 'walk'}
         className={classes.walkthrough}

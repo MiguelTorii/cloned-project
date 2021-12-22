@@ -88,6 +88,10 @@ export default (theme: any): any => ({
     left: 0,
     right: 0
   },
+  schoolSearchMenu: {
+    backgroundColor: theme.circleIn.palette.feedBackground,
+    opacity: 0.85
+  },
   addClassmatePaper: {
     zIndex: 100,
     left: 0,

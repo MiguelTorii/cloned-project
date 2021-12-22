@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'scale-down'
   },
   scanText: {
-    fontWeight: 600,
     fontSize: 18,
     textAlign: 'center'
   },
@@ -44,13 +43,11 @@ const useStyles = makeStyles((theme) => ({
   },
   loginButton: {
     marginTop: theme.spacing(2),
-    fontWeight: 'bold',
     width: 160
   },
   orButton: {
     minWidth: 0,
     fontSize: 16,
-    fontWeight: 600,
     color: theme.circleIn.palette.black
   },
   scanContainer: {
@@ -68,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
   },
   activateButton: {
     textDecoration: 'underline',
-    fontWeight: 600,
     color: theme.circleIn.palette.black,
     marginTop: theme.spacing(2)
   }
@@ -164,7 +160,7 @@ const Login = ({ role, setScreen, school, signIn, isLoginAsExternalUser }) => {
             </Box>
           )}
           <div className={classes.forgotPassword}>
-            <SemiBoldTypography>Or, </SemiBoldTypography>
+            <Typography>Or, </Typography>
             <Button className={classes.orButton} onClick={forgotPassword}>
               Forgot Password
             </Button>

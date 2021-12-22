@@ -253,6 +253,7 @@ function Menu({ selectProps, children, innerProps }) {
       square
       className={cx(
         searchClassmate ? classes.addClassmatePaper : classes.paper,
+        isSchoolSearch && classes.schoolSearchMenu,
         textFieldProps.relative ? classes.paperRelative : classes.paperAbsolute
       )}
       {...innerProps}

@@ -29,12 +29,10 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     fontSize: 12,
-    fontWeight: 600,
     marginTop: theme.spacing(4)
   },
   externalUser: {
     color: theme.circleIn.palette.black,
-    fontWeight: 600,
     marginTop: theme.spacing(2),
     textTransform: 'inherit',
     '& span': {
@@ -197,9 +195,9 @@ const SelectSchool = ({
           <b>{"Glad you're here!"}</b>
         </Typography>
       </Box>
-      <SemiBoldTypography variant="h6" align="center">
+      <Typography variant="h6" align="center">
         Please enter your school name to login
-      </SemiBoldTypography>
+      </Typography>
       <form onSubmit={onSubmit} className={classes.schools}>
         <AutoComplete
           inputValue=""
