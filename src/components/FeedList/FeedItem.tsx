@@ -605,6 +605,7 @@ const FeedItem = ({
           isPastClassFlashcard={
             pastClassIds.includes(data.classId) && data.typeId === FeedTypes.flashcards.id
           }
+          isFromList
           feedId={data.feedId}
           postId={data.postId}
           typeId={data.typeId}
