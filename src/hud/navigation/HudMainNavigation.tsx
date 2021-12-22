@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import IconChat from '@material-ui/icons/Chat';
 import { Badge } from '@material-ui/core';
+import { ReactComponent as IconChat } from '../../assets/svg/ic_nav_chat.svg';
 import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow-mark.svg';
 import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_question.svg';
 import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
@@ -10,8 +10,8 @@ import { ReactComponent as ShareNotesIcon } from '../../assets/svg/ic_notes.svg'
 import { ReactComponent as ActiveCreatePost } from '../../assets/svg/posts.svg';
 import { ReactComponent as FlashcardMark } from '../../assets/svg/flashcard-mark.svg';
 import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/ic_in_app_notes.svg';
-import { ReactComponent as IconClasses } from '../../assets/svg/class-feed-icon-on.svg';
-import { ReactComponent as IconLeaderboard } from '../../assets/svg/leaderboard-icon-on.svg';
+import { ReactComponent as IconClasses } from '../../assets/svg/ic_nav_classes.svg';
+import { ReactComponent as IconLeaderboard } from '../../assets/svg/ic_nav_leaderboard.svg';
 import { ReactComponent as IconMyClasses } from '../../assets/svg/ic_classes.svg';
 import { ReactComponent as IconClassFeed } from '../../assets/svg/ic_class_feeds.svg';
 import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
@@ -41,6 +41,7 @@ import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
+const NAVBAR_ICON_SIZE = { width: '50px', height: '50px' };
 
 const HudMainNavigation = () => {
   const classes: any = useStyles();
@@ -134,7 +135,7 @@ const HudMainNavigation = () => {
     displayName: 'chat',
     icon: (
       <Badge badgeContent={unreadMessageCount} color="secondary">
-        <IconChat />
+        <IconChat style={NAVBAR_ICON_SIZE} />
       </Badge>
     ),
     childTools: chatNavigationItems
@@ -143,19 +144,19 @@ const HudMainNavigation = () => {
   const classesNavigationItem: HudToolData = {
     id: COMMUNITIES_MAIN_AREA,
     displayName: 'Classes',
-    icon: <IconClasses />,
+    icon: <IconClasses style={NAVBAR_ICON_SIZE} />,
     childTools: classesNavigationItems
   };
   const studyToolsNavigationItem: HudToolData = {
     id: STUDY_TOOLS_MAIN_AREA,
     displayName: 'Study Tools',
-    icon: <IconStudyTools />,
+    icon: <IconStudyTools style={NAVBAR_ICON_SIZE} />,
     childTools: studyToolsNavigationItems
   };
   const achievementsNavigationItem: HudToolData = {
     id: ACHIEVEMENTS_MAIN_AREA,
     displayName: 'Leaderboard',
-    icon: <IconLeaderboard />,
+    icon: <IconLeaderboard style={NAVBAR_ICON_SIZE} />,
     childTools: achievementsNavigationItems
   };
 

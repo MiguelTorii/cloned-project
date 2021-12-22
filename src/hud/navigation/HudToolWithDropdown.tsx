@@ -17,7 +17,9 @@ import {
   EXPERT_MODE_ACCESS,
   SIGN_OUT_BUTTON,
   SUPPORT_AREA,
-  CHAT_MAIN_AREA
+  CHAT_MAIN_AREA,
+  COMMUNITIES_MAIN_AREA,
+  ACHIEVEMENTS_MAIN_AREA
 } from '../navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
@@ -85,6 +87,19 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     selectLeaf(childToolId);
   };
 
+  const navbarItemClass = (parentNavId: string) => {
+    switch (parentNavId) {
+      case COMMUNITIES_MAIN_AREA:
+        return classes.navbarClasses;
+      case ACHIEVEMENTS_MAIN_AREA:
+        return classes.navbarLeaderboard;
+      case CHAT_MAIN_AREA:
+        return classes.navbarChat;
+      default:
+        return null;
+    }
+  };
+
   const renderParentNavButton = (multipleItems: boolean) => (
     <>
       {multipleItems ? (
@@ -102,14 +117,20 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
             {parentNavigationItem.icon}
           </ListItemIcon>
           {!parentNavigationItem.showIconOnly && (
-            <Typography className={classes.parentNavigationItemText}>
+            <Typography
+              className={clsx(
+                classes.parentNavigationItemText,
+                navbarItemClass(parentNavigationItem.id)
+              )}
+            >
               {parentNavigationItem.displayName}
             </Typography>
           )}
           <ArrowDropDownIcon
-            className={
-              parentNavigationItem.isCompact ? classes.compactArrowDropdown : classes.arrowDropdown
-            }
+            className={clsx(
+              parentNavigationItem.isCompact ? classes.compactArrowDropdown : classes.arrowDropdown,
+              navbarItemClass(parentNavigationItem.id)
+            )}
           />
         </Button>
       ) : (
@@ -127,7 +148,12 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
             {parentNavigationItem.icon}
           </ListItemIcon>
           {!parentNavigationItem.showIconOnly && (
-            <Typography className={classes.parentNavigationItemText}>
+            <Typography
+              className={clsx(
+                classes.parentNavigationItemText,
+                navbarItemClass(parentNavigationItem.id)
+              )}
+            >
               {parentNavigationItem.displayName}
             </Typography>
           )}
