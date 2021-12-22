@@ -9,7 +9,6 @@ export const useStyles = makeStyles((theme: any) => ({
     fontWeight: 'bold'
   },
   parentNavigationItem: {
-    padding: theme.spacing(2),
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
     height: '100%',
@@ -34,15 +33,7 @@ export const useStyles = makeStyles((theme: any) => ({
     boxShadow: `0 0 0 ${theme.spacing(1)}px inset ${theme.circleIn.palette.success}`
   },
   parentNavigationIcon: {
-    height: '30px',
-    width: '30px',
-    alignItems: 'center',
-    marginLeft: theme.spacing(1 / 2),
-    marginRight: theme.spacing(1 / 2)
-  },
-  profileArea: {
-    marginLeft: `${theme.spacing(-2)} !important`,
-    marginRight: `${theme.spacing(-2)} !important`
+    alignItems: 'center'
   },
   parentNavigationMenu: {
     marginTop: theme.spacing(4)
@@ -55,9 +46,8 @@ export const useStyles = makeStyles((theme: any) => ({
     }
   },
   childToolIcon: {
-    width: '35px',
     marginRight: theme.spacing(0.25),
-    marginLeft: theme.spacing(-1)
+    marginLeft: 0
   },
   avatarImage: {
     width: '100%',
@@ -79,6 +69,15 @@ export const useStyles = makeStyles((theme: any) => ({
     marginLeft: theme.spacing(0.25)
   },
   compactArrowDropdown: {
-    marginLeft: theme.spacing(-0.5)
+    marginLeft: 0
+  },
+  navbarChat: {
+    color: theme.circleIn.palette.navbarChatFontColor
+  },
+  navbarClasses: {
+    color: theme.circleIn.palette.navbarClassesFontColor
+  },
+  navbarLeaderboard: {
+    color: theme.circleIn.palette.navbarLeaderboardFontColor
   }
 }));

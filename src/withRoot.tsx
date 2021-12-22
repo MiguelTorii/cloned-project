@@ -59,6 +59,9 @@ const circleInTheme = {
   menuDivider: '#C7D3DA',
   navbarBackgroundColor: '#1A1C1D',
   navbarBorderColor: '#FFFFFF1C',
+  navbarChatFontColor: '#9bcfee',
+  navbarClassesFontColor: '#eacbc9',
+  navbarLeaderboardFontColor: '#f0cd8e',
   searchInputColor: '#484848',
   darkTextColor: '#BFBFC1',
   tooltipBackground: '#3C3D3F',
@@ -159,7 +162,10 @@ let theme = createTheme({
       navigationHighlightTranslucent: circleInTheme.navigationHighlightTranslucent,
       navigationHighlightOpaque: circleInTheme.navigationHighlightOpaque,
       hoverMenuTranslucent: circleInTheme.hoverMenuTranslucent,
-      expBarBackground: circleInTheme.expBarBackground
+      expBarBackground: circleInTheme.expBarBackground,
+      navbarChatFontColor: circleInTheme.navbarChatFontColor,
+      navbarClassesFontColor: circleInTheme.navbarClassesFontColor,
+      navbarLeaderboardFontColor: circleInTheme.navbarLeaderboardFontColor
     },
     customBackground: {
       iconButton: 'rgba(173,187,196, 0.5)'
