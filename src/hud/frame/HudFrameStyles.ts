@@ -24,7 +24,8 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'row',
     overflow: 'hidden',
     margin: 'auto',
-    width: '100%'
+    width: '100%',
+    height: '100px'
   },
   standardAppContent: {
     maxWidth: '1200px'
@@ -42,7 +43,8 @@ export const useStyles = makeStyles((theme: any) => ({
   mainHeader: {},
   mainAction: {
     flexGrow: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    height: '100px'
   },
   mainFooter: {
     flexShrink: 0,
