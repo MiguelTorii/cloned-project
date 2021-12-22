@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useMemo, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { differenceInMilliseconds } from 'date-fns';
 import { useIdleTimer } from 'react-idle-timer';
@@ -18,6 +19,7 @@ import Recommendations from '../../containers/Recommendations/Recommendations';
 import RecommendationsFeedback from '../RecommendationsFeedback/RecommendationsFeedback';
 import { POST_SOURCE } from '../../constants/app';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
+import { CampaignState } from '../../reducers/campaign';
 
 const timeout = TIMEOUT.POST_ITEM;
 const MyLink = React.forwardRef<any, any>(
@@ -44,6 +46,10 @@ const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
     const query = new URLSearchParams(location.search);
     return query.get(PROFILE_SOURCE_KEY);
   }, [location]);
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
 
   const handleOnActive = () => {
     const diff = differenceInMilliseconds(new Date(), lastActive.current);
@@ -93,13 +99,13 @@ const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
         </div>
       </Hidden>
       <Grid container spacing={3}>
-        <Grid item xs={12} lg={9}>
+        <Grid item xs={12} lg={isHud ? 12 : 9}>
           <Paper className={classes.root} elevation={0}>
             {children}
           </Paper>
         </Grid>
         <Hidden mdDown>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={12} lg={isHud ? 12 : 3}>
             <Box pt={2}>
               {from === POST_SOURCE.RECOMMENDATION && <RecommendationsFeedback feedId={feedId} />}
               <Recommendations />
