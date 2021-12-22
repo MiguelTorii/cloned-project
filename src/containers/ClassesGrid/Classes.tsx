@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
+import { Link } from '@material-ui/core';
 import ClassCard from './ClassCard';
 import { leaveUserClass } from '../../api/user';
 import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
@@ -22,6 +23,9 @@ import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user';
 import { CampaignState } from '../../reducers/campaign';
+import { AppState } from '../../configureStore';
+import { User } from '../../types/models';
+import { openSupportWidget } from '../../utils/helpers';
 
 const Filters = {
   current: {
@@ -60,7 +64,6 @@ const styles = (theme) => ({
     textAlign: 'center'
   },
   emptyBody: {
-    maxWidth: 370,
     color: theme.circleIn.palette.darkTextColor,
     fontWeight: 400,
     fontSize: 16,
@@ -94,6 +97,8 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const isHud: boolean | null = useSelector(
     (state: { campaign: CampaignState }) => state.campaign.hud
   );
+
+  const profile = useSelector<AppState, User>((state) => state.user.data);
 
   const arrFilters = useMemo(
     () =>
@@ -203,6 +208,11 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const handleSelectFilter = useCallback((item) => {
     setCurrentFilter(item);
   }, []);
+
+  const handleOpenSupport = useCallback(() => {
+    openSupportWidget(`${profile.firstName} ${profile.lastName}`, profile.email);
+  }, [profile]);
+
   return (
     <div className={!isHud && classes.wrapper}>
       {isHud ? (
@@ -247,6 +257,20 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
           </Grid>
         </>
       )}
+      {classList.length > 0 && (
+        <Box display="flex" mt={1} mb={1}>
+          <Typography>
+            {currentFilter === 'current'
+              ? "Here are the classes that you're enrolled in currently on CircleIn."
+              : 'Here are the past classes that you were enrolled in currently on CircleIn.'}
+            &nbsp;
+          </Typography>
+          <Link component="button" underline="none" onClick={handleOpenSupport}>
+            <Typography>Contact CircleIn Support</Typography>
+          </Link>
+          <Typography>&nbsp;if you have any questions.</Typography>
+        </Box>
+      )}
 
       <Grid
         justifyContent={classList?.length ? 'flex-start' : 'center'}
@@ -272,17 +296,13 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
               </Grid>
             )
         )}
-        {!classList?.length && (
-          <EmptyState imageUrl={EmptyClass}>
-            <div className={classes.emptyTitle}>
-              {currentFilter === 'current' ? 'No classes yet.' : 'No past classes yet.'}
-            </div>
-            <div className={classes.emptyBody}>
-              {currentFilter === 'current'
-                ? 'You haven’t been added to any classes yet. If you’re currently enrolled in classes, please contact us at support@circleinapp.com.'
-                : 'When you complete a class, they will show up here!'}
-            </div>
-          </EmptyState>
+        {!classList?.length && currentFilter === 'current' && (
+          <Box mt={15} display="flex" justifyContent="center">
+            <Typography>If a class has already started and it isn’t here,&nbsp;</Typography>
+            <Link component="button" underline="none" onClick={handleOpenSupport}>
+              <Typography>Contact CircleIn Support.</Typography>
+            </Link>
+          </Box>
         )}
         {loading && (
           <div className={classes.progress}>

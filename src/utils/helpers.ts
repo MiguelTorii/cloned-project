@@ -139,3 +139,8 @@ export const checkPath = (path, urls) => {
 };
 
 export const buildPath = (rootPath, params) => `${rootPath}?${qs.stringify(params)}`;
+
+export const openSupportWidget = (name: string, email: string) => {
+  (window as any).FreshworksWidget('identify', 'ticketForm', { name, email });
+  (window as any).FreshworksWidget('open');
+};
