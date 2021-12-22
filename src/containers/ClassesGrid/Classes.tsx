@@ -264,11 +264,11 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
               ? "Here are the classes that you're enrolled in currently on CircleIn."
               : 'Here are the past classes that you were enrolled in currently on CircleIn.'}
             &nbsp;
+            <Link component="button" underline="none" onClick={handleOpenSupport}>
+              <Typography>Contact CircleIn Support</Typography>
+            </Link>
+            &nbsp;if you have any questions.
           </Typography>
-          <Link component="button" underline="none" onClick={handleOpenSupport}>
-            <Typography>Contact CircleIn Support</Typography>
-          </Link>
-          <Typography>&nbsp;if you have any questions.</Typography>
         </Box>
       )}
 
@@ -298,10 +298,12 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         )}
         {!classList?.length && currentFilter === 'current' && (
           <Box mt={15} display="flex" justifyContent="center">
-            <Typography>If a class has already started and it isn’t here,&nbsp;</Typography>
-            <Link component="button" underline="none" onClick={handleOpenSupport}>
-              <Typography>Contact CircleIn Support.</Typography>
-            </Link>
+            <Typography>
+              If a class has already started and it isn’t here,&nbsp;
+              <Link component="button" underline="none" onClick={handleOpenSupport}>
+                <Typography>Contact CircleIn Support.</Typography>
+              </Link>
+            </Typography>
           </Box>
         )}
         {loading && (
