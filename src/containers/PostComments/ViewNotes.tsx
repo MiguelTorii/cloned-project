@@ -58,6 +58,7 @@ type Props = {
   showNotification?: (...args: Array<any>) => any;
   isPost?: boolean;
   isCurrent?: boolean;
+  isFromList?: boolean;
   initialComment?: TComment;
   onAddComment?: () => void;
   onDeleteComment?: () => void;
@@ -86,6 +87,14 @@ class ViewNotes extends React.PureComponent<Props, State> {
     loadViewMoreComment: false,
     replyCommentId: 0
   };
+
+  componentDidMount() {
+    const { isFromList } = this.props;
+
+    if (!isFromList) {
+      this.loadData();
+    }
+  }
 
   handlePostComment = async ({
     comment,
@@ -456,7 +465,7 @@ class ViewNotes extends React.PureComponent<Props, State> {
     const { items, loadViewMoreComment, comments } = this.state;
 
     // If comments are not loaded in the beginning, it just displays initial comment.
-    if (!comments) {
+    if (!comments && initialComment) {
       return <ErrorBoundary>{this.renderInitComment(initialComment)}</ErrorBoundary>;
     }
 
@@ -470,11 +479,11 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   renderComments = () => {
-    const { classes, initialComment } = this.props;
+    const { classes, initialComment, isFromList } = this.props;
     const { comments, loadViewMoreComment } = this.state;
 
     // If initialComment does not exist, it means there are no comments on the post.
-    if (!initialComment) {
+    if (!initialComment && isFromList) {
       return null;
     }
 
