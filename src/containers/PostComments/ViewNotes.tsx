@@ -90,7 +90,6 @@ class ViewNotes extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     const { isFromList } = this.props;
-    console.log('come', isFromList);
 
     if (!isFromList) {
       this.loadData();
