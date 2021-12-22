@@ -6,6 +6,7 @@ export default withStyles((theme) => ({
     color: theme.circleIn.palette.modalBackground,
     fontSize: 18,
     borderRadius: 10,
+    boxShadow: '6px 6px 40px rgba(0, 0, 0, 0.2)',
     '&:hover': {
       backgroundColor: theme.circleIn.palette.brand
     },
