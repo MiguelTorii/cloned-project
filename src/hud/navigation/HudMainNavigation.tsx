@@ -134,7 +134,7 @@ const HudMainNavigation = () => {
     id: CHAT_MAIN_AREA,
     displayName: 'chat',
     icon: (
-      <Badge badgeContent={unreadMessageCount} color="secondary">
+      <Badge badgeContent={unreadMessageCount} color="secondary" overlap="circular">
         <IconChat style={NAVBAR_ICON_SIZE} />
       </Badge>
     ),
