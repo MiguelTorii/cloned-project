@@ -303,7 +303,7 @@ class Profile extends React.PureComponent<Props, State> {
       chatLoading: true
     });
     openChannelWithEntity({
-      entityId: userId,
+      entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false
@@ -324,7 +324,7 @@ class Profile extends React.PureComponent<Props, State> {
       chatLoading: true
     });
     openChannelWithEntity({
-      entityId: userId,
+      entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: true
