@@ -84,7 +84,10 @@ const CreateChatChannelInput = ({
       channels.forEach((channel) => {
         const { channels } = channel;
         channels.forEach((channel) => {
-          if (getChannelName(channel.chat_name) === selectChannel) {
+          if (
+            channel.chat_name === selectChannel ||
+            getChannelName(channel.chat_name) === selectChannel
+          ) {
             selectedChannelIs.push(channel.chat_id);
             selectedChannels.push(channel);
           }
@@ -124,7 +127,7 @@ const CreateChatChannelInput = ({
         chatIds
       });
       setCurrentCommunityId(selectedClasses[selectedClasses.length - 1]?.community?.id);
-      setCurrentCommunity(channels[channels.length - 1]);
+      setCurrentCommunity(selectedClasses[selectedClasses.length - 1]?.community);
       setShowError(false);
       onClosePopover();
       setLoading(false);

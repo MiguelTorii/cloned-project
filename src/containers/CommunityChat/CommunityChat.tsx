@@ -76,8 +76,8 @@ const CommunityChat = ({
       (communityChannel) => communityChannel.courseId === currentCommunity.id
     );
 
-    if (currentCommunity.id !== 'chat') {
-      const channels = filterCurrentCommunityChannel[0]?.channels;
+    if (currentCommunity.id !== 'chat' && filterCurrentCommunityChannel[0]) {
+      const { channels } = filterCurrentCommunityChannel[0];
       channels.forEach((communityChannel) => {
         const { channels } = communityChannel;
         currentCommunityChannels.push(...channels);
