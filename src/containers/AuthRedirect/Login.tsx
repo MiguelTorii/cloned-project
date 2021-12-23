@@ -124,7 +124,7 @@ const Login = ({ role, setScreen, school, signIn, isLoginAsExternalUser }) => {
               onChange={onChange('email')}
               autoComplete="on"
               fullWidth
-              placeholder="Email"
+              placeholder="School Email Address"
             />
             <AuthTextInput
               id="password-login"

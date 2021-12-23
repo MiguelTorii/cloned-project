@@ -213,7 +213,7 @@ const SelectSchool = ({
       </form>
       <Box mt={3}>
         <AuthButton variant="contained" onClick={onClick} disabled={!school?.id || loading}>
-          {loading ? <CircularProgress size={20} color="secondary" /> : 'Select School'}
+          {loading ? <CircularProgress size={20} color="secondary" /> : 'Enter'}
         </AuthButton>
       </Box>
 
