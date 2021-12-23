@@ -156,23 +156,15 @@ const CollapseNavbar = ({
             />
           ) : local[channel.chat_id] ? (
             <div className={classes.list}>
-              <Tooltip
-                id={9089}
-                hidden={channel.chat_name !== 'introduce-yourself'}
-                placement="right"
-                text="Let your classmates know you’re here, tell them where you’re from, and we made a space for everything you need to chat about. "
-                okButton="Yay! 🎉"
-              >
-                <ListItemText
-                  classes={{
-                    primary: cx(
-                      classes.channelName,
-                      local[channel.chat_id]?.unread && classes.unreadMessageChannel
-                    )
-                  }}
-                  primary={local[channel.chat_id] && channel.chat_name}
-                />
-              </Tooltip>
+              <ListItemText
+                classes={{
+                  primary: cx(
+                    classes.channelName,
+                    local[channel.chat_id]?.unread && classes.unreadMessageChannel
+                  )
+                }}
+                primary={local[channel.chat_id] && channel.chat_name}
+              />
               {local[channel.chat_id]?.unread > 0 && (
                 <Badge
                   badgeContent={local[channel.chat_id]?.unread}
