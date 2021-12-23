@@ -24,7 +24,10 @@ export const styles = (theme) => ({
     fontWeight: 'bold',
     letterSpacing: 1.1,
     margin: theme.spacing(2, 7),
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 20
+    }
   },
   backIcon: {
     position: 'absolute',
@@ -38,7 +41,11 @@ export const styles = (theme) => ({
     color: theme.circleIn.palette.primaryText1,
     cursor: 'pointer',
     right: 24,
-    top: 24
+    top: 24,
+    [theme.breakpoints.down('sm')]: {
+      right: 20,
+      top: 20
+    }
   },
   hr: {
     background: 'rgba(233, 236, 239, 0.25)',

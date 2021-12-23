@@ -39,12 +39,10 @@ const styles = (theme) => ({
     backgroundImage: `url(${ImageBackgroundDesktop})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center center',
-    backgroundSize: '100% auto',
-    [theme.breakpoints.only('sm')]: {
-      backgroundSize: '200%'
-    },
+    backgroundSize: '1440px auto',
     [theme.breakpoints.down('xs')]: {
-      backgroundImage: `url(${ImageBackgroundMobile})`
+      backgroundImage: `url(${ImageBackgroundMobile})`,
+      backgroundSize: '450px auto'
     }
   },
   deeplinkBlankPage: {
@@ -100,6 +98,7 @@ const styles = (theme) => ({
     borderRadius: 30,
     padding: theme.spacing(7, 10),
     marginTop: 60,
+    boxShadow: '10px 10px 40px rgba(0, 0, 0, 0.2)',
     [theme.breakpoints.down('sm')]: {
       marginTop: 80
     }
@@ -381,7 +380,7 @@ const Auth = ({
           <img src={ImageLogoIcon} alt="Logo Icon" className={classes.logoIcon} />
         </Hidden>
         <img src={ImageLogoText} alt="Logo Text" className={classes.logoText} />
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={0}>
           <img className={classes.imageLeft} src={ImageContentLeft} alt="background on left" />
           <img className={classes.imageRight} src={ImageContentRight} alt="background on right" />
           {renderBack}
