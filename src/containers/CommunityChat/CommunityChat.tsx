@@ -71,6 +71,10 @@ const CommunityChat = ({
     }
   } = chat;
   useEffect(() => {
+    if (!currentCommunity) {
+      return;
+    }
+
     const currentCommunityChannels = [];
     const filterCurrentCommunityChannel = allCommunityChannels.filter(
       (communityChannel) => communityChannel.courseId === currentCommunity.id
