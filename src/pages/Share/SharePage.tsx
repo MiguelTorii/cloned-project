@@ -67,6 +67,10 @@ const SharePage = ({ classes, match }: Props) => {
             setRedirect(`/question/${postId}`);
             break;
 
+          case 8:
+            setRedirect(`/post/${postId}`);
+            break;
+
           default:
             break;
         }
