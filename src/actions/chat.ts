@@ -967,8 +967,3 @@ export const handleUpdateFriendlyName =
       })
     );
   };
-
-export const setDefaultCommunityIdAction = (communityId) => ({
-  type: chatActions.SET_DEFAULT_COMMUNITY_ID,
-  payload: { communityId }
-});
