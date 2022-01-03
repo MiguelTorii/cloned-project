@@ -167,6 +167,10 @@ const HudRightNavigation = () => {
           dispatch(push(`/question/${postId}`));
           break;
 
+        case POST_TYPES.POST:
+          dispatch(push(`/post/${postId}`));
+          break;
+
         default:
           break;
       }
