@@ -47,7 +47,7 @@ const ChatPage = ({
   const classes = useStyles();
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) {
@@ -95,21 +95,23 @@ const ChatPage = ({
       }
     }
 
+    setLoading(true);
     fetchCommuniteis();
   }, []);
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-
     let defaultCommunity;
 
-    if ((!currentCommunityId && communities.length === 0) || oneTouchSendOpen) {
+    if (communities.length === 0 || oneTouchSendOpen) {
       defaultCommunity = DEFAULT_COMMUNITY_MENU_ITEMS;
-    } else if (!currentCommunityId && !currentCommunityChannel && communities.length > 0) {
+    } else if (!currentCommunityId) {
       defaultCommunity = (
         communities.find((community) => community.community.id === defaultCommunityId) ||
+        communities[0]
+      ).community;
+    } else if (!currentCommunity) {
+      defaultCommunity = (
+        communities.find((community) => community.community.id === currentCommunityId) ||
         communities[0]
       ).community;
     }
@@ -118,14 +120,7 @@ const ChatPage = ({
       setCurrentCommunityId(defaultCommunity.id);
       setCurrentCommunity(defaultCommunity);
     }
-  }, [
-    loading,
-    communities,
-    oneTouchSendOpen,
-    currentCommunity,
-    currentCommunityId,
-    defaultCommunityId
-  ]);
+  }, [communities, oneTouchSendOpen, currentCommunity, currentCommunityId, defaultCommunityId]);
 
   useEffect(() => {
     if (!isLoading && !!Object.keys(local).length) {
