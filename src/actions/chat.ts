@@ -537,7 +537,11 @@ export const openChannelWithEntity =
     fullscreen: boolean;
   }) =>
   async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
-    if (!fullscreen) {
+    const {
+      campaign: { hud }
+    } = getState();
+
+    if (!hud && !fullscreen) {
       dispatch(
         requestStartChannelWithEntity({
           entityId,
@@ -555,7 +559,7 @@ export const openChannelWithEntity =
       } = getState();
       // Create Channel with users
       const { chatId } = await createChannel({
-        users: [entityId]
+        users: [Number(entityId)]
       });
       // Get Created Channel By Chat Id
       const channel = await client.getChannelBySid(chatId);
