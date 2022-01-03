@@ -82,7 +82,7 @@ class StudyCircle extends React.PureComponent<Props, State> {
       isLoading: true
     });
     openChannelWithEntity({
-      entityId: userId ? Number(userId) : 0,
+      entityId: userId,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false
