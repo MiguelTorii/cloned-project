@@ -46,7 +46,6 @@ import FlashcardsShowPage from './pages/Flashcards/FlashcardsShowPage';
 import FlashcardsEditPage from './pages/Flashcards/FlashcardsEditPage';
 import HomePage from './pages/Home/HomePage';
 import Gondor from './containers/Auth/Gondor';
-import JoinCommunity from './pages/JoinCommunity/JoinCommunity';
 
 const BrowserRoutes = () => (
   <ConnectedRouter history={history}>
@@ -101,8 +100,6 @@ const BrowserRoutes = () => (
           />
           <Route exact path="/study" component={withTracker(StudyPage)} />
 
-          {/* WHAT ARE THESE? */}
-          <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
           <Route exact path="/notifications" component={withTracker(NotificationsPage)} />
           <Route exact path="/share/:code" component={withTracker(SharePage)} />
 

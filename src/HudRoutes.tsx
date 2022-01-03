@@ -21,7 +21,6 @@ import RedirectPage from './pages/Redirect/RedirectPage';
 import Sandbox from './pages/Sandbox/Sandbox';
 import withTracker from './withTracker';
 import Gondor from './containers/Auth/Gondor';
-import JoinCommunity from './pages/JoinCommunity/JoinCommunity';
 import HudFrame from './hud/frame/HudFrame';
 import Miss from './pages/Miss/Miss';
 import { CREATE_POST_PATHNAME } from './routeConstants';
@@ -85,7 +84,6 @@ const HudRoutes = () => (
           <Route exact path="/chat" component={withTracker(HudFrame)} />
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
           <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
-          <Route path="/community/:hashId" component={withTracker(JoinCommunity)} />
 
           {/* Non-signed in routes */}
           <Route exact path="/new" component={withTracker(AuthRedirectPage)} />

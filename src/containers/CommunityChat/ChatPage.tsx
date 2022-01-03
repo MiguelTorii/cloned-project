@@ -38,16 +38,14 @@ const ChatPage = ({
       currentCommunity,
       currentCommunityId,
       oneTouchSendOpen,
-      currentCommunityChannel,
-      defaultCommunityId
+      currentCommunityChannel
     },
     isLoading
   } = chat;
-
-  const classes = useStyles();
-
+  const classes: any = useStyles();
+  const campaign = useSelector((state) => (state as any).campaign);
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) {
@@ -89,44 +87,22 @@ const ChatPage = ({
         );
         setCommunityList(nonEmptyCommunities);
         setCommunityChannels(communityChannels);
+
+        if (currentCommunityId && !currentCommunityChannel && nonEmptyCommunities.length > 0) {
+          const defaultCommunity = nonEmptyCommunities[0].community;
+          setCurrentCommunityId(defaultCommunity.id);
+          setCurrentCommunity(defaultCommunity);
+        }
+
         setLoading(false);
       } catch (e) {
         setLoading(false);
       }
     }
 
+    setLoading(true);
     fetchCommuniteis();
   }, []);
-
-  useEffect(() => {
-    if (loading) {
-      return;
-    }
-
-    let defaultCommunity;
-
-    if ((!currentCommunityId && communities.length === 0) || oneTouchSendOpen) {
-      defaultCommunity = DEFAULT_COMMUNITY_MENU_ITEMS;
-    } else if (!currentCommunityId && !currentCommunityChannel && communities.length > 0) {
-      defaultCommunity = (
-        communities.find((community) => community.community.id === defaultCommunityId) ||
-        communities[0]
-      ).community;
-    }
-
-    if (defaultCommunity) {
-      setCurrentCommunityId(defaultCommunity.id);
-      setCurrentCommunity(defaultCommunity);
-    }
-  }, [
-    loading,
-    communities,
-    oneTouchSendOpen,
-    currentCommunity,
-    currentCommunityId,
-    defaultCommunityId
-  ]);
-
   useEffect(() => {
     if (!isLoading && !!Object.keys(local).length) {
       let count = 0;
@@ -160,6 +136,35 @@ const ChatPage = ({
     },
     [currentCommunity, setCurrentCommunityId, setCurrentCommunity, setCurrentChannelSid]
   );
+  useEffect(() => {
+    if (oneTouchSendOpen || currentCommunityId === 'chat' || !currentCommunityId) {
+      setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS);
+    } else if (currentCommunity && !!communities?.length && currentCommunity.id !== 'chat') {
+      const targetCourse = communities.filter(
+        (course) => course.community.id === currentCommunity.id
+      );
+
+      if (targetCourse.length) {
+        setCurrentCommunity(targetCourse[0]?.community);
+      }
+    } else if (currentCommunityId && !!communities?.length && currentCommunityId !== 'chat') {
+      const targetCourseChannel = communities.filter(
+        (community) => community.community.id === Number(currentCommunityId)
+      );
+
+      if (targetCourseChannel.length) {
+        setCurrentCommunity(targetCourseChannel[0].community);
+      }
+    }
+  }, [
+    currentCommunityId,
+    setCurrentCommunityId,
+    setCurrentCommunity,
+    currentCommunity,
+    communities,
+    loading,
+    campaign.chatLanding
+  ]);
 
   if (loading) {
     return <LoadingSpin />;

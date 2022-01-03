@@ -20,7 +20,6 @@ import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { uploadMedia } from './user';
-import DEFAULT_COMMUNITY_MENU_ITEMS from '../containers/CommunityChat/constants';
 
 const getAvailableSlots = (width) => {
   try {
@@ -558,12 +557,10 @@ export const openChannelWithEntity =
           data: { client }
         }
       } = getState();
-
       // Create Channel with users
       const { chatId } = await createChannel({
         users: [Number(entityId)]
       });
-
       // Get Created Channel By Chat Id
       const channel = await client.getChannelBySid(chatId);
 
@@ -600,9 +597,6 @@ export const openChannelWithEntity =
           dispatch(push(`/video-call/${chatId}`));
         } else {
           dispatch(push('/chat'));
-          setCurrentCommunityId(DEFAULT_COMMUNITY_MENU_ITEMS.id)(dispatch);
-          setCurrentChannelSid('')(dispatch);
-          setCurrentCommunity(DEFAULT_COMMUNITY_MENU_ITEMS)(dispatch);
         }
       }
     }
@@ -977,8 +971,3 @@ export const handleUpdateFriendlyName =
       })
     );
   };
-
-export const setDefaultCommunityIdAction = (communityId) => ({
-  type: chatActions.SET_DEFAULT_COMMUNITY_ID,
-  payload: { communityId }
-});

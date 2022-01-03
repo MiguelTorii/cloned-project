@@ -15,7 +15,6 @@ export type ChatState = {
     currentCommunity: Record<string, any> | null | undefined;
     currentCommunityChannel: Record<string, any> | null | undefined;
     currentCommunityId: string | null;
-    defaultCommunityId: string;
     entityFirstName: string;
     entityId: number;
     entityLastName: string;
@@ -50,7 +49,6 @@ const defaultState = {
     currentCommunity: null,
     currentCommunityChannel: null,
     currentCommunityId: null,
-    defaultCommunityId: null,
     entityFirstName: '',
     entityId: 0,
     entityLastName: '',
@@ -408,14 +406,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           }
         }
       };
-    case chatActions.SET_DEFAULT_COMMUNITY_ID:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          defaultCommunityId: action.payload.communityId
-        }
-      };
+
     case rootActions.CLEAR_STATE:
       return defaultState;
 
