@@ -5,7 +5,7 @@ import { useStyles } from './HudTitleStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const subAreaToTitle = {
-  ABOUT_ME_AREA: 'About Me',
+  ABOUT_ME_AREA: null,
   REWARDS_STORE_AREA: 'Rewards Store',
   POINTS_HISTORY_AREA: 'Points History',
   CHAT_AREA: null,
