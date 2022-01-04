@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
   unreadMessageChannel: {
     color: 'white',
-    fontWeight: 700
+    fontWeight: 700,
+    paddingRight: theme.spacing(1 / 2)
   },
   childChannel: {
     paddingLeft: theme.spacing(5)
@@ -49,9 +50,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    '&>:first-child': {
-      width: '100%'
-    }
+    overflowX: 'hidden'
   },
   listItem: {
     '&:hover': {
@@ -59,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   badge: {
-    right: theme.spacing()
+    transform: 'none',
+    position: 'static'
   }
 }));
 
