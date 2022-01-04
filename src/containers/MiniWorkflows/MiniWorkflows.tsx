@@ -61,9 +61,9 @@ const MiniWorkflows = ({ isHud = false }: Props) => {
           <Typography paragraph>
             When you add tasks to Workflow, they’ll show up here to help you stay on track!
           </Typography>
-          <GradientButton compact onClick={handleGotoWorkflow}>
+          <TransparentButton compact onClick={handleGotoWorkflow}>
             Go to Workflow
-          </GradientButton>
+          </TransparentButton>
         </Box>
       );
     }
