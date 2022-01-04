@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import HudRoutes from './HudRoutes';
 import BrowserRoutes from './BrowserRoutes';
 import { CampaignState } from './reducers/campaign';
+import UnauthenticatedRoutes from './UnauthenticatedRoutes';
 
 const Routes = () => {
   const isHud: boolean | null = useSelector(
@@ -13,7 +14,11 @@ const Routes = () => {
     return <HudRoutes />;
   }
 
-  return <BrowserRoutes />;
+  if (isHud === false) {
+    return <BrowserRoutes />;
+  }
+
+  return <UnauthenticatedRoutes />;
 };
 
 export default Routes;
