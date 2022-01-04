@@ -64,7 +64,6 @@ const ChatChannel = ({ channelId }: Props) => {
       />
 
       {/* Channel unread badge */}
-      <span />
       {channel.unreadCount > -1 && (
         <Badge
           badgeContent={channel.unreadCount}

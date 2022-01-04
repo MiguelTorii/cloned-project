@@ -44,10 +44,7 @@ export const useStyles = makeStyles((theme: any) => ({
   list: {
     display: 'flex',
     alignItems: 'center',
-    width: '100%',
-    '&>:first-child': {
-      width: '100%'
-    }
+    width: '100%'
   },
   listItem: {
     '&:hover': {
