@@ -17,6 +17,7 @@ import EmptyState from './EmptyState';
 import FeedItem from './FeedItem';
 import styles from '../_styles/FeedList';
 import { TFeedItem } from '../../types/models';
+import { COMMUNITY_SCROLL_CONTAINER_ID } from '../../constants/common';
 
 type Props = {
   classes?: Record<string, any>;
@@ -236,7 +237,7 @@ class FeedList extends React.PureComponent<Props, State> {
                 </Typography>
               </div>
             }
-            scrollableTarget={isHud ? 'community-scroll-container' : null}
+            scrollableTarget={isHud ? COMMUNITY_SCROLL_CONTAINER_ID : null}
           >
             {items.map((item) => (
               <Paper key={item.feedId} className={classes.root} elevation={0}>

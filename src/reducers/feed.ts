@@ -4,37 +4,36 @@ import type { Action } from '../types/action';
 import type { TFeedItem } from '../types/models';
 import { POST_WRITER } from '../constants/common';
 import { FEEDS_PER_PAGE } from '../constants/app';
-import { feedToCamelCaseV2 } from '../api/utils';
+
+export type TFeedFilters = {
+  userClasses: Array<string>;
+  index?: number;
+  limit?: number;
+  postTypes: Array<string>;
+  from: string;
+  bookmark: boolean;
+  query: string;
+  fromDate: Record<string, any> | null | undefined;
+  toDate: Record<string, any> | null | undefined;
+  pastFilter: boolean;
+};
+
+export type TFeedData = {
+  items: TFeedItem[];
+  hasMore: boolean;
+  lastIndex: number;
+  filters: TFeedFilters;
+};
 
 export type FeedState = {
-  data: {
-    items: TFeedItem[];
-    hasMore: boolean;
-    lastIndex: number;
-    filters: {
-      userClasses: Array<string>;
-      index?: number;
-      limit?: number;
-      postTypes: Array<string>;
-      from: string;
-      bookmark: boolean;
-      query: string;
-      fromDate: Record<string, any> | null | undefined;
-      toDate: Record<string, any> | null | undefined;
-      pastFilter: boolean;
-    };
-  };
+  data: TFeedData;
   error: boolean;
   errorMessage: {
     title: string;
     body: string;
   };
   isLoading: boolean;
-  scrollData: {
-    position: number;
-    classId: number;
-  };
-  lastClickedPostScrollPosition: number;
+  lastScrollPosition: number | null;
 };
 
 const defaultState = {
@@ -60,11 +59,7 @@ const defaultState = {
     body: ''
   },
   isLoading: false,
-  lastClickedPostScrollPosition: null,
-  scrollData: {
-    position: null,
-    classId: -1
-  }
+  lastScrollPosition: null
 };
 
 export default (state: FeedState = defaultState, action: Action): FeedState => {
@@ -218,16 +213,12 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
 
     case feedActions.UPDATE_SCROLL_DATA:
       return update(state, {
-        scrollData: {
-          $set: action.payload
-        }
+        lastScrollPosition: { $set: action.payload }
       });
 
     case feedActions.RESET_SCROLL_DATA:
       return update(state, {
-        scrollData: {
-          $set: defaultState.scrollData
-        }
+        lastScrollPosition: { $set: null }
       });
 
     case feedActions.UPDATE_FILTER_FIELDS: {

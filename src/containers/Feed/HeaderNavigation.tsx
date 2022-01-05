@@ -167,7 +167,7 @@ const HeaderNavigation = ({
         </Button>
         <>
           <span> | </span>
-          <Button onClick={openClassmatesDialog(expertMode ? 'student' : 'classmate')}>
+          <Button onClick={() => openClassmatesDialog(expertMode ? 'student' : 'classmate')}>
             <Tooltip
               id={9057}
               placement="right"

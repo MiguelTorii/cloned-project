@@ -236,11 +236,10 @@ export const apiFetchFeeds = async (params: APIFetchFeedsParams, cancelToken) =>
     params,
     cancelToken
   });
-export const apiFetchFeedsV2 = async (params: APIFetchFeedsParams, cancelToken) => {
+export const apiFetchFeedsV2 = async (params: APIFetchFeedsParams) => {
   const data = await callApi({
     url: `${API_URL_V1_2}/feed`,
-    params,
-    cancelToken
+    params
   });
 
   return feedToCamelCaseV2(data.posts);

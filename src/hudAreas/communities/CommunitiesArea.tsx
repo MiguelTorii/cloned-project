@@ -5,6 +5,7 @@ import { useStyles } from './CommunitiesAreaStyles';
 import { CLASSES_AREA, FEEDS_AREA } from '../../hud/navigationState/hudNavigation';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 import ClassFeedSubArea from '../classFeed/ClassFeedSubArea';
+import { COMMUNITY_SCROLL_CONTAINER_ID } from '../../constants/common';
 
 const CommunitiesArea = () => {
   const classes: any = useStyles();
@@ -19,7 +20,7 @@ const CommunitiesArea = () => {
   );
 
   return (
-    <div id="community-scroll-container" className={classes.container}>
+    <div id={COMMUNITY_SCROLL_CONTAINER_ID} className={classes.container}>
       {selectedMainSubArea === CLASSES_AREA && <Classes />}
 
       {selectedMainSubArea === FEEDS_AREA && <ClassFeedSubArea />}

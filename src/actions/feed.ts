@@ -75,19 +75,16 @@ const clearFeedFilterRequest = () => ({
   type: feedActions.CLEAR_FEED_FILTER_REQUEST
 });
 
-const updateScrollDataRequest = ({ position, classId }: { position: number; classId: number }) => ({
+export const updateScrollDataRequest = (position: number) => ({
   type: feedActions.UPDATE_SCROLL_DATA,
-  payload: {
-    position,
-    classId
-  }
+  payload: position
 });
 
 const resetScrollDataRequest = () => ({
   type: feedActions.RESET_SCROLL_DATA
 });
 
-const clearFeedsAction = () => ({
+export const clearFeedsAction = () => ({
   type: feedActions.CLEAR_FEEDS
 });
 
@@ -137,9 +134,6 @@ export const fetchFeed =
 
 export const clearFeedError = () => async (dispatch: Dispatch) => dispatch(clearError());
 export const clearFeeds = () => async (dispatch) => dispatch(clearFeedsAction());
-export const updateScrollData =
-  (scrollData: { position: number; classId: number }) => async (dispatch: Dispatch) =>
-    dispatch(updateScrollDataRequest(scrollData));
 export const resetScrollData = () => async (dispatch: Dispatch) =>
   dispatch(resetScrollDataRequest());
 export const updateBookmark =
@@ -245,9 +239,9 @@ export const updateFilterFields = (newFilter) => ({
   type: feedActions.UPDATE_FILTER_FIELDS,
   payload: newFilter
 });
-export const actionFetchFeed = (params, cancelToken) => ({
+export const actionFetchFeed = (params) => ({
   type: feedActions.FETCH_FEED,
-  apiCall: () => apiFetchFeedsV2(params, cancelToken)
+  apiCall: () => apiFetchFeedsV2(params)
 });
 export const actionDeleteFeed = (feedId) => ({
   type: feedActions.DELETE_FEED,

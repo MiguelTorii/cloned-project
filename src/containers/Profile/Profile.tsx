@@ -226,12 +226,9 @@ class Profile extends React.PureComponent<Props, State> {
     const { userId } = this.props;
 
     if (userId !== '') {
-      apiFetchFeedsV2(
-        {
-          user_id: Number(userId)
-        },
-        null
-      ).then((feed) => {
+      apiFetchFeedsV2({
+        user_id: Number(userId)
+      }).then((feed) => {
         this.setState({
           feed
         });
@@ -248,12 +245,9 @@ class Profile extends React.PureComponent<Props, State> {
     } = this.props;
 
     if (ownId === userId && userId !== '') {
-      apiFetchFeedsV2(
-        {
-          bookmarked: true
-        },
-        null
-      ).then((bookmarks) => {
+      apiFetchFeedsV2({
+        bookmarked: true
+      }).then((bookmarks) => {
         this.setState({
           bookmarks
         });

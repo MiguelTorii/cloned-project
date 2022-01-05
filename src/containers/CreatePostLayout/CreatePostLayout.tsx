@@ -236,7 +236,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         dispatch(push(path));
       }
     },
-    [newClassExperience, dispatch, canBatchPost]
+    [newClassExperience, dispatch, canBatchPost, classId, sectionId]
   );
 
   const renderClassSelector = () => (

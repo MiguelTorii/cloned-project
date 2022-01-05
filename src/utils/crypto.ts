@@ -37,3 +37,19 @@ export const decypherClass = (): ClassSectionLocation => {
   } catch (error) {}
   return {};
 };
+
+export const decipherClassId = (encryptedString: string) => {
+  if (!encryptedString) {
+    return null;
+  }
+
+  try {
+    const [classId, sectionId] = decypher(encryptedString).split(':');
+    return {
+      classId: Number(classId),
+      sectionId: Number(sectionId)
+    };
+  } catch {}
+
+  return null;
+};

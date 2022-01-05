@@ -23,6 +23,17 @@ export type FlashcardData = {
   ids: Array<number>;
 };
 
+export type TUserClasses = {
+  classList: Array<UserClass> | null | undefined;
+  pastClasses?: Array<UserClass> | null | undefined;
+  canAddClasses: boolean;
+  emptyState: {
+    body: string;
+    logo: string;
+    visibility: boolean;
+  };
+};
+
 export type UserState = {
   action: any;
   announcementData: Announcement | null;
@@ -55,16 +66,7 @@ export type UserState = {
     viewedOnboarding: boolean | null;
     helpLink: string;
   };
-  userClasses: {
-    classList: Array<UserClass> | null | undefined;
-    pastClasses?: Array<UserClass> | null | undefined;
-    canAddClasses: boolean;
-    emptyState: {
-      body: string;
-      logo: string;
-      visibility: boolean;
-    };
-  };
+  userClasses: TUserClasses;
 };
 
 const defaultState = {
