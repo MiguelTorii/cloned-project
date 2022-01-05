@@ -169,11 +169,12 @@ const FloatingChat = ({
   }, [handleNewChannel]);
 
   const handleOpenChannel = (channel) => {
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
     const {
       channel: {
         channelState: { attributes }
       }
-    } = newMessage;
+    } = newMessage as any;
 
     if (attributes?.community_id) {
       setCurrentCommunityId(attributes?.community_id);
@@ -221,7 +222,10 @@ const FloatingChat = ({
       let unread = 0;
       const cl = Object.keys(local)
         .filter(
-          (l) => local[l].sid && !local[l]?.twilioChannel?.channelState?.attributes?.community_id
+          (l) =>
+            // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
+            local[l].sid &&
+            !(local[l]?.twilioChannel as any)?.channelState?.attributes?.community_id
         )
         .sort((a, b) => {
           if (!local[a].lastMessage.message) {
@@ -245,7 +249,8 @@ const FloatingChat = ({
   const [prevMessageId, setPrevMessageId] = useState('');
   useEffect(() => {
     const handleMessage = () => {
-      const { state, channel } = newMessage;
+      // Use `any` type because `Property 'state' is private and only accessible within class 'Message'.`
+      const { state, channel } = newMessage as any;
       const { author, attributes, body } = state;
       const { firstName, lastName, files } = attributes;
       const sids = openChannels.map((oc) => oc.sid);
@@ -337,7 +342,7 @@ const FloatingChat = ({
 
       if (client && profileImage !== '') {
         try {
-          if (client.user.attributes.profileImageUrl !== profileImage) {
+          if ((client.user.attributes as Record<string, any>).profileImageUrl !== profileImage) {
             client.user.updateAttributes({
               ...client.user.attributes,
               profileImageUrl: profileImage

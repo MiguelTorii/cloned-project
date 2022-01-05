@@ -28,6 +28,7 @@ import { getPresignedURL } from '../../api/media';
 import { logEvent } from '../../api/analytics';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { Member } from '../../types/models';
+import { ChannelWrapper } from '../../reducers/chat';
 
 const styles = (theme) => ({
   list: {
@@ -89,7 +90,7 @@ type Props = {
   push?: (...args: Array<any>) => any;
   setCurrentCommunityId?: any;
   setCurrentChannel?: any;
-  local?: any;
+  local?: Record<string, ChannelWrapper>;
 };
 
 type State = {

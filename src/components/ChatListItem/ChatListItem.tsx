@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import MainChatItem from './MainChatItem';
 import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
-  channel?: Record<string, any>;
+  channel?: ChannelWrapper;
   userId?: string;
   onOpenChannel?: (...args: Array<any>) => any;
   selected?: boolean;

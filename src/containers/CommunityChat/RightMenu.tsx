@@ -15,13 +15,14 @@ import useStyles from './_styles/rightMenu';
 import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
+import { ChannelWrapper } from '../../reducers/chat';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
 type Props = {
-  local?: any;
+  local?: Record<string, ChannelWrapper>;
   channel?: any;
   isCommunityChat?: any;
   userId?: any;

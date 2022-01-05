@@ -4,12 +4,13 @@ import Divider from '@material-ui/core/Divider';
 import CommunityMenu from '../../components/CommunityMenu/CommunityMenu';
 import useStyles from './_styles/collageList';
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   unreadMessageCount: number;
   selectedCourse: any;
   communities: any[];
-  local: Record<string, any>;
+  local: Record<string, ChannelWrapper>;
   communityChannels: any[];
   handleSelect: (...args: Array<any>) => any;
 };

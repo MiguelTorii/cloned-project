@@ -332,10 +332,6 @@ export type ChatUser = {
   role?: string;
   isOnline?: boolean;
 };
-export type ChatChannel = {
-  sid: string;
-};
-export type ChatChannels = Array<ChatChannel>;
 export type BlockedUser = {
   userId: string;
   profileImageUrl: string;

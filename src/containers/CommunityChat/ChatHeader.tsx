@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { Channel } from 'twilio-chat/lib/channel';
 import { connect } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
@@ -29,17 +30,18 @@ import { PERMISSIONS } from '../../constants/common';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/chatHeader';
 import type { State as StoreState } from '../../types/state';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   isCommunityChat?: boolean;
-  channel?: Record<string, any>;
+  channel?: Channel;
   currentUserName?: string;
   title?: string;
   otherUser?: any;
   rightSpace?: number;
   memberKeys?: Array<any>;
   startVideo?: (...args: Array<any>) => any;
-  local?: Record<string, any>;
+  local?: Record<string, ChannelWrapper>;
   user?: Record<string, any>;
   onOpenRightPanel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
@@ -90,7 +92,8 @@ const ChatHeader = ({
   } = user;
   const members = useMemo(() => channel && local[channel.sid].members, [channel, local]);
   const currentChannelTitle = useMemo(() => {
-    if (!channel?.channelState?.friendlyName) {
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
+    if (!(channel as any)?.channelState?.friendlyName) {
       let customTitle = '';
       let currentIndex = 0;
 
@@ -154,7 +157,7 @@ const ChatHeader = ({
         query,
         schoolId: from === 'school' ? Number(schoolId) : undefined
       });
-      const memberIds = members.map((m) => Number(m.id));
+      const memberIds: number[] = members.map((m) => Number(m.userId));
       const options = users
         .map((user) => {
           const name = `${user.firstName} ${user.lastName}`;
@@ -252,7 +255,8 @@ const ChatHeader = ({
         <Grid container justifyContent="space-between">
           <Typography className={classes.headerTitle}>
             <ChatIcon className={classes.headerIcon} /> {currentChannelTitle}
-            {members.length > 3 && !channel.channelState.friendlyName && (
+            {/* Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.` */}
+            {members.length > 3 && !(channel as any).channelState.friendlyName && (
               <ArrowDropDownIcon onClick={handleClick} />
             )}
           </Typography>

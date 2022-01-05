@@ -7,10 +7,11 @@ import LoadImg from '../LoadImg/LoadImg';
 import { ReactComponent as Chat } from '../../assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   item?: Record<string, any>;
-  local?: Record<string, any>;
+  local?: Record<string, ChannelWrapper>;
   unreadMessageCount?: number;
   selectedCourse?: Record<string, any>;
   communityChannels?: any[];

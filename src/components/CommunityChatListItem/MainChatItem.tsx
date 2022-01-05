@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useMemo } from 'react';
+import { Channel } from 'twilio-chat/lib/channel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
@@ -17,6 +18,7 @@ import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import { PERMISSIONS } from '../../constants/common';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/mainChatItem';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   isLoading?: boolean;
@@ -32,8 +34,8 @@ type Props = {
   muted?: boolean;
   members?: Array<any>;
   permission?: Array<any>;
-  local?: Array<any>;
-  targetChannel?: Record<string, any>;
+  local?: Record<string, ChannelWrapper>;
+  targetChannel?: Channel;
   lastMessage?: string;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   handleRemoveChannel?: (...args: Array<any>) => any;

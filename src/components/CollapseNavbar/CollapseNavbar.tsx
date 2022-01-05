@@ -15,6 +15,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Tooltip from '../../containers/Tooltip/Tooltip';
 import { ReactComponent as ChannelIcon } from '../../assets/svg/public-channel.svg';
 import { ReactComponent as UnreadMessageChannelIcon } from '../../assets/svg/unread-message-channel-icon.svg';
+import { ChannelWrapper } from '../../reducers/chat';
 
 const useStyles = makeStyles((theme) => ({
   navLink: {
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 type Props = {
   channels?: Array<any>;
   selectedChannel?: any;
-  local?: Array<any>;
+  local?: Record<string, ChannelWrapper>;
   currentCommunityChannel?: Record<string, any>;
   startMessageLoading?: (...args: Array<any>) => any;
   setSelctedChannel?: (...args: Array<any>) => any;

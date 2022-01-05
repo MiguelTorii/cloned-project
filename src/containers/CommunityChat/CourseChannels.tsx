@@ -9,6 +9,7 @@ import LoadImg from '../../components/LoadImg/LoadImg';
 import CollapseNavbar from '../../components/CollapseNavbar/CollapseNavbar';
 import useStyles from './_styles/courseChannels';
 import { cypherClass } from '../../utils/crypto';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   currentCommunity?: Record<string, any>;
@@ -16,7 +17,7 @@ type Props = {
   currentCommunityChannel?: Record<string, any>;
   startMessageLoading?: (...args: Array<any>) => any;
   communityChannels?: Array<any>;
-  local?: Array<any>;
+  local?: Record<string, ChannelWrapper>;
   setCurrentChannelSidAction?: (...args: Array<any>) => any;
   setSelctedChannel?: (...args: Array<any>) => any;
   setCurrentCommunityChannel?: any;

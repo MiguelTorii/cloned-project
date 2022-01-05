@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import MainChatItem from './MainChatItem';
 import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
 import { Member } from '../../types/models';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   channel?: Record<string, any>;
@@ -15,7 +16,7 @@ type Props = {
   handleMarkAsRead?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   targetChannel?: Array<any>;
-  local?: any;
+  local?: Record<string, ChannelWrapper>;
   dark?: boolean;
 };
 

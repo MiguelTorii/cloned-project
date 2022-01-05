@@ -20,6 +20,7 @@ import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { uploadMedia } from './user';
+import { ChannelWrapper } from '../reducers/chat';
 
 const getAvailableSlots = (width) => {
   try {
@@ -71,7 +72,7 @@ const startLoading = (): Action => ({
   type: chatActions.CHAT_START_LOADING
 });
 
-const initLocal = ({ local }: { local: Record<string, any> }): Action => ({
+const initLocal = ({ local }: { local: Record<string, ChannelWrapper> }): Action => ({
   type: chatActions.INIT_LOCAL_CHAT,
   payload: {
     local
@@ -90,7 +91,7 @@ const initChannels = ({
   local
 }: {
   channels: any[];
-  local: Record<string, any>;
+  local: Record<string, ChannelWrapper>;
 }): Action => ({
   type: chatActions.INIT_CHANNELS_CHAT,
   payload: {

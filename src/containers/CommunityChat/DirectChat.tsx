@@ -162,7 +162,9 @@ const DirectChat = ({
   useEffect(() => {
     const channelList = Object.keys(local)
       .filter(
-        (l) => local[l]?.sid && !local[l]?.twilioChannel?.channelState?.attributes?.community_id
+        (l) =>
+          // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
+          local[l]?.sid && !(local[l]?.twilioChannel as any)?.channelState?.attributes?.community_id
       )
       .sort((a, b) => {
         if (local[a].lastMessage.message === '') {
@@ -203,8 +205,10 @@ const DirectChat = ({
     if (currentChannel?.sid === lastReadMessageInfo.channelId) {
       return;
     }
+
+    // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
     setLastReadMessageInfo({
-      lastIndex: currentChannel?.channelState.lastConsumedMessageIndex,
+      lastIndex: (currentChannel as any)?.channelState.lastConsumedMessageIndex,
       channelId: currentChannel?.sid
     });
   }, [currentChannel, lastReadMessageInfo]);

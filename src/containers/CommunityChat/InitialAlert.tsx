@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useMemo } from 'react';
-import cx from 'classnames';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,10 +9,11 @@ import InitialCommunityImage from '../../assets/svg/community_first_time.svg';
 import { getInitials } from '../../utils/chat';
 import { ReactComponent as CommunityGroupIcon } from '../../assets/svg/community_chat_group.svg';
 import useStyles from './_styles/initialAlert';
+import { ChannelWrapper, CurrentCommunity } from '../../reducers/chat';
 
 type Props = {
-  local?: any;
-  channel?: Record<string, any>;
+  local?: Record<string, ChannelWrapper>;
+  channel?: ChannelWrapper;
   userId?: string;
   isCommunityChat?: boolean;
   selectedChannel?: Record<string, any>;
@@ -21,7 +21,7 @@ type Props = {
   focusMessageBox: any;
   setFocusMessageBox: any;
   handleUpdateGroupName: any;
-  currentCommunity: any;
+  currentCommunity: CurrentCommunity;
 };
 
 const InitialAlert = ({
@@ -59,7 +59,8 @@ const InitialAlert = ({
   }, [channel, local, userId]);
   const initials = useMemo(() => getInitials(name), [name]);
   return isCommunityChat ? (
-    local[channel?.sid]?.twilioChannel?.channelState?.lastConsumedMessageIndex === null ? (
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
+    (local[channel?.sid]?.twilioChannel as any)?.channelState?.lastConsumedMessageIndex === null ? (
       <Box
         className={classes.root}
         display="flex"
