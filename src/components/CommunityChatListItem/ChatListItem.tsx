@@ -13,7 +13,6 @@ type Props = {
   permission?: Array<any>;
   handleRemoveChannel?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
-  handleMarkAsRead?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   targetChannel?: Array<any>;
   local?: Record<string, ChannelWrapper>;
@@ -27,7 +26,6 @@ const ChatListItem = ({
   permission,
   onOpenChannel,
   handleRemoveChannel,
-  handleMarkAsRead,
   handleUpdateGroupName,
   targetChannel,
   local,
@@ -71,7 +69,6 @@ const ChatListItem = ({
         permission={permission}
         handleRemoveChannel={handleRemoveChannel}
         handleUpdateGroupName={handleUpdateGroupName}
-        handleMarkAsRead={handleMarkAsRead}
         isLoading={false}
         isOnline={isOnline}
         isDirectChat={isDirectChat}

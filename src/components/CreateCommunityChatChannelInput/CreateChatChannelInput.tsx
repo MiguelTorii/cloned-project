@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector } from 'react-redux';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -9,14 +8,12 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import { CircularProgress } from '@material-ui/core';
 import { PERMISSIONS } from '../../constants/common';
-import * as chatActions from '../../actions/chat';
 import { sendMessage, createChannel } from '../../api/chat';
 import { searchUsers } from '../../api/user';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import { getInitials } from '../../utils/chat';
 import SelectClassmates from './SelectClassmates';
-import type { State as StoreState } from '../../types/state';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -101,26 +98,22 @@ const styles = (theme) => ({
 
 type Props = {
   classes?: Record<string, any>;
-  user?: UserState;
   onClosePopover?: (...args: Array<any>) => any;
   onOpenChannel?: (...args: Array<any>) => any;
   setIsOpen?: (...args: Array<any>) => any;
   createMessage?: Record<string, any>;
   handleClearCreateMessage?: (...args: Array<any>) => any;
-  chat?: ChatState;
   permission?: Array<any>;
   handleUpdateGroupName?: (...args: Array<any>) => any;
 };
 
 const CreateChatChannelInput = ({
   classes,
-  user,
   onClosePopover,
   createMessage,
   setIsOpen,
   onOpenChannel,
   handleClearCreateMessage,
-  chat,
   permission,
   handleUpdateGroupName
 }: Props) => {
@@ -133,12 +126,14 @@ const CreateChatChannelInput = ({
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [channelName, setChannelName] = useState('');
+
   const {
     data: { userId, schoolId }
-  } = user;
+  } = useSelector((state: { user: UserState }) => state.user);
   const {
     data: { client }
-  } = chat;
+  } = useSelector((state: { chat: ChatState }) => state.chat);
+
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') {
       setChatType('group');
@@ -362,20 +357,4 @@ const CreateChatChannelInput = ({
   );
 };
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
-  user,
-  chat
-});
-
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      closeNewChannel: chatActions.closeNewChannel
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles as any)(CreateChatChannelInput));
+export default withStyles(styles as any)(CreateChatChannelInput);

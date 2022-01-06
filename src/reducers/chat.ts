@@ -89,7 +89,7 @@ export type CurrentCommunity = {
   communityBannerUrl: string;
   communityIconUrl: string;
   created: string;
-  id: string;
+  id: number | string; // Direct chat uses the string 'chat' as an id, the rest of the communities use numbers for ids.  TODO make them all strings for consistency.
   name: string;
   private: boolean;
   school_id: number;

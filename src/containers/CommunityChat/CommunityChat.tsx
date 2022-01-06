@@ -1,8 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import cx from 'classnames';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,44 +9,30 @@ import withWidth from '@material-ui/core/withWidth';
 import IconButton from '@material-ui/core/IconButton';
 import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
-import * as chatActions from '../../actions/chat';
-import * as notificationsActions from '../../actions/notifications';
 import Main from './Main';
 import RightMenu from './RightMenu';
-import type { State as StoreState } from '../../types/state';
 import CourseChannels from './CourseChannels';
 import useStyles from './_styles/styles';
-import { CommunityChannels, CommunityChannelData } from '../../reducers/chat';
+import { CommunityChannels, CommunityChannelData, ChatState } from '../../reducers/chat';
+import { UserState } from '../../reducers/user';
+import { setCurrentChannelSidAction, setCurrentCommunityChannel } from '../../actions/chat';
+import { Dispatch } from '../../types/store';
 
 const RIGHT_GRID_SPAN = 2;
 
 type Props = {
-  chat?: Record<string, any>;
-  user?: Record<string, any>;
-  setCurrentCommunityChannel?: (...args: Array<any>) => any;
-  startMessageLoading?: (...args: Array<any>) => any;
-  setMainMessage?: (...args: Array<any>) => any;
-  showNotification?: (...args: Array<any>) => any;
-  setCurrentChannelSidAction?: (...args: Array<any>) => any;
   width?: string;
 };
 
-const CommunityChat = ({
-  setMainMessage,
-  startMessageLoading,
-  setCurrentCommunityChannel,
-  setCurrentChannelSidAction,
-  showNotification,
-  user,
-  chat,
-  width
-}: Props) => {
+const CommunityChat = ({ width }: Props) => {
   const classes: any = useStyles();
+  const dispatch: Dispatch = useDispatch();
+
   const [leftSpace, setLeftSpace] = useState(2);
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
   const [communityChannels, setCommunityChannels] = useState([]);
-  const [selectedChannel, setSelctedChannel] = useState(null);
+  const [selectedChannel, setSelectedChannel] = useState(null);
   const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
     channelId: string;
     lastIndex: number;
@@ -55,9 +40,11 @@ const CommunityChat = ({
     channelId: null,
     lastIndex: null
   });
+
   const {
     data: { userId, schoolId, permission }
-  } = user;
+  } = useSelector((state: { user: UserState }) => state.user);
+
   const {
     isLoading,
     data: {
@@ -70,7 +57,8 @@ const CommunityChat = ({
       messageLoading,
       selectedChannelId
     }
-  } = chat;
+  } = useSelector((state: { chat: ChatState }) => state.chat);
+
   useEffect(() => {
     const currentCommunityChannels: CommunityChannelData[] = [];
     const filterCurrentCommunityChannel: CommunityChannels[] = allCommunityChannels.filter(
@@ -93,19 +81,23 @@ const CommunityChat = ({
 
         if (filterChannel.length) {
           // set select channel
-          setSelctedChannel(filterChannel[0]);
-          setCurrentChannelSidAction(filterChannel[0]?.chat_id);
+          setSelectedChannel(filterChannel[0]);
+          dispatch(setCurrentChannelSidAction(filterChannel[0]?.chat_id));
         } else {
           // currentCommunityChannel is not in course channels, set the default first channel
-          setSelctedChannel(currentCommunityChannels[0]);
-          setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
-          setCurrentCommunityChannel(local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel);
+          setSelectedChannel(currentCommunityChannels[0]);
+          dispatch(setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id));
+          setCurrentCommunityChannel(local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel)(
+            dispatch
+          );
         }
       } else {
         // currentCommunityChannel is not exists, set the default first channel
-        setSelctedChannel(currentCommunityChannels[0]);
-        setCurrentCommunityChannel(local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel);
-        setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id);
+        setSelectedChannel(currentCommunityChannels[0]);
+        setCurrentCommunityChannel(local?.[currentCommunityChannels[0]?.chat_id]?.twilioChannel)(
+          dispatch
+        );
+        dispatch(setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id));
       }
     }
   }, [allCommunityChannels, currentCommunity, currentCommunityChannel, local]);
@@ -134,7 +126,7 @@ const CommunityChat = ({
     // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
     setLastReadMessageInfo({
       channelId: selectedChannel.chat_id,
-      lastIndex: localChannel.twilioChannel.channelState.lastConsumedMessageIndex
+      lastIndex: (localChannel.twilioChannel as any).channelState.lastConsumedMessageIndex
     });
   }, [selectedChannel, lastReadMessageInfo, local]);
 
@@ -215,15 +207,12 @@ const CommunityChat = ({
             </Box>
           ) : (
             <CourseChannels
-              setSelctedChannel={setSelctedChannel}
+              setSelectedChannel={setSelectedChannel}
               selectedChannel={selectedChannel}
-              startMessageLoading={startMessageLoading}
               communityChannels={communityChannels}
               local={local}
               currentCommunity={currentCommunity}
               currentCommunityChannel={currentCommunityChannel}
-              setCurrentChannelSidAction={setCurrentChannelSidAction}
-              setCurrentCommunityChannel={setCurrentCommunityChannel}
             />
           )}
         </Grid>
@@ -242,8 +231,6 @@ const CommunityChat = ({
             selectedChannel={selectedChannel}
             newMessage={newMessage}
             messageLoading={messageLoading}
-            startMessageLoading={startMessageLoading}
-            setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             permission={permission}
             local={local}
@@ -252,9 +239,7 @@ const CommunityChat = ({
             onCollapseLeft={onCollapseLeft}
             onCollapseRight={onCollapseRight}
             setRightPanel={handleOpenRightPanel}
-            user={user}
             rightSpace={rightSpace}
-            showNotification={showNotification}
           />
         </Grid>
       )}
@@ -277,24 +262,4 @@ const CommunityChat = ({
   );
 };
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
-  user,
-  chat
-});
-
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      showNotification: notificationsActions.showNotification,
-      setMainMessage: chatActions.setMainMessage,
-      setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
-      startMessageLoading: chatActions.startMessageLoading,
-      setCurrentChannelSidAction: chatActions.setCurrentChannelSid
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withWidth()(CommunityChat));
+export default withWidth()(CommunityChat);

@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +22,8 @@ import { MessageItemType, PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
 import { Member } from '../../types/models';
 import { ChannelWrapper, DetailedChatUser, CurrentCommunity } from '../../reducers/chat';
+import { messageLoadingAction } from '../../actions/chat';
+import { UserState } from '../../reducers/user';
 
 type Props = {
   isLoading?: boolean;
@@ -30,20 +33,16 @@ type Props = {
   currentCommunity?: CurrentCommunity | null;
   channel?: any;
   channelList?: Array<any>;
-  startMessageLoading?: (...args: Array<any>) => any;
   newMessage?: Record<string, any>;
   rightSpace?: number;
   local?: Record<string, ChannelWrapper>;
   newChannel?: boolean;
-  permission?: Array<any>;
-  user?: Record<string, any>;
+  permission?: string;
   messageLoading?: boolean;
   onSend?: (...args: Array<any>) => any;
   setRightPanel?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
-  showNotification?: (...args: Array<any>) => any;
-  setMainMessage?: any;
   mainMessage?: any;
   onCollapseLeft?: any;
   onCollapseRight?: any;
@@ -59,7 +58,6 @@ const Main = ({
   channel,
   channelList,
   messageLoading,
-  startMessageLoading,
   selectedChannel,
   newMessage,
   rightSpace,
@@ -67,13 +65,10 @@ const Main = ({
   local,
   newChannel,
   permission,
-  user,
   onSend,
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  showNotification,
-  setMainMessage,
   mainMessage,
   onCollapseLeft,
   onCollapseRight,
@@ -82,6 +77,10 @@ const Main = ({
   lastReadMessageIndex
 }: Props) => {
   const classes: any = useStyles();
+  const dispatch = useDispatch();
+
+  const user = useSelector((state: { user: UserState }) => state.user);
+
   const end = useRef(null);
   const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -165,14 +164,14 @@ const Main = ({
 
   useEffect(() => {
     if (channelList.length && !channel) {
-      startMessageLoading(true);
+      dispatch(messageLoadingAction(true));
     } else if (!channelList.length && !isLoading) {
-      startMessageLoading(false);
+      dispatch(messageLoadingAction(false));
     }
   }, [channelList, channel, isLoading]);
   useEffect(() => {
     const init = async () => {
-      startMessageLoading(true);
+      dispatch(messageLoadingAction(true));
 
       try {
         channel.setAllMessagesConsumed();
@@ -184,7 +183,7 @@ const Main = ({
 
         if (!chatData?.items?.length || selectedChannelId === chatData?.items?.[0]?.channel?.sid) {
           if (!chatData.hasNextPage) {
-            startMessageLoading(false);
+            dispatch(messageLoadingAction(false));
           }
 
           setMessages(chatData.items);
@@ -338,7 +337,6 @@ const Main = ({
                 isCommunityChat={isCommunityChat}
                 date={item.date}
                 channelId={channel.sid}
-                showNotification={showNotification}
                 isOnline={isOnline}
                 isLastMessage={isLastMessage}
                 lastReadMessageIndex={lastReadIndex}
@@ -581,7 +579,6 @@ const Main = ({
             focusMessageBox={focusMessageBox}
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
-            showNotification={showNotification}
             setValue={setValue}
             onTyping={onTyping}
             showError={showError}

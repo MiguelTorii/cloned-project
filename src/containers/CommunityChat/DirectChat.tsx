@@ -2,7 +2,7 @@
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import cx from 'classnames';
 import moment from 'moment';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
@@ -20,25 +20,21 @@ import type { ChatState } from '../../reducers/chat';
 import { blockUser } from '../../api/user';
 import type { State as StoreState } from '../../types/state';
 import useStyles from './_styles/directChat';
+import { setCurrentChannelSidAction } from '../../actions/chat';
 
 const RIGHT_GRID_SPAN = 2;
 
 type Props = {
   chat?: ChatState;
-  user?: UserState;
   width?: string;
   onboardingListVisible?: boolean;
-  setMainMessage?: () => void;
   handleRemoveChannel?: (...args: Array<any>) => any;
   handleBlockUser?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
   handleNewChannel?: (...args: Array<any>) => any;
-  setCurrentChannelSid?: (...args: Array<any>) => any;
   setOneTouchSend?: (...args: Array<any>) => any;
   handleUpdateFriendlyName?: (...args: Array<any>) => any;
-  handleMarkAsRead?: (...args: Array<any>) => any;
   enqueueSnackbar?: (...args: Array<any>) => any;
-  startMessageLoading?: (...args: Array<any>) => any;
   getOnboardingList?: (...args: Array<any>) => any;
   setCurrentChannel?: (...args: Array<any>) => any;
 };
@@ -47,18 +43,13 @@ const DirectChat = ({
   handleRemoveChannel,
   handleBlockUser,
   handleMuteChannel,
-  setCurrentChannelSid,
   handleNewChannel,
   handleUpdateFriendlyName,
   setOneTouchSend,
-  handleMarkAsRead,
-  startMessageLoading,
   enqueueSnackbar,
   setCurrentChannel,
   width,
   chat,
-  user,
-  setMainMessage,
   getOnboardingList,
   onboardingListVisible
 }: Props) => {
@@ -78,9 +69,11 @@ const DirectChat = ({
     }
   } = chat;
   const classes: any = useStyles();
+  const dispatch = useDispatch();
+
   const {
     data: { userId, schoolId, permission }
-  } = user;
+  } = useSelector((state: { user: UserState }) => state.user);
   const [leftSpace, setLeftSpace] = useState(2);
   const [rightSpace, setRightSpace] = useState(0);
   const [prevWidth, setPrevWidth] = useState(null);
@@ -121,17 +114,17 @@ const DirectChat = ({
         handleNewChannel(false);
       }
 
-      setCurrentChannelSid(channel.sid);
+      dispatch(setCurrentChannelSidAction(channel.sid));
       setCurrentChannel(channel);
     },
-    [handleNewChannel, setCurrentChannel, setCurrentChannelSid, width, newChannel]
+    [handleNewChannel, setCurrentChannel, dispatch, width, newChannel]
   );
   const handleRemove = useCallback(
     async (sid) => {
       const restChannels = channelList.filter((channel) => channel !== sid.sid);
 
       if (currentChannel.sid === sid.sid) {
-        await setCurrentChannelSid(restChannels[0]);
+        dispatch(setCurrentChannelSidAction(restChannels[0]));
         await setCurrentChannel(
           local[restChannels[0]] ? local[restChannels[0]].twilioChannel : null
         );
@@ -283,7 +276,6 @@ const DirectChat = ({
             newChannel={newChannel}
             currentChannel={currentChannel}
             onOpenChannel={onOpenChannel}
-            handleMarkAsRead={handleMarkAsRead}
             handleMuteChannel={handleMuteChannel}
             handleUpdateGroupName={updateGroupName}
             handleRemoveChannel={handleRemove}
@@ -297,11 +289,9 @@ const DirectChat = ({
             newMessage={newMessage}
             channelList={channelList}
             selectedChannelId={currentChannelId}
-            setMainMessage={setMainMessage}
             mainMessage={mainMessage}
             handleBlock={handleBlock}
             messageLoading={messageLoading}
-            startMessageLoading={startMessageLoading}
             onCollapseLeft={onCollapseLeft}
             onCollapseRight={onCollapseRight}
             local={local}
@@ -310,7 +300,6 @@ const DirectChat = ({
             channel={currentChannel}
             newChannel={newChannel}
             enqueueSnackbar={enqueueSnackbar}
-            user={user}
             lastReadMessageIndex={
               lastReadMessageInfo.channelId === currentChannel?.sid
                 ? lastReadMessageInfo.lastIndex
@@ -344,7 +333,6 @@ const DirectChat = ({
 };
 
 const mapStateToProps = ({ user, chat, onboarding }: StoreState): {} => ({
-  user,
   chat,
   onboardingListVisible: onboarding.onboardingList.visible
 });
@@ -352,17 +340,13 @@ const mapStateToProps = ({ user, chat, onboarding }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      handleMarkAsRead: chatActions.handleMarkAsRead,
       handleMuteChannel: chatActions.handleMuteChannel,
       handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
-      setMainMessage: chatActions.setMainMessage,
       handleNewChannel: chatActions.handleNewChannel,
       setCurrentChannel: chatActions.setCurrentChannel,
       handleUpdateFriendlyName: chatActions.handleUpdateFriendlyName,
       setOneTouchSend: chatActions.setOneTouchSend,
-      startMessageLoading: chatActions.startMessageLoading,
-      setCurrentChannelSid: chatActions.setCurrentChannelSid,
       getOnboardingList: OnboardingActions.getOnboardingList,
       enqueueSnackbar: notificationsActions.enqueueSnackbar
     },

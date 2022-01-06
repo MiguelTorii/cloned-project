@@ -2,7 +2,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import parse from 'html-react-parser';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
@@ -29,6 +29,7 @@ import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { CampaignState } from '../../reducers/campaign';
+import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from '../../actions/chat';
 
 const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
 
@@ -78,7 +79,6 @@ type Props = {
   handleMuteChannel?: (...args: Array<any>) => any;
   handleNewChannel?: (...args: Array<any>) => any;
   push?: (...args: Array<any>) => any;
-  setCurrentChannelSid?: (...args: Array<any>) => any;
   onboardingListVisible?: boolean;
   getOnboardingList?: (...args: Array<any>) => any;
   setCurrentChannel?: (...args: Array<any>) => any;
@@ -104,9 +104,10 @@ const FloatingChat = ({
   onboardingListVisible,
   setCurrentChannel,
   getOnboardingList,
-  setCurrentChannelSid,
   setCurrentCommunityChannel
 }: Props) => {
+  const dispatch = useDispatch();
+
   const [createChannel, setCreateChat] = useState(null);
   const [unread, setUnread] = useState(0);
   const [channelList, setChannelList] = useState([]);
@@ -177,14 +178,14 @@ const FloatingChat = ({
     } = newMessage as any;
 
     if (attributes?.community_id) {
-      setCurrentCommunityId(attributes?.community_id);
+      dispatch(setCurrentCommunityIdAction(attributes?.community_id));
       setCurrentCommunityChannel(channel);
     } else {
-      setCurrentCommunityId(null);
+      dispatch(setCurrentCommunityIdAction(null));
       setCurrentChannel(channel);
     }
 
-    setCurrentChannelSid(channel.sid);
+    dispatch(setCurrentChannelSidAction(channel.sid));
     push('/chat');
   };
 
@@ -355,7 +356,7 @@ const FloatingChat = ({
 
   const onChannelOpen = ({ channel }) => {
     handleRoomClick(channel);
-    setCurrentChannelSid(channel.sid);
+    dispatch(setCurrentChannelSidAction(channel.sid));
     setCurrentChannel(channel);
   };
 
@@ -520,7 +521,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
       enqueueSnackbarAction: enqueueSnackbar,
       setCurrentCommunityId: chatActions.setCurrentCommunityId,
       getOnboardingList: OnboardingActions.getOnboardingList,
-      setCurrentChannelSid: chatActions.setCurrentChannelSid,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
     },
     dispatch

@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import cx from 'classnames';
 import { useQuill } from 'react-quilljs';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
@@ -14,6 +15,7 @@ import { uploadMedia } from '../../actions/user';
 import EditorToolbar, { formats } from './Toolbar';
 import styles from '../../containers/CommunityChat/_styles/messageQuill';
 import { isMac } from '../../utils/helpers';
+import { showNotification } from '../../actions/notifications';
 
 type Props = {
   classes?: any;
@@ -23,7 +25,6 @@ type Props = {
   onSendMessage?: any;
   showError?: any;
   userId?: any;
-  showNotification?: any;
   setFiles?: any;
   files?: any;
   isNamedChannel?: boolean;
@@ -37,11 +38,12 @@ const MessageQuill = ({
   onSendMessage,
   showError,
   userId,
-  showNotification,
   setFiles,
   files,
   isNamedChannel
 }: Props) => {
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);
   const [emojiPopupOpen, setEmojiPopupOpen] = useState(false);
@@ -84,13 +86,15 @@ const MessageQuill = ({
         };
         setFiles([...files, anyFile]);
       } else {
-        showNotification({
-          message: 'Upload File size is over 40 MB',
-          variant: 'warning'
-        });
+        dispatch(
+          showNotification({
+            message: 'Upload File size is over 40 MB',
+            variant: 'warning'
+          })
+        );
       }
     },
-    [setFiles, showNotification, classes, files]
+    [setFiles, dispatch, classes, files]
   );
 
   const imageHandler = useCallback(

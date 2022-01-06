@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { Channel } from 'twilio-chat/lib/channel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -19,6 +20,7 @@ import { PERMISSIONS } from '../../constants/common';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/mainChatItem';
 import { ChannelWrapper } from '../../reducers/chat';
+import { updateChannel } from '../../actions/chat';
 
 type Props = {
   isLoading?: boolean;
@@ -41,7 +43,6 @@ type Props = {
   handleRemoveChannel?: (...args: Array<any>) => any;
   onClick?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
-  handleMarkAsRead?: (...args: Array<any>) => any;
 };
 
 const MainChatItem = ({
@@ -59,7 +60,6 @@ const MainChatItem = ({
   handleUpdateGroupName,
   handleRemoveChannel,
   handleMuteChannel,
-  handleMarkAsRead,
   dark,
   selected,
   muted,
@@ -68,6 +68,8 @@ const MainChatItem = ({
   onClick
 }: Props) => {
   const classes: any = useStyles();
+  const dispatch = useDispatch();
+
   const [showMenu, setShowMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
@@ -106,9 +108,15 @@ const MainChatItem = ({
   }, [handleClose]);
   const [removeChat, setRemoveChat] = useState(false);
   const handleRead = useCallback(() => {
-    handleMarkAsRead(targetChannel);
+    dispatch(
+      updateChannel({
+        channel: targetChannel,
+        unread: 0
+      })
+    );
+
     handleClose();
-  }, [handleClose, handleMarkAsRead, targetChannel]);
+  }, [handleClose, dispatch, targetChannel]);
   const handleRemoveClose = useCallback(() => setRemoveChat(false), []);
   const handleRemoveOpen = useCallback(() => {
     setRemoveChat(true);

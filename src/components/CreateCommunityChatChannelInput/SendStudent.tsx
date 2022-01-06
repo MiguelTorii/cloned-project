@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector } from 'react-redux';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
@@ -8,7 +7,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { PERMISSIONS } from '../../constants/common';
-import * as chatActions from '../../actions/chat';
 import { sendMessage, createChannel } from '../../api/chat';
 import { searchUsers } from '../../api/user';
 import type { UserState } from '../../reducers/user';
@@ -16,7 +14,6 @@ import type { ChatState } from '../../reducers/chat';
 import { getInitials } from '../../utils/chat';
 import styles from '../_styles/CreateCommunityChatChannelInput/sendStudent';
 import SelectClassmates from './SelectClassmates';
-import type { State as StoreState } from '../../types/state';
 
 type Props = {
   classes?: Record<string, any>;
@@ -33,12 +30,10 @@ type Props = {
 
 const CreateChatChannelInput = ({
   classes,
-  user,
   createMessage,
   setIsOpen,
   onOpenChannel,
   handleClearCreateMessage,
-  chat,
   permission,
   handleUpdateGroupName,
   onClosePopover
@@ -54,10 +49,10 @@ const CreateChatChannelInput = ({
   const [channelName, setChannelName] = useState('');
   const {
     data: { userId, schoolId }
-  } = user;
+  } = useSelector((state: { user: UserState }) => state.user);
   const {
     data: { client }
-  } = chat;
+  } = useSelector((state: { chat: ChatState }) => state.chat);
   // ONE_TOUCH_SEND_CHAT
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') {
@@ -280,20 +275,4 @@ const CreateChatChannelInput = ({
   );
 };
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
-  user,
-  chat
-});
-
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      closeNewChannel: chatActions.closeNewChannel
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles as any)(CreateChatChannelInput));
+export default withStyles(styles as any)(CreateChatChannelInput);

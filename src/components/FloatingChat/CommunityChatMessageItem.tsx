@@ -13,7 +13,7 @@ import Popover from '@material-ui/core/Popover';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -32,6 +32,7 @@ import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg'
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 import MessageQuill from './EditMessageQuill';
 import { useDeleteModal } from '../../contexts/DeleteModalContext';
+import { showNotification } from '../../actions/notifications';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -52,7 +53,6 @@ type Props = {
   onBlockMember: (number, string) => void;
   onImageClick: (string) => void;
   onImageLoaded: (string) => void;
-  showNotification: (object) => void;
   onStartVideoCall: () => void;
   onRemoveMessage: (messageId: string) => void;
 };
@@ -82,7 +82,6 @@ const CommunityChatMessageItem = ({
   avatar,
   isOnline,
   isGroupChannel,
-  showNotification,
   onViewProfile,
   onReportIssue,
   onBlockMember,
@@ -92,6 +91,8 @@ const CommunityChatMessageItem = ({
   onRemoveMessage
 }: Props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const { open: openDeleteModal } = useDeleteModal();
   const myUserId = useSelector<any>((state) => state.user.data.userId);
   const [isHover, setIsHover] = useState(false);
@@ -165,16 +166,18 @@ const CommunityChatMessageItem = ({
           messageId: editMessageId,
           chatId: channelId
         });
-        showNotification({
-          message: 'Your message was successfully edited.',
-          variant: 'info'
-        });
+        dispatch(
+          showNotification({
+            message: 'Your message was successfully edited.',
+            variant: 'info'
+          })
+        );
         setEdit(false);
       } catch (err) {
         setShowError(true);
       }
     },
-    [editMessageId, channelId, showNotification, value]
+    [editMessageId, channelId, dispatch, value]
   );
 
   const handleCloseErrorModal = useCallback(() => {
@@ -235,7 +238,6 @@ const CommunityChatMessageItem = ({
             setValue={setValue}
             files={files}
             setFiles={setFiles}
-            showNotification={showNotification}
             onSendMessage={handleSaveMessage}
             onChange={handleChangeMessage}
           />

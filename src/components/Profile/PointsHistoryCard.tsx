@@ -12,6 +12,7 @@ import { getPointsHistory } from '../../actions/user';
 import withRoot from '../../withRoot';
 import type { UserProfile } from '../../types/models';
 import { useStyles } from '../_styles/Profile/PointsHistoryCard';
+import { UserState } from '../../reducers/user';
 
 type Props = {
   profile: UserProfile;
@@ -21,7 +22,7 @@ type Props = {
 const PointsHistoryCard = ({ profile, onSeeMore }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
-  const myUserId = useSelector((state) => (state as any).user.data.userId);
+  const myUserId = useSelector((state: { user: UserState }) => state.user.data.userId);
   const [pointsHistory, setPointsHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const title = useMemo(
