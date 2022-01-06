@@ -18,7 +18,6 @@ export const getToken = async (): Promise<string> => {
     const token = store.get('TOKEN');
     const refreshToken = store.get('REFRESH_TOKEN');
     const userId = store.get('USER_ID');
-    const segment = store.get('SEGMENT');
 
     if (token) {
       const decoded = decode(token);
@@ -30,14 +29,13 @@ export const getToken = async (): Promise<string> => {
       }
     }
 
-    if (segment === '' || userId === '' || refreshToken === '' || !userId) {
+    if (userId === '' || refreshToken === '' || !userId) {
       return '';
     }
 
     const result = await axios.post(API_ROUTES.REFRESH, {
       user_id: Number(userId),
-      token: refreshToken,
-      segment
+      token: refreshToken
     });
     const { data = {} } = result;
     // eslint-disable-next-line camelcase

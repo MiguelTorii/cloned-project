@@ -101,7 +101,6 @@ export const signUp =
       store.set('TOKEN', user.jwtToken);
       store.set('REFRESH_TOKEN', user.refreshToken);
       store.set('USER_ID', user.userId);
-      store.set('SEGMENT', user.segment);
       await dispatch(
         setUser({
           user

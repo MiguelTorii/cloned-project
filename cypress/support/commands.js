@@ -33,6 +33,5 @@ Cypress.Commands.add('login', () => {
     window.localStorage.setItem('TOKEN', user.body.jwt_token);
     window.localStorage.setItem('REFRESH_TOKEN', user.body.refresh_token);
     window.localStorage.setItem('USER_ID', user.body.user_id);
-    window.localStorage.setItem('SEGMENT', user.body.segment);
   });
 });

@@ -71,7 +71,6 @@ export const updateUser =
     store.set('TOKEN', user.jwtToken);
     store.set('REFRESH_TOKEN', user.refreshToken);
     store.set('USER_ID', user.userId);
-    store.set('SEGMENT', user.segment);
     dispatch(
       sync({
         userId: user.userId
@@ -189,10 +188,9 @@ export const checkUserSession =
 
     const token = store.get('REFRESH_TOKEN');
     const userId = store.get('USER_ID');
-    const segment = store.get('SEGMENT');
 
-    if (token && userId && segment) {
-      const user = await checkUser(token, userId, segment);
+    if (token && userId) {
+      const user = await checkUser(token, userId);
 
       if (user.email) {
         dispatch(
@@ -207,7 +205,6 @@ export const checkUserSession =
     store.remove('TOKEN');
     store.remove('REFRESH_TOKEN');
     store.remove('USER_ID');
-    store.remove('SEGMENT');
     await dispatch(clearError());
 
     const {

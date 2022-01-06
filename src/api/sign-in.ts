@@ -37,11 +37,10 @@ export const samlLogin = async (token, isGondor): Promise<User> => {
   const { data = {} } = result;
   return userToCamelCase(data);
 };
-export const checkUser = async (token, userId, segment): Promise<User> => {
+export const checkUser = async (token, userId): Promise<User> => {
   const result = await axios.post(API_ROUTES.REFRESH, {
     user_id: Number(userId),
-    token,
-    segment
+    token
   });
   const { data = {} } = result;
   return userToCamelCase(data);
