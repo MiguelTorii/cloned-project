@@ -18,11 +18,12 @@ import { ReactComponent as ExpandChatIcon } from '../../assets/svg/float_chat_co
 import { ReactComponent as CollapseChatIcon } from '../../assets/svg/float_chat_expand.svg';
 import Dialog from '../Dialog/Dialog';
 import styles from '../_styles/FloatingChat/ChatItem';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   classes?: Record<string, any>;
   channels?: Array<any>;
-  local?: Record<string, any>;
+  local?: Record<string, ChannelWrapper>;
   children?: React.ReactNode;
   title?: string;
   open?: boolean;

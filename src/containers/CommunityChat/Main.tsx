@@ -20,19 +20,20 @@ import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
 import { MessageItemType, PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
 import { Member } from '../../types/models';
+import { ChannelWrapper, DetailedChatUser, CurrentCommunity } from '../../reducers/chat';
 
 type Props = {
   isLoading?: boolean;
   isCommunityChat?: boolean;
   selectedChannelId?: string;
   selectedChannel?: any;
-  currentCommunity?: Record<string, any>;
+  currentCommunity?: CurrentCommunity | null;
   channel?: any;
   channelList?: Array<any>;
   startMessageLoading?: (...args: Array<any>) => any;
   newMessage?: Record<string, any>;
   rightSpace?: number;
-  local?: Record<string, any>;
+  local?: Record<string, ChannelWrapper>;
   newChannel?: boolean;
   permission?: Array<any>;
   user?: Record<string, any>;
@@ -150,7 +151,9 @@ const Main = ({
   const getTypingMemberName = useCallback(
     (id) => {
       const { members } = local[channel.sid];
-      const currentMember: Member = members.find((member: Member) => member.userId === id);
+      const currentMember: DetailedChatUser = members.find(
+        (member: DetailedChatUser) => member.userId === Number(id)
+      );
 
       if (currentMember) {
         return `${currentMember.firstname} ${currentMember.lastname}`;

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Channel } from 'twilio-chat/lib/channel';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -14,6 +15,7 @@ import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import TextField from '../../components/Basic/TextField/TextField';
 import { handleUpdateGroupPhoto } from '../../actions/chat';
+import { ChannelWrapper } from '../../reducers/chat';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -84,11 +86,11 @@ type Props = {
   isLoading?: any;
   classes?: any;
   title?: string | null | undefined;
-  channel?: Record<string, any>;
+  channel?: Channel;
   open?: any;
   onClose?: (...args: Array<any>) => any;
   updateGroupName?: (...args: Array<any>) => any;
-  localChannel?: Record<string, any>;
+  localChannel?: ChannelWrapper;
 };
 
 const EditGroupDetailsDialog = ({
@@ -137,7 +139,8 @@ const EditGroupDetailsDialog = ({
   }, [localChannel.title, onClose]);
 
   const updateChannelName = async () => {
-    if (name === channel.channelState.friendlyName) {
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
+    if (name === (channel as any).channelState.friendlyName) {
       return;
     }
 

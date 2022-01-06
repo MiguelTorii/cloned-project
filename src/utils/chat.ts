@@ -5,21 +5,18 @@
 /* eslint-disable no-restricted-syntax */
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
+import { Channel } from 'twilio-chat/lib/channel';
 import parse from 'html-react-parser';
-import type { ChatMessages } from '../types/models';
+import { ChatMessages } from '../types/models';
 
-/**
- * Use any type for channel because channelState is a private property
- * that we should not be accessing.
- * TODO remove twilio or figure out the proper (i.e. public) way to do this.
- */
-export const getTitle = (channel: any, userId: string, members: any[]) => {
+export const getTitle = (channel: Channel, userId: string, members: any[]) => {
   try {
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
     const {
       state,
       channelState: { attributes = {} }
-    } = channel;
-    const friendlyName = channel.channelState.friendlyName || '';
+    } = channel as any;
+    const friendlyName = (channel as any).channelState.friendlyName || '';
     const { users } = attributes;
 
     if (attributes.friendlyName && attributes.friendlyName !== '') {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Channel } from 'twilio-chat/lib/channel';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -18,12 +19,13 @@ import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.s
 import { getTitle } from '../../utils/chat';
 import { PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/leftMenu';
+import { ChannelWrapper } from '../../reducers/chat';
 
 type Props = {
   userId?: string;
-  channels?: any[];
-  channelList?: any[];
-  local?: Record<string, any>;
+  channels?: Channel[];
+  channelList?: string[];
+  local?: Record<string, ChannelWrapper>;
   isLoading?: boolean;
   onOpenChannel?: (...args: Array<any>) => any;
   handleRemoveChannel?: (...args: Array<any>) => any;

@@ -1,33 +1,124 @@
+import { Channel } from 'twilio-chat/lib/channel';
+import Client from 'twilio-chat';
+import { Message } from 'twilio-chat/lib/message';
 import update from 'immutability-helper';
 import moment from 'moment';
 import { getTitle } from '../utils/chat';
 import { chatActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { ChatChannel } from '../types/models';
+
+export type ChatUser = {
+  firstname: string;
+  image: string;
+  lastname: string;
+  userId: number;
+};
+
+export type DetailedChatUser = {
+  firstname: string;
+  image: string;
+  lastname: string;
+  userId: number;
+  isOnline: boolean;
+  role: string;
+  roleId: number;
+};
+
+export type ChannelWrapper = {
+  lastMessage: {
+    date: string;
+    message: string;
+    user: ChatUser;
+  };
+  members: DetailedChatUser[];
+  muted: boolean;
+  sectionId: number;
+  sid: string;
+  thumbnail: string;
+  title: string;
+  twilioChannel: Channel;
+  unread: number;
+  shareLink?: string;
+};
+
+export type ChatCommunityData = {
+  community: ChatCommunity;
+  permissions: string[];
+};
+
+export type ChatCommunity = {
+  about: string;
+  bg_color: string;
+  class_id: number;
+  community_banner_url: string;
+  community_icon_url: string;
+  created: string;
+  id: number;
+  name: string;
+  private: boolean;
+  school_id: number;
+  section_id: number;
+};
+
+export type CommunityChannels = {
+  channels: CommunityChannelsData[];
+  courseId: number;
+};
+
+export type CommunityChannelsData = {
+  channels: CommunityChannelData[];
+  community_id: number;
+  created: string;
+  id: number;
+  name: string;
+  private: boolean;
+};
+
+export type CommunityChannelData = {
+  category_id: number;
+  chat_id: string;
+  chat_name: string;
+  community_id: number;
+  created: string;
+  ordering: number;
+};
+
+export type CurrentCommunity = {
+  about: string;
+  color: string;
+  communityBannerUrl: string;
+  communityIconUrl: string;
+  created: string;
+  id: string;
+  name: string;
+  private: boolean;
+  school_id: number;
+  section_id: string;
+};
 
 export type ChatState = {
   data: {
-    channels: Array<ChatChannel>;
-    client: Record<string, any> | null | undefined;
-    communities: any[];
-    communityChannels: any[];
-    currentChannel: Record<string, any> | null | undefined;
-    currentCommunity: Record<string, any> | null | undefined;
-    currentCommunityChannel: Record<string, any> | null | undefined;
+    channels: Channel[];
+    client: Client | null;
+    communities: ChatCommunityData[];
+    communityChannels: CommunityChannels[];
+    currentChannel: Channel | null;
+    currentCommunity: CurrentCommunity | null;
+    currentCommunityChannel: Channel | null;
     currentCommunityId: string | null;
     entityFirstName: string;
     entityId: number;
     entityLastName: string;
     entityUuid: string;
     entityVideo: boolean;
-    local: Record<string, any>;
+    local: Record<string, ChannelWrapper>;
     mainMessage: string;
     messageLoading: boolean;
     newChannel: boolean;
-    newMessage: Record<string, any> | null | undefined;
+    newMessage: Message | null;
     oneTouchSendOpen: boolean;
     online: boolean;
-    openChannels: Array<ChatChannel>;
+    openChannels: Channel[];
     selectedChannelId: string;
     unread: number;
     uuid: string;

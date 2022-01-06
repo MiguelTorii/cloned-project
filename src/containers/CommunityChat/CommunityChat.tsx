@@ -17,6 +17,7 @@ import RightMenu from './RightMenu';
 import type { State as StoreState } from '../../types/state';
 import CourseChannels from './CourseChannels';
 import useStyles from './_styles/styles';
+import { CommunityChannels, CommunityChannelData } from '../../reducers/chat';
 
 const RIGHT_GRID_SPAN = 2;
 
@@ -71,8 +72,8 @@ const CommunityChat = ({
     }
   } = chat;
   useEffect(() => {
-    const currentCommunityChannels = [];
-    const filterCurrentCommunityChannel = allCommunityChannels.filter(
+    const currentCommunityChannels: CommunityChannelData[] = [];
+    const filterCurrentCommunityChannel: CommunityChannels[] = allCommunityChannels.filter(
       (communityChannel) => communityChannel.courseId === currentCommunity.id
     );
 
@@ -129,6 +130,8 @@ const CommunityChat = ({
     if (!localChannel) {
       return;
     }
+
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
     setLastReadMessageInfo({
       channelId: selectedChannel.chat_id,
       lastIndex: localChannel.twilioChannel.channelState.lastConsumedMessageIndex
