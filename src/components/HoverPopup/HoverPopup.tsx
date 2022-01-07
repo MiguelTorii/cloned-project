@@ -20,6 +20,8 @@ import { buildPath } from '../../utils/helpers';
 import type { State as StoreState } from '../../types/state';
 import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from '../../actions/chat';
 import { UserState } from '../../reducers/user';
+import { CampaignState } from '../../reducers/campaign';
+import { ChatState } from '../../reducers/chat';
 
 type Props = {
   leftAligned?: boolean;
@@ -46,6 +48,15 @@ const HoverPopup = ({
   const dispatch = useDispatch();
 
   const myUserId = useSelector((state: { user: UserState }) => state.user.data.userId);
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
+  const {
+    data: { client }
+  } = useSelector((state: { chat: ChatState }) => state.chat);
+
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -145,7 +156,9 @@ const HoverPopup = ({
       entityFirstName: (profile as any).firstName,
       entityLastName: (profile as any).lastName,
       entityVideo: false,
-      fullscreen: true
+      fullscreen: true,
+      isHud,
+      client
     });
     setTimeout(() => {
       setChatLoading(false);
@@ -160,7 +173,9 @@ const HoverPopup = ({
       entityFirstName: (profile as any).firstName,
       entityLastName: (profile as any).lastName,
       entityVideo: true,
-      fullscreen: true
+      fullscreen: true,
+      isHud,
+      client
     });
     setTimeout(() => {
       setChatLoading(false);

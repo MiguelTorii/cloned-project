@@ -40,6 +40,7 @@ import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import { LOG_EVENT_CATEGORY, LOG_EVENT_TYPE, PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
+import { ChatState } from '../../reducers/chat';
 
 const styles = (theme) => ({
   root: {
@@ -78,6 +79,7 @@ type Props = {
   match?: any;
   defaultPage?: string;
   isHud?: boolean;
+  chat?: ChatState;
 };
 
 type State = {
@@ -289,7 +291,7 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStartChat = () => {
-    const { openChannelWithEntity } = this.props;
+    const { openChannelWithEntity, isHud, chat } = this.props;
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
@@ -300,7 +302,9 @@ class Profile extends React.PureComponent<Props, State> {
       entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
-      entityVideo: false
+      entityVideo: false,
+      isHud,
+      client: chat.data.client
     });
     setTimeout(() => {
       this.setState({
@@ -310,7 +314,7 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStartVideo = () => {
-    const { openChannelWithEntity } = this.props;
+    const { openChannelWithEntity, isHud, chat } = this.props;
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
@@ -321,7 +325,9 @@ class Profile extends React.PureComponent<Props, State> {
       entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
-      entityVideo: true
+      entityVideo: true,
+      isHud,
+      client: chat.data.client
     });
     setTimeout(() => {
       this.setState({
@@ -838,8 +844,9 @@ class Profile extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, chat }: StoreState): {} => ({
+  user,
+  chat
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
