@@ -10,12 +10,16 @@ import MyStudyCircle from '../../components/MyStudyCircle/MyStudyCircle';
 import { getStudyCircle } from '../../api/user';
 import { removeFromStudyCircle } from '../../api/posts';
 import * as chatActions from '../../actions/chat';
+import { CampaignState } from '../../reducers/campaign';
+import { ChatState } from '../../reducers/chat';
 
 const styles = () => ({});
 
 type Props = {
   classes?: Record<string, any>;
   user?: UserState;
+  chat?: ChatState;
+  campaign?: CampaignState;
   openChannelWithEntity?: (...args: Array<any>) => any;
 };
 type State = {
@@ -77,7 +81,7 @@ class StudyCircle extends React.PureComponent<Props, State> {
   };
 
   handleStartChat = ({ userId, firstName, lastName }) => {
-    const { openChannelWithEntity } = this.props;
+    const { openChannelWithEntity, campaign, chat } = this.props;
     this.setState({
       isLoading: true
     });
@@ -85,7 +89,9 @@ class StudyCircle extends React.PureComponent<Props, State> {
       entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
-      entityVideo: false
+      entityVideo: false,
+      isHud: campaign.hud,
+      client: chat.data.client
     });
     setTimeout(() => {
       this.setState({
@@ -112,8 +118,10 @@ class StudyCircle extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
+const mapStateToProps = ({ user, campaign, chat }: StoreState): {} => ({
+  user,
+  campaign,
+  chat
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
