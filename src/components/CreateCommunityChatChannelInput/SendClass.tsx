@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import cx from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -25,6 +25,7 @@ import type { ChatState } from '../../reducers/chat';
 import styles from '../_styles/CreateCommunityChatChannelInput/sendClass';
 import MessageQuill from './MessageQuill';
 import type { State as StoreState } from '../../types/state';
+import { setCurrentCommunityIdAction } from '../../actions/chat';
 
 type Props = {
   classes?: Record<string, any>;
@@ -48,6 +49,8 @@ const CreateChatChannelInput = ({
   enqueueSnackbarAction,
   setCurrentCommunityId
 }: Props) => {
+  const dispatch = useDispatch();
+
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectChannel, setSelectedChannel] = useState('');
   const [templateChannels, setTemplateChannels] = useState([]);
@@ -126,7 +129,9 @@ const CreateChatChannelInput = ({
         message: value,
         chatIds
       });
-      setCurrentCommunityId(selectedClasses[selectedClasses.length - 1]?.community?.id);
+      dispatch(
+        setCurrentCommunityIdAction(selectedClasses[selectedClasses.length - 1]?.community?.id)
+      );
       setCurrentCommunity(selectedClasses[selectedClasses.length - 1]?.community);
       setShowError(false);
       onClosePopover();

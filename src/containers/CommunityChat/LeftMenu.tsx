@@ -36,7 +36,6 @@ type Props = {
   permission?: any;
   oneTouchSendOpen?: boolean;
   onNewChannel?: (...args: Array<any>) => any;
-  handleMarkAsRead?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   handleNewChannel?: any;
@@ -61,7 +60,6 @@ const LeftMenu = ({
   permission,
   newChannel,
   onNewChannel,
-  handleMarkAsRead,
   handleRemoveChannel,
   handleUpdateGroupName,
   client
@@ -228,7 +226,6 @@ const LeftMenu = ({
                       local={local}
                       permission={permission}
                       onOpenChannel={onOpenChannel}
-                      handleMarkAsRead={handleMarkAsRead}
                       handleRemoveChannel={handleRemoveChannel}
                       handleMuteChannel={handleMuteChannel}
                       handleUpdateGroupName={handleUpdateGroupName}

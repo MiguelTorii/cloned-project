@@ -1,8 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -14,7 +12,6 @@ import Link from '@material-ui/core/Link';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import clsx from 'clsx';
-import * as chatActions from '../../actions/chat';
 import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/Classmate';
@@ -33,7 +30,6 @@ type Props = {
   courseDisplayName?: string;
   meetingInvite?: boolean;
   classmate?: ClassmateType;
-  openChannelWithEntity?: (...args: Array<any>) => any;
   videoEnabled?: boolean;
   isInvited?: boolean;
   width?: string;
@@ -48,7 +44,6 @@ const Classmate = ({
   courseDisplayName,
   videoEnabled,
   isInvited,
-  openChannelWithEntity,
   width,
   classmate,
   meetingInvite,
@@ -147,12 +142,4 @@ const Classmate = ({
   );
 };
 
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      openChannelWithEntity: chatActions.openChannelWithEntity
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(null, mapDispatchToProps)(withWidth()(Classmate));
+export default withWidth()(Classmate);

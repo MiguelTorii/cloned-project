@@ -18,6 +18,8 @@ import * as chatActions from '../../actions/chat';
 import useStyles from '../_styles/HoverPopup';
 import { buildPath } from '../../utils/helpers';
 import type { State as StoreState } from '../../types/state';
+import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from '../../actions/chat';
+import { UserState } from '../../reducers/user';
 
 type Props = {
   leftAligned?: boolean;
@@ -27,7 +29,6 @@ type Props = {
   setCurrentCommunityId?: any;
   setCurrentChannel?: any;
   setCurrentCommunity?: any;
-  setCurrentChannelSid?: any;
   openChannelWithEntity?: any;
 };
 
@@ -39,12 +40,12 @@ const HoverPopup = ({
   setCurrentCommunityId,
   setCurrentChannel,
   setCurrentCommunity,
-  setCurrentChannelSid,
   ...props
 }: Props) => {
   const classes: any = useStyles();
-  const myUserId = useSelector((state) => (state as any).user.data.userId);
   const dispatch = useDispatch();
+
+  const myUserId = useSelector((state: { user: UserState }) => state.user.data.userId);
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -136,8 +137,8 @@ const HoverPopup = ({
     event.stopPropagation();
     const { openChannelWithEntity } = props;
     setChatLoading(true);
-    setCurrentCommunityId(null);
-    setCurrentChannelSid('');
+    dispatch(setCurrentCommunityIdAction(null));
+    dispatch(setCurrentChannelSidAction(''));
     setCurrentChannel(null);
     openChannelWithEntity({
       entityId: Number(userId),
@@ -275,7 +276,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
       openChannelWithEntity: chatActions.openChannelWithEntity,
       setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCurrentChannel: chatActions.setCurrentChannel,
-      setCurrentChannelSid: chatActions.setCurrentChannelSid,
       setCurrentCommunity: chatActions.setCurrentCommunity
     },
     dispatch

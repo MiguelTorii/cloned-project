@@ -15,12 +15,9 @@ type Props = {
   currentCommunity?: Record<string, any>;
   selectedChannel?: Record<string, any>;
   currentCommunityChannel?: Record<string, any>;
-  startMessageLoading?: (...args: Array<any>) => any;
   communityChannels?: Array<any>;
   local?: Record<string, ChannelWrapper>;
-  setCurrentChannelSidAction?: (...args: Array<any>) => any;
-  setSelctedChannel?: (...args: Array<any>) => any;
-  setCurrentCommunityChannel?: any;
+  setSelectedChannel?: (...args: Array<any>) => any;
 };
 
 const CourseChannels = ({
@@ -28,14 +25,12 @@ const CourseChannels = ({
   selectedChannel,
   currentCommunityChannel,
   communityChannels,
-  startMessageLoading,
   local,
-  setCurrentCommunityChannel,
-  setCurrentChannelSidAction,
-  setSelctedChannel
+  setSelectedChannel
 }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
+
   const userClasses = useSelector((state) => (state as any).user.userClasses);
   const handleGoToFeed = useCallback(() => {
     const communityClass = [...userClasses.classList, ...userClasses.pastClasses].find((item) =>
@@ -89,12 +84,9 @@ const CourseChannels = ({
       <CollapseNavbar
         channels={communityChannels}
         currentCommunityChannel={currentCommunityChannel}
-        startMessageLoading={startMessageLoading}
-        setCurrentCommunityChannel={setCurrentCommunityChannel}
-        setCurrentChannelSidAction={setCurrentChannelSidAction}
         local={local}
         selectedChannel={selectedChannel}
-        setSelctedChannel={setSelctedChannel}
+        setSelectedChannel={setSelectedChannel}
       />
     </Box>
   );

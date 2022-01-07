@@ -12,10 +12,16 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import Tooltip from '../../containers/Tooltip/Tooltip';
+import { useDispatch } from 'react-redux';
 import { ReactComponent as ChannelIcon } from '../../assets/svg/public-channel.svg';
 import { ReactComponent as UnreadMessageChannelIcon } from '../../assets/svg/unread-message-channel-icon.svg';
 import { ChannelWrapper } from '../../reducers/chat';
+import {
+  messageLoadingAction,
+  setCurrentChannelSidAction,
+  setCurrentCommunityChannel
+} from '../../actions/chat';
+import { Dispatch } from '../../types/store';
 
 const useStyles = makeStyles((theme) => ({
   navLink: {
@@ -69,23 +75,19 @@ type Props = {
   selectedChannel?: any;
   local?: Record<string, ChannelWrapper>;
   currentCommunityChannel?: Record<string, any>;
-  startMessageLoading?: (...args: Array<any>) => any;
-  setSelctedChannel?: (...args: Array<any>) => any;
-  setCurrentChannelSidAction?: (...args: Array<any>) => any;
-  setCurrentCommunityChannel?: (...args: Array<any>) => any;
+  setSelectedChannel?: (...args: Array<any>) => any;
 };
 
 const CollapseNavbar = ({
   channels,
   selectedChannel,
-  startMessageLoading,
   local,
   currentCommunityChannel,
-  setSelctedChannel,
-  setCurrentChannelSidAction,
-  setCurrentCommunityChannel
+  setSelectedChannel
 }: Props) => {
   const classes: any = useStyles();
+  const dispatch: Dispatch = useDispatch();
+
   const [collapsedStates, setCollapsedStates] = useState({});
 
   const handleSwitchCollapsedState = (channel) => {
@@ -105,10 +107,10 @@ const CollapseNavbar = ({
     }
 
     if (!channel?.channels && currentCommunityChannel.sid !== channel.chat_id) {
-      setCurrentChannelSidAction(channel.chat_id);
-      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel);
-      setSelctedChannel(channel);
-      startMessageLoading(true);
+      dispatch(setCurrentChannelSidAction(channel.chat_id));
+      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel)(dispatch);
+      setSelectedChannel(channel);
+      dispatch(messageLoadingAction(true));
     }
   };
 

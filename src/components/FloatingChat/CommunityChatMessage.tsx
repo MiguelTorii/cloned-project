@@ -31,7 +31,6 @@ type Props = {
   onStartVideoCall?: (...args: Array<any>) => any;
   onImageClick?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
-  showNotification?: (...args: Array<any>) => any;
   onRemoveMessage: (messageId: string) => void;
 };
 
@@ -46,7 +45,6 @@ const ChatMessage = ({
   members,
   isGroupChannel,
   messageList,
-  showNotification,
   onImageLoaded,
   onStartVideoCall,
   onImageClick,
@@ -139,7 +137,6 @@ const ChatMessage = ({
             isOnline={isOnline}
             isGroupChannel={isGroupChannel}
             date={date}
-            showNotification={showNotification}
             onViewProfile={handleViewProfile}
             onReportIssue={handleOpenReport}
             onBlockMember={handleOpenBlockMemberModal}

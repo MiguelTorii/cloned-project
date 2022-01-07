@@ -1,15 +1,11 @@
 import React, { useCallback } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiTabs from '../Tabs/TabPanel';
-import * as chatActions from '../../actions/chat';
 import styles from '../_styles/CreateCommunityChatChannelInput/oneTouchSend';
 import SendStudent from './SendStudent';
 import SendClass from './SendClass';
-import type { State as StoreState } from '../../types/state';
 
 type Props = {
   classes?: Record<string, any>;
@@ -61,20 +57,4 @@ const CreateChatChannelInput = ({
   );
 };
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
-  user,
-  chat
-});
-
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      closeNewChannel: chatActions.closeNewChannel
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles as any)(CreateChatChannelInput));
+export default withStyles(styles as any)(CreateChatChannelInput);

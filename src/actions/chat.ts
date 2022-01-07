@@ -20,7 +20,8 @@ import { chatActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import { uploadMedia } from './user';
-import { ChannelWrapper } from '../reducers/chat';
+import { ChannelWrapper, CurrentCommunity } from '../reducers/chat';
+import { APICommunity, APICommunityData } from '../api/models/APICommunity';
 
 const getAvailableSlots = (width) => {
   try {
@@ -100,14 +101,14 @@ const initChannels = ({
   }
 });
 
-const messageLoading = (loading) => ({
+export const messageLoadingAction = (loading) => ({
   type: chatActions.MAIN_MESSAGE_LOADING,
   payload: {
     loading
   }
 });
 
-const updateChannel = ({
+export const updateChannel = ({
   channel,
   unread
 }: {
@@ -125,7 +126,7 @@ const updateShareLink = ({
   shareLink,
   channelId
 }: {
-  channelId: number;
+  channelId: string;
   shareLink: string;
 }): Action => ({
   type: chatActions.UPDATE_SHARE_LINK_CHAT,
@@ -139,7 +140,7 @@ const updateMembers = ({
   members,
   channelId
 }: {
-  channelId: number;
+  channelId: string;
   members: Record<string, any>;
 }): Action => ({
   type: chatActions.UPDATE_MEMBERS_CHAT,
@@ -183,7 +184,7 @@ const removeChannel = ({ sid }: { sid: string }): Action => ({
   }
 });
 
-const closeNewChannelAction = () => ({
+export const closeNewChannelAction = () => ({
   type: chatActions.CLOSE_NEW_CHANNEL
 });
 
@@ -216,14 +217,15 @@ const setCurrentChannelAction = ({
   }
 });
 
-const setCurrentChannelSidAction = ({ selectedChannelId }: { selectedChannelId: string }) => ({
+export const setCurrentChannelSidAction = (selectedChannelId: string) => ({
   type: chatActions.SET_CURRENT_CHANNEL_ID,
   payload: {
     selectedChannelId
   }
 });
 
-const setCurrentCommunityAction = ({ channel }: { channel: Record<string, any> }) => ({
+// TODO resolve the type discrepancy between CurrentCommunity and APICommunityData
+export const setCurrentCommunityAction = (channel: CurrentCommunity | APICommunityData | null) => ({
   type: chatActions.SET_CURRENT_COMMUNITY,
   payload: {
     channel
@@ -241,7 +243,7 @@ const setCurrentCommunityChannelAction = ({
   }
 });
 
-const setCurrentCommunityIdAction = ({ currentCommunityId }) => ({
+export const setCurrentCommunityIdAction = (currentCommunityId: number | null) => ({
   type: chatActions.SET_CURRENT_COMMUNITY_ID,
   payload: {
     currentCommunityId
@@ -276,18 +278,14 @@ const setMainMessageAction = ({ mainMessage }: { mainMessage: string }) => ({
   }
 });
 
-const setCommunitiesAction = ({ communities }: { communities: any[] }) => ({
+export const setCommunitiesAction = (communities: APICommunity[]) => ({
   type: chatActions.SET_COMMUNITIES,
   payload: {
     communities
   }
 });
 
-export const setCommunityChannelsAction = ({
-  communityChannels
-}: {
-  communityChannels: Array<any>;
-}) => ({
+export const setCommunityChannelsAction = (communityChannels: Array<any>) => ({
   type: chatActions.SET_COMMUNITY_CHANNELS,
   payload: {
     communityChannels
@@ -301,13 +299,6 @@ const updateFriendlyName = ({ channel }: { channel: Record<string, any> }) => ({
   }
 });
 
-export const setMainMessage = (mainMessage) => (dispatch: Dispatch) => {
-  dispatch(
-    setMainMessageAction({
-      mainMessage
-    })
-  );
-};
 export const updateChannelAttributes = (channelSid: string, attributes: Record<string, any>) => ({
   type: chatActions.UPDATE_CHANNEL_ATTRIBUTES,
   payload: {
@@ -335,20 +326,10 @@ const fetchMembers = async (sid) => {
 
 export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
   if (channel) {
-    dispatch(
-      setCurrentCommunityAction({
-        channel
-      })
-    );
+    dispatch(setCurrentCommunityAction(channel));
   }
 };
-export const setCurrentChannelSid = (selectedChannelId) => async (dispatch: Dispatch) => {
-  dispatch(
-    setCurrentChannelSidAction({
-      selectedChannelId
-    })
-  );
-};
+
 export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) => {
   if (currentChannel) {
     localStorage.setItem('currentDMChannel', currentChannel.sid);
@@ -415,25 +396,7 @@ export const setOneTouchSend = (open) => async (dispatch: Dispatch) => {
   );
 };
 export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
-  dispatch(
-    setCurrentCommunityIdAction({
-      currentCommunityId
-    })
-  );
-};
-export const setCommunityList = (communities) => async (dispatch: Dispatch) => {
-  dispatch(
-    setCommunitiesAction({
-      communities
-    })
-  );
-};
-export const setCommunityChannels = (communityChannels) => (dispatch: Dispatch) => {
-  dispatch(
-    setCommunityChannelsAction({
-      communityChannels
-    })
-  );
+  dispatch(setCurrentCommunityIdAction(currentCommunityId));
 };
 export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction());
@@ -468,9 +431,6 @@ export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
     })
   );
 };
-export const startMessageLoading = (loading) => async (dispatch: Dispatch) => {
-  dispatch(messageLoading(loading));
-};
 
 const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
@@ -497,19 +457,11 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
        * Set the default current channel id if there is no previus selected channel
        * Save channel Id for checking the messages from another channel
        */
-      dispatch(
-        setCurrentChannelSidAction({
-          selectedChannelId: channelList[0]
-        })
-      );
+      dispatch(setCurrentChannelSidAction(channelList[0]));
       dispatch(setCurrentChannel(currentLocal[channelList[0]]?.twilioChannel));
     } else if (localStorage.getItem('currentDMChannel')) {
       const lastChannelId = localStorage.getItem('currentDMChannel');
-      dispatch(
-        setCurrentChannelSidAction({
-          selectedChannelId: lastChannelId || ''
-        })
-      );
+      dispatch(setCurrentChannelSidAction(lastChannelId || ''));
       dispatch(setCurrentChannel(currentLocal?.[lastChannelId]?.twilioChannel));
     }
 
@@ -529,20 +481,20 @@ export const openChannelWithEntity =
     entityFirstName,
     entityLastName,
     entityVideo,
-    fullscreen = false
+    fullscreen = false,
+    isHud,
+    client
   }: {
     entityId: number;
     entityFirstName: string;
     entityLastName: string;
     entityVideo: boolean;
     fullscreen: boolean;
+    isHud: boolean;
+    client: Client;
   }) =>
-  async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
-    const {
-      campaign: { hud }
-    } = getState();
-
-    if (!hud && !fullscreen) {
+  async (dispatch: Dispatch) => {
+    if (!isHud && !fullscreen) {
       dispatch(
         requestStartChannelWithEntity({
           entityId,
@@ -553,11 +505,6 @@ export const openChannelWithEntity =
         })
       );
     } else {
-      const {
-        chat: {
-          data: { client }
-        }
-      } = getState();
       // Create Channel with users
       const { chatId } = await createChannel({
         users: [Number(entityId)]
@@ -583,11 +530,7 @@ export const openChannelWithEntity =
             channelId: channel.sid
           })
         );
-        dispatch(
-          setCurrentChannelSidAction({
-            selectedChannelId: channel.sid
-          })
-        );
+        dispatch(setCurrentChannelSidAction(channel.sid));
         dispatch(
           setCurrentChannelAction({
             currentChannel: channel
@@ -840,14 +783,6 @@ export const handleMuteChannel =
       );
     }
   };
-export const handleMarkAsRead = (channel: Record<string, any>) => async (dispatch: Dispatch) => {
-  dispatch(
-    updateChannel({
-      channel,
-      unread: 0
-    })
-  );
-};
 export const handleRemoveChannel =
   ({ sid }: { sid: string }) =>
   async (dispatch: Dispatch) => {

@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -14,13 +13,16 @@ import Link from '@material-ui/core/Link';
 import ChatIcon from '@material-ui/icons/Chat';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import clsx from 'clsx';
-import * as chatActions from '../../actions/chat';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import InviteIcon from '../../assets/svg/invite-icon.svg';
 import { getInitials } from '../../utils/chat';
 import useStyles from '../_styles/ClassmatesDialog/Classmate';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
+import { openChannelWithEntity } from '../../actions/chat';
+import { CampaignState } from '../../reducers/campaign';
+import { ChatState } from '../../reducers/chat';
+import { Dispatch } from '../../types/store';
 
 type ClassmateType = {
   userId: string;
@@ -35,29 +37,29 @@ type Props = {
   courseDisplayName: string;
   meetingInvite: boolean;
   classmate: ClassmateType;
-  openChannelWithEntity?: (...args: Array<any>) => any;
   videoEnabled?: boolean;
   width?: string;
-  handleInvite?: () => void;
 };
 const MyProfileLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
 ));
 
-const Classmate = ({
-  courseDisplayName,
-  videoEnabled,
-  openChannelWithEntity,
-  width,
-  classmate,
-  meetingInvite,
-  handleInvite
-}: Props) => {
+const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingInvite }: Props) => {
   const classes: any = useStyles();
+  const dispatch: Dispatch = useDispatch();
+
+  const isHud: boolean | null = useSelector(
+    (state: { campaign: CampaignState }) => state.campaign.hud
+  );
+
+  const {
+    data: { client }
+  } = useSelector((state: { chat: ChatState }) => state.chat);
+
   const [loadingMessage, setLoadingMessage] = useState(false);
   const [loadingVideo, setLoadingVideo] = useState(false);
   const openChat = useCallback(
-    (videoButton, isVideo) => () => {
+    (videoButton: boolean, isVideo: boolean) => () => {
       if (videoButton) {
         setLoadingVideo(true);
       } else {
@@ -69,21 +71,16 @@ const Classmate = ({
         entityFirstName: classmate.firstName,
         entityLastName: classmate.lastName,
         entityVideo: isVideo,
-        notRegistered: classmate.notRegistered,
-        fullscreen: true && !isVideo
-      });
+        fullscreen: true && !isVideo,
+        isHud,
+        client
+      })(dispatch);
       setTimeout(() => {
         setLoadingVideo(false);
         setLoadingMessage(false);
       }, 4000);
     },
-    [
-      classmate.firstName,
-      classmate.lastName,
-      classmate.notRegistered,
-      classmate.userId,
-      openChannelWithEntity
-    ]
+    [classmate.firstName, classmate.lastName, classmate.userId, dispatch, isHud, client]
   );
   const classList = useMemo(() => {
     if (courseDisplayName) {
@@ -168,12 +165,4 @@ const Classmate = ({
   );
 };
 
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      openChannelWithEntity: chatActions.openChannelWithEntity
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(null, mapDispatchToProps)(withWidth()(Classmate));
+export default withWidth()(Classmate);

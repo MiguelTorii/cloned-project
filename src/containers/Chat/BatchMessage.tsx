@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
@@ -6,6 +7,7 @@ import { UserState } from '../../reducers/user';
 import Tooltip from '../Tooltip/Tooltip';
 import BatchMessageDialog from '../BatchMessageDialog/BatchMessageDialog';
 import { PERMISSIONS } from '../../constants/common';
+import { closeNewChannelAction } from '../../actions/chat';
 
 const useStyles = makeStyles((theme) => ({
   selectClasses: {
@@ -15,20 +17,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BatchMessage = ({
-  user,
-  closeNewChannel,
   location: { pathname }
 }: {
-  user: UserState;
-  closeNewChannel: any;
   location: {
     pathname: string;
   };
 }) => {
   const classes: any = useStyles();
-  const {
-    data: { permission }
-  } = user;
+  const dispatch = useDispatch();
+
+  const permission = useSelector((state: { user: UserState }) => state.user.data.permission);
+
   const [open, setOpen] = useState(false);
   const canBatchMessage = useMemo(
     () =>
@@ -39,8 +38,8 @@ const BatchMessage = ({
   const openDialog = useCallback(() => setOpen(true), []);
   const closeDialog = useCallback(() => {
     setOpen(false);
-    closeNewChannel();
-  }, [closeNewChannel]);
+    dispatch(closeNewChannelAction());
+  }, [dispatch]);
 
   if (!canBatchMessage || pathname !== '/chat') {
     return null;
