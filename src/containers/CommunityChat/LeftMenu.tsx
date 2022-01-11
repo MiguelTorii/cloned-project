@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Channel } from 'twilio-chat/lib/channel';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
@@ -7,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
 import Fuse from 'fuse.js';
 import ChatListItem from '../../components/CommunityChatListItem/ChatListItem';
 import CreateChatChannelInput from '../../components/CreateCommunityChatChannelInput/CreateChatChannelInput';
@@ -19,7 +19,9 @@ import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.s
 import { getTitle } from '../../utils/chat';
 import { PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/leftMenu';
-import { ChannelWrapper } from '../../reducers/chat';
+import { ChannelWrapper, ChatState } from '../../reducers/chat';
+import { handleNewChannel, setCurrentChannel, setOneTouchSendAction } from '../../actions/chat';
+import { Dispatch } from '../../types/store';
 
 type Props = {
   userId?: string;
@@ -29,8 +31,6 @@ type Props = {
   isLoading?: boolean;
   onOpenChannel?: (...args: Array<any>) => any;
   handleRemoveChannel?: (...args: Array<any>) => any;
-  setCurrentChannel?: (...args: Array<any>) => any;
-  setOneTouchSend?: ((...args: Array<any>) => any) | null | undefined;
   lastChannelSid?: string;
   currentChannel?: Record<string, any> | null | undefined;
   permission?: any;
@@ -38,9 +38,7 @@ type Props = {
   onNewChannel?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
-  handleNewChannel?: any;
   newChannel?: any;
-  client?: any;
 };
 
 const LeftMenu = ({
@@ -50,10 +48,7 @@ const LeftMenu = ({
   handleMuteChannel,
   userId,
   oneTouchSendOpen = false,
-  setOneTouchSend,
   lastChannelSid,
-  handleNewChannel,
-  setCurrentChannel,
   channels,
   onOpenChannel,
   currentChannel,
@@ -61,14 +56,19 @@ const LeftMenu = ({
   newChannel,
   onNewChannel,
   handleRemoveChannel,
-  handleUpdateGroupName,
-  client
+  handleUpdateGroupName
 }: Props) => {
   const classes: any = useStyles();
+  const dispatch: Dispatch = useDispatch();
+
   const [search, setSearch] = useState();
   const [searchChannels, setSearchChannels] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const expertMode = useSelector((state) => (state as any).user.expertMode);
+
+  const {
+    data: { openChannels }
+  } = useSelector((state: { chat: ChatState }) => state.chat);
 
   const switchOneTouchSend = () =>
     permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && expertMode;
@@ -84,12 +84,10 @@ const LeftMenu = ({
   const handleClose = () => {
     setIsOpen(false);
 
-    if (setOneTouchSend) {
-      setOneTouchSend(false);
-    }
+    dispatch(setOneTouchSendAction(false));
 
-    handleNewChannel(false);
-    setCurrentChannel(local[lastChannelSid]?.twilioChannel);
+    handleNewChannel(false, openChannels)(dispatch);
+    setCurrentChannel(local[lastChannelSid]?.twilioChannel)(dispatch);
   };
 
   const onChangeSearch = (e) => setSearch(e.target.value);

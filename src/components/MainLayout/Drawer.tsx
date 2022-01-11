@@ -9,6 +9,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import { useDispatch } from 'react-redux';
+import { Dispatch } from '../../types/store';
 import ClassList from '../ClassList/ClassList';
 import CustomSwitch from './Switch';
 import Tooltip from '../../containers/Tooltip/Tooltip';
@@ -42,6 +44,7 @@ import { ReactComponent as HomeIconOff } from '../../assets/svg/home-inactive.sv
 import DrawerItem from './DrawerItem';
 import { useStyles } from '../_styles/MainLayout/Drawer';
 import { checkPath } from '../../utils/helpers';
+import { setOneTouchSendAction } from '../../actions/chat';
 
 type Props = {
   newClassExperience?: any;
@@ -53,7 +56,6 @@ type Props = {
   pathname?: any;
   handleManageClasses?: any;
   appBarHeight?: any;
-  setOneTouchSend?: any;
   landingPageCampaign?: any;
   expertMode?: any;
   isExpert?: any;
@@ -62,14 +64,6 @@ type Props = {
   fullName?: any;
   userProfileUrl?: any;
   initials?: any;
-  viewedOnboarding?: any;
-  handleCreatePostMenuOpen?: any;
-  updateFeed?: any;
-  createPostOpen?: any;
-  handleOpenUseCases?: any;
-  handleOpenStudentJobs?: any;
-  handleOpenHowEarnPoints?: any;
-  userClasses?: any;
 };
 
 const Drawer = ({
@@ -82,7 +76,6 @@ const Drawer = ({
   pathname,
   handleManageClasses,
   appBarHeight,
-  setOneTouchSend,
   landingPageCampaign,
   expertMode,
   isExpert,
@@ -90,18 +83,15 @@ const Drawer = ({
   userId,
   fullName,
   userProfileUrl,
-  initials,
-  viewedOnboarding,
-  handleCreatePostMenuOpen,
-  updateFeed,
-  createPostOpen,
-  handleOpenUseCases,
-  handleOpenStudentJobs,
-  handleOpenHowEarnPoints,
-  userClasses
-}) => {
+  initials
+}: Props) => {
   const classes: any = useStyles();
-  const handleOpenOneTouchSend = useCallback(() => setOneTouchSend(true), [setOneTouchSend]);
+  const dispatch: Dispatch = useDispatch();
+
+  const handleOpenOneTouchSend = useCallback(
+    () => dispatch(setOneTouchSendAction(true)),
+    [dispatch]
+  );
 
   const handleOpenTutorHelp = useCallback(() => {
     window.open('https://tutors.circleinapp.com/home', '_blank');

@@ -54,7 +54,6 @@ type Props = {
   updateFilter?: (...args: Array<any>) => any;
   push?: (...args: Array<any>) => any;
   setBannerHeight?: (...args: Array<any>) => any;
-  setOneTouchSend?: (...args: Array<any>) => any;
 };
 
 const Layout = ({
@@ -70,8 +69,7 @@ const Layout = ({
   toggleExpertMode,
   updateFilter,
   push,
-  setBannerHeight,
-  setOneTouchSend
+  setBannerHeight
 }: Props) => {
   const [manageClasses, setManageClasses] = useState(false);
   const [manageBlockedUsers, setManageBlockedUsers] = useState(false);
@@ -228,7 +226,6 @@ const Layout = ({
           pathname={pathname}
           updateFeed={updateFeed}
           userClasses={userClasses}
-          setOneTouchSend={setOneTouchSend}
           handleNotificationOpen={handleNotificationOpen}
           handleSignOut={signOut}
           onManageClasses={handleOpenManageClasses}
@@ -291,14 +288,11 @@ const mapStateToProps = ({ chat, user, campaign }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      enqueueSnackbar: notificationsActions.enqueueSnackbar,
       signOut: signInActions.signOut,
-      openCreateChatGroup: chatActions.openCreateChatGroup,
       fetchFeed: feedActions.fetchFeed,
       updateFilter: feedActions.updateFilter,
       toggleExpertMode: userActions.toggleExpertMode,
       setBannerHeight: userActions.setBannerHeight,
-      setOneTouchSend: chatActions.setOneTouchSend,
       push: routePush
     },
     dispatch

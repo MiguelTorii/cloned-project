@@ -83,13 +83,12 @@ type Props = {
   getMembers?: (...args: Array<any>) => any;
   onClose?: (...args: Array<any>) => any;
   onBlock?: (...args: Array<any>) => any;
-  onRemove?: (...args: Array<any>) => any;
+  onRemove: (...args: Array<any>) => any;
   newChannel?: boolean;
   handleChannelCreated?: (...args: Array<any>) => any;
   onSend?: (...args: Array<any>) => any;
   push?: (...args: Array<any>) => any;
   setCurrentCommunityId?: any;
-  setCurrentChannel?: any;
   local?: Record<string, ChannelWrapper>;
 };
 
@@ -611,7 +610,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
       },
       onBlock,
       handleChannelCreated,
-      setCurrentChannel,
       setCurrentCommunityId,
       push
     } = this.props;
@@ -642,7 +640,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
             open={open}
             unread={unread}
             setCurrentCommunityId={setCurrentCommunityId}
-            isGroup={groupType !== ''}
             expanded={expanded}
             channels={channels}
             local={local}
@@ -651,7 +648,6 @@ class ChatChannel extends React.PureComponent<Props, State> {
             onDelete={this.handleDelete}
             newChannel={newChannel}
             channel={channel}
-            setCurrentChannel={setCurrentChannel}
             onStartVideoCall={this.handleStartVideoCall}
             onViewMembers={this.handleViewMembers}
             onExpand={this.handleExpand}
