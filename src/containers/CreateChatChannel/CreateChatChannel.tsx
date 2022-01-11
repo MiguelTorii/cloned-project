@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import { getInitials } from '../../utils/chat';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
-import type { State as StoreState } from '../../types/state';
 import CreateChatChannelDialog from '../../components/CreateChatChannelDialog/CreateChatChannelDialog';
 import { searchUsers } from '../../api/user';
 import { getPresignedURL } from '../../api/media';
@@ -13,8 +12,6 @@ import { createChannel } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 type Props = {
-  user?: UserState;
-  chat?: ChatState;
   type?: string | null | undefined;
   client?: Record<string, any>;
   isVideo?: boolean;
@@ -24,35 +21,30 @@ type Props = {
   channels?: any;
 };
 
-type State = {
-  thumbnail: string | null | undefined;
-  isLoading: boolean;
-};
+const CreateChatChannel = ({
+  type,
+  client,
+  isVideo = false,
+  onClose,
+  onChannelCreated,
+  title,
+  channels
+}: Props) => {
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [prevEntityUuid, setPrevEntityUuid] = useState<string>('');
 
-class CreateChatChannel extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    isVideo: false
-  };
+  const {
+    data: { userId, schoolId }
+  } = useSelector((state: { user: UserState }) => state.user);
 
-  state = {
-    thumbnail: null,
-    isLoading: false
-  };
+  const {
+    data: { entityId, entityFirstName, entityLastName, entityVideo, entityUuid }
+  } = useSelector((state: { chat: ChatState }) => state.chat);
 
-  componentDidUpdate = (prevProps) => {
-    const {
-      chat: {
-        data: { entityId, entityFirstName, entityLastName, entityVideo, entityUuid }
-      }
-    } = this.props;
-    const {
-      chat: {
-        data: { entityUuid: prevEntityUuid }
-      }
-    } = prevProps;
-
+  useEffect(() => {
     if (entityId !== 0 && entityUuid !== prevEntityUuid) {
-      this.handleSubmit({
+      handleSubmit({
         chatType: 'single',
         name: '',
         type: '',
@@ -66,9 +58,10 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         startVideo: entityVideo
       });
     }
-  };
+    setPrevEntityUuid(entityUuid);
+  }, [entityId, entityFirstName, entityLastName, entityVideo, entityUuid, prevEntityUuid]);
 
-  handleLoadOptions = async ({ query, from }) => {
+  const handleLoadOptions = async ({ query, from }) => {
     if (query.trim() === '' || query.trim().length < 3) {
       return {
         options: [],
@@ -76,11 +69,6 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
       };
     }
 
-    const {
-      user: {
-        data: { userId, schoolId }
-      }
-    } = this.props;
     const users = await searchUsers({
       userId,
       query,
@@ -108,12 +96,7 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
     };
   };
 
-  handleUploadThumbnail = async (file) => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
+  const handleUploadThumbnail = async (file) => {
     const result = await getPresignedURL({
       userId,
       type: 4,
@@ -125,17 +108,11 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
         'Content-Type': file.type
       }
     });
-    this.setState({
-      thumbnail: readUrl
-    });
+    setThumbnail(readUrl);
   };
 
-  handleSubmit = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
-    const { client, onChannelCreated } = this.props;
-    const { thumbnail } = this.state;
-    this.setState({
-      isLoading: true
-    });
+  const handleSubmit = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
+    setIsLoading(true);
 
     try {
       const users = selectedUsers.map((item) => Number(item.userId));
@@ -154,57 +131,39 @@ class CreateChatChannel extends React.PureComponent<Props, State> {
             isNew: isNewChat,
             startVideo
           });
-          this.handleClose();
+          handleClose();
         } catch (e) {
-          this.setState({
-            isLoading: false
-          });
+          setIsLoading(false);
         }
       } else {
-        this.setState({
-          isLoading: false
-        });
+        setIsLoading(false);
       }
     } finally {
-      this.setState({
-        isLoading: false
-      });
+      setIsLoading(false);
     }
   };
 
-  handleClose = () => {
-    const { onClose } = this.props;
-    this.setState({
-      thumbnail: null,
-      isLoading: false
-    });
+  const handleClose = () => {
+    setThumbnail(null);
+    setIsLoading(false);
     onClose();
   };
 
-  render() {
-    const { isVideo, type, title } = this.props;
-    const { thumbnail, isLoading } = this.state;
-    return (
-      <ErrorBoundary>
-        <CreateChatChannelDialog
-          chatType={type}
-          thumbnail={thumbnail}
-          isLoading={isLoading}
-          isVideo={isVideo}
-          onClose={this.handleClose}
-          onSubmit={this.handleSubmit}
-          onLoadOptions={this.handleLoadOptions}
-          onSendInput={this.handleUploadThumbnail}
-          title={title}
-        />
-      </ErrorBoundary>
-    );
-  }
-}
+  return (
+    <ErrorBoundary>
+      <CreateChatChannelDialog
+        chatType={type}
+        thumbnail={thumbnail}
+        isLoading={isLoading}
+        isVideo={isVideo}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        onLoadOptions={handleLoadOptions}
+        onSendInput={handleUploadThumbnail}
+        title={title}
+      />
+    </ErrorBoundary>
+  );
+};
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
-  user,
-  chat
-});
-
-export default connect<{}, {}, Props>(mapStateToProps, null)(withMobileDialog()(CreateChatChannel));
+export default withMobileDialog()(CreateChatChannel);
