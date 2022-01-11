@@ -469,6 +469,10 @@ class ViewNotes extends React.PureComponent<Props, State> {
       return <ErrorBoundary>{this.renderInitComment(initialComment)}</ErrorBoundary>;
     }
 
+    if (!comments) {
+      return null;
+    }
+
     return (
       <ErrorBoundary>
         {loadViewMoreComment
@@ -479,20 +483,15 @@ class ViewNotes extends React.PureComponent<Props, State> {
   };
 
   renderComments = () => {
-    const { classes, initialComment, isFromList } = this.props;
+    const { classes, initialComment } = this.props;
     const { comments, loadViewMoreComment } = this.state;
-
-    // If initialComment does not exist, it means there are no comments on the post.
-    if (!initialComment && isFromList) {
-      return null;
-    }
 
     return (
       <>
         {this.renderLoadMoreComments()}
         <ErrorBoundary>
           <div>
-            {!comments || comments.comments.length > 1 ? (
+            {(!comments && initialComment) || comments?.comments.length > 1 ? (
               <Button className={classes.viewMore} color="secondary" onClick={this.viewMoreComment}>
                 {!loadViewMoreComment ? 'View more comments' : 'View less comments'}
               </Button>
