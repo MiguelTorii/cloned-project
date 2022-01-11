@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
 import get from 'lodash/get';
 import InfiniteScroll from 'react-infinite-scroller';
 import Lightbox from 'react-images';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import cx from 'classnames';
@@ -20,8 +16,9 @@ import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import { sendMessage } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
 import { getPresignedURL } from '../../api/media';
-import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { UserState } from '../../reducers/user';
+import { showNotification } from '../../actions/notifications';
 
 const styles = (theme) => ({
   messageScroll: {
@@ -85,14 +82,11 @@ const styles = (theme) => ({
 
 type Props = {
   classes?: Record<string, any>;
-  user?: Record<string, any>;
   channel?: Record<string, any>;
   members?: any;
-  chat?: any;
-  showNotification?: (...args: Array<any>) => any;
 };
 
-const StudyRoomChat = ({ members, user, channel, classes, chat, showNotification }: Props) => {
+const StudyRoomChat = ({ members, channel, classes }: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -110,7 +104,7 @@ const StudyRoomChat = ({ members, user, channel, classes, chat, showNotification
 
   const {
     data: { userId, firstName, lastName }
-  } = user;
+  } = useSelector((state: { user: UserState }) => state.user);
   const onTyping = useCallback(() => {
     const twilioChannel = get(channel, 'twilioChannel');
 
@@ -445,17 +439,4 @@ const StudyRoomChat = ({ members, user, channel, classes, chat, showNotification
   );
 };
 
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      showNotification: notificationsActions.showNotification
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles as any)(StudyRoomChat));
+export default withStyles(styles as any)(StudyRoomChat);

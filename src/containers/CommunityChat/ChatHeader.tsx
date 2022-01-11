@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { Channel } from 'twilio-chat/lib/channel';
-import { connect } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -29,8 +29,8 @@ import { ReactComponent as ChatActiveStudyRoomMemberrs } from '../../assets/svg/
 import { PERMISSIONS } from '../../constants/common';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/chatHeader';
-import type { State as StoreState } from '../../types/state';
 import { ChannelWrapper } from '../../reducers/chat';
+import { UserState } from '../../reducers/user';
 
 type Props = {
   isCommunityChat?: boolean;
@@ -42,7 +42,6 @@ type Props = {
   memberKeys?: Array<any>;
   startVideo?: (...args: Array<any>) => any;
   local?: Record<string, ChannelWrapper>;
-  user?: Record<string, any>;
   onOpenRightPanel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
 };
@@ -57,7 +56,6 @@ const ChatHeader = ({
   memberKeys,
   startVideo,
   local,
-  user,
   onOpenRightPanel,
   handleUpdateGroupName
 }: Props) => {
@@ -69,6 +67,8 @@ const ChatHeader = ({
   const [openRemoveStudent, setOpenRemoveStudent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [membersEl, setMembersEl] = useState(null);
+
+  const user = useSelector((state: { user: UserState }) => state.user);
 
   const handleClick = (event) => {
     setMembersEl(event.currentTarget);
@@ -398,9 +398,4 @@ const ChatHeader = ({
   );
 };
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
-});
-
-const mapDispatchToProps = {};
-export default connect<{}, {}, Props>(mapStateToProps, mapDispatchToProps)(ChatHeader);
+export default ChatHeader;

@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
+import { useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import get from 'lodash/get';
@@ -17,7 +15,7 @@ import { fetchAvatars } from '../../utils/chat';
 import { getGroupMembers } from '../../api/chat';
 import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { State as StoreState } from '../../types/state';
+import { ChatState } from '../../reducers/chat';
 
 const styles = (theme) => ({
   root: {
@@ -124,32 +122,25 @@ const StyledTab = withStyles((theme) => ({
 
 type Props = {
   classes?: Record<string, any>;
-  user?: Record<string, any>;
-  router?: Record<string, any>;
   open?: boolean;
-  chat?: Record<string, any>;
   selectedTab?: number;
   participants?: Record<string, any>;
   handleClose?: any;
 };
 
-const StudyRoomChat = ({
-  handleClose,
-  open,
-  user,
-  router,
-  classes,
-  chat,
-  selectedTab,
-  participants
-}: Props) => {
+const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }: Props) => {
   const [members, setMembers] = useState({});
   const [tabs, setTabs] = useState(1);
+
+  const router = useSelector((state) => (state as any).router);
+  const chat = useSelector((state: { chat: ChatState }) => state.chat);
+
   useEffect(() => {
     if (typeof selectedTab === 'number') {
       setTabs(selectedTab);
     }
   }, [selectedTab]);
+
   const channelId = useMemo(() => {
     const pathname = get(router, 'location.pathname');
 
@@ -160,6 +151,7 @@ const StudyRoomChat = ({
 
     return null;
   }, [router]);
+
   const channel = useMemo(() => {
     if (channelId) {
       return get(chat, `data.local.${channelId}`);
@@ -167,6 +159,7 @@ const StudyRoomChat = ({
 
     return null;
   }, [channelId, chat]);
+
   useEffect(() => {
     const initAvatars = async () => {
       const twilioChannel = get(channel, 'twilioChannel');
@@ -215,13 +208,16 @@ const StudyRoomChat = ({
       getMembers();
     }
   }, [channel, channelId]);
+
   const handleChangeTabs = useCallback((_, value) => {
     setTabs(value);
   }, []);
+
   const participantsIdList = useMemo(
     () => participants.map((p) => p.participant.identity),
     [participants]
   );
+
   const memberListOnVideo = useMemo(
     () => Object.keys(members).filter((member) => participantsIdList.indexOf(member) > -1),
     [members, participantsIdList]
@@ -269,7 +265,7 @@ const StudyRoomChat = ({
             </div>
           </TabPanel>
           <TabPanel value={tabs} index={1}>
-            <Chat user={user} channel={channel} members={members} chat={chat} />
+            <Chat channel={channel} members={members} />
           </TabPanel>
         </div>
       </ClickAwayListener>
@@ -277,21 +273,4 @@ const StudyRoomChat = ({
   );
 };
 
-const mapStateToProps = ({ router, user, chat }: StoreState): {} => ({
-  user,
-  router,
-  chat
-});
-
-const mapDispatchToProps = (dispatch: any): {} =>
-  bindActionCreators(
-    {
-      pushTo: push
-    },
-    dispatch
-  );
-
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles as any)(StudyRoomChat));
+export default withStyles(styles as any)(StudyRoomChat);
