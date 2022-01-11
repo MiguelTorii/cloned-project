@@ -236,7 +236,7 @@ const ClassQuestions = ({ classId }: Props) => {
         onClose={handleReportClose}
       />
       <SharePost
-        feedId={(shareData || {}).feedId}
+        feedId={shareData?.feedId || 0}
         open={Boolean(shareData)}
         onClose={handleShareClose}
       />
