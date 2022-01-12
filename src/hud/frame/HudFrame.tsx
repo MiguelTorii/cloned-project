@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -32,7 +32,7 @@ import {
   STUDY_TOOLS_QUERY_KEY
 } from '../../routeConstants';
 import {
-  hideSideArea,
+  setSideAreaVisibility,
   setStudyToolsOption,
   toggleSideAreaVisibility
 } from '../navigationState/hudNavigationActions';
@@ -55,6 +55,7 @@ const HudFrame = () => {
   const dispatch: Dispatch<Action> = useDispatch();
   const theme = useTheme();
   const isSmallWindow = useMediaQuery(theme.breakpoints.down('sm'));
+  const [forceHideSideArea, setForceHideSideArea] = useState(false);
 
   useOnboarding();
 
@@ -73,14 +74,17 @@ const HudFrame = () => {
   );
 
   const handleToggleRightPane = useCallback(() => {
-    dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
-  }, [dispatch]);
+    if (forceHideSideArea) {
+      dispatch(setSideAreaVisibility(RIGHT_SIDE_AREA, true));
+    } else {
+      dispatch(toggleSideAreaVisibility(RIGHT_SIDE_AREA));
+    }
+    setForceHideSideArea(false);
+  }, [dispatch, forceHideSideArea]);
 
   useEffect(() => {
-    if (isSmallWindow && isRightPaneVisible) {
-      dispatch(hideSideArea(RIGHT_SIDE_AREA));
-    }
-  }, [dispatch, isSmallWindow]);
+    setForceHideSideArea(isSmallWindow);
+  }, [isSmallWindow]);
 
   const isShowingOnboardingPopup: boolean = useSelector(
     (state: { hudStory: HudStoryState }) => state.hudStory.isShowingOnboardingPopup
@@ -102,6 +106,8 @@ const HudFrame = () => {
     dispatch(openOnboardingPopup());
   }
 
+  const showRightPanel = !forceHideSideArea && isRightPaneVisible;
+
   return (
     <main>
       <CssBaseline />
@@ -122,7 +128,7 @@ const HudFrame = () => {
                 : classes.standardAppContent
             )}
           >
-            {(!isSmallWindow || !isRightPaneVisible) && (
+            {(!isSmallWindow || !showRightPanel) && (
               <div className={classes.mainContainer}>
                 <div className={classes.mainHeader}>
                   <HudTitle />
@@ -145,11 +151,11 @@ const HudFrame = () => {
               </div>
             )}
 
-            <Box position="relative" minWidth={isRightPaneVisible ? 'auto' : 20}>
+            <Box position="relative" minWidth={showRightPanel ? 'auto' : 20}>
               <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
-                {isRightPaneVisible ? <IconRight /> : <IconLeft />}
+                {showRightPanel ? <IconRight /> : <IconLeft />}
               </IconButton>
-              <HudRightPanel />
+              {showRightPanel && <HudRightPanel />}
             </Box>
           </div>
         )}

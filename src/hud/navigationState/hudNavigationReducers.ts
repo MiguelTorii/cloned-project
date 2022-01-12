@@ -13,12 +13,12 @@ export default (state: HudNavigationState = defaultState, action: Action): HudNa
         }
       };
 
-    case hudNavigationActions.HIDE_SIDE_AREA:
+    case hudNavigationActions.SET_SIDE_AREA_VISIBILITY:
       return {
         ...state,
         sideAreaToIsVisible: {
           ...state.sideAreaToIsVisible,
-          [action.payload.sideArea]: false
+          [action.payload.sideArea]: action.payload.visibility
         }
       };
 
