@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 
 /* eslint-disable no-restricted-syntax */
-import React, { Fragment, RefObject } from 'react';
+import React, { RefObject } from 'react';
 import cx from 'classnames';
 import Video from 'twilio-video';
 import moment from 'moment';
@@ -25,9 +25,6 @@ import DeviceSettings from '../../components/MeetUp/DeviceSettings';
 import Thumbnails from '../../components/MeetUp/Thumbnails';
 import VideoGrid from '../../components/MeetUp/VideoGrid';
 import MeetingDetails from '../../components/MeetUp/MeetingDetails';
-import Whiteboard from '../../components/MeetUp/Whiteboard';
-import WhiteboardControls from '../../components/MeetUp/WhiteboardControls';
-import Dialog from '../../components/Dialog/Dialog';
 import ClassmatesDialog from '../../components/ClassmatesDialog/ClassmatesDialog';
 import VideoPointsDialog from '../../components/VideoPointsDialog/VideoPointsDialog';
 import { renewTwilioToken } from '../../api/chat';
@@ -77,15 +74,6 @@ const styles = (theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: theme.spacing(3, 3, 0, 3)
-  },
-  canvasWrapper: {
-    backgroundColor: 'white',
-    padding: theme.spacing(),
-    minHeight: 100
-  },
-  canvasImg: {
-    width: '300px !important',
-    height: 'auto !important'
   },
   settings: {
     zIndex: 9999,
@@ -176,13 +164,6 @@ type State = {
   isAudioSwitching: boolean;
   type: string;
   unread: number;
-  dataTrack: Record<string, any> | null | undefined;
-  drawData: string;
-  lineWidth: number;
-  color: string;
-  canvasImg: string;
-  isText: boolean;
-  eraser: boolean;
   points: boolean;
   openVideoPoints: boolean;
   postingPoints: boolean;
@@ -215,13 +196,6 @@ class MeetUp extends React.Component<Props, State> {
     isAudioSwitching: false,
     type: '',
     unread: 0,
-    dataTrack: null,
-    drawData: '',
-    lineWidth: 1,
-    color: 'black',
-    canvasImg: '',
-    isText: false,
-    eraser: false,
     points: false,
     openVideoPoints: false,
     postingPoints: false,
@@ -450,19 +424,6 @@ class MeetUp extends React.Component<Props, State> {
               isVideoSharing: true,
               sharingTrackIds: screenSharingIds
             });
-          } else if (kind === 'data') {
-            track.on('message', (data) => {
-              const message = JSON.parse(data);
-              const { type = '' } = message;
-
-              if (type === 'drawing') {
-                this.handleDataReceived(data);
-              } else if (type === 'texting') {
-                this.handleDataReceived(data);
-              } else if (type === 'cursor') {
-                this.handleDataReceived(data);
-              }
-            });
           }
         });
 
@@ -509,19 +470,6 @@ class MeetUp extends React.Component<Props, State> {
           this.setState({
             isVideoSharing: true,
             sharingTrackIds: screenSharingIds
-          });
-        } else if (kind === 'data') {
-          track.on('message', (data) => {
-            const message = JSON.parse(data);
-            const { type = '' } = message;
-
-            if (type === 'drawing') {
-              this.handleDataReceived(data);
-            } else if (type === 'texting') {
-              this.handleDataReceived(data);
-            } else if (type === 'cursor') {
-              this.handleDataReceived(data);
-            }
           });
         }
       });
@@ -781,33 +729,6 @@ class MeetUp extends React.Component<Props, State> {
     }
   };
 
-  handleShareData = async () => {
-    const { videoRoom, dataTrack } = this.state;
-
-    if (!dataTrack) {
-      const localDataTrack = await new Video.LocalDataTrack();
-      this.setState({
-        dataTrack: localDataTrack
-      });
-
-      if (videoRoom && videoRoom.localParticipant) {
-        this.handleAddParticipant(videoRoom.localParticipant, localDataTrack, true);
-        videoRoom.localParticipant.publishTrack(localDataTrack, {
-          name: 'whiteBoard'
-        });
-      }
-    } else if (videoRoom && videoRoom.localParticipant) {
-      if (dataTrack) {
-        this.handleRemoveTrack(videoRoom.localParticipant, dataTrack, true);
-        videoRoom.localParticipant.unpublishTrack(dataTrack);
-      }
-
-      this.setState({
-        dataTrack: null
-      });
-    }
-  };
-
   handleTabChange = (type) => {
     this.setState({
       type
@@ -824,41 +745,6 @@ class MeetUp extends React.Component<Props, State> {
         unread: unread + count
       }));
     }
-  };
-
-  handleDataReceived = (drawData) => {
-    this.setState({
-      drawData
-    });
-  };
-
-  handlePencilChange = (size) => {
-    this.setState({
-      lineWidth: size,
-      isText: false,
-      eraser: false
-    });
-  };
-
-  handleTextChange = () => {
-    this.setState({
-      isText: true,
-      eraser: false
-    });
-  };
-
-  handleColorChange = (color) => {
-    this.setState({
-      color
-    });
-  };
-
-  handleErase = (size) => {
-    this.setState({
-      lineWidth: size,
-      isText: false,
-      eraser: true
-    });
   };
 
   handleMeetingDetails = () => {
@@ -881,56 +767,6 @@ class MeetUp extends React.Component<Props, State> {
     document.execCommand('copy');
   };
 
-  handleSave = () => {
-    const { current } = this.whiteboard;
-
-    if (current) {
-      const { canvas } = current;
-
-      if (canvas) {
-        const { current: currentCanvas } = canvas;
-
-        if (currentCanvas) {
-          const canvasImg = currentCanvas.toDataURL('image/png');
-          this.setState({
-            canvasImg
-          });
-        }
-      }
-    }
-  };
-
-  handleCanvasClose = () => {
-    this.setState({
-      canvasImg: ''
-    });
-  };
-
-  handleClear = () => {
-    const { current } = this.whiteboard;
-
-    if (current) {
-      const { canvas } = current;
-
-      if (canvas) {
-        const { current: currentCanvas } = canvas;
-
-        if (currentCanvas) {
-          const context = currentCanvas.getContext('2d');
-          context.clearRect(0, 0, currentCanvas.width, currentCanvas.height);
-        }
-      }
-    }
-  };
-
-  handleSendDataMessage = (data) => {
-    const { dataTrack } = this.state;
-
-    if (dataTrack) {
-      dataTrack.send(data);
-    }
-  };
-
   handleSession: any = () => {
     const { earned, points, noPointsAllowed } = this.state;
 
@@ -947,12 +783,6 @@ class MeetUp extends React.Component<Props, State> {
     if (this.pointsStarted) {
       this.handleSession();
     }
-  };
-
-  handleOpenClaimPoints = () => {
-    this.setState({
-      openVideoPoints: true
-    });
   };
 
   handleVideoPointsClose = () => {
@@ -1153,7 +983,7 @@ class MeetUp extends React.Component<Props, State> {
       meetupRef
     } = this.props;
     const {
-      data: { userId, firstName, lastName },
+      data: { userId },
       expertMode
     } = user;
     const {
@@ -1168,13 +998,6 @@ class MeetUp extends React.Component<Props, State> {
       isVideoSwitching,
       isAudioSwitching,
       selectedTab,
-      dataTrack,
-      drawData,
-      lineWidth,
-      color,
-      isText,
-      eraser,
-      canvasImg,
       openVideoPoints,
       dominantView,
       postingPoints,
@@ -1277,7 +1100,6 @@ class MeetUp extends React.Component<Props, State> {
                 navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia
               )}
               isSharing={isVideoSharing}
-              isSharingData={Boolean(dataTrack)}
               isVideoSwitching={isVideoSwitching}
               isAudioSwitching={isAudioSwitching}
               isOpenMeetingDetails={isOpenMeetingDetails}
@@ -1286,7 +1108,6 @@ class MeetUp extends React.Component<Props, State> {
               disableVideo={this.handleDisableVideo}
               disableAudio={this.handleDisableAudio}
               shareScreen={this.handleShareScreen}
-              shareData={this.handleShareData}
               unreadMessageCount={unreadMessageCount}
             />
             <VideoGrid
@@ -1297,48 +1118,12 @@ class MeetUp extends React.Component<Props, State> {
               lockedParticipant={lockedParticipant}
               dominantSpeaker={dominantSpeaker}
               sharingTrackIds={sharingTrackIds}
-              isSharing={isVideoSharing}
               localSharing={localSharing}
-              isDataSharing={Boolean(dataTrack)}
               viewMode={viewMode}
               handleSelectedScreenSharing={this.handleSelectedScreenSharing}
               currentUserId={currentUserId}
             />
-            {Boolean(dataTrack) && (
-              <>
-                <Whiteboard
-                  innerRef={this.whiteboard}
-                  userId={userId}
-                  name={`${firstName} ${lastName}`}
-                  drawData={drawData}
-                  lineWidth={lineWidth}
-                  color={color}
-                  isText={isText}
-                  eraser={eraser}
-                  sendDataMessage={this.handleSendDataMessage}
-                />
-                <WhiteboardControls
-                  onPencilChange={this.handlePencilChange}
-                  onColorChange={this.handleColorChange}
-                  onErase={this.handleErase}
-                  onText={this.handleTextChange}
-                  onSave={this.handleSave}
-                  onClear={this.handleClear}
-                />
-              </>
-            )}
           </div>
-          <Dialog
-            onCancel={this.handleCanvasClose}
-            open={Boolean(canvasImg !== '')}
-            title="Whiteboard Screenshot"
-          >
-            <div className={classes.canvasWrapper}>
-              {canvasImg !== '' && (
-                <img src={canvasImg} className={classes.canvasImg} alt="Canvas screenshot" />
-              )}
-            </div>
-          </Dialog>
         </ErrorBoundary>
         <ErrorBoundary>
           <VideoPointsDialog
