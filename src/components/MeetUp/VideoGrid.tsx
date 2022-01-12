@@ -22,8 +22,6 @@ type Props = {
   viewMode: string;
   handleSelectedScreenSharing: (...args: Array<any>) => any;
   meetupRef: any;
-  isSharing?: boolean;
-  isDataSharing?: boolean;
 };
 
 const VideoGrid = ({
@@ -38,9 +36,7 @@ const VideoGrid = ({
   viewMode,
   currentUserId,
   handleSelectedScreenSharing,
-  meetupRef,
-  isSharing,
-  isDataSharing
+  meetupRef
 }: Props) => {
   const [dominant, setDominant] = useState('');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);

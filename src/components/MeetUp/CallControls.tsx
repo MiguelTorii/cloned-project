@@ -25,7 +25,6 @@ type Props = {
   isAudioEnabled?: boolean;
   isScreenSharingSupported?: boolean;
   isSharing?: boolean;
-  isSharingData?: boolean;
   isVideoSwitching?: boolean;
   isAudioSwitching?: boolean;
   isOpenMeetingDetails?: boolean;
@@ -39,7 +38,6 @@ type Props = {
   toggleChat?: any;
   dominantToggle?: any;
   dominantView?: any;
-  shareData?: any;
 };
 
 type State = {
@@ -81,7 +79,6 @@ class Controls extends React.PureComponent<Props, State> {
       isAudioEnabled,
       isScreenSharingSupported,
       isSharing,
-      isSharingData,
       isVideoSwitching,
       isAudioSwitching,
       disableVideo,
@@ -140,7 +137,7 @@ class Controls extends React.PureComponent<Props, State> {
             color="default"
             aria-label="share-screen"
             className={classes.fab}
-            disabled={!isScreenSharingSupported || isSharingData || !isConnected}
+            disabled={!isScreenSharingSupported || !isConnected}
             onClick={shareScreen}
           >
             {!localSharing ? (
@@ -177,7 +174,7 @@ class Controls extends React.PureComponent<Props, State> {
               color="default"
               aria-label="participant"
               className={classes.fab}
-              disabled={!isScreenSharingSupported || isSharingData || !isConnected}
+              disabled={!isScreenSharingSupported || !isConnected}
               onClick={() => this.handleOpen(0)}
             >
               <div className={classes.controlButtons}>
