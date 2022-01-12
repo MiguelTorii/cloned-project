@@ -293,11 +293,7 @@ export const leaveChat = async ({ sid }: { sid: string }): Promise<Record<string
   const { data = {} } = result;
   return data;
 };
-export const blockChatUser = async ({
-  blockedUserId
-}: {
-  blockedUserId: string;
-}): Promise<Record<string, any>> => {
+export const blockChatUser = async (blockedUserId: string): Promise<Record<string, any>> => {
   const token = await getToken();
   const result = await axios.post(
     `${API_ROUTES.CHAT}/block`,

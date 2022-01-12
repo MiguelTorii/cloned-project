@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import uuidv4 from 'uuid/v4';
 import Chat, { Client } from 'twilio-chat';
+import { Channel } from 'twilio-chat/lib/channel';
 import update from 'immutability-helper';
 import { push } from 'connected-react-router';
 import moment from 'moment';
@@ -12,7 +13,6 @@ import {
   unmuteChannel,
   renewTwilioToken,
   leaveChat,
-  blockChatUser,
   createChannel,
   apiUpdateChat
 } from '../api/chat';
@@ -250,7 +250,7 @@ export const setCurrentCommunityIdAction = (currentCommunityId: number | null) =
   }
 });
 
-const setOneTouchSendAction = ({ open }) => ({
+export const setOneTouchSendAction = (open: boolean) => ({
   type: chatActions.SET_OPEN_ONE_TOUCH_SEND,
   payload: {
     open
@@ -271,13 +271,6 @@ const createNewChannel = ({
   }
 });
 
-const setMainMessageAction = ({ mainMessage }: { mainMessage: string }) => ({
-  type: chatActions.SET_MAIN_MESSAGE,
-  payload: {
-    mainMessage
-  }
-});
-
 export const setCommunitiesAction = (communities: APICommunity[]) => ({
   type: chatActions.SET_COMMUNITIES,
   payload: {
@@ -292,7 +285,7 @@ export const setCommunityChannelsAction = (communityChannels: Array<any>) => ({
   }
 });
 
-const updateFriendlyName = ({ channel }: { channel: Record<string, any> }) => ({
+export const updateFriendlyName = (channel: Record<string, any>) => ({
   type: chatActions.UPDATE_FRIENDLY_NAME,
   payload: {
     channel
@@ -388,13 +381,7 @@ export const setCurrentCommunityChannel = (currentChannel) => async (dispatch: D
     );
   }
 };
-export const setOneTouchSend = (open) => async (dispatch: Dispatch) => {
-  dispatch(
-    setOneTouchSendAction({
-      open
-    })
-  );
-};
+
 export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
   dispatch(setCurrentCommunityIdAction(currentCommunityId));
 };
@@ -402,14 +389,9 @@ export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction());
 };
 export const handleNewChannel =
-  (newChannel) => (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
-    const {
-      chat: {
-        data: { openChannels }
-      }
-    } = getState();
+  (newChannel: boolean, openChannels: Channel[]) => (dispatch: Dispatch) => {
     const availableSlots = getAvailableSlots(window.innerWidth);
-    const newState = update(openChannels, {
+    const newState = update(openChannels || [], {
       $apply: (b) => {
         const newB = update(b, {
           $splice: [[availableSlots - 1]]
@@ -424,13 +406,6 @@ export const handleNewChannel =
       })
     );
   };
-export const openCreateChatGroup = () => async (dispatch: Dispatch) => {
-  dispatch(
-    requestOpenCreateChatGroupChannel({
-      uuid: uuidv4()
-    })
-  );
-};
 
 const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
@@ -458,11 +433,11 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
        * Save channel Id for checking the messages from another channel
        */
       dispatch(setCurrentChannelSidAction(channelList[0]));
-      dispatch(setCurrentChannel(currentLocal[channelList[0]]?.twilioChannel));
+      setCurrentChannel(currentLocal[channelList[0]]?.twilioChannel)(dispatch);
     } else if (localStorage.getItem('currentDMChannel')) {
       const lastChannelId = localStorage.getItem('currentDMChannel');
       dispatch(setCurrentChannelSidAction(lastChannelId || ''));
-      dispatch(setCurrentChannel(currentLocal?.[lastChannelId]?.twilioChannel));
+      setCurrentChannel(currentLocal?.[lastChannelId]?.twilioChannel)(dispatch);
     }
 
     dispatch(
@@ -757,13 +732,7 @@ export const handleUpdateGroupPhoto =
       callback();
     }
   };
-export const handleBlockUser =
-  ({ blockedUserId }) =>
-  async () => {
-    await blockChatUser({
-      blockedUserId
-    });
-  };
+
 export const handleMuteChannel =
   ({ sid }) =>
   async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
@@ -783,21 +752,19 @@ export const handleMuteChannel =
       );
     }
   };
-export const handleRemoveChannel =
-  ({ sid }: { sid: string }) =>
-  async (dispatch: Dispatch) => {
-    try {
-      await leaveChat({
-        sid
-      });
-    } catch (err) {}
+export const handleRemoveChannel = (sid: string) => async (dispatch: Dispatch) => {
+  try {
+    await leaveChat({
+      sid
+    });
+  } catch (err) {}
 
-    dispatch(
-      removeChannel({
-        sid
-      })
-    );
-  };
+  dispatch(
+    removeChannel({
+      sid
+    })
+  );
+};
 export const handleRoomClick =
   (channel) => async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
     const {
@@ -896,14 +863,6 @@ export const handleChannelClose =
     dispatch(
       setOpenChannels({
         openChannels: openChannels.filter((oc) => oc.sid !== sid)
-      })
-    );
-  };
-export const handleUpdateFriendlyName =
-  (channel: Record<string, any>) => async (dispatch: Dispatch) => {
-    dispatch(
-      updateFriendlyName({
-        channel
       })
     );
   };

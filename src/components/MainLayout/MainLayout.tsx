@@ -37,7 +37,6 @@ import UseCases from '../UseCases/UseCases';
 import Dialog from '../Dialog/Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints/HowDoIEarnPoints';
 import GiveFeedback from '../../containers/GiveFeedback/GiveFeedback';
-import Tooltip from '../../containers/Tooltip/Tooltip';
 import { AnnouncementBanner } from '../../containers/Announcements/AnnouncementBanner';
 import { styles } from '../_styles/MainLayout/index';
 
@@ -75,11 +74,9 @@ type Props = {
   onManageClasses?: (...args: Array<any>) => any;
   userClasses?: Record<string, any>;
   onManageBlockedUsers?: (...args: Array<any>) => any;
-  setOneTouchSend?: (...args: Array<any>) => any;
   newClassExperience?: boolean;
   onOpenReferralStatus?: (...args: Array<any>) => any;
   landingPageCampaign?: boolean;
-  updateFeed?: (...args: Array<any>) => any;
   location?: {
     search: string;
   };
@@ -87,7 +84,6 @@ type Props = {
   isExpert?: boolean;
   announcementData?: Record<string, any> | null | undefined;
   toggleExpertMode?: (...args: Array<any>) => any;
-  viewedOnboarding: boolean;
   fullName?: string;
   bannerHeight?: number;
   setBannerHeight?: number;
@@ -106,7 +102,6 @@ const MainLayout = ({
   setBannerHeight,
   toggleExpertMode,
   initials,
-  setOneTouchSend,
   newNotesScreen,
   userProfileUrl,
   children,
@@ -121,8 +116,6 @@ const MainLayout = ({
   newClassExperience,
   landingPageCampaign,
   onOpenReferralStatus,
-  updateFeed,
-  viewedOnboarding,
   location: { search }
 }: Props) => {
   const dispatch = useDispatch();
@@ -134,7 +127,6 @@ const MainLayout = ({
   const [openFeedback, setOpenFeedback] = useState(false);
   const [openHowEarnPoints, setOpenHowEarnPoints] = useState(false);
   const [openUseCases, setOpenUseCases] = useState(false);
-  const [createPostOpen, setCreatePostOpen] = useState(false);
   const [openStudentJobs, setOpenStudentJobs] = useState(false);
   const handleAnnouncementLoaded = useCallback(() => {}, []);
   const handleOpenWidget = useCallback(() => {
@@ -163,13 +155,8 @@ const MainLayout = ({
     setAnchorEl(null);
     handleMobileMenuClose();
   }, [handleMobileMenuClose]);
-  const handleCreatePostMenuOpen = useCallback((event) => {
-    setCreatePostAnchorEl(event.currentTarget);
-    setCreatePostOpen(true);
-  }, []);
   const handleCreatePostMenuClose = useCallback(() => {
     setCreatePostAnchorEl(null);
-    setCreatePostOpen(false);
   }, []);
   const handleNotificationOpenCur = useCallback(
     (event) => {
@@ -188,10 +175,6 @@ const MainLayout = ({
     handleMenuClose();
     onManageClasses();
   }, [handleMenuClose, onManageClasses]);
-  const handleOpenReferralStatus = useCallback(() => {
-    handleMenuClose();
-    onOpenReferralStatus();
-  }, [handleMenuClose, onOpenReferralStatus]);
   const handleBlockedUsers = useCallback(() => {
     handleMenuClose();
     onManageBlockedUsers();
@@ -220,13 +203,6 @@ const MainLayout = ({
   }, [expertMode, handleMenuClose]);
   const handleCloseHowEarnPoints = useCallback(() => {
     setOpenHowEarnPoints(false);
-  }, []);
-  const handleOpenUseCases = useCallback(() => {
-    setOpenUseCases(true);
-    handleMenuClose();
-  }, [handleMenuClose]);
-  const handleOpenStudentJobs = useCallback(() => {
-    setOpenStudentJobs(true);
   }, []);
   const handleCloseStudentJobs = useCallback(() => {
     setOpenStudentJobs(false);
@@ -319,45 +295,30 @@ const MainLayout = ({
       <DrawerMenu
         expertMode={expertMode}
         isExpert={isExpert}
-        viewedOnboarding={viewedOnboarding}
         toggleExpertMode={toggleExpertMode}
-        handleCreatePostMenuOpen={handleCreatePostMenuOpen}
         appBarHeight={appBarHeight}
-        updateFeed={updateFeed}
         newNotesScreen={newNotesScreen}
         newClassExperience={newClassExperience}
         userId={userId}
         initials={initials}
         fullName={fullName}
         userProfileUrl={userProfileUrl}
-        createPostOpen={createPostOpen}
         handleOpenGetApp={handleOpenGetApp}
         handleOpenFeedback={handleOpenFeedback}
-        setOneTouchSend={setOneTouchSend}
         MyLink={MyLink}
         search={search}
         pathname={pathname}
         handleManageClasses={handleManageClasses}
-        handleOpenUseCases={handleOpenUseCases}
-        handleOpenStudentJobs={handleOpenStudentJobs}
-        handleOpenHowEarnPoints={handleOpenHowEarnPoints}
         landingPageCampaign={landingPageCampaign}
-        userClasses={userClasses}
       />
     ),
     [
       appBarHeight,
-      createPostOpen,
       expertMode,
       fullName,
-      handleCreatePostMenuOpen,
       handleManageClasses,
       handleOpenFeedback,
       handleOpenGetApp,
-      handleOpenHowEarnPoints,
-      handleOpenStudentJobs,
-      handleOpenUseCases,
-      setOneTouchSend,
       initials,
       isExpert,
       landingPageCampaign,
@@ -366,11 +327,8 @@ const MainLayout = ({
       pathname,
       search,
       toggleExpertMode,
-      updateFeed,
-      userClasses,
       userId,
-      userProfileUrl,
-      viewedOnboarding
+      userProfileUrl
     ]
   );
   return (

@@ -30,6 +30,7 @@ import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { CampaignState } from '../../reducers/campaign';
 import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from '../../actions/chat';
+import { blockChatUser } from '../../api/chat';
 
 const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
 
@@ -68,7 +69,6 @@ type Props = {
   user?: UserState;
   chat?: ChatState;
   router?: any;
-  handleBlockUser?: (...args: Array<any>) => any;
   handleRemoveChannel?: (...args: Array<any>) => any;
   handleRoomClick?: (...args: Array<any>) => any;
   updateOpenChannels?: (...args: Array<any>) => any;
@@ -91,7 +91,6 @@ const FloatingChat = ({
   chat,
   push,
   router,
-  handleBlockUser,
   handleRemoveChannel,
   handleRoomClick,
   handleMuteChannel,
@@ -410,12 +409,11 @@ const FloatingChat = ({
               user={user}
               channel={item}
               channels={channelList}
-              setCurrentChannel={setCurrentChannel}
               localChannel={local[item.sid]}
               local={local}
               onClose={handleChannelClose}
               onRemove={handleRemoveChannel}
-              onBlock={handleBlockUser}
+              onBlock={(blockedUserId) => blockChatUser(blockedUserId)}
               onSend={() => {
                 if (onboardingListVisible) {
                   setTimeout(() => getOnboardingList(), 1000);
@@ -510,7 +508,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
     {
       push: routePush,
       handleMuteChannel: chatActions.handleMuteChannel,
-      handleBlockUser: chatActions.handleBlockUser,
       handleRemoveChannel: chatActions.handleRemoveChannel,
       handleRoomClick: chatActions.handleRoomClick,
       updateOpenChannels: chatActions.updateOpenChannels,

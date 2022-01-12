@@ -27,17 +27,9 @@ type Props = {
   isCommunityChat?: any;
   userId?: any;
   schoolId?: any;
-  handleRemoveChannel?: any;
 };
 
-const RightMenu = ({
-  local,
-  channel,
-  isCommunityChat,
-  userId,
-  schoolId,
-  handleRemoveChannel
-}: Props) => {
+const RightMenu = ({ local, channel, isCommunityChat, userId, schoolId }: Props) => {
   const classes: any = useStyles();
   const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
 

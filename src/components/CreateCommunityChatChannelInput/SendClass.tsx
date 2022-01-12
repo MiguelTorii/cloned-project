@@ -25,7 +25,7 @@ import type { ChatState } from '../../reducers/chat';
 import styles from '../_styles/CreateCommunityChatChannelInput/sendClass';
 import MessageQuill from './MessageQuill';
 import type { State as StoreState } from '../../types/state';
-import { setCurrentCommunityIdAction } from '../../actions/chat';
+import { setCurrentCommunityIdAction, setOneTouchSendAction } from '../../actions/chat';
 
 type Props = {
   classes?: Record<string, any>;
@@ -33,7 +33,6 @@ type Props = {
   onClosePopover?: (...args: Array<any>) => any;
   setCurrentCommunityId?: (...args: Array<any>) => any;
   setCurrentCommunityChannel?: (...args: Array<any>) => any;
-  setOneTouchSend?: (...args: Array<any>) => any;
   setCurrentCommunity?: (...args: Array<any>) => any;
   enqueueSnackbarAction?: (...args: Array<any>) => any;
   chat?: ChatState;
@@ -44,7 +43,6 @@ const CreateChatChannelInput = ({
   chat,
   user,
   onClosePopover,
-  setOneTouchSend,
   setCurrentCommunity,
   enqueueSnackbarAction,
   setCurrentCommunityId
@@ -136,7 +134,7 @@ const CreateChatChannelInput = ({
       setShowError(false);
       onClosePopover();
       setLoading(false);
-      setOneTouchSend(false);
+      dispatch(setOneTouchSendAction(false));
       enqueueSnackbarAction({
         notification: {
           message: `You successfully sent a message to ${
@@ -160,7 +158,7 @@ const CreateChatChannelInput = ({
     } catch (e) {
       setShowError(true);
       setLoading(false);
-      setOneTouchSend(false);
+      dispatch(setOneTouchSendAction(false));
       enqueueSnackbarAction({
         notification: {
           message: `There was an error sending your message to ${
@@ -190,7 +188,7 @@ const CreateChatChannelInput = ({
     onClosePopover,
     selectedClasses,
     setCurrentCommunityId,
-    setOneTouchSend,
+    dispatch,
     setCurrentCommunity,
     enqueueSnackbarAction
   ]);
@@ -323,7 +321,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
       setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       setCurrentCommunity: chatActions.setCurrentCommunity,
-      setOneTouchSend: chatActions.setOneTouchSend,
       enqueueSnackbarAction: enqueueSnackbar
     },
     dispatch
