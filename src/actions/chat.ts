@@ -32,13 +32,6 @@ const getAvailableSlots = (width) => {
   }
 };
 
-const requestOpenCreateChatGroupChannel = ({ uuid }: { uuid: string }): Action => ({
-  type: chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST,
-  payload: {
-    uuid
-  }
-});
-
 const requestStartChannelWithEntity = ({
   entityId,
   entityFirstName,
@@ -330,6 +323,10 @@ export const setCurrentChannel = (currentChannel) => async (dispatch: Dispatch) 
       fetchMembers(currentChannel.sid),
       getShareLink(currentChannel.sid)
     ]);
+
+    // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
+    // user's selected navigation state after some arbitrary amount of time,
+    // i.e. after we have finished "awaiting" the promise result.
     dispatch(
       updateMembers({
         members,
@@ -362,6 +359,10 @@ export const setCurrentCommunityChannel = (currentChannel) => async (dispatch: D
       fetchMembers(currentChannel.sid),
       getShareLink(currentChannel.sid)
     ]);
+
+    // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
+    // user's selected navigation state after some arbitrary amount of time,
+    // i.e. after we have finished "awaiting" the promise result.
     dispatch(
       updateMembers({
         members,
@@ -411,6 +412,9 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
     const local = await getChannels();
 
+    // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
+    // user's selected navigation state after some arbitrary amount of time,
+    // i.e. after we have finished "awaiting" the promise result.
     if (
       Object.keys(local).length > 0 &&
       Object.keys(currentLocal).length > 0 &&
@@ -488,6 +492,12 @@ export const openChannelWithEntity =
       const channel = await client.getChannelBySid(chatId);
 
       if (channel) {
+        // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
+        // user's selected navigation state after some arbitrary amount of time,
+        // i.e. after we have finished "awaiting" the promise results.
+        // The user state could have changed, and maybe some other channel besides
+        // this channel was selected as the current channel.
+        // If that occurred, this code resets the state erroneously.
         localStorage.setItem('currentDMChannel', channel.sid);
         const [members, shareLink] = await Promise.all([
           fetchMembers(channel.sid),
@@ -520,6 +530,8 @@ export const openChannelWithEntity =
       }
     }
   };
+
+// TODO CHAT_REFACTOR: Move logic into a chat hook.
 export const handleInitChat =
   () => async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
     const {
