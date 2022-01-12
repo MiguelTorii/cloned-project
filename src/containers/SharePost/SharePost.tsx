@@ -1,10 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
 import { createShareURL } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import ShareDialog from '../../components/ShareDialog/ShareDialog';
@@ -22,61 +21,56 @@ type Props = {
   user?: UserState;
   feedId: number;
   open: boolean;
-  onClose: (...args: Array<any>) => any;
-  enqueueSnackbar?: (...args: Array<any>) => any;
-};
-type State = {
-  link: string;
-  loading: boolean;
+  onClose?: (...args: Array<any>) => any;
 };
 
-class SharePost extends React.PureComponent<Props, State> {
-  state = {
-    link: '',
-    loading: false
-  };
+const SharePost = ({ classes, feedId, open, onClose }: Props) => {
+  const [wasOpen, setWasOpen] = useState<boolean>();
+  const [lastFeedId, setLastFeedId] = useState<number>();
+  const [link, setLink] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  getSnapshotBeforeUpdate = async (prevProps) => {
-    const {
-      open,
-      feedId,
-      user: {
-        data: { userId }
+  const { enqueueSnackbar } = useSnackbar();
+
+  const {
+    isLoading,
+    error,
+    data: { userId }
+  } = useSelector((state: { user: UserState }) => state.user);
+
+  useEffect(() => {
+    const loadShareUrl = async () => {
+      if (
+        (open !== wasOpen && link === '' && open === true) ||
+        (open !== wasOpen && feedId !== lastFeedId && open === true)
+      ) {
+        try {
+          setLoading(true);
+
+          // TODO fix race condition where if the feedId changes
+          // the share url could get out of sync.
+          const url = await createShareURL({
+            userId,
+            feedId
+          });
+          setLink(url);
+        } finally {
+          setLoading(false);
+          logEvent({
+            event: 'User- Generated Link',
+            props: {
+              'Internal ID': feedId
+            }
+          });
+        }
       }
-    } = this.props;
-    const { link } = this.state;
+    };
+    loadShareUrl();
+    setWasOpen(open);
+    setLastFeedId(feedId);
+  }, [userId, open, link, wasOpen, feedId, lastFeedId]);
 
-    if (
-      (open !== prevProps.open && link === '' && open === true) ||
-      (open !== prevProps.open && feedId !== prevProps.feedId && open === true)
-    ) {
-      try {
-        this.setState({
-          loading: true
-        });
-        const url = await createShareURL({
-          userId,
-          feedId
-        });
-        this.setState({
-          link: url
-        });
-      } finally {
-        this.setState({
-          loading: false
-        });
-        logEvent({
-          event: 'User- Generated Link',
-          props: {
-            'Internal ID': feedId
-          }
-        });
-      }
-    }
-  };
-
-  handleLinkCopied = () => {
-    const { enqueueSnackbar, classes } = this.props;
+  const handleLinkCopied = () => {
     enqueueSnackbar('Shareable Link has been copied.', {
       variant: 'info',
       anchorOrigin: {
@@ -92,45 +86,25 @@ class SharePost extends React.PureComponent<Props, State> {
     });
   };
 
-  render() {
-    const {
-      user: {
-        isLoading,
-        error,
-        data: { userId }
-      },
-      open,
-      onClose
-    } = this.props;
-    const { link, loading } = this.state;
-
-    if (isLoading) {
-      return <CircularProgress size={12} />;
-    }
-
-    if (userId === '' || error) {
-      return 'Oops, there was an error loading your data, please try again.';
-    }
-
-    return (
-      <ErrorBoundary>
-        <ShareDialog
-          open={open}
-          link={link}
-          isLoading={loading}
-          onLinkCopied={this.handleLinkCopied}
-          onClose={onClose}
-        />
-      </ErrorBoundary>
-    );
+  if (isLoading) {
+    return <CircularProgress size={12} />;
   }
-}
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
-});
+  if (userId === '' || error) {
+    return <>Oops, there was an error loading your data, please try again.</>;
+  }
 
-export default connect<{}, {}, Props>(
-  mapStateToProps,
-  null
-)(withSnackbar(withStyles(styles as any)(SharePost) as any));
+  return (
+    <ErrorBoundary>
+      <ShareDialog
+        open={open}
+        link={link}
+        isLoading={loading}
+        onLinkCopied={handleLinkCopied}
+        onClose={onClose}
+      />
+    </ErrorBoundary>
+  );
+};
+
+export default withStyles(styles as any)(SharePost);
