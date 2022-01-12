@@ -41,6 +41,7 @@ const ChatPage = () => {
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
 
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) {
       return [];
@@ -67,6 +68,7 @@ const ChatPage = () => {
     }
   };
 
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     async function fetchCommunities() {
       try {
@@ -100,6 +102,7 @@ const ChatPage = () => {
     fetchCommunities();
   }, []);
 
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     if (!isLoading && !!Object.keys(local).length) {
       let count = 0;
@@ -127,6 +130,7 @@ const ChatPage = () => {
   const handleSelect = useCallback(
     (course) => {
       if (course.id !== currentCommunity?.id) {
+        // TODO CHAT_REFACTOR: Dispatch a single, atomic action, not 3 actions here
         dispatch(setCurrentCommunityIdAction(course.id));
         dispatch(setCurrentChannelSidAction(''));
         dispatch(setCurrentCommunityAction(course));
@@ -135,6 +139,7 @@ const ChatPage = () => {
     [currentCommunity, dispatch]
   );
 
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     if (oneTouchSendOpen || currentCommunityId === 'chat' || !currentCommunityId) {
       dispatch(setCurrentCommunityAction(DEFAULT_COMMUNITY_MENU_ITEMS));

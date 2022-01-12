@@ -120,6 +120,7 @@ const Main = ({
       setErrorLoadingMessage(true);
     } // eslint-disable-next-line
   }, [scroll]);
+
   useEffect(() => {
     if (channel && local && local[channel.sid]) {
       const { members } = local[channel.sid];
@@ -130,6 +131,7 @@ const Main = ({
       setMembers(newMembers);
     }
   }, [local, channel]);
+
   useEffect(() => {
     if (channel && newMessage && channel.sid === newMessage.channel.sid) {
       try {
@@ -162,6 +164,7 @@ const Main = ({
     [local, channel]
   );
 
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     if (channelList.length && !channel) {
       dispatch(messageLoadingAction(true));
@@ -169,6 +172,8 @@ const Main = ({
       dispatch(messageLoadingAction(false));
     }
   }, [channelList, channel, isLoading]);
+
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     const init = async () => {
       dispatch(messageLoadingAction(true));
@@ -222,6 +227,7 @@ const Main = ({
       init();
     } // eslint-disable-next-line
   }, [channel, selectedChannelId]);
+
   const messageItems = useMemo(
     () =>
       processMessages({
@@ -256,6 +262,8 @@ const Main = ({
     () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
     [permission]
   );
+
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   const handleLoadMore = useCallback(() => {
     setScroll(false);
 

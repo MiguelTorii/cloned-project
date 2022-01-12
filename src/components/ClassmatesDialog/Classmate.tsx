@@ -58,6 +58,8 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
 
   const [loadingMessage, setLoadingMessage] = useState(false);
   const [loadingVideo, setLoadingVideo] = useState(false);
+
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   const openChat = useCallback(
     (videoButton: boolean, isVideo: boolean) => () => {
       if (videoButton) {
@@ -75,6 +77,9 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
         isHud,
         client
       })(dispatch);
+
+      // TODO CHAT_REFACTOR: remove this setTimeout and use promise status to determine whether the
+      // load process has finished.
       setTimeout(() => {
         setLoadingVideo(false);
         setLoadingMessage(false);

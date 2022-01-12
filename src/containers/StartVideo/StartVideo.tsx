@@ -123,6 +123,7 @@ class StartVideo extends React.PureComponent<Props, State> {
     }
   };
 
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
   handleInitChat = async () => {
     const {
       user: {
