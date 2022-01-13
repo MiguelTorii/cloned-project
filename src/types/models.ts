@@ -642,6 +642,3 @@ export type TMission = {
   link: string;
   label: string;
 };
-export type TGetMissionsData = {
-  missions: Array<TMission>;
-};

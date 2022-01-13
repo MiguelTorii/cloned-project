@@ -11,10 +11,10 @@ import { CIRCLEIN_REWARDS_URL } from '../../constants/app';
 
 const HudMissions = () => {
   const dispatch = useDispatch();
-  const missions = useSelector<AppState, Array<TMission>>((state) => state.hudRightPanel.missions);
+  const missions = useSelector<AppState, TMission[]>((state) => state.hudRightPanel.missions);
 
   useEffect(() => {
-    apiGetMissions().then(({ missions }) => {
+    apiGetMissions().then((missions) => {
       dispatch(setMissions(missions));
     });
   }, [dispatch]);

@@ -16,7 +16,7 @@ import type {
   SyncSuccessData,
   UserClass,
   TExperiencePointsData,
-  TGetMissionsData
+  TMission
 } from '../types/models';
 import { getToken } from './utils';
 import callApi from './api_base';
@@ -709,7 +709,7 @@ export const apiGetExperiencePoints = async (): Promise<TExperiencePointsData> =
   callApi({
     url: `${API_ROUTES.USER}/points`
   });
-export const apiGetMissions = async (): Promise<TGetMissionsData> =>
+export const apiGetMissions = async (): Promise<TMission[]> =>
   callApi({
     url: `${API_URL}/missions`
   });
