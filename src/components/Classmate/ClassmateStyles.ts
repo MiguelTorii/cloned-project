@@ -1,6 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-export default makeStyles((theme: any) => ({
+export default (theme: any) => ({
   textRoot: {
     width: 0
   },
@@ -46,5 +44,8 @@ export default makeStyles((theme: any) => ({
     color: 'white',
     backgroundColor: theme.circleIn.palette.brand,
     marginLeft: theme.spacing()
+  },
+  mobileContainer: {
+    flexDirection: 'row'
   }
-}));
+});

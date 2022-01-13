@@ -1,15 +1,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useMemo } from 'react';
-import List from '@material-ui/core/List';
-import FormControl from '@material-ui/core/FormControl';
+
 import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import List from '@material-ui/core/List';
 import SearchIcon from '@material-ui/icons/Search';
-import { getReferralProgram } from '../../api/referral';
-import { getClassmates } from '../../api/chat';
+
+import { decypherClass } from 'utils/crypto';
+import { getClassmates } from 'api/chat';
+import { getReferralProgram } from 'api/referral';
+
+import Classmate from 'components/Classmate';
+import ReferralInvite from 'containers/Referrals/Invite';
+
 import Dialog from '../Dialog/Dialog';
-import ReferralInvite from '../../containers/Referrals/Invite';
-import Classmate from './Classmate';
-import { decypherClass } from '../../utils/crypto';
 import { useStyles } from '../_styles/ClassmatesDialog/index';
 
 type Props = {
