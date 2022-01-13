@@ -1,4 +1,6 @@
-export default (theme: any) => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+export const useStyles = makeStyles((theme: any) => ({
   textRoot: {
     width: 0
   },
@@ -48,4 +50,4 @@ export default (theme: any) => ({
   mobileContainer: {
     flexDirection: 'row'
   }
-});
+}));

@@ -2,9 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { compose } from 'recompose';
 import withWidth from '@material-ui/core/withWidth';
-import { withStyles } from '@material-ui/core/styles';
 
 import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
@@ -29,7 +27,7 @@ import InviteIcon from 'assets/svg/invite-icon.svg';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
 import OnlineBadge from 'components/OnlineBadge';
 
-import styles from './ClassmateStyles';
+import { useStyles } from './ClassmateStyles';
 
 type ClassmateType = {
   userId: string;
@@ -40,26 +38,21 @@ type ClassmateType = {
   isOnline: boolean;
   classes: any;
 };
+
 type Props = {
-  classes: any;
   courseDisplayName: string;
   meetingInvite: boolean;
   classmate: ClassmateType;
   videoEnabled?: boolean;
   width?: string;
 };
+
 const MyProfileLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
 ));
 
-const Classmate = ({
-  classes,
-  courseDisplayName,
-  videoEnabled,
-  width,
-  classmate,
-  meetingInvite
-}: Props) => {
+const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingInvite }: Props) => {
+  const classes: any = useStyles();
   const dispatch: Dispatch = useDispatch();
   const { isMobileScreen } = useMediaQuery();
 
@@ -205,4 +198,4 @@ const Classmate = ({
   );
 };
 
-export default compose(withWidth(), withStyles(styles as any))(Classmate);
+export default withWidth()(Classmate);

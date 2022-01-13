@@ -10,8 +10,8 @@ import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import { getClassmates } from 'api/chat';
 import LoadingImg from 'assets/svg/astro-shuttle.svg';
 
-import Classmate from 'components/Classmate';
 import Dialog from 'components/Dialog/Dialog';
+import Classmate from './Classmate';
 
 import useStyles from './_styles/StudyRoomInvite';
 
