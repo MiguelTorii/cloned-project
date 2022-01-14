@@ -185,14 +185,7 @@ const UserInitializer = ({
       (window as any).FreshworksWidget('show', 'launcher');
     }
   }, [userId, status]);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (userId) {
-        (window as any).FreshworksWidget('hide', 'launcher');
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [userId]);
+
   const updateDimensions = useCallback(() => {
     setWindowWidth(window.innerWidth);
   }, []);

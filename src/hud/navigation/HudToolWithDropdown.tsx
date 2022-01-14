@@ -28,6 +28,7 @@ import reduxStore from '../../configureStore';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';
+import { openSupportWidget } from '../../utils/helpers';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -55,11 +56,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
     leafAreaId === highlightedNavigation?.leafAreaId;
 
   const handleOpenCircleInSupportWidget = useCallback(() => {
-    (window as any)?.FreshworksWidget('identify', 'ticketForm', {
-      name: `${profile.firstName} ${profile.lastName}`,
-      email: profile.email
-    });
-    (window as any)?.FreshworksWidget('open');
+    openSupportWidget(`${profile.firstName} ${profile.lastName}`, profile.email);
   }, []);
 
   const selectLeaf = (mainSubArea: string) => {
