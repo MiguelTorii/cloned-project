@@ -2,7 +2,7 @@ import moment from 'moment';
 
 describe('Workflow', () => {
   beforeEach(() => {
-    cy.login();
+    cy.loginUser1();
   });
 
   it('Creates task', () => {
