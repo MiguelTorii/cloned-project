@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-// import Select from '@material-ui/core/Select';
-// import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { useLocation } from 'react-router';
+import { push } from 'connected-react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import qs from 'query-string';
+import cx from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
+import { withStyles } from '@material-ui/core/styles';
+
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import withWidth from '@material-ui/core/withWidth';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { push } from 'connected-react-router';
-import qs from 'query-string';
-import { useDispatch, useSelector } from 'react-redux';
-import cx from 'classnames';
-import { useLocation } from 'react-router';
+
+import { useMediaQuery } from 'hooks';
 import withRoot from '../../withRoot';
 import Table from './table';
 import LoadImg from '../LoadImg/LoadImg';
@@ -21,6 +22,12 @@ import { styles } from '../_styles/LeaderBoardTabs';
 import { SCHOLARSHIP_HELP_URL } from '../../constants/app';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 import { REWARDS_STORE_AREA } from '../../hud/navigationState/hudNavigation';
+
+const IMAGE_STYLE = {
+  width: 75,
+  height: 75,
+  marginRight: 5
+};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,6 +53,8 @@ const LeaderBoardTabs = ({
     (state) => (state as any).campaign.showScholarshipTracker
   );
   const { search } = useLocation();
+  const { isMobileScreen } = useMediaQuery();
+
   const [selectedTab, setSelectedTab] = useState<string>(
     (qs.parse(search).tab as string) || 'tuesday'
   );
@@ -74,6 +83,7 @@ const LeaderBoardTabs = ({
     updateGrandLeaderboards(sectionId);
     updateLeaderboardGrandInfo();
   }, [sectionId, updateGrandLeaderboards, updateTuesdayLeaderboard, updateLeaderboardGrandInfo]);
+
   useEffect(() => {
     try {
       const { data } = leaderboard;
@@ -101,41 +111,35 @@ const LeaderBoardTabs = ({
         setPrizeImgs(images);
       }
     } catch (e) {
-      // console.log(e)
+      console.error(e);
     }
   }, [leaderboard, selectedTab]);
 
   const renderPrizes = () => {
-    const imgStyle = {
-      width: 75,
-      height: 75,
-      marginRight: 5
-    };
-    const containerStyle = {
-      display: 'flex'
-    };
-    const placeholder = {
-      height: 74,
-      width: 75,
-      paddingTop: 2,
-      marginRight: 8,
-      border: '1px dashed gray',
-      borderRadius: 16
-    };
-
-    if (window.innerWidth > 400) {
-      return (
-        <div style={containerStyle}>
-          {prizeImgs.map((img) => (
-            <LoadImg key={img} url={img} style={imgStyle} />
-          ))}
-          {selectedTab === 'tuesday' &&
-            [...Array(3 - prizeImgs.length)].map(() => <div key={uuidv4()} style={placeholder} />)}
-        </div>
-      );
+    if (window.innerWidth <= 400) {
+      return null;
     }
 
-    return null;
+    return (
+      <Box display="flex">
+        {prizeImgs.map((img) => (
+          <LoadImg key={img} url={img} style={IMAGE_STYLE} />
+        ))}
+        {selectedTab === 'tuesday' &&
+          [...Array(3 - prizeImgs.length)].map(() => (
+            <Box
+              key={uuidv4()}
+              style={{
+                ...IMAGE_STYLE,
+                paddingTop: 2,
+                marginRight: 8,
+                border: '1px dashed gray',
+                borderRadius: 16
+              }}
+            />
+          ))}
+      </Box>
+    );
   };
 
   const navigateToStore = () => {
@@ -146,15 +150,16 @@ const LeaderBoardTabs = ({
     window.open(SCHOLARSHIP_HELP_URL);
   };
 
-  const me = students.find((s) => s.userId === Number(userId)) || {};
-  const imgStyle = {
-    width: 75,
-    height: 75,
-    marginRight: 5
-  };
+  const EligibilitySection = (
+    <>
+      <Box className={classes.highlight}>Eligibility Requirements*</Box>
+      <Box className={classes.labelSmall}>{leaderboard.data.general.grand.eligibility || ''}</Box>
+    </>
+  );
+
   return (
-    <div className={classes.container}>
-      <div className={classes.header}>
+    <Box className={classes.container}>
+      <Box className={classes.header}>
         <Tabs
           variant="fullWidth"
           value={selectedTab}
@@ -164,7 +169,6 @@ const LeaderBoardTabs = ({
           onChange={(e, n) => setSelectedTab(n)}
         >
           <Tab
-            className="tour-onboarding-leaderboard-tuesday"
             classes={{
               wrapper: classes.tabs
             }}
@@ -173,7 +177,6 @@ const LeaderBoardTabs = ({
           />
           {showScholarshipTracker && (
             <Tab
-              className="tour-onboarding-leaderboard-grand"
               classes={{
                 wrapper: classes.tabs
               }}
@@ -182,37 +185,20 @@ const LeaderBoardTabs = ({
             />
           )}
         </Tabs>
-      </div>
+      </Box>
       <TabPanel value={selectedTab} index="grand">
-        <div className={classes.scoreContainer}>
-          <div className={classes.days}>
+        <Box className={classes.scoreContainer}>
+          <Box className={classes.days}>
             MVPs earned:
             <span className={classes.count}>{leaderboard.data.general.grand.mvpCount}</span>
-          </div>
-          <div
-            style={{
-              marginTop: 24
-            }}
-          >
-            <div
-              style={{
-                display: 'flex'
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                <div
-                  style={{
-                    marginBottom: 12
-                  }}
-                >
-                  <LoadImg key={prizeImgs[0]} url={prizeImgs[0]} style={imgStyle} />
-                </div>
-                <div>
+          </Box>
+          <Box mt={3}>
+            <Box display="flex">
+              <Box display="flex" flexDirection="column">
+                <Box mb={1.5}>
+                  <LoadImg key={prizeImgs[0]} url={prizeImgs[0]} style={IMAGE_STYLE} />
+                </Box>
+                <Box>
                   <Button
                     className={classes.infoButton}
                     onClick={handleClickInfo}
@@ -220,79 +206,53 @@ const LeaderBoardTabs = ({
                   >
                     <Typography>Info</Typography>
                   </Button>
-                </div>
-              </div>
-              <div
-                style={{
-                  marginLeft: 16
-                }}
-              >
-                <div
-                  style={{
-                    marginBottom: 2
-                  }}
-                >
+                </Box>
+              </Box>
+              <Box ml={2}>
+                <Box mb={0.5}>
                   <Typography variant="h5">{text}</Typography>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    marginBottom: 15
-                  }}
-                >
-                  <div
-                    style={{
-                      marginRight: 25
-                    }}
-                  >
-                    <div className={classes.highlight}>Amount</div>
-                    <div className={classes.label}>{amount}</div>
-                  </div>
-                  <div
-                    style={{
-                      marginRight: 25,
-                      whiteSpace: 'nowrap'
-                    }}
-                  >
-                    <div className={classes.highlight}>Number of Winners</div>
-                    <div className={classes.label}>{numberOfWinners}</div>
-                  </div>
-                  <div
-                    style={{
-                      maxWidth: 250
-                    }}
-                  >
-                    <div className={classes.highlight}>Eligibility Requirements*</div>
-                    <div className={classes.labelSmall}>
-                      {leaderboard.data.general.grand.eligibility || ''}
-                    </div>
-                  </div>
-                </div>
-                <div className={classes.footnote}>
+                </Box>
+                <Box display="flex" mb={2}>
+                  <Box mr={3}>
+                    <Box className={classes.highlight}>Amount</Box>
+                    <Box className={classes.label}>{amount}</Box>
+                  </Box>
+                  <Box mr={3} whiteSpace="nowrap">
+                    <Box className={classes.highlight}>Number of Winners</Box>
+                    <Box className={classes.label}>{numberOfWinners}</Box>
+                  </Box>
+                  <Box maxWidth={250} display={isMobileScreen ? 'none' : 'block'}>
+                    {EligibilitySection}
+                  </Box>
+                </Box>
+                <Box mb={0.5} maxWidth={250} display={isMobileScreen ? 'block' : 'none'}>
+                  {EligibilitySection}
+                </Box>
+                <Box className={classes.footnote}>
                   {leaderboard.data.general.grand.eligibilitySubtitle || ''}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </TabPanel>
       <TabPanel value={selectedTab} index="tuesday">
-        <div className={classes.scoreContainer}>
-          <div className={classes.days}>
+        <Box className={classes.scoreContainer}>
+          <Box className={classes.days}>
             {timeLabel}:<span className={classes.count}>{time}</span>
-          </div>
-          <div className={classes.days}>
+          </Box>
+          <Box className={classes.days}>
             Points:
             <span className={classes.count}>{tuesdayPoints}</span>
-          </div>
-          <div className={classes.footnote}>
+          </Box>
+          <Box className={classes.footnote}>
             {leaderboard.data.general.tuesday.eligibility || ''}
-          </div>
-        </div>
-        <div className={classes.rewardContainer}>
+          </Box>
+        </Box>
+        <Box className={classes.rewardContainer}>
           {renderPrizes()}
-          <div>
-            <div className={classes.rewardTitle}>{prizeText}</div>
+          <Box>
+            <Box className={classes.rewardTitle}>{prizeText}</Box>
             <Button
               variant="outlined"
               color="primary"
@@ -304,12 +264,12 @@ const LeaderBoardTabs = ({
             >
               {rewardButtonText}
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </TabPanel>
-      <div className={classes.filterContainer}>
+      <Box className={classes.filterContainer}>
         <Typography variant="h4">Current Leaders</Typography>
-      </div>
+      </Box>
       <Table
         userId={Number(userId)}
         scoreLabel={scoreLabel}
@@ -318,7 +278,7 @@ const LeaderBoardTabs = ({
         sectionId={sectionId}
         selectedTab={selectedTab}
       />
-    </div>
+    </Box>
   );
 };
 

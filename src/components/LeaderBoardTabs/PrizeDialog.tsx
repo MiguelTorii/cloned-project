@@ -1,12 +1,16 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
+
+import Box from '@material-ui/core/Box';
+
 import withRoot from '../../withRoot';
 import Dialog from '../Dialog/Dialog';
 import LoadImg from '../LoadImg/LoadImg';
 import shareNotes from '../../assets/svg/share_notes.svg';
 import answerQuestions from '../../assets/svg/answer_questions.svg';
 import studyVirtually from '../../assets/svg/study-virtually.svg';
+
 import { styles } from '../_styles/LeaderBoardTabs/PrizeDialog';
 
 const mvpActions = [
@@ -36,82 +40,56 @@ const LeaderBoardTabs = ({
   numberOfWinners,
   dialogTitle,
   eligibilityDialog
-}) => {
-  const imgStyle = {
-    width: 75,
-    height: 75,
-    marginRight: 5
-  };
-  return (
-    <Dialog
-      className={classes.dialog}
-      onCancel={handleCloseDialog}
-      open={openDialog}
-      title={dialogTitle}
-    >
-      <div className={classes.subtitle}>
-        For students who positively impact their classmates’ academic success through collaboration
-        on CircleIn.
-      </div>
-      <hr className={classes.hr} />
-      <div
-        style={{
-          padding: 20
-        }}
-      >
-        <div className={classes.dialogTable}>
-          <div
-            style={{
-              marginRight: 25
-            }}
-          >
-            <div className={classes.highlight}>Amount</div>
-            <div className={classes.label}>{amount}</div>
-          </div>
-          <div
-            style={{
-              marginRight: 25,
-              whiteSpace: 'nowrap'
-            }}
-          >
-            <div className={classes.highlight}>Number of Winners</div>
-            <div className={classes.label}>{numberOfWinners}</div>
-          </div>
-          <div
-            style={{
-              maxWidth: 250
-            }}
-          >
-            <div className={classes.highlight}>Eligibility Requirements</div>
-            <div className={classes.label}>{eligibilityDialog}</div>
-          </div>
-        </div>
-        <div className={classes.dialogFootnote}>{eligibilitySubtitleDialog}</div>
-        <div className={classes.title}>Best Practices to Earn MVPs:</div>
-        <div className={classes.mvpActions}>
-          {mvpActions.map((action) => (
-            <div key={action.title} className={classes.mvpAction}>
-              <LoadImg key={action.imageUrl} url={action.imageUrl} style={imgStyle} />
-              <div
-                style={{
-                  marginTop: 8
-                }}
-              >
-                <b>{action.title}</b>
-              </div>
-              <div
-                style={{
-                  marginTop: 8
-                }}
-              >
-                {action.text}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Dialog>
-  );
-};
+}) => (
+  <Dialog
+    className={classes.dialog}
+    onCancel={handleCloseDialog}
+    open={openDialog}
+    title={dialogTitle}
+  >
+    <Box className={classes.subtitle}>
+      For students who positively impact their classmates’ academic success through collaboration on
+      CircleIn.
+    </Box>
+    <hr className={classes.hr} />
+    <Box padding={20}>
+      <Box className={classes.dialogTable}>
+        <Box mr={3}>
+          <Box className={classes.highlight}>Amount</Box>
+          <Box className={classes.label}>{amount}</Box>
+        </Box>
+        <Box mr={3} whiteSpace="nowrap">
+          <Box className={classes.highlight}>Number of Winners</Box>
+          <Box className={classes.label}>{numberOfWinners}</Box>
+        </Box>
+        <Box maxWidth={250}>
+          <Box className={classes.highlight}>Eligibility Requirements</Box>
+          <Box className={classes.label}>{eligibilityDialog}</Box>
+        </Box>
+      </Box>
+      <Box className={classes.dialogFootnote}>{eligibilitySubtitleDialog}</Box>
+      <Box className={classes.title}>Best Practices to Earn MVPs:</Box>
+      <Box className={classes.mvpActions}>
+        {mvpActions.map((action) => (
+          <Box key={action.title} className={classes.mvpAction}>
+            <LoadImg
+              key={action.imageUrl}
+              url={action.imageUrl}
+              style={{
+                width: 75,
+                height: 75,
+                marginRight: 5
+              }}
+            />
+            <Box mt={0}>
+              <b>{action.title}</b>
+            </Box>
+            <Box mt={1}>{action.text}</Box>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  </Dialog>
+);
 
 export default withRoot(withStyles(styles as any)(withWidth()(LeaderBoardTabs)));
