@@ -1,6 +1,6 @@
 describe('Classes', () => {
   beforeEach(() => {
-    cy.login();
+    cy.loginUser1();
   });
 
   it('Renders classes page', () => {

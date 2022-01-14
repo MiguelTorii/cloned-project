@@ -1,6 +1,6 @@
 describe('Notes', () => {
   beforeEach(() => {
-    cy.login();
+    cy.loginUser1();
   });
 
   it('Creates note', () => {
