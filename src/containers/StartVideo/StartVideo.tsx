@@ -1,175 +1,32 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
-import Chat from 'twilio-chat';
-import { withStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { decypherClass } from '../../utils/crypto';
-import StudyRoomImg from '../../assets/svg/video-chat-image.svg';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import StudyRoomInvite from './StudyRoomInvite';
-import { renewTwilioToken, createChannel, addGroupMembers, getGroupMembers } from '../../api/chat';
-import { logEvent } from '../../api/analytics';
+import Chat from 'twilio-chat';
+import { useSelector } from 'react-redux';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import styles from './_styles/index';
+import StudyRoomImg from '../../assets/svg/video-chat-image.svg';
+import StudyRoomInvite from './StudyRoomInvite';
+import useStyles from './_styles/index';
+import { addGroupMembers, createChannel, getGroupMembers, renewTwilioToken } from '../../api/chat';
+import { logEvent } from '../../api/analytics';
+import { AppState } from '../../configureStore';
+import { User, UserClass } from '../../types/models';
 
-type Props = {
-  classes?: Record<string, any>;
-  user?: UserState;
-};
-type State = {
-  isLoading: boolean;
-  channel: string;
-  client: Record<string, any> | null | undefined;
-  channels: Array<Record<string, any>>;
-  errorDialog: boolean;
-  errorTitle: string;
-  errorBody: string;
-  createChannel: string | null | undefined;
-  online: boolean;
-  classId: number;
-  sectionId: number;
-  classList: any;
-  groupUsers: any;
-  inviteVisible: any;
-};
+const StartVideo = () => {
+  const classes = useStyles();
+  const [inviteVisible, setInviteVisible] = useState(false);
+  const [client, setClient] = useState(null);
+  const [channel, setChannel] = useState('');
+  const [groupUsers, setGroupUsers] = useState([]);
+  const [online, setOnline] = useState(true);
+  const profile = useSelector<AppState, User>((state) => state.user.data);
+  const classList = useSelector<AppState, UserClass[]>((state) => state.user.userClasses.classList);
 
-class StartVideo extends React.PureComponent<Props, State> {
-  state: any = {
-    isLoading: false,
-    channel: '',
-    client: null,
-    channels: [],
-    online: true,
-    inviteVisible: false,
-    classList: [],
-    groupUsers: []
+  const handleClose = () => {
+    setInviteVisible(false);
   };
 
-  mounted: boolean;
-
-  componentDidMount = () => {
-    this.mounted = true;
-    const {
-      user: {
-        userClasses: { classList },
-        data: { userId }
-      }
-    } = this.props;
-    this.setState({
-      classList: [...classList]
-    });
-    const { classId, sectionId } = decypherClass();
-    window.addEventListener('offline', () => {
-      console.log('**** offline ****');
-      this.setState({
-        online: false
-      });
-      this.handleShutdownChat();
-    });
-    window.addEventListener('online', () => {
-      console.log('**** online ****');
-      this.setState({
-        online: true
-      });
-    });
-
-    if (userId !== '') {
-      this.handleInitChat();
-    }
-  };
-
-  componentDidUpdate = (prevProps, prevState) => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-    const {
-      user: {
-        data: { userId: prevUserId }
-      }
-    } = prevProps;
-    const { online } = this.state;
-
-    if (prevUserId !== '' && userId === '') {
-      this.handleShutdownChat();
-    } else if (
-      (prevUserId === '' && userId !== '' && online) ||
-      (userId !== '' && online && !prevState.online)
-    ) {
-      this.handleInitChat();
-    }
-  };
-
-  componentWillUnmount = () => {
-    this.mounted = false;
-    this.handleShutdownChat();
-  };
-
-  handleShutdownChat = () => {
-    const { client } = this.state;
-
-    if (client) {
-      client.shutdown();
-    }
-
-    if (this.mounted) {
-      this.setState({
-        client: null,
-        channels: []
-      });
-    }
-  };
-
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
-  handleInitChat = async () => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = this.props;
-
-    try {
-      const accessToken = await renewTwilioToken({
-        userId
-      });
-
-      if (!accessToken || (accessToken && accessToken === '')) {
-        this.handleInitChat();
-        return;
-      }
-
-      const client = await Chat.create(accessToken);
-      let paginator = await client.getSubscribedChannels();
-
-      while (paginator.hasNextPage) {
-        // eslint-disable-next-line no-await-in-loop
-        paginator = await paginator.nextPage();
-      }
-
-      const channels = await client.getLocalChannels({
-        criteria: 'lastMessage',
-        order: 'descending'
-      });
-      this.setState({
-        client,
-        channels
-      });
-    } finally {
-    }
-  };
-
-  handleChange = (event) => {
-    this.setState({
-      channel: event.target.value
-    });
-  };
-
-  handleStart = () => {
-    const { channel, groupUsers } = this.state;
-
+  const handleStart = () => {
     if (groupUsers.length <= 1) {
       return;
     }
@@ -184,24 +41,21 @@ class StartVideo extends React.PureComponent<Props, State> {
     win.focus();
   };
 
-  handleInvite = async ({ chatType, name, type, selectedUsers, startVideo = false }) => {
-    const { client, channel } = this.state;
-
+  const handleInvite = async ({ chatType, name, type, selectedUsers }) => {
     try {
       const users = selectedUsers.map((item) => Number(item.userId));
       let chatId;
-      let isNew = false;
 
       // Create New study room
       if (!channel) {
-        const { chatId: newChatId, isNewChat } = await createChannel({
+        const { chatId: newChatId } = await createChannel({
           users,
           groupName: chatType === 'group' ? name : '',
           type: chatType === 'group' ? type : '',
           thumbnailUrl: chatType === 'group' ? '' : ''
         });
+        setChannel(newChatId);
         chatId = newChatId;
-        isNew = isNewChat;
       } else {
         // Invite the user to existing chat
         await addGroupMembers({
@@ -211,96 +65,116 @@ class StartVideo extends React.PureComponent<Props, State> {
         chatId = channel;
       }
 
-      if (chatId !== '') {
-        const channel = await client.getChannelBySid(chatId);
-        const groupUsers = await getGroupMembers({
-          chatId
-        });
-        this.setState({
-          groupUsers: [...groupUsers]
-        });
-        this.handleChannelUpdated({
-          channel,
-          isNew: isNew
-        });
-      }
+      const groupUsers = await getGroupMembers({
+        chatId
+      });
+      setGroupUsers(groupUsers);
     } catch (e) {}
   };
 
-  handleChannelUpdated = ({ channel, isNew }: { channel: Record<string, any>; isNew: boolean }) => {
-    this.setState(({ channels }) => ({
-      channels: [channel, ...channels],
-      channel: channel.sid
-    }));
-  };
+  // TODO CHAT_REFACTOR: Move logic into a chat hook
+  const handleInitChat = async () => {
+    try {
+      const accessToken = await renewTwilioToken({
+        userId: profile.userId
+      });
 
-  handleSetInviteVisible = () => {
-    this.setState({
-      inviteVisible: true
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      inviteVisible: false
-    });
-  };
-
-  render() {
-    const {
-      classes,
-      user: {
-        data: { userId }
+      if (!accessToken || (accessToken && accessToken === '')) {
+        handleInitChat();
+        return;
       }
-    } = this.props;
-    const { inviteVisible, classList, groupUsers } = this.state;
-    return (
-      <>
-        <ErrorBoundary>
-          <div className={classes.root}>
-            <div className={classes.row}>
-              <Typography variant="h4">Study Room</Typography>
-              <Button className={classes.button1} onClick={this.handleSetInviteVisible}>
-                Start a Study Room
-              </Button>
-            </div>
 
-            <Typography className={classes.subtitle} variant="body1">
-              What’s better than studying? Studying with the squad of course! Study with your
-              classmates from home. Pants optional. You can earn 20,000 points just for starting a
-              study room!
+      const client = await Chat.create(accessToken);
+      let paginator = await client.getSubscribedChannels();
+
+      while (paginator.hasNextPage) {
+        // eslint-disable-next-line no-await-in-loop
+        paginator = await paginator.nextPage();
+      }
+      setClient(client);
+    } finally {
+    }
+  };
+
+  const handleSetInviteVisible = () => setInviteVisible(true);
+
+  const handleShutdownChat = () => {
+    client.shutdown();
+    setClient(null);
+  };
+
+  // Effects
+  useEffect(() => {
+    const handleOffline = () => {
+      console.log('**** offline ****');
+      setOnline(false);
+    };
+
+    const handleOnline = () => {
+      console.log('**** online ****');
+      setOnline(true);
+    };
+
+    window.addEventListener('offline', handleOffline);
+    window.addEventListener('online', handleOnline);
+
+    return () => {
+      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('online', handleOnline);
+      handleShutdownChat();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (profile.userId === '' || !online) {
+      handleShutdownChat();
+    } else {
+      handleInitChat();
+    }
+  }, [profile.userId, online]);
+
+  return (
+    <>
+      <ErrorBoundary>
+        <div className={classes.root}>
+          <div className={classes.row}>
+            <Typography variant="h4">Study Room</Typography>
+            <Button className={classes.button1} onClick={handleSetInviteVisible}>
+              Start a Study Room
+            </Button>
+          </div>
+
+          <Typography className={classes.subtitle} variant="body1">
+            What’s better than studying? Studying with the squad of course! Study with your
+            classmates from home. Pants optional. You can earn 20,000 points just for starting a
+            study room!
+          </Typography>
+
+          <div className={classes.wrapper}>
+            <img src={StudyRoomImg} alt="study room chat" />
+
+            <Typography className={classes.note} variant="body1" align="center">
+              Get nice and cozy, stay hydrated and press the button below to select classmates to
+              join you on a video chat!
             </Typography>
 
-            <div className={classes.wrapper}>
-              <img className={classes.img} src={StudyRoomImg} alt="study room chat" />
-
-              <Typography className={classes.note} variant="body1" align="center">
-                Get nice and cozy, stay hydrated and press the button below to select classmates to
-                join you on a video chat!
-              </Typography>
-
-              <Button className={classes.button2} onClick={this.handleSetInviteVisible}>
-                Start a Private Study Room
-              </Button>
-            </div>
+            <Button className={classes.button2} onClick={handleSetInviteVisible}>
+              Start a Private Study Room
+            </Button>
           </div>
-        </ErrorBoundary>
-        <StudyRoomInvite
-          open={inviteVisible}
-          userId={userId}
-          groupUsers={groupUsers}
-          classList={classList}
-          handleClose={this.handleClose}
-          handleInvite={this.handleInvite}
-          handleStart={this.handleStart}
-        />
-      </>
-    );
-  }
-}
+        </div>
+      </ErrorBoundary>
+      <StudyRoomInvite
+        open={inviteVisible}
+        userId={profile.userId}
+        groupUsers={groupUsers}
+        classList={classList}
+        handleClose={handleClose}
+        handleInvite={handleInvite}
+        handleStart={handleStart}
+      />
+    </>
+  );
+};
 
-const mapStateToProps = ({ user }: StoreState): {} => ({
-  user
-});
-
-export default connect<{}, {}, Props>(mapStateToProps, null)(withStyles(styles as any)(StartVideo));
+export default StartVideo;

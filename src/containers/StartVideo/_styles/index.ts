@@ -1,4 +1,6 @@
-const styles = (theme) => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(5)
   },
@@ -64,6 +66,6 @@ const styles = (theme) => ({
       textTransform: 'none'
     }
   }
-});
+}));
 
-export default styles;
+export default useStyles;
