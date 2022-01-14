@@ -1,28 +1,33 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
+import withWidth from '@material-ui/core/withWidth';
+
+import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import withWidth from '@material-ui/core/withWidth';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
 import ChatIcon from '@material-ui/icons/Chat';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
-import clsx from 'clsx';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
-import InviteIcon from '../../assets/svg/invite-icon.svg';
-import { getInitials } from '../../utils/chat';
-import useStyles from '../_styles/ClassmatesDialog/Classmate';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
-import { openChannelWithEntity } from '../../actions/chat';
-import { CampaignState } from '../../reducers/campaign';
-import { ChatState } from '../../reducers/chat';
-import { Dispatch } from '../../types/store';
+
+import { useMediaQuery } from 'hooks';
+import { Dispatch } from 'types/store';
+import { getInitials } from 'utils/chat';
+import { buildPath } from 'utils/helpers';
+import { ChatState } from 'reducers/chat';
+import { CampaignState } from 'reducers/campaign';
+import { openChannelWithEntity } from 'actions/chat';
+import InviteIcon from 'assets/svg/invite-icon.svg';
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import OnlineBadge from 'components/OnlineBadge';
+
+import { useStyles } from './ClassmateStyles';
 
 type ClassmateType = {
   userId: string;
@@ -33,6 +38,7 @@ type ClassmateType = {
   isOnline: boolean;
   classes: any;
 };
+
 type Props = {
   courseDisplayName: string;
   meetingInvite: boolean;
@@ -40,6 +46,7 @@ type Props = {
   videoEnabled?: boolean;
   width?: string;
 };
+
 const MyProfileLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
 ));
@@ -47,6 +54,7 @@ const MyProfileLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
 const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingInvite }: Props) => {
   const classes: any = useStyles();
   const dispatch: Dispatch = useDispatch();
+  const { isMobileScreen } = useMediaQuery();
 
   const isHud: boolean | null = useSelector(
     (state: { campaign: CampaignState }) => state.campaign.hud
@@ -107,8 +115,11 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
     const name = `${classmate?.firstName} ${classmate?.lastName}`;
     return getInitials(name);
   }, [classmate]);
+
   return (
-    <ListItem className={clsx(width === 'xs' && classes.buttons)}>
+    <ListItem
+      className={clsx(width === 'xs' && classes.buttons, isMobileScreen && classes.mobileContainer)}
+    >
       <ListItemAvatar>
         <Link
           href={buildPath(`/profile/${classmate.userId}`, {
@@ -137,7 +148,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
         secondary={classList}
       />
       <ListSubheader component="div" disableGutters>
-        {!meetingInvite && (
+        {!meetingInvite && !isMobileScreen && (
           <Button
             className={classes.sendMessage}
             variant="contained"
@@ -148,7 +159,24 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
             {!loadingMessage ? 'Send Message' : <CircularProgress size={20} />}
           </Button>
         )}
-        {videoEnabled && (
+
+        {!meetingInvite && isMobileScreen && (
+          <Fab size="small" color="primary">
+            <ChatIcon />
+          </Fab>
+        )}
+
+        {videoEnabled && isMobileScreen && (
+          <Fab size="small" color="primary" className={classes.rightIconButton}>
+            {!classmate.notRegistered ? (
+              <VideocamRoundedIcon />
+            ) : (
+              <img alt="invite" src={InviteIcon} />
+            )}
+          </Fab>
+        )}
+
+        {videoEnabled && !isMobileScreen && (
           <Button
             variant="contained"
             className={classmate.notRegistered ? classes.invite : classes.videoChat}

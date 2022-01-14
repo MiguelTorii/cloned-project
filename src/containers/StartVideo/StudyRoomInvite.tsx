@@ -6,11 +6,13 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
-import { getCampaign } from '../../api/campaign';
-import { getClassmates } from '../../api/chat';
-import Dialog from '../../components/Dialog/Dialog';
-import LoadingImg from '../../assets/svg/astro-shuttle.svg';
+
+import { getClassmates } from 'api/chat';
+import LoadingImg from 'assets/svg/astro-shuttle.svg';
+
+import Dialog from 'components/Dialog/Dialog';
 import Classmate from './Classmate';
+
 import useStyles from './_styles/StudyRoomInvite';
 
 const StudyRoomInvite = ({
