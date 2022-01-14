@@ -179,7 +179,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const options = useMemo(() => {
     try {
       const newClassList = {};
-      const currentClassList = classList.filter((cl) => cl.isCurrent);
+      const currentClassList = classList.filter((cl) => cl.isCurrent && !!cl.classId);
       currentClassList.forEach((cl) => {
         if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
           cl.section.forEach((s) => {
