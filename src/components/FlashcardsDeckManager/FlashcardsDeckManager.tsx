@@ -15,6 +15,7 @@ import FlashcardsListEditor from '../FlashcardsListEditor/FlashcardsListEditor';
 import TextField from '../Basic/TextField/TextField';
 import { INTERVAL, STORAGE_KEYS } from '../../constants/app';
 import HotKeyGuide from '../HotKeyGuide/HotKeyGuide';
+import { CIRCLEIN101_CLASS_ID } from '../../constants/common';
 
 const HOT_KEYS = [
   {
@@ -83,7 +84,7 @@ const FlashcardsDeckManager = ({
   const dropdownOptions = useMemo(() => {
     const result = [];
     myClasses.forEach((classData) => {
-      if (classData.isCurrent) {
+      if (classData.isCurrent && classData.classId !== CIRCLEIN101_CLASS_ID) {
         classData.section.forEach((section) => {
           result.push({
             value: `${classData.classId}_${section.sectionId}`,
