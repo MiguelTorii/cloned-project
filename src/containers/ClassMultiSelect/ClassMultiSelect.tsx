@@ -13,6 +13,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Tooltip from '../Tooltip/Tooltip';
 import type { State as StoreState } from '../../types/state';
 import { CampaignState } from '../../reducers/campaign';
+import { CIRCLEIN101_CLASS_ID } from '../../constants/common';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
@@ -70,7 +71,13 @@ const ClassMultiSelect = ({
 
     const classList = {};
     user.userClasses.classList.forEach((cl) => {
-      if (cl.classId && cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
+      if (
+        cl.classId !== CIRCLEIN101_CLASS_ID &&
+        cl.section &&
+        cl.section.length > 0 &&
+        cl.className &&
+        cl.bgColor
+      ) {
         cl.section.forEach((s) => {
           classList[s.sectionId] = cl;
         });

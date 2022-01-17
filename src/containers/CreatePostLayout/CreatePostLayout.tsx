@@ -28,6 +28,7 @@ import { buildPath } from '../../utils/helpers';
 import { cypherClass } from '../../utils/crypto';
 import { AppState } from '../../configureStore';
 import { CampaignState } from '../../reducers/campaign';
+import { CIRCLEIN101_CLASS_ID } from '../../constants/common';
 
 const styles = (theme) => ({
   item: {
@@ -179,7 +180,9 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const options = useMemo(() => {
     try {
       const newClassList = {};
-      const currentClassList = classList.filter((cl) => cl.isCurrent && !!cl.classId);
+      const currentClassList = classList.filter(
+        (cl) => cl.isCurrent && cl.classId !== CIRCLEIN101_CLASS_ID
+      );
       currentClassList.forEach((cl) => {
         if (cl.section && cl.section.length > 0 && cl.className && cl.bgColor) {
           cl.section.forEach((s) => {

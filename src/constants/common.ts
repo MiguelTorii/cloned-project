@@ -204,3 +204,4 @@ export const ERROR_MODAL_TITLE = {
 };
 export const FETCH_POINTS_INTERVAL = 15 * 60 * 1000;
 export const COMMUNITY_SCROLL_CONTAINER_ID = 'community-scroll-container';
+export const CIRCLEIN101_CLASS_ID = 1;
