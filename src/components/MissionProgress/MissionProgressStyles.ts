@@ -18,5 +18,8 @@ export const useStyles = makeStyles((theme) => ({
   text: {
     color: 'white',
     fontSize: 14
+  },
+  partyIcon: {
+    fontSize: 12
   }
 }));

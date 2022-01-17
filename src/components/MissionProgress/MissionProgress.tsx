@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, LinearProgress, Tooltip } from '@material-ui/core';
+import { Box, LinearProgress, Tooltip, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import lodash from 'lodash';
 import SemiBoldTypography from '../SemiBoldTypography/SemiBoldTypography';
@@ -14,8 +14,8 @@ type Props = {
 
 const StyledLinearProgress = withStyles((theme) => ({
   root: {
-    height: 16,
-    borderRadius: 16
+    height: 18,
+    borderRadius: 18
   },
   colorPrimary: {
     backgroundColor: theme.circleIn.palette.expBarBackground
@@ -48,6 +48,7 @@ const MissionProgress = ({ value, total, label, link }: Props) => {
           <SemiBoldTypography className={classes.text}>
             {value.toLocaleString()}/{total.toLocaleString()}
           </SemiBoldTypography>
+          {value >= total && <Typography className={classes.partyIcon}>&nbsp;🎉</Typography>}
         </Box>
       </Box>
     </Tooltip>
