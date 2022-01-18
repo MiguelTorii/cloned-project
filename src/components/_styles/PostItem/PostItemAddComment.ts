@@ -14,7 +14,7 @@ export default (theme) => ({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     width: '100%',
-    minHeight: 80
+    minHeight: 116
   },
   textField: {
     marginLeft: theme.spacing(2)
