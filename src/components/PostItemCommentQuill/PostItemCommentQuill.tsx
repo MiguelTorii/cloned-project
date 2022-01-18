@@ -1,17 +1,23 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback } from 'react';
-import cx from 'classnames';
+import classNames from 'classnames';
 import axios from 'axios';
 import { useQuill } from 'react-quilljs';
 import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import EditorToolbar, { formats } from './Toolbar';
-import { getPresignedURL } from '../../api/media';
-import { styles } from '../_styles/PostItem/CommentQuill';
 
-const CommentQuill = ({
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+
+import { useMediaQuery } from 'hooks';
+import { getPresignedURL } from 'api/media';
+
+import PostItemToolbar, { formats } from 'components/PostItemToolbar';
+
+import styles from './PostItemCommentQuillStyles';
+
+const PostItemCommentQuill = ({
   classes,
   onChange,
   value,
@@ -23,6 +29,8 @@ const CommentQuill = ({
   toolbarPrefix,
   isPastClassFlashcard
 }) => {
+  const { isMobileScreen } = useMediaQuery();
+
   const [loading, setLoading] = useState(false);
   const [isNewLine, setIsNewLine] = useState(false);
   const [currentQuill, setCurrentQuill] = useState(null);
@@ -34,6 +42,7 @@ const CommentQuill = ({
     formats,
     placeholder: 'Type a comment...'
   });
+
   useEffect(() => {
     if (quill && isPastClassFlashcard) {
       quill.enable(false);
@@ -43,6 +52,7 @@ const CommentQuill = ({
       quill.enable();
     }
   }, [isPastClassFlashcard, quill]);
+
   useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
@@ -70,11 +80,13 @@ const CommentQuill = ({
       });
     }
   }, [feedId, toolbarPrefix, isNewLine, onChange, quill]);
+
   useEffect(() => {
     if (currentQuill && isNewLine) {
       currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n');
     }
   }, [currentQuill, isNewLine]);
+
   useEffect(() => {
     if (quill && value) {
       quill.clipboard.dangerouslyPasteHTML(value);
@@ -84,6 +96,7 @@ const CommentQuill = ({
       });
     } // eslint-disable-next-line
   }, [quill]);
+
   const selectLocalImage = useCallback(() => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -117,11 +130,13 @@ const CommentQuill = ({
       }
     };
   }, [quill, userId]);
+
   useEffect(() => {
     if (quill) {
       quill.getModule('toolbar').addHandler('image', selectLocalImage);
     }
   }, [quill, selectLocalImage]);
+
   const insertEmoji = useCallback(
     (emoji) => {
       if (quill) {
@@ -134,16 +149,24 @@ const CommentQuill = ({
     },
     [quill, setValue]
   );
+
   return (
     <div className={classes.commentQuill}>
       <div className={classes.editor}>
         <div className={classes.innerContainerEditor}>
           <div className={classes.editorToolbar}>
             <div id={`editor-${feedId}`} className={classes.editorable} ref={quillRef} />
-            <EditorToolbar
-              id={`comment-toolbar-${feedId}-${toolbarPrefix}`}
-              handleSelect={insertEmoji}
-            />
+            <Box
+              className={classNames({
+                [classes.toolbarBox]: true,
+                [classes.toolbarBoxMobile]: isMobileScreen
+              })}
+            >
+              <PostItemToolbar
+                id={`comment-toolbar-${feedId}-${toolbarPrefix}`}
+                handleSelect={insertEmoji}
+              />
+            </Box>
           </div>
           {loading && (
             <div className={classes.loader}>
@@ -170,7 +193,7 @@ const CommentQuill = ({
         </div>
       </div>
 
-      <div className={cx(showError ? classes.error : classes.nonError)}>
+      <div className={classNames(showError ? classes.error : classes.nonError)}>
         <Typography component="p" variant="subtitle1" className={classes.errorMessage}>
           {"We couldn't post your comment for some reason. 😥"}
         </Typography>
@@ -179,4 +202,4 @@ const CommentQuill = ({
   );
 };
 
-export default withStyles(styles as any)(CommentQuill);
+export default withStyles(styles as any)(PostItemCommentQuill);

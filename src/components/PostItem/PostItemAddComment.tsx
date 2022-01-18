@@ -1,8 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import cx from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+
 import TextField from '@material-ui/core/TextField';
-import CommentQuill from './CommentQuill';
+
+import PostItemCommentQuill from 'components/PostItemCommentQuill';
+
 import SkeletonLoad from './SkeletonLoad';
 import styles from '../_styles/PostItem/PostItemAddComment';
 
@@ -96,7 +99,7 @@ const PostItemAddComment = ({
     <div className={cx(classes.container, isReply && classes.reply)}>
       <div aria-hidden="true" className={classes.body} onKeyUp={handleKeyUp}>
         {rte && !readOnly ? (
-          <CommentQuill
+          <PostItemCommentQuill
             value={value}
             isPastClassFlashcard={isPastClassFlashcard}
             userId={userId}

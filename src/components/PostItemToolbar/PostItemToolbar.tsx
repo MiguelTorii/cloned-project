@@ -1,12 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import cx from 'classnames';
+import classNames from 'classnames';
 import { Quill } from 'react-quill';
+
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import EmojiSelector from '../EmojiSelector/EmojiSelector';
-import { useStyles } from '../_styles/PostItem/Toolbar';
-import { QUILL_TOOLBAR_SHORT_KEYS } from '../../constants/common';
+
+import { useMediaQuery } from 'hooks';
+import { QUILL_TOOLBAR_SHORT_KEYS } from 'constants/common';
+
+import EmojiSelector from 'components/EmojiSelector';
+
+import { useStyles } from './PostItemToolbarStyles';
 
 const Link = Quill.import('formats/link');
 
@@ -30,14 +35,24 @@ export const formats = [
   'image',
   'formula'
 ];
-export const QuillToolbar = ({ id, handleSelect }) => {
+
+export const PostItemToolbar = ({ id, handleSelect }) => {
   const classes: any = useStyles();
+  const { isMobileScreen } = useMediaQuery();
+
   const [open, setOpen] = useState(false);
+
   const handleClick = useCallback(() => {
     setOpen(!open);
   }, [open]);
+
   return (
-    <div id={id} className={classes.toolbar}>
+    <div
+      id={id}
+      className={classNames({
+        [classes.root]: true
+      })}
+    >
       <span className="ql-formats">
         <div>
           <IconButton
@@ -123,7 +138,15 @@ export const QuillToolbar = ({ id, handleSelect }) => {
           <EmojiSelector onSelect={handleSelect} emoIconStyle={classes.emoIconStyle} />
         </Tooltip>
       </span>
-      <span className={cx('ql-formats', classes.subToolbar, open ? classes.show : classes.hide)}>
+      <span
+        className={classNames({
+          'ql-formats': true,
+          [classes.subToolbar]: true,
+          [classes.show]: open,
+          [classes.hide]: !open,
+          [classes.subToolbarMobile]: isMobileScreen
+        })}
+      >
         <Tooltip
           title="Strike"
           aria-label="strike"
@@ -200,4 +223,5 @@ export const QuillToolbar = ({ id, handleSelect }) => {
     </div>
   );
 };
-export default QuillToolbar;
+
+export default PostItemToolbar;
