@@ -96,33 +96,35 @@ export type CurrentCommunity = {
   section_id: string;
 };
 
+export type ChatData = {
+  channels: Channel[];
+  client: Client | null;
+  communities: ChatCommunityData[];
+  communityChannels: CommunityChannels[];
+  currentChannel: Channel | null;
+  currentCommunity: CurrentCommunity | null;
+  currentCommunityChannel: Channel | null;
+  currentCommunityId: string | null;
+  entityFirstName: string;
+  entityId: number;
+  entityLastName: string;
+  entityUuid: string;
+  entityVideo: boolean;
+  local: Record<string, ChannelWrapper>;
+  mainMessage: string;
+  messageLoading: boolean;
+  newChannel: boolean;
+  newMessage: Message | null;
+  oneTouchSendOpen: boolean;
+  online: boolean;
+  openChannels: Channel[];
+  selectedChannelId: string;
+  unread: number;
+  uuid: string;
+};
+
 export type ChatState = {
-  data: {
-    channels: Channel[];
-    client: Client | null;
-    communities: ChatCommunityData[];
-    communityChannels: CommunityChannels[];
-    currentChannel: Channel | null;
-    currentCommunity: CurrentCommunity | null;
-    currentCommunityChannel: Channel | null;
-    currentCommunityId: string | null;
-    entityFirstName: string;
-    entityId: number;
-    entityLastName: string;
-    entityUuid: string;
-    entityVideo: boolean;
-    local: Record<string, ChannelWrapper>;
-    mainMessage: string;
-    messageLoading: boolean;
-    newChannel: boolean;
-    newMessage: Message | null;
-    oneTouchSendOpen: boolean;
-    online: boolean;
-    openChannels: Channel[];
-    selectedChannelId: string;
-    unread: number;
-    uuid: string;
-  };
+  data: ChatData;
   error: boolean;
   errorMessage: {
     title: string;

@@ -170,9 +170,7 @@ const ChatPage = () => {
     <div className={classes.root}>
       <Box className={classes.collageList}>
         <CollageList
-          local={local}
           unreadMessageCount={unreadMessageCount}
-          selectedCourse={currentCommunity}
           communities={communities}
           communityChannels={communityChannels}
           handleSelect={handleSelect}

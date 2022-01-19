@@ -21,65 +21,49 @@ import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
 import { MessageItemType, PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
 import { Member } from '../../types/models';
-import { ChannelWrapper, DetailedChatUser, CurrentCommunity } from '../../reducers/chat';
+import { DetailedChatUser, CurrentCommunity, ChatData } from '../../reducers/chat';
 import { messageLoadingAction } from '../../actions/chat';
 import { UserState } from '../../reducers/user';
+import { AppState } from '../../configureStore';
 
 type Props = {
-  isLoading?: boolean;
   isCommunityChat?: boolean;
   selectedChannelId?: string;
   selectedChannel?: any;
   currentCommunity?: CurrentCommunity | null;
   channel?: any;
   channelList?: Array<any>;
-  newMessage?: Record<string, any>;
   rightSpace?: number;
-  local?: Record<string, ChannelWrapper>;
-  newChannel?: boolean;
-  permission?: string;
-  messageLoading?: boolean;
   onSend?: (...args: Array<any>) => any;
   setRightPanel?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
-  mainMessage?: any;
-  onCollapseLeft?: any;
-  onCollapseRight?: any;
-  leftSpace?: any;
-  enqueueSnackbar?: any;
   lastReadMessageIndex?: number;
 };
 
 const Main = ({
-  isLoading,
   isCommunityChat = false,
   currentCommunity,
   channel,
   channelList,
-  messageLoading,
   selectedChannel,
-  newMessage,
   rightSpace,
   selectedChannelId = '',
-  local,
-  newChannel,
-  permission,
   onSend,
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  mainMessage,
-  onCollapseLeft,
-  onCollapseRight,
-  leftSpace,
-  enqueueSnackbar,
   lastReadMessageIndex
 }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
 
   const user = useSelector((state: { user: UserState }) => state.user);
+  const permission = useSelector<AppState, Array<string>>((state) => state.user.data.permission);
+  const isLoading = useSelector<AppState, boolean>((state) => state.chat.isLoading);
+  const { newChannel, local, newMessage, messageLoading } = useSelector<AppState, ChatData>(
+    (state) => state.chat.data
+  );
 
   const end = useRef(null);
   const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);

@@ -93,7 +93,7 @@ const defaultState = {
     updateProfile: [],
     lmsTypeId: -1,
     lmsUser: false,
-    permission: ''
+    permission: []
   },
   isMasquerading: store.get('MASQUERADING') === true,
   userClasses: {

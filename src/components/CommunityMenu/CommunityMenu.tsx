@@ -3,31 +3,30 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useSelector } from 'react-redux';
 import LoadImg from '../LoadImg/LoadImg';
 import { ReactComponent as Chat } from '../../assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
-import { ChannelWrapper } from '../../reducers/chat';
+import { ChannelWrapper, CurrentCommunity } from '../../reducers/chat';
+import { AppState } from '../../configureStore';
 
 type Props = {
   item?: Record<string, any>;
-  local?: Record<string, ChannelWrapper>;
   unreadMessageCount?: number;
-  selectedCourse?: Record<string, any>;
   communityChannels?: any[];
   handleSelect?: (...args: Array<any>) => any;
 };
 
-const CommunityMenu = ({
-  item,
-  local,
-  unreadMessageCount,
-  selectedCourse,
-  communityChannels,
-  handleSelect
-}: Props) => {
+const CommunityMenu = ({ item, unreadMessageCount, communityChannels, handleSelect }: Props) => {
   const classes: any = useStyles();
   const [unreadMessages, setUnreadMessages] = useState(0);
+  const local = useSelector<AppState, Record<string, ChannelWrapper>>(
+    (state) => state.chat.data.local
+  );
+  const selectedCourse = useSelector<AppState, CurrentCommunity>(
+    (state) => state.chat.data.currentCommunity
+  );
   useEffect(() => {
     const { id } = item;
 

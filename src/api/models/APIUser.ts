@@ -20,5 +20,5 @@ export type APIUser = {
   update_profile: UpdateProfile[];
   lms_type_id: number;
   lms_user: boolean;
-  permission: string;
+  permission: Array<string>;
 };

@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { useSelector } from 'react-redux';
 import { getInitials } from '../../utils/chat';
 import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
 import RoleBadge from '../../components/RoleBadge/RoleBadge';
@@ -16,21 +17,22 @@ import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChannelWrapper } from '../../reducers/chat';
+import { AppState } from '../../configureStore';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
 type Props = {
-  local?: Record<string, ChannelWrapper>;
   channel?: any;
   isCommunityChat?: any;
-  userId?: any;
-  schoolId?: any;
 };
 
-const RightMenu = ({ local, channel, isCommunityChat, userId, schoolId }: Props) => {
+const RightMenu = ({ channel, isCommunityChat }: Props) => {
   const classes: any = useStyles();
+  const local = useSelector<AppState, Record<string, ChannelWrapper>>(
+    (state) => state.chat.data.local
+  );
   const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
 
   if (!channel || !localChannel) {

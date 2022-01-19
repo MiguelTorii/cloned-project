@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Channel } from 'twilio-chat/lib/channel';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -19,41 +18,27 @@ import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.s
 import { getTitle } from '../../utils/chat';
 import { PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/leftMenu';
-import { ChannelWrapper, ChatState } from '../../reducers/chat';
+import { ChatData, ChatState } from '../../reducers/chat';
 import { handleNewChannel, setCurrentChannel, setOneTouchSendAction } from '../../actions/chat';
 import { Dispatch } from '../../types/store';
+import { AppState } from '../../configureStore';
+import { User } from '../../types/models';
 
 type Props = {
-  userId?: string;
-  channels?: Channel[];
   channelList?: string[];
-  local?: Record<string, ChannelWrapper>;
-  isLoading?: boolean;
   onOpenChannel?: (...args: Array<any>) => any;
   handleRemoveChannel?: (...args: Array<any>) => any;
   lastChannelSid?: string;
-  currentChannel?: Record<string, any> | null | undefined;
-  permission?: any;
-  oneTouchSendOpen?: boolean;
   onNewChannel?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
-  newChannel?: any;
 };
 
 const LeftMenu = ({
-  local,
-  isLoading,
   channelList,
   handleMuteChannel,
-  userId,
-  oneTouchSendOpen = false,
   lastChannelSid,
-  channels,
   onOpenChannel,
-  currentChannel,
-  permission,
-  newChannel,
   onNewChannel,
   handleRemoveChannel,
   handleUpdateGroupName
@@ -65,6 +50,12 @@ const LeftMenu = ({
   const [searchChannels, setSearchChannels] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const expertMode = useSelector((state) => (state as any).user.expertMode);
+  const { local, currentChannel, channels, newChannel, oneTouchSendOpen } = useSelector<
+    AppState,
+    ChatData
+  >((state) => state.chat.data);
+  const isLoading = useSelector<AppState, boolean>((state) => state.chat.isLoading);
+  const { userId, permission } = useSelector<AppState, User>((state) => state.user.data);
 
   const {
     data: { openChannels }
@@ -220,9 +211,6 @@ const LeftMenu = ({
                       selected={currentChannel && c === currentChannel.sid}
                       channel={local[c]}
                       targetChannel={channels.filter((channel) => channel.sid === c)}
-                      userId={userId}
-                      local={local}
-                      permission={permission}
                       onOpenChannel={onOpenChannel}
                       handleRemoveChannel={handleRemoveChannel}
                       handleMuteChannel={handleMuteChannel}

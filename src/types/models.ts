@@ -21,7 +21,7 @@ export type User = {
   updateProfile: Array<UpdateProfile>;
   lmsTypeId: number;
   lmsUser: boolean;
-  permission?: string;
+  permission?: Array<string>;
 };
 export type UserProfile = {
   userId: string;

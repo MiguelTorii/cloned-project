@@ -39,22 +39,11 @@ const DirectChat = ({ width }: Props) => {
 
   const {
     isLoading,
-    data: {
-      channels,
-      newMessage,
-      selectedChannelId,
-      local,
-      newChannel,
-      mainMessage,
-      currentChannel,
-      oneTouchSendOpen,
-      messageLoading,
-      openChannels
-    }
+    data: { selectedChannelId, local, newChannel, currentChannel, openChannels }
   } = useSelector((state: { chat: ChatState }) => state.chat);
 
   const {
-    data: { userId, schoolId, permission }
+    data: { userId, schoolId }
   } = useSelector((state: { user: UserState }) => state.user);
 
   const onboardingListVisible = useSelector(
@@ -214,13 +203,6 @@ const DirectChat = ({ width }: Props) => {
 
     setLeftSpace(leftSpace ? 0 : curSize);
   }, [width, curSize, leftSpace]);
-  const onCollapseRight = useCallback(() => {
-    if (['xs'].includes(width)) {
-      setLeftSpace(0);
-    }
-
-    setRightSpace(rightSpace ? 0 : curSize);
-  }, [width, curSize, rightSpace]);
   const renderIcon = useCallback((d) => (d ? <IconLeft /> : <IconRight />), []);
   return (
     <Grid
@@ -244,17 +226,9 @@ const DirectChat = ({ width }: Props) => {
           className={leftSpace !== 0 ? classes.left : classes.hidden}
         >
           <LeftMenu
-            channels={channels}
             channelList={channelList}
-            local={local}
-            oneTouchSendOpen={oneTouchSendOpen}
             lastChannelSid={lastChannelSid}
-            userId={userId}
-            isLoading={isLoading}
-            permission={permission}
             onNewChannel={onNewChannel}
-            newChannel={newChannel}
-            currentChannel={currentChannel}
             onOpenChannel={onOpenChannel}
             handleUpdateGroupName={updateGroupName}
             handleRemoveChannel={handleRemove}
@@ -264,20 +238,11 @@ const DirectChat = ({ width }: Props) => {
       {leftSpace !== 12 && (
         <Grid item xs={(12 - leftSpace - rightSpace) as any} className={classes.main}>
           <Main
-            isLoading={isLoading}
-            newMessage={newMessage}
             channelList={channelList}
             selectedChannelId={currentChannelId}
-            mainMessage={mainMessage}
             handleBlock={handleBlock}
-            messageLoading={messageLoading}
-            onCollapseLeft={onCollapseLeft}
-            onCollapseRight={onCollapseRight}
-            local={local}
-            leftSpace={leftSpace}
             rightSpace={rightSpace}
             channel={currentChannel}
-            newChannel={newChannel}
             lastReadMessageIndex={
               lastReadMessageInfo.channelId === currentChannel?.sid
                 ? lastReadMessageInfo.lastIndex
@@ -298,7 +263,7 @@ const DirectChat = ({ width }: Props) => {
         xs={(rightSpace || 1) as any}
         className={rightSpace !== 0 ? classes.right : classes.hidden}
       >
-        <RightMenu userId={userId} schoolId={schoolId} channel={currentChannel} local={local} />
+        <RightMenu channel={currentChannel} />
       </Grid>
     </Grid>
   );

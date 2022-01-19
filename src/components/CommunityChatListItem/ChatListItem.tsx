@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 import MainChatItem from './MainChatItem';
 import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
 import { Member } from '../../types/models';
-import { ChannelWrapper } from '../../reducers/chat';
+import { AppState } from '../../configureStore';
 
 type Props = {
   channel?: Record<string, any>;
-  userId?: string;
   onOpenChannel?: (...args: Array<any>) => any;
   selected?: boolean;
-  permission?: Array<any>;
   handleRemoveChannel?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   targetChannel?: Array<any>;
-  local?: Record<string, ChannelWrapper>;
   dark?: boolean;
 };
 
@@ -23,15 +20,13 @@ const ChatListItem = ({
   dark,
   handleMuteChannel,
   selected,
-  permission,
   onOpenChannel,
   handleRemoveChannel,
   handleUpdateGroupName,
   targetChannel,
-  local,
-  channel,
-  userId
+  channel
 }: Props) => {
+  const userId = useSelector<AppState, string>((state) => state.user.data.userId);
   const [name, setName] = useState('');
   const [thumbnail, setThumbnail] = useState('');
   const [isOnline, setIsOnline] = useState(false);
@@ -65,8 +60,6 @@ const ChatListItem = ({
         handleMuteChannel={handleMuteChannel}
         targetChannel={targetChannel[0]}
         roomId={channel.sid}
-        local={local}
-        permission={permission}
         handleRemoveChannel={handleRemoveChannel}
         handleUpdateGroupName={handleUpdateGroupName}
         isLoading={false}
@@ -79,7 +72,6 @@ const ChatListItem = ({
         muted={channel.muted}
         members={channel.members}
         roomName={channel.title}
-        lastMessage={clsx(channel.lastMessage && channel.lastMessage.message)}
         unReadCount={channel.unread}
         onClick={handleOpenChannel}
       />

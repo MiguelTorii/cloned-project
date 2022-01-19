@@ -472,7 +472,6 @@ const FloatingChat = ({
                     <ChatListItem
                       key={local[c].sid}
                       channel={local[c]}
-                      userId={userId}
                       handleMuteChannel={handleMuteChannel}
                       handleRemoveChannel={handleRemoveChannel}
                       onOpenChannel={onChannelOpen}

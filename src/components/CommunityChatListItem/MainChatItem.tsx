@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Channel } from 'twilio-chat/lib/channel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -21,6 +21,7 @@ import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/mainChatItem';
 import { ChannelWrapper } from '../../reducers/chat';
 import { updateChannel } from '../../actions/chat';
+import { AppState } from '../../configureStore';
 
 type Props = {
   isLoading?: boolean;
@@ -35,10 +36,7 @@ type Props = {
   roomId?: string;
   muted?: boolean;
   members?: Array<any>;
-  permission?: Array<any>;
-  local?: Record<string, ChannelWrapper>;
   targetChannel?: Channel;
-  lastMessage?: string;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   handleRemoveChannel?: (...args: Array<any>) => any;
   onClick?: (...args: Array<any>) => any;
@@ -54,16 +52,13 @@ const MainChatItem = ({
   roomName,
   roomId,
   unReadCount,
-  permission,
   targetChannel,
-  lastMessage,
   handleUpdateGroupName,
   handleRemoveChannel,
   handleMuteChannel,
   dark,
   selected,
   muted,
-  local,
   members,
   onClick
 }: Props) => {
@@ -73,6 +68,10 @@ const MainChatItem = ({
   const [showMenu, setShowMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
+  const permission = useSelector<AppState, Array<string>>((state) => state.user.data.permission);
+  const local = useSelector<AppState, Record<string, ChannelWrapper>>(
+    (state) => state.chat.data.local
+  );
   const isShow = useMemo(
     () =>
       permission &&

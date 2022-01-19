@@ -42,19 +42,16 @@ const CommunityChat = ({ width }: Props) => {
   });
 
   const {
-    data: { userId, schoolId, permission }
+    data: { userId, schoolId }
   } = useSelector((state: { user: UserState }) => state.user);
 
   const {
     isLoading,
     data: {
-      newMessage,
       local,
-      mainMessage,
       currentCommunity,
       communityChannels: allCommunityChannels,
       currentCommunityChannel,
-      messageLoading,
       selectedChannelId
     }
   } = useSelector((state: { chat: ChatState }) => state.chat);
@@ -171,13 +168,6 @@ const CommunityChat = ({ width }: Props) => {
 
     setLeftSpace(leftSpace ? 0 : curSize);
   }, [width, curSize, leftSpace]);
-  const onCollapseRight = useCallback(() => {
-    if (width === 'xs') {
-      setLeftSpace(0);
-    }
-
-    setRightSpace(rightSpace ? 0 : curSize);
-  }, [width, curSize, rightSpace]);
   const renderIcon = useCallback((d) => (d ? <IconLeft /> : <IconRight />), []);
   return (
     <Grid className={classes.container} direction="row" container>
@@ -229,15 +219,8 @@ const CommunityChat = ({ width }: Props) => {
             channelList={communityChannels}
             currentCommunity={currentCommunity}
             selectedChannel={selectedChannel}
-            newMessage={newMessage}
-            messageLoading={messageLoading}
-            mainMessage={mainMessage}
-            permission={permission}
-            local={local}
             channel={currentCommunityChannel}
             selectedChannelId={selectedChannelId}
-            onCollapseLeft={onCollapseLeft}
-            onCollapseRight={onCollapseRight}
             setRightPanel={handleOpenRightPanel}
             rightSpace={rightSpace}
           />
@@ -249,13 +232,7 @@ const CommunityChat = ({ width }: Props) => {
           xs={(rightSpace || 1) as any}
           className={rightSpace !== 0 ? classes.right : classes.hidden}
         >
-          <RightMenu
-            isCommunityChat
-            userId={userId}
-            schoolId={schoolId}
-            channel={currentCommunityChannel}
-            local={local}
-          />
+          <RightMenu isCommunityChat channel={currentCommunityChannel} />
         </Grid>
       )}
     </Grid>
