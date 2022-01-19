@@ -88,7 +88,8 @@ export const EVENT_TYPES = {
   END_VIDEO: 'End Video',
   SESSION_LENGTH: 'Session Length',
   VIEWED: 'Viewed',
-  EXITED: 'Exited'
+  EXITED: 'Exited',
+  CLICKED_RECOMMENDED: 'ClickedRecommended'
 };
 export const CIRCLEIN_EVENT_NAMES = [
   'Chat- Send Message',

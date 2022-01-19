@@ -79,12 +79,13 @@ export const fetchFeed = async ({
     return [];
   }
 };
-export const fetchRecommendations = async (limit) => {
+export const fetchRecommendations = async (limit, request_id) => {
   try {
     const response = await callApi({
       url: API_ROUTES.RECOMMENDATIONS,
       params: {
-        limit
+        limit,
+        request_id
       }
     });
     const posts = response || [];

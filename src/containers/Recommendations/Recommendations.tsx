@@ -3,18 +3,20 @@ import { Grid, Paper, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import update from 'immutability-helper';
+import { v4 as uuidv4 } from 'uuid';
+import { PROFILE_PAGE_SOURCE, RECOMMENDATION_FETCH_UNIT } from 'constants/common';
 import withRoot from '../../withRoot';
 import { fetchRecommendations } from '../../api/feed';
 import FeedItem from '../../components/FeedList/FeedItem';
 import useStyles from './styles';
 import SharePost from '../SharePost/SharePost';
-import { POST_TYPES } from '../../constants/app';
+import { EVENT_TYPES, LOG_EVENT_CATEGORIES, POST_TYPES } from '../../constants/app';
 import { updateBookmark } from '../../actions/feed';
 import DeletePost from '../DeletePost/DeletePost';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import ReportIssue from '../../components/Report/ReportIssue';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
+import { logEventLocally } from '../../api/analytics';
 
 const Recommendations = () => {
   const classes: any = useStyles();
@@ -25,9 +27,13 @@ const Recommendations = () => {
   const [shareFeedId, setShareFeedId] = useState(null);
   const [deleteFeedId, setDeleteFeedId] = useState(null);
   const [reportData, setReportData] = useState(null);
+  const [requestId, setRequestId] = useState(null);
+
   // Callbacks
   const loadRecommendations = useCallback(() => {
-    fetchRecommendations(5).then((data) => {
+    const newRequestId = uuidv4();
+    setRequestId(newRequestId);
+    fetchRecommendations(RECOMMENDATION_FETCH_UNIT, newRequestId).then((data) => {
       setPosts(data);
     });
   }, []);
@@ -38,7 +44,7 @@ const Recommendations = () => {
     setShareFeedId(null);
   }, []);
   const handlePostClick = useCallback(
-    ({ postId, typeId }) =>
+    ({ postId, feedId, typeId }) =>
       () => {
         let url = '';
 
@@ -67,10 +73,18 @@ const Recommendations = () => {
             throw new Error('unknown feed type');
         }
 
+        logEventLocally({
+          category: LOG_EVENT_CATEGORIES.POST,
+          type: EVENT_TYPES.CLICKED_RECOMMENDED,
+          objectId: feedId,
+          feed_id: feedId,
+          request_id: requestId
+        });
+
         url = `${url}?${PROFILE_SOURCE_KEY}=recommendation`;
         dispatch(push(url));
       },
-    [dispatch]
+    [dispatch, requestId]
   );
   const handleUserClick = useCallback(
     ({ userId }) => {

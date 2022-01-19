@@ -558,6 +558,8 @@ export type EventData = {
   variationId?: number;
   sectionId?: number;
   user_id?: any;
+  request_id?: string;
+  feed_id?: string;
 };
 export type Class = {
   courseDisplayName: string;

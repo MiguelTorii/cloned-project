@@ -36,8 +36,8 @@ import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
 import { updateProfileImage, uploadMedia } from '../../actions/user';
-import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
-import { LOG_EVENT_CATEGORY, LOG_EVENT_TYPE, PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { EVENT_TYPES, LOG_EVENT_CATEGORIES, UPLOAD_MEDIA_TYPES } from '../../constants/app';
+import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 import { ChatState } from '../../reducers/chat';
@@ -171,8 +171,8 @@ class Profile extends React.PureComponent<Props, State> {
     // If profile is other's and `from` is valid, it dispatches a log event.
     if (userId !== user.data.userId && Object.values(PROFILE_PAGE_SOURCE).includes(from)) {
       logEventLocally({
-        category: LOG_EVENT_CATEGORY.PROFILE,
-        type: LOG_EVENT_TYPE.VIEWED,
+        category: LOG_EVENT_CATEGORIES.PROFILE,
+        type: EVENT_TYPES.VIEWED,
         source: from as any,
         objectId: userId,
         user_id: userId
