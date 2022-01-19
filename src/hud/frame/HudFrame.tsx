@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
-import { Box, Hidden, IconButton } from '@material-ui/core';
+import { Box, Hidden, IconButton, SvgIcon } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import IconLeft from '@material-ui/icons/ArrowBack';
-import IconRight from '@material-ui/icons/ArrowForward';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import { useTheme } from '@material-ui/core/styles';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import useIconClasses from 'components/_styles/Icons';
 import { useStyles } from './HudFrameStyles';
 import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
 import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
@@ -56,6 +57,7 @@ const HudFrame = () => {
   const theme = useTheme();
   const isSmallWindow = useMediaQuery(theme.breakpoints.down('sm'));
   const [forceHideSideArea, setForceHideSideArea] = useState(false);
+  const iconClasses = useIconClasses();
 
   useOnboarding();
 
@@ -152,8 +154,17 @@ const HudFrame = () => {
             )}
 
             <Box position="relative" minWidth={showRightPanel ? 'auto' : 20}>
+              {/* TODO Refactor to single reusable expand button */}
               <IconButton className={classes.rightPaneToggle} onClick={handleToggleRightPane}>
-                {showRightPanel ? <IconRight /> : <IconLeft />}
+                {showRightPanel ? (
+                  <SvgIcon
+                    className={iconClasses.collapseIcon}
+                    component={CollapseIcon}
+                    viewBox="0 0 32 32"
+                  />
+                ) : (
+                  <MenuOpenIcon />
+                )}
               </IconButton>
               {showRightPanel && <HudRightPanel />}
             </Box>

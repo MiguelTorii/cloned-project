@@ -8,6 +8,10 @@ import withWidth from '@material-ui/core/withWidth';
 import IconButton from '@material-ui/core/IconButton';
 import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import useIconClasses from 'components/_styles/Icons';
 import LeftMenu from './LeftMenu';
 import RightMenu from './RightMenu';
 import Main from './Main';
@@ -61,6 +65,7 @@ const DirectChat = ({ width }: Props) => {
     channelId: null,
     lastIndex: null
   });
+  const iconClasses = useIconClasses();
 
   const lastChannelSid = useMemo(() => localStorage.getItem('currentDMChannel'), []);
   const currentChannelId = useMemo(
@@ -203,13 +208,22 @@ const DirectChat = ({ width }: Props) => {
 
     setLeftSpace(leftSpace ? 0 : curSize);
   }, [width, curSize, leftSpace]);
-  const renderIcon = useCallback((d) => (d ? <IconLeft /> : <IconRight />), []);
+
+  const onCollapseRight = useCallback(() => {
+    if (['xs'].includes(width)) {
+      setLeftSpace(0);
+    }
+
+    setRightSpace(rightSpace ? 0 : curSize);
+  }, [width, curSize, rightSpace]);
+
   return (
     <Grid
       className={cx(leftSpace !== 0 ? classes.container : classes.directContainer)}
       direction="row"
       container
     >
+      {/* TODO Refactor to single reusable expand icon */}
       <IconButton
         className={cx(
           classes.expandButton,
@@ -217,7 +231,15 @@ const DirectChat = ({ width }: Props) => {
         )}
         onClick={onCollapseLeft}
       >
-        {renderIcon(leftSpace !== 0)}
+        {leftSpace === 0 ? (
+          <MenuOpenIcon style={{ transform: 'rotate(180deg)' }} />
+        ) : (
+          <SvgIcon
+            className={cx(iconClasses.collapseIconLeft)}
+            component={CollapseIcon}
+            viewBox="0 0 32 32"
+          />
+        )}
       </IconButton>
       {leftSpace !== 0 && (
         <Grid

@@ -71,6 +71,11 @@ const useStyles = makeStyles((theme: any) => ({
     top: 40,
     left: 0,
     zIndex: 1002
+  },
+  collapseIconLeft: {
+    marginLeft: 3,
+    padding: 3,
+    transform: 'rotate(180deg)'
   }
 }));
 export default useStyles;

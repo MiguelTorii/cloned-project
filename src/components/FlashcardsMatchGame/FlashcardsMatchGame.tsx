@@ -18,6 +18,10 @@ import IconShare from '@material-ui/icons/ShareOutlined';
 import { useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import IconPrev from '@material-ui/icons/SkipPrevious';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import useIconStyles from 'components/_styles/Icons';
 import StartupModal from './StartupModal';
 import GifCongrats from '../../assets/gif/match-game-congrats.gif';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
@@ -58,6 +62,7 @@ const TIMER_INTERVAL = 100;
 
 const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) => {
   const classes: any = useStyles();
+  const iconClasses = useIconStyles();
   const me = useSelector((state) => (state as any).user.data);
   const [isExpanded, setIsExpanded] = useState(true);
   const [containerRef, setContainerRef] = useState(null);
@@ -308,11 +313,20 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
           }
         />
       </Box>
+      {/* TODO Refactor to single reusable expand icon */}
       <IconButton
         className={clsx(classes.sidebarButton, classes.expandButton)}
         onClick={handleExpand}
       >
-        {isExpanded ? <IconLeft /> : <IconRight />}
+        {isExpanded ? (
+          <SvgIcon
+            className={clsx(iconClasses.collapseIconLeft)}
+            component={CollapseIcon}
+            viewBox="0 0 32 32"
+          />
+        ) : (
+          <MenuOpenIcon style={{ transform: 'rotate(180deg)' }} />
+        )}
       </IconButton>
     </Box>
   );
