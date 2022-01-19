@@ -550,8 +550,7 @@ class MeetUp extends React.Component<Props, State> {
   };
 
   handleRemoveTrack = (participant, track, local = false) => {
-    const newState = utils.removeTrack(this.state, participant, track, local);
-    this.setState(newState);
+    this.setState((oldState) => utils.removeTrack(oldState, participant, track, local));
   };
 
   handleLoadProfile = async (participant) => {
