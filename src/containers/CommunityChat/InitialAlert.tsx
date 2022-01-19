@@ -73,9 +73,8 @@ const InitialAlert = ({
           Welcome To #{selectedChannel?.chat_name}
         </Typography>
         <Typography className={classes.initialAlert} variant="subtitle2">
-          Gasp...you’re the first one here! Start this chat by sending a message below to light the
-          way for your classmates! It feels good to connect with others no matter where you are. Who
-          knows, you might make a friend!
+          Start this chat by sending a message below to light the way for your classmates!……… Who
+          knows you might make a friend
         </Typography>
       </Box>
     ) : (
