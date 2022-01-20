@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
   avatarImg: {
     marginBottom: theme.spacing(4),
-    height: '120px'
+    height: 120
   }
 }));
 export default useStyles;
