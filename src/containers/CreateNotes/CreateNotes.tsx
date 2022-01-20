@@ -39,18 +39,6 @@ const styles = (theme) => ({
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
   },
-  leftCharacters: {
-    marginRight: theme.spacing(2)
-  },
-  leftCharactersRed: {
-    marginRight: theme.spacing(2),
-    color: theme.circleIn.palette.brand
-  },
-  errorMessage: {
-    color: theme.circleIn.palette.brand,
-    fontWeight: 'bold',
-    marginLeft: theme.spacing()
-  },
   divisorOr: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
@@ -561,8 +549,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
     });
   };
 
-  getLeftCharts = (field) => (50 - field.length >= 0 ? 50 - field.length : 0);
-
   imageChange = () => {
     this.setState({
       changed: true
@@ -577,25 +563,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
         hasImages: (this.uploadImages as any).state.images.length > 0
       });
     }
-  };
-
-  errorMessage = () => {
-    const { classes } = this.props;
-    const { summary } = this.state;
-
-    if (Number(this.getLeftCharts(summary)) <= 0) {
-      return null;
-    }
-
-    if (this.canBatchPost()) {
-      return <div />;
-    }
-
-    return (
-      <Typography variant="subtitle1" align="left" className={classes.errorMessage}>
-        You must type 50 characters or more in the summary to post these notes.
-      </Typography>
-    );
   };
 
   canBatchPost = () => {
@@ -634,7 +601,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
         <ErrorBoundary>
           <CreatePostForm
             title="Share Notes"
-            errorMessage={this.errorMessage()}
             subtitle="When you upload your notes, it’s your classmates who can see them. You can help others by sharing and also get feedback too."
             loading={loading}
             changed={changed}
@@ -676,21 +642,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   validators={['required']}
                   errorMessages={['Description is required']}
                 />
-                <Typography
-                  variant="subtitle1"
-                  align="right"
-                  className={
-                    Number(this.getLeftCharts(summary)) > 0
-                      ? classes.leftCharactersRed
-                      : classes.leftCharacters
-                  }
-                >
-                  {`${this.getLeftCharts(summary)} ${
-                    this.canBatchPost()
-                      ? 'more characters required'
-                      : 'more characters to earn points'
-                  }`}
-                </Typography>
               </Grid>
               {notSm && (
                 <Grid item md={2}>
