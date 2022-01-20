@@ -234,7 +234,7 @@ const Feed = ({ from }: Props) => {
       }
       handleClearActiveAction();
     },
-    [dispatch, handleClearActiveAction]
+    [dispatch, activeAction, handleClearActiveAction]
   );
 
   const handleChangeSearch = (query) => {
