@@ -4,8 +4,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import GroupIcon from '@material-ui/icons/Group';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import InitialCommunityImage from '../../assets/svg/community_first_time.svg';
+import avatarImg from 'assets/svg/icon-kobe.svg';
+import LoadImg from 'components/LoadImg/LoadImg';
 import { getInitials } from '../../utils/chat';
 import { ReactComponent as CommunityGroupIcon } from '../../assets/svg/community_chat_group.svg';
 import useStyles from './_styles/initialAlert';
@@ -68,14 +68,13 @@ const InitialAlert = ({
         alignItems="center"
         flexDirection="column"
       >
-        <LoadImg url={InitialCommunityImage} />
+        <LoadImg className={classes.avatarImg} url={avatarImg} />
         <Typography className={classes.members} variant="h5">
           Welcome To #{selectedChannel?.chat_name}
         </Typography>
         <Typography className={classes.initialAlert} variant="subtitle2">
-          Gasp...you’re the first one here! Start this chat by sending a message below to light the
-          way for your classmates! It feels good to connect with others no matter where you are. Who
-          knows, you might make a friend!
+          Start this chat by sending a message below to light the way for your classmates!………Who
+          knows you might make a friend?
         </Typography>
       </Box>
     ) : (

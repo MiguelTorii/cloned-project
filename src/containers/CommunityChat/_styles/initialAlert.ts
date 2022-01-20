@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme: any) => ({
     fontWeight: 400,
     fontSize: 32,
     backgroundColor: theme.circleIn.palette.communityChannelProfileBg
+  },
+  avatarImg: {
+    marginBottom: theme.spacing(4),
+    height: 120
   }
 }));
 export default useStyles;
