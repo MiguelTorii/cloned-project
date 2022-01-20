@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +12,7 @@ import cx from 'classnames';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
+import { experienceActions } from 'hud/experienceBarState/hudExperienceActions';
 import CreateWorkflow from '../../components/Workflow/CreateWorkflow';
 import WorkflowList from '../../components/Workflow/WorkflowList';
 import CalendarView from '../../components/Workflow/CalendarView';
@@ -195,6 +196,7 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
   const [calendarView, setCalendarView] = useState(false);
   const [tips, setTips] = useState(false);
   const [currentCalendarView, setCurrentCalendarView] = useState('dayGridMonth');
+  const reduxDispatch = useDispatch();
 
   const isHud: boolean | null = useSelector(
     (state: { campaign: CampaignState }) => state.campaign.hud
@@ -290,6 +292,13 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
         const res = await updateTodo({ ...task, categoryId: dragCategoryId.current });
 
         if (res?.points) {
+          reduxDispatch({
+            type: experienceActions.ADD_EXPERIENCE_POINTS,
+            payload: {
+              experiencePoints: res.points
+            }
+          });
+
           enqueueSnackbar(
             createSnackbar(
               `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,
@@ -382,6 +391,12 @@ const Workflow = ({ user, enqueueSnackbar, classes }: Props) => {
           handleExpand(1)(true);
 
           if (res?.points) {
+            reduxDispatch({
+              type: experienceActions.ADD_EXPERIENCE_POINTS,
+              payload: {
+                experiencePoints: res.points
+              }
+            });
             enqueueSnackbar(
               createSnackbar(
                 `Congratulations ${firstName}, you have just earned ${res.points} points. Good Work!`,

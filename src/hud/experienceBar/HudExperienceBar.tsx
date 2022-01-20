@@ -26,8 +26,7 @@ const HudExperienceBar = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const intervalId = setIntervalWithFirstCall(fetchPoints, FETCH_POINTS_INTERVAL);
-    return () => clearInterval(intervalId);
+    fetchPoints();
   }, [fetchPoints]);
 
   const experiencePoints: number = useSelector(
