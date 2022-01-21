@@ -29,18 +29,6 @@ const styles = (theme) => ({
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
   },
-  leftCharacters: {
-    marginRight: theme.spacing(2)
-  },
-  leftCharactersRed: {
-    marginRight: theme.spacing(2),
-    color: theme.circleIn.palette.brand
-  },
-  errorMessage: {
-    color: theme.circleIn.palette.brand,
-    fontWeight: 'bold',
-    marginLeft: theme.spacing()
-  },
   divisorOr: {
     marginLeft: theme.spacing(),
     marginRight: theme.spacing(),
@@ -594,27 +582,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
     });
   };
 
-  getLeftCharts = (field) => (50 - field.length >= 0 ? 50 - field.length : 0);
-
-  errorMessage = () => {
-    const { classes } = this.props;
-    const { summary } = this.state;
-
-    if (Number(this.getLeftCharts(summary)) <= 0) {
-      return null;
-    }
-
-    if (this.canBatchPost()) {
-      return <div />;
-    }
-
-    return (
-      <Typography variant="subtitle1" align="left" className={classes.errorMessage}>
-        You must type 50 characters or more in the summary to post these notes.
-      </Typography>
-    );
-  };
-
   canBatchPost = () => {
     const {
       user: {
@@ -649,7 +616,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
       <div className={classes.root}>
         <ErrorBoundary>
           <CreatePostForm
-            errorMessage={this.errorMessage()}
             loading={loading}
             changed={changed}
             buttonLabel={isEdit ? 'Save' : 'Post! 🚀'}

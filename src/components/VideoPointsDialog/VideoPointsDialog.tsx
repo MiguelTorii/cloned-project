@@ -79,11 +79,6 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
     });
   };
 
-  getLeftCharts = () => {
-    const { help = '' } = this.state;
-    return 50 - help.length >= 0 ? 50 - help.length : 0;
-  };
-
   render() {
     const { classes, open, loading, onClose } = this.props;
     const { purpose, meeting, selectedDate, help } = this.state;
@@ -167,9 +162,6 @@ class VideoPointsDialog extends React.PureComponent<Props, State> {
               validators={['required']}
               errorMessages={['This field is required']}
             />
-            <Typography color="textPrimary">
-              {`${this.getLeftCharts()} characters left to earn points`}
-            </Typography>
           </ValidatorForm>
         </div>
       </Dialog>
