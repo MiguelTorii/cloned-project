@@ -296,14 +296,18 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
               </Grid>
             )
         )}
-        {!classList?.length && currentFilter === 'current' && (
+        {!classList?.length && (
           <Box mt={15} display="flex" justifyContent="center">
-            <Typography>
-              If a class has already started and it isn’t here,&nbsp;
-              <Link component="button" underline="none" onClick={handleOpenSupport}>
-                <Typography>Contact CircleIn Support.</Typography>
-              </Link>
-            </Typography>
+            {currentFilter === 'current' ? (
+              <Typography>
+                If a class has already started and it isn’t here,&nbsp;
+                <Link component="button" underline="none" onClick={handleOpenSupport}>
+                  <Typography>Contact CircleIn Support.</Typography>
+                </Link>
+              </Typography>
+            ) : (
+              <Typography>When you complete a class, they will show up here!</Typography>
+            )}
           </Box>
         )}
         {loading && (
