@@ -13,3 +13,14 @@ declare module '@material-ui/core/styles/createTheme' {
   // eslint-disable-next-line no-undef, @typescript-eslint/no-empty-interface
   interface ThemeOptions extends CustomTheme {}
 }
+
+declare module '@material-ui/core/styles/createBreakpoints' {
+  interface BreakpointOverrides {
+    xs: true;
+    s: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+  }
+}

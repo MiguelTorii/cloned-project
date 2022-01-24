@@ -2,26 +2,55 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
   storyContainer: {
-    overflow: 'hidden',
     display: 'flex',
-    flexDirection: 'row',
-    position: 'relative'
-  },
-  storyMessageBackground: {
-    position: 'absolute',
-    left: '35px',
-    top: theme.spacing(1 / 2),
-    bottom: theme.spacing(1 / 2),
-    right: 0,
-    backgroundColor: theme.circleIn.palette.white,
-    border: `solid 1px ${theme.circleIn.palette.success}`,
-    borderRadius: '4px'
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    position: 'relative',
+    [theme.breakpoints.up('s')]: {
+      margin: theme.spacing(0, 4),
+      flexDirection: 'row'
+    },
+    [theme.breakpoints.between('s', 'sm')]: {
+      marginRight: 0
+    }
   },
   storyAvatarContainer: {
-    height: '70px',
-    width: '70px',
+    zIndex: 2,
+    height: 70,
+    width: 70,
     flexShrink: 0,
-    zIndex: 2
+    [theme.breakpoints.up('s')]: {
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      left: -35
+    },
+    // TODO breakpoints is broken for Dialog, update MUI
+    [theme.breakpoints.down(600)]: {
+      transform: 'none',
+      top: -5
+    }
+  },
+  newStoryMessageContainer: {
+    backgroundColor: theme.circleIn.palette.white,
+    border: `solid 1px ${theme.circleIn.palette.success}`,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflowX: 'hidden',
+    overflowY: 'auto',
+    fontSize: 18,
+    color: 'black',
+    padding: theme.spacing(2, 1),
+    // TODO breakpoints is broken for Dialog, update MUI
+    paddingTop: 50,
+    marginTop: -35,
+    [theme.breakpoints.up('s')]: {
+      marginTop: 0,
+      paddingTop: theme.spacing(2),
+      paddingLeft: theme.spacing(4)
+    }
   },
   storyMessageContainer: {
     overflow: 'hidden',

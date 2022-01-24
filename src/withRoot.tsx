@@ -90,6 +90,16 @@ const circleInTheme = {
   expBarBackground: '#404040'
 };
 let theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      s: 400,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920
+    }
+  },
   circleIn: {
     palette: {
       white: circleInTheme.white,

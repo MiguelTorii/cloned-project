@@ -22,15 +22,13 @@ const HudStory = () => {
 
   return (
     <div className={classes.storyContainer}>
-      <div className={classes.storyMessageBackground} />
-
       <div className={classes.storyAvatarContainer}>
         <div className={classes.storyAvatarBackground}>
           <img src={avatarImg} alt="story-avatar" className={classes.storyAvatar} />
         </div>
       </div>
 
-      <div className={classes.storyMessageContainer}>
+      <div className={classes.newStoryMessageContainer}>
         <div className={classes.storyMessage}>
           {/** If this is ever used to display chat messages or other user based content, it should be updated to display a sanitized version of the message to prevent cross-site scripting attacks. */}
           <Typography variant="body1" dangerouslySetInnerHTML={{ __html: currentStatement }} />

@@ -8,7 +8,10 @@ export const styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     padding: 24,
-    paddingTop: 8
+    paddingTop: 8,
+    [theme.breakpoints.down('sm')]: {
+      padding: 0
+    }
   },
   container: {
     borderRadius: 8
