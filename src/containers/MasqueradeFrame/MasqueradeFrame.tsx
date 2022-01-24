@@ -12,17 +12,18 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     top: 0,
     bottom: 0,
-    border: 'solid 8px #7572F7',
+    border: 'solid 6px #7572F7',
     pointerEvents: 'none',
-    zIndex: 3000
+    zIndex: 3000,
+    opacity: '90%'
   },
   header: {
-    width: 550,
+    width: 400,
     maxWidth: '100%',
-    margin: '0 auto',
     padding: theme.spacing(0.5, 2),
     borderRadius: theme.spacing(0, 0, 1, 1),
-    backgroundColor: '#7572F7'
+    backgroundColor: '#7572F7',
+    opacity: '90%'
   },
   stopButton: {
     backgroundColor: '#D74244',
@@ -69,9 +70,7 @@ const MasqueradeFrame = () => {
               size="small"
               startIcon={<Stop />}
               onClick={handleStop}
-            >
-              Stop Acting as User
-            </Button>
+            />
           </Grid>
         </Grid>
       </div>
