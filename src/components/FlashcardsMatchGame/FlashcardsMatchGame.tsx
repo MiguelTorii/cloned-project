@@ -360,7 +360,7 @@ const FlashcardsMatchGame = ({ cards, flashcardId, flashcardTitle, onClose }) =>
   };
 
   const renderContent = () => (
-    <DndProvider backend={HTML5Backend as any}>
+    <DndProvider backend={HTML5Backend}>
       <div ref={setContainerRef} className={clsx(classes.contentBox, isFinished && classes.hidden)}>
         {matchCards.map((card, index) => renderCard(card, index))}
       </div>

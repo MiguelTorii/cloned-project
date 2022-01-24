@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import { useDrag, useDrop } from 'react-dnd';
-import { DRAG_TYPE_CARD } from './reducer';
+import { DragTypes } from 'constants/enums';
 import ContentCard from './ContentCard';
 
 const DraggableCard = ({
@@ -18,19 +18,19 @@ const DraggableCard = ({
   onIncorrectDrop
 }) => {
   const [{ isDragging }, dragRef] = useDrag({
+    type: DragTypes.CARD,
     item: {
       cardId,
       index,
       image,
-      text,
-      type: DRAG_TYPE_CARD
+      text
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging()
     })
   });
   const [{ isOver }, dropRef] = useDrop({
-    accept: DRAG_TYPE_CARD,
+    accept: DragTypes.CARD,
     drop: (item: any) => {
       if (item.cardId === cardId) {
         onCorrectDrop(item.index, index);
@@ -45,7 +45,7 @@ const DraggableCard = ({
   // Effects
   // Render
   return (
-    <Box {...({ ref: dropRef } as any)}>
+    <Box {...{ ref: dropRef }}>
       <ContentCard
         dragRef={dragRef}
         isDragging={isDragging}
