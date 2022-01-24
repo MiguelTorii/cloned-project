@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import store from 'store';
 import { fetchGreetings } from '../../api/home';
 import { StorySequence, IStorySequenceOptions } from './StorySequence';
 import useHudEvents from '../events/useHudEvents';
@@ -7,6 +8,8 @@ import { hudEventNames } from '../events/hudEventNames';
 import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
 import { currentStoryCompleted, setCurrentStatement } from './hudStoryActions';
+import { STORAGE_KEYS } from '../../constants/app';
+import { DATE_FORMAT } from '../../constants/common';
 
 const STORY_COMPLETION_DELAY_IN_MS = 30000;
 
@@ -46,10 +49,16 @@ const useStorySequence = () => {
       return;
     }
 
+    // Keep current date into the local storage to show the story once per day.
+    store.set(STORAGE_KEYS.STORY_CLOSE_DATE, moment().format(DATE_FORMAT));
+
     closeStoryInternal();
 
     dispatch(setCurrentStatement(''));
   };
+
+  const isStoryClosedToday = (): boolean =>
+    store.get(STORAGE_KEYS.STORY_CLOSE_DATE) === moment().format(DATE_FORMAT);
 
   const startNextStory = (options: IStorySequenceOptions): void => {
     // End the last story before starting the next story.
@@ -73,7 +82,7 @@ const useStorySequence = () => {
     nextStorySequence.startStory(dispatch);
   };
 
-  if (!greetingLoadTriggered && user) {
+  if (!greetingLoadTriggered && user && !isStoryClosedToday()) {
     fetchGreetings(moment().format('YYYY-MM-DDThh:mm:ss')).then((welcomeMessage) => {
       greetingStatements = [welcomeMessage.greetings.title, welcomeMessage.greetings.body];
 
@@ -92,6 +101,11 @@ const useStorySequence = () => {
   }
 
   const sayGreeting = () => {
+    // Check if the story has already showed up today.
+    if (isStoryClosedToday()) {
+      return;
+    }
+
     if (greetingStatements) {
       startNextStory({ statements: greetingStatements, canBeClosedByUser: true });
     }
