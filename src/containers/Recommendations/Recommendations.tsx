@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import update from 'immutability-helper';
 import { v4 as uuidv4 } from 'uuid';
-import { PROFILE_PAGE_SOURCE, RECOMMENDATION_FETCH_UNIT } from 'constants/common';
+import {
+  COMMUNITY_SCROLL_CONTAINER_ID,
+  PROFILE_PAGE_SOURCE,
+  RECOMMENDATION_FETCH_UNIT
+} from 'constants/common';
 import withRoot from '../../withRoot';
 import { fetchRecommendations } from '../../api/feed';
 import FeedItem from '../../components/FeedList/FeedItem';
@@ -83,6 +87,12 @@ const Recommendations = () => {
 
         url = `${url}?${PROFILE_SOURCE_KEY}=recommendation`;
         dispatch(push(url));
+
+        const container = document.getElementById(COMMUNITY_SCROLL_CONTAINER_ID);
+
+        if (container) {
+          container.scrollTop = 0;
+        }
       },
     [dispatch, requestId]
   );
