@@ -11,7 +11,6 @@ type Props = {
 
 const HudMission = ({ data }: Props) => {
   const classes = useStyles();
-
   return (
     <Box display="flex" alignItems="center">
       <Box className={classes.imageContainer} mr={1}>

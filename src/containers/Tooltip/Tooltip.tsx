@@ -1,18 +1,20 @@
 import React, { useMemo, useEffect, useCallback, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router';
+import cx from 'clsx';
+import { nanoid } from 'nanoid';
 import { withStyles } from '@material-ui/core/styles';
+
 import MuiTooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Zoom from '@material-ui/core/Fade';
-import { withRouter } from 'react-router';
-import cx from 'clsx';
-import cryptoRandomString from 'crypto-random-string';
-import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
-import type { State as StoreState } from '../../types/state';
+
+import { confirmTooltip as confirmTooltipAction } from 'actions/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   primaryTooltip: {
@@ -365,21 +367,10 @@ const Tooltip = ({
                 <Box display="flex" position="absolute" right="45%" bottom="8px">
                   <TooltipStep completed />
                   {[...Array(completedSteps)].map(() => (
-                    <TooltipStep
-                      key={cryptoRandomString({
-                        length: 10,
-                        type: 'base64'
-                      })}
-                      completed
-                    />
+                    <TooltipStep key={nanoid(10)} completed />
                   ))}
                   {[...Array(totalSteps - completedSteps)].map(() => (
-                    <TooltipStep
-                      key={cryptoRandomString({
-                        length: 10,
-                        type: 'base64'
-                      })}
-                    />
+                    <TooltipStep key={nanoid(10)} />
                   ))}
                 </Box>
               )}

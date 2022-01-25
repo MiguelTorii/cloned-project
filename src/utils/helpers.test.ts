@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import {
   getPointsText,
   truncate,
@@ -17,7 +20,7 @@ describe('getPointsText', () => {
   });
 
   test('positive large number for getPointsText', () => {
-    expect(getPointsText(3323123212112321.21312321)).toBe('3,323,123,212,112,321');
+    expect(getPointsText(1211232121312.321)).toBe('1,211,232,121,312');
   });
 
   test('null points for getPointsText', () => {

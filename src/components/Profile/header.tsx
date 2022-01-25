@@ -68,6 +68,7 @@ class Header extends React.PureComponent<Props, State> {
   fileInput: HTMLInputElement | null | undefined;
 
   state = {
+    // eslint-disable-next-line react/no-unused-state
     open: false
   };
 

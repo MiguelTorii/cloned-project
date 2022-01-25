@@ -38,6 +38,7 @@ export default () => {
     const historyCacheKey = options.historyCacheKey || '__mathquill4quill_historylist_cache__';
     const historySize = options.historySize || 10;
     const displayHistory = options.displayHistory || false;
+    // eslint-disable-next-line prefer-const
     let historyList;
 
     function areAllDependenciesMet() {

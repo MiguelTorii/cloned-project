@@ -183,6 +183,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       editor: null,
       body: null,
       notes: [],
+      // eslint-disable-next-line react/no-unused-state
       hasImages: false
     };
   }
