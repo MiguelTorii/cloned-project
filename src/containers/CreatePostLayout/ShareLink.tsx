@@ -324,6 +324,22 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     }
   };
 
+  checkStatusCode = (errorCode: number) => {
+    switch (errorCode) {
+      case 400:
+        return {
+          errMsgTitle: 'Invalid Link',
+          errMsgBody:
+            "We don't recognize the URL you're trying to share. If you think this is an error, please contact our support"
+        };
+      default:
+        return {
+          errMsgTitle: 'Unknown Error',
+          errMsgBody: 'Please try again'
+        };
+    }
+  };
+
   createSharelink = async () => {
     const { tags, classId, sectionId } = this.state;
 
@@ -484,12 +500,16 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
       localStorage.removeItem('shareLink');
       handleAfterCreation('/feed');
-    } catch (err) {
+    } catch (err: any) {
+      const statusCode = err.response?.status;
+      const { errMsgTitle, errMsgBody } = this.checkStatusCode(statusCode);
+
       this.setState({
+        isPosting: false,
         loading: false,
         errorDialog: true,
-        errorTitle: 'Unknown Error',
-        errorBody: 'Please try again'
+        errorTitle: errMsgTitle,
+        errorBody: errMsgBody
       });
     }
   };
