@@ -50,7 +50,7 @@ import { getPastClassIds } from '../../utils/helpers';
 import useStyles from '../_styles/FeedList/FeedItem';
 import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import HoverPopup from '../HoverPopup/HoverPopup';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
 import type { State as StoreState } from '../../types/state';
 import { TFeedItem } from '../../types/models';
 
@@ -241,6 +241,11 @@ const FeedItem = ({
   }, [data, handleMenuClose, pushTo]);
   const handleUserClick = useCallback(() => {
     const { userId } = data;
+
+    if (Number(data.userId) === ANONYMOUS_USER_ID) {
+      return;
+    }
+
     onUserClick({
       userId
     });
