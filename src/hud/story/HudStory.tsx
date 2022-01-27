@@ -28,7 +28,7 @@ const HudStory = () => {
         </div>
       </div>
 
-      <div className={classes.newStoryMessageContainer}>
+      <div className={classes.storyMessageContainer}>
         <div className={classes.storyMessage}>
           {/** If this is ever used to display chat messages or other user based content, it should be updated to display a sanitized version of the message to prevent cross-site scripting attacks. */}
           <Typography variant="body1" dangerouslySetInnerHTML={{ __html: currentStatement }} />

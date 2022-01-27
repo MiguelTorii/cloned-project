@@ -1,5 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+const ICON_WIDTH_PX = 70;
+
 export const useStyles = makeStyles((theme: any) => ({
   storyContainer: {
     display: 'flex',
@@ -7,8 +9,9 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     position: 'relative',
+    padding: theme.spacing(1),
     [theme.breakpoints.up('s')]: {
-      margin: theme.spacing(0, 4),
+      paddingLeft: theme.spacing(5),
       flexDirection: 'row'
     },
     [theme.breakpoints.between('s', 'sm')]: {
@@ -17,22 +20,18 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   storyAvatarContainer: {
     zIndex: 2,
-    height: 70,
-    width: 70,
+    height: ICON_WIDTH_PX,
+    width: ICON_WIDTH_PX,
     flexShrink: 0,
     [theme.breakpoints.up('s')]: {
       position: 'absolute',
       top: '50%',
       transform: 'translateY(-50%)',
-      left: -35
-    },
-    // TODO breakpoints is broken for Dialog, update MUI
-    [theme.breakpoints.down(600)]: {
-      transform: 'none',
-      top: -5
+      left: `calc(${theme.spacing(5)}px - ${ICON_WIDTH_PX / 2}px)`
     }
   },
-  newStoryMessageContainer: {
+  storyMessageContainer: {
+    width: '100%',
     backgroundColor: theme.circleIn.palette.white,
     border: `solid 1px ${theme.circleIn.palette.success}`,
     display: 'flex',
@@ -43,19 +42,13 @@ export const useStyles = makeStyles((theme: any) => ({
     fontSize: 18,
     color: 'black',
     padding: theme.spacing(2, 1),
-    // TODO breakpoints is broken for Dialog, update MUI
     paddingTop: 50,
-    marginTop: -35,
+    marginTop: -(ICON_WIDTH_PX / 2),
     [theme.breakpoints.up('s')]: {
       marginTop: 0,
       paddingTop: theme.spacing(2),
       paddingLeft: theme.spacing(4)
     }
-  },
-  storyMessageContainer: {
-    overflow: 'hidden',
-    flexGrow: 1,
-    zIndex: 2
   },
   storyAvatarBackground: {
     background: theme.circleIn.palette.kobeBackground,
@@ -82,6 +75,14 @@ export const useStyles = makeStyles((theme: any) => ({
     padding: theme.spacing(1 / 2, 2)
   },
   closeIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    // TODO: Fix breakpoints, broken for Dialog, update MUI
+    // Issue: https://github.com/mui-org/material-ui/issues/21745
+    [theme.breakpoints.down(600)]: {
+      top: ICON_WIDTH_PX / 2
+    },
     color: theme.circleIn.palette.primaryText2,
     zIndex: 2,
     marginTop: theme.spacing(1),
