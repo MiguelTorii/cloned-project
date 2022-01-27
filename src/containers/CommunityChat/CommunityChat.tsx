@@ -2,13 +2,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import cx from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withWidth from '@material-ui/core/withWidth';
 import IconButton from '@material-ui/core/IconButton';
-import IconLeft from '@material-ui/icons/ArrowBack';
-import IconRight from '@material-ui/icons/ArrowForward';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import SvgIcon from '@material-ui/core/SvgIcon';
+
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import useIconClasses from 'components/_styles/Icons';
+
 import Main from './Main';
 import RightMenu from './RightMenu';
 import CourseChannels from './CourseChannels';
@@ -24,6 +29,7 @@ type Props = {
   width?: string;
 };
 
+// TODO: Refactor width, open and close logic to reusable sidebar component
 const CommunityChat = ({ width }: Props) => {
   const classes: any = useStyles();
   const dispatch: Dispatch = useDispatch();
@@ -40,6 +46,8 @@ const CommunityChat = ({ width }: Props) => {
     channelId: null,
     lastIndex: null
   });
+
+  const iconClasses = useIconClasses();
 
   const {
     data: { userId, schoolId }
@@ -98,6 +106,7 @@ const CommunityChat = ({ width }: Props) => {
       }
     }
   }, [allCommunityChannels, currentCommunity, currentCommunityChannel, local]);
+
   useEffect(() => {
     const targetSelectedChannel = selectedChannel ? local[selectedChannel.chat_id] : null;
 
@@ -140,6 +149,7 @@ const CommunityChat = ({ width }: Props) => {
       setRightSpace(0);
     }
   }, [rightSpace, width]);
+
   useEffect(() => {
     if (width !== prevWidth) {
       if (['xs', 'sm', 'md'].includes(width)) {
@@ -161,6 +171,7 @@ const CommunityChat = ({ width }: Props) => {
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);
+
   const onCollapseLeft = useCallback(() => {
     if (['xs', 'sm', 'md'].includes(width)) {
       setRightSpace(0);
@@ -168,7 +179,15 @@ const CommunityChat = ({ width }: Props) => {
 
     setLeftSpace(leftSpace ? 0 : curSize);
   }, [width, curSize, leftSpace]);
-  const renderIcon = useCallback((d) => (d ? <IconLeft /> : <IconRight />), []);
+
+  const onCollapseRight = useCallback(() => {
+    if (width === 'xs') {
+      setLeftSpace(0);
+    }
+
+    setRightSpace(rightSpace ? 0 : curSize);
+  }, [width, curSize, rightSpace]);
+
   return (
     <Grid className={classes.container} direction="row" container>
       <IconButton
@@ -178,7 +197,16 @@ const CommunityChat = ({ width }: Props) => {
         )}
         onClick={onCollapseLeft}
       >
-        {renderIcon(leftSpace !== 0)}
+        {/* TODO: Refactor to single reusable expand icon in sidebar component */}
+        {leftSpace === 0 ? (
+          <MenuOpenIcon style={{ transform: 'rotate(180deg)' }} />
+        ) : (
+          <SvgIcon
+            className={cx(iconClasses.collapseIconLeft)}
+            component={CollapseIcon}
+            viewBox="0 0 32 32"
+          />
+        )}
       </IconButton>
       {leftSpace !== 0 && (
         <Grid

@@ -37,6 +37,7 @@ type Props = {
   width?: string;
 };
 
+// TODO Refactor width, open and close logic to reusable sidebar component
 const DirectChat = ({ width }: Props) => {
   const classes: any = useStyles();
   const dispatch: Dispatch = useDispatch();
@@ -223,7 +224,7 @@ const DirectChat = ({ width }: Props) => {
       direction="row"
       container
     >
-      {/* TODO Refactor to single reusable expand icon */}
+      {/* TODO Refactor to single reusable expand icon in sidebar component */}
       <IconButton
         className={cx(
           classes.expandButton,
