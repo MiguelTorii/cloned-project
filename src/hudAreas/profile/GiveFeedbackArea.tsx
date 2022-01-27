@@ -2,26 +2,36 @@ import React, { useCallback, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, DialogContent } from '@material-ui/core';
+import Dialog from 'components/Dialog/Dialog';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
 import { sendFeedback as sendFeedbackAPI } from '../../api/user';
 
 const GiveFeedback = () => {
   const [feedback, setFeedback] = useState('');
   const [error, setError] = useState('');
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
 
   const onChange = useCallback((e) => {
     setFeedback(e.target.value);
   }, []);
   const sendFeedback = useCallback(async () => {
+    setIsSubmittingFeedback(true);
     const res = await sendFeedbackAPI({
       feedback,
       origin
     });
 
+    setIsSubmittingFeedback(false);
+
     if (!(res as any)?.success) {
       setError('Failed to send Feedback');
+    } else {
+      setIsSuccessModalOpen(true);
     }
   }, [feedback, origin]);
+
   return (
     <Box>
       <Grid container justifyContent="center">
@@ -42,12 +52,29 @@ const GiveFeedback = () => {
             rowsMax={8}
           />
           <Box display="flex" justifyContent="flex-end" mt={2}>
-            <Button variant="contained" color="primary" onClick={sendFeedback}>
+            <GradientButton
+              variant="contained"
+              color="primary"
+              disabled={!feedback || isSubmittingFeedback}
+              loading={isSubmittingFeedback}
+              onClick={sendFeedback}
+            >
               Send Feedback
-            </Button>
+            </GradientButton>
           </Box>
         </Grid>
       </Grid>
+      <Dialog
+        open={isSuccessModalOpen}
+        title="We received your feedback!"
+        onCancel={() => setIsSuccessModalOpen(false)}
+      >
+        <DialogContent>
+          <Typography variant="h6">
+            Thanks for your feedback to help us improve CircleIn!
+          </Typography>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
