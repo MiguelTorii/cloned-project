@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import cx from 'classnames';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Image from 'react-graceful-image';
 import moment from 'moment';
 import pluralize from 'pluralize';
@@ -30,6 +30,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CreateIcon from '@material-ui/icons/Create';
+import { push } from 'connected-react-router';
 import ViewNotes from '../../containers/PostComments/ViewNotes';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import PdfComponent from '../PdfGallery/PdfComponent';
@@ -53,6 +54,7 @@ import HoverPopup from '../HoverPopup/HoverPopup';
 import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
 import type { State as StoreState } from '../../types/state';
 import { TFeedItem } from '../../types/models';
+import { POST_TYPES } from 'constants/app';
 
 const FeedTypes = {
   flashcards: {
@@ -141,6 +143,7 @@ const FeedItem = ({
   const classes: any = useStyles({
     showSimple
   });
+  const dispatch = useDispatch();
   const currentUserId = useMemo(() => user.data.userId, [user.data.userId]);
   const [moreAnchorEl, setAnchorEl] = useState(null);
   const [thanksCount, setThanksCount] = useState(0);
@@ -219,24 +222,24 @@ const FeedItem = ({
     const { postId, typeId } = data;
     handleMenuClose();
 
-    if (typeId === 3) {
-      pushTo(`/edit/flashcards/${postId}`);
-    }
-
-    if (typeId === 4) {
-      pushTo(`/edit/notes/${postId}`);
-    }
-
-    if (typeId === 5) {
-      pushTo(`/edit/sharelink/${postId}`);
-    }
-
-    if (typeId === 6) {
-      pushTo(`/edit/question/${postId}`);
-    }
-
-    if (typeId === 8) {
-      pushTo(`/edit/post/${postId}`);
+    switch (typeId) {
+      case POST_TYPES.FLASHCARDS:
+        dispatch(push(`/edit/flashcards/${postId}`));
+        break;
+      case POST_TYPES.NOTE:
+        dispatch(push(`/edit/notes/${postId}`));
+        break;
+      case POST_TYPES.LINK:
+        dispatch(push(`/edit/sharelink/${postId}`));
+        break;
+      case POST_TYPES.QUESTION:
+        dispatch(push(`/edit/question/${postId}`));
+        break;
+      case POST_TYPES.POST:
+        dispatch(push(`/edit/post/${postId}`));
+        break;
+      default:
+        break;
     }
   }, [data, handleMenuClose, pushTo]);
   const handleUserClick = useCallback(() => {
