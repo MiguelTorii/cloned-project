@@ -5,14 +5,15 @@ import { useHistory } from 'react-router';
 import { ExperienceState } from '../experienceBarState/hudExperienceState';
 import { useStyles } from './HudExperienceBarStyles';
 import { apiGetExperiencePoints } from '../../api/user';
-import { setIntervalWithFirstCall } from '../../utils/helpers';
-import { FETCH_POINTS_INTERVAL } from '../../constants/common';
+import usePrevious from 'hooks/usePrevious';
+import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
 import { UserState } from '../../reducers/user';
 import { AppState } from '../../configureStore';
+import useStorySequence from 'hud/storyState/useStorySequence';
 
 const HudExperienceBar = () => {
-  const classes: any = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
   const showExpBar = useSelector<AppState, boolean>(
     (state) => state.campaign.showScholarshipTracker
@@ -29,9 +30,15 @@ const HudExperienceBar = () => {
     fetchPoints();
   }, [fetchPoints]);
 
+  const { closeStory } = useStorySequence();
+
   const experiencePoints: number = useSelector(
     (state: { hudExperience: ExperienceState }) => state.hudExperience.experiencePoints
   );
+
+  const previousExperiencePoints = usePrevious(experiencePoints);
+
+  const difference = previousExperiencePoints ? experiencePoints - previousExperiencePoints : 0;
 
   const isExpertMode: boolean = useSelector((state: { user: UserState }) => state.user.expertMode);
 
@@ -58,15 +65,30 @@ const HudExperienceBar = () => {
     return null;
   }
 
+  const handleAnimationStart = () => {
+    closeStory();
+  };
+
   return (
     <>
       {!isExpertMode ? (
-        <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
-          <div style={experienceBarFillWidth} className={classes.experienceFiller} />
-          <div className={classes.experienceLabelContainer}>
-            <Typography className={classes.experienceLabel}>
-              MVP: {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
-            </Typography>
+        <div className={classes.root}>
+          <AnimateOnChange
+            animationStyles={classes.experienceBarNotificationAnimation}
+            className={classes.experienceBarNotificationWrapper}
+            handleAnimationStart={handleAnimationStart}
+            current={experiencePoints}
+            previous={previousExperiencePoints}
+          >
+            <h3 className={classes.notificationText}>+ {difference} points!</h3>
+          </AnimateOnChange>
+          <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
+            <div style={experienceBarFillWidth} className={classes.experienceFiller} />
+            <div className={classes.experienceLabelContainer}>
+              <Typography className={classes.experienceLabel}>
+                MVP: {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
+              </Typography>
+            </div>
           </div>
         </div>
       ) : (

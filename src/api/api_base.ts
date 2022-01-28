@@ -26,7 +26,7 @@ export const callApi = async (apiConfig) => {
 
     if (response.data?.points) {
       reduxStore.dispatch({
-        type: experienceActions.ADD_EXPERIENCE_POINTS,
+        type: experienceActions.SET_EXPERIENCE_POINTS,
         payload: {
           experiencePoints: response.data?.points
         }
