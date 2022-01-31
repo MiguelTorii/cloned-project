@@ -18,7 +18,6 @@ import UserInitializer from './containers/UserInitializer/UserInitializer';
 import { GOOGLE_ANALYTICS, SENTRY, ENV, RELEASE } from './constants/app';
 import './index.css';
 import ErrorBoundary from './containers/ErrorBoundary/ErrorBoundary';
-import OnboardingPopup from './containers/OnboardingPopup/OnboardingPopup';
 import MasqueradeFrame from './containers/MasqueradeFrame/MasqueradeFrame';
 import { theme } from './withRoot';
 import ProviderGroup from './providers';
@@ -44,7 +43,6 @@ ReactDOM.render(
           <SnackbarProvider maxSnack={3}>
             <ProviderGroup>
               <CssBaseline />
-              <OnboardingPopup />
               <UserInitializer />
               <MasqueradeFrame />
               <Routes />

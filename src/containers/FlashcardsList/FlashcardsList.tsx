@@ -9,7 +9,6 @@ import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withRoot from '../../withRoot';
-import OnboardingFlashcards from '../OnboardingFlashcards/OnboardingFlashcards';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';
 import FiltersBar from '../../components/FiltersBar/FiltersBar';
 import FlashcardsDeck from '../../components/FlashcardsDeck/FlashcardsDeck';
@@ -174,12 +173,6 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
   // Rendering
   return (
     <div className={isHud && classes.container}>
-      <OnboardingFlashcards
-        userId={me.userId}
-        updateOnboarding={updateOnboarding}
-        open={onboardingOpen}
-      />
-
       {/* Title Section */}
       {!isHud && (
         <Grid container justifyContent="flex-start" alignItems="center" spacing={3}>

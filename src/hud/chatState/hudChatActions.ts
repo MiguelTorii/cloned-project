@@ -1,4 +1,4 @@
-import Client from 'twilio-chat';
+import Client from 'twilio-chat/lib/client';
 import { Action } from '../../types/action';
 import { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
 

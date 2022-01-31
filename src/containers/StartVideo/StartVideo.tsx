@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Chat from 'twilio-chat';
+import Chat from 'twilio-chat/lib/client';
 import { useSelector } from 'react-redux';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import StudyRoomImg from '../../assets/svg/video-chat-image.svg';

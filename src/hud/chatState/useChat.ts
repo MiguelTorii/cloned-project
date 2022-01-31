@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
-import { Client } from 'twilio-chat';
+import { Client } from 'twilio-chat/lib/client';
 import { Channel } from 'twilio-chat/lib/channel';
 import { getCommunities } from '../../api/community';
 import { APICommunities } from '../../api/models/APICommunities';

@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import React, { Fragment, RefObject } from 'react';
-import Chat from 'twilio-chat';
+import Chat from 'twilio-chat/lib/client';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';

@@ -1,4 +1,4 @@
-import Chat, { Client } from 'twilio-chat';
+import Chat, { Client } from 'twilio-chat/lib/client';
 import { Channel } from 'twilio-chat/lib/channel';
 import { Paginator } from 'twilio-chat/lib/interfaces/paginator';
 import { renewTwilioToken } from '../../api/chat';

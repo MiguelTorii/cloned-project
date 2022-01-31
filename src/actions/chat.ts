@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import uuidv4 from 'uuid/v4';
-import Chat, { Client } from 'twilio-chat';
+import Chat, { Client } from 'twilio-chat/lib/client';
 import { Channel } from 'twilio-chat/lib/channel';
 import update from 'immutability-helper';
 import { push } from 'connected-react-router';

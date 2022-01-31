@@ -24,7 +24,6 @@ import {
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import OnboardingPopup from '../OnboardingPopup/OnboardingPopup';
 import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
 import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
 import * as userActions from '../../actions/user';
@@ -64,57 +63,15 @@ type Props = {
   campaign?: any;
   checkUserSession?: Function;
   confirmTooltip?: Function;
-  updateOnboarding?: Function;
 };
 
-const UserInitializer = ({
-  classes,
-  user,
-  campaign,
-  checkUserSession,
-  confirmTooltip,
-  updateOnboarding
-}: Props) => {
+const UserInitializer = ({ user, checkUserSession }: Props) => {
   const [widgetUrl, setWidgetUrl] = useState('');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [onboardingPopupOpen, setOnboardingPopupOpen] = useState(false);
   const dispatch = useDispatch();
-  const viewedOnboarding = useSelector((state) => (state as any).user.syncData.viewedOnboarding);
-  const chatLanding = useSelector((state) => (state as any).campaign.chatLanding);
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   useHudRoutes();
 
-  // Check to show onboarding popup or not.
-  // This got complex after chat landing campaign. (5 seconds delay)
-  useEffect(() => {
-    let timeoutId = null;
-
-    if (isHud === true || isHud === null) {
-      // The hud has its own onboarding flow, so if we are in the HUD
-      // (or we aren't sure if we are in the HUD because the campaign
-      // hasn't loaded yet), then don't show the standard onboarding.
-      return;
-    }
-
-    if (viewedOnboarding) {
-      setOnboardingPopupOpen(false);
-    } else if (viewedOnboarding === false) {
-      if (!chatLanding) {
-        setOnboardingPopupOpen(true);
-      } else {
-        // Since it is delayed 5 seconds, it shows up after 6 seconds to make it natural.
-        timeoutId = setTimeout(() => {
-          setOnboardingPopupOpen(true);
-        }, 6000);
-      }
-    }
-
-    return () => timeoutId && clearTimeout(timeoutId);
-  }, [chatLanding, viewedOnboarding, isHud]);
   const {
     data: { userId, schoolId, school, email, firstName }
   } = user;
@@ -208,17 +165,7 @@ const UserInitializer = ({
     }
   }, [dispatch, userId]);
 
-  return (
-    <ErrorBoundary>
-      {windowWidth > 640 && (
-        <OnboardingPopup
-          open={onboardingPopupOpen}
-          updateOnboarding={updateOnboarding}
-          userId={userId}
-        />
-      )}
-    </ErrorBoundary>
-  );
+  return <></>;
 };
 
 const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
@@ -230,7 +177,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
       checkUserSession: signInActions.checkUserSession,
-      updateOnboarding: userActions.updateOnboarding,
       confirmTooltip: confirmTooltipAction
     },
     dispatch
