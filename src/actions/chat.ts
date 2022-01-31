@@ -3,6 +3,7 @@ import uuidv4 from 'uuid/v4';
 import Chat, { Client } from 'twilio-chat/lib/client';
 import { Channel } from 'twilio-chat/lib/channel';
 import update from 'immutability-helper';
+import isEmpty from 'lodash/isEmpty';
 import { push } from 'connected-react-router';
 import moment from 'moment';
 import {
@@ -558,8 +559,7 @@ export const handleInitChat =
         setTimeout(handleInitChat, 2000);
         return;
       }
-
-      const client: Client = await Chat.create(accessToken, {
+      const client = await Chat.create(accessToken, {
         logLevel: 'silent'
       });
       let paginator = await client.getSubscribedChannels();
@@ -613,7 +613,8 @@ export const handleInitChat =
       );
       await initLocalChannels(dispatch, local);
 
-      if ((client as any)._eventsCount === 0) {
+      // Client stores event listener functions in ._events. Init only if it's an empty object
+      if (isEmpty((client as any)._events)) {
         client.on('channelJoined', async (channel) => {
           const { sid } = channel;
           setTimeout(async () => {
