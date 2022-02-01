@@ -100,6 +100,7 @@ type Props = {
   enqueueSnackbar?: (...args: Array<any>) => any;
   classList?: any;
   handleAfterCreation: (path: string) => void;
+  sectionId: number;
 };
 
 type State = {
@@ -588,7 +589,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { sharelinkId, classes } = this.props;
+    const { sharelinkId, classes, sectionId } = this.props;
     const {
       loading,
       resourceToolbar,
@@ -610,6 +611,7 @@ class CreateShareLink extends React.PureComponent<Props, State> {
             buttonLabel={sharelinkId ? 'Save' : 'Post! 🚀'}
             changed={changed}
             handleSubmit={this.handleSubmit}
+            sectionId={sectionId}
           >
             <Grid container alignItems="center">
               <Grid item xs={12} sm={12} md={12}>

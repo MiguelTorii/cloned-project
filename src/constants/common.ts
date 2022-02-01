@@ -201,3 +201,6 @@ export const COMMUNITY_SCROLL_CONTAINER_ID = 'community-scroll-container';
 export const RECOMMENDATION_FETCH_UNIT = 5;
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const ANONYMOUS_USER_ID = -1;
+export const CIRCLEIN101_SECTION_ID = 1;
+export const CIRCLEIN101_TC =
+  'By posting to CircleIn101, you acknowledge and agree to make your profile public to the CircleIn Student Network. This will allow any Student on CircleIn to view your profile,which includes your real name, and the school you attend, and allow them to communicate with you.';

@@ -410,6 +410,7 @@ const CreateQuestion = ({
           toggleAnonymousActive={toggleAnonymousActive}
           handleSubmit={handleSubmit}
           buttonLabel={questionId ? 'Save' : 'Post! 🚀'}
+          sectionId={sectionId}
         >
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12}>

@@ -131,6 +131,7 @@ type Props = {
   setIsPosting: any;
   images: any;
   handleAfterCreation: (path: string) => void;
+  sectionId: number;
 };
 
 type State = {
@@ -598,7 +599,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, width, images, handleUpdateImages } = this.props;
+    const { classes, width, images, handleUpdateImages, sectionId } = this.props;
     const {
       loading,
       title,
@@ -621,6 +622,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
             changed={changed}
             buttonLabel={isEdit ? 'Save' : 'Post! 🚀'}
             handleSubmit={this.handleSubmit}
+            sectionId={sectionId}
           >
             <Grid container alignItems="center">
               <Grid item xs={12} md={12}>

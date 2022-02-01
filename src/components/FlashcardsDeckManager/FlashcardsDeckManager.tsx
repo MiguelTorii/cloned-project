@@ -15,6 +15,7 @@ import FlashcardsListEditor from '../FlashcardsListEditor/FlashcardsListEditor';
 import TextField from '../Basic/TextField/TextField';
 import { INTERVAL, STORAGE_KEYS } from '../../constants/app';
 import HotKeyGuide from '../HotKeyGuide/HotKeyGuide';
+import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
 
 const HOT_KEYS = [
   {
@@ -219,7 +220,12 @@ const FlashcardsDeckManager = ({
 
   // Rendering Helpers
   const renderForm = () => (
-    <Box mt={4} mb={4}>
+    <Box mt={3} mb={4}>
+      {formData.sectionId === CIRCLEIN101_SECTION_ID && (
+        <Box mb={5}>
+          <Typography variant="body2">{CIRCLEIN101_TC}</Typography>
+        </Box>
+      )}
       <Grid container spacing={3}>
         <Grid item xs={12} lg={6}>
           <TextField

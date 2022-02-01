@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import CustomSwitch from '../MainLayout/Switch';
 import Dialog from '../Dialog/Dialog';
 import { styles } from '../_styles/CreatePostForm';
+import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
 
 type Props = {
   currentTag?: any;
@@ -26,6 +27,7 @@ type Props = {
   toggleAnonymousActive?: any;
   anonymousActive?: any;
   handleSubmit?: (...args: Array<any>) => any;
+  sectionId?: number;
 };
 type State = {};
 
@@ -57,6 +59,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
   };
 
   render() {
+    const { sectionId } = this.props;
     const {
       currentTag,
       classes,
@@ -75,6 +78,11 @@ class CreatePostForm extends React.PureComponent<Props, State> {
         <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
           <main className={classes.main}>
             <Paper className={classes.paper}>{children}</Paper>
+            {sectionId === CIRCLEIN101_SECTION_ID && (
+              <Box px={2}>
+                <Typography variant="body2">{CIRCLEIN101_TC}</Typography>
+              </Box>
+            )}
             <Grid container alignItems="center">
               <Grid className={classes.mt3} item xs={12} sm={6}>
                 {currentTag === 1 && (

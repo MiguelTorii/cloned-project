@@ -427,6 +427,7 @@ const CreatePostSt = ({
           toggleAnonymousActive={toggleAnonymousActive}
           handleSubmit={handleSubmit}
           buttonLabel={postId ? 'Save' : 'Post! 🚀'}
+          sectionId={sectionId}
         >
           <Grid container alignItems="center">
             <Grid item xs={12} sm={12}>
