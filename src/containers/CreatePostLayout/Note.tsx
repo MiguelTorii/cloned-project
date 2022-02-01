@@ -655,7 +655,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                 <ToolbarTooltip toolbar={questionToolbar} toolbarClass={classes.toolbarClass} />
                 <RichTextEditor
                   setEditor={this.setEditor}
-                  placeholder="Add a description to your question to help your classmates give the best answer! You’re a hero for asking a question--some of your classmates are probably wondering the same thing too."
+                  placeholder="Write down a note description here."
                   value={body}
                   onChange={this.handleRTEChange}
                 />
