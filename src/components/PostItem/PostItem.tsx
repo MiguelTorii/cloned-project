@@ -104,14 +104,12 @@ const PostItem = ({ classes, children, feedId, isFlashcard }: Props) => {
             {children}
           </Paper>
         </Grid>
-        <Hidden mdDown>
-          <Grid item xs={12} lg={isHud ? 12 : 3}>
-            <Box pt={2}>
-              {from === POST_SOURCE.RECOMMENDATION && <RecommendationsFeedback feedId={feedId} />}
-              <Recommendations />
-            </Box>
-          </Grid>
-        </Hidden>
+        <Grid item xs={12} lg={isHud ? 12 : 3}>
+          <Box pt={2}>
+            {from === POST_SOURCE.RECOMMENDATION && <RecommendationsFeedback feedId={feedId} />}
+            <Recommendations />
+          </Box>
+        </Grid>
       </Grid>
     </div>
   );
