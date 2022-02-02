@@ -212,7 +212,10 @@ class UploadImages extends React.PureComponent<Props, State> {
     }
 
     this.setImagesUploading();
-    const fileNames = images.map((image) => image.id);
+
+    // Only upload images that are newly added.
+    const newImages = images.filter((image) => !!image.file);
+    const fileNames = newImages.map((image) => image.id);
     const result = await getPresignedURLs({
       userId,
       type: 3,
@@ -220,7 +223,7 @@ class UploadImages extends React.PureComponent<Props, State> {
     });
     return axios
       .all(
-        images.map(async (item) => {
+        newImages.map(async (item) => {
           const compress =
             item.file.type === 'application/pdf' ? item.file : await this.compressImage(item.file);
           this.uploadImageRequest(result[item.id].url, compress, item.type);

@@ -123,13 +123,11 @@ type Props = {
   user?: UserState;
   width?: string;
   enqueueSnackbar?: (...args: Array<any>) => any;
-  handleUpdateImages?: (...args: Array<any>) => any;
   location?: {
     search: string;
     pathname: string;
   };
   setIsPosting: any;
-  images: any;
   handleAfterCreation: (path: string) => void;
   sectionId: number;
 };
@@ -139,7 +137,6 @@ type State = {
   title: string;
   classId: number;
   sectionId: number | null | undefined;
-  summary: string;
   tags: Array<SelectType>;
   hasImages: boolean;
   errorDialog: boolean;
@@ -152,6 +149,7 @@ type State = {
   questionToolbar: any;
   editor: any;
   body: any;
+  images: any[];
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -172,7 +170,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
       title: '',
       classId: currentSelectedClassId || 0,
       sectionId: curretnSelectedSectoinId || 0,
-      summary: '',
       changed: false,
       tags: [],
       errorDialog: false,
@@ -184,6 +181,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       editor: null,
       body: null,
       notes: [],
+      images: [],
       // eslint-disable-next-line react/no-unused-state
       hasImages: false
     };
@@ -275,7 +273,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
         classId,
         sectionId,
         body,
-        tags
+        tags,
+        images: photoNote.notes.map((note) => ({
+          error: false,
+          id: note.note,
+          image: note.fullNoteUrl,
+          loaded: false,
+          loading: false
+        }))
       });
     } catch (e) {
       handleAfterCreation('/feed');
@@ -452,7 +457,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           noteId,
           handleAfterCreation
         } = this.props;
-        const { title, classId, sectionId, summary } = this.state;
+        const { title, classId, sectionId, body } = this.state;
         const images = await this.uploadImages.handleUploadImages();
         const fileNames = images.map((item) => item.id);
         await updatePhotoNote({
@@ -462,7 +467,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
           classId,
           sectionId,
           fileNames,
-          comment: summary
+          comment: body
         });
         setTimeout(() => {
           this.setState({
@@ -584,6 +589,12 @@ class CreateNotes extends React.PureComponent<Props, State> {
     });
   };
 
+  handleUpdateImages = (newImages) => {
+    this.setState({
+      images: newImages
+    });
+  };
+
   canBatchPost = () => {
     const {
       user: {
@@ -599,7 +610,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, width, images, handleUpdateImages, sectionId } = this.props;
+    const { classes, width, sectionId } = this.props;
     const {
       loading,
       title,
@@ -610,7 +621,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody,
       questionToolbar,
       body,
-      notes
+      notes,
+      images
     } = this.state;
     const notSm = !['xs', 'sm'].includes(width);
 
@@ -645,7 +657,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
                   notes={notes}
                   imageChange={(this as any).imageChange}
                   images={images}
-                  handleUpdateImages={handleUpdateImages}
+                  handleUpdateImages={this.handleUpdateImages}
                   innerRef={(node) => {
                     this.uploadImages = node;
                   }}
