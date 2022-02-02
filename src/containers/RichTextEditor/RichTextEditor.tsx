@@ -23,7 +23,8 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
     maxHeight: 200,
     '& .ql-editor': {
-      minHeight: 70
+      minHeight: 70,
+      maxHeight: 105
     }
   },
   input: {
