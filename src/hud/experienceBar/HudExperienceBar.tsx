@@ -20,15 +20,11 @@ const HudExperienceBar = () => {
   );
   const history = useHistory();
 
-  const fetchPoints = useCallback(() => {
+  useEffect(() => {
     apiGetExperiencePoints().then(({ points }) => {
       dispatch(setExperiencePoints(points));
     });
   }, [dispatch]);
-
-  useEffect(() => {
-    fetchPoints();
-  }, [fetchPoints]);
 
   const { closeStory } = useStorySequence();
 
