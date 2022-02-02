@@ -2,7 +2,7 @@ import BaseAxios from 'axios';
 import qs from 'query-string';
 import { getToken } from './utils';
 import { experienceActions } from '../hud/experienceBarState/hudExperienceActions';
-import reduxStore from '../configureStore';
+import reduxStore from 'redux/store';
 
 const axios = BaseAxios.create({
   timeout: 60000

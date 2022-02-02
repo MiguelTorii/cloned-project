@@ -23,7 +23,7 @@ import {
   POST_WRITER,
   PROFILE_PAGE_SOURCE
 } from '../../constants/common';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { User } from '../../types/models';
 import {
   actionBookmarkFeed,

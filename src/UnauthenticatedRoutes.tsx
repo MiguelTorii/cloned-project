@@ -2,7 +2,7 @@ import { LastLocationProvider } from 'react-router-last-location';
 import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import { Route, Switch } from 'react-router';
-import { history } from './configureStore';
+import { history } from 'redux/store';
 import FloatingChatContainer from './containers/FloatingChat/FloatingChatContainer';
 import withTracker from './withTracker';
 import Home from './containers/Home/Home';

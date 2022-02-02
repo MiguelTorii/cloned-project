@@ -19,6 +19,7 @@
     "@material-ui/pickers": "^3.2.9",
     "@microlink/react": "^5.5.4",
     "@react-hook/debounce": "^3.0.0",
+    "@reduxjs/toolkit": "^1.7.1",
     "@sentry/browser": "^5.23.0",
     "@sentry/cli": "^1.52.1",
     "@welldone-software/why-did-you-render": "^6.0.3",

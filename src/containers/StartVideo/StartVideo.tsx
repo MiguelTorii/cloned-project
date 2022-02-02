@@ -9,7 +9,7 @@ import StudyRoomInvite from './StudyRoomInvite';
 import useStyles from './_styles/index';
 import { addGroupMembers, createChannel, getGroupMembers, renewTwilioToken } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { User, UserClass } from '../../types/models';
 
 const StartVideo = () => {

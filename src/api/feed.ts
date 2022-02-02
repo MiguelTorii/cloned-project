@@ -8,7 +8,8 @@ import { API_ROUTES, API_URL_V1_1, API_URL_V1_2 } from '../constants/routes';
 import type { TFeedItem } from '../types/models';
 import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL, feedToCamelCaseV2 } from './utils';
-import reduxStore from '../configureStore';
+import reduxStore from 'redux/store';
+
 import { callApi } from './api_base';
 import { APIFetchFeedsParams } from './params/APIFetchFeedsParams';
 

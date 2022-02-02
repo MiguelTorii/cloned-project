@@ -4,7 +4,7 @@ import { Grid, Link } from '@material-ui/core';
 import RightPanelCard from '../../components/RightPanelCard/RightPanelCard';
 import { apiGetMissions } from '../../api/user';
 import { setMissions } from '../rightPanelState/hudRightPanelActions';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { TMission } from '../../types/models';
 import HudMission from './HudMission';
 import { CIRCLEIN_REWARDS_URL } from '../../constants/app';

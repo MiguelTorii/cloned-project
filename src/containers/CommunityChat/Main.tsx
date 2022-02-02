@@ -2,6 +2,7 @@
 import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from 'react-images';
+import { AppState } from 'redux/store';
 import InfiniteScroll from 'react-infinite-scroller';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -24,7 +25,6 @@ import { Member } from '../../types/models';
 import { DetailedChatUser, CurrentCommunity, ChatData } from '../../reducers/chat';
 import { messageLoadingAction } from '../../actions/chat';
 import { UserState } from '../../reducers/user';
-import { AppState } from '../../configureStore';
 
 type Props = {
   isCommunityChat?: boolean;

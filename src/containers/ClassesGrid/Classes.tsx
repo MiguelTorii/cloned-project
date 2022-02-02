@@ -23,7 +23,7 @@ import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user';
 import { CampaignState } from '../../reducers/campaign';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { User } from '../../types/models';
 import { openSupportWidget } from '../../utils/helpers';
 

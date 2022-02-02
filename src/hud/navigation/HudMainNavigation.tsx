@@ -36,7 +36,7 @@ import {
 } from '../navigationState/hudNavigation';
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
 

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from 'redux/store';
+import clsx from 'clsx';
+import Fuse from 'fuse.js';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import clsx from 'clsx';
-import Fuse from 'fuse.js';
+
 import ChatListItem from '../../components/CommunityChatListItem/ChatListItem';
 import CreateChatChannelInput from '../../components/CreateCommunityChatChannelInput/CreateChatChannelInput';
 import OneTouchSend from '../../components/CreateCommunityChatChannelInput/OneTouchSend';
@@ -21,7 +23,6 @@ import useStyles from './_styles/leftMenu';
 import { ChatData, ChatState } from '../../reducers/chat';
 import { handleNewChannel, setCurrentChannel, setOneTouchSendAction } from '../../actions/chat';
 import { Dispatch } from '../../types/store';
-import { AppState } from '../../configureStore';
 import { User } from '../../types/models';
 
 type Props = {

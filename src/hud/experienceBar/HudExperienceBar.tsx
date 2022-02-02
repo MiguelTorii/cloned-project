@@ -9,7 +9,7 @@ import usePrevious from 'hooks/usePrevious';
 import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
 import { UserState } from '../../reducers/user';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import useStorySequence from 'hud/storyState/useStorySequence';
 
 const HudExperienceBar = () => {

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { AppState } from 'redux/store';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -17,7 +18,6 @@ import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChannelWrapper } from '../../reducers/chat';
-import { AppState } from '../../configureStore';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />

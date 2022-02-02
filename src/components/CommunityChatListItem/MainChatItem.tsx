@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from 'redux/store';
 import { Channel } from 'twilio-chat/lib/channel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -21,7 +22,6 @@ import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/mainChatItem';
 import { ChannelWrapper } from '../../reducers/chat';
 import { updateChannel } from '../../actions/chat';
-import { AppState } from '../../configureStore';
 
 type Props = {
   isLoading?: boolean;

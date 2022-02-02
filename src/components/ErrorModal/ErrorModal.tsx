@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@material-ui/core';
 import parse from 'html-react-parser';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { TErrorModalData } from '../../types/models';
 import Dialog from '../Dialog/Dialog';
 import { ReactComponent as ImageError } from '../../assets/svg/error-modal.svg';

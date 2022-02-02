@@ -32,6 +32,5 @@ yarn-error.log*
 # (i.e. don't check them into github, it is not secure!)
 cypress.env.json
 
-.idea/*
-
 /.vscode
+.idea/*

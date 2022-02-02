@@ -24,7 +24,8 @@ import {
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
 import type { Dispatch } from '../../types/store';
-import reduxStore from '../../configureStore';
+import reduxStore from 'redux/store';
+
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';

@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from 'redux/store';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import { useSelector } from 'react-redux';
+
 import LoadImg from '../LoadImg/LoadImg';
 import { ReactComponent as Chat } from '../../assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
 import { ChannelWrapper, CurrentCommunity } from '../../reducers/chat';
-import { AppState } from '../../configureStore';
 
 type Props = {
   item?: Record<string, any>;

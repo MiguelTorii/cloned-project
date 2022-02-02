@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
 import { LastLocationProvider } from 'react-router-last-location';
-import { history } from './configureStore';
+import { history } from 'redux/store';
 import Home from './containers/Home/Home';
 import VideoCallPage from './pages/VideoCall/VideoCallPage';
 import StartVideoPage from './pages/StartVideo/StartVideoPage';

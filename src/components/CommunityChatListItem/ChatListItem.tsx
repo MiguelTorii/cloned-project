@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { AppState } from 'redux/store';
+
 import MainChatItem from './MainChatItem';
 import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
 import { Member } from '../../types/models';
-import { AppState } from '../../configureStore';
 
 type Props = {
   channel?: Record<string, any>;

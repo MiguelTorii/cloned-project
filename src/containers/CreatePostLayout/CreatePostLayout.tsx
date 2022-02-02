@@ -26,7 +26,7 @@ import type { State as StoreState } from '../../types/state';
 import Appbar from './Appbar';
 import { buildPath } from '../../utils/helpers';
 import { cypherClass } from '../../utils/crypto';
-import { AppState } from '../../configureStore';
+import { AppState } from 'redux/store';
 import { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
