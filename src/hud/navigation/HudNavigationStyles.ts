@@ -79,5 +79,16 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   navbarLeaderboard: {
     color: theme.circleIn.palette.navbarLeaderboardFontColor
+  },
+  mobileRoot: {
+    backgroundColor: theme.circleIn.palette.formBackground
+  },
+  mobileNavMenu: {
+    overflow: 'auto',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  mobileNavItem: {
+    padding: theme.spacing(0, 2)
   }
 }));
