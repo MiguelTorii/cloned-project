@@ -33,7 +33,7 @@ import { getInitials } from '../../utils/chat';
 import { buildPath, getPastClassIds } from '../../utils/helpers';
 import { styles } from '../_styles/PostItem/PostItemHeader';
 import HoverPopup from '../HoverPopup/HoverPopup';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
 import type { State as StoreState } from '../../types/state';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
@@ -274,31 +274,43 @@ class PostItemHeader extends React.PureComponent<Props, State> {
           <Typography className={classes.feedTypo}>{navigationTitle}</Typography>
         </Grid>
         <div className={classes.root}>
-          <Link
-            className={classes.avatar}
-            component={MyLink}
-            href={buildPath(`/profile/${userId}`, {
-              from: PROFILE_PAGE_SOURCE.POST
-            })}
-          >
-            <HoverPopup userId={userId} profileSource={PROFILE_PAGE_SOURCE.POST}>
-              <Avatar src={userProfileUrl} className={classes.bigAvatar}>
-                {initials}
-              </Avatar>
-            </HoverPopup>
-          </Link>
+          {Number(userId) === ANONYMOUS_USER_ID ? (
+            <Avatar src={userProfileUrl} className={classes.bigAvatar}>
+              {initials}
+            </Avatar>
+          ) : (
+            <Link
+              className={classes.avatar}
+              component={MyLink}
+              underline="none"
+              href={buildPath(`/profile/${userId}`, {
+                from: PROFILE_PAGE_SOURCE.POST
+              })}
+            >
+              <HoverPopup userId={userId} profileSource={PROFILE_PAGE_SOURCE.POST}>
+                <Avatar src={userProfileUrl} className={classes.bigAvatar}>
+                  {initials}
+                </Avatar>
+              </HoverPopup>
+            </Link>
+          )}
+
           <div className={classes.userInfo}>
             <Box display="flex" alignItems="center">
               <Typography component="p" variant="h6" noWrap>
-                <Link
-                  component={MyLink}
-                  href={buildPath(`/profile/${userId}`, {
-                    from: PROFILE_PAGE_SOURCE.POST
-                  })}
-                  className={classes.link}
-                >
-                  {name}
-                </Link>
+                {Number(userId) === ANONYMOUS_USER_ID ? (
+                  name
+                ) : (
+                  <Link
+                    component={MyLink}
+                    href={buildPath(`/profile/${userId}`, {
+                      from: PROFILE_PAGE_SOURCE.POST
+                    })}
+                    className={classes.link}
+                  >
+                    {name}
+                  </Link>
+                )}
               </Typography>
               {role && <RoleBadge text={role} />}
             </Box>
