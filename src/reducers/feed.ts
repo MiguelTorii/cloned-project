@@ -40,7 +40,7 @@ const defaultState = {
   data: {
     items: [],
     hasMore: true,
-    lastIndex: 0,
+    lastIndex: null, // Set to null, meaning it is not initialized
     filters: {
       userClasses: [],
       // an array of sectionIds
