@@ -14,6 +14,9 @@ export default (theme) => ({
       background: theme.circleIn.palette.hoverMenu,
       color: theme.palette.common.white,
       borderRadius: 20
+    },
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column'
     }
   },
   innerContainerEditor: {
@@ -56,7 +59,10 @@ export default (theme) => ({
   postCommentAction: {
     display: 'flex',
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: 40
+    }
   },
   postCommentIcon: {
     fontSize: 16,
@@ -91,6 +97,6 @@ export default (theme) => ({
     right: 0
   },
   toolbarBoxMobile: {
-    top: 80
+    bottom: -40
   }
 });

@@ -32,8 +32,6 @@ const PostItemCommentQuill = ({
   const { isMobileScreen } = useMediaQuery();
 
   const [loading, setLoading] = useState(false);
-  const [isNewLine, setIsNewLine] = useState(false);
-  const [currentQuill, setCurrentQuill] = useState(null);
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: `#comment-toolbar-${feedId}-${toolbarPrefix}`
@@ -57,7 +55,8 @@ const PostItemCommentQuill = ({
     if (quill) {
       quill.on('text-change', () => {
         if (quill.getSelection(true)) {
-          onChange((quill as any).container.firstChild.innerHTML);
+          const container = (quill as any).container;
+          onChange(container.firstChild.innerHTML);
           const currentFocusPosition = quill.getSelection(true).index;
           const leftPosition = quill.getBounds(currentFocusPosition).left;
           const currentTooltipWidth = document.getElementById(
@@ -65,27 +64,24 @@ const PostItemCommentQuill = ({
           )
             ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
             : 0;
-          const currentEditorWidth = (quill as any).container.firstChild.clientWidth;
+          const currentEditorWidth = container.firstChild.clientWidth;
 
-          if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
-            setCurrentQuill(quill);
-            setIsNewLine(true);
+          // Add an empty line when the caret gets closer to the toolbar.
+          if (
+            !isMobileScreen &&
+            currentEditorWidth - currentTooltipWidth < leftPosition + 80 &&
+            !container.firstChild.innerText.endsWith('\n')
+          ) {
+            quill.insertText(container.firstChild.innerHTML.length.index + 1, '\n');
           }
 
-          if (!(quill as any).container.firstChild.innerText.trim()) {
+          if (!container.firstChild.innerText.trim()) {
             quill.focus();
-            setIsNewLine(false);
           }
         }
       });
     }
-  }, [feedId, toolbarPrefix, isNewLine, onChange, quill]);
-
-  useEffect(() => {
-    if (currentQuill && isNewLine) {
-      currentQuill.insertText(currentQuill.container.firstChild.innerHTML.length.index + 1, '\n');
-    }
-  }, [currentQuill, isNewLine]);
+  }, [feedId, toolbarPrefix, onChange, quill]);
 
   useEffect(() => {
     if (quill && value) {
