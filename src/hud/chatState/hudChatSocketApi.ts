@@ -1,6 +1,5 @@
-import Chat, { Client } from 'twilio-chat/lib/client';
-import { Channel } from 'twilio-chat/lib/channel';
-import { Paginator } from 'twilio-chat/lib/interfaces/paginator';
+import { Client, Channel } from 'twilio-chat';
+import { updateToken } from 'utils/chat';
 import { renewTwilioToken } from '../../api/chat';
 
 const CONNECTION_STATE_CONNECTED = 'connected';
@@ -10,15 +9,13 @@ export const loadChatClient = async (userId: string): Promise<Client> => {
     userId
   });
 
-  const client: Client = await Chat.create(accessToken, {
-    logLevel: 'silent'
-  });
+  const client = await updateToken(accessToken);
 
   return client;
 };
 
 export const loadSubscribedChannels = async (client: Client) => {
-  let paginator: Paginator<Channel> = await client.getSubscribedChannels();
+  let paginator = await client.getSubscribedChannels();
   while (paginator.hasNextPage) {
     // eslint-disable-next-line no-await-in-loop
     paginator = await paginator.nextPage();

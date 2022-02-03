@@ -1,9 +1,7 @@
-import { Channel } from 'twilio-chat/lib/channel';
-import Client from 'twilio-chat/lib/client';
-import { Message } from 'twilio-chat/lib/message';
+import { Client, Channel, Message } from 'twilio-chat';
 import update from 'immutability-helper';
 import moment from 'moment';
-import { getTitle } from '../utils/chat';
+import { getTitle } from 'utils/chat';
 import { chatActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 

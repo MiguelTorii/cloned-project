@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Chat from 'twilio-chat/lib/client';
 import { useSelector } from 'react-redux';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import StudyRoomImg from '../../assets/svg/video-chat-image.svg';
@@ -11,6 +10,7 @@ import { addGroupMembers, createChannel, getGroupMembers, renewTwilioToken } fro
 import { logEvent } from '../../api/analytics';
 import { AppState } from 'redux/store';
 import { User, UserClass } from '../../types/models';
+import { updateToken } from 'utils/chat';
 
 const StartVideo = () => {
   const classes = useStyles();
@@ -84,7 +84,7 @@ const StartVideo = () => {
         return;
       }
 
-      const client = await Chat.create(accessToken);
+      const client = await updateToken(accessToken);
       let paginator = await client.getSubscribedChannels();
 
       while (paginator.hasNextPage) {

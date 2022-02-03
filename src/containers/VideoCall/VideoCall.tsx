@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-import React, { Fragment, RefObject } from 'react';
-import Chat from 'twilio-chat/lib/client';
+import React, { RefObject } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
@@ -15,6 +14,7 @@ import MeetUp from './MeetUp';
 import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { updateToken } from 'utils/chat';
 
 const styles = (theme) => ({
   root: {
@@ -237,7 +237,7 @@ class VideoCall extends React.Component<Props, State> {
         return;
       }
 
-      const client = await Chat.create(accessToken);
+      const client = await updateToken(accessToken);
       const channel = await client.getChannelBySid(roomId);
       const messageAttributes = {
         firstName,

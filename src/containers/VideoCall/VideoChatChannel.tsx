@@ -13,8 +13,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Paginator } from 'twilio-chat/lib/interfaces/paginator';
-import { Channel } from 'twilio-chat/lib/channel';
+import { Channel, RestPaginator } from 'twilio-chat';
 import { processMessages, getAvatar, fetchAvatars, getFileAttributes } from '../../utils/chat';
 import { sendMessage } from '../../api/chat';
 import ChatMessage from '../../components/FloatingChat/ChatMessage';
@@ -66,7 +65,7 @@ type Props = {
   onUnreadUpdate: (...args: Array<any>) => any;
 };
 type State = {
-  paginator: Paginator<Channel> | null;
+  paginator: RestPaginator<Channel> | null;
   messages: Array<Record<string, any>>;
   hasMore: boolean;
   profileURLs: Array<Record<string, any>>;

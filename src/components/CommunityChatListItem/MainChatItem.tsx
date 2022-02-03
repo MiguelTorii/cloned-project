@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'redux/store';
-import { Channel } from 'twilio-chat/lib/channel';
+import { Channel } from 'twilio-chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
-import { Client } from 'twilio-chat/lib/client';
-import { Channel } from 'twilio-chat/lib/channel';
+import { Channel, Client } from 'twilio-chat';
 import { getCommunities } from '../../api/community';
 import { APICommunities } from '../../api/models/APICommunities';
 import { APICommunityChannelGroups } from '../../api/models/APICommunityChannelGroups';
@@ -80,9 +79,9 @@ const loadCommunities = async (userId: string): Promise<CommunityChannelData> =>
 };
 
 const loadClientAndChannels = async (userId: string): Promise<ChatSocketData> => {
-  const client: Client = await loadChatClient(userId);
+  const client = await loadChatClient(userId);
   await loadSubscribedChannels(client);
-  const channels: Channel[] = await loadLocalChannels(client);
+  const channels = await loadLocalChannels(client);
 
   registerForClientEvents(client, userId);
 

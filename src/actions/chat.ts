@@ -1,8 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import uuidv4 from 'uuid/v4';
-import Chat, { Client } from 'twilio-chat/lib/client';
-import { Channel } from 'twilio-chat/lib/channel';
 import update from 'immutability-helper';
+import { Channel, Client } from 'twilio-chat';
 import isEmpty from 'lodash/isEmpty';
 import { push } from 'connected-react-router';
 import moment from 'moment';
@@ -23,6 +22,7 @@ import type { Dispatch } from '../types/store';
 import { uploadMedia } from './user';
 import { ChannelWrapper, CurrentCommunity } from '../reducers/chat';
 import { APICommunity, APICommunityData } from '../api/models/APICommunity';
+import { ensureChatClient } from 'utils/chat';
 
 const getAvailableSlots = (width) => {
   try {
@@ -422,6 +422,7 @@ const initLocalChannels = async (dispatch, currentLocal = {}) => {
       !localStorage.getItem('currentDMChannel')
     ) {
       let channelList: string[] = [];
+
       channelList = Object.keys(local).filter((l) => !local[l].lastMessage.message);
       const recentMessageChannels = Object.keys(local).filter((l) => local[l].lastMessage.message);
 
@@ -559,9 +560,9 @@ export const handleInitChat =
         setTimeout(handleInitChat, 2000);
         return;
       }
-      const client = await Chat.create(accessToken, {
-        logLevel: 'silent'
-      });
+
+      const client = await ensureChatClient(accessToken);
+
       let paginator = await client.getSubscribedChannels();
 
       while (paginator.hasNextPage) {
@@ -594,6 +595,7 @@ export const handleInitChat =
 
       const promises = channels.map((channel) => unreadCount(channel));
       const unreadMessages = await Promise.all(promises);
+
       channels.forEach((c, key) => {
         local[c.sid] = {
           unread: unreadMessages[key][c.sid],

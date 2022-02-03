@@ -3,11 +3,42 @@
 /* eslint-disable no-await-in-loop */
 
 /* eslint-disable no-restricted-syntax */
+import { Client, Channel } from 'twilio-chat';
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
-import { Channel } from 'twilio-chat/lib/channel';
 import parse from 'html-react-parser';
 import { ChatMessages } from '../types/models';
+
+let client: Client;
+
+export const ensureChatClient = async (token: string) => {
+  if (!client) {
+    client = new Client(token, {
+      logLevel: 'silent'
+    });
+  }
+
+  if (client.connectionState === 'connected') {
+    return client;
+  }
+
+  return new Promise<Client>((resolve, reject) => {
+    client.on('stateChanged', (state) => {
+      if (state === 'initialized') {
+        resolve(client);
+      }
+      if (state === 'failed') {
+        reject('Failed to initialize chat client');
+      }
+    });
+  });
+};
+
+export const updateToken = async (token: string) => {
+  const client = await ensureChatClient(token);
+  await client.updateToken(token);
+  return client;
+};
 
 export const getTitle = (channel: Channel, userId: string, members: any[]) => {
   try {
@@ -127,6 +158,7 @@ export const processMessages = ({
 
     for (const item of items) {
       const { state } = item;
+
       const { attributes, author, body, sid, timestamp } = state;
       const { firstName, lastName, imageKey, isVideoNotification, files } = attributes;
       const date = moment(timestamp).format('MMMM DD');

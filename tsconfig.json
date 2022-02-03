@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "lib": [
-      "es6",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es6", "dom", "dom.iterable"],
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -23,7 +19,5 @@
     "skipLibCheck": true,
     "esModuleInterop": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src", "src/@types"]
 }

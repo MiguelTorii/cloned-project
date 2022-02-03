@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Channel } from 'twilio-chat/lib/channel';
+import { Channel } from 'twilio-chat';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';

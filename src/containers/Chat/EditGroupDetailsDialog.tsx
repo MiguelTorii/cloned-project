@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Channel } from 'twilio-chat/lib/channel';
+import { Channel } from 'twilio-chat';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
