@@ -14,19 +14,6 @@ export const styles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  avatarButton: {
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 80,
-    height: 80,
-    position: 'relative'
-  },
-  avatar: {
-    width: 80,
-    height: 80
-  },
   upload: {
     margin: theme.spacing(2)
   },

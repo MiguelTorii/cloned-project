@@ -1,8 +1,9 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
+
+import Avatar from 'components/Avatar';
 import { getInitials } from '../../utils/chat';
 import Dialog from '../Dialog/Dialog';
 import type { StudyCircle } from '../../types/models';
@@ -44,9 +45,12 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
           {!loading && (
             <div className={classes.circleContainer}>
               <div className={classes.main}>
-                <Avatar src={userProfileUrl} className={classes.avatarBig}>
-                  {initials}
-                </Avatar>
+                <Avatar
+                  profileImage={userProfileUrl}
+                  initials={initials}
+                  mobileSize={60}
+                  desktopSize={60}
+                />
               </div>
               {circle.map((item, index) => (
                 <div
@@ -59,9 +63,11 @@ class StudyCircleDialog extends React.PureComponent<Props, State> {
                     )}deg)`
                   }}
                 >
-                  <Avatar className={classes.avatarSmall} src={item.profileImageUrl}>
-                    {getInitials(`${item.firstName} ${item.lastName}`)}
-                  </Avatar>
+                  <Avatar
+                    profileImage={item.profileImageUrl}
+                    fullName={`${item.firstName} ${item.lastName}`}
+                    fromChat
+                  />
                 </div>
               ))}
             </div>

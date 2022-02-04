@@ -8,43 +8,44 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import { useDispatch } from 'react-redux';
-import { Dispatch } from '../../types/store';
-import ClassList from '../ClassList/ClassList';
+
+import Avatar from 'components/Avatar';
+import { Dispatch } from 'types/store';
+import ClassList from 'components/ClassList/ClassList';
 import CustomSwitch from './Switch';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import { ReactComponent as ClassFeedIconOff } from '../../assets/svg/class-feed-icon-off.svg';
-import { ReactComponent as ClassFeedIconOn } from '../../assets/svg/class-feed-icon-on.svg';
-import { ReactComponent as ChatIconOn } from '../../assets/svg/chat-icon-on.svg';
-import { ReactComponent as ChatIconOff } from '../../assets/svg/chat-icon-off.svg';
-import { ReactComponent as FeedbackIconOff } from '../../assets/svg/feedback-icon-off.svg';
-import { ReactComponent as FeedbackIconOn } from '../../assets/svg/feedback-icon-on.svg';
-import { ReactComponent as FlashcardsIconOff } from '../../assets/svg/flashcards-icon-off.svg';
-import { ReactComponent as CircleInLogoIcon } from '../../assets/svg/ic_simple_circlein_logo.svg';
-import FlashcardsIconOn from '../../assets/img/flashcards-icon-on.png';
-import { ReactComponent as GetAppIconOff } from '../../assets/svg/get-app-icon-off.svg';
-import { ReactComponent as GetAppIconOn } from '../../assets/svg/get-app-icon-on.svg';
-import { ReactComponent as HelpIcon } from '../../assets/svg/help-icon.svg';
-import { ReactComponent as LeaderboardIconOff } from '../../assets/svg/leaderboard-icon-off.svg';
-import { ReactComponent as LeaderboardIconOn } from '../../assets/svg/leaderboard-icon-on.svg';
-import { ReactComponent as NotesIconOff } from '../../assets/svg/notes-icon-off.svg';
-import { ReactComponent as NotesIconOn } from '../../assets/svg/notes-icon-on.svg';
-import { ReactComponent as RewardsIconOff } from '../../assets/svg/rewards-icon-off.svg';
-import { ReactComponent as RewardsIconOn } from '../../assets/svg/rewards-icon-on.svg';
-import { ReactComponent as WorkflowIconOff } from '../../assets/svg/workflow-icon-off.svg';
-import { ReactComponent as WorkflowIconOn } from '../../assets/svg/workflow-icon-on.svg';
-import { ReactComponent as OneTouchSendIconOn } from '../../assets/svg/one-touch-send-icon-on.svg';
-import { ReactComponent as OneTouchSendIconOff } from '../../assets/svg/one-touch-send-icon-off.svg';
-import { ReactComponent as GradCapIcon } from '../../assets/svg/ic_grad_cap.svg';
-import { ReactComponent as MyClassOff } from '../../assets/svg/myclass-inactive.svg';
-import { ReactComponent as MyClassOn } from '../../assets/svg/myclass-active.svg';
-import { ReactComponent as HomeIconOn } from '../../assets/svg/home-active.svg';
-import { ReactComponent as HomeIconOff } from '../../assets/svg/home-inactive.svg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+import { ReactComponent as ClassFeedIconOff } from 'assets/svg/class-feed-icon-off.svg';
+import { ReactComponent as ClassFeedIconOn } from 'assets/svg/class-feed-icon-on.svg';
+import { ReactComponent as ChatIconOn } from 'assets/svg/chat-icon-on.svg';
+import { ReactComponent as ChatIconOff } from 'assets/svg/chat-icon-off.svg';
+import { ReactComponent as FeedbackIconOff } from 'assets/svg/feedback-icon-off.svg';
+import { ReactComponent as FeedbackIconOn } from 'assets/svg/feedback-icon-on.svg';
+import { ReactComponent as FlashcardsIconOff } from 'assets/svg/flashcards-icon-off.svg';
+import { ReactComponent as CircleInLogoIcon } from 'assets/svg/ic_simple_circlein_logo.svg';
+import FlashcardsIconOn from 'assets/img/flashcards-icon-on.png';
+import { ReactComponent as GetAppIconOff } from 'assets/svg/get-app-icon-off.svg';
+import { ReactComponent as GetAppIconOn } from 'assets/svg/get-app-icon-on.svg';
+import { ReactComponent as HelpIcon } from 'assets/svg/help-icon.svg';
+import { ReactComponent as LeaderboardIconOff } from 'assets/svg/leaderboard-icon-off.svg';
+import { ReactComponent as LeaderboardIconOn } from 'assets/svg/leaderboard-icon-on.svg';
+import { ReactComponent as NotesIconOff } from 'assets/svg/notes-icon-off.svg';
+import { ReactComponent as NotesIconOn } from 'assets/svg/notes-icon-on.svg';
+import { ReactComponent as RewardsIconOff } from 'assets/svg/rewards-icon-off.svg';
+import { ReactComponent as RewardsIconOn } from 'assets/svg/rewards-icon-on.svg';
+import { ReactComponent as WorkflowIconOff } from 'assets/svg/workflow-icon-off.svg';
+import { ReactComponent as WorkflowIconOn } from 'assets/svg/workflow-icon-on.svg';
+import { ReactComponent as OneTouchSendIconOn } from 'assets/svg/one-touch-send-icon-on.svg';
+import { ReactComponent as OneTouchSendIconOff } from 'assets/svg/one-touch-send-icon-off.svg';
+import { ReactComponent as GradCapIcon } from 'assets/svg/ic_grad_cap.svg';
+import { ReactComponent as MyClassOff } from 'assets/svg/myclass-inactive.svg';
+import { ReactComponent as MyClassOn } from 'assets/svg/myclass-active.svg';
+import { ReactComponent as HomeIconOn } from 'assets/svg/home-active.svg';
+import { ReactComponent as HomeIconOff } from 'assets/svg/home-inactive.svg';
 import DrawerItem from './DrawerItem';
 import { useStyles } from '../_styles/MainLayout/Drawer';
-import { checkPath } from '../../utils/helpers';
-import { setOneTouchSendAction } from '../../actions/chat';
+import { checkPath } from 'utils/helpers';
+import { setOneTouchSendAction } from 'actions/chat';
 
 type Props = {
   newClassExperience?: any;
@@ -519,9 +520,7 @@ const Drawer = ({
           component={MyLink}
           className={classes.otherPath}
         >
-          <Avatar className={classes.avatar} src={userProfileUrl}>
-            {initials}
-          </Avatar>
+          <Avatar profileImage={userProfileUrl} initials={initials} fromChat />
           <ListItemText primary={fullName} />
         </ListItem>
       </List>

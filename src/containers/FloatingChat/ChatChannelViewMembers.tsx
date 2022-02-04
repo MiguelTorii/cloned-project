@@ -5,15 +5,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
-import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
+
+import Avatar from 'components/Avatar';
 import RoleBadge from '../../components/RoleBadge/RoleBadge';
 import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import { getInitials } from '../../utils/chat';
 import type { ChatUser } from '../../types/models';
 import { blockUser } from '../../api/user';
 import { getGroupMembers } from '../../api/chat';
@@ -140,17 +139,13 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
               {members.map((member) => (
                 <ListItem key={member.userId} role={undefined} dense>
                   <ListItemAvatar>
-                    <OnlineBadge
+                    <Avatar
                       isOnline={member.isOnline}
-                      bgColorPath="circleIn.palette.feedBackground"
-                    >
-                      <Avatar
-                        alt={`${member.firstName} ${member.lastName}`}
-                        src={member.profileImageUrl}
-                      >
-                        {getInitials(`${member.firstName} ${member.lastName}`)}
-                      </Avatar>
-                    </OnlineBadge>
+                      onlineBadgeBackground="circleIn.palette.feedBackground"
+                      profileImage={member.profileImageUrl}
+                      fullName={`${member.firstName} ${member.lastName}`}
+                      fromChat
+                    />
                   </ListItemAvatar>
                   <ListItemText
                     primary={

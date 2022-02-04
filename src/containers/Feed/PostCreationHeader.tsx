@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button';
 import { push } from 'connected-react-router';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-import Avatar from '../../components/Avatar/Avatar';
-import { getInitials } from '../../utils/chat';
+
+import Avatar from 'components/Avatar';
 import IconPencil from '../../assets/svg/pencil.svg';
 import IconQuestion from '../../assets/svg/smile-green.svg';
 import QuestionIcon from '../../assets/svg/ic_ask_a_question.svg';
@@ -126,6 +126,7 @@ const PostCreationHeader = () => {
       </Box>
     );
   }
+  const fullName = `${me.firstName} ${me.lastName}`;
 
   return (
     <Box className={classes.postHeaderRoot}>
@@ -133,8 +134,8 @@ const PostCreationHeader = () => {
         <Box display="flex" alignItems="center" pb={2}>
           <Box mr={3}>
             <Avatar
-              src={me.profileImage}
-              initialText={getInitials(`${me.firstName} ${me.lastName}`)}
+              profileImage={me.profileImage}
+              fullName={fullName}
               mobileSize={50}
               desktopSize={50}
             />

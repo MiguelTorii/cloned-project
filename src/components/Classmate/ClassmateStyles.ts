@@ -38,10 +38,6 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.greenInvite,
     borderRadius: theme.spacing(2)
   },
-  avatarProfile: {
-    backgroundColor: theme.circleIn.palette.brand,
-    color: 'white'
-  },
   rightIconButton: {
     color: 'white',
     backgroundColor: theme.circleIn.palette.brand,

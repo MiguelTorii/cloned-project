@@ -46,10 +46,6 @@ export default makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.disabled,
     borderRadius: theme.spacing(2)
   },
-  avatarProfile: {
-    backgroundColor: theme.circleIn.palette.brand,
-    color: 'white'
-  },
   circleCheck: {
     color: theme.circleIn.palette.white
   }

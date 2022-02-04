@@ -3,12 +3,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import withWidth from '@material-ui/core/withWidth';
-
 import Fab from '@material-ui/core/Fab';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
@@ -16,6 +14,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 
+import Avatar from 'components/Avatar';
 import { useMediaQuery } from 'hooks';
 import { Dispatch } from 'types/store';
 import { getInitials } from 'utils/chat';
@@ -25,7 +24,6 @@ import { CampaignState } from 'reducers/campaign';
 import { openChannelWithEntity } from 'actions/chat';
 import InviteIcon from 'assets/svg/invite-icon.svg';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
-import OnlineBadge from 'components/OnlineBadge';
 
 import { useStyles } from './ClassmateStyles';
 
@@ -127,15 +125,13 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
           })}
           component={MyProfileLink}
         >
-          <OnlineBadge isOnline={classmate.isOnline} bgColorPath="circleIn.palette.feedBackground">
-            <Avatar
-              alt={`Avatar n°${classmate.userId}`}
-              className={classes.avatarProfile}
-              src={classmate.image}
-            >
-              {initials}
-            </Avatar>
-          </OnlineBadge>
+          <Avatar
+            profileImage={classmate.image}
+            isOnline={classmate.isOnline}
+            onlineBadgeBackground="circleIn.palette.feedBackground"
+            initials={initials}
+            fromChat
+          />
         </Link>
       </ListItemAvatar>
       <ListItemText

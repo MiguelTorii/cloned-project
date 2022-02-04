@@ -25,6 +25,8 @@ import IconNote from '@material-ui/icons/LibraryBooks';
 import IconBack from '@material-ui/icons/ArrowBackIos';
 import Link from '@material-ui/core/Link';
 import { useHotkeys } from 'react-hotkeys-hook';
+
+import Avatar from 'components/Avatar';
 import { getFlashcards } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
 import { bookmarkFlashcards } from '../../actions/user';
@@ -48,7 +50,6 @@ import FlashcardsReview from '../../components/FlashcardsReview/FlashcardsReview
 import FlashcardsQuiz from '../../components/FlashcardsQuiz/FlashcardsQuiz';
 import PostItem from '../../components/PostItem/PostItem';
 import PostItemHeader from '../../components/PostItem/PostItemHeader';
-import Avatar from '../../components/Avatar/Avatar';
 import { isApiCalling, getPastClassIds, buildPath } from '../../utils/helpers';
 import { getInitials } from '../../utils/chat';
 import PostTags from '../PostTags/PostTags';
@@ -475,8 +476,8 @@ const FlashcardsShow = () => {
             <Grid item>
               <Link component="button" onClick={handleClickUser}>
                 <Avatar
-                  initialText={getInitials(data.name)}
-                  src={data.userProfileUrl}
+                  fullName={data.name}
+                  profileImage={data.userProfileUrl}
                   desktopSize={45}
                   mobileSize={45}
                 />

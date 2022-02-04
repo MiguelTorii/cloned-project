@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import GroupIcon from '@material-ui/icons/Group';
@@ -12,8 +11,9 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import Avatar from 'components/Avatar';
 import Dialog from '../Dialog/Dialog';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import { containsImage, getInitials } from '../../utils/chat';
 import { styles } from '../_styles/ChatListItem/MainChatItem';
 
@@ -113,13 +113,15 @@ const MainChatItem = ({
         })}
         onClick={onClick}
       >
-        <OnlineBadge
-          isVisible={isDirectChat}
+        <Avatar
+          onlineBadgeBackground={
+            dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'
+          }
           isOnline={isOnline}
-          bgColorPath={dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'}
-        >
-          <Avatar src={imageProfile}>{initials() || <GroupIcon />}</Avatar>
-        </OnlineBadge>
+          profileImage={imageProfile || <GroupIcon />}
+          initials={initials()}
+          isVisible={isDirectChat}
+        />
         <div className={classes.grow}>
           <Typography variant="subtitle1" noWrap>
             {roomName}

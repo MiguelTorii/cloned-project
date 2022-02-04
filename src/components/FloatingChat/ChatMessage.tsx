@@ -6,10 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
+
+import Avatar from 'components/Avatar';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import { getInitials } from '../../utils/chat';
 import { styles } from '../_styles/FloatingChat/ChatMessage';
@@ -161,11 +161,13 @@ class ChatMessage extends React.PureComponent<Props> {
               from: PROFILE_PAGE_SOURCE.CHAT
             })}
           >
-            <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
-              <Avatar alt={name} src={avatar}>
-                {initials}
-              </Avatar>
-            </OnlineBadge>
+            <Avatar
+              isOnline={isUserOnline}
+              onlineBadgeBackground="circleIn.palette.feedBackground"
+              profileImage={avatar}
+              initials={initials}
+              fromChat
+            />
           </ListItemAvatar>
         )}
         <div className={cx(classes.content, isOwn && classes.alignEnd)}>

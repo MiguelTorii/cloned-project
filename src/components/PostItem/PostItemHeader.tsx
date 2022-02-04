@@ -5,7 +5,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import moment from 'moment';
 import queryString from 'query-string';
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import Grid from '@material-ui/core/Grid';
@@ -25,9 +24,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CreateIcon from '@material-ui/icons/Create';
 import ShareIcon from '@material-ui/icons/Share';
 import _ from 'lodash';
+
+import Avatar from 'components/Avatar';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import CustomQuill from '../CustomQuill/CustomQuill';
-import Tooltip from '../../containers/Tooltip/Tooltip';
 import SharePost from '../../containers/SharePost/SharePost';
 import { getInitials } from '../../utils/chat';
 import { buildPath, getPastClassIds } from '../../utils/helpers';
@@ -275,9 +275,12 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         </Grid>
         <div className={classes.root}>
           {Number(userId) === ANONYMOUS_USER_ID ? (
-            <Avatar src={userProfileUrl} className={classes.bigAvatar}>
-              {initials}
-            </Avatar>
+            <Avatar
+              profileImage={userProfileUrl}
+              initials={initials}
+              mobileSize={60}
+              desktopSize={60}
+            />
           ) : (
             <Link
               className={classes.avatar}
@@ -288,9 +291,12 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               })}
             >
               <HoverPopup userId={userId} profileSource={PROFILE_PAGE_SOURCE.POST}>
-                <Avatar src={userProfileUrl} className={classes.bigAvatar}>
-                  {initials}
-                </Avatar>
+                <Avatar
+                  profileImage={userProfileUrl}
+                  initials={initials}
+                  mobileSize={60}
+                  desktopSize={60}
+                />
               </HoverPopup>
             </Link>
           )}

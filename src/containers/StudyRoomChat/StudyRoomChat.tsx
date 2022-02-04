@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
 import withStyles from '@material-ui/core/styles/withStyles';
 import get from 'lodash/get';
 import Typography from '@material-ui/core/Typography';
@@ -10,10 +9,11 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
+import Avatar from 'components/Avatar';
 import Chat from './Chat';
 import { fetchAvatars } from '../../utils/chat';
 import { getGroupMembers } from '../../api/chat';
-import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { ChatState } from '../../reducers/chat';
 
@@ -37,10 +37,6 @@ const styles = (theme) => ({
     marginTop: theme.spacing(),
     fontSize: 24,
     fontWeight: 700
-  },
-  avatar: {
-    height: 50,
-    width: 50
   },
   member: {
     display: 'flex',
@@ -246,15 +242,15 @@ const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }
                 return (
                   isOnline && (
                     <div key={member} className={classes.member}>
-                      <OnlineBadge
+                      <Avatar
                         isOnline={isOnline}
-                        bgColorPath="circleIn.palette.feedBackground"
-                      >
-                        <Avatar src={avatar} className={classes.avatar}>
-                          {firstname[0]}
-                          {lastname[0]}
-                        </Avatar>
-                      </OnlineBadge>
+                        onlineBadgeBackground="circleIn.palette.feedBackground"
+                        profileImage={avatar}
+                        fullName={`${firstname} ${lastname}`}
+                        fromChat
+                        mobileSize={50}
+                        desktopSize={50}
+                      />
                       <Typography className={classes.fullname}>
                         {firstname} {lastname}
                       </Typography>

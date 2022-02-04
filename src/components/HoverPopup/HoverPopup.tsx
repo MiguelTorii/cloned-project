@@ -3,7 +3,8 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
+import MUIAvatar from '@material-ui/core/Avatar';
+import Avatar from 'components/Avatar';
 import { Message, Videocam } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import { push } from 'connected-react-router';
@@ -235,20 +236,15 @@ const HoverPopup = ({
           disableRestoreFocus
         >
           <div className={classes.hasBio}>
-            <OnlineBadge
+            <Avatar
+              profileImage={(profile as any).userProfileUrl}
+              handleUserClick={handleGotoProfile}
+              fullName={fullName}
+              mobileSize={90}
+              desktopSize={90}
+              onlineBadgeBackground="circleIn.palette.primaryBackground"
               isOnline={(profile as any).isOnline}
-              bgColorPath="circleIn.palette.primaryBackground"
-              fromChat={false}
-            >
-              <Avatar
-                alt={fullName}
-                src={(profile as any).userProfileUrl}
-                className={classes.overviewAvatar}
-                onClick={handleGotoProfile}
-              >
-                {getInitials(fullName)}
-              </Avatar>
-            </OnlineBadge>
+            />
             <div className={cx(classes.userInfo, classes.hasBio)}>
               <Typography variant="subtitle1" className={classes.name} onClick={handleGotoProfile}>
                 {fullName}

@@ -3,8 +3,8 @@ import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
 import { Link as RouterLink } from 'react-router-dom';
+
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
@@ -20,11 +20,12 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PenIcon from '@material-ui/icons/Create';
+
+import Avatar from 'components/Avatar';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import CustomQuill from '../CustomQuill/CustomQuill';
 import SkeletonLoad from './SkeletonLoad';
 import Report from '../Report/ReportIssue';
-import { getInitials } from '../../utils/chat';
 import IconBadge from '../../assets/svg/badge.svg';
 import PostItemAddComment from './PostItemAddComment';
 import Dialog from '../Dialog/Dialog';
@@ -33,7 +34,6 @@ import { ReactComponent as ThankedIcon } from '../../assets/svg/thanked.svg';
 import thanksSvg from '../../assets/svg/thanks.svg';
 import commentSvg from '../../assets/svg/comment.svg';
 import { styles } from '../_styles/PostItem/PostItemComment';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import HoverPopup from '../HoverPopup/HoverPopup';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
@@ -237,7 +237,6 @@ class PostItemComment extends React.PureComponent<Props, State> {
     const isMenuOpen = Boolean(moreAnchorEl);
     const date = moment(created);
     const name = `${firstName} ${lastName}`;
-    const initials = getInitials(name);
     const fromNow = date ? date.fromNow() : '';
     const renderMenu = (
       <Menu
@@ -359,13 +358,13 @@ class PostItemComment extends React.PureComponent<Props, State> {
             })}
           >
             <HoverPopup userId={ownerId} profileSource={PROFILE_PAGE_SOURCE.COMMENT}>
-              <OnlineBadge
-                isOnline={isOnline}
-                bgColorPath="circleIn.palette.feedBackground"
+              <Avatar
+                profileImage={profileImageUrl}
                 fromChat
-              >
-                <Avatar src={profileImageUrl}>{initials}</Avatar>
-              </OnlineBadge>
+                onlineBadgeBackground="circleIn.palette.feedBackground"
+                isOnline={isOnline}
+                fullName={name}
+              />
             </HoverPopup>
           </Link>
           <div className={classes.info}>

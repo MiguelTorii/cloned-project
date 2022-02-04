@@ -3,14 +3,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import { AppState } from 'redux/store';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import { useSelector } from 'react-redux';
-import { getInitials } from '../../utils/chat';
-import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
+
+import Avatar from 'components/Avatar';
 import RoleBadge from '../../components/RoleBadge/RoleBadge';
 import HoverPopup from '../../components/HoverPopup/HoverPopup';
 import useStyles from './_styles/rightMenu';
@@ -79,14 +78,13 @@ const RightMenu = ({ channel, isCommunityChat }: Props) => {
                   }}
                 >
                   <ListItemAvatar>
-                    <OnlineBadge
+                    <Avatar
                       isOnline={m.isOnline}
-                      bgColorPath="circleIn.palette.primaryBackground"
-                    >
-                      <Avatar alt={fullName} src={m.image}>
-                        {getInitials(fullName)}
-                      </Avatar>
-                    </OnlineBadge>
+                      onlineBadgeBackground="circleIn.palette.primaryBackground"
+                      profileImage={m.image}
+                      fullName={fullName}
+                      fromChat
+                    />
                   </ListItemAvatar>
                   <Box
                     display="flex"

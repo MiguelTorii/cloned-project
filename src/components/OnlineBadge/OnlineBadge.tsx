@@ -12,7 +12,7 @@ type Props = {
   bgColorPath?: string;
 };
 
-const OnlineBadge = ({ classes, isVisible, isOnline, backColor, fromChat, children }: Props) =>
+const OnlineBadge = ({ classes, isVisible, children }: Props) =>
   isVisible ? (
     <span className={classes.root}>
       {children}

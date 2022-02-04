@@ -4,6 +4,8 @@ import { Action, Dispatch } from 'redux';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { push } from 'connected-react-router';
 import { Badge, Typography } from '@material-ui/core';
+
+import Avatar from 'components/Avatar';
 import { useStyles } from './HudNavigationStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 
@@ -29,15 +31,13 @@ import { ReactComponent as IconSupport } from '../../assets/svg/ic_support.svg';
 import { ReactComponent as IconMobileApp } from '../../assets/svg/ic_get_mobile_app.svg';
 import { ReactComponent as IconExpertModeToggle } from '../../assets/svg/ic_go_to_expert_mode.svg';
 import { ReactComponent as IconSignOut } from '../../assets/svg/ic_logout.svg';
-import Avatar from '../../components/Avatar/Avatar';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
 import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
-import { getInitials } from '../../utils/chat';
 import { PERMISSIONS } from '../../constants/common';
 
-const ICON_SIZE = '30px';
+const ICON_SIZE = 30;
 
 const HudRightNavigation = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -104,16 +104,15 @@ const HudRightNavigation = () => {
     icon: <IconSignOut />
   });
 
-  const initials = getInitials(`${profile.firstName} ${profile.lastName}`);
+  const fullName = `${profile.firstName} ${profile.lastName}`;
 
-  const profilePicture = profile.profileImage ? (
-    <div className={classes.profileBackground}>
-      <Avatar src={profile.profileImage} desktopSize={ICON_SIZE} mobileSize={ICON_SIZE} />
-    </div>
-  ) : (
-    <div className={classes.profileBackground}>
-      <Typography className={classes.initials}>{initials}</Typography>
-    </div>
+  const profilePicture = (
+    <Avatar
+      fullName={fullName}
+      profileImage={profile.profileImage}
+      desktopSize={ICON_SIZE}
+      mobileSize={ICON_SIZE}
+    />
   );
 
   const profileNavigationItem: HudToolData = {

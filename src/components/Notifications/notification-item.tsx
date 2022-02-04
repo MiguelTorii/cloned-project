@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { getInitials } from '../../utils/chat';
+
+import Avatar from 'components/Avatar';
 import type { Notification as NotificationState } from '../../types/models';
 import questionImage from '../../assets/svg/ic_question_post.svg';
 import flashcardImage from '../../assets/svg/ic_flashcard_post.svg';
@@ -109,15 +109,12 @@ class FeedItem extends React.PureComponent<Props, State> {
       notification: { actorFirstName, actorLastName, profileImageUrl, notificationText, createdOn }
     } = this.props;
     const name = `${actorFirstName} ${actorLastName}`;
-    const initials = getInitials(name);
     const date = moment(createdOn);
     const fromNow = date ? date.fromNow() : '';
     return (
       <ListItem button alignItems="flex-start" onClick={this.handleClick}>
         <ListItemAvatar>
-          <Avatar src={profileImageUrl} alt={name}>
-            {initials}
-          </Avatar>
+          <Avatar profileImage={profileImageUrl} fullName={name} fromChat />
         </ListItemAvatar>
         <ListItemText
           primary={notificationText}

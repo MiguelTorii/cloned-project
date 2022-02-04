@@ -3,7 +3,6 @@ import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -12,11 +11,11 @@ import { Message, Videocam, Create } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import _ from 'lodash';
 import Box from '@material-ui/core/Box';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
+
+import Avatar from 'components/Avatar';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import ImgEmptyCover from '../../assets/img/empty_cover.png';
 import ImgLogo from '../../assets/svg/app-logo.svg';
-import { getInitials } from '../../utils/chat';
 import schoolIcon from '../../assets/svg/ic_school.svg';
 import LoadImg from '../LoadImg/LoadImg';
 import { getPointsText } from '../../utils/helpers';
@@ -134,7 +133,6 @@ class Header extends React.PureComponent<Props, State> {
       isHud
     } = this.props;
     const name = `${firstName} ${lastName}`;
-    const initials = getInitials(name);
     const bio = this.findAboutField(6);
     const major = this.findAboutField(4);
     return (
@@ -158,26 +156,15 @@ class Header extends React.PureComponent<Props, State> {
             )}
           </div>
           <div className={classes.avatarContainer}>
-            <div className={classes.avatar}>
-              <OnlineBadge
-                isOnline={isOnline}
-                bgColorPath="circleIn.palette.feedBackground"
-                fromChat={false}
-              >
-                <div className={classes.profileBackground}>
-                  <Avatar
-                    alt={initials}
-                    src={userProfileUrl}
-                    className={classes.bigAvatar}
-                    classes={{
-                      img: classes.img
-                    }}
-                  >
-                    {initials}
-                  </Avatar>
-                </div>
-              </OnlineBadge>
-            </div>
+            <Avatar
+              profileImage={userProfileUrl}
+              fullName={name}
+              hasOnlineBadge
+              isOnline={isOnline}
+              onlineBadgeBackground="circleIn.palette.feedBackground"
+              desktopSize={124}
+              mobileSize={124}
+            />
           </div>
           <div className={classes.gridInfo}>
             <Grid container justifyContent="space-between" alignItems="center" wrap="nowrap">

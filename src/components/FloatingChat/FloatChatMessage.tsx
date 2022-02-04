@@ -10,13 +10,12 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
+
+import Avatar from 'components/Avatar';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
-import { getInitials } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/FloatChatMessage';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
@@ -97,8 +96,6 @@ const ChatMessage = ({
     onImageClick(url);
   };
 
-  const initials = getInitials(name);
-
   const renderItem = ({
     imageKey,
     body,
@@ -153,9 +150,7 @@ const ChatMessage = ({
               <Typography className={classes.title} color="textSecondary" gutterBottom>
                 <b>{firstName}</b> started a Study Room 🎉
               </Typography>
-              <Avatar alt={name} src={avatar}>
-                {initials}
-              </Avatar>
+              <Avatar profileImage={avatar} fullName={name} fromChat />
             </CardContent>
             <CardActions
               classes={{
@@ -198,11 +193,13 @@ const ChatMessage = ({
                   from: PROFILE_PAGE_SOURCE.CHAT
                 })}
               >
-                <OnlineBadge isOnline={isUserOnline} bgColorPath="circleIn.palette.feedBackground">
-                  <Avatar alt={name} src={avatar}>
-                    {initials}
-                  </Avatar>
-                </OnlineBadge>
+                <Avatar
+                  isOnline={isUserOnline}
+                  onlineBadgeBackground="circleIn.palette.feedBackground"
+                  profileImage={avatar}
+                  fullName={name}
+                  fromChat
+                />
               </ListItemAvatar>
             )}
           </div>

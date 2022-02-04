@@ -22,6 +22,20 @@ export type User = {
   lmsTypeId: number;
   lmsUser: boolean;
   permission?: Array<string>;
+  isOnline?: boolean;
+};
+export type UserAvatar = {
+  fullName?: string;
+  initials?: string;
+  profileImage: any;
+  hasOnlineBadge?: boolean;
+  isOnline?: boolean;
+  desktopSize?: number;
+  mobileSize?: number;
+  handleUserClick?: any;
+  onlineBadgeBackground?: string;
+  fromChat?: boolean;
+  isVisible?: boolean;
 };
 export type UserProfile = {
   userId: string;

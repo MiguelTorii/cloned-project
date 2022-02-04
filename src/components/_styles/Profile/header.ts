@@ -4,8 +4,6 @@ export const styles = (theme) => ({
   container: {
     height: '100%',
     maxHeight: 'inherit',
-    // display: 'flex',
-    // flexDirection: ''
     padding: theme.spacing(0, 1)
   },
   root: {
@@ -83,22 +81,6 @@ export const styles = (theme) => ({
       alignItems: 'flex-start'
     }
   },
-  avatarContainer: {
-    position: 'absolute',
-    left: theme.spacing(3),
-    top: 53,
-    [theme.breakpoints.down('sm')]: {
-      top: 5
-    }
-  },
-  avatar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 124,
-    height: 124,
-    position: 'relative'
-  },
   progress: {
     position: 'absolute',
     display: 'flex',
@@ -109,19 +91,6 @@ export const styles = (theme) => ({
     borderRadius: '50%',
     top: 0,
     backgroundColor: 'rgba(0,0,0,0.8)'
-  },
-  bigAvatar: {
-    width: 90,
-    height: 90,
-    [theme.breakpoints.up('sm')]: {
-      width: 124,
-      height: 124
-    },
-    fontSize: theme.typography.h1.fontSize,
-    margin: theme.spacing(2)
-  },
-  img: {
-    textAlign: 'center'
   },
   button: {
     margin: theme.spacing(2)
@@ -192,14 +161,5 @@ export const styles = (theme) => ({
     marginRight: theme.spacing(),
     marginBottom: theme.spacing(2),
     height: 40
-  },
-  profileBackground: {
-    backgroundColor: theme.circleIn.palette.profilebgColor,
-    borderRadius: '50%',
-    width: '125px',
-    height: '125px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 });

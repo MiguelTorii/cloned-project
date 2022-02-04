@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, useState } from 'react';
 import cx from 'classnames';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -11,12 +10,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+
+import Avatar from 'components/Avatar';
 import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
 import { ReactComponent as UndoIcon } from '../../assets/svg/undo.svg';
-import { getInitials } from '../../utils/chat';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import Dialog from '../Dialog/Dialog';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import useStyles from '../_styles/RemoveStudentDialog';
 import { removeUser, sendMessage, addGroupMembers } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
@@ -140,14 +139,13 @@ const RemoveStudentDialog = ({
                   }}
                 >
                   <ListItemAvatar>
-                    <OnlineBadge
+                    <Avatar
                       isOnline={m.isOnline}
-                      bgColorPath="circleIn.palette.feedBackground"
-                    >
-                      <Avatar alt={fullName} src={m.image}>
-                        {getInitials(fullName)}
-                      </Avatar>
-                    </OnlineBadge>
+                      onlineBadgeBackground="circleIn.palette.feedBackground"
+                      profileImage={m.image}
+                      fullName={fullName}
+                      fromChat
+                    />
                   </ListItemAvatar>
                   {fullName} {m.role && <RoleBadge text={m.role} />}
                   <ListItemSecondaryAction>

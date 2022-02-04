@@ -9,9 +9,6 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'none'
   },
   profileBackground: {
-    backgroundColor: theme.circleIn.palette.profilebgColor,
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column'
+    backgroundColor: theme.circleIn.palette.profilebgColor
   }
 }));

@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
-import { getInitials } from '../../utils/chat';
+
+import Avatar from 'components/Avatar';
 import type { UserProfile } from '../../types/models';
 import withRoot from '../../withRoot';
-import Avatar from '../Avatar/Avatar';
 import { getPointsText } from '../../utils/helpers';
 import { useStyles } from '../_styles/PointsHistoryDetails/Header';
 import { CampaignState } from '../../reducers/campaign';
@@ -24,14 +24,18 @@ const Header = ({ profile }: Props) => {
     (state: { campaign: CampaignState }) => state.campaign.hud
   );
 
+  const fullName = `${profile.firstName} ${profile.lastName}`;
+
   return (
     <Paper className={classes.root}>
       <Grid container spacing={2} className={classes.mainContainer} alignItems="center">
         <Grid item xs={12} md={6} wrap="nowrap" container spacing={2} alignItems="center">
           <Grid item>
             <Avatar
-              src={profile.userProfileUrl}
-              defaultText={getInitials(`${profile.firstName} ${profile.lastName}`)}
+              profileImage={profile.userProfileUrl}
+              fullName={fullName}
+              desktopSize={124}
+              mobileSize={60}
             />
           </Grid>
           <Grid item container direction="column" spacing={isMobile ? 0 : 1}>

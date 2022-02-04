@@ -4,8 +4,9 @@ import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Menu from '@material-ui/core/Menu';
-import Avatar from '@material-ui/core/Avatar';
 import ChatIcon from '@material-ui/icons/Chat';
+
+import Avatar from 'components/Avatar';
 
 const MobileMenu = ({
   mobileMoreAnchorEl,
@@ -58,9 +59,7 @@ const MobileMenu = ({
       <p>Chats</p>
     </MenuItem>
     <MenuItem onClick={handleProfileMenuOpen}>
-      <IconButton color="inherit">
-        <Avatar src={userProfileUrl}>{initials}</Avatar>
-      </IconButton>
+      <Avatar profileImage={userProfileUrl} initials={initials} fromChat />
       <p>Account</p>
     </MenuItem>
   </Menu>

@@ -6,10 +6,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
 import GroupIcon from '@material-ui/icons/Group';
 import { Create } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
+
+import Avatar from '@material-ui/core/Avatar';
 import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
 import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
 import GradientButton from '../../components/Basic/Buttons/GradientButton';

@@ -13,7 +13,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
 import Link from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from 'components/Avatar';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import HelpIcon from '@material-ui/icons/Help';
@@ -389,9 +389,7 @@ const MainLayout = ({
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <Avatar className="avatar-menu" src={userProfileUrl}>
-                  {initials}
-                </Avatar>
+                <Avatar profileImage={userProfileUrl} initials={initials} fromChat />
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>

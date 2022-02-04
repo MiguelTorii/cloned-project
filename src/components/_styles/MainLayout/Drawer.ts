@@ -151,8 +151,5 @@ export const useStyles = makeStyles((theme: any) => ({
   divider: {
     margin: theme.spacing(2, 2, 1, 2),
     border: '1px solid #C5C5C6'
-  },
-  avatar: {
-    marginRight: theme.spacing()
   }
 }));

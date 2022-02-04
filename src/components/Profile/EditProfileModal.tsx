@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, Grid, Box } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 import _ from 'lodash';
-import { getInitials } from '../../utils/chat';
+
+import Avatar from 'components/Avatar';
 import withRoot from '../../withRoot';
 import Dialog from '../Dialog/Dialog';
 import TextField from '../Basic/TextField/TextField';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import AvatarEditor from '../AvatarEditor/AvatarEditor';
-import Avatar, { DEFAULT_AVATAR_SIZE } from '../Avatar/Avatar';
 import type { About, UserProfile } from '../../types/models';
 import { useStyles } from '../_styles/Profile/EditProfileModal';
 
@@ -58,27 +58,22 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
     });
   };
 
+  const fullName = `${profile.firstName} ${profile.lastName}`;
+
   return (
     <Dialog title="Edit Your Profile" open={open} onCancel={onClose} maxWidth="lg">
       <Grid container className={classes.root} spacing={4}>
         <Grid item xs={12}>
           <Box display="inline-block" position="relative">
-            <div className={classes.profileBackground}>
-              <Avatar
-                className={classes.profilePicture}
-                mobileSize={DEFAULT_AVATAR_SIZE.desktop}
-                src={image}
-                initialText={getInitials(`${profile.firstName} ${profile.lastName}`)}
-              />
-              <Button
-                onClick={() => setIsEditingAvatar(true)}
-                classes={{
-                  root: classes.penButton
-                }}
-              >
-                <Create />
-              </Button>
-            </div>
+            <Avatar profileImage={image} fullName={fullName} desktopSize={124} mobileSize={60} />
+            <Button
+              onClick={() => setIsEditingAvatar(true)}
+              classes={{
+                root: classes.penButton
+              }}
+            >
+              <Create />
+            </Button>
           </Box>
         </Grid>
         <Grid item xs={12}>

@@ -18,7 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import Avatar from '@material-ui/core/Avatar';
+import MuiAvatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -31,6 +31,8 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CreateIcon from '@material-ui/icons/Create';
 import { push } from 'connected-react-router';
+
+import Avatar from 'components/Avatar';
 import ViewNotes from '../../containers/PostComments/ViewNotes';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import PdfComponent from '../PdfGallery/PdfComponent';
@@ -265,7 +267,6 @@ const FeedItem = ({
   const handleAddComment = useCallback(() => setCommentCount(commentCount + 1), [commentCount]);
   const handleDeleteComment = useCallback(() => setCommentCount(commentCount - 1), [commentCount]);
   const getTitle = useCallback((data: Record<string, any>): string => data.title, []);
-  const initials = useMemo(() => getInitials(data.name), [data.name]);
   const date = useMemo(() => moment(data.created), [data.created]);
   const fromNow = useMemo(() => (date ? date.fromNow() : ''), [date]);
   const ownerId = useMemo(() => data.userId, [data.userId]);
@@ -429,7 +430,7 @@ const FeedItem = ({
     >
       <CardHeader
         className={classes.header}
-        avatar={<Avatar src={feedTypeData.url} />}
+        avatar={<MuiAvatar src={feedTypeData.url} />}
         action={
           <>
             <IconButton aria-label="Share" onClick={handleShareLinkClick}>
@@ -528,19 +529,14 @@ const FeedItem = ({
           <Grid item>
             <HoverPopup userId={data.userId} profileSource={PROFILE_PAGE_SOURCE.POST}>
               <Box display="flex" alignItems="center">
-                <ButtonBase className={classes.avatar} onClick={handleUserClick}>
-                  <OnlineBadge
-                    isOnline={data.isOnline}
-                    bgColorPath="circleIn.palette.feedBackground"
-                    fromChat
-                  >
-                    <div className={classes.profileBackground}>
-                      <Avatar aria-label="Recipe" src={data.userProfileUrl}>
-                        {initials}
-                      </Avatar>
-                    </div>
-                  </OnlineBadge>
-                </ButtonBase>
+                <Avatar
+                  profileImage={data.userProfileUrl}
+                  fullName={data.name}
+                  isOnline={data.isOnline}
+                  fromChat
+                  onlineBadgeBackground={'circleIn.palette.feedBackground'}
+                  handleUserClick={handleUserClick}
+                />
                 <Box marginLeft={1}>
                   <CardActionArea
                     classes={{

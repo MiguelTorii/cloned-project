@@ -2,12 +2,12 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Action, Dispatch } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
-import { Avatar, Box, ListItem, ListItemAvatar } from '@material-ui/core';
+import { Box, ListItem, ListItemAvatar } from '@material-ui/core';
+
+import Avatar from 'components/Avatar';
 import { useStyles } from './HudChatStyles';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
-import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
-import { getInitials } from '../../utils/chat';
 import RoleBadge from '../../components/RoleBadge/RoleBadge';
 import HoverPopup from '../../components/HoverPopup/HoverPopup';
 import { Classmate } from '../../types/models';
@@ -53,11 +53,13 @@ const ChatMember = ({ memberId }: Props) => {
         }}
       >
         <ListItemAvatar>
-          <OnlineBadge isOnline={member.isOnline} bgColorPath="circleIn.palette.primaryBackground">
-            <Avatar alt={member.fullName} src={member.image}>
-              {getInitials(member.fullName)}
-            </Avatar>
-          </OnlineBadge>
+          <Avatar
+            isOnline={member.isOnline}
+            onlineBadgeBackground="circleIn.palette.primaryBackground"
+            profileImage={member.image}
+            fullName={member.fullName}
+            fromChat
+          />
         </ListItemAvatar>
         <Box
           display="flex"

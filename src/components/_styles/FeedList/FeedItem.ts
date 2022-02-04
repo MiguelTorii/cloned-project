@@ -40,7 +40,7 @@ export default makeStyles((theme: any) => ({
     paddingLeft: theme.spacing()
   },
   cardHighlight: {
-    backgroundColor: 'rgba(255,255,255,0.2)'
+    backgroundColor: theme.circleIn.palette.feedBackground
   },
   actions: {
     display: 'flex',
@@ -139,23 +139,6 @@ export default makeStyles((theme: any) => ({
     padding: 2,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5
-  },
-  avatar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    borderRadius: '50%'
-  },
-  profileBackground: {
-    backgroundColor: theme.circleIn.palette.profilebgColor,
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column'
   },
   tags: {
     display: 'flex',

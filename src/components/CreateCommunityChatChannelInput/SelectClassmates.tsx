@@ -15,11 +15,11 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Box from '@material-ui/core/Box';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Avatar from '@material-ui/core/Avatar';
 import CancelIcon from '@material-ui/icons/Cancel';
 import ClearIcon from '@material-ui/icons/Clear';
+
+import Avatar from 'components/Avatar';
 import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import RoleBadge from '../RoleBadge/RoleBadge';
 import type { SelectType } from '../../types/models';
 import styles from '../_styles/AutoComplete';
@@ -137,11 +137,13 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data, s
         {...innerProps}
       >
         <ListItemAvatar>
-          <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
-            <Avatar alt={initials} className={selectProps.classes.avatar} src={avatar}>
-              {initials}
-            </Avatar>
-          </OnlineBadge>
+          <Avatar
+            profileImage={avatar}
+            initials={initials}
+            onlineBadgeBackground="circleIn.palette.feedBackground"
+            isOnline={isOnline}
+            fromChat
+          />
         </ListItemAvatar>
         <ListItemText
           id={`id-${userId}`}
@@ -213,13 +215,7 @@ function MultiValue({ children, selectProps, isFocused, removeProps, data }) {
   if (avatar !== '' || initials !== '') {
     return (
       <Chip
-        avatar={
-          !searchClassmate ? (
-            <Avatar alt={initials} src={avatar}>
-              {initials}
-            </Avatar>
-          ) : null
-        }
+        avatar={!searchClassmate ? <Avatar profileImage={avatar} initials={initials} /> : null}
         tabIndex={-1}
         label={children}
         className={cx(searchClassmate ? classes.addClassmateChip : classes.chip, {

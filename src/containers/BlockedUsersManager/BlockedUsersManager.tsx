@@ -9,8 +9,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import { getInitials } from '../../utils/chat';
+
+import Avatar from 'components/Avatar';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { BlockedUsers } from '../../types/models';
@@ -153,9 +153,7 @@ class BlockedUsersManager extends React.PureComponent<Props, State> {
               {blockedUsers.map((user) => (
                 <ListItem key={user.userId} dense>
                   <ListItemAvatar>
-                    <Avatar alt={user.name} src={user.profileImageUrl}>
-                      {getInitials(user.name)}
-                    </Avatar>
+                    <Avatar profileImage={user.profileImageUrl} fullName={user.name} fromChat />
                   </ListItemAvatar>
                   <ListItemText primary={user.name} />
                   <ListItemSecondaryAction>

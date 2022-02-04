@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import parse from 'html-react-parser';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
@@ -19,12 +18,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import clsx from 'clsx';
+
+import Avatar from 'components/Avatar';
 import { apiDeleteMessage, editMessage } from '../../api/chat';
-import { getInitials } from '../../utils/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import EditFailedModal from '../EditFailedModal/EditFailedModal';
 import RoleBadge from '../RoleBadge/RoleBadge';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChatMessageItem } from '../../types/models';
@@ -297,9 +296,7 @@ const CommunityChatMessageItem = ({
               <Typography className={classes.title} color="textSecondary" gutterBottom>
                 <b>{firstName}</b> started a Study Room 🎉
               </Typography>
-              <Avatar alt={name} src={avatar}>
-                {getInitials(name)}
-              </Avatar>
+              <Avatar profileImage={avatar} fullName={name} fromChat />
             </CardContent>
             <CardActions
               classes={{
@@ -356,11 +353,13 @@ const CommunityChatMessageItem = ({
               from: PROFILE_PAGE_SOURCE.CHAT
             })}
           >
-            <OnlineBadge isOnline={isOnline} bgColorPath="circleIn.palette.feedBackground">
-              <Avatar alt={name} src={avatar}>
-                {getInitials(name)}
-              </Avatar>
-            </OnlineBadge>
+            <Avatar
+              isOnline={isOnline}
+              onlineBadgeBackground="circleIn.palette.feedBackground"
+              profileImage={avatar}
+              fullName={name}
+              fromChat
+            />
           </ListItemAvatar>
         )}
       </div>

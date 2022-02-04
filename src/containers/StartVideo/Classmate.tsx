@@ -5,14 +5,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import withWidth from '@material-ui/core/withWidth';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import clsx from 'clsx';
-import OnlineBadge from '../../components/OnlineBadge/OnlineBadge';
+
+import Avatar from 'components/Avatar';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/Classmate';
 import { buildPath } from '../../utils/helpers';
@@ -96,18 +96,13 @@ const Classmate = ({
           })}
           component={MyProfileLink}
         >
-          <OnlineBadge
+          <Avatar
             isOnline={(classmate as any).isOnline}
-            bgColorPath="circleIn.palette.feedBackground"
-          >
-            <Avatar
-              alt={`Avatar n°${classmate.userId}`}
-              className={classes.avatarProfile}
-              src={classmate.image}
-            >
-              {initials}
-            </Avatar>
-          </OnlineBadge>
+            onlineBadgeBackground="circleIn.palette.feedBackground"
+            profileImage={classmate.image}
+            initials={initials}
+            fromChat
+          />
         </Link>
       </ListItemAvatar>
       <ListItemText

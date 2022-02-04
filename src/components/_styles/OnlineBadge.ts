@@ -10,8 +10,8 @@ export default (theme) => {
     },
     badge: {
       position: 'absolute',
-      bottom: ({ fromChat }) => (fromChat ? 0 : 15),
-      right: ({ fromChat }) => (fromChat ? 0 : 15),
+      bottom: 0,
+      right: 0,
       width: ({ fromChat }) => (fromChat ? 11 : 24),
       height: ({ fromChat }) => (fromChat ? 11 : 24),
       boxShadow: (props) => `${get(theme, props.bgColorPath)} 0 0 0 ${props.fromChat ? 3 : 7}px`,
