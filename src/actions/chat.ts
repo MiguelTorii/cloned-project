@@ -2,7 +2,6 @@
 import uuidv4 from 'uuid/v4';
 import update from 'immutability-helper';
 import { Channel, Client } from 'twilio-chat';
-import isEmpty from 'lodash/isEmpty';
 import { push } from 'connected-react-router';
 import moment from 'moment';
 import {
@@ -615,8 +614,13 @@ export const handleInitChat =
       );
       await initLocalChannels(dispatch, local);
 
-      // Client stores event listener functions in ._events. Init only if it's an empty object
-      if (isEmpty((client as any)._events)) {
+      /**
+       * Client stores event listener functions in ._events.
+       * Listen to events only if there are no other events besides stateChanged, which is necessary to check when client has been initialized
+       */
+      if (
+        Object.keys((client as any)._events).filter((key) => key !== 'stateChanged').length === 0
+      ) {
         client.on('channelJoined', async (channel) => {
           const { sid } = channel;
           setTimeout(async () => {
