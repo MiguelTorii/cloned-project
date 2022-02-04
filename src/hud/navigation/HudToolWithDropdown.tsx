@@ -30,6 +30,7 @@ import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';
 import { openSupportWidget } from '../../utils/helpers';
+import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -38,6 +39,8 @@ type Props = {
 
 const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const classes: any = useStyles();
+  const highlightedButtonStyles = useHighlightedButtonStyles();
+
   const dispatch: Dispatch = useDispatch();
 
   const setHudArea = useHudRoutes();
@@ -107,7 +110,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
               ? classes.compactParentNavigationItem
               : classes.parentNavigationItem,
             isSelected && classes.selectedButton,
-            isRootHighlighted && classes.highlightedButton
+            isRootHighlighted && highlightedButtonStyles.animated
           )}
           onClick={onMenuClick}
         >
@@ -138,7 +141,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
               ? classes.compactParentNavigationItem
               : classes.parentNavigationItem,
             isSelected && classes.selectedButton,
-            isRootHighlighted && classes.highlightedButton
+            isRootHighlighted && highlightedButtonStyles.animated
           )}
           onClick={() => onMenuItemClick(parentNavigationItem.childTools[0].id)}
         >
@@ -194,7 +197,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
                 <MenuItem
                   className={clsx(
                     classes.childToolItem,
-                    isLeafHighlighted(childTool.id) && classes.highlightedButton
+                    isLeafHighlighted(childTool.id) && highlightedButtonStyles.animated
                   )}
                   onClick={() => onMenuItemClick(childTool.id)}
                 >

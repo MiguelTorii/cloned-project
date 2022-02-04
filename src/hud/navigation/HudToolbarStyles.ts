@@ -34,9 +34,6 @@ export const useStyles = makeStyles((theme: any) => ({
   selectedButton: {
     backgroundColor: theme.circleIn.palette.gray2
   },
-  highlightedButton: {
-    boxShadow: `0 0 0 ${theme.spacing(1)}px inset ${theme.circleIn.palette.success}`
-  },
   tooltip: {
     fontSize: 12
   }

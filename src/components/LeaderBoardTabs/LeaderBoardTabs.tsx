@@ -14,6 +14,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 
+import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
+
 import { useMediaQuery } from 'hooks';
 import withRoot from '../../withRoot';
 import Table from './table';
@@ -48,6 +50,7 @@ const LeaderBoardTabs = ({
   pushTo,
   updateGrandLeaderboards
 }) => {
+  const highlightedButtonClasses = useHighlightedButtonStyles();
   // On this page, scholarship tracker is called `grand board`.
   const showScholarshipTracker = useSelector(
     (state) => (state as any).campaign.showScholarshipTracker
@@ -259,7 +262,7 @@ const LeaderBoardTabs = ({
               onClick={selectedTab === 'grand' ? handleClickInfo : navigateToStore}
               className={cx(
                 classes.button,
-                isRewardsStoreHighlighted() && classes.highlightedButton
+                isRewardsStoreHighlighted() && highlightedButtonClasses.animated
               )}
             >
               {rewardButtonText}

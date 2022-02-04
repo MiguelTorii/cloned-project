@@ -5,14 +5,10 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.feedBackground,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    overflow: 'hidden'
+    justifyContent: 'space-between'
   },
   chatNavigation: {
     flexShrink: 0,
-    overflow: 'hidden'
-  },
-  mainNavigation: {
     overflow: 'hidden'
   },
   missionNavigation: {

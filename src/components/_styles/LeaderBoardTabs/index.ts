@@ -67,9 +67,6 @@ export const styles = (theme) => ({
     width: 150,
     marginLeft: 10
   },
-  highlightedButton: {
-    boxShadow: `0 0 0 ${theme.spacing(1)}px ${theme.circleIn.palette.success}`
-  },
   imgDialogContainer: {
     textAlign: 'center',
     width: '100%'

@@ -13,8 +13,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   appNavbar: {
     flexShrink: 0,
-    width: '100%',
-    overflow: 'hidden'
+    width: '100%'
   },
   appContent: {
     position: 'relative',

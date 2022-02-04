@@ -33,8 +33,5 @@ export const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     flexDirection: 'column',
     marginLeft: theme.spacing(1)
-  },
-  highlightedButtonGroup: {
-    boxShadow: `0 0 0 ${theme.spacing(1)}px ${theme.circleIn.palette.success}`
   }
 }));

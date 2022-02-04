@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import cx from 'classnames';
 import { useStyles } from './HudMissionsStyles';
+import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
 import { ReactComponent as IconWorkflow } from '../../assets/svg/ic_workflow.svg';
 import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_question.svg';
 import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
@@ -31,6 +32,7 @@ const ICON_SIZE = { width: '44px', height: '44px' };
 
 const HudStudyTools = () => {
   const classes: any = useStyles();
+  const highlightedButtonClasses = useHighlightedButtonStyles();
 
   const setHudArea = useHudRoutes();
 
@@ -101,7 +103,10 @@ const HudStudyTools = () => {
 
   return (
     <div
-      className={cx(classes.buttonGroup, highlightStudyToolGroup && classes.highlightedButtonGroup)}
+      className={cx(
+        classes.buttonGroup,
+        highlightStudyToolGroup && highlightedButtonClasses.animated
+      )}
     >
       <HudToolbar navbarItems={topStudyTools} onSelectItem={selectLeaf} />
       <HudToolbar navbarItems={bottomStudyTools} onSelectItem={selectLeaf} />

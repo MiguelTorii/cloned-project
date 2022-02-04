@@ -2,6 +2,7 @@ import React, { MouseEvent } from 'react';
 import { Button, Tooltip } from '@material-ui/core';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
+import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
 import { HudToolData } from './HudToolData';
 import { useStyles } from './HudToolbarStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
@@ -15,6 +16,7 @@ type Props = {
 
 const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => {
   const classes: any = useStyles();
+  const highlightedButton = useHighlightedButtonStyles();
 
   const highlightedNavigation = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation
@@ -30,7 +32,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
             classes.toolButton,
             isSelected && classes.selectedButton,
             isCompact && classes.toolButtonCompact,
-            isHighlighted && classes.highlightedButton
+            isHighlighted && highlightedButton.animated
           )}
           size="medium"
           onClick={(e) => onSelectItem(navbarItem.id, e)}
@@ -47,7 +49,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
             classes.toolButton,
             isSelected && classes.selectedButton,
             isCompact && classes.toolButtonCompact,
-            isHighlighted && classes.highlightedButton
+            isHighlighted && highlightedButton.animated
           )}
           size="medium"
           onClick={(e) => onSelectItem(navbarItem.id, e)}
@@ -63,7 +65,7 @@ const HudTool = ({ navbarItem, onSelectItem, isSelected, isCompact }: Props) => 
           classes.textIconButton,
           isSelected && classes.selectedButton,
           isCompact && classes.toolButtonCompact,
-          isHighlighted && classes.highlightedButton
+          isHighlighted && highlightedButton.animated
         )}
         onClick={(e) => onSelectItem(navbarItem.id, e)}
       >
