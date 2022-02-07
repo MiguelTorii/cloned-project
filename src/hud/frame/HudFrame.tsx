@@ -119,8 +119,10 @@ const HudFrame = () => {
           <HudControlPanel />
         </div>
 
+        {isShowingOnboardingPopup && <OnboardingModal />}
+
         {isShowingOnboardingPopup ? (
-          <OnboardingModal />
+          <div className={cx(classes.appContent, classes.standardAppContent)} />
         ) : (
           <div
             className={cx(
