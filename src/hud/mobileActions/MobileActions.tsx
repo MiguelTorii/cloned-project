@@ -10,7 +10,6 @@ import {
   Popover
 } from '@material-ui/core';
 import IconAdd from '@material-ui/icons/Add';
-import useStyles from './MobileActionsStyles';
 import { HudToolData } from '../navigation/HudToolData';
 import {
   ASK_A_QUESTION_AREA,
@@ -31,6 +30,8 @@ import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_questi
 import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
 import useHudRoutes from '../frame/useHudRoutes';
 
+import useStyles from './MobileActionsStyles';
+
 const ICON_SIZE = { width: '24px', height: '24px' };
 
 const actionItems: HudToolData[] = [
@@ -41,7 +42,7 @@ const actionItems: HudToolData[] = [
   },
   {
     id: CREATE_A_POST_AREA,
-    displayName: 'Create a Post',
+    displayName: 'Write a Post',
     icon: <ActiveCreatePost style={ICON_SIZE} />
   },
   {
@@ -110,7 +111,7 @@ const MobileActions = () => {
         {actionItems.map((item) => (
           <MenuItem key={item.id} onClick={() => handleClickMenuItem(item.id)}>
             <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.displayName} />
+            <ListItemText className={classes.actionText} primary={item.displayName} />
           </MenuItem>
         ))}
       </Menu>

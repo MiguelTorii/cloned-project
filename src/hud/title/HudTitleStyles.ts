@@ -9,6 +9,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   largeTitle: {
     fontWeight: 700,
-    fontSize: 28
+    fontSize: 28,
+    textTransform: 'capitalize'
   }
 }));

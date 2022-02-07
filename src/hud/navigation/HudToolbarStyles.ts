@@ -35,6 +35,7 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: theme.circleIn.palette.gray2
   },
   tooltip: {
-    fontSize: 12
+    fontSize: 12,
+    textTransform: 'capitalize'
   }
 }));

@@ -17,7 +17,6 @@ import ActiveCreatePost from '../../assets/svg/ic_create_a_post.svg';
 import IconNote from '../../assets/svg/notes-1.svg';
 import IconResource from '../../assets/svg/ic_share_a_resource.svg';
 import Tooltip from '../Tooltip/Tooltip';
-import useStyles from './styles';
 import { CampaignState } from '../../reducers/campaign';
 import { UserState } from '../../reducers/user';
 import useHudRoutes from '../../hud/frame/useHudRoutes';
@@ -29,6 +28,8 @@ import {
   SHARE_RESOURCES_AREA,
   STUDY_TOOLS_MAIN_AREA
 } from '../../hud/navigationState/hudNavigation';
+
+import useStyles from './styles';
 
 const ICON_SIZE = { width: '36px', height: '36px' };
 

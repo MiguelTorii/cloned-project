@@ -92,7 +92,7 @@ const HudMainNavigation = () => {
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Create a Post',
+      displayName: 'Write a Post',
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {

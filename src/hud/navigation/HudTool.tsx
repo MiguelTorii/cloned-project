@@ -4,8 +4,9 @@ import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
 import { HudToolData } from './HudToolData';
-import { useStyles } from './HudToolbarStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+
+import { useStyles } from './HudToolbarStyles';
 
 type Props = {
   navbarItem: HudToolData;

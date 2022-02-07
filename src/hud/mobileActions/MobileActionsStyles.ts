@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(2),
     bottom: 75,
     zIndex: 2
+  },
+  actionText: {
+    textTransform: 'capitalize'
   }
 }));
 

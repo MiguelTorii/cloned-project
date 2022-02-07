@@ -76,7 +76,7 @@ class ProfilePosts extends React.PureComponent<Props> {
         <div className={cx(classes.container, classes.nothing)}>
           <Typography variant="h6" color="textPrimary" align="center">
             {isMyProfile
-              ? 'You do not have any posts yet. Once you create a post you can come back here to view them'
+              ? 'You do not have any posts yet. Once you write a post you can come back here to view them'
               : "Please check back later. They haven't created any posts yet."}
           </Typography>
         </div>

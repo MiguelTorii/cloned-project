@@ -66,7 +66,7 @@ const HudStudyTools = () => {
     {
       id: SHARE_NOTES_AREA,
       displayName:
-        'Notes: Add your custom class notes and resources to keep everything in one place',
+        'Share Notes: Add your custom class notes and resources to keep everything in one place',
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {

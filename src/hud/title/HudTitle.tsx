@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
-import { useStyles } from './HudTitleStyles';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+
+import { useStyles } from './HudTitleStyles';
 
 const subAreaToTitle = {
   ABOUT_ME_AREA: null,
@@ -11,7 +12,7 @@ const subAreaToTitle = {
   CHAT_AREA: null,
   CLASSES_AREA: 'Classes',
   FEEDS_AREA: 'Class Feeds',
-  CREATE_A_POST_AREA: 'Create a Post',
+  CREATE_A_POST_AREA: 'Write a Post',
   ASK_A_QUESTION_AREA: 'Ask a Question',
   SHARE_NOTES_AREA: 'Share Notes',
   SHARE_RESOURCES_AREA: 'Share Resources',
