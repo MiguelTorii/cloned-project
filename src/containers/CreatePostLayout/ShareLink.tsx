@@ -14,7 +14,7 @@ import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import postingImage from '../../assets/gif/loading-rocket.gif';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { SelectType } from '../../types/models';
+import type { SelectType, ClassSectionIds } from 'types/models';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import LinkPreview from '../../components/LinkPreview/LinkPreview';
@@ -101,6 +101,7 @@ type Props = {
   classList?: any;
   handleAfterCreation: (path: string) => void;
   sectionId: number;
+  onSetClass?: (classData: ClassSectionIds) => void;
 };
 
 type State = {
@@ -213,7 +214,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         userClasses: { classList: classes }
       },
       sharelinkId,
-      handleAfterCreation
+      handleAfterCreation,
+      onSetClass
     } = this.props;
 
     try {
@@ -221,6 +223,14 @@ class CreateShareLink extends React.PureComponent<Props, State> {
         userId,
         sharelinkId
       });
+
+      if (onSetClass) {
+        onSetClass({
+          classId: shareLink.classId,
+          sectionId: shareLink.sectionId
+        });
+      }
+
       const userClasses = processClasses({
         classes,
         segment

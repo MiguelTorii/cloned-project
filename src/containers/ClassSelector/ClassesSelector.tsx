@@ -186,6 +186,8 @@ const ClassesSelector = ({
     return 'Oops, there was an error loading your data, please try again.';
   }
 
+  const selectedOption = userClasses.find((classData) => classData.value === value);
+
   return (
     <>
       <ErrorBoundary>
@@ -202,6 +204,7 @@ const ClassesSelector = ({
               options={userClasses}
               getOptionLabel={(option) => option.label}
               onChange={handleChange}
+              value={selectedOption}
               renderOption={(option) => (
                 <div className={classes.optionItem}>
                   {value === option.value ? (
@@ -212,21 +215,27 @@ const ClassesSelector = ({
                   <span>{option.label}</span>
                 </div>
               )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="filled"
-                  placeholder="Choose a class"
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <InputAdornment className={classes.classIcon} position="start">
-                        <ClassFeedIcon />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              )}
+              renderInput={(params) => {
+                if (!(params.inputProps as any).value && selectedOption) {
+                  (params.inputProps as any).value = selectedOption.label;
+                }
+
+                return (
+                  <TextField
+                    {...params}
+                    variant="filled"
+                    placeholder="Choose a class"
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment className={classes.classIcon} position="start">
+                          <ClassFeedIcon />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                );
+              }}
             />
           </FormControl>
         </div>

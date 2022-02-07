@@ -20,6 +20,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { CampaignState } from '../../reducers/campaign';
+import { ClassSectionIds } from 'types/models';
 
 const styles = (theme) => ({
   stackbar: {
@@ -82,6 +83,7 @@ type Props = {
   classId?: number;
   sectionId?: number;
   handleAfterCreation: (path: string) => void;
+  onSetClass?: (classData: ClassSectionIds) => void;
 };
 
 const CreateQuestion = ({
@@ -98,7 +100,8 @@ const CreateQuestion = ({
   classId: currentSelectedClassId,
   sectionId: currentSelectedSectionId,
   setIsPosting,
-  handleAfterCreation
+  handleAfterCreation,
+  onSetClass
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -138,6 +141,14 @@ const CreateQuestion = ({
       userId,
       questionId
     });
+
+    if (onSetClass) {
+      onSetClass({
+        classId: question.classId,
+        sectionId: question.sectionId
+      });
+    }
+
     const uc = processClasses({
       classes: userClasses.classList,
       segment

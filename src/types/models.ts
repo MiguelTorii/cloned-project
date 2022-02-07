@@ -658,3 +658,7 @@ export type TMission = {
   link: string;
   label: string;
 };
+export type ClassSectionIds = {
+  classId: number;
+  sectionId: number;
+};

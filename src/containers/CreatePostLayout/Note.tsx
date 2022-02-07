@@ -18,7 +18,7 @@ import RichTextEditor from '../RichTextEditor/RichTextEditor';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
-import type { SelectType } from '../../types/models';
+import type { SelectType, ClassSectionIds } from 'types/models';
 import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from '../../api/posts';
 import * as notificationsActions from '../../actions/notifications';
 import { logEventLocally } from '../../api/analytics';
@@ -130,6 +130,7 @@ type Props = {
   setIsPosting: any;
   handleAfterCreation: (path: string) => void;
   sectionId: number;
+  onSetClass?: (classData: ClassSectionIds) => void;
 };
 
 type State = {
@@ -247,7 +248,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
         userClasses: { classList: classes }
       },
       noteId,
-      handleAfterCreation
+      handleAfterCreation,
+      onSetClass
     } = this.props;
 
     try {
@@ -262,6 +264,14 @@ class CreateNotes extends React.PureComponent<Props, State> {
         userId,
         noteId: noteId
       });
+
+      if (onSetClass) {
+        onSetClass({
+          classId: photoNote.classId,
+          sectionId: photoNote.sectionId
+        });
+      }
+
       const userClasses = processClasses({
         classes,
         segment

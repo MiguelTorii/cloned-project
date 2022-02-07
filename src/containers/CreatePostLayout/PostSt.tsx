@@ -17,6 +17,7 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { ClassSectionIds } from 'types/models';
 
 const styles = (theme) => ({
   stackbar: {
@@ -79,6 +80,7 @@ type Props = {
   classId?: any;
   sectionId?: number;
   handleAfterCreation: (path: string) => void;
+  onSetClass?: (classData: ClassSectionIds) => void;
 };
 
 const CreatePostSt = ({
@@ -95,7 +97,8 @@ const CreatePostSt = ({
   classId: currentSelectedClassId,
   sectionId: currentSelectedSectionId,
   setIsPosting,
-  handleAfterCreation
+  handleAfterCreation,
+  onSetClass
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -137,6 +140,15 @@ const CreatePostSt = ({
       userId,
       postId
     });
+
+    // Update class info of parent component with loaded post data.
+    if (onSetClass) {
+      onSetClass({
+        classId: post.classId,
+        sectionId: post.sectionId
+      });
+    }
+
     const uc = processClasses({
       classes: userClasses.classList,
       segment

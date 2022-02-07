@@ -324,6 +324,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 postId={postId}
                 setIsPosting={(val) => setIsPosting(val)}
                 handleAfterCreation={handleAfterCreation}
+                onSetClass={handleClassChange}
               />
             </TabPanel>
             <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)}>
@@ -335,6 +336,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 questionId={questionId}
                 setIsPosting={(val) => setIsPosting(val)}
                 handleAfterCreation={handleAfterCreation}
+                onSetClass={handleClassChange}
               />
             </TabPanel>
             <TabPanel key="share-note" value={value} index={2} {...a11yProps(2)}>
@@ -346,6 +348,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 noteId={noteId}
                 setIsPosting={(val) => setIsPosting(val)}
                 handleAfterCreation={handleAfterCreation}
+                onSetClass={handleClassChange}
               />
             </TabPanel>
             <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)}>
@@ -356,6 +359,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 sectionId={sectionId}
                 sharelinkId={sharelinkId}
                 handleAfterCreation={handleAfterCreation}
+                onSetClass={handleClassChange}
               />
             </TabPanel>
           </div>
