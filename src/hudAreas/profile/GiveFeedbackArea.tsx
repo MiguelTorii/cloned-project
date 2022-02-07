@@ -29,6 +29,7 @@ const GiveFeedback = () => {
       setError('Failed to send Feedback');
     } else {
       setIsSuccessModalOpen(true);
+      setFeedback('');
     }
   }, [feedback, origin]);
 
