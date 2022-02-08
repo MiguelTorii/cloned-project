@@ -16,6 +16,8 @@ import FloatingMainChat from '../../components/FloatingChat/FloatingMainChat';
 import * as OnboardingActions from '../../actions/onboarding';
 import * as chatActions from '../../actions/chat';
 import { updateTitle } from '../../actions/web-notifications';
+import { useAppSelector } from 'redux/store';
+import { selectChannelList, selectUnread } from 'redux/chat/selectors';
 import { enqueueSnackbar } from '../../actions/notifications';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
@@ -108,8 +110,8 @@ const FloatingChat = ({
   const dispatch = useDispatch();
 
   const [createChannel, setCreateChat] = useState(null);
-  const [unread, setUnread] = useState(0);
-  const [channelList, setChannelList] = useState([]);
+  const channelList = useAppSelector(selectChannelList);
+
   const {
     isLoading,
     data: {
@@ -213,39 +215,12 @@ const FloatingChat = ({
     return content;
   };
 
+  const unread = useAppSelector(selectUnread);
+
   const isHud: boolean | null = useSelector(
     (state: { campaign: CampaignState }) => state.campaign.hud
   );
 
-  useEffect(() => {
-    if (local) {
-      let unread = 0;
-      const cl = Object.keys(local)
-        .filter(
-          (l) =>
-            // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
-            local[l].sid &&
-            !(local[l]?.twilioChannel as any)?.channelState?.attributes?.community_id
-        )
-        .sort((a, b) => {
-          if (!local[a].lastMessage.message) {
-            return 0;
-          }
-
-          return (
-            moment(local[b].lastMessage.date).valueOf() -
-            moment(local[a].lastMessage.date).valueOf()
-          );
-        });
-      setChannelList(cl);
-      cl.forEach((l) => {
-        if (local[l]?.unread) {
-          unread += local[l].unread;
-        }
-      });
-      setUnread(unread);
-    }
-  }, [local]);
   const [prevMessageId, setPrevMessageId] = useState('');
   useEffect(() => {
     const handleMessage = () => {

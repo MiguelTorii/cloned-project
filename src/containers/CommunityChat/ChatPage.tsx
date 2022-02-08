@@ -1,23 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import moment from 'moment';
 import Box from '@material-ui/core/Box';
-import { getCommunities, getCommunityChannels } from '../../api/community';
-import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
-import DirectChat from './DirectChat';
-import CollageList from './CollageList';
-import CommunityChat from './CommunityChat';
-import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
-import useStyles from './_styles/styles';
-import { CampaignState } from '../../reducers/campaign';
-import { ChatState } from '../../reducers/chat';
+
 import {
   setCommunitiesAction,
   setCommunityChannelsAction,
   setCurrentCommunityAction,
   setCurrentCommunityIdAction,
   setCurrentChannelSidAction
-} from '../../actions/chat';
+} from 'actions/chat';
+import { selectUnread } from 'redux/chat/selectors';
+import { useAppSelector } from 'redux/store';
+import { getCommunities, getCommunityChannels } from 'api/community';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import { CampaignState } from 'reducers/campaign';
+import { ChatState } from 'reducers/chat';
+
+import DirectChat from './DirectChat';
+import CollageList from './CollageList';
+import CommunityChat from './CommunityChat';
+import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
+import useStyles from './_styles/styles';
 
 const ChatPage = () => {
   const classes: any = useStyles();
@@ -34,11 +37,11 @@ const ChatPage = () => {
       currentCommunityId,
       oneTouchSendOpen,
       currentCommunityChannel
-    },
-    isLoading
+    }
   } = useSelector((state: { chat: ChatState }) => state.chat);
 
-  const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
+  const unread = useAppSelector(selectUnread);
+
   const [loading, setLoading] = useState<boolean>(false);
 
   // TODO CHAT_REFACTOR: Move logic into a chat hook
@@ -102,31 +105,6 @@ const ChatPage = () => {
     fetchCommunities();
   }, []);
 
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
-  useEffect(() => {
-    if (!isLoading && !!Object.keys(local).length) {
-      let count = 0;
-      const channelList = Object.keys(local)
-        .filter((l) => local[l].sid)
-        .sort((a, b) => {
-          if (local[a].lastMessage.message === '') {
-            return 0;
-          }
-
-          return (
-            moment(local[b].lastMessage.date).valueOf() -
-            moment(local[a].lastMessage.date).valueOf()
-          );
-        });
-      channelList.forEach((key) => {
-        if (local[key]?.unread) {
-          count += local[key].unread;
-        }
-      });
-      setUnreadMessageCount(count);
-    }
-  }, [local, isLoading]);
-
   const handleSelect = useCallback(
     (course) => {
       if (course.id !== currentCommunity?.id) {
@@ -170,7 +148,7 @@ const ChatPage = () => {
     <div className={classes.root}>
       <Box className={classes.collageList}>
         <CollageList
-          unreadMessageCount={unreadMessageCount}
+          unreadMessageCount={unread}
           communities={communities}
           communityChannels={communityChannels}
           handleSelect={handleSelect}

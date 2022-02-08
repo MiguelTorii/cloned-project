@@ -15,6 +15,8 @@ import useIconClasses from 'components/_styles/Icons';
 import LeftMenu from './LeftMenu';
 import RightMenu from './RightMenu';
 import Main from './Main';
+import { selectChannelList } from 'redux/chat/selectors';
+import { useAppSelector } from 'redux/store';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
 import useStyles from './_styles/directChat';
@@ -55,10 +57,11 @@ const DirectChat = ({ width }: Props) => {
     (state: { onboarding: OnboardingState }) => state.onboarding.onboardingList.visible
   );
 
+  const channelList = useAppSelector(selectChannelList);
+
   const [leftSpace, setLeftSpace] = useState(2);
   const [rightSpace, setRightSpace] = useState(0);
   const [prevWidth, setPrevWidth] = useState(null);
-  const [channelList, setChannelList] = useState([]);
   const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
     channelId: string;
     lastIndex: number;
@@ -133,24 +136,6 @@ const DirectChat = ({ width }: Props) => {
     [width]
   );
 
-  useEffect(() => {
-    const channelList = Object.keys(local)
-      .filter(
-        (l) =>
-          // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
-          local[l]?.sid && !(local[l]?.twilioChannel as any)?.channelState?.attributes?.community_id
-      )
-      .sort((a, b) => {
-        if (local[a].lastMessage.message === '') {
-          return 0;
-        }
-
-        return (
-          moment(local[b].lastMessage.date).valueOf() - moment(local[a].lastMessage.date).valueOf()
-        );
-      });
-    setChannelList(channelList);
-  }, [local]);
   useEffect(() => {
     if (width !== prevWidth) {
       if (['xs', 'sm', 'md'].includes(width)) {
