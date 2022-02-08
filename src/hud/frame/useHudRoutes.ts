@@ -58,6 +58,7 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/share': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   [EDIT_POST_PATHNAME_PREFIX]: { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
+  '/notes/': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/sharelink': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
   '/edit/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
