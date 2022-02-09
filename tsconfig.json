@@ -1,23 +1,25 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
-    "lib": ["es6", "dom", "dom.iterable"],
+    "target": "es2020",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    // TODO REMOVE AND ADD ALL TYPES
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "es2020",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "target": "es6",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true
+    "types": ["vite-plugin-svgr/client", "jest"],
+    "baseUrl": "src"
   },
-  "include": ["src", "src/@types"]
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

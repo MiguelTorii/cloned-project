@@ -1,9 +1,11 @@
 import React from 'react';
 import { useLocation } from 'react-router';
+
 import Box from '@material-ui/core/Box';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/es/hooks';
+
 import IconEye from '../../assets/svg/icon-eye-gray.svg';
 import IconBookmark from '../../assets/svg/icon-bookmark-gray.svg';
 import IconThreeDots from '../../assets/svg/icon-dots-gray.svg';
@@ -26,6 +28,12 @@ type Props = {
 const ActionBar = ({ isOwn, bookmarked, onViewEdit, onBookmark, onShareLink, onDelete }: Props) => {
   const classes: any = useStyles();
   const { search } = useLocation();
+
+  const popupState = usePopupState({
+    variant: 'popover',
+    popupId: 'actionBar'
+  });
+
   return (
     <Box display="flex" justifyContent="space-between" className={classes.actionBar}>
       <ActionItem
@@ -41,36 +49,30 @@ const ActionBar = ({ isOwn, bookmarked, onViewEdit, onBookmark, onShareLink, onD
         active={bookmarked}
         onClick={onBookmark}
       />
-      <PopupState variant="popover">
-        {(popupState) => (
-          <>
-            <div {...bindTrigger(popupState)}>
-              <ActionItem icon={IconThreeDots} activeIcon={IconDotsGradient} text="More" />
-            </div>
-            <Menu {...bindMenu(popupState)}>
-              <MenuItem
-                onClick={() => {
-                  popupState.close();
-                  onShareLink();
-                }}
-              >
-                Share Link
-              </MenuItem>
-              {isOwn && (
-                <MenuItem
-                  className={classes.reportText}
-                  onClick={() => {
-                    popupState.close();
-                    onDelete();
-                  }}
-                >
-                  Delete Flashcard Deck
-                </MenuItem>
-              )}
-            </Menu>
-          </>
+      <div {...bindTrigger(popupState)}>
+        <ActionItem icon={IconThreeDots} activeIcon={IconDotsGradient} text="More" />
+      </div>
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem
+          onClick={() => {
+            popupState.close();
+            onShareLink();
+          }}
+        >
+          Share Link
+        </MenuItem>
+        {isOwn && (
+          <MenuItem
+            className={classes.reportText}
+            onClick={() => {
+              popupState.close();
+              onDelete();
+            }}
+          >
+            Delete Flashcard Deck
+          </MenuItem>
         )}
-      </PopupState>
+      </Menu>
     </Box>
   );
 };
