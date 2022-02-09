@@ -50,6 +50,7 @@ import useOnboarding from '../storyState/useOnboarding';
 
 let onboardingPopupTriggered = false;
 import UserDialog from '../../containers/UserDialog/UserDialog';
+import WebNotification from 'containers/WebNotifications';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -177,6 +178,7 @@ const HudFrame = () => {
           <MobileActions />
         </Hidden>
       </div>
+      <WebNotification />
     </main>
   );
 };
