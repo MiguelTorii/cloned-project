@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import Typography from '@material-ui/core/Typography';
+import moment from 'moment';
 import { workflowCategories } from '../../constants/common';
 import WorkflowEdit from './WorkflowEdit';
 import Dialog from '../Dialog/Dialog';
@@ -99,14 +100,14 @@ const CalendarView = () => {
   }, [doubleClick]);
   const onDateClick = useCallback(
     (e) => {
-      const { dateStr } = e;
+      const standardDate = moment(e.dateStr).format('MM/DD/YYYY');
 
       if (!doubleClick) {
-        setDoubleClick(dateStr);
+        setDoubleClick(standardDate);
         setTimeout(() => setDoubleClick(null), 1000);
       }
 
-      if (doubleClick === dateStr) {
+      if (doubleClick === standardDate) {
         addTask();
       }
     },
