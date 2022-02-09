@@ -25,6 +25,6 @@ node -v
 To install and build the project:
 
 ```sh
-yarn install
-yarn start
+yarn
+yarn dev
 ```
