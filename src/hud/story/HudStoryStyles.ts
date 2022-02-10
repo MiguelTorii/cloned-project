@@ -76,14 +76,15 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   closeIcon: {
     position: 'absolute',
-    top: 0,
+    top: 2,
     right: 5,
     // TODO: Fix breakpoints, broken for Dialog, update MUI
     // Issue: https://github.com/mui-org/material-ui/issues/21745
     [theme.breakpoints.down(600)]: {
       top: ICON_WIDTH_PX / 2
     },
-    color: theme.circleIn.palette.primaryText2,
+    color: theme.circleIn.palette.primaryBackground,
+    cursor: 'pointer',
     zIndex: 2,
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1 / 2),
