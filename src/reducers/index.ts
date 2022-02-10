@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { connectRouter, go, goBack, goForward, push, replace } from 'connected-react-router';
-import type { History } from 'history';
+import type { BrowserHistory } from 'history';
 import user from './user';
 import chat from './chat';
 import feed from './feed';
@@ -47,5 +47,5 @@ const reducers = {
   hudRightPanel
 };
 export type Reducers = typeof reducers;
-export default (history: History) =>
+export default (history: BrowserHistory) =>
   combineReducers({ ...reducers, router: connectRouter(history) });

@@ -21,7 +21,7 @@ then
   exit 0
 fi
 
-if [ -z $REACT_APP_SENTRY_ENV ]
+if [ -z $REACT_APP_SENTRY_ENV ] 
 then
 export SENTRY_ENV=prod
 else
@@ -29,7 +29,7 @@ export SENTRY_ENV=$REACT_APP_SENTRY_ENV
 fi
 
 echo $1
-REACT_APP_STAGE=$1 yarn build
+DISABLE_ESLINT_PLUGIN=true REACT_APP_STAGE=$1 GENERATE_SOURCEMAP=true react-scripts --max_old_space_size=8192 build
 
 # install sentry cli
 echo "Installing and configuring sentry cli"
@@ -44,10 +44,9 @@ yarn run sentry-cli releases new ${REACT_APP_SENTRY_RELEASE}
 echo "Link deploy to release"
 yarn run sentry-cli releases deploys ${REACT_APP_SENTRY_RELEASE} new -e ${SENTRY_ENV}
 echo "Uploading source maps"
-# Vite has option to build with sourcemaps, is this necessary now?
 if [ -d build ]; then
   yarn run sentry-cli releases files ${REACT_APP_SENTRY_RELEASE} upload-sourcemaps build/static/js/ --rewrite --url-prefix '~/static/js' || true
-else
+else 
   echo "No build dir"
 fi
 echo "Finalizing release"

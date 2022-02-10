@@ -34,10 +34,9 @@ module.exports = {
         // 'no-restricted-imports': [
         //   'error',
         //   {
-        //     patterns: ['features/*/*']
+        //     patterns: ['@/features/*/*']
         //   }
         // ],
-        '@typescript-eslint/no-explicit-any': ['warn'],
         'linebreak-style': ['error', 'unix'],
         // TODO turn this on once we can use typescript to generate the prop types
         'react/prop-types': 'off',
@@ -112,6 +111,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': ['off'],
         '@typescript-eslint/explicit-module-boundary-types': ['off'],
         '@typescript-eslint/no-empty-function': ['off'],
+        '@typescript-eslint/no-explicit-any': ['off'],
 
         'prettier/prettier': ['error', {}, { usePrettierrc: true }],
 

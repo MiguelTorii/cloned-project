@@ -10,7 +10,7 @@ const AnimateOnChange = ({
   children
 }: {
   current: number;
-  previous?: number;
+  previous: number;
   className?: ClassValue;
   animationStyles: string;
   handleAnimationStart?: () => void;

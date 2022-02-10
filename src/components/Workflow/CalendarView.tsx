@@ -1,7 +1,4 @@
 import React, { useContext, useRef, useEffect, useState, useCallback } from 'react';
-// TODO Vite issue
-// https://github.com/fullcalendar/fullcalendar-react/issues/150
-import '@fullcalendar/react/dist/vdom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
