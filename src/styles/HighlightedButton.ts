@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme: any) => ({
   animated: {
     animation: '$pulse 2s infinite',
     position: 'relative',
-    '&:before': {
+    '&:after': {
       zIndex: 2,
       content: '""',
       position: 'absolute',
@@ -15,7 +15,8 @@ export const useStyles = makeStyles((theme: any) => ({
       bottom: 0,
       left: 0,
       right: 0,
-      boxShadow: `0 0 0 5px inset ${theme.circleIn.palette.success}`
+      boxShadow: `0 0 0 5px inset ${theme.circleIn.palette.success}`,
+      pointerEvents: 'none'
     }
   },
   '@keyframes pulse': {
