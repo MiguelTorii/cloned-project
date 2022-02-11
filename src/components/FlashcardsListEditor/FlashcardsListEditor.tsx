@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import { useCallback, useContext, memo } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { useHotkeys } from 'react-hotkeys-hook';
-import OutsideClickHandler from 'react-outside-click-handler';
+import { useClickOutside } from '@mantine/hooks';
 import useStyles from './styles';
 import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
 import FlashcardEditor from './FlashcardEditor';
@@ -26,7 +26,7 @@ type Props = {
   onUpdateFlashcardField?: any;
 };
 
-const FlashcardsListEditor = ({
+const FlashcardsListEditorComponent = ({
   data,
   readOnly,
   toolbarPrefix,
@@ -165,11 +165,15 @@ const FlashcardsListEditor = ({
       card: null
     });
   }, [readOnly]);
+
+  const ref = useClickOutside(handleOutsideClick);
+
   // Handle Shortcut keys
   useHotkeys('Tab', handleGoToNextCard, {}, [handleGoToNextCard]);
   useHotkeys('Shift+Tab', handleGoToPrevCard, {}, [handleGoToPrevCard]);
+
   return (
-    <OutsideClickHandler onOutsideClick={handleOutsideClick}>
+    <div ref={ref}>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="droppable">
           {(provided) => (
@@ -216,19 +220,28 @@ const FlashcardsListEditor = ({
           <AddDeckButton onClick={handleAddNewDeck} />
         </Box>
       )}
-    </OutsideClickHandler>
+    </div>
   );
 };
 
-FlashcardsListEditor.propTypes = {
-  data: PropTypes.arrayOf,
+FlashcardsListEditorComponent.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      answer: PropTypes.string,
+      answerImage: PropTypes.string,
+      id: PropTypes.number,
+      question: PropTypes.string,
+      questionImage: PropTypes.string
+    })
+  ),
   onUpdate: PropTypes.func,
   onUpdateFlashcardField: PropTypes.func,
   onSetRef: PropTypes.func,
   readOnly: PropTypes.bool,
   toolbarPrefix: PropTypes.string
 };
-FlashcardsListEditor.defaultProps = {
+
+FlashcardsListEditorComponent.defaultProps = {
   data: [],
   onUpdate: () => {},
   onUpdateFlashcardField: () => {},
@@ -236,8 +249,11 @@ FlashcardsListEditor.defaultProps = {
   readOnly: false,
   toolbarPrefix: ''
 };
-export default (props) => (
+
+const FlashcardsListEditor = memo((props: Props) => (
   <FlashcardListContextProvider>
-    <FlashcardsListEditor {...props} />
+    <FlashcardsListEditorComponent {...props} />
   </FlashcardListContextProvider>
-);
+));
+
+export default FlashcardsListEditor;

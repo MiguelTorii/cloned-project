@@ -187,8 +187,22 @@ const FlashcardEditor = ({
 FlashcardEditor.propTypes = {
   index: PropTypes.number.isRequired,
   inViewport: PropTypes.bool,
-  data: PropTypes.shape,
-  dndProps: PropTypes.shape,
+  data: PropTypes.shape({
+    answer: PropTypes.string,
+    answerImage: PropTypes.string,
+    id: PropTypes.number,
+    question: PropTypes.string,
+    questionImage: PropTypes.string
+  }),
+  dndProps: PropTypes.shape({
+    'aria-describedby': PropTypes.string.isRequired,
+    'data-rbd-drag-handle-context-id': PropTypes.string.isRequired,
+    'data-rbd-drag-handle-draggable-id': PropTypes.string.isRequired,
+    draggable: PropTypes.bool.isRequired,
+    onDragStart: PropTypes.func.isRequired,
+    role: PropTypes.string.isRequired,
+    tabIndex: PropTypes.number.isRequired
+  }),
   readOnly: PropTypes.bool,
   toolbarPrefix: PropTypes.string,
   onDelete: PropTypes.func,

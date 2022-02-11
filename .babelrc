@@ -1,7 +1,15 @@
 {
-    "env": {
-      "test": {
-        "plugins": ["@babel/plugin-transform-modules-commonjs"]
+  "presets": [
+    "babel-preset-vite",
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
       }
-    }
-  }
+    ]
+  ]
+}

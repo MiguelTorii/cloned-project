@@ -354,6 +354,11 @@ let theme = createTheme({
       popper: {
         zIndex: 1250
       }
+    },
+    MuiMenuItem: {
+      root: {
+        fontSize: '2rem'
+      }
     }
   }
 });

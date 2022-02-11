@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Avatar as MuiAvatar, Typography } from '@material-ui/core';
+import { Avatar as MuiAvatar, Box } from '@material-ui/core';
 
 import { UserAvatar } from 'types/models';
 import OnlineBadge from 'components/OnlineBadge';
@@ -35,11 +35,11 @@ const Avatar = ({
   const userName = initials ? initials : getInitials(fullName);
 
   const renderAvatar = () => (
-    <Typography onClick={handleUserClick} className={classes.profileBackground}>
+    <Box onClick={handleUserClick} className={classes.profileBackground}>
       <div className={classes.avatarContainer}>
         {profileImage ? <MuiAvatar className={classes.profileImage} src={avatarUrl} /> : userName}
       </div>
-    </Typography>
+    </Box>
   );
 
   return hasOnlineBadge || onlineBadgeBackground ? (

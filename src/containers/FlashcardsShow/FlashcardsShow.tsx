@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import _ from 'lodash';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import update from 'immutability-helper';
@@ -25,6 +24,8 @@ import IconNote from '@material-ui/icons/LibraryBooks';
 import IconBack from '@material-ui/icons/ArrowBackIos';
 import Link from '@material-ui/core/Link';
 import { useHotkeys } from 'react-hotkeys-hook';
+import isEmpty from 'lodash/isEmpty';
+import truncate from 'lodash/truncate';
 
 import Avatar from 'components/Avatar';
 import { getFlashcards } from '../../api/posts';
@@ -306,10 +307,6 @@ const FlashcardsShow = () => {
   const handleGoBack = useCallback(() => {
     dispatch(goBack());
   }, [dispatch]);
-  const DeckList = useMemo(
-    () => <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />,
-    [cardList]
-  );
   // Prevent page down from `Space`
   useEffect(() => {
     const eventListener = (event) => {
@@ -326,7 +323,7 @@ const FlashcardsShow = () => {
   useHotkeys('Right', handleNextDeck, {}, [handleNextDeck]);
 
   // Rendering
-  if (_.isEmpty(data) || isLoadingFlashcards) {
+  if (isEmpty(data) || isLoadingFlashcards) {
     return <LoadingSpin />;
   }
 
@@ -392,7 +389,7 @@ const FlashcardsShow = () => {
           })`}
         </Typography>
       </Box>
-      {DeckList}
+      <FlashcardsListEditor data={cardList} toolbarPrefix="show" readOnly />
     </>
   );
 
@@ -524,7 +521,7 @@ const FlashcardsShow = () => {
           </Typography>
           <Typography>
             {isShortSummary
-              ? _.truncate(data.summary, {
+              ? truncate(data.summary, {
                   length: 50
                 })
               : data.summary}
