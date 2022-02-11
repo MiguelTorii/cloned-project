@@ -5,13 +5,17 @@ import IconSchool from '@material-ui/icons/School';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
-import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import IconPrev from '@material-ui/icons/SkipPrevious';
 import IconClose from '@material-ui/icons/Close';
 import IconShuffle from '@material-ui/icons/Shuffle';
 import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import useIconClasses from 'components/_styles/Icons';
+import clsx from 'clsx';
 import store from 'store';
 import _ from 'lodash';
 import uuidv4 from 'uuid/v4';
@@ -89,6 +93,8 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     const diff = differenceInMilliseconds(new Date(), lastActive.current);
     totalIdleTime.current = Math.max(totalIdleTime.current + diff - timeout, 0);
   };
+
+  const iconClasses = useIconClasses();
 
   const { getRemainingTime, getLastActiveTime, getElapsedTime, reset } = useIdleTimer({
     timeout,
@@ -306,7 +312,15 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
         className={clsx(classes.sidebarButton, classes.expandButton)}
         onClick={handleExpand}
       >
-        {isExpanded ? <IconLeft /> : <IconRight />}
+        {isExpanded ? (
+          <SvgIcon
+            className={clsx(iconClasses.collapseIconLeft)}
+            component={CollapseIcon}
+            viewBox="0 0 32 32"
+          />
+        ) : (
+          <MenuOpenIcon style={{ transform: 'rotate(180deg)' }} />
+        )}
       </IconButton>
     </Box>
   );

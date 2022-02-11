@@ -3,10 +3,12 @@ import Typography from '@material-ui/core/Typography';
 import IconSchool from '@material-ui/icons/School';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
-import IconLeft from '@material-ui/icons/ArrowBack';
-import IconRight from '@material-ui/icons/ArrowForward';
-import Slide from '@material-ui/core/Slide';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import useIconClasses from 'components/_styles/Icons';
 import clsx from 'clsx';
+import Slide from '@material-ui/core/Slide';
 import update from 'immutability-helper';
 import Grid from '@material-ui/core/Grid';
 import { Select } from '@material-ui/core';
@@ -68,6 +70,8 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
   const remaining = useRef(timeout);
   const lastActive: any = useRef(+new Date());
   const timer = useRef(null);
+
+  const iconClasses = useIconClasses();
 
   const handleOnActive = () => {
     const diff = differenceInMilliseconds(new Date(), lastActive.current);
@@ -266,7 +270,15 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
         className={clsx(classes.sidebarButton, classes.expandButton)}
         onClick={handleExpand}
       >
-        {isExpanded ? <IconLeft /> : <IconRight />}
+        {isExpanded ? (
+          <SvgIcon
+            className={clsx(iconClasses.collapseIconLeft)}
+            component={CollapseIcon}
+            viewBox="0 0 32 32"
+          />
+        ) : (
+          <MenuOpenIcon style={{ transform: 'rotate(180deg)' }} />
+        )}
       </IconButton>
     </Box>
   );
