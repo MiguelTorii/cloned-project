@@ -131,6 +131,8 @@ type Props = {
   handleAfterCreation: (path: string) => void;
   sectionId: number;
   onSetClass?: (classData: ClassSectionIds) => void;
+  images: any[];
+  onSetImages: (newImages: any[]) => void;
 };
 
 type State = {
@@ -150,7 +152,6 @@ type State = {
   questionToolbar: any;
   editor: any;
   body: any;
-  images: any[];
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -182,7 +183,6 @@ class CreateNotes extends React.PureComponent<Props, State> {
       editor: null,
       body: null,
       notes: [],
-      images: [],
       // eslint-disable-next-line react/no-unused-state
       hasImages: false
     };
@@ -249,7 +249,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       },
       noteId,
       handleAfterCreation,
-      onSetClass
+      onSetClass,
+      onSetImages
     } = this.props;
 
     try {
@@ -278,20 +279,24 @@ class CreateNotes extends React.PureComponent<Props, State> {
       });
       const { sectionId } = JSON.parse(userClasses[0].value);
       const { title, classId, body, tags } = photoNote;
+
       this.setState({
         title,
         classId,
         sectionId,
         body,
-        tags,
-        images: photoNote.notes.map((note) => ({
+        tags
+      });
+
+      onSetImages(
+        photoNote.notes.map((note) => ({
           error: false,
           id: note.note,
           image: note.fullNoteUrl,
           loaded: false,
           loading: false
         }))
-      });
+      );
     } catch (e) {
       handleAfterCreation('/feed');
     }
@@ -600,9 +605,9 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
 
   handleUpdateImages = (newImages) => {
-    this.setState({
-      images: newImages
-    });
+    const { onSetImages } = this.props;
+
+    onSetImages(newImages);
   };
 
   canBatchPost = () => {
@@ -620,7 +625,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { classes, width, sectionId } = this.props;
+    const { classes, width, sectionId, images } = this.props;
     const {
       loading,
       title,
@@ -631,8 +636,7 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody,
       questionToolbar,
       body,
-      notes,
-      images
+      notes
     } = this.state;
     const notSm = !['xs', 'sm'].includes(width);
 

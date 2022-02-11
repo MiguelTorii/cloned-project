@@ -112,6 +112,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [classId, setClassId] = useState(0);
   const [sectionId, setSectionId] = useState(0);
   const [isPosting, setIsPosting] = useState(false);
+  const [noteImages, setNoteImages] = useState([]);
   const location = useLocation();
 
   const isHud: boolean | null = useSelector(
@@ -311,6 +312,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
           </Grid>
         )}
         {!isHud && renderClassSelector()}
+        {/* TODO: Need to figure out why TabPanels are re-mounted whenever a state is updated. */}
         <Grid item xs={12} lg={9}>
           <div className={classes.paperRoot}>
             {isHud && renderHudClassSelector()}
@@ -349,6 +351,8 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 setIsPosting={(val) => setIsPosting(val)}
                 handleAfterCreation={handleAfterCreation}
                 onSetClass={handleClassChange}
+                images={noteImages}
+                onSetImages={setNoteImages}
               />
             </TabPanel>
             <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)}>
