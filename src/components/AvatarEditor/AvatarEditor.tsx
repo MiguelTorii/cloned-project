@@ -115,6 +115,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
     >
       <Box py={4} display="flex" justifyContent="center">
         <DefaultAvatarEditor
+          crossOrigin="anonymous"
           className={classes.profileBackground}
           ref={editorRef}
           image={image}
