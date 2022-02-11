@@ -21,11 +21,11 @@ import EditGroupDetailsDialog from '../Chat/EditGroupDetailsDialog';
 import { searchUsers } from '../../api/user';
 import { addGroupMembers, sendMessage } from '../../api/chat';
 import { logEvent } from '../../api/analytics';
-import { ReactComponent as ChatIcon } from '../../assets/svg/community-chat.svg';
-import { ReactComponent as ChatStudyRoom } from '../../assets/svg/chat-studyroom.svg';
-import { ReactComponent as ChatAddMember } from '../../assets/svg/chat-addmember.svg';
-import { ReactComponent as ChatStudyRoomMemberrs } from '../../assets/svg/chat-studyroom-members.svg';
-import { ReactComponent as ChatActiveStudyRoomMemberrs } from '../../assets/svg/chat-active-studyroom-members.svg';
+import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg';
+import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg';
+import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg';
+import { ReactComponent as ChatStudyRoomMembers } from 'assets/svg/chat-studyroom-members.svg';
+import { ReactComponent as ChatActiveStudyRoomMembers } from 'assets/svg/chat-active-studyroom-members.svg';
 import { PERMISSIONS } from '../../constants/common';
 import { getInitials } from '../../utils/chat';
 import useStyles from './_styles/chatHeader';
@@ -308,7 +308,7 @@ const ChatHeader = ({
                 className={classes.chatIcon}
                 onClick={onOpenRightPanel}
               >
-                {rightSpace ? <ChatActiveStudyRoomMemberrs /> : <ChatStudyRoomMemberrs />}
+                {rightSpace ? <ChatActiveStudyRoomMembers /> : <ChatStudyRoomMembers />}
               </IconButton>
             )}
             {!isCommunityChat && (

@@ -132,6 +132,7 @@ function Option({ innerRef, innerProps, isFocused, isSelected, children, data })
             isOnline={isOnline}
             onlineBadgeBackground="circleIn.palette.feedBackground"
             profileImage={avatar}
+            fromChat
           />
         </ListItemAvatar>
         <ListItemText
