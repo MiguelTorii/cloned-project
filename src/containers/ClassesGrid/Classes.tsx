@@ -14,10 +14,7 @@ import ClassCard from './ClassCard';
 import { leaveUserClass } from '../../api/user';
 import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
 import FiltersBar from '../../components/FiltersBar/FiltersBar';
-import Empty from './Empty';
-import EmptyState from '../../components/FeedList/EmptyState';
 import { cypherClass } from '../../utils/crypto';
-import EmptyClass from '../../assets/svg/empty-class.svg';
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
@@ -88,9 +85,6 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [classList, setClassList] = useState([]);
   const [canAddClasses, setCanAddClasses] = useState(false);
   const [openAddClasses, setOpenAddClasses] = useState(false);
-  const [emptyLogo, setEmptyLogo] = useState('');
-  const [emptyVisibility, setEmptyVisibility] = useState(false);
-  const [emptyBody, setEmptyBody] = useState('');
   const [currentFilter, setCurrentFilter] = useState('current');
   const [loading, setLoading] = useState(false);
 
@@ -132,15 +126,8 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
 
       try {
         const {
-          userClasses: { classList, canAddClasses, emptyState, pastClasses }
+          userClasses: { classList, canAddClasses, pastClasses }
         } = user;
-
-        if (emptyState && emptyState.visibility) {
-          const { visibility, logo, body } = emptyState;
-          setEmptyLogo(logo);
-          setEmptyBody(body);
-          setEmptyVisibility(visibility);
-        }
 
         const classListArr = currentFilter === 'current' ? classList : pastClasses;
 
@@ -188,22 +175,6 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     },
     [pushTo]
   );
-
-  const getFilteredList = () => {
-    if (!classList) {
-      return [];
-    }
-
-    if (currentFilter === 'current') {
-      return classList.filter((cl) => cl.isCurrent);
-    }
-
-    if (currentFilter === 'past') {
-      return classList.filter((cl) => !cl.isCurrent);
-    }
-
-    return [];
-  };
 
   const handleSelectFilter = useCallback((item) => {
     setCurrentFilter(item);
@@ -325,13 +296,6 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
             >
               + Add More Classes
             </Button>
-          </Grid>
-        )}
-        {emptyVisibility && (
-          <Grid container justifyContent="center" item xs={12}>
-            <Grid item xs={12} md={9}>
-              <Empty logo={emptyLogo} body={emptyBody} />
-            </Grid>
           </Grid>
         )}
       </Grid>
