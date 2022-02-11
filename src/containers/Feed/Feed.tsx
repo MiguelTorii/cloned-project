@@ -4,7 +4,6 @@ import { useLocation } from 'react-router';
 import { push } from 'connected-react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import qs from 'query-string';
-import axios from 'axios';
 import lodash from 'lodash';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import ClassmatesDialog from '../../components/ClassmatesDialog/ClassmatesDialog';
@@ -43,6 +42,7 @@ import { TUserClasses } from '../../reducers/user';
 import { decipherClassId } from '../../utils/crypto';
 import { APIFetchFeedsParams } from '../../api/params/APIFetchFeedsParams';
 import { feedActions as feedActionTypes } from '../../constants/action-types';
+import { URL } from 'constants/navigation';
 
 type Props = {
   from?: string;
@@ -197,7 +197,7 @@ const Feed = ({ from }: Props) => {
     });
   }, []);
 
-  const handleSetActiveTab = useCallback((tab) => {
+  const handleSetActiveTab = (tab) => {
     switch (tab) {
       case FEED_NAVIGATION_TABS.CLASS_FEED: {
         handleUpdateFilters({
@@ -225,7 +225,7 @@ const Feed = ({ from }: Props) => {
     }
 
     setActiveTab(tab);
-  }, []);
+  };
 
   const handleDeleteClose = useCallback(
     ({ deleted }: { deleted?: boolean }) => {
@@ -245,24 +245,21 @@ const Feed = ({ from }: Props) => {
     handleUpdateFilters({ fromDate, toDate });
   };
 
-  const handleUpdateSelectedClasses = useCallback((sectionIds) => {
+  const handleUpdateSelectedClasses = (sectionIds) => {
     handleUpdateFilters({
       userClasses: sectionIds
     });
-  }, []);
+  };
 
-  const handleClickUser = useCallback(
-    ({ userId }: { userId: string }) => {
-      dispatch(
-        push(
-          buildPath(`/profile/${userId}`, {
-            from: PROFILE_PAGE_SOURCE.POST
-          })
-        )
-      );
-    },
-    [dispatch]
-  );
+  const handleClickUser = ({ userId }: { userId: string }) => {
+    dispatch(
+      push(
+        buildPath(`${URL.PROFILE}/${userId}`, {
+          from: PROFILE_PAGE_SOURCE.POST
+        })
+      )
+    );
+  };
 
   const handleOpenDelete = useCallback(({ feedId }) => {
     setActiveAction({
