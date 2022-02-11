@@ -16,16 +16,14 @@ import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import type { CampaignState } from '../../reducers/campaign';
 import * as signInActions from '../../actions/sign-in';
-import * as chatActions from '../../actions/chat';
 import Notifications from '../Notifications/Feed';
 import BlockedUsersManager from '../BlockedUsersManager/BlockedUsersManager';
 import WebNotifications from '../WebNotifications/WebNotification';
 import RequestClass from '../RequestClass/RequestClass';
 import BottomNav from '../../components/BottomNav/BottomNav';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import Notifier from '../Notifier/Notifier';
-import * as notificationsActions from '../../actions/notifications';
 import * as feedActions from '../../actions/feed';
+import { useNotifier } from 'hooks';
 
 const styles = (theme) => ({
   loader: {
@@ -71,6 +69,8 @@ const Layout = ({
   push,
   setBannerHeight
 }: Props) => {
+  useNotifier();
+
   const [manageClasses, setManageClasses] = useState(false);
   const [manageBlockedUsers, setManageBlockedUsers] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -271,9 +271,6 @@ const Layout = ({
       </ErrorBoundary>
       <ErrorBoundary>
         <RequestClass open={openRequestClass} onClose={handleCloseRequestClass} />
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <Notifier />
       </ErrorBoundary>
     </>
   );

@@ -1,22 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { removeSnackbar } from '../../actions/notifications';
 
-let displayed = [];
+import { removeSnackbar } from 'actions/notifications';
 
-const Notifier = () => {
+const useNotifier = () => {
   const dispatch = useDispatch();
   const notifications = useSelector((store: any) => store.notifications.items || []);
   const pathname = useSelector((store: any) => store.router.location.pathname || '');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [displayedIds, setDisplayedIds] = useState<Array<number>>([]);
 
   const storeDisplayed = (id) => {
-    displayed = [...displayed, id];
+    setDisplayedIds([...displayedIds, id]);
   };
 
   const removeDisplayed = (id) => {
-    displayed = [...displayed.filter((key) => id !== key)];
+    setDisplayedIds(displayedIds.filter((item) => item !== id));
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Notifier = () => {
       }
 
       // do nothing if snackbar is already displayed
-      if (displayed.includes(key)) {
+      if (displayedIds.includes(key)) {
         return;
       }
 
@@ -60,7 +60,6 @@ const Notifier = () => {
       storeDisplayed(key);
     }); // eslint-disable-next-line
   }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
-  return null;
 };
 
-export default Notifier;
+export default useNotifier;

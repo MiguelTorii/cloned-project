@@ -51,6 +51,7 @@ import useOnboarding from '../storyState/useOnboarding';
 let onboardingPopupTriggered = false;
 import UserDialog from '../../containers/UserDialog/UserDialog';
 import WebNotification from 'containers/WebNotifications';
+import { useNotifier } from 'hooks';
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -60,6 +61,7 @@ const HudFrame = () => {
   const [forceHideSideArea, setForceHideSideArea] = useState(false);
   const iconClasses = useIconClasses();
 
+  useNotifier();
   useOnboarding();
 
   const selectedMainArea: string = useSelector(
