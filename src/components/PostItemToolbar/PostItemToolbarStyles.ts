@@ -47,7 +47,7 @@ export const useStyles = makeStyles(() => ({
   subToolbar: {
     position: 'absolute',
     top: -35,
-    right: 70,
+    right: 120,
     border: '1px solid',
     borderRadius: 5
   },

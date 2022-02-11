@@ -22,24 +22,13 @@ Quill.register(
 const modules = {
   formula: true,
   toolbar: [
-    [
-      {
-        header: [1, 2, false]
-      }
-    ],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    ['bold', 'italic', 'underline'],
     [
       {
         list: 'ordered'
       },
       {
         list: 'bullet'
-      },
-      {
-        indent: '-1'
-      },
-      {
-        indent: '+1'
       }
     ],
     ['formula'],

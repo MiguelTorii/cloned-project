@@ -36,8 +36,12 @@ export default makeStyles((theme: any) => ({
       flex: 1
     }
   },
+  feedBody: {
+    overflow: 'hidden'
+  },
   postTitle: {
-    paddingLeft: theme.spacing()
+    paddingLeft: theme.spacing(),
+    cursor: 'pointer'
   },
   cardHighlight: {
     backgroundColor: theme.circleIn.palette.feedBackground
@@ -255,24 +259,5 @@ export default makeStyles((theme: any) => ({
   boldTitle: {
     fontSize: (props: any) => (props.showSimple ? 14 : 18),
     fontWeight: 600
-  },
-  titleFormat: {
-    fontSize: (props: any) => (props.showSimple ? 12 : 18),
-    lineHeight: '25px',
-    fontWeight: 600
-  },
-  markdown: {
-    color: theme.palette.text.primary,
-    fontFamily: theme.typography.fontFamily,
-    fontSize: 16,
-    lineHeight: '22px',
-    fontWeight: 400,
-    position: 'relative',
-    maxHeight: 'calc(22px * 6)',
-    overflow: 'hidden',
-    marginBottom: theme.spacing(1.5),
-    display: '-webkit-box',
-    WebkitLineClamp: 6,
-    WebkitBoxOrient: 'vertical'
   }
 }));

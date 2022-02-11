@@ -21,7 +21,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import MuiAvatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Chip from '@material-ui/core/Chip';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -48,15 +47,16 @@ import FeedIconResource from '../../assets/svg/ic_share_a_resource.svg';
 import FeedIconQuestion from '../../assets/svg/ic_ask_a_question.svg';
 import FeedIconNote from '../../assets/svg/ic_notes.svg';
 import FeedIconPost from '../../assets/svg/ic_create_a_post.svg';
-import { getInitials } from '../../utils/chat';
 import { getPastClassIds } from '../../utils/helpers';
-import useStyles from '../_styles/FeedList/FeedItem';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import HoverPopup from '../HoverPopup/HoverPopup';
 import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
 import type { State as StoreState } from '../../types/state';
 import { TFeedItem } from '../../types/models';
 import { POST_TYPES } from 'constants/app';
+import CustomQuill from 'components/CustomQuill/CustomQuill';
+
+import useStyles from 'components/_styles/FeedList/FeedItem';
+import { Button } from '@material-ui/core';
 
 const FeedTypes = {
   flashcards: {
@@ -151,6 +151,7 @@ const FeedItem = ({
   const [thanksCount, setThanksCount] = useState(0);
   const [thanked, setThanked] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
+  const [collapsed, setCollapsed] = useState(true);
   const classList = useSelector((state) => (state as any).user.userClasses.classList);
   const isCurrent = useMemo(() => {
     const postClass = classList.find((classData) => classData.classId === data.classId);
@@ -255,25 +256,13 @@ const FeedItem = ({
       userId
     });
   }, [data, onUserClick]);
-  const handleDescription = useCallback((typeId, body) => {
-    if (typeId === 6) {
-      return '';
-    }
-
-    // eslint-disable-next-line
-    const cleanBody = body.replace(/<[^>]*>/g, '').replace(/\&nbsp;/g, ' ');
-    return cleanBody;
-  }, []);
   const handleAddComment = useCallback(() => setCommentCount(commentCount + 1), [commentCount]);
   const handleDeleteComment = useCallback(() => setCommentCount(commentCount - 1), [commentCount]);
+  const handleCollapse = useCallback(() => setCollapsed(!collapsed), [collapsed]);
   const getTitle = useCallback((data: Record<string, any>): string => data.title, []);
   const date = useMemo(() => moment(data.created), [data.created]);
   const fromNow = useMemo(() => (date ? date.fromNow() : ''), [date]);
   const ownerId = useMemo(() => data.userId, [data.userId]);
-  const description = useMemo(
-    () => handleDescription(data.typeId, data.body),
-    [data.body, data.typeId, handleDescription]
-  );
   const feedTypeData = useMemo(() => {
     const type = Object.values(FeedTypes).find((item) => item.id === data.typeId);
 
@@ -420,6 +409,7 @@ const FeedItem = ({
       isCurrent
     ]
   );
+
   return (
     <Card
       className={classes.card}
@@ -472,27 +462,34 @@ const FeedItem = ({
         classes={{
           focusHighlight: classes.cardHighlight
         }}
-        onClick={onPostClick({
-          typeId: data.typeId,
-          postId: data.postId,
-          feedId: data.feedId
-        })}
       >
-        <CardContent className={classes.postTitle}>
+        <CardContent
+          onClick={onPostClick({
+            typeId: data.typeId,
+            postId: data.postId,
+            feedId: data.feedId
+          })}
+          className={classes.postTitle}
+        >
           <Typography component="p" variant="h5" className={classes.boldTitle}>
             {!newClassExperience ? data.title : getTitle(data)}
           </Typography>
         </CardContent>
         {data.typeId !== FeedTypes.question.id && (
           <CardContent className={classes.content}>
-            {description && (
-              <div
-                className={
-                  !data.title && description.length < 220 ? classes.titleFormat : classes.markdown
-                }
-              >
-                {description}
-              </div>
+            <div
+              onClick={onPostClick({
+                typeId: data.typeId,
+                postId: data.postId,
+                feedId: data.feedId
+              })}
+              style={{ maxHeight: collapsed ? 100 : 'none' }}
+              className={classes.feedBody}
+            >
+              <CustomQuill value={data.body} readOnly />
+            </div>
+            {collapsed && data?.body.length > 200 && (
+              <Button onClick={handleCollapse}>Read More</Button>
             )}
             <span />
             {renderImage()}

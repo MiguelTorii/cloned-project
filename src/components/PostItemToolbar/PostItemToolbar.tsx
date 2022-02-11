@@ -28,10 +28,8 @@ export const formats = [
   'italic',
   'underline',
   'align',
-  'strike',
   'list',
   'bullet',
-  'indent',
   'image',
   'formula'
 ];
@@ -148,18 +146,6 @@ export const PostItemToolbar = ({ id, handleSelect }) => {
         })}
       >
         <Tooltip
-          title="Strike"
-          aria-label="strike"
-          arrow
-          placement="top"
-          classes={{
-            tooltip: classes.tooltip,
-            popper: classes.popper
-          }}
-        >
-          <button type="button" className="ql-strike" />
-        </Tooltip>
-        <Tooltip
           title="Numbered list"
           aria-label="numbered-list"
           arrow
@@ -182,30 +168,6 @@ export const PostItemToolbar = ({ id, handleSelect }) => {
           }}
         >
           <button type="button" className="ql-list" value="bullet" />
-        </Tooltip>
-        <Tooltip
-          title="Decrease indent"
-          aria-label="decrease-indent"
-          arrow
-          placement="top"
-          classes={{
-            tooltip: classes.tooltip,
-            popper: classes.popper
-          }}
-        >
-          <button type="button" className="ql-indent" value="-1" />
-        </Tooltip>
-        <Tooltip
-          title="Increase indent"
-          aria-label="increase-indent"
-          arrow
-          placement="top"
-          classes={{
-            tooltip: classes.tooltip,
-            popper: classes.popper
-          }}
-        >
-          <button type="button" className="ql-indent" value="+1" />
         </Tooltip>
         <Tooltip
           title="Clean"
