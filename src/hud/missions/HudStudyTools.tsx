@@ -27,6 +27,7 @@ import { HudToolData } from '../navigation/HudToolData';
 import HudToolbar from '../navigation/HudToolbar';
 import useHudRoutes from '../frame/useHudRoutes';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+import AREA_TITLES from 'constants/area-titles';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 
@@ -55,24 +56,22 @@ const HudStudyTools = () => {
   const topStudyTools: HudToolData[] = [
     {
       id: FLASHCARDS_AREA,
-      displayName: 'Flashcards: Create, share and review your flashcards in multiple modes',
+      displayName: `${AREA_TITLES.FLASHCARDS}: Create, share and review your flashcards in multiple modes`,
       icon: <FlashcardMark style={ICON_SIZE} />
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Write a Post: Share an announcement or message in your class',
+      displayName: `${AREA_TITLES.WRITE_A_POST}: Share an announcement or message in your class`,
       icon: <CreatePostIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_NOTES_AREA,
-      displayName:
-        'Share Notes: Add your custom class notes and resources to keep everything in one place',
+      displayName: `${AREA_TITLES.SHARE_NOTES}: Add your custom class notes and resources to keep everything in one place`,
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
       id: ASK_A_QUESTION_AREA,
-      displayName:
-        'Ask a Question: Need help? Ask a question publicly or anonymously to your class',
+      displayName: `${AREA_TITLES.ASK_A_QUESTION}: Need help? Ask a question publicly or anonymously to your class`,
       icon: <QuestionIcon style={ICON_SIZE} />
     }
   ];
@@ -80,23 +79,22 @@ const HudStudyTools = () => {
   const bottomStudyTools: HudToolData[] = [
     {
       id: SHARE_RESOURCES_AREA,
-      displayName: 'Share a Resource: Share helpful resources, links, and more with your class',
+      displayName: `${AREA_TITLES.SHARE_A_RESOURCE}: Share helpful resources, links, and more with your class`,
       icon: <ResourceIcon style={ICON_SIZE} />
     },
     {
       id: CALENDAR_AREA,
-      displayName:
-        'Workflow: Manage your time by tracking your tasks, assignments, and important deadlines',
+      displayName: `${AREA_TITLES.WORKFLOW}: Manage your time by tracking your tasks, assignments, and important deadlines`,
       icon: <IconWorkflow style={ICON_SIZE} />
     },
     {
       id: NOTES_AREA,
-      displayName: 'Private Notes: Create private notes just for yourself',
+      displayName: `${AREA_TITLES.PRIVATE_NOTES}: Create private notes just for yourself`,
       icon: <PrivateNotesIcon style={ICON_SIZE} />
     },
     {
       id: CHAT_AREA,
-      displayName: 'Chat: Connect with peers and classmates anywhere, any time',
+      displayName: `${AREA_TITLES.CHAT}: Connect with peers and classmates anywhere, any time`,
       icon: <ChatIcon style={ICON_SIZE} />
     }
   ];

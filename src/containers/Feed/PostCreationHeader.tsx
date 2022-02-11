@@ -28,6 +28,7 @@ import {
   SHARE_RESOURCES_AREA,
   STUDY_TOOLS_MAIN_AREA
 } from '../../hud/navigationState/hudNavigation';
+import AREA_TITLES from 'constants/area-titles';
 
 import useStyles from './styles';
 
@@ -36,22 +37,22 @@ const ICON_SIZE = { width: '36px', height: '36px' };
 const POST_BUTTONS = [
   {
     value: 0,
-    text: 'Write a Post',
+    text: AREA_TITLES.WRITE_A_POST,
     icon: IconPencil
   },
   {
     value: 1,
-    text: 'Ask a Question',
+    text: AREA_TITLES.ASK_A_QUESTION,
     icon: IconQuestion
   },
   {
     value: 2,
-    text: 'Share Notes',
+    text: AREA_TITLES.SHARE_NOTES,
     icon: IconNote
   },
   {
     value: 3,
-    text: 'Share a Resource',
+    text: AREA_TITLES.SHARE_A_RESOURCE,
     icon: IconResource
   }
 ];
@@ -59,27 +60,27 @@ const POST_BUTTONS = [
 const HUD_POST_BUTTONS = [
   {
     value: FLASHCARDS_AREA,
-    text: 'Flashcards',
+    text: AREA_TITLES.FLASHCARDS,
     icon: FlashcardMark
   },
   {
     value: CREATE_A_POST_AREA,
-    text: 'Write a Post',
+    text: AREA_TITLES.WRITE_A_POST,
     icon: ActiveCreatePost
   },
   {
     value: SHARE_NOTES_AREA,
-    text: 'Share Notes',
+    text: AREA_TITLES.SHARE_NOTES,
     icon: ShareNotesIcon
   },
   {
     value: ASK_A_QUESTION_AREA,
-    text: 'Ask a Question',
+    text: AREA_TITLES.ASK_A_QUESTION,
     icon: QuestionIcon
   },
   {
     value: SHARE_RESOURCES_AREA,
-    text: 'Share a Resource',
+    text: AREA_TITLES.SHARE_A_RESOURCE,
     icon: IconResource
   }
 ];

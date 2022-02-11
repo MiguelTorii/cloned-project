@@ -2,26 +2,27 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
+import AREA_TITLES from 'constants/area-titles';
 
 import { useStyles } from './HudTitleStyles';
 
 const subAreaToTitle = {
   ABOUT_ME_AREA: null,
-  REWARDS_STORE_AREA: 'Rewards Store',
-  POINTS_HISTORY_AREA: 'Points History',
+  REWARDS_STORE_AREA: AREA_TITLES.REWARDS_STORE,
+  POINTS_HISTORY_AREA: AREA_TITLES.POINTS_HISTORY,
   CHAT_AREA: null,
-  CLASSES_AREA: 'Classes',
-  FEEDS_AREA: 'Class Feeds',
-  CREATE_A_POST_AREA: 'Write a Post',
-  ASK_A_QUESTION_AREA: 'Ask a Question',
-  SHARE_NOTES_AREA: 'Share Notes',
-  SHARE_RESOURCES_AREA: 'Share Resources',
-  NOTES_AREA: 'Private Notes',
-  FLASHCARDS_AREA: 'Flashcards',
-  CALENDAR_AREA: 'Workflow',
-  LEADERBOARD_AREA: 'Leaderboard',
-  GIVE_FEEDBACK_AREA: 'Give Feedback',
-  GET_THE_MOBILE_APP_AREA: 'Get the Mobile App'
+  CLASSES_AREA: AREA_TITLES.CLASSES,
+  FEEDS_AREA: AREA_TITLES.CLASS_FEEDS,
+  CREATE_A_POST_AREA: AREA_TITLES.WRITE_A_POST,
+  ASK_A_QUESTION_AREA: AREA_TITLES.ASK_A_QUESTION,
+  SHARE_NOTES_AREA: AREA_TITLES.SHARE_NOTES,
+  SHARE_RESOURCES_AREA: AREA_TITLES.SHARE_A_RESOURCE,
+  NOTES_AREA: AREA_TITLES.PRIVATE_NOTES,
+  FLASHCARDS_AREA: AREA_TITLES.FLASHCARDS,
+  CALENDAR_AREA: AREA_TITLES.WORKFLOW,
+  LEADERBOARD_AREA: AREA_TITLES.LEADERBOARD,
+  GIVE_FEEDBACK_AREA: AREA_TITLES.GIVE_FEEDBACK,
+  GET_THE_MOBILE_APP_AREA: AREA_TITLES.GET_THE_MOBILE_APP
 };
 
 const HudTitle = () => {

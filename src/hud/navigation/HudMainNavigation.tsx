@@ -39,6 +39,7 @@ import { HudToolData } from './HudToolData';
 import { AppState } from 'redux/store';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
+import AREA_TITLES from 'constants/area-titles';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 const NAVBAR_ICON_SIZE = { width: '50px', height: '50px' };
@@ -66,7 +67,7 @@ const HudMainNavigation = () => {
   const chatNavigationItems: HudToolData[] = [
     {
       id: CHAT_AREA,
-      displayName: 'Chat',
+      displayName: AREA_TITLES.CHAT,
       icon: <IconChat style={ICON_SIZE} />
     }
   ];
@@ -74,12 +75,12 @@ const HudMainNavigation = () => {
   const classesNavigationItems: HudToolData[] = [
     {
       id: CLASSES_AREA,
-      displayName: 'Classes',
+      displayName: AREA_TITLES.CLASSES,
       icon: <IconMyClasses style={ICON_SIZE} />
     },
     {
       id: FEEDS_AREA,
-      displayName: 'Class Feeds',
+      displayName: AREA_TITLES.CLASS_FEEDS,
       icon: <IconClassFeed style={ICON_SIZE} />
     }
   ];
@@ -87,37 +88,37 @@ const HudMainNavigation = () => {
   const studyToolsNavigationItems: HudToolData[] = [
     {
       id: FLASHCARDS_AREA,
-      displayName: 'Flashcards',
+      displayName: AREA_TITLES.FLASHCARDS,
       icon: <FlashcardMark style={ICON_SIZE} />
     },
     {
       id: CREATE_A_POST_AREA,
-      displayName: 'Write a Post',
+      displayName: AREA_TITLES.WRITE_A_POST,
       icon: <ActiveCreatePost style={ICON_SIZE} />
     },
     {
       id: SHARE_NOTES_AREA,
-      displayName: 'Share Notes',
+      displayName: AREA_TITLES.SHARE_NOTES,
       icon: <ShareNotesIcon style={ICON_SIZE} />
     },
     {
       id: ASK_A_QUESTION_AREA,
-      displayName: 'Ask a question',
+      displayName: AREA_TITLES.ASK_A_QUESTION,
       icon: <QuestionIcon style={ICON_SIZE} />
     },
     {
       id: SHARE_RESOURCES_AREA,
-      displayName: 'Share Resources',
+      displayName: AREA_TITLES.SHARE_A_RESOURCE,
       icon: <ResourceIcon style={ICON_SIZE} />
     },
     {
       id: CALENDAR_AREA,
-      displayName: 'Workflow',
+      displayName: AREA_TITLES.WORKFLOW,
       icon: <IconWorkflow style={ICON_SIZE} />
     },
     {
       id: NOTES_AREA,
-      displayName: 'Private Notes',
+      displayName: AREA_TITLES.PRIVATE_NOTES,
       icon: <PrivateNotesIcon style={ICON_SIZE} />
     }
   ];
@@ -125,14 +126,14 @@ const HudMainNavigation = () => {
   const achievementsNavigationItems: HudToolData[] = [
     {
       id: LEADERBOARD_AREA,
-      displayName: 'Leaderboard',
+      displayName: AREA_TITLES.LEADERBOARD,
       icon: <IconAchievements style={ICON_SIZE} />
     }
   ];
 
   const chatNavigationItem: HudToolData = {
     id: CHAT_MAIN_AREA,
-    displayName: 'chat',
+    displayName: AREA_TITLES.CHAT,
     icon: (
       <Badge badgeContent={unreadMessageCount} color="secondary" overlap="circular">
         <IconChat style={NAVBAR_ICON_SIZE} />
@@ -143,19 +144,19 @@ const HudMainNavigation = () => {
 
   const classesNavigationItem: HudToolData = {
     id: COMMUNITIES_MAIN_AREA,
-    displayName: 'Classes',
+    displayName: AREA_TITLES.CLASSES,
     icon: <IconClasses style={NAVBAR_ICON_SIZE} />,
     childTools: classesNavigationItems
   };
   const studyToolsNavigationItem: HudToolData = {
     id: STUDY_TOOLS_MAIN_AREA,
-    displayName: 'Study Tools',
+    displayName: AREA_TITLES.STUDY_TOOLS,
     icon: <IconStudyTools style={NAVBAR_ICON_SIZE} />,
     childTools: studyToolsNavigationItems
   };
   const achievementsNavigationItem: HudToolData = {
     id: ACHIEVEMENTS_MAIN_AREA,
-    displayName: 'Leaderboard',
+    displayName: AREA_TITLES.LEADERBOARD,
     icon: <IconLeaderboard style={NAVBAR_ICON_SIZE} />,
     childTools: achievementsNavigationItems
   };

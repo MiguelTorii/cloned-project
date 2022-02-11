@@ -29,6 +29,7 @@ import { ReactComponent as ShareNotesIcon } from '../../assets/svg/ic_notes.svg'
 import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_question.svg';
 import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
 import useHudRoutes from '../frame/useHudRoutes';
+import AREA_TITLES from 'constants/area-titles';
 
 import useStyles from './MobileActionsStyles';
 
@@ -37,37 +38,37 @@ const ICON_SIZE = { width: '24px', height: '24px' };
 const actionItems: HudToolData[] = [
   {
     id: FLASHCARDS_AREA,
-    displayName: 'Flashcards',
+    displayName: AREA_TITLES.FLASHCARDS,
     icon: <FlashcardMark style={ICON_SIZE} />
   },
   {
     id: CREATE_A_POST_AREA,
-    displayName: 'Write a Post',
+    displayName: AREA_TITLES.WRITE_A_POST,
     icon: <ActiveCreatePost style={ICON_SIZE} />
   },
   {
     id: SHARE_NOTES_AREA,
-    displayName: 'Share Notes',
+    displayName: AREA_TITLES.SHARE_NOTES,
     icon: <ShareNotesIcon style={ICON_SIZE} />
   },
   {
     id: ASK_A_QUESTION_AREA,
-    displayName: 'Ask a Question',
+    displayName: AREA_TITLES.ASK_A_QUESTION,
     icon: <QuestionIcon style={ICON_SIZE} />
   },
   {
     id: SHARE_RESOURCES_AREA,
-    displayName: 'Share Resources',
+    displayName: AREA_TITLES.SHARE_A_RESOURCE,
     icon: <ResourceIcon style={ICON_SIZE} />
   },
   {
     id: CALENDAR_AREA,
-    displayName: 'Workflow',
+    displayName: AREA_TITLES.WORKFLOW,
     icon: <IconWorkflow style={ICON_SIZE} />
   },
   {
     id: NOTES_AREA,
-    displayName: 'Private Notes',
+    displayName: AREA_TITLES.PRIVATE_NOTES,
     icon: <PrivateNotesIcon style={ICON_SIZE} />
   }
 ];
