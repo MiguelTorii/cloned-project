@@ -8,9 +8,9 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MasqueradeFrame from 'containers/MasqueradeFrame/MasqueradeFrame';
 import UserInitializer from 'containers/UserInitializer/UserInitializer';
 
-import Routes from './Routes';
 import { theme } from './withRoot';
 import ProviderGroup from './providers';
+import HudRoutes from './HudRoutes';
 
 const App = () => (
   <MuiThemeProvider theme={theme}>
@@ -20,7 +20,7 @@ const App = () => (
           <CssBaseline />
           <UserInitializer />
           <MasqueradeFrame />
-          <Routes />
+          <HudRoutes />
         </ProviderGroup>
       </SnackbarProvider>
     </MuiPickersUtilsProvider>
