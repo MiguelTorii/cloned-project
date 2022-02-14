@@ -34,7 +34,8 @@ export const useStyles = makeStyles((theme: any) => ({
   parentNavigationMenu: {
     marginTop: theme.spacing(4)
   },
-  childToolItem: {
+  menuItem: {
+    fontSize: '2rem',
     alignItems: 'left',
     width: '200px',
     '&:hover': {

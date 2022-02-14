@@ -196,7 +196,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
               <div key={childTool.id}>
                 <MenuItem
                   className={clsx(
-                    classes.childToolItem,
+                    classes.menuItem,
                     isLeafHighlighted(childTool.id) && highlightedButtonStyles.animated
                   )}
                   onClick={() => onMenuItemClick(childTool.id)}
