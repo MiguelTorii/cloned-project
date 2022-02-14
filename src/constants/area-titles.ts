@@ -14,7 +14,7 @@ const AREA_TITLES = {
   GIVE_FEEDBACK: 'Give Feedback',
   GET_THE_MOBILE_APP: 'Get the Mobile App',
   REWARDS_STORE: 'Rewards Store',
-  POINTS_HISTORY: 'Points History',
+  POINTS_HISTORY: 'Points History'
 };
 
-export default AREA_TITLES
+export default AREA_TITLES;
