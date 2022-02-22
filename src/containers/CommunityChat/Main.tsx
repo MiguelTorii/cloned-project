@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from 'react-images';
 import { AppState } from 'redux/store';
 import InfiniteScroll from 'react-infinite-scroller';
+import { Channel } from 'twilio-chat';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import findIndex from 'lodash/findIndex';
@@ -22,7 +23,7 @@ import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
 import { MessageItemType, PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
 import { Member } from '../../types/models';
-import { DetailedChatUser, CurrentCommunity, ChatData } from '../../reducers/chat';
+import { CurrentCommunity, ChatData } from 'reducers/chat';
 import { messageLoadingAction } from '../../actions/chat';
 import { UserState } from '../../reducers/user';
 
@@ -31,7 +32,7 @@ type Props = {
   selectedChannelId?: string;
   selectedChannel?: any;
   currentCommunity?: CurrentCommunity | null;
-  channel?: any;
+  channel?: Channel;
   channelList?: Array<any>;
   rightSpace?: number;
   onSend?: (...args: Array<any>) => any;
@@ -134,11 +135,9 @@ const Main = ({
   }, [newMessage]);
 
   const getTypingMemberName = useCallback(
-    (id) => {
+    (id: string) => {
       const { members } = local[channel.sid];
-      const currentMember: DetailedChatUser = members.find(
-        (member: DetailedChatUser) => member.userId === Number(id)
-      );
+      const currentMember = members.find((member) => member.userId === id);
 
       if (currentMember) {
         return `${currentMember.firstname} ${currentMember.lastname}`;
@@ -188,7 +187,7 @@ const Main = ({
 
         if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
           channel.on('typingStarted', (member) => {
-            const memberId = member?.state?.identity;
+            const memberId = member.identity;
 
             if (memberId) {
               const typingUserName = getTypingMemberName(memberId);

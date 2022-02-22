@@ -16,7 +16,7 @@ export type DetailedChatUser = {
   firstname: string;
   image: string;
   lastname: string;
-  userId: number;
+  userId: string;
   isOnline: boolean;
   role: string;
   roleId: number;
