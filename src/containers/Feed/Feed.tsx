@@ -296,37 +296,36 @@ const Feed = ({ from }: Props) => {
   }, []);
 
   const handleClickPost = useCallback(
-    ({ typeId, postId }) =>
-      () => {
-        const scrollContainer = document.getElementById(COMMUNITY_SCROLL_CONTAINER_ID);
-        if (scrollContainer) {
-          dispatch(updateScrollDataRequest(scrollContainer.scrollTop));
-        }
+    ({ typeId, postId }) => {
+      const scrollContainer = document.getElementById(COMMUNITY_SCROLL_CONTAINER_ID);
+      if (scrollContainer) {
+        dispatch(updateScrollDataRequest(scrollContainer.scrollTop));
+      }
 
-        let redirectUrl = null;
+      let redirectUrl = null;
 
-        switch (typeId) {
-          case POST_TYPES.FLASHCARDS:
-            redirectUrl = `/flashcards/${postId}`;
-            break;
-          case POST_TYPES.NOTE:
-            redirectUrl = `/notes/${postId}`;
-            break;
-          case POST_TYPES.LINK:
-            redirectUrl = `/sharelink/${postId}`;
-            break;
-          case POST_TYPES.QUESTION:
-            redirectUrl = `/question/${postId}`;
-            break;
-          case POST_TYPES.POST:
-            redirectUrl = `/post/${postId}`;
-            break;
-          default:
-            throw Error('Unknown post type');
-        }
+      switch (typeId) {
+        case POST_TYPES.FLASHCARDS:
+          redirectUrl = `/flashcards/${postId}`;
+          break;
+        case POST_TYPES.NOTE:
+          redirectUrl = `/notes/${postId}`;
+          break;
+        case POST_TYPES.LINK:
+          redirectUrl = `/sharelink/${postId}`;
+          break;
+        case POST_TYPES.QUESTION:
+          redirectUrl = `/question/${postId}`;
+          break;
+        case POST_TYPES.POST:
+          redirectUrl = `/post/${postId}`;
+          break;
+        default:
+          throw Error('Unknown post type');
+      }
 
-        dispatch(push(redirectUrl));
-      },
+      dispatch(push(redirectUrl));
+    },
     [dispatch]
   );
 

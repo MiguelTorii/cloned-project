@@ -272,6 +272,15 @@ const FeedItem = ({
 
     return type;
   }, [data.typeId]);
+
+  const handleClick = () => {
+    onPostClick({
+      typeId: data.typeId,
+      postId: data.postId,
+      feedId: data.feedId
+    });
+  };
+
   const renderImage = useCallback(() => {
     const { numberOfNotes } = data;
     const isPdf = data.noteUrl.includes('.pdf');
@@ -353,6 +362,7 @@ const FeedItem = ({
         return null;
     }
   }, [classes, data, newClassExperience, showSimple]);
+
   const renderMenu = useMemo(
     () => (
       <Menu
@@ -462,37 +472,23 @@ const FeedItem = ({
         classes={{
           focusHighlight: classes.cardHighlight
         }}
+        onClick={handleClick}
       >
-        <CardContent
-          onClick={onPostClick({
-            typeId: data.typeId,
-            postId: data.postId,
-            feedId: data.feedId
-          })}
-          className={classes.postTitle}
-        >
+        <CardContent className={classes.postTitle}>
           <Typography component="p" variant="h5" className={classes.boldTitle}>
             {!newClassExperience ? data.title : getTitle(data)}
           </Typography>
         </CardContent>
         {data.typeId !== FeedTypes.question.id && (
           <CardContent className={classes.content}>
-            <div
-              onClick={onPostClick({
-                typeId: data.typeId,
-                postId: data.postId,
-                feedId: data.feedId
-              })}
-              style={{ maxHeight: collapsed ? 100 : 'none' }}
-              className={classes.feedBody}
-            >
+            <div style={{ maxHeight: collapsed ? 100 : 'none' }} className={classes.feedBody}>
               <CustomQuill value={data.body} readOnly />
             </div>
             {collapsed && data?.body.length > 200 && (
               <Button onClick={handleCollapse}>Read More</Button>
             )}
             <span />
-            {renderImage()}
+            <div>{renderImage()}</div>
           </CardContent>
         )}
         {data.tags.length > 0 && (
