@@ -29,6 +29,14 @@ export const styles = (theme) => ({
       height: 70
     }
   },
+  avatarContainer: {
+    position: 'absolute',
+    left: theme.spacing(3),
+    top: 53,
+    [theme.breakpoints.down('sm')]: {
+      top: 5
+    }
+  },
   actionContainer: {
     position: 'absolute',
     right: 10,

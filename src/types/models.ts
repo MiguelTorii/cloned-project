@@ -36,6 +36,7 @@ export type UserAvatar = {
   onlineBadgeBackground?: string;
   fromChat?: boolean;
   isVisible?: boolean;
+  largeImage?: boolean;
 };
 export type UserProfile = {
   userId: string;

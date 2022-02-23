@@ -10,6 +10,7 @@ type Props = {
   fromChat?: boolean;
   children?: any;
   bgColorPath?: string;
+  largeImage?: boolean;
 };
 
 const OnlineBadge = ({ classes, isVisible, children }: Props) =>

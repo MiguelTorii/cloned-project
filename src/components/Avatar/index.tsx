@@ -17,7 +17,8 @@ const Avatar = ({
   onlineBadgeBackground,
   fromChat,
   initials,
-  isVisible
+  isVisible,
+  largeImage
 }: UserAvatar) => {
   const classes = useStyles({
     mobileSize,
@@ -48,6 +49,7 @@ const Avatar = ({
       isOnline={isOnline}
       bgColorPath={onlineBadgeBackground}
       fromChat={fromChat}
+      largeImage={largeImage}
     >
       {renderAvatar()}
     </OnlineBadge>

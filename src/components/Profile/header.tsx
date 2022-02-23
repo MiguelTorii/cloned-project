@@ -164,6 +164,7 @@ class Header extends React.PureComponent<Props, State> {
               onlineBadgeBackground="circleIn.palette.feedBackground"
               desktopSize={124}
               mobileSize={124}
+              largeImage
             />
           </div>
           <div className={classes.gridInfo}>
