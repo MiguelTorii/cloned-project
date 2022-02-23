@@ -26,6 +26,7 @@ import { Member } from '../../types/models';
 import { CurrentCommunity, ChatData } from 'reducers/chat';
 import { messageLoadingAction } from '../../actions/chat';
 import { UserState } from '../../reducers/user';
+import { useTyping } from 'features/chat';
 
 type Props = {
   isCommunityChat?: boolean;
@@ -74,7 +75,6 @@ const Main = ({
   const [scroll, setScroll] = useState(true);
   const [value, setValue] = useState('');
   const [avatars, setAvatars] = useState([]);
-  const [typing, setTyping] = useState(null);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState<{ [index: number]: Member }>({});
@@ -89,6 +89,17 @@ const Main = ({
 
     return members[memberKeys.find((key) => key !== user.data.userId)];
   }, [memberKeys, members, user.data.userId]);
+
+  const { typing, onTyping } = useTyping(channel);
+
+  const handleOnTyping = useCallback(() => {
+    try {
+      onTyping();
+    } catch (err) {
+      setErrorLoadingMessage(true);
+    }
+  }, [onTyping]);
+
   const {
     expertMode,
     data: { userId, firstName, lastName }
@@ -184,23 +195,6 @@ const Main = ({
             behavior: 'auto'
           });
         }
-
-        if (!channel._events.typingStarted || channel._events.typingStarted.length === 0) {
-          channel.on('typingStarted', (member) => {
-            const memberId = member.identity;
-
-            if (memberId) {
-              const typingUserName = getTypingMemberName(memberId);
-              setTyping({
-                channel: channel.sid,
-                friendlyName: typingUserName
-              });
-            }
-          });
-          channel.on('typingEnded', () => {
-            setTyping('');
-          });
-        }
       } catch (e) {
         setErrorLoadingMessage(true);
       }
@@ -209,7 +203,7 @@ const Main = ({
     if (channel) {
       init();
     } // eslint-disable-next-line
-  }, [channel, selectedChannelId]);
+  }, [channel, dispatch, getTypingMemberName, selectedChannelId]);
 
   const messageItems = useMemo(
     () =>
@@ -434,17 +428,7 @@ const Main = ({
     },
     [channel, firstName, lastName, onSend, files]
   );
-  const onTyping = useCallback(() => {
-    if (!channel) {
-      return;
-    }
 
-    try {
-      channel.typing();
-    } catch (err) {
-      setErrorLoadingMessage(true);
-    }
-  }, [channel]);
   const handleRTEChange = useCallback((updatedValue) => {
     if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
       setValue('');
@@ -485,6 +469,7 @@ const Main = ({
     ),
     [classes]
   );
+
   return messageLoading || isLoading ? (
     loadingConversation()
   ) : errorLoadingMessage ? (
@@ -571,7 +556,7 @@ const Main = ({
             onSendMessage={onSendMessage}
             onChange={handleRTEChange}
             setValue={setValue}
-            onTyping={onTyping}
+            onTyping={handleOnTyping}
             showError={showError}
           />
         )}
@@ -579,7 +564,7 @@ const Main = ({
         {channel && (
           <div className={classes.typing}>
             <Typography className={classes.typingText} variant="subtitle1">
-              {typing && typing.channel === channel.sid
+              {typing && typing.channelId === channel.sid
                 ? `${typing.friendlyName} is typing ...`
                 : ''}
             </Typography>

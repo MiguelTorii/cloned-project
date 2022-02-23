@@ -19,6 +19,7 @@ import { getPresignedURL } from '../../api/media';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { UserState } from '../../reducers/user';
 import { showNotification } from '../../actions/notifications';
+import { useTyping } from 'features/chat';
 
 const styles = (theme) => ({
   messageScroll: {
@@ -90,7 +91,6 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
   const [messages, setMessages] = useState([]);
-  const [typing, setTyping] = useState(null);
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [scroll, setScroll] = useState(true);
@@ -100,24 +100,14 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
   const [hasMore, setHasMore] = useState(false);
   const [mainMessage, setMainMessage] = useState('');
 
+  const { typing, onTyping } = useTyping(channel?.twilioChannel);
+
   const onSend = () => {};
 
   const {
     data: { userId, firstName, lastName }
   } = useSelector((state: { user: UserState }) => state.user);
-  const onTyping = useCallback(() => {
-    const twilioChannel = get(channel, 'twilioChannel');
 
-    if (!twilioChannel) {
-      return;
-    }
-
-    try {
-      twilioChannel.typing();
-    } catch (err) {
-      console.log(err);
-    }
-  }, [channel]);
   const getRole = useCallback(
     (userId) => {
       if (!members[userId]) {
@@ -204,25 +194,6 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
         setPaginator(p);
         setHasMore(!(p.items.length < 10));
         handleScrollToBottom();
-
-        if (
-          twilioChannel &&
-          (!twilioChannel._events.typingStarted || twilioChannel._events.typingStarted.length === 0)
-        ) {
-          twilioChannel.on('typingStarted', (member) => {
-            member.getUser().then((user) => {
-              const { state } = user;
-              const { friendlyName } = state;
-              setTyping({
-                channel: twilioChannel.sid,
-                friendlyName
-              });
-            });
-          });
-          twilioChannel.on('typingEnded', () => {
-            setTyping('');
-          });
-        }
       } catch (e) {}
     };
 
@@ -409,7 +380,9 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
       {channel && (
         <div className={classes.typing}>
           <Typography className={classes.typingText} variant="subtitle1">
-            {typing && typing.channel === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
+            {typing && typing.channelId === channel.sid
+              ? `${typing.friendlyName} is typing ...`
+              : ''}
           </Typography>
         </div>
       )}
