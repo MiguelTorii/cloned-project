@@ -291,7 +291,7 @@ const FeedItem = ({
           return (
             <div className={classes.flashCardsImage}>
               <img src={flashcardPost} className={classes.flashcardImage} alt="Flascarhds" />
-              <div className={classes.deckCount}>{`${data.deck.length} Cards`}</div>
+              <div className={classes.deckCount}>{`${data.deckCount} Cards`}</div>
             </div>
           );
         }
@@ -310,7 +310,7 @@ const FeedItem = ({
                   className={classes.flashcardCount}
                   align={showSimple ? 'left' : 'center'}
                 >
-                  {pluralize(showSimple ? 'card' : 'flashcard', data.deck.length, true)}
+                  {pluralize(showSimple ? 'card' : 'flashcard', data.deckCount, true)}
                 </Typography>
               </Box>
             </Box>

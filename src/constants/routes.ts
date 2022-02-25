@@ -1,4 +1,9 @@
 /* eslint-disable no-nested-ternary */
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+  ? `${process.env.REACT_APP_API_BASE_URL}`
+  : process.env.REACT_APP_STAGE === 'production'
+  ? 'https://api.circleinapp.com'
+  : 'https://dev-api.circleinapp.com';
 export const API_URL = process.env.REACT_APP_API_BASE_URL
   ? `${process.env.REACT_APP_API_BASE_URL}/v1`
   : process.env.REACT_APP_STAGE === 'production'

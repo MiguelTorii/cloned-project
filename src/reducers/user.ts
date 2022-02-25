@@ -352,7 +352,7 @@ export default (state: UserState = defaultState, action: Action): UserState => {
     case userActions.GET_FLASHCARDS: {
       return update(state, {
         flashcards: {
-          $set: normalizeArray(action.payload.posts, 'feed_id')
+          $set: normalizeArray(action.payload, 'feedId')
         }
       });
     }

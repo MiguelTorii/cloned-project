@@ -4,7 +4,7 @@
  * - Jira Ticket: https://circleinapp.atlassian.net/browse/NCGNT-669
  */
 import axios from 'axios';
-import { API_ROUTES, API_URL_V1_1, API_URL_V1_2 } from '../constants/routes';
+import { API_BASE_URL, API_ROUTES } from 'constants/routes';
 import type { TFeedItem } from '../types/models';
 import { logEvent } from './analytics';
 import { getToken, feedToCamelCase, generateFeedURL, feedToCamelCaseV2 } from './utils';
@@ -229,18 +229,9 @@ export const generateQuiz = async ({
   }
 };
 
-/**
- * Fetch feed data.
- */
-export const apiFetchFeeds = async (params: APIFetchFeedsParams, cancelToken) =>
-  callApi({
-    url: `${API_URL_V1_1}/feed`,
-    params,
-    cancelToken
-  });
-export const apiFetchFeedsV2 = async (params: APIFetchFeedsParams) => {
+export const apiFetchFeeds = async (params: APIFetchFeedsParams) => {
   const data = await callApi({
-    url: `${API_URL_V1_2}/feed`,
+    url: `${API_BASE_URL}/v1.3/feed`,
     params
   });
 

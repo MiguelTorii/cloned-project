@@ -12,13 +12,12 @@ import {
 } from '../api/user';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import { Announcement, SyncSuccessData } from '../types/models';
+import { Announcement, SyncSuccessData, TFeedItem } from 'types/models';
 import { checkUserSession } from './sign-in';
 import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
 import { getPresignedURL } from '../api/media';
 import { UserClassList, EmptyState } from '../reducers/user';
-import { APIFlashcardDeck } from '../api/models/APIFlashcardDeck';
 import { APIFetchFeedsParams } from '../api/params/APIFetchFeedsParams';
 
 const setBannerHeightAction = ({ bannerHeight }: { bannerHeight: number }): Action => ({
@@ -255,13 +254,13 @@ export const masquerade =
     }
   };
 export const getFlashcards = (
-  userId: string,
+  userId: string | undefined,
   bookmarked?: boolean,
   index?: number,
   limit?: number
 ) => ({
   type: userActions.GET_FLASHCARDS,
-  apiCall: (): Promise<APIFlashcardDeck> => {
+  apiCall: (): Promise<TFeedItem[]> => {
     const params: APIFetchFeedsParams = {
       bookmarked,
       tool_type_id: 3,
@@ -274,7 +273,7 @@ export const getFlashcards = (
       params.user_id = Number(userId);
     }
 
-    return apiFetchFeeds(params, null);
+    return apiFetchFeeds(params);
   }
 });
 export const deleteFlashcard = (userId: string, feedId: number) => ({
@@ -288,7 +287,7 @@ export const bookmarkFlashcards = (
   userId: string,
   feedId: number,
   isRemove: boolean,
-  cb: (...args: Array<any>) => any
+  cb?: (...args: Array<any>) => any
 ) => ({
   type: userActions.BOOKMARK_FLASHCARDS,
   meta: {

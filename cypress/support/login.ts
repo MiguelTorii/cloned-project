@@ -2,20 +2,24 @@ export type TestCredentials = {
   email: string;
   password: string;
   userId: string;
-}
+};
 
 type TestSchool = {
   name: string;
   id: string;
-}
+};
 
 export type SessionData = {
   TOKEN?: string;
   REFRESH_TOKEN?: string;
   USER_ID?: string;
-}
+};
 
-function loginUser(school: TestSchool, credentials: TestCredentials, inputSessionData: SessionData): void {
+function loginUser(
+  school: TestSchool,
+  credentials: TestCredentials,
+  inputSessionData: SessionData
+): void {
   const sessionData: SessionData = inputSessionData || {};
 
   cy.request('POST', `${Cypress.env('api')}/auth/login`, {

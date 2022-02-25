@@ -1,9 +1,13 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.circlein.android",
-    "sha256_cert_fingerprints":
-    ["BA:46:3C:04:3E:EA:98:4A:8B:2F:40:56:F6:AA:8E:CC:A8:42:AB:AE:8B:B7:8F:AC:2C:37:E8:68:6C:FB:61:B2", "AE:91:8D:4F:7C:5E:30:B8:56:FC:20:CC:E6:27:6C:32:56:CF:8C:CE:97:BD:8E:36:AF:6D:7E:25:55:DA:BA:45"]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.circlein.android",
+      "sha256_cert_fingerprints": [
+        "BA:46:3C:04:3E:EA:98:4A:8B:2F:40:56:F6:AA:8E:CC:A8:42:AB:AE:8B:B7:8F:AC:2C:37:E8:68:6C:FB:61:B2",
+        "AE:91:8D:4F:7C:5E:30:B8:56:FC:20:CC:E6:27:6C:32:56:CF:8C:CE:97:BD:8E:36:AF:6D:7E:25:55:DA:BA:45"
+      ]
+    }
   }
-}]
+]

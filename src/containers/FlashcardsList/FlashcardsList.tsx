@@ -22,6 +22,7 @@ import { getFlashcards, confirmTooltip as confirmTooltipAction } from '../../act
 import useStyles from './styles';
 import type { State as StoreState } from '../../types/state';
 import { CampaignState } from '../../reducers/campaign';
+import { useAppSelector } from 'redux/store';
 
 const Filters = {
   mine: {
@@ -45,7 +46,7 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const me = useSelector((state) => (state as any).user.data);
-  const decks = useSelector((state) => (state as any).user.flashcards);
+  const decks = useAppSelector((state) => state.user.flashcards);
   const isLoadingDecks = useSelector(isApiCalling(userActions.GET_FLASHCARDS));
   const pastClasses = useSelector((state) => (state as any).user.userClasses.pastClasses);
   const location = useLocation();
@@ -72,14 +73,14 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
   }, [location]);
   const decksToShow = useMemo(() => {
     const result = decks.ids.map((id) => decks.byId[id]);
-    const myDecks = result.filter((item) => !pastClassIds.includes(item.class_id));
+    const myDecks = result.filter((item) => !pastClassIds.includes(item.classId));
 
     if (currentFilter === 'bookmarked') {
       return result.filter((item) => item.bookmarked);
     }
 
     if (currentFilter === 'past') {
-      return result.filter((item) => pastClassIds.includes(item.class_id));
+      return result.filter((item) => pastClassIds.includes(item.classId));
     }
 
     return myDecks;
@@ -162,7 +163,7 @@ const FlashcardsList = ({ viewedTooltips, confirmTooltip }: Props) => {
     return (
       <Grid container spacing={3}>
         {decksToShow.map((deck) => (
-          <Grid item key={deck.feed_id} xs={12} md={6} lg={4} xl={3}>
+          <Grid item key={deck.feedId} xs={12} md={6} lg={4} xl={3}>
             <FlashcardsDeck data={deck} />
           </Grid>
         ))}

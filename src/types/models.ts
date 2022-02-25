@@ -363,7 +363,7 @@ export type TFeedItem = {
   role: string;
   courseDisplayName: string;
   bookmarked: boolean;
-  deck: Array<Flashcard>;
+  deckCount: number;
   noteUrl: string;
   name: string;
   created: string;

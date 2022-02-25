@@ -189,13 +189,7 @@ const feedDataToCamelCase = (feedData: APIFeedItem): TFeedItem => ({
   role: feedData.role || '',
   courseDisplayName: feedData.course_display_name || '',
   bookmarked: feedData.bookmarked,
-  deck: feedData.deck?.map((d: APIFlashcard) => ({
-    answer: d.answer || '',
-    answerImageUrl: d.answer_image_url || '',
-    id: d.id,
-    question: d.question || '',
-    questionImageUrl: d.question_image_url || ''
-  })),
+  deckCount: feedData.deck_count,
   notes: feedData.notes.map((n: APINote) => ({
     fullNoteUrl: n.full_note_url || '',
     note: n.note || '',

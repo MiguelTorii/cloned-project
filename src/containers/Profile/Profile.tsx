@@ -19,7 +19,7 @@ import {
   getStudyCircle
 } from '../../api/user';
 import { addToStudyCircle, removeFromStudyCircle } from '../../api/posts';
-import { apiFetchFeedsV2 } from '../../api/feed';
+import { apiFetchFeeds } from 'api/feed';
 import * as signInActions from '../../actions/sign-in';
 import * as chatActions from '../../actions/chat';
 import * as feedActions from '../../actions/feed';
@@ -228,7 +228,7 @@ class Profile extends React.PureComponent<Props, State> {
     const { userId } = this.props;
 
     if (userId !== '') {
-      apiFetchFeedsV2({
+      apiFetchFeeds({
         user_id: Number(userId)
       }).then((feed) => {
         this.setState({
@@ -247,7 +247,7 @@ class Profile extends React.PureComponent<Props, State> {
     } = this.props;
 
     if (ownId === userId && userId !== '') {
-      apiFetchFeedsV2({
+      apiFetchFeeds({
         bookmarked: true
       }).then((bookmarks) => {
         this.setState({

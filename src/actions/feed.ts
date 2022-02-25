@@ -5,7 +5,7 @@ import type { TFeedItem } from '../types/models';
 import * as feedApi from '../api/feed';
 import * as postsApi from '../api/posts';
 import { FEEDS_PER_PAGE } from '../constants/app';
-import { apiFetchFeeds, apiFetchFeedsV2 } from '../api/feed';
+import { apiFetchFeeds } from 'api/feed';
 
 const requestFetchFeed = (): Action => ({
   type: feedActions.FETCH_FEED_REQUEST
@@ -241,7 +241,7 @@ export const updateFilterFields = (newFilter) => ({
 });
 export const actionFetchFeed = (params) => ({
   type: feedActions.FETCH_FEED,
-  apiCall: () => apiFetchFeedsV2(params)
+  apiCall: () => apiFetchFeeds(params)
 });
 export const actionDeleteFeed = (feedId) => ({
   type: feedActions.DELETE_FEED,

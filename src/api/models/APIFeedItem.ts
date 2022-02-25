@@ -1,4 +1,3 @@
-import { APIFlashcard } from './APIFlashcard';
 import { APINote } from './APINote';
 import { APITag } from './APITag';
 import { APIPostInfo } from './APIPostInfo';
@@ -14,7 +13,7 @@ export type APIFeedItem = {
   role: string;
   course_display_name: string;
   bookmarked: boolean;
-  deck: APIFlashcard[];
+  deck_count: number;
   note_url: string;
   name: string;
   created: string;

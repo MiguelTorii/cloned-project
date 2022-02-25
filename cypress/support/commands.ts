@@ -1,4 +1,4 @@
-import {addCypressLoginCommands} from './login';
+import { addCypressLoginCommands } from './login';
 
 // ***********************************************
 // This example commands.js shows you how to

@@ -19,9 +19,10 @@ import Dialog from '../Dialog/Dialog';
 import ActionBar from './ActionBar';
 import withRoot from '../../withRoot';
 import useStyles from './styles';
+import { TFeedItem } from 'types/models';
 
 type Props = {
-  data: any;
+  data: TFeedItem;
 };
 
 const FlashcardsDeck = ({ data }: Props) => {
@@ -37,10 +38,10 @@ const FlashcardsDeck = ({ data }: Props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   // Memos
   const deckClass = useMemo(
-    () => classList.find((item) => item.classId === data.class_id),
+    () => classList.find((item) => item.classId === data.classId),
     [data, classList]
   );
-  const deckLink = useMemo(() => `${APP_ROOT_PATH}/flashcards/${data.post_id}`, [data]);
+  const deckLink = useMemo(() => `${APP_ROOT_PATH}/flashcards/${data.postId}`, [data]);
   const shareLinkModalTitle = useMemo(
     () => (
       <Typography variant="h6">
@@ -55,17 +56,17 @@ const FlashcardsDeck = ({ data }: Props) => {
   );
   // Callbacks
   const handleBookmark = useCallback(() => {
-    dispatch(bookmarkFlashcards(me.userId, data.feed_id, data.bookmarked, null));
+    dispatch(bookmarkFlashcards(me.userId, data.feedId, data.bookmarked));
   }, [data, me, dispatch]);
   const handleView = useCallback(() => {
-    dispatch(push(`/flashcards/${data.post_id}?source=deck`));
+    dispatch(push(`/flashcards/${data.postId}?source=deck`));
   }, [dispatch, data]);
   const handleShareLink = useCallback(() => {
     setIsShareLinkModalOpen(true);
   }, []);
   const handleDelete = useCallback(() => {
     setIsDeleteModalOpen(false);
-    dispatch(deleteFlashcard(me.userId, data.feed_id));
+    dispatch(deleteFlashcard(me.userId, data.feedId));
   }, [me, data, dispatch]);
   const handleOpenDeleteModal = useCallback(() => setIsDeleteModalOpen(true), []);
   const handleCloseDeleteModal = useCallback(() => setIsDeleteModalOpen(false), []);
@@ -78,7 +79,7 @@ const FlashcardsDeck = ({ data }: Props) => {
   }, []);
 
   const isOwn = () => {
-    const dataUserId: string = data.user_id ? String(data.user_id) : '';
+    const dataUserId: string = data.userId ? String(data.userId) : '';
     return me.userId === dataUserId;
   };
 
@@ -104,7 +105,7 @@ const FlashcardsDeck = ({ data }: Props) => {
               })}
             </Typography>
             <Typography variant="body2" className={classes.subtitle}>
-              {pluralize('flashcard', data.deck.length, true)}
+              {pluralize('flashcard', data.deckCount, true)}
               &nbsp; • &nbsp; updated {moment(data.created).fromNow()}
             </Typography>
           </div>
