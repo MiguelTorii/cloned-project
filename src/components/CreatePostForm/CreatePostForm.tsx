@@ -13,6 +13,7 @@ import CustomSwitch from '../MainLayout/Switch';
 import Dialog from '../Dialog/Dialog';
 import { styles } from '../_styles/CreatePostForm';
 import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
+import SimpleErrorDialog from 'components/SimpleErrorDialog';
 
 type Props = {
   currentTag?: any;
@@ -29,12 +30,24 @@ type Props = {
   handleSubmit?: (...args: Array<any>) => any;
   sectionId?: number;
 };
-type State = {};
+type State = {
+  open: boolean;
+  errorTitle: string | null;
+  errorBody: string | null;
+  errorOpen: boolean;
+};
 
 class CreatePostForm extends React.PureComponent<Props, State> {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+      errorOpen: false,
+      errorTitle: null,
+      errorBody: null
+    };
+  }
 
   showBreakDownDialog = () => {
     this.setState({
@@ -58,6 +71,20 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     return buttonLabel || 'Create';
   };
 
+  handleFormError = () => {
+    this.setState({
+      errorOpen: true,
+      errorTitle: 'Error',
+      errorBody: 'Some fields are missing!'
+    });
+  };
+
+  handleCloseErrorPopup = () => {
+    this.setState({
+      errorOpen: false
+    });
+  };
+
   render() {
     const { sectionId } = this.props;
     const {
@@ -72,10 +99,14 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       errorMessage,
       handleSubmit
     } = this.props;
-    const { open } = this.state;
+    const { open, errorBody, errorOpen, errorTitle } = this.state;
     return (
       <>
-        <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
+        <ValidatorForm
+          onSubmit={handleSubmit}
+          onError={this.handleFormError}
+          className={classes.form}
+        >
           <main className={classes.main}>
             <Paper className={classes.paper}>{children}</Paper>
             {sectionId === CIRCLEIN101_SECTION_ID && (
@@ -189,6 +220,12 @@ class CreatePostForm extends React.PureComponent<Props, State> {
             </div>
           </div>
         </Dialog>
+        <SimpleErrorDialog
+          open={errorOpen}
+          title={errorTitle || ''}
+          body={errorBody || ''}
+          handleClose={this.handleCloseErrorPopup}
+        />
       </>
     );
   }
