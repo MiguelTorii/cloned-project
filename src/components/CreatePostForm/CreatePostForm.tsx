@@ -9,6 +9,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
+import { Checkbox } from '@material-ui/core';
+
 import CustomSwitch from '../MainLayout/Switch';
 import Dialog from '../Dialog/Dialog';
 import { styles } from '../_styles/CreatePostForm';
@@ -35,6 +37,7 @@ type State = {
   errorTitle: string | null;
   errorBody: string | null;
   errorOpen: boolean;
+  termsAndConditionAccepted: boolean;
 };
 
 class CreatePostForm extends React.PureComponent<Props, State> {
@@ -45,7 +48,8 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       open: false,
       errorOpen: false,
       errorTitle: null,
-      errorBody: null
+      errorBody: null,
+      termsAndConditionAccepted: false
     };
   }
 
@@ -85,6 +89,12 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     });
   };
 
+  handleChangeTermsAndCondition = (event) => {
+    this.setState({
+      termsAndConditionAccepted: event.target.checked
+    });
+  };
+
   render() {
     const { sectionId } = this.props;
     const {
@@ -99,7 +109,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       errorMessage,
       handleSubmit
     } = this.props;
-    const { open, errorBody, errorOpen, errorTitle } = this.state;
+    const { open, errorBody, errorOpen, errorTitle, termsAndConditionAccepted } = this.state;
     return (
       <>
         <ValidatorForm
@@ -110,7 +120,13 @@ class CreatePostForm extends React.PureComponent<Props, State> {
           <main className={classes.main}>
             <Paper className={classes.paper}>{children}</Paper>
             {sectionId === CIRCLEIN101_SECTION_ID && (
-              <Box px={2}>
+              <Box px={2} display="flex">
+                <Box>
+                  <Checkbox
+                    checked={termsAndConditionAccepted}
+                    onChange={this.handleChangeTermsAndCondition}
+                  />
+                </Box>
                 <Typography variant="body2">{CIRCLEIN101_TC}</Typography>
               </Box>
             )}
@@ -153,7 +169,11 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                       variant="contained"
                       color="primary"
                       fullWidth
-                      disabled={Boolean(loading || !changed)}
+                      disabled={Boolean(
+                        loading ||
+                          !changed ||
+                          (sectionId === CIRCLEIN101_SECTION_ID && !termsAndConditionAccepted)
+                      )}
                       classes={{
                         root: classes.submit,
                         disabled: classes.disabled

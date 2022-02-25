@@ -16,6 +16,7 @@ import TextField from '../Basic/TextField/TextField';
 import { INTERVAL, STORAGE_KEYS } from '../../constants/app';
 import HotKeyGuide from '../HotKeyGuide/HotKeyGuide';
 import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
+import { Checkbox } from '@material-ui/core';
 
 const HOT_KEYS = [
   {
@@ -41,6 +42,7 @@ const FlashcardsDeckManager = ({
   const dispatch = useDispatch();
   // States
   const [isValidated, setIsValidated] = useState(false);
+  const [termsAndConditionAccepted, setTermsAndConditionAccepted] = useState(false);
   const [editorRefs, setEditorRefs] = useState({});
   const [formData, setFormData] = useState({
     title: null,
@@ -221,8 +223,14 @@ const FlashcardsDeckManager = ({
   // Rendering Helpers
   const renderForm = () => (
     <Box mt={3} mb={4}>
-      {formData.sectionId === CIRCLEIN101_SECTION_ID && (
-        <Box mb={5}>
+      {!disableClass && formData.sectionId === CIRCLEIN101_SECTION_ID && (
+        <Box mb={5} display="flex">
+          <Box>
+            <Checkbox
+              checked={termsAndConditionAccepted}
+              onChange={(event) => setTermsAndConditionAccepted(event.target.checked)}
+            />
+          </Box>
           <Typography variant="body2">{CIRCLEIN101_TC}</Typography>
         </Box>
       )}
@@ -307,7 +315,16 @@ const FlashcardsDeckManager = ({
     <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h5">{title}</Typography>
-        <GradientButton loading={isSubmitting} disabled={isSubmitting} onClick={handleSubmit}>
+        <GradientButton
+          loading={isSubmitting}
+          disabled={
+            isSubmitting ||
+            (!disableClass &&
+              formData.sectionId === CIRCLEIN101_SECTION_ID &&
+              !termsAndConditionAccepted)
+          }
+          onClick={handleSubmit}
+        >
           {submitText}
         </GradientButton>
       </Box>
