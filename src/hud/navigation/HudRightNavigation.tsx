@@ -19,8 +19,9 @@ import {
   SUPPORT_AREA,
   GET_THE_MOBILE_APP_AREA,
   EXPERT_MODE_ACCESS,
-  RIGHT_SIDE_AREA
-} from '../navigationState/hudNavigation';
+  RIGHT_SIDE_AREA,
+  INVITE_FRIENDS_AREA
+} from 'hud/navigationState/hudNavigation';
 import { UserState } from '../../reducers/user';
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
@@ -31,6 +32,7 @@ import { ReactComponent as IconSupport } from '../../assets/svg/ic_support.svg';
 import { ReactComponent as IconMobileApp } from '../../assets/svg/ic_get_mobile_app.svg';
 import { ReactComponent as IconExpertModeToggle } from '../../assets/svg/ic_go_to_expert_mode.svg';
 import { ReactComponent as IconSignOut } from '../../assets/svg/ic_logout.svg';
+import { ReactComponent as IconInvite } from 'assets/svg/invite-icon.svg';
 import { User } from '../../types/models';
 import HudTool from './HudTool';
 import Notifications from '../../containers/Notifications/Feed';
@@ -82,6 +84,11 @@ const HudRightNavigation = () => {
       id: GIVE_FEEDBACK_AREA,
       displayName: 'Give Feedback',
       icon: <IconSubmitAnIdea />
+    },
+    {
+      id: INVITE_FRIENDS_AREA,
+      displayName: 'Invite Friends',
+      icon: <IconInvite />
     },
     {
       id: SUPPORT_AREA,

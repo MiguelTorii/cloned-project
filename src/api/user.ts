@@ -16,13 +16,15 @@ import type {
   SyncSuccessData,
   UserClass,
   TExperiencePointsData,
-  TMission
-} from '../types/models';
+  TMission,
+  InviteLinkData,
+  UserProfile,
+  JoinWithReferralCodeResponse
+} from 'types/models';
 import { getToken } from './utils';
 import callApi from './api_base';
 import { APIProfile } from './models/APIProfile';
 import { APIAbout } from './models/APIAbout';
-import { UserProfile } from '../types/models';
 
 export const getUserProfile = async ({ userId }: { userId: string }): Promise<Profile> => {
   if (!userId) {
@@ -712,4 +714,17 @@ export const apiGetExperiencePoints = async (): Promise<TExperiencePointsData> =
 export const apiGetMissions = async (): Promise<TMission[]> =>
   callApi({
     url: `${API_URL}/missions`
+  });
+
+export const apiGetInviteLink = async (): Promise<InviteLinkData> =>
+  callApi({
+    url: `${API_URL}/referral/create/link`
+  });
+
+export const apiJoinWithReferralCode = async (
+  referralCode
+): Promise<JoinWithReferralCodeResponse> =>
+  callApi({
+    url: `${API_URL}/referral/join/${referralCode}`,
+    method: 'POST'
   });

@@ -25,6 +25,7 @@ import HudFrame from './hud/frame/HudFrame';
 import Miss from './pages/Miss/Miss';
 import { CREATE_POST_PATHNAME } from './routeConstants';
 import SharePage from './pages/Share/SharePage';
+import JoinWithReferralCode from './pages/JoinWithReferralCode/JoinWithReferralCode';
 
 const HudRoutes = () => (
   <ConnectedRouter history={history}>
@@ -102,6 +103,7 @@ const HudRoutes = () => (
           <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
           <Route exact path="/redirect" component={RedirectPage} />
           <Route exact path="/sandbox" component={Sandbox} />
+          <Route exact path="/invite/:code" component={JoinWithReferralCode} />
 
           {/* Show a message and then in 1 sec redirect to "/" */}
           <Route component={Miss} />

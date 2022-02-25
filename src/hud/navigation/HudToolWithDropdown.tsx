@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Button,
   ListItemIcon,
@@ -19,8 +19,9 @@ import {
   SUPPORT_AREA,
   CHAT_MAIN_AREA,
   COMMUNITIES_MAIN_AREA,
-  ACHIEVEMENTS_MAIN_AREA
-} from '../navigationState/hudNavigation';
+  ACHIEVEMENTS_MAIN_AREA,
+  INVITE_FRIENDS_AREA
+} from 'hud/navigationState/hudNavigation';
 import useHudRoutes from '../frame/useHudRoutes';
 import { signOut } from '../../actions/sign-in';
 import type { Dispatch } from '../../types/store';
@@ -31,6 +32,7 @@ import { User } from '../../types/models';
 import { toggleExpertMode } from '../../actions/user';
 import { openSupportWidget } from '../../utils/helpers';
 import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
+import InviteFriendsModal from 'components/InviteFriendsModal/InviteFriendsModal';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -42,6 +44,8 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const highlightedButtonStyles = useHighlightedButtonStyles();
 
   const dispatch: Dispatch = useDispatch();
+
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   const setHudArea = useHudRoutes();
 
@@ -70,6 +74,8 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
       toggleExpertMode()(dispatch, reduxStore.getState);
     } else if (mainSubArea === SIGN_OUT_BUTTON) {
       dispatch(signOut());
+    } else if (mainSubArea === INVITE_FRIENDS_AREA) {
+      setIsInviteModalOpen(true);
     } else {
       setHudArea(parentNavigationItem.id, mainSubArea);
     }
@@ -209,6 +215,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
           </Menu>
         </>
       )}
+      <InviteFriendsModal open={isInviteModalOpen} onClose={() => setIsInviteModalOpen(false)} />
     </div>
   );
 };

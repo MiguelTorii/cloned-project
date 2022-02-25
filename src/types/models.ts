@@ -663,3 +663,10 @@ export type ClassSectionIds = {
   classId: number;
   sectionId: number;
 };
+export type InviteLinkData = {
+  referral_link: string;
+};
+export type JoinWithReferralCodeResponse = {
+  success: boolean;
+  message?: string;
+};

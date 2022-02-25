@@ -12,9 +12,10 @@ import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
 import type { TLoginError, User } from '../types/models';
 import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
-import { apiSetExpertMode, apiGetExpertMode } from '../api/user';
+import { apiSetExpertMode, apiGetExpertMode, apiJoinWithReferralCode } from 'api/user';
 import { showErrorModal } from './dialog';
-import { INSIGHTS_DASHBOARD_URI } from '../constants/app';
+import { INSIGHTS_DASHBOARD_URI, STORAGE_KEYS } from 'constants/app';
+import { showNotification } from './notifications';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -121,6 +122,7 @@ export const signIn =
           user
         })
       );
+
       return dispatch(push('/'));
     } catch (err: any) {
       const { response = {} } = err;
@@ -151,11 +153,34 @@ export const samlLogin =
       const user = await samlSignin(token, isGondor);
 
       if (user.jwtToken) {
-        dispatch(
+        await dispatch(
           updateUser({
             user
           })
         );
+
+        // Check if the user is invited by a referral code
+        const referralCode = store.get(STORAGE_KEYS.REFERRAL_CODE);
+
+        if (referralCode) {
+          const { success, message } = await apiJoinWithReferralCode(referralCode);
+
+          if (success) {
+            dispatch(
+              showNotification({
+                message: 'Thanks for joining CircleIn!',
+                variant: 'success'
+              })
+            );
+          } else {
+            dispatch(
+              showNotification({
+                message,
+                variant: 'error'
+              })
+            );
+          }
+        }
       }
 
       return dispatch(
