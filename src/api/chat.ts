@@ -9,6 +9,7 @@ import { getToken } from './utils';
 import { APICreateChat } from './models/APICreateChat';
 import { APIClassmate } from './models/APIClassmate';
 import { APIChat } from './models/APIChat';
+import retry from 'async-retry';
 
 export const sendMessage = async ({
   message,
@@ -160,17 +161,31 @@ export const getChannelMetadata = async (): Promise<APIChat[]> => {
   return result.chats;
 };
 
-export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<string> => {
-  const token = await getToken();
-  const result = await axios.get(`${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
+export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<string> =>
+  await retry(
+    async (_bail) => {
+      const token = await getToken();
+      const {
+        data: { accessToken = '' }
+      } = await axios.get(`${API_ROUTES.TWILIO_TOKEN}?user_id=${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!accessToken) {
+        return new Promise((_, reject) => {
+          reject('Invalid token.');
+        });
+      }
+
+      return accessToken;
+    },
+    {
+      retries: 5,
+      minTimeout: 2000
     }
-  });
-  const { data = {} } = result;
-  const { accessToken = '' } = data;
-  return accessToken;
-};
+  );
 
 export const createChannel = async ({
   users,
@@ -238,17 +253,18 @@ export const unmuteChannel = async (sid): Promise<Record<string, any>> => {
   return data;
 };
 
-export const getChannels = async (): Promise<Record<string, any>> => {
+export const getTransformedAPIChats = async () => {
   // CHAT_V1
   const token = await getToken();
-  const result = await axios.get(`${API_ROUTES.CHAT_V1}`, {
+  const {
+    data: { chats = [] }
+  } = await axios.get<{ chats: APIChat[] }>(`${API_ROUTES.CHAT_V1}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
-  const { data = {} } = result;
   const local = {};
-  data.chats.forEach((c) => {
+  chats.forEach((c) => {
     local[c.id] = {
       sid: c.id,
       title: c.group_name,
@@ -277,6 +293,19 @@ export const getChannels = async (): Promise<Record<string, any>> => {
     };
   });
   return local;
+};
+
+export const getAPIChats = async () => {
+  // CHAT_V1
+  const token = await getToken();
+  const {
+    data: { chats = [] }
+  } = await axios.get<{ chats: APIChat[] }>(`${API_ROUTES.CHAT_V1}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return chats;
 };
 
 export const leaveChat = async ({ sid }: { sid: string }): Promise<Record<string, any>> => {

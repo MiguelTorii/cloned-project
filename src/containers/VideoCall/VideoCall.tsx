@@ -14,7 +14,7 @@ import MeetUp from './MeetUp';
 import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { updateToken } from 'utils/chat';
+import { updateClientToken } from 'lib/chat';
 
 const styles = (theme) => ({
   root: {
@@ -237,7 +237,7 @@ class VideoCall extends React.Component<Props, State> {
         return;
       }
 
-      const client = await updateToken(accessToken);
+      const client = await updateClientToken(accessToken);
       const channel = await client.getChannelBySid(roomId);
       const messageAttributes = {
         firstName,

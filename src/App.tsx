@@ -5,23 +5,30 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
+import { QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
 import MasqueradeFrame from 'containers/MasqueradeFrame/MasqueradeFrame';
 import UserInitializer from 'containers/UserInitializer/UserInitializer';
 
 import { theme } from './withRoot';
-import ProviderGroup from './providers';
 import HudRoutes from './HudRoutes';
+import ProviderGroup from './providers';
+import { queryClient } from 'lib/query';
 
 const App = () => (
   <MuiThemeProvider theme={theme}>
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <SnackbarProvider maxSnack={3}>
-        <ProviderGroup>
-          <CssBaseline />
-          <UserInitializer />
-          <MasqueradeFrame />
-          <HudRoutes />
-        </ProviderGroup>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ProviderGroup>
+            <CssBaseline />
+            <UserInitializer />
+            <MasqueradeFrame />
+            <HudRoutes />
+          </ProviderGroup>
+        </QueryClientProvider>
       </SnackbarProvider>
     </MuiPickersUtilsProvider>
   </MuiThemeProvider>

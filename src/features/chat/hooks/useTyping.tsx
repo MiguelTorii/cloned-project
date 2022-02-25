@@ -5,7 +5,7 @@ const INITIAL_STATE = { channelId: '', friendlyName: '' };
 const EVENT_TYPING_STARTED: KeyOfChannelEvents = 'typingStarted';
 const EVENT_TYPING_ENDED: KeyOfChannelEvents = 'typingEnded';
 
-const useTyping = (channel?: Channel) => {
+export const useTyping = (channel?: Channel) => {
   const [typing, setTyping] = useState(INITIAL_STATE);
 
   const onTyping = useCallback(() => channel?.typing(), [channel]);

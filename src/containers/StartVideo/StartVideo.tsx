@@ -10,7 +10,7 @@ import { addGroupMembers, createChannel, getGroupMembers, renewTwilioToken } fro
 import { logEvent } from '../../api/analytics';
 import { AppState } from 'redux/store';
 import { User, UserClass } from '../../types/models';
-import { updateToken } from 'utils/chat';
+import { updateClientToken } from 'lib/chat';
 
 const StartVideo = () => {
   const classes = useStyles();
@@ -84,7 +84,7 @@ const StartVideo = () => {
         return;
       }
 
-      const client = await updateToken(accessToken);
+      const client = await updateClientToken(accessToken);
       let paginator = await client.getSubscribedChannels();
 
       while (paginator.hasNextPage) {

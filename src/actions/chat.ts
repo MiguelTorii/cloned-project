@@ -7,7 +7,7 @@ import moment from 'moment';
 import {
   getGroupMembers,
   getShareLink,
-  getChannels,
+  getTransformedAPIChats,
   muteChannel,
   unmuteChannel,
   renewTwilioToken,
@@ -21,7 +21,8 @@ import type { Dispatch } from '../types/store';
 import { uploadMedia } from './user';
 import { ChannelWrapper, CurrentCommunity } from '../reducers/chat';
 import { APICommunity, APICommunityData } from '../api/models/APICommunity';
-import { ensureChatClient } from 'utils/chat';
+import { loadClientAndChannels } from 'lib/chat';
+import { getChannelsUnreadCount, getUnreadCountFromChannel } from 'features/chat';
 
 const getAvailableSlots = (width) => {
   try {
@@ -410,7 +411,7 @@ export const handleNewChannel =
 
 const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
-    const local = await getChannels();
+    const local = await getTransformedAPIChats();
 
     // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
     // user's selected navigation state after some arbitrary amount of time,
@@ -547,60 +548,19 @@ export const handleInitChat =
     try {
       dispatch(startLoading());
 
-      if (curClient && curClient.connectionState === 'connected') {
-        return;
-      }
+      const { client, channels } = await loadClientAndChannels(userId);
 
-      const accessToken = await renewTwilioToken({
-        userId
-      });
+      const unreadMessages = await getChannelsUnreadCount(channels);
 
-      if (!accessToken || (accessToken && accessToken === '')) {
-        setTimeout(handleInitChat, 2000);
-        return;
-      }
-
-      const client = await ensureChatClient(accessToken);
-
-      let paginator = await client.getSubscribedChannels();
-
-      while (paginator.hasNextPage) {
-        // eslint-disable-next-line no-await-in-loop
-        paginator = await paginator.nextPage();
-      }
-
-      const channels = await client.getLocalChannels({
-        criteria: 'lastMessage',
-        order: 'descending'
-      });
       const local = {};
 
-      const unreadCount = async (channel) => {
-        const count = await channel.getMessagesCount();
-        let unreadCount;
-
-        if (channel.lastConsumedMessageIndex === null) {
-          unreadCount = count;
-        } else if (channel.lastConsumedMessageIndex + 1 > count) {
-          unreadCount = 0; // check the channel is new or check lastConsumedMessageIndex is bigger than message count
-        } else {
-          unreadCount = count - (channel.lastConsumedMessageIndex + 1);
-        }
-
-        return {
-          [channel.sid]: unreadCount
-        };
-      };
-
-      const promises = channels.map((channel) => unreadCount(channel));
-      const unreadMessages = await Promise.all(promises);
-
-      channels.forEach((c, key) => {
+      channels.forEach((c) => {
         local[c.sid] = {
-          unread: unreadMessages[key][c.sid],
+          unread: unreadMessages[c.sid],
           twilioChannel: c
         };
       });
+
       dispatch(
         initClient({
           client
@@ -666,7 +626,7 @@ export const handleInitChat =
           );
         });
         client.on('channelUpdated', async ({ channel }) => {
-          const unreadMessageCount = await unreadCount(channel);
+          const unreadMessageCount = await getUnreadCountFromChannel(channel);
           dispatch(
             updateChannel({
               channel,
@@ -676,7 +636,7 @@ export const handleInitChat =
         });
         client.on('messageAdded', async (message) => {
           const { channel } = message;
-          const unreadMessageCount = await unreadCount(channel);
+          const unreadMessageCount = await getUnreadCountFromChannel(channel);
           dispatch(
             newMessage({
               message
@@ -704,7 +664,7 @@ export const handleInitChat =
         });
       }
     } catch (err) {
-      setTimeout(handleInitChat, 2000);
+      // setTimeout(handleInitChat, 2000);
     }
   };
 export const handleShutdownChat =

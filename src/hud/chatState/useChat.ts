@@ -14,10 +14,11 @@ import { ClassmateGroup, User } from '../../types/models';
 import { setCommunitiesAndChannels, startChatLoad } from './hudChatActions';
 import { HudChatState } from './hudChatState';
 import { fetchCommunityChannels, fetchCommunityMembers } from './hudChatRESTApi';
-import { loadChatClient, loadLocalChannels, loadSubscribedChannels } from './hudChatSocketApi';
 import { UserState } from '../../reducers/user';
 import { getChannelMetadata, renewTwilioToken } from '../../api/chat';
 import { APIChat } from '../../api/models/APIChat';
+import { loadLocalChannels } from 'lib/chat/channels';
+import { renewTokenAndGetClient } from 'lib/chat/client';
 
 export interface IChatLoadOptions {
   channelId: string;
@@ -79,9 +80,8 @@ const loadCommunities = async (userId: string): Promise<CommunityChannelData> =>
 };
 
 const loadClientAndChannels = async (userId: string): Promise<ChatSocketData> => {
-  const client = await loadChatClient(userId);
-  await loadSubscribedChannels(client);
-  const channels = await loadLocalChannels(client);
+  const client = await renewTokenAndGetClient(userId);
+  const channels = await loadLocalChannels(userId);
 
   registerForClientEvents(client, userId);
 

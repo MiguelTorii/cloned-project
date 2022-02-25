@@ -1,19 +1,21 @@
-export type APIChatUser = {
-  email: string;
+export interface APIChatUser {
   first_name: string;
+  last_name: string;
+  user_id: number;
+  scholarship_points: number;
+  state: string;
+  joined: string;
+  rank: number;
   hours: number;
+  school_id: number;
+  profile_image_url: string;
   is_online: boolean;
   is_tutor: boolean;
-  joined: string;
-  last_name: string;
-  profile_image_url: string;
-  rank: number;
-  registered: boolean;
-  role: string;
+  role: Role | null;
   role_id: number;
-  scholarship_points: number;
   school: string;
-  school_id: number;
-  state: string;
-  user_id: number;
-};
+  registered: boolean;
+  email: string;
+}
+
+export type Role = 'Admin' | 'Faculty' | 'Orientation Leader' | 'Student' | 'Tutor';

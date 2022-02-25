@@ -36,27 +36,17 @@ import {
 } from '../navigationState/hudNavigation';
 import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
-import { AppState } from 'redux/store';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
 import AREA_TITLES from 'constants/area-titles';
+import { useAllUnreadCount } from 'features/chat';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 const NAVBAR_ICON_SIZE = { width: '50px', height: '50px' };
 
 const HudMainNavigation = () => {
   const classes: any = useStyles();
-  const local = useSelector<AppState, Record<string, any>>((state) => state.chat.data.local);
-
-  const unreadMessageCount = useMemo(() => {
-    let result = 0;
-    Object.keys(local).forEach((l) => {
-      if (local[l]?.unread) {
-        result += Number(local[l].unread);
-      }
-    });
-    return result;
-  }, [local]);
+  const unreadData = useAllUnreadCount();
 
   const studyToolsOption: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.studyToolsOption
@@ -135,7 +125,7 @@ const HudMainNavigation = () => {
     id: CHAT_MAIN_AREA,
     displayName: AREA_TITLES.CHAT,
     icon: (
-      <Badge badgeContent={unreadMessageCount} color="secondary" overlap="circular">
+      <Badge badgeContent={unreadData.data} color="secondary" overlap="circular">
         <IconChat style={NAVBAR_ICON_SIZE} />
       </Badge>
     ),
@@ -183,5 +173,7 @@ const HudMainNavigation = () => {
     </div>
   );
 };
+
+HudMainNavigation.whyDidYouRender = true;
 
 export default HudMainNavigation;
