@@ -253,7 +253,11 @@ export const unmuteChannel = async (sid): Promise<Record<string, any>> => {
   return data;
 };
 
-export const getTransformedAPIChats = async () => {
+/**
+ * TODO: Deprecate in favor of camelCased transformation in features/chat/api/channels
+ * Responsability of sending correct naming and structure should fall on the server
+ */
+export const getChannels = async () => {
   // CHAT_V1
   const token = await getToken();
   const {
@@ -293,19 +297,6 @@ export const getTransformedAPIChats = async () => {
     };
   });
   return local;
-};
-
-export const getAPIChats = async () => {
-  // CHAT_V1
-  const token = await getToken();
-  const {
-    data: { chats = [] }
-  } = await axios.get<{ chats: APIChat[] }>(`${API_ROUTES.CHAT_V1}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-  return chats;
 };
 
 export const leaveChat = async ({ sid }: { sid: string }): Promise<Record<string, any>> => {

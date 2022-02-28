@@ -7,7 +7,7 @@ import moment from 'moment';
 import {
   getGroupMembers,
   getShareLink,
-  getTransformedAPIChats,
+  getChannels,
   muteChannel,
   unmuteChannel,
   renewTwilioToken,
@@ -411,7 +411,7 @@ export const handleNewChannel =
 
 const initLocalChannels = async (dispatch, currentLocal = {}) => {
   try {
-    const local = await getTransformedAPIChats();
+    const local = await getChannels();
 
     // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
     // user's selected navigation state after some arbitrary amount of time,

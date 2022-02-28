@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
-import { useLocalChannelById, useLocalChannels } from './useLocalChannels';
+import { useChannelById, useChannels } from './useChannels';
 import { queryClient } from 'lib/query';
 import { Unreads, getChannelsUnreadCount, getChannelUnreadCount } from '../api/unread';
 
 export const useUnreadCount = <T extends Unreads>(select?: (data: Unreads) => number | T) => {
-  const channels = useLocalChannels();
+  const channels = useChannels();
 
   return useQuery(['unreadCount'], () => getChannelsUnreadCount(channels.data), {
     enabled: Boolean(channels.data?.length),
@@ -14,7 +14,7 @@ export const useUnreadCount = <T extends Unreads>(select?: (data: Unreads) => nu
 };
 
 export const useUnreadCountById = (id: string) => {
-  const channelQuery = useLocalChannelById(id);
+  const channelQuery = useChannelById(id);
 
   return useQuery(['unreadCount', id], () => getChannelUnreadCount(channelQuery.data), {
     enabled: Boolean(channelQuery.data),
