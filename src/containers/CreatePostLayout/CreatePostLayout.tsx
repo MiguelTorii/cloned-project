@@ -28,6 +28,7 @@ import { buildPath } from '../../utils/helpers';
 import { cypherClass } from '../../utils/crypto';
 import { AppState } from 'redux/store';
 import { CampaignState } from '../../reducers/campaign';
+import TabPanel from './TabPanel';
 
 const styles = (theme) => ({
   item: {
@@ -113,6 +114,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [sectionId, setSectionId] = useState(0);
   const [isPosting, setIsPosting] = useState(false);
   const [noteImages, setNoteImages] = useState([]);
+  const [isFormValidated, setIsFormValidated] = useState(false);
   const location = useLocation();
 
   const isHud: boolean | null = useSelector(
@@ -199,28 +201,6 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
     setSelectedClasses(opts);
   }, []);
 
-  function a11yProps(index) {
-    return {
-      id: `scrollable-auto-tab-${index}`,
-      'aria-controls': `scrollable-auto-tabpanel-${index}`
-    };
-  }
-
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`scrollable-auto-tabpanel-${index}`}
-        aria-labelledby={`scrollable-auto-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box p={3}>{children}</Box>}
-      </div>
-    );
-  }
-
   const handleAfterCreation = useCallback(
     (path) => {
       if (newClassExperience) {
@@ -263,6 +243,11 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
     </Grid>
   );
 
+  const a11yProps = (index) => ({
+    id: `scrollable-auto-tab-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`
+  });
+
   const renderHudClassSelector = () => (
     <div className={classes.selectClassOuterContainer}>
       <div className={classes.selectClassInnerContainer}>
@@ -284,11 +269,14 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
             sectionId={sectionId}
             variant="standard"
             onChange={handleClassChange}
+            validate={isFormValidated}
           />
         )}
       </div>
     </div>
   );
+
+  const handleValidateForm = useCallback(() => setIsFormValidated(true), []);
 
   return (
     <ErrorBoundary>
@@ -312,12 +300,11 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
           </Grid>
         )}
         {!isHud && renderClassSelector()}
-        {/* TODO: Need to figure out why TabPanels are re-mounted whenever a state is updated. */}
         <Grid item xs={12} lg={9}>
           <div className={classes.paperRoot}>
             {isHud && renderHudClassSelector()}
             {!isHud && <Appbar value={value} handleChange={handleChange} />}
-            <TabPanel key="create-post" value={value} index={0} {...a11yProps(0)}>
+            <TabPanel value={value} index={0} {...a11yProps(0)}>
               <CreatePostSt
                 classList={selectedClasses}
                 classId={classId}
@@ -327,9 +314,10 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 setIsPosting={(val) => setIsPosting(val)}
                 handleAfterCreation={handleAfterCreation}
                 onSetClass={handleClassChange}
+                onValidateForm={handleValidateForm}
               />
             </TabPanel>
-            <TabPanel key="create-question" value={value} index={1} {...a11yProps(1)}>
+            <TabPanel value={value} index={1} {...a11yProps(1)}>
               <Question
                 classList={selectedClasses}
                 currentSelectedClassId={classId}
@@ -339,9 +327,10 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 setIsPosting={(val) => setIsPosting(val)}
                 handleAfterCreation={handleAfterCreation}
                 onSetClass={handleClassChange}
+                onValidateForm={handleValidateForm}
               />
             </TabPanel>
-            <TabPanel key="share-note" value={value} index={2} {...a11yProps(2)}>
+            <TabPanel value={value} index={2} {...a11yProps(2)}>
               <CreateNotes
                 classList={selectedClasses}
                 currentTag={value}
@@ -353,9 +342,10 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 onSetClass={handleClassChange}
                 images={noteImages}
                 onSetImages={setNoteImages}
+                onValidateForm={handleValidateForm}
               />
             </TabPanel>
-            <TabPanel key="share-resources" value={value} index={3} {...a11yProps(3)}>
+            <TabPanel value={value} index={3} {...a11yProps(3)}>
               <CreateShareLink
                 classList={selectedClasses}
                 currentTag={value}
@@ -364,6 +354,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
                 sharelinkId={sharelinkId}
                 handleAfterCreation={handleAfterCreation}
                 onSetClass={handleClassChange}
+                onValidateForm={handleValidateForm}
               />
             </TabPanel>
           </div>

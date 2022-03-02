@@ -100,8 +100,10 @@ type Props = {
   enqueueSnackbar?: (...args: Array<any>) => any;
   classList?: any;
   handleAfterCreation: (path: string) => void;
+  classId: number;
   sectionId: number;
   onSetClass?: (classData: ClassSectionIds) => void;
+  onValidateForm?: () => void;
 };
 
 type State = {
@@ -127,15 +129,14 @@ type State = {
 class CreateShareLink extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
-    const { classId: currentSelectedClassId, sectionId: curretnSelectedSectoinId } = props;
     this.state = {
       loading: false,
       title: '',
       summary: '',
       url: '',
       preview: '',
-      classId: currentSelectedClassId || 0,
-      sectionId: curretnSelectedSectoinId || 0,
+      classId: 0,
+      sectionId: 0,
       tags: [],
       changed: false,
       errorDialog: false,
@@ -203,6 +204,23 @@ class CreateShareLink extends React.PureComponent<Props, State> {
     if (editor) {
       this.setState({
         resourceToolbar: editor.getEditor().theme.modules.toolbar
+      });
+    }
+  };
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { classId, sectionId } = this.props;
+
+    this.onUpdateSectionId(classId, sectionId);
+  }
+
+  onUpdateSectionId = (classId, sectionId) => {
+    const { sectionId: currentSectionId } = this.state;
+
+    if (currentSectionId !== sectionId) {
+      this.setState({
+        classId,
+        sectionId
       });
     }
   };
@@ -527,7 +545,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { sharelinkId } = this.props;
+    const { sharelinkId, onValidateForm } = this.props;
+
+    if (onValidateForm) {
+      onValidateForm();
+    }
 
     if (sharelinkId) {
       this.updateSharelink();

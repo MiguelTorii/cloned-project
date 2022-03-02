@@ -3,8 +3,11 @@ import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router';
+import clsx from 'clsx';
+
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+
 import { processClasses } from '../ClassesSelector/utils';
 import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
 import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
@@ -18,6 +21,7 @@ import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { ClassSectionIds } from 'types/models';
+import { extractTextFromHtml } from 'utils/helpers';
 
 const styles = (theme) => ({
   stackbar: {
@@ -62,6 +66,12 @@ const styles = (theme) => ({
         }
       }
     }
+  },
+  quillError: {
+    '& .quill': {
+      border: `solid 1px ${theme.palette.error.main}`,
+      borderRadius: 4
+    }
   }
 });
 
@@ -77,10 +87,11 @@ type Props = {
   enqueueSnackbar?: (...args: Array<any>) => any;
   setIsPosting?: (...args: Array<any>) => any;
   classList?: Array<any>;
-  classId?: any;
+  classId?: number;
   sectionId?: number;
   handleAfterCreation: (path: string) => void;
   onSetClass?: (classData: ClassSectionIds) => void;
+  onValidateForm?: () => void;
 };
 
 const CreatePostSt = ({
@@ -98,22 +109,30 @@ const CreatePostSt = ({
   sectionId: currentSelectedSectionId,
   setIsPosting,
   handleAfterCreation,
-  onSetClass
+  onSetClass,
+  onValidateForm
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [classId, setClassId] = useState(currentSelectedClassId || 0);
-  const [sectionId, setSectionId] = useState(currentSelectedSectionId || 0);
+  const [classId, setClassId] = useState(0);
+  const [sectionId, setSectionId] = useState(0);
   const [errorDialog, setErrorDialog] = useState(false);
   const [anonymousActive, setAnonymousActive] = useState(false);
   const [changed, setChanged] = useState(false);
+  const [validated, setValidated] = useState(false);
   const [error, setError] = useState({
     title: '',
     body: ''
   });
   const [postToolbar, setPostToolbar] = useState(null);
   const [editor, setEditor] = useState(null);
+
+  useEffect(() => {
+    setClassId(currentSelectedClassId || 0);
+    setSectionId(currentSelectedSectionId || 0);
+  }, [currentSelectedSectionId, currentSelectedClassId]);
+
   useEffect(() => {
     if (localStorage.getItem('postSt')) {
       const postSt = JSON.parse(localStorage.getItem('postSt'));
@@ -241,6 +260,7 @@ const CreatePostSt = ({
       setErrorDialog(true);
     }
   }, [body, classes.stackbar, enqueueSnackbar, handleAfterCreation, postId, classId, title]);
+
   const createPostSt = useCallback(async () => {
     setLoading(true);
 
@@ -373,13 +393,19 @@ const CreatePostSt = ({
     (event) => {
       event.preventDefault();
 
+      setValidated(true);
+
+      if (onValidateForm) {
+        onValidateForm();
+      }
+
       if (postId) {
         updatePostSt();
       } else {
         createPostSt();
       }
     },
-    [createPostSt, postId, updatePostSt]
+    [createPostSt, postId, updatePostSt, onValidateForm]
   );
   const handleTextChange = useCallback(
     () => (event) => {
@@ -403,7 +429,7 @@ const CreatePostSt = ({
   );
   const handleRTEChange = useCallback((value) => {
     setChanged(true);
-    setBody(value);
+    setBody(extractTextFromHtml(value) ? value : '');
 
     if (localStorage.getItem('postSt')) {
       const currentPost = JSON.parse(localStorage.getItem('postSt'));
@@ -453,7 +479,12 @@ const CreatePostSt = ({
                 value={title}
               />
             </Grid>
-            <Grid item xs={12} sm={12} className={classes.quillGrid}>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              className={clsx(classes.quillGrid, validated && !body && classes.quillError)}
+            >
               <ToolbarTooltip toolbar={postToolbar} toolbarClass={classes.toolbarClass} />
               <RichTextEditor
                 setEditor={setEditor}

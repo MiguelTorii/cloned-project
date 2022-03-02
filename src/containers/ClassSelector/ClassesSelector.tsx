@@ -1,5 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import clsx from 'clsx';
+
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
@@ -8,6 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import { ReactComponent as ClassFeedIcon } from '../../assets/svg/myclass-active.svg';
 import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
 import type { UserState } from '../../reducers/user';
@@ -25,6 +28,9 @@ const styles = (theme) => ({
   },
   newClass: {
     color: theme.circleIn.palette.action
+  },
+  dropdownError: {
+    border: `solid 1px ${theme.palette.error.main}`
   },
   classDropdown: {
     paddingTop: `${theme.spacing(1)}px !important`,
@@ -75,6 +81,7 @@ type Props = {
     };
   };
   wideLayout?: boolean;
+  validate?: boolean;
 };
 
 const ClassesSelector = ({
@@ -91,7 +98,8 @@ const ClassesSelector = ({
     location: { pathname }
   },
   sectionId,
-  wideLayout
+  wideLayout,
+  validate
 }: Props) => {
   const [userClasses, setUserClasses] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -198,7 +206,10 @@ const ClassesSelector = ({
               size="small"
               disabled={isEdit}
               classes={{
-                inputRoot: classes.classDropdown,
+                inputRoot: clsx(
+                  classes.classDropdown,
+                  validate && !sectionId && classes.dropdownError
+                ),
                 option: classes.option
               }}
               options={userClasses}

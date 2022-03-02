@@ -84,6 +84,7 @@ type Props = {
   sectionId?: number;
   handleAfterCreation: (path: string) => void;
   onSetClass?: (classData: ClassSectionIds) => void;
+  onValidateForm?: () => void;
 };
 
 const CreateQuestion = ({
@@ -101,13 +102,14 @@ const CreateQuestion = ({
   sectionId: currentSelectedSectionId,
   setIsPosting,
   handleAfterCreation,
-  onSetClass
+  onSetClass,
+  onValidateForm
 }: Props) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [classId, setClassId] = useState(currentSelectedClassId);
-  const [sectionId, setSectionId] = useState(currentSelectedSectionId);
+  const [classId, setClassId] = useState(0);
+  const [sectionId, setSectionId] = useState(0);
   const [errorDialog, setErrorDialog] = useState(false);
   const [anonymousActive, setAnonymousActive] = useState(false);
   const [changed, setChanged] = useState(false);
@@ -132,6 +134,12 @@ const CreateQuestion = ({
       }
     }
   }, []);
+
+  useEffect(() => {
+    setClassId(currentSelectedClassId || 0);
+    setSectionId(currentSelectedSectionId || 0);
+  }, [currentSelectedSectionId, currentSelectedClassId]);
+
   const canBatchPost = useMemo(
     () => expertMode && permission.includes('one_touch_send_posts'),
     [expertMode, permission]
@@ -356,6 +364,10 @@ const CreateQuestion = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+
+      if (onValidateForm) {
+        onValidateForm();
+      }
 
       if (questionId) {
         updateQuestion();

@@ -5,10 +5,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
+import clsx from 'clsx';
+
+import { Box } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
+
 import { processClasses } from '../ClassesSelector/utils';
 import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
@@ -23,6 +27,7 @@ import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from
 import * as notificationsActions from '../../actions/notifications';
 import { logEventLocally } from '../../api/analytics';
 import UploadImages from '../UploadImages/UploadImages';
+import { extractTextFromHtml } from 'utils/helpers';
 
 const styles = (theme) => ({
   stackbar: {
@@ -70,6 +75,16 @@ const styles = (theme) => ({
         }
       }
     }
+  },
+  quillError: {
+    '& .quill': {
+      border: `solid 1px ${theme.palette.error.main}`,
+      borderRadius: 4
+    }
+  },
+  imagesError: {
+    border: `solid 1px ${theme.palette.error.main}`,
+    borderRadius: 4
   },
   actions: {
     display: 'flex',
@@ -129,10 +144,12 @@ type Props = {
   };
   setIsPosting: any;
   handleAfterCreation: (path: string) => void;
+  classId: number;
   sectionId: number;
   onSetClass?: (classData: ClassSectionIds) => void;
   images: any[];
   onSetImages: (newImages: any[]) => void;
+  onValidateForm?: () => void;
 };
 
 type State = {
@@ -152,6 +169,7 @@ type State = {
   questionToolbar: any;
   editor: any;
   body: any;
+  validated: boolean;
 };
 
 class CreateNotes extends React.PureComponent<Props, State> {
@@ -161,17 +179,13 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
-    const {
-      classId: currentSelectedClassId,
-      sectionId: curretnSelectedSectoinId,
-      classList
-    } = props;
+    const { classList } = props;
 
     this.state = {
       loading: false,
       title: '',
-      classId: currentSelectedClassId || 0,
-      sectionId: curretnSelectedSectoinId || 0,
+      classId: 0,
+      sectionId: 0,
       changed: false,
       tags: [],
       errorDialog: false,
@@ -184,7 +198,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       body: null,
       notes: [],
       // eslint-disable-next-line react/no-unused-state
-      hasImages: false
+      hasImages: false,
+      validated: false
     };
   }
 
@@ -221,20 +236,38 @@ class CreateNotes extends React.PureComponent<Props, State> {
     }
   };
 
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { classId, sectionId } = this.props;
+
+    this.onUpdateSectionId(classId, sectionId);
+  }
+
+  onUpdateSectionId = (classId, sectionId) => {
+    const { sectionId: currentSectionId } = this.state;
+
+    if (currentSectionId !== sectionId) {
+      this.setState({
+        classId,
+        sectionId
+      });
+    }
+  };
+
   handleRTEChange = (value) => {
+    const refinedValue = extractTextFromHtml(value) ? value : '';
     this.setState({
-      body: value,
+      body: refinedValue,
       changed: true
     });
 
     if (localStorage.getItem('note')) {
       const currentNote = JSON.parse(localStorage.getItem('note'));
-      currentNote.body = value;
+      currentNote.body = refinedValue;
       currentNote.changed = true;
       localStorage.setItem('note', JSON.stringify(currentNote));
     } else {
       const note = {
-        body: value,
+        body: refinedValue,
         changed: true
       };
       localStorage.setItem('note', JSON.stringify(note));
@@ -533,7 +566,15 @@ class CreateNotes extends React.PureComponent<Props, State> {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { noteId } = this.props;
+    const { noteId, onValidateForm } = this.props;
+
+    this.setState({
+      validated: true
+    });
+
+    if (onValidateForm) {
+      onValidateForm();
+    }
 
     if (noteId) {
       this.updateNotes();
@@ -636,7 +677,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
       errorBody,
       questionToolbar,
       body,
-      notes
+      notes,
+      validated
     } = this.state;
     const notSm = !['xs', 'sm'].includes(width);
 
@@ -667,17 +709,25 @@ class CreateNotes extends React.PureComponent<Props, State> {
               </Grid>
               <Grid item xs={12} md={12}>
                 {/* TODO:  I'm not sure where `imageChange` came from, but it appears to not be a part of this component. Using any type for now. */}
-                <UploadImages
-                  notes={notes}
-                  imageChange={(this as any).imageChange}
-                  images={images}
-                  handleUpdateImages={this.handleUpdateImages}
-                  innerRef={(node) => {
-                    this.uploadImages = node;
-                  }}
-                />
+                <Box p={2}>
+                  <UploadImages
+                    className={validated && images.length === 0 && classes.imagesError}
+                    notes={notes}
+                    imageChange={(this as any).imageChange}
+                    images={images}
+                    handleUpdateImages={this.handleUpdateImages}
+                    innerRef={(node) => {
+                      this.uploadImages = node;
+                    }}
+                  />
+                </Box>
               </Grid>
-              <Grid item xs={12} md={12} className={classes.quillGrid}>
+              <Grid
+                item
+                xs={12}
+                md={12}
+                className={clsx(classes.quillGrid, validated && !body && classes.quillError)}
+              >
                 <ToolbarTooltip toolbar={questionToolbar} toolbarClass={classes.toolbarClass} />
                 <RichTextEditor
                   setEditor={this.setEditor}

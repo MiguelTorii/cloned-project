@@ -16,9 +16,6 @@ import { getPresignedURLs } from '../../api/media';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
-  root: {
-    padding: theme.spacing(2)
-  },
   stackbar: {
     backgroundColor: theme.circleIn.palette.snackbar,
     color: theme.circleIn.palette.primaryText1
@@ -40,6 +37,7 @@ type ImageUrl = {
 
 type Props = {
   classes?: Record<string, any>;
+  className?: string;
   enqueueSnackbar?: (...args: Array<any>) => any;
   notes?: Array<ImageUrl>;
   imageChange?: (...args: Array<any>) => any;
@@ -289,12 +287,12 @@ class UploadImages extends React.PureComponent<Props, State> {
     });
 
   render() {
-    const { classes } = this.props;
+    const { className } = this.props;
     const { loading, isDropzoneDisabled } = this.state;
     const { images } = this.props;
     return (
       <ErrorBoundary>
-        <div className={classes.root}>
+        <div className={className}>
           <UploadImagesForm
             images={images}
             isDropzoneDisabled={isDropzoneDisabled}
