@@ -204,3 +204,10 @@ export const ANONYMOUS_USER_ID = -1;
 export const CIRCLEIN101_SECTION_ID = 1;
 export const CIRCLEIN101_TC =
   'By posting to CircleIn101, you acknowledge and agree to make your profile public to the CircleIn Student Network. This will allow any Student on CircleIn to view your profile,which includes your real name, and the school you attend, and allow them to communicate with you.';
+export const QuillSources = {
+  silent: 'silent'
+};
+export const QuillModules = {
+  clipboard: 'modules/clipboard',
+  delta: 'delta'
+};

@@ -9,6 +9,12 @@ import PropTypes from 'prop-types';
 import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
 import { uploadMedia } from '../../actions/user';
 import useStyles from './styles';
+import PlainClipboard from './PlainClipboard';
+import { QuillModules } from 'constants/common';
+
+const { Quill } = ReactQuill;
+
+Quill.register(QuillModules.clipboard, PlainClipboard, true);
 
 type Props = {
   active?: any;
@@ -51,13 +57,6 @@ const RichTextEditor = ({
       });
     }
   });
-  // Callbacks
-  const removeStyleMatcher = useCallback((node, delta) => {
-    delta.ops = delta.ops.map((op) => ({
-      insert: op.insert
-    }));
-    return delta;
-  }, []);
   // Event Handlers
   const handleFocus = useCallback(
     (event) => {
@@ -134,9 +133,6 @@ const RichTextEditor = ({
             },
             toolbar: {
               container: `#${containerId}`
-            },
-            clipboard: {
-              matchers: [[Node.ELEMENT_NODE, removeStyleMatcher]]
             }
           }}
           defaultValue={value}
