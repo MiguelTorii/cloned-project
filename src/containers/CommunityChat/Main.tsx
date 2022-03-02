@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
+import { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Lightbox from 'react-images';
 import { AppState } from 'redux/store';
@@ -27,6 +27,7 @@ import { CurrentCommunity, ChatData } from 'reducers/chat';
 import { messageLoadingAction } from '../../actions/chat';
 import { UserState } from '../../reducers/user';
 import { useTyping } from 'features/chat';
+import usePrevious from 'hooks/usePrevious';
 
 type Props = {
   isCommunityChat?: boolean;
@@ -145,19 +146,6 @@ const Main = ({
     } // eslint-disable-next-line
   }, [newMessage]);
 
-  const getTypingMemberName = useCallback(
-    (id: string) => {
-      const { members } = local[channel.sid];
-      const currentMember = members.find((member) => member.userId === id);
-
-      if (currentMember) {
-        return `${currentMember.firstname} ${currentMember.lastname}`;
-      }
-      return '';
-    },
-    [local, channel]
-  );
-
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     if (channelList.length && !channel) {
@@ -165,8 +153,9 @@ const Main = ({
     } else if (!channelList.length && !isLoading) {
       dispatch(messageLoadingAction(false));
     }
-  }, [channelList, channel, isLoading]);
+  }, [channelList, channel, isLoading, dispatch]);
 
+  const usePreviousChannelSid = usePrevious(channel?.sid);
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     const init = async () => {
@@ -200,10 +189,11 @@ const Main = ({
       }
     };
 
-    if (channel) {
+    // Only init if the SID itself is different, not when selectedChannelId changes
+    if (channel && channel.sid !== usePreviousChannelSid) {
       init();
-    } // eslint-disable-next-line
-  }, [channel, dispatch, getTypingMemberName, selectedChannelId]);
+    }
+  }, [channel, dispatch, selectedChannelId, usePreviousChannelSid]);
 
   const messageItems = useMemo(
     () =>

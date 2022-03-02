@@ -10,10 +10,10 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import { useSelector } from 'react-redux';
 
 import Avatar from 'components/Avatar';
+import ShareLinkWidget from 'components/ShareLinkWidget';
 import RoleBadge from '../../components/RoleBadge/RoleBadge';
 import HoverPopup from '../../components/HoverPopup/HoverPopup';
 import useStyles from './_styles/rightMenu';
-import ShareLinkWidget from '../../components/ShareLinkWidget/ShareLinkWidget';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChannelWrapper } from '../../reducers/chat';
@@ -33,6 +33,8 @@ const RightMenu = ({ channel, isCommunityChat }: Props) => {
     (state) => state.chat.data.local
   );
   const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
+
+  console.log('localChannel', localChannel);
 
   if (!channel || !localChannel) {
     return null;
@@ -103,7 +105,7 @@ const RightMenu = ({ channel, isCommunityChat }: Props) => {
       </Grid>
       {!isCommunityChat && (
         <Box padding={2}>
-          <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" />
+          {/* <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" /> */}
         </Box>
       )}
     </Box>

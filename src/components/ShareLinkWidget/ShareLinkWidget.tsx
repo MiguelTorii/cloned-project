@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
-import cx from 'classnames';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { useState } from 'react';
+import clsx from 'clsx';
 import withStyles from '@material-ui/core/styles/withStyles';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconLink from '../../assets/svg/ic_link.svg';
-import IconClip from '../../assets/svg/clip.svg';
-import { styles } from '../_styles/ShareLinkWidget';
+import Typography from '@material-ui/core/Typography';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+import IconClip from 'assets/svg/clip.svg';
+import IconLink from 'assets/svg/ic_link.svg';
+
+import styles from './ShareLinkWidgetStyles';
 
 type Props = {
   className?: string;
-  classes?: Record<string, any>;
+  classes: Record<string, any>;
   headerText?: string;
   shareLink?: string;
   isLoading?: boolean;
 };
 
-const ShareLinkWidget = (props: Props) => {
-  const { className, classes, shareLink, headerText = 'Share a link', isLoading = false } = props;
+const ShareLinkWidget = ({
+  classes,
+  className,
+  shareLink,
+  headerText = 'Share a link',
+  isLoading = false
+}: Props) => {
   const [isTooltipShown, setIsTooltipShown] = useState(false);
 
   const handleCopied = () => {
@@ -55,7 +63,7 @@ const ShareLinkWidget = (props: Props) => {
                 arrow: classes.arrow
               }}
             >
-              <img alt="icon-clip" src={IconClip} className={cx(classes.img, classes.imgCopy)} />
+              <img alt="icon-clip" src={IconClip} className={clsx(classes.img, classes.imgCopy)} />
             </Tooltip>
           </CopyToClipboard>
         </div>
