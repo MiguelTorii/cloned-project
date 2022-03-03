@@ -74,11 +74,15 @@ export const englishIdFromNumber = (aNumber: number) => {
     return 'A';
   }
 
+  if (!aNumber) {
+    return '';
+  }
+
   const rem: number[] = [];
 
-  while (aNumber && aNumber >= -1) {
+  while (aNumber >= 0) {
     rem.push(aNumber % 26);
-    aNumber = Math.floor(aNumber / 26);
+    aNumber = Math.floor(aNumber / 26) - 1;
   }
 
   return rem

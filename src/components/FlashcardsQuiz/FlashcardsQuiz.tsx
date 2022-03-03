@@ -106,7 +106,7 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
     () =>
       [...(new Array(quizData.match.qIds.length) as any).keys()].map((id) => ({
         value: id + 1,
-        text: String.fromCharCode('A'.charCodeAt(0) + id)
+        text: englishIdFromNumber(id)
       })),
     [quizData]
   );
