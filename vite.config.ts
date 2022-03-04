@@ -80,7 +80,8 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         // https://github.com/danbovey/react-infinite-scroller/issues/253
-        'react-infinite-scroller': 'react-infinite-scroller/index.js'
+        'react-infinite-scroller': 'react-infinite-scroller/index.js',
+        '@material-ui/pickers': '@material-ui/pickers/dist/material-ui-pickers.js'
       }
     },
     // TODO might need for twilio or node-dependent libraries, do not remove
