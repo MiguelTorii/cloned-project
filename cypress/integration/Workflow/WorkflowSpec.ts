@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 describe('Workflow', () => {
   beforeEach(() => {
     cy.loginUser1();
@@ -10,10 +8,11 @@ describe('Workflow', () => {
     cy.get('#board-Overdue .create-task-button').click();
     cy.get('.workflow-task-text-area').type('Create Test Task');
     cy.get('.add-workflow-button').click();
-    cy.contains('Congratulations cypress, you have just earned 1000 points. Good Work!');
+    cy.contains('Congratulations Cathy, you have just earned 1000 points. Good Work!');
   });
 
   it('Edit task', () => {
+    cy.wait(1000);
     cy.contains('Create Test Task').click();
     cy.get('[rows="1"]').clear().type('Create Test Task Edit');
     cy.contains('Time')
@@ -23,27 +22,26 @@ describe('Workflow', () => {
       });
     cy.contains('3:00 PM').click({ force: true });
     cy.contains('Save').click();
-    cy.contains(moment().format('MMM D'));
-  });
-
-  it('Moves task to done', () => {
     cy.wait(1000);
-    cy.contains('Create Test Task Edit').trigger('dragstart').trigger('dragleave');
-
-    cy.get('#board-Done')
-      .trigger('dragenter')
-      .trigger('dragover')
-      .trigger('drop')
-      .trigger('dragend');
-
-    cy.contains('Congratulations cypress, you have just earned 1500 points. Good Work!');
   });
-
+  
+  it('Moves task to done', () => {
+    cy.contains('Create Test Task Edit').trigger('dragstart').trigger('dragleave');
+    cy.get('#board-Done')
+    .trigger('dragenter')
+    .trigger('dragover')
+    .trigger('drop')
+    .trigger('dragend');
+    
+    cy.contains('Congratulations Cathy, you have just earned 1500 points. Good Work!');
+  });
+  
   it('Deletes task', () => {
     cy.contains('Create Test Task Edit')
-      .trigger('mouseover')
-      .get('#board-Done .workflow-task-delete-button')
-      .click();
+    .trigger('mouseover')
+    .get('#board-Done .workflow-task-delete-button')
+    .click();
+    cy.wait(1000);
     cy.contains('Delete').click();
   });
 

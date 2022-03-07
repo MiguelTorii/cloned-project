@@ -1,12 +1,12 @@
 export type TestCredentials = {
   email: string;
   password: string;
-  userId: string;
+  userId?: string;
 };
 
 type TestSchool = {
   name: string;
-  id: string;
+  id: number;
 };
 
 export type SessionData = {
@@ -43,20 +43,32 @@ function setSessionInLocalStorage(sessionData: SessionData): void {
 }
 
 export function addCypressLoginCommands() {
-  const testSchool: TestSchool = Cypress.env('testSchool');
+  const testSchool: TestSchool = Cypress.env('TEST_SCHOOL') || {
+    name: 'Kori Sandbox',
+    id: 121
+  };
 
   Cypress.Commands.add('loginAdmin', (sessionData: SessionData) => {
-    const adminTestUser: TestCredentials = Cypress.env('adminTestUser');
+    const adminTestUser: TestCredentials = Cypress.env('ADMIN_TEST_USER') || {
+      email: 'kori+sandbox@circleinapp.com',
+      password: Cypress.env('PASSWORD')
+    };
     loginUser(testSchool, adminTestUser, sessionData);
   });
 
   Cypress.Commands.add('loginUser1', (sessionData: SessionData) => {
-    const testUser1: TestCredentials = Cypress.env('testUser1');
+    const testUser1: TestCredentials = Cypress.env('TEST_USER_1') || {
+      email: 'kori+cb@circleinapp.com',
+      password: Cypress.env('PASSWORD')
+    };
     loginUser(testSchool, testUser1, sessionData);
   });
 
   Cypress.Commands.add('loginUser2', (sessionData: SessionData) => {
-    const testUser2: TestCredentials = Cypress.env('testUser2');
+    const testUser2: TestCredentials = Cypress.env('TEST_USER_2') || {
+      email: 'kori+hs@circleinapp.com',
+      password: Cypress.env('PASSWORD')
+    };
     loginUser(testSchool, testUser2, sessionData);
   });
 

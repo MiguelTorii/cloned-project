@@ -147,7 +147,9 @@
     "@typescript-eslint/parser": "^5.10.0",
     "@vitejs/plugin-react": "^1.1.4",
     "babel-preset-vite": "^1.0.4",
-    "cypress": "8.7.0",
+    "cypress": "8.5.0",
+    "cypress-dotenv": "^2.0.0",
+    "dotenv": "^16.0.0",
     "eslint": "^8.7.0",
     "eslint-config-import": "^0.13.0",
     "eslint-config-prettier": "^8.3.0",
@@ -217,7 +219,7 @@
     "test": "jest",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
-    "cy:run": "cypress run --spec 'cypress/**/*.js'",
+    "cy:run": "cypress run --spec 'cypress/**/*.ts'",
     "cy:open": "cypress open"
   },
   "browserslist": [

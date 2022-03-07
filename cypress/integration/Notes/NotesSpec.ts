@@ -5,7 +5,7 @@ describe('Notes', () => {
 
   it('Creates note', () => {
     cy.visit(`${Cypress.env('url')}notes`);
-    cy.contains('cypress test 101').click();
+    cy.contains('CircleIn101').click();
     // cy.contains('Now, you can type class notes right inside of CircleIn.')
     // cy.contains('Organization just got so much easier.')
     cy.contains('Add notes').click({ force: true });

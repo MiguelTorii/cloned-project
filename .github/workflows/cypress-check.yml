@@ -1,0 +1,18 @@
+name: Cypress tests
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: UI Tests
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn dev
+          wait-on: 'http://localhost:2000'
+          wait-on-timeout: 120
+        env:
+          PASSWORD: ${{ secrets.PASSWORD }}
