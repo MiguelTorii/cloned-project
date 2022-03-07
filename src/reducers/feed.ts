@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import { rootActions, feedActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import type { TFeedItem } from '../types/models';
-import { POST_WRITER } from '../constants/common';
+import { FEED_CLEARED_INDEX, POST_WRITER } from 'constants/common';
 import { FEEDS_PER_PAGE } from '../constants/app';
 
 export type TFeedFilters = {
@@ -186,7 +186,7 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
             $set: true
           },
           lastIndex: {
-            $set: 0
+            $set: FEED_CLEARED_INDEX
           }
         }
       });
@@ -242,7 +242,7 @@ export default (state: FeedState = defaultState, action: Action): FeedState => {
           hasMore: {
             $set: posts.length >= FEEDS_PER_PAGE
           },
-          lastIndex: (data) => data + posts.length
+          lastIndex: (data) => (data === FEED_CLEARED_INDEX ? 0 : data) + posts.length
         }
       });
     }

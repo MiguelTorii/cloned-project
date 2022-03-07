@@ -18,10 +18,11 @@ import Report from '../../components/Report/ReportIssue';
 import DeletePost from '../DeletePost/DeletePost';
 import {
   COMMUNITY_SCROLL_CONTAINER_ID,
+  FEED_CLEARED_INDEX,
   FEED_NAVIGATION_TABS,
   POST_WRITER,
   PROFILE_PAGE_SOURCE
-} from '../../constants/common';
+} from 'constants/common';
 import { AppState } from 'redux/store';
 import { User } from '../../types/models';
 import {
@@ -143,7 +144,7 @@ const Feed = ({ from }: Props) => {
 
   const handleFetchMorePosts = () => {
     const fetchParams: APIFetchFeedsParams = {
-      index: lastFeedIndex,
+      index: lastFeedIndex === FEED_CLEARED_INDEX ? 0 : lastFeedIndex,
       limit: FEEDS_PER_PAGE,
       bookmarked: feedFilters.bookmark || undefined,
       query: feedFilters.query || undefined,
@@ -385,7 +386,7 @@ const Feed = ({ from }: Props) => {
 
   useEffect(() => {
     // This means posts are cleared by updating any filter or refreshing, where needs to fetch posts.
-    if (lastFeedIndex === 0) {
+    if (lastFeedIndex === FEED_CLEARED_INDEX) {
       handleFetchMorePosts();
     }
   }, [lastFeedIndex]);

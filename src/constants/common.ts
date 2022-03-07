@@ -211,3 +211,4 @@ export const QuillModules = {
   clipboard: 'modules/clipboard',
   delta: 'delta'
 };
+export const FEED_CLEARED_INDEX = -1;
