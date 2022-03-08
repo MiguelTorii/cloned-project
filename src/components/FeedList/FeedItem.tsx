@@ -49,7 +49,11 @@ import FeedIconNote from '../../assets/svg/ic_notes.svg';
 import FeedIconPost from '../../assets/svg/ic_create_a_post.svg';
 import { getPastClassIds } from '../../utils/helpers';
 import HoverPopup from '../HoverPopup/HoverPopup';
-import { ANONYMOUS_USER_ID, POST_PREVIEW_THRESHOLD, PROFILE_PAGE_SOURCE } from 'constants/common';
+import {
+  ANONYMOUS_USER_ID,
+  POST_PREVIEW_THRESHOLD_PX,
+  PROFILE_PAGE_SOURCE
+} from 'constants/common';
 import type { State as StoreState } from '../../types/state';
 import { TFeedItem } from '../../types/models';
 import { POST_TYPES } from 'constants/app';
@@ -167,7 +171,7 @@ const FeedItem = ({
   }, [data, classList]);
   const isMenuOpen = Boolean(moreAnchorEl);
   const pastClassIds = useMemo(() => getPastClassIds(classList), [classList]);
-  const isInViewport = useIntersection(rootRef, POST_PREVIEW_THRESHOLD);
+  const isInViewport = useIntersection(rootRef, POST_PREVIEW_THRESHOLD_PX);
   const { previewPost } = usePostMonitor();
 
   useEffect(() => {
