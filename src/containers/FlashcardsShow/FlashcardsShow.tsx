@@ -539,6 +539,16 @@ const FlashcardsShow = () => {
         </Grid>
       </Grid>
       {renderBody()}
+      <Box mt={3}>
+        <PostComments
+          isPastClassFlashcard={pastClassIds.includes(data.classId)}
+          feedId={data.feedId}
+          postId={data.postId}
+          typeId={data.typeId}
+          classId={data.classId}
+          readOnly={data.readOnly}
+        />
+      </Box>
     </>
   );
 
