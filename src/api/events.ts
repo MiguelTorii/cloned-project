@@ -6,12 +6,14 @@ import reduxStore from 'redux/store';
 const createEvent = async ({
   category,
   objectId,
+  objectIds,
   type,
   recommendationType,
   ...rest
 }: {
   category: string;
   objectId: string;
+  objectIds: Array<string> | Array<number>;
   type: string;
   recommendationType: any;
 }): Promise<void> => {
@@ -25,6 +27,7 @@ const createEvent = async ({
     {
       category,
       object_id: objectId ? objectId.toString() : '',
+      object_ids: objectIds,
       recommendation_type: recommendationType,
       type,
       ...rest

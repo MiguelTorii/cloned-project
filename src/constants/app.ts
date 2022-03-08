@@ -89,6 +89,7 @@ export const EVENT_TYPES = {
   SESSION_LENGTH: 'Session Length',
   VIEWED: 'Viewed',
   EXITED: 'Exited',
+  PREVIEWED: 'Previewed',
   CLICKED_RECOMMENDED: 'ClickedRecommended'
 };
 export const CIRCLEIN_EVENT_NAMES = [

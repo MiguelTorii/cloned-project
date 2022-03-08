@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import cx from 'classnames';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import Image from 'react-graceful-image';
@@ -49,7 +49,7 @@ import FeedIconNote from '../../assets/svg/ic_notes.svg';
 import FeedIconPost from '../../assets/svg/ic_create_a_post.svg';
 import { getPastClassIds } from '../../utils/helpers';
 import HoverPopup from '../HoverPopup/HoverPopup';
-import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
+import { ANONYMOUS_USER_ID, POST_PREVIEW_THRESHOLD, PROFILE_PAGE_SOURCE } from 'constants/common';
 import type { State as StoreState } from '../../types/state';
 import { TFeedItem } from '../../types/models';
 import { POST_TYPES } from 'constants/app';
@@ -57,6 +57,8 @@ import CustomQuill from 'components/CustomQuill/CustomQuill';
 
 import useStyles from 'components/_styles/FeedList/FeedItem';
 import { Button } from '@material-ui/core';
+import useIntersection from 'hooks/useIntersection';
+import { usePostMonitor } from 'contexts/PostMonitorContext';
 
 const FeedTypes = {
   flashcards: {
@@ -145,6 +147,7 @@ const FeedItem = ({
   const classes: any = useStyles({
     showSimple
   });
+  const rootRef = useRef();
   const dispatch = useDispatch();
   const currentUserId = useMemo(() => user.data.userId, [user.data.userId]);
   const [moreAnchorEl, setAnchorEl] = useState(null);
@@ -164,11 +167,21 @@ const FeedItem = ({
   }, [data, classList]);
   const isMenuOpen = Boolean(moreAnchorEl);
   const pastClassIds = useMemo(() => getPastClassIds(classList), [classList]);
+  const isInViewport = useIntersection(rootRef, POST_PREVIEW_THRESHOLD);
+  const { previewPost } = usePostMonitor();
+
   useEffect(() => {
     setThanked(data.thanked);
     setThanksCount(data.postInfo.thanksCount);
     setCommentCount(data.postInfo.questionsCount);
   }, [data, setThanked]);
+
+  useEffect(() => {
+    if (isInViewport) {
+      previewPost(data.postId);
+    }
+  }, [data, isInViewport]);
+
   const handleMenuOpen = useCallback((event) => {
     setAnchorEl(event.currentTarget);
   }, []);
@@ -422,6 +435,7 @@ const FeedItem = ({
 
   return (
     <Card
+      ref={rootRef}
       className={classes.card}
       elevation={0}
       classes={{

@@ -212,3 +212,5 @@ export const QuillModules = {
   delta: 'delta'
 };
 export const FEED_CLEARED_INDEX = -1;
+export const POST_PREVIEW_INTERVAL = 5 * 1000;
+export const POST_PREVIEW_THRESHOLD_PX = '-50px';

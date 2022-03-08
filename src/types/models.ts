@@ -564,7 +564,8 @@ export type CreateChat = {
 export type EventData = {
   category: string;
   durationMs?: number;
-  objectId: string;
+  objectId?: string;
+  objectIds?: Array<string> | Array<number>;
   position?: number;
   rating?: number;
   recommendationType?: 'notification';
