@@ -172,7 +172,8 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
         logEvent({
           event: 'Chat- Send Message',
           props: {
-            Content: 'Text'
+            Content: 'Text',
+            'Channel SID': channel.sid
           }
         });
         onSend();
@@ -310,13 +311,6 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
           imageKey: readUrl,
           isVideoNotification: false
         };
-        logEvent({
-          event: 'Chat- Send Message',
-          props: {
-            Content: 'Image',
-            'Channel SID': channel.sid
-          }
-        });
         await sendMessage({
           message: 'Uploaded a image',
           ...messageAttributes,
@@ -325,7 +319,8 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
         logEvent({
           event: 'Chat- Send Message',
           props: {
-            Content: 'Image'
+            Content: 'Image',
+            'Channel SID': channel.sid
           }
         });
       } catch (err) {

@@ -402,7 +402,8 @@ const Main = ({
         logEvent({
           event: 'Chat- Send Message',
           props: {
-            Content: 'Text'
+            Content: 'Text',
+            'Channel SID': channel.sid
           }
         });
 
