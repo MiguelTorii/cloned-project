@@ -41,6 +41,7 @@ import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 import { ChatState } from '../../reducers/chat';
+import { ChatClientContext } from 'features/chat';
 
 const styles = (theme) => ({
   root: {
@@ -110,6 +111,8 @@ export const PROFILE_PAGES = {
 };
 
 class Profile extends React.PureComponent<Props, State> {
+  static contextType = ChatClientContext;
+
   state: any = {
     userProfile: {
       userId: '',
@@ -291,20 +294,22 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStartChat = () => {
-    const { openChannelWithEntity, isHud, chat } = this.props;
+    const { openChannelWithEntity, isHud } = this.props;
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
     this.setState({
       chatLoading: true
     });
+    const client = this.context;
+
     openChannelWithEntity({
       entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false,
       isHud,
-      client: chat.data.client
+      client
     });
     setTimeout(() => {
       this.setState({

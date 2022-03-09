@@ -3,31 +3,24 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
-import MUIAvatar from '@material-ui/core/Avatar';
 import Avatar from 'components/Avatar';
 import { Message, Videocam } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import { push } from 'connected-react-router';
 import cx from 'classnames';
 import _ from 'lodash';
-import OnlineBadge from '../OnlineBadge/OnlineBadge';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
-import { getInitials } from '../../utils/chat';
 import { getUserProfile } from '../../api/user';
 import * as chatActions from '../../actions/chat';
 import useStyles from '../_styles/HoverPopup';
 import { buildPath } from '../../utils/helpers';
 import type { State as StoreState } from '../../types/state';
-import {
-  setCurrentCommunityIdAction,
-  setCurrentChannelSidAction,
-  setCurrentChannel
-} from '../../actions/chat';
+import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
 import { UserState } from '../../reducers/user';
 import { CampaignState } from '../../reducers/campaign';
-import { ChatState } from '../../reducers/chat';
 import { Dispatch } from '../../types/store';
+import { useChatClient } from 'features/chat';
 
 type Props = {
   leftAligned?: boolean;
@@ -57,9 +50,7 @@ const HoverPopup = ({
     (state: { campaign: CampaignState }) => state.campaign.hud
   );
 
-  const {
-    data: { client }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
+  const client = useChatClient();
 
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
@@ -106,12 +97,12 @@ const HoverPopup = ({
   };
 
   const keepPopoverOpen = () => {
-    if (userId !== myUserId) {
-      setOpen(true);
-    }
+    setOpen(true);
   };
 
   const mouseEnter = (event) => {
+    // TODO Fix consistency: User state in redux and returned from an API is a string,
+    if (String(userId) === String(myUserId)) return;
     setHover(true);
     const rect = postFeedItemContainer.current?.getBoundingClientRect();
 
@@ -154,7 +145,6 @@ const HoverPopup = ({
     setChatLoading(true);
     dispatch(setCurrentCommunityIdAction(null));
     dispatch(setCurrentChannelSidAction(''));
-    setCurrentChannel(null)(dispatch);
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: (profile as any).firstName,
@@ -295,3 +285,13 @@ const mapDispatchToProps = (dispatch: any): {} =>
   );
 
 export default connect<{}, {}, Props>(mapStateToProps, mapDispatchToProps)(HoverPopup);
+
+export const ConditionalHoverPopup = ({
+  condition,
+  wrapper,
+  children
+}: {
+  condition: boolean;
+  wrapper: React.ReactElement;
+  children: React.ReactChildren;
+} & Props) => (condition ? wrapper(children) : children);

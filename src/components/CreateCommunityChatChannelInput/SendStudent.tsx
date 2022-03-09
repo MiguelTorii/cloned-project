@@ -2,23 +2,27 @@ import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import withStyles from '@material-ui/core/styles/withStyles';
+
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { PERMISSIONS } from '../../constants/common';
-import { sendMessage, createChannel } from '../../api/chat';
-import { searchUsers } from '../../api/user';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import { getInitials } from '../../utils/chat';
-import styles from '../_styles/CreateCommunityChatChannelInput/sendStudent';
+
+import { PERMISSIONS } from 'constants/common';
+import { searchUsers } from 'api/user';
+import { sendMessage, createChannel } from 'api/chat';
+import type { UserState } from 'reducers/user';
+import type { ChatState } from 'reducers/chat';
+import { getInitials } from 'utils/chat';
+
 import SelectClassmates from './SelectClassmates';
+
+import styles from '../_styles/CreateCommunityChatChannelInput/sendStudent';
 
 type Props = {
   classes?: Record<string, any>;
   user?: UserState;
-  onOpenChannel?: (...args: Array<any>) => any;
+  onOpenChannel?: (id: string) => void;
   setIsOpen?: (...args: Array<any>) => any;
   createMessage?: Record<string, any>;
   handleClearCreateMessage?: (...args: Array<any>) => any;
@@ -144,9 +148,7 @@ const CreateChatChannelInput = ({
               });
             }
 
-            onOpenChannel({
-              channel
-            });
+            onOpenChannel?.(channel.sid);
           } catch (e) {
             setIsLoading(false);
           }

@@ -14,8 +14,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import Avatar from 'components/Avatar';
 import Dialog from '../Dialog/Dialog';
-import { containsImage, getInitials } from '../../utils/chat';
 import { styles } from '../_styles/ChatListItem/MainChatItem';
+
+import { containsImage, getInitials } from 'utils/chat';
 
 type Props = {
   classes?: Record<string, any>;
@@ -65,9 +66,7 @@ const MainChatItem = ({
     setAnchorEl(null);
   }, []);
   const handleMute = useCallback(() => {
-    handleMuteChannel({
-      sid: roomId
-    });
+    handleMuteChannel(roomId);
     handleClose();
   }, [roomId, handleMuteChannel, handleClose]);
   const initials = useCallback(() => getInitials(name), [name]);

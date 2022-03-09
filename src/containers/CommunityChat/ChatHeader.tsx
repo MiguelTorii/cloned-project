@@ -14,52 +14,51 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconShare from '@material-ui/icons/Share';
-import CreateChatChannelDialog from '../../components/CreateChatChannelDialog/CreateChatChannelDialog';
-import ShareLinkDialog from '../../components/ShareLinkDialog/ShareLinkDialog';
-import RemoveStudentDialog from '../../components/RemoveStudentDialog/RemoveStudentDialog';
-import EditGroupDetailsDialog from '../Chat/EditGroupDetailsDialog';
-import { searchUsers } from '../../api/user';
-import { addGroupMembers, sendMessage } from '../../api/chat';
-import { logEvent } from '../../api/analytics';
+import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
+import ShareLinkDialog from 'components/ShareLinkDialog/ShareLinkDialog';
+import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDialog';
+import { searchUsers } from 'api/user';
+import { addGroupMembers, sendMessage } from 'api/chat';
+import { logEvent } from 'api/analytics';
 import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg';
 import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg';
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg';
 import { ReactComponent as ChatStudyRoomMembers } from 'assets/svg/chat-studyroom-members.svg';
 import { ReactComponent as ChatActiveStudyRoomMembers } from 'assets/svg/chat-active-studyroom-members.svg';
-import { PERMISSIONS } from '../../constants/common';
-import { getInitials } from '../../utils/chat';
+import { PERMISSIONS } from 'constants/common';
+import { getInitials } from 'utils/chat';
+import { UserState } from 'reducers/user';
+import { ChannelMetadata } from 'features/chat';
 import useStyles from './_styles/chatHeader';
-import { ChannelWrapper } from '../../reducers/chat';
-import { UserState } from '../../reducers/user';
 
 type Props = {
-  isCommunityChat?: boolean;
-  channel?: Channel;
-  currentUserName?: string;
-  title?: string;
-  otherUser?: any;
-  rightSpace?: number;
-  memberKeys?: Array<any>;
-  startVideo?: (...args: Array<any>) => any;
-  local?: Record<string, ChannelWrapper>;
-  onOpenRightPanel?: (...args: Array<any>) => any;
+  channel: Channel;
+  currentUserName: string;
   handleUpdateGroupName?: (...args: Array<any>) => any;
+  isCommunityChat: boolean;
+  memberKeys: Array<any>;
+  members: ChannelMetadata['users'];
+  onOpenRightPanel?: (...args: Array<any>) => any;
+  otherUser: any;
+  rightSpace?: number;
+  startVideo?: (...args: Array<any>) => any;
+  title: string;
 };
 
 const ChatHeader = ({
-  isCommunityChat,
   channel,
-  title,
   currentUserName,
+  handleUpdateGroupName,
+  isCommunityChat,
+  memberKeys,
+  members,
+  onOpenRightPanel,
   otherUser,
   rightSpace,
-  memberKeys,
   startVideo,
-  local,
-  onOpenRightPanel,
-  handleUpdateGroupName
+  title
 }: Props) => {
-  const classes: any = useStyles();
+  const classes = useStyles();
   const [channelType, setChannelType] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openShareLink, setOpenShareLink] = useState(false);
@@ -90,17 +89,16 @@ const ChatHeader = ({
   const {
     data: { userId, schoolId, permission }
   } = user;
-  const members = useMemo(() => channel && local[channel.sid].members, [channel, local]);
   const currentChannelTitle = useMemo(() => {
     // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
-    if (!(channel as any)?.channelState?.friendlyName) {
+    if (!channel.friendlyName) {
       let customTitle = '';
       let currentIndex = 0;
 
       if (members.length > 3) {
         members.forEach((member, index) => {
           if (index < 3) {
-            customTitle += `${member.firstname} ${member.lastname}, `;
+            customTitle += `${member.firstName} ${member.lastName}, `;
             currentIndex = index;
           }
         });
@@ -129,8 +127,8 @@ const ChatHeader = ({
     [permission]
   );
   const showThreeDotsMenu = useMemo(
-    () => (Object.keys(members).length > 2 && isShow) || deletePermission,
-    [isCommunityChat, deletePermission, members, isShow]
+    () => (members && Object.keys(members).length > 2 && isShow) || deletePermission,
+    [deletePermission, members, isShow]
   );
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), []);
   const handleEditGroupDetailsOpen = useCallback(() => setEditGroupDetailsOpen(true), []);
@@ -229,6 +227,7 @@ const ChatHeader = ({
   const handleCloseRemoveStudent = useCallback(() => {
     setOpenRemoveStudent(false);
   }, []);
+
   const renderOtherMembers = useCallback(
     () => (
       <List component="nav" aria-label="secondary mailbox folders">
@@ -236,7 +235,7 @@ const ChatHeader = ({
           if (index > 2) {
             return (
               <ListItem button key={member.userId}>
-                <ListItemText primary={`${member.firstname} ${member.lastname}`} />
+                <ListItemText primary={`${member.firstName} ${member.lastName}`} />
               </ListItem>
             );
           }
@@ -247,8 +246,10 @@ const ChatHeader = ({
     ),
     [members]
   );
+
   const openMembers = Boolean(membersEl);
   const openMemberId = openMembers ? 'simple-popover' : undefined;
+
   return (
     <div className={classes.header}>
       {channel && (
@@ -361,14 +362,15 @@ const ChatHeader = ({
           </div>
         </Grid>
       )}
-      <EditGroupDetailsDialog
+      {/* TODO Fix merge */}
+      {/* <EditGroupDetailsDialog
         title="Edit Group Details"
-        channel={channel}
-        localChannel={local[channel.sid]}
+        metadata={channel}
+        channel={local[channel.sid]}
         open={editGroupDetailsOpen}
         updateGroupName={handleUpdateGroupName}
         onClose={handleEditGroupDetailsClose}
-      />
+      /> */}
       <CreateChatChannelDialog
         title="ADD CLASSMATES"
         chatType={channelType}
@@ -390,7 +392,7 @@ const ChatHeader = ({
       {channel && (
         <ShareLinkDialog
           open={openShareLink}
-          localChannel={local[channel.sid]}
+          channelId={channel.sid}
           handleClose={closeShareLinkDialog}
         />
       )}

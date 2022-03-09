@@ -35,6 +35,7 @@
     "axios": "^0.18.0",
     "babel-runtime": "^6.26.0",
     "browser-image-compression": "^1.0.6",
+    "buffer": "^6.0.3",
     "classnames": "^2.2.6",
     "clsx": "^1.1.0",
     "connected-react-router": "^6.2.2",

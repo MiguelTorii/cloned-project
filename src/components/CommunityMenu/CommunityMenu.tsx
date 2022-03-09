@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { AppState } from 'redux/store';
+import React, { useCallback, useMemo } from 'react';
+import { useAppSelector } from 'redux/store';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -11,76 +10,80 @@ import LoadImg from '../LoadImg/LoadImg';
 import { ReactComponent as Chat } from '../../assets/svg/community-chat.svg';
 import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
-import { ChannelWrapper, CurrentCommunity } from '../../reducers/chat';
+import { useUnreadCount } from 'features/chat';
+import { ChatCommunity } from 'api/models/APICommunity';
 
 type Props = {
-  item?: Record<string, any>;
-  unreadMessageCount?: number;
-  communityChannels?: any[];
-  handleSelect?: (...args: Array<any>) => any;
+  item: ChatCommunity;
+  handleSelect: (course: ChatCommunity) => void;
 };
 
-const CommunityMenu = ({ item, unreadMessageCount, communityChannels, handleSelect }: Props) => {
-  const classes: any = useStyles();
-  const [unreadMessages, setUnreadMessages] = useState(0);
-  const local = useSelector<AppState, Record<string, ChannelWrapper>>(
-    (state) => state.chat.data.local
-  );
-  const selectedCourse = useSelector<AppState, CurrentCommunity>(
-    (state) => state.chat.data.currentCommunity
-  );
-  useEffect(() => {
+const CommunityMenu = ({ item, handleSelect }: Props) => {
+  const classes = useStyles();
+
+  const { currentCommunity, communityChannels } = useAppSelector((state) => state.chat.data);
+
+  const { data: unreadCountData } = useUnreadCount();
+
+  const unreadCount = useMemo(() => {
+    if (!communityChannels?.length || !unreadCountData) {
+      return 0;
+    }
     const { id } = item;
 
-    if (id !== 'chat') {
-      const currentCourseChannel = communityChannels.filter(
-        (courseChannel) => courseChannel.courseId === id
-      );
+    if (!id) {
+      return 0;
+    }
 
-      if (currentCourseChannel.length) {
-        const communityChannels = currentCourseChannel[0].channels;
-        let count = 0;
-        communityChannels.forEach((communityChannel) => {
-          communityChannel.channels.forEach((channel) => {
-            if (local[channel.chat_id]?.unread) {
-              count += local[channel.chat_id].unread;
-            }
-          });
-        });
-        setUnreadMessages(count);
+    const currentCourseChannel = communityChannels?.filter(
+      (courseChannel) => courseChannel.courseId === id
+    );
+
+    if (!currentCourseChannel.length) {
+      return 0;
+    }
+
+    // TODO From here and redux, rename and differenciate from course channel, community channel, and channels inside channels
+    const channels = currentCourseChannel[0].channels;
+    let count = 0;
+    for (const communityChannel of channels) {
+      for (const channel of communityChannel.channels) {
+        count += unreadCountData[channel.chat_id] || 0;
       }
     }
-  }, [item, local, communityChannels]);
+    return count;
+  }, [communityChannels, item, unreadCountData]);
+
   const handleSelectItem = useCallback(() => {
     handleSelect(item);
   }, [handleSelect, item]);
-  const isDirectChat = useMemo(() => ['chat'].indexOf(item.id) > -1, [item]);
+
   return (
     <Tooltip
-      title={isDirectChat ? 'Direct Chat' : item.name}
+      title={!item.id ? 'Direct Chat' : item.name}
       placement="top"
       arrow
       classes={{
         tooltip: classes.tooltip
       }}
     >
-      {item.communityIconUrl ? (
+      {item.community_icon_url ? (
         <ListItem
           button
           onClick={handleSelectItem}
-          selected={selectedCourse && selectedCourse.id === item.id}
+          selected={Boolean(currentCommunity?.id === item.id)}
           classes={{
             root: classes.listItem,
             selected: classes.selectedItem
           }}
         >
-          <StyledBadge max={99} badgeContent={unreadMessages} color="secondary">
+          <StyledBadge max={99} badgeContent={unreadCount} color="secondary">
             <ListItemIcon
               classes={{
                 root: classes.itemContent
               }}
             >
-              <LoadImg url={item.communityIconUrl} />
+              <LoadImg url={item.community_icon_url} />
             </ListItemIcon>
           </StyledBadge>
         </ListItem>
@@ -88,17 +91,17 @@ const CommunityMenu = ({ item, unreadMessageCount, communityChannels, handleSele
         <ListItem
           button
           onClick={handleSelectItem}
-          selected={selectedCourse && selectedCourse.id === item.id}
+          selected={Boolean(currentCommunity?.id === item.id)}
           classes={{
             root: classes.listItem,
             selected: classes.selectedItem
           }}
           style={{
-            backgroundColor: item.color ? item.color : '#C45960'
+            backgroundColor: item.bg_color ? item.bg_color : '#C45960'
           }}
         >
-          {isDirectChat ? (
-            <StyledBadge max={99} badgeContent={unreadMessageCount} color="secondary">
+          {!item.id ? (
+            <StyledBadge max={99} badgeContent={unreadCount} color="secondary">
               <ListItemIcon
                 classes={{
                   root: classes.itemContent
@@ -111,9 +114,9 @@ const CommunityMenu = ({ item, unreadMessageCount, communityChannels, handleSele
             <StyledBadge
               max={99}
               classes={{
-                badge: unreadMessages ? classes.unreadMessageCount : classes.emptyUnreadMessage
+                badge: unreadCount ? classes.unreadMessageCount : classes.emptyUnreadMessage
               }}
-              badgeContent={unreadMessages}
+              badgeContent={unreadCount}
               color="secondary"
             >
               <ListItemText

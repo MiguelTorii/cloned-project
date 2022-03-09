@@ -4,6 +4,12 @@ import { AppState } from 'redux/store';
 
 // Temporary, transition to react-query
 export const selectLocal = (state: AppState) => state.chat.data.local;
+
+export const selectLocalById = createSelector(
+  [selectLocal, (state: AppState, id?: string) => id],
+  (local, id) => (id ? local[id] : undefined)
+);
+
 export const selectChannelKeys = createSelector(selectLocal, (local) =>
   Object.keys(local).filter(
     (l) =>

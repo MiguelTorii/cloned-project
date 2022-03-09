@@ -103,7 +103,6 @@ export const updateUser =
       })
     );
     dispatch(userActions.fetchClasses());
-    dispatch(chatActions.handleInitChat());
     await dispatch(
       campaignActions.requestCampaign({
         campaignId: LANDING_PAGE_CAMPAIGN,
@@ -263,7 +262,6 @@ export const checkUserSession =
   };
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
-    dispatch(chatActions.handleShutdownChat());
     sessionStorage.clear();
     localStorage.clear();
     window.location.href = window.location.origin;

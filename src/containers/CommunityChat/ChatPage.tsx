@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import Box from '@material-ui/core/Box';
 
 import {
@@ -9,41 +9,35 @@ import {
   setCurrentCommunityIdAction,
   setCurrentChannelSidAction
 } from 'actions/chat';
-import { selectUnread } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
 import { getCommunities, getCommunityChannels } from 'api/community';
 import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
-import { CampaignState } from 'reducers/campaign';
-import { ChatState } from 'reducers/chat';
 
 import DirectChat from './DirectChat';
 import CollageList from './CollageList';
 import CommunityChat from './CommunityChat';
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
 import useStyles from './_styles/styles';
+import { useSelectChatByHash } from 'features/chat';
 
 const ChatPage = () => {
-  const classes: any = useStyles();
-  const dispatch = useDispatch();
+  useSelectChatByHash();
 
-  const campaign = useSelector((state: { campaign: CampaignState }) => state.campaign);
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
   const {
     data: {
-      local,
       communityChannels,
       communities,
       currentCommunity,
       currentCommunityId,
       oneTouchSendOpen,
-      currentCommunityChannel
+      currentCommunityChannelId
     }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
-
-  const unread = useAppSelector(selectUnread);
+  } = useAppSelector((state) => state.chat);
 
   const [loading, setLoading] = useState<boolean>(false);
-
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   const fetchCommunityChannels = async (communities) => {
     if (!communities?.length) {
@@ -86,8 +80,7 @@ const ChatPage = () => {
         );
         dispatch(setCommunitiesAction(nonEmptyCommunities));
         dispatch(setCommunityChannelsAction(communityChannels));
-
-        if (currentCommunityId && !currentCommunityChannel && nonEmptyCommunities.length > 0) {
+        if (currentCommunityId && !currentCommunityChannelId && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           dispatch(setCurrentCommunityIdAction(defaultCommunity.id));
           if (defaultCommunity) {
@@ -138,7 +131,7 @@ const ChatPage = () => {
         dispatch(setCurrentCommunityAction(targetCourseChannel[0].community));
       }
     }
-  }, [currentCommunityId, dispatch, currentCommunity, communities, loading, campaign.chatLanding]);
+  }, [communities, currentCommunity, currentCommunityId, dispatch, oneTouchSendOpen]);
 
   if (loading) {
     return <LoadingSpin />;
@@ -148,14 +141,13 @@ const ChatPage = () => {
     <div className={classes.root}>
       <Box className={classes.collageList}>
         <CollageList
-          unreadMessageCount={unread}
           communities={communities}
           communityChannels={communityChannels}
           handleSelect={handleSelect}
         />
       </Box>
       <Box className={classes.directChat}>
-        {currentCommunity && currentCommunity.id === 'chat' ? <DirectChat /> : <CommunityChat />}
+        {!currentCommunity?.id ? <DirectChat /> : <CommunityChat />}
       </Box>
     </div>
   );

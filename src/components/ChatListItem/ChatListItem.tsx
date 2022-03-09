@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import MainChatItem from './MainChatItem';
-import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
-import { ChannelWrapper } from '../../reducers/chat';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import { ChannelWrapper } from 'reducers/chat';
 
 type Props = {
   channel?: ChannelWrapper;
   userId?: string;
-  onOpenChannel?: (...args: Array<any>) => any;
+  onOpenChannel?: (id: string) => void;
   selected?: boolean;
   handleRemoveChannel?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
@@ -27,6 +27,7 @@ const ChatListItem = ({
   const [thumbnail, setThumbnail] = useState('');
   const [isOnline, setIsOnline] = useState(false);
   const [isDirectChat, setIsDirectChat] = useState(false);
+
   useEffect(() => {
     if (channel && channel.members) {
       if (channel.members.length === 2) {
@@ -45,9 +46,7 @@ const ChatListItem = ({
   }, [channel, userId]);
 
   const handleOpenChannel = () => {
-    onOpenChannel({
-      channel: channel.twilioChannel
-    });
+    onOpenChannel(channel?.sid);
   };
 
   return (

@@ -148,3 +148,20 @@ export const openSupportWidget = (name: string, email: string) => {
   (window as any).FreshworksWidget('identify', 'ticketForm', { name, email });
   (window as any).FreshworksWidget('open');
 };
+
+export const waitUntil = (condition: () => boolean, polling = 100, timeout = 2000) =>
+  new Promise<void>((resolve, reject) => {
+    const interval = setInterval(() => {
+      if (!condition()) {
+        return;
+      }
+
+      clearInterval(interval);
+      resolve();
+    }, polling);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      reject('your error msg');
+    }, timeout);
+  });

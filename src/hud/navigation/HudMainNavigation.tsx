@@ -38,15 +38,15 @@ import HudToolWithDropdown from './HudToolWithDropdown';
 import { HudToolData } from './HudToolData';
 import { HudNavigationState } from '../navigationState/hudNavigationState';
 import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
-import AREA_TITLES from 'constants/area-titles';
 import { useAllUnreadCount } from 'features/chat';
+import AREA_TITLES from 'constants/area-titles';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 const NAVBAR_ICON_SIZE = { width: '50px', height: '50px' };
 
 const HudMainNavigation = () => {
   const classes: any = useStyles();
-  const unreadData = useAllUnreadCount();
+  const { data: unreadCount } = useAllUnreadCount();
 
   const studyToolsOption: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.studyToolsOption
@@ -125,7 +125,7 @@ const HudMainNavigation = () => {
     id: CHAT_MAIN_AREA,
     displayName: AREA_TITLES.CHAT,
     icon: (
-      <Badge badgeContent={unreadData.data} color="secondary" overlap="circular">
+      <Badge badgeContent={unreadCount} color="secondary" overlap="circular">
         <IconChat style={NAVBAR_ICON_SIZE} />
       </Badge>
     ),

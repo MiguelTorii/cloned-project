@@ -116,9 +116,7 @@ const registerForClientEvents = (client: Client, userId: string) => {
   });
   client.on('tokenAboutToExpire', async () => {
     try {
-      const newToken = await renewTwilioToken({
-        userId
-      });
+      const newToken = await renewTwilioToken(userId);
 
       if (!newToken || (newToken && newToken === '')) {
         return;

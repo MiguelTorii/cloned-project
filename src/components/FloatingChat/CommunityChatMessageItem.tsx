@@ -23,7 +23,6 @@ import Avatar from 'components/Avatar';
 import { apiDeleteMessage, editMessage } from '../../api/chat';
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import EditFailedModal from '../EditFailedModal/EditFailedModal';
-import RoleBadge from '../RoleBadge/RoleBadge';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 import { buildPath } from '../../utils/helpers';
 import { ChatMessageItem } from '../../types/models';
@@ -41,7 +40,6 @@ type Props = {
   message: ChatMessageItem;
   name: string;
   authorUserId: string;
-  role: string;
   channelId: string;
   avatar: string;
   isOnline: boolean;
@@ -378,7 +376,6 @@ const CommunityChatMessageItem = ({
                   {name}
                 </Link>
               </Typography>
-              {role && <RoleBadge text={role} />}
               <Typography className={cx(classes.createdAt)} variant="caption">
                 {date} at {message.createdAt}
               </Typography>

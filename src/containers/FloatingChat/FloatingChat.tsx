@@ -31,8 +31,9 @@ import ChatChannel from './ChatChannel';
 import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { CampaignState } from '../../reducers/campaign';
-import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from '../../actions/chat';
+import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
 import { blockChatUser } from '../../api/chat';
+import { useChatClient } from 'features/chat';
 
 const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
 
@@ -83,7 +84,6 @@ type Props = {
   push?: (...args: Array<any>) => any;
   onboardingListVisible?: boolean;
   getOnboardingList?: (...args: Array<any>) => any;
-  setCurrentChannel?: (...args: Array<any>) => any;
   setCurrentCommunityChannel?: (...args: Array<any>) => any;
 };
 
@@ -103,7 +103,6 @@ const FloatingChat = ({
   enqueueSnackbarAction,
   updateTitleAction,
   onboardingListVisible,
-  setCurrentChannel,
   getOnboardingList,
   setCurrentCommunityChannel
 }: Props) => {
@@ -116,7 +115,6 @@ const FloatingChat = ({
     isLoading,
     data: {
       uuid,
-      client,
       channels,
       newMessage,
       online,
@@ -131,6 +129,9 @@ const FloatingChat = ({
   const {
     location: { pathname }
   } = router;
+
+  const client = useChatClient();
+
   const showNotification = useCallback(
     (channel) => {
       if (!pathname.includes('chat')) {
@@ -180,10 +181,8 @@ const FloatingChat = ({
 
     if (attributes?.community_id) {
       dispatch(setCurrentCommunityIdAction(attributes?.community_id));
-      setCurrentCommunityChannel(channel);
     } else {
       dispatch(setCurrentCommunityIdAction(null));
-      setCurrentChannel(channel);
     }
 
     dispatch(setCurrentChannelSidAction(channel.sid));
@@ -331,7 +330,6 @@ const FloatingChat = ({
   const onChannelOpen = ({ channel }) => {
     handleRoomClick(channel);
     dispatch(setCurrentChannelSidAction(channel.sid));
-    setCurrentChannel(channel);
   };
 
   const handleChannelCreated = ({
@@ -487,7 +485,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
       updateOpenChannels: chatActions.updateOpenChannels,
       handleChannelClose: chatActions.handleChannelClose,
       handleNewChannel: chatActions.handleNewChannel,
-      setCurrentChannel: chatActions.setCurrentChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
       setCurrentCommunityId: chatActions.setCurrentCommunityId,

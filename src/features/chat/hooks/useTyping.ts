@@ -42,5 +42,3 @@ export const useTyping = (channel?: Channel) => {
 
   return { typing, onTyping };
 };
-
-export default useTyping;

@@ -4,9 +4,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import useStyles from '../_styles/ShareLinkDialog';
 import ShareLink from './ShareLink';
 import Dialog from '../Dialog/Dialog';
+import { useChatShareLink } from 'features/chat';
 
-const ShareLinkDialog = ({ open, handleClose, localChannel }) => {
-  const classes: any = useStyles();
+const ShareLinkDialog = ({ open, handleClose, channelId }) => {
+  const { data: shareLink } = useChatShareLink(channelId);
+
+  const classes = useStyles();
+
   return (
     <Dialog
       className={classes.dialog}
@@ -31,8 +35,7 @@ const ShareLinkDialog = ({ open, handleClose, localChannel }) => {
           </span>
           &nbsp; Need to invite someone to this chat? Invite them by sharing the following link
         </Typography>
-
-        <ShareLink shareLink={localChannel.shareLink} />
+        {shareLink && <ShareLink shareLink={shareLink} />}
       </div>
     </Dialog>
   );

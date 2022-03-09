@@ -21,7 +21,7 @@ import Dialog from '../Dialog/Dialog';
 import styles from '../_styles/FloatingChat/ChatItem';
 import { ChannelWrapper } from '../../reducers/chat';
 import { Dispatch } from '../../types/store';
-import { setCurrentChannel } from '../../actions/chat';
+import { setCurrentChannelSidAction } from 'actions/chat';
 
 type Props = {
   classes?: Record<string, any>;
@@ -91,9 +91,9 @@ const ChatItem = ({
     const findAnotherDefaultChannel = channels.find((channelEntry) => channelEntry !== channel.sid);
 
     if (findAnotherDefaultChannel) {
-      await setCurrentChannel(local[findAnotherDefaultChannel].twilioChannel)(dispatch);
+      dispatch(setCurrentChannelSidAction(findAnotherDefaultChannel.sid));
     } else {
-      await setCurrentChannel(null)(dispatch);
+      dispatch(setCurrentChannelSidAction(null));
     }
 
     onDelete();
@@ -111,7 +111,7 @@ const ChatItem = ({
 
   const handleGotoChat = async () => {
     setCurrentCommunityId('chat');
-    await setCurrentChannel(channel)(dispatch);
+    dispatch(setCurrentChannelSidAction(channel.sid));
     push('/chat');
   };
 

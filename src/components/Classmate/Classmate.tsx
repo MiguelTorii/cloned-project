@@ -19,13 +19,13 @@ import { useMediaQuery } from 'hooks';
 import { Dispatch } from 'types/store';
 import { getInitials } from 'utils/chat';
 import { buildPath } from 'utils/helpers';
-import { ChatState } from 'reducers/chat';
 import { CampaignState } from 'reducers/campaign';
 import { openChannelWithEntity } from 'actions/chat';
 import InviteIcon from 'assets/svg/invite-icon.svg';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
 
 import { useStyles } from './ClassmateStyles';
+import { useChatClient } from 'features/chat';
 
 type ClassmateType = {
   userId: string;
@@ -58,9 +58,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
     (state: { campaign: CampaignState }) => state.campaign.hud
   );
 
-  const {
-    data: { client }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
+  const client = useChatClient();
 
   const [loadingMessage, setLoadingMessage] = useState(false);
   const [loadingVideo, setLoadingVideo] = useState(false);

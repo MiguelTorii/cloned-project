@@ -1,37 +1,25 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import cx from 'classnames';
-import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
-import Grid from '@material-ui/core/Grid';
-import withWidth from '@material-ui/core/withWidth';
+import { Channel } from 'twilio-chat';
+import Grid, { GridSize } from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import IconLeft from '@material-ui/icons/ArrowBack';
-import IconRight from '@material-ui/icons/ArrowForward';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import withWidth from '@material-ui/core/withWidth';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import { handleNewChannel, setCurrentChannelSidAction, updateFriendlyName } from 'actions/chat';
+import { getOnboardingList } from 'actions/onboarding';
+import { blockChatUser, leaveChat } from 'api/chat';
 import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import cx from 'classnames';
 import useIconClasses from 'components/_styles/Icons';
+import { useSelectChannelById, useOrderedChannelList } from 'features/chat';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'redux/store';
+
 import LeftMenu from './LeftMenu';
-import RightMenu from './RightMenu';
 import Main from './Main';
-import { selectChannelList } from 'redux/chat/selectors';
-import { useAppSelector } from 'redux/store';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import useStyles from './_styles/directChat';
-import {
-  handleNewChannel,
-  handleRemoveChannel,
-  setCurrentChannel,
-  setCurrentChannelSidAction,
-  updateFriendlyName
-} from '../../actions/chat';
-import { OnboardingState } from '../../reducers/onboarding';
-import { Dispatch } from '../../types/store';
-import { blockChatUser } from '../../api/chat';
-import { getOnboardingList } from '../../actions/onboarding';
+import RightMenu from './RightMenu';
 import blockUser from './_styles/blockUser';
+import useStyles from './_styles/directChat';
 
 const RIGHT_GRID_SPAN = 2;
 
@@ -39,43 +27,53 @@ type Props = {
   width?: string;
 };
 
+type NumberGridSizes = Exclude<GridSize, 'auto'> | 0;
+
 // TODO Refactor width, open and close logic to reusable sidebar component
 const DirectChat = ({ width }: Props) => {
-  const classes: any = useStyles();
-  const dispatch: Dispatch = useDispatch();
+  const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const {
     isLoading,
-    data: { selectedChannelId, local, newChannel, currentChannel, openChannels }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
+    data: { selectedChannelId, newChannel, openChannels }
+  } = useAppSelector((state) => state.chat);
 
   const {
-    data: { userId, schoolId }
-  } = useSelector((state: { user: UserState }) => state.user);
+    data: { userId }
+  } = useAppSelector((state) => state.user);
 
-  const onboardingListVisible = useSelector(
-    (state: { onboarding: OnboardingState }) => state.onboarding.onboardingList.visible
-  );
+  const onboardingListVisible = useAppSelector((state) => state.onboarding.onboardingList.visible);
 
-  const channelList = useAppSelector(selectChannelList);
+  const channelList = useOrderedChannelList();
 
-  const [leftSpace, setLeftSpace] = useState(2);
-  const [rightSpace, setRightSpace] = useState(0);
+  useEffect(() => {
+    if (!selectedChannelId && channelList?.length) {
+      dispatch(
+        setCurrentChannelSidAction(localStorage.getItem('currentDMChannel') || channelList[0])
+      );
+    } else if (
+      selectedChannelId &&
+      channelList.length &&
+      !channelList.includes(selectedChannelId)
+    ) {
+      dispatch(setCurrentChannelSidAction(channelList[0]));
+    }
+  }, [channelList, dispatch, selectedChannelId]);
+
+  const { data: currentChannel } = useSelectChannelById(selectedChannelId);
+
+  const [leftSpace, setLeftSpace] = useState<NumberGridSizes>(2);
+  const [rightSpace, setRightSpace] = useState<NumberGridSizes>(0);
   const [prevWidth, setPrevWidth] = useState(null);
   const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
-    channelId: string;
-    lastIndex: number;
+    channelId: string | null;
+    lastIndex: Channel['lastConsumedMessageIndex'];
   }>({
     channelId: null,
     lastIndex: null
   });
   const iconClasses = useIconClasses();
-
-  const lastChannelSid = useMemo(() => localStorage.getItem('currentDMChannel'), []);
-  const currentChannelId = useMemo(
-    () => selectedChannelId || lastChannelSid || channelList[0],
-    [selectedChannelId, lastChannelSid, channelList]
-  );
 
   const onNewChannel = useCallback(() => {
     handleNewChannel(true, openChannels)(dispatch);
@@ -92,7 +90,7 @@ const DirectChat = ({ width }: Props) => {
   }, [rightSpace, width]);
 
   const onOpenChannel = useCallback(
-    ({ channel }) => {
+    (sid: string) => {
       if (['xs'].includes(width)) {
         setLeftSpace(0);
       }
@@ -101,31 +99,22 @@ const DirectChat = ({ width }: Props) => {
         handleNewChannel(false, openChannels)(dispatch);
       }
 
-      dispatch(setCurrentChannelSidAction(channel.sid));
-      setCurrentChannel(channel)(dispatch);
+      dispatch(setCurrentChannelSidAction(sid));
     },
     [dispatch, width, newChannel, openChannels]
   );
 
-  const handleRemove = useCallback(
-    async (sid) => {
-      const restChannels = channelList.filter((channel) => channel !== sid.sid);
-
-      if (currentChannel.sid === sid.sid) {
-        dispatch(setCurrentChannelSidAction(restChannels[0]));
-        await setCurrentChannel(
-          local[restChannels[0]] ? local[restChannels[0]].twilioChannel : null
-        )(dispatch);
-      }
-
-      handleRemoveChannel(sid)(dispatch);
-    },
-    [currentChannel, dispatch, channelList, local]
-  );
+  const handleRemove = useCallback(async (sid) => {
+    try {
+      await leaveChat(sid);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const updateGroupName = useCallback(
-    (channel) => {
-      setCurrentChannel(channel)(dispatch);
+    (channel: Channel) => {
+      dispatch(setCurrentChannelSidAction(channel.sid));
       dispatch(updateFriendlyName(channel));
     },
     [dispatch]
@@ -160,16 +149,24 @@ const DirectChat = ({ width }: Props) => {
 
   // This effect is to keep the index of last read message.
   useEffect(() => {
-    // We just want to update the last read message info only if the channel is changed.
-    if (currentChannel?.sid === lastReadMessageInfo.channelId) {
+    if (!currentChannel) {
       return;
     }
 
+    const sid = currentChannel.sid;
+
+    // We just want to update the last read message info only if the channel is changed.
+    if (sid === lastReadMessageInfo.channelId) {
+      return;
+    }
+
+    if (sid) {
+      setLastReadMessageInfo({
+        lastIndex: currentChannel.lastConsumedMessageIndex,
+        channelId: currentChannel.sid
+      });
+    }
     // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
-    setLastReadMessageInfo({
-      lastIndex: (currentChannel as any)?.channelState.lastConsumedMessageIndex,
-      channelId: currentChannel?.sid
-    });
   }, [currentChannel, lastReadMessageInfo]);
 
   const handleBlock = useCallback(
@@ -180,7 +177,7 @@ const DirectChat = ({ width }: Props) => {
           blockedUserId: blockedUserId
         });
         await blockChatUser(blockedUserId);
-        setCurrentChannel(null)(dispatch);
+        dispatch(setCurrentChannelSidAction(''));
       } catch (err) {
         /* NONE */
       }
@@ -228,14 +225,8 @@ const DirectChat = ({ width }: Props) => {
         )}
       </IconButton>
       {leftSpace !== 0 && (
-        <Grid
-          item
-          xs={(leftSpace || 1) as any}
-          className={leftSpace !== 0 ? classes.left : classes.hidden}
-        >
+        <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left : classes.hidden}>
           <LeftMenu
-            channelList={channelList}
-            lastChannelSid={lastChannelSid}
             onNewChannel={onNewChannel}
             onOpenChannel={onOpenChannel}
             handleUpdateGroupName={updateGroupName}
@@ -244,34 +235,29 @@ const DirectChat = ({ width }: Props) => {
         </Grid>
       )}
       {leftSpace !== 12 && (
-        <Grid item xs={(12 - leftSpace - rightSpace) as any} className={classes.main}>
+        <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
           <Main
-            channelList={channelList}
-            selectedChannelId={currentChannelId}
-            handleBlock={handleBlock}
-            rightSpace={rightSpace}
+            channelLength={channelList.length}
             channel={currentChannel}
+            handleBlock={handleBlock}
+            handleUpdateGroupName={updateGroupName}
             lastReadMessageIndex={
               lastReadMessageInfo.channelId === currentChannel?.sid
                 ? lastReadMessageInfo.lastIndex
                 : null
             }
-            handleUpdateGroupName={updateGroupName}
-            setRightPanel={handleOpenRightPanel}
             onSend={() => {
               if (onboardingListVisible) {
                 setTimeout(() => getOnboardingList()(dispatch), 1000);
               }
             }}
+            rightSpace={rightSpace}
+            setRightPanel={handleOpenRightPanel}
           />
         </Grid>
       )}
-      <Grid
-        item
-        xs={(rightSpace || 1) as any}
-        className={rightSpace !== 0 ? classes.right : classes.hidden}
-      >
-        <RightMenu channel={currentChannel} />
+      <Grid item xs={rightSpace || 1} className={rightSpace !== 0 ? classes.right : classes.hidden}>
+        <RightMenu channelId={selectedChannelId} />
       </Grid>
     </Grid>
   );

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from 'redux/store';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useAppSelector, useAppDispatch } from 'redux/store';
 import clsx from 'clsx';
 import Fuse from 'fuse.js';
 import List from '@material-ui/core/List';
@@ -14,64 +13,58 @@ import ChatListItem from '../../components/CommunityChatListItem/ChatListItem';
 import CreateChatChannelInput from '../../components/CreateCommunityChatChannelInput/CreateChatChannelInput';
 import OneTouchSend from '../../components/CreateCommunityChatChannelInput/OneTouchSend';
 import Dialog from '../../components/Dialog/Dialog';
-import MainChatItem from '../../components/CommunityChatListItem/MainChatItem';
 import EmptyLeftMenu from './EmptyLeftMenu';
 import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
-import { getTitle } from '../../utils/chat';
+import { getTitle } from 'utils/chat';
 import { PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/leftMenu';
-import { ChatData, ChatState } from '../../reducers/chat';
-import { handleNewChannel, setCurrentChannel, setOneTouchSendAction } from '../../actions/chat';
-import { Dispatch } from '../../types/store';
-import { User } from '../../types/models';
+import { handleNewChannel, setCurrentChannelSidAction, setOneTouchSendAction } from 'actions/chat';
+import { useChannels, useOrderedChannelList, useChannelsMetadata } from 'features/chat';
+import BaseChatItem from 'components/CommunityChatListItem/BaseChatItem';
 
 type Props = {
-  channelList?: string[];
-  onOpenChannel?: (...args: Array<any>) => any;
+  onOpenChannel?: (id: string) => void;
   handleRemoveChannel?: (...args: Array<any>) => any;
-  lastChannelSid?: string;
   onNewChannel?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
 };
 
 const LeftMenu = ({
-  channelList,
   handleMuteChannel,
-  lastChannelSid,
   onOpenChannel,
   onNewChannel,
   handleRemoveChannel,
   handleUpdateGroupName
 }: Props) => {
-  const classes: any = useStyles();
-  const dispatch: Dispatch = useDispatch();
+  const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const [search, setSearch] = useState();
-  const [searchChannels, setSearchChannels] = useState([]);
+  const [searchChannels, setSearchChannels] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const expertMode = useSelector((state) => (state as any).user.expertMode);
-  const { local, currentChannel, channels, newChannel, oneTouchSendOpen } = useSelector<
-    AppState,
-    ChatData
-  >((state) => state.chat.data);
-  const isLoading = useSelector<AppState, boolean>((state) => state.chat.isLoading);
-  const { userId, permission } = useSelector<AppState, User>((state) => state.user.data);
-
+  const expertMode = useAppSelector((state) => state.user.expertMode);
   const {
-    data: { openChannels }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
+    data: { newChannel, selectedChannelId, oneTouchSendOpen, openChannels },
+    isLoading: isChatLoading
+  } = useAppSelector((state) => state.chat);
+  const { userId, permission } = useAppSelector((state) => state.user.data);
 
-  const switchOneTouchSend = () =>
-    permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && expertMode;
+  const { isLoading: channelsIsLoading, data: channels } = useChannels();
+  const { data: channelsMetadata } = useChannelsMetadata();
+  const channelList = useOrderedChannelList();
 
-  const handleCreateNewChannel = () => {
+  const isLoading = isChatLoading || channelsIsLoading;
+
+  const switchOneTouchSend = permission?.includes(PERMISSIONS.EXPERT_MODE_ACCESS) && expertMode;
+
+  const handleCreateNewChannel = useCallback(() => {
     setIsOpen(true);
 
-    if (!switchOneTouchSend()) {
-      onNewChannel();
+    if (!switchOneTouchSend) {
+      onNewChannel?.();
     }
-  };
+  }, [onNewChannel, switchOneTouchSend]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -79,7 +72,11 @@ const LeftMenu = ({
     dispatch(setOneTouchSendAction(false));
 
     handleNewChannel(false, openChannels)(dispatch);
-    setCurrentChannel(local[lastChannelSid]?.twilioChannel)(dispatch);
+    // TODO Remove and only use channelId
+    const lastChannelSid = localStorage.getItem('currentDMChannel') || channels?.[0].sid;
+    if (lastChannelSid) {
+      dispatch(setCurrentChannelSidAction(lastChannelSid));
+    }
   };
 
   const onChangeSearch = (e) => setSearch(e.target.value);
@@ -89,10 +86,11 @@ const LeftMenu = ({
       handleCreateNewChannel();
     }
   }, [oneTouchSendOpen, handleCreateNewChannel]);
+
   useEffect(() => {
     if (search && channels) {
       const list = channels.map((c) => ({
-        name: getTitle(c, userId, local[c.sid].members),
+        name: getTitle(c, userId, channelsMetadata?.users),
         channel: c
       }));
       const options = {
@@ -104,9 +102,10 @@ const LeftMenu = ({
       const result = fuse.search(search).map((c) => c.item.channel.sid);
       setSearchChannels(result);
     } else {
-      setSearchChannels(channels.map((c) => c.sid));
+      setSearchChannels(channels ? channels.map((c) => c.sid) : []);
     }
-  }, [search, channels, userId, local]);
+  }, [search, channels, userId, channelsMetadata?.users]);
+
   return (
     <Grid
       item
@@ -175,7 +174,7 @@ const LeftMenu = ({
           showHeader={false}
           showActions={false}
         >
-          {switchOneTouchSend() ? (
+          {switchOneTouchSend ? (
             <OneTouchSend
               setIsOpen={setIsOpen}
               onClosePopover={handleClose}
@@ -200,27 +199,20 @@ const LeftMenu = ({
             isLoading={isLoading}
           />
           <List className={classes.root}>
-            {newChannel && <MainChatItem roomName="New Chat" selected />}
-            {channelList.map(
-              (c) =>
-                local[c] && (
-                  <div
-                    key={local[c].sid}
-                    className={clsx(!searchChannels.includes(local[c].sid) && classes.hidden)}
-                  >
-                    <ChatListItem
-                      selected={currentChannel && c === currentChannel.sid}
-                      channel={local[c]}
-                      targetChannel={channels.filter((channel) => channel.sid === c)}
-                      onOpenChannel={onOpenChannel}
-                      handleRemoveChannel={handleRemoveChannel}
-                      handleMuteChannel={handleMuteChannel}
-                      handleUpdateGroupName={handleUpdateGroupName}
-                      dark
-                    />
-                  </div>
-                )
-            )}
+            {newChannel && <BaseChatItem roomName="New Chat" selected />}
+            {channelList.map((id) => (
+              <div key={id} className={clsx(!searchChannels.includes(id) && classes.hidden)}>
+                <ChatListItem
+                  selected={id === selectedChannelId}
+                  channelId={id}
+                  onOpenChannel={onOpenChannel}
+                  handleRemoveChannel={handleRemoveChannel}
+                  handleMuteChannel={handleMuteChannel}
+                  handleUpdateGroupName={handleUpdateGroupName}
+                  dark
+                />
+              </div>
+            ))}
           </List>
         </Grid>
       </Grid>

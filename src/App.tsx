@@ -15,20 +15,23 @@ import { theme } from './withRoot';
 import HudRoutes from './HudRoutes';
 import ProviderGroup from './providers';
 import { queryClient } from 'lib/query';
+import { ChatClientProvider } from 'features/chat';
 
 const App = () => (
   <MuiThemeProvider theme={theme}>
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <SnackbarProvider maxSnack={3}>
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <ProviderGroup>
-            <CssBaseline />
-            <UserInitializer />
-            <MasqueradeFrame />
-            <HudRoutes />
-          </ProviderGroup>
-        </QueryClientProvider>
+        <ChatClientProvider>
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <ProviderGroup>
+              <CssBaseline />
+              <UserInitializer />
+              <MasqueradeFrame />
+              <HudRoutes />
+            </ProviderGroup>
+          </QueryClientProvider>
+        </ChatClientProvider>
       </SnackbarProvider>
     </MuiPickersUtilsProvider>
   </MuiThemeProvider>

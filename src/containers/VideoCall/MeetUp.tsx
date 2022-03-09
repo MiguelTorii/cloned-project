@@ -365,9 +365,7 @@ class MeetUp extends React.Component<Props, State> {
         tracks.push(localAudioTrack);
       }
 
-      const accessToken = await renewTwilioToken({
-        userId
-      });
+      const accessToken = await renewTwilioToken(userId);
       const videoRoom = await Video.connect(accessToken, {
         name: roomName,
         tracks,

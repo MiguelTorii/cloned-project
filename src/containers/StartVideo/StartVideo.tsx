@@ -6,16 +6,14 @@ import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import StudyRoomImg from '../../assets/svg/video-chat-image.svg';
 import StudyRoomInvite from './StudyRoomInvite';
 import useStyles from './_styles/index';
-import { addGroupMembers, createChannel, getGroupMembers, renewTwilioToken } from '../../api/chat';
+import { addGroupMembers, createChannel, getGroupMembers } from 'api/chat';
 import { logEvent } from '../../api/analytics';
 import { AppState } from 'redux/store';
 import { User, UserClass } from '../../types/models';
-import { updateClientToken } from 'lib/chat';
 
 const StartVideo = () => {
   const classes = useStyles();
   const [inviteVisible, setInviteVisible] = useState(false);
-  const [client, setClient] = useState(null);
   const [channel, setChannel] = useState('');
   const [groupUsers, setGroupUsers] = useState([]);
   const [online, setOnline] = useState(true);
@@ -65,43 +63,12 @@ const StartVideo = () => {
         chatId = channel;
       }
 
-      const groupUsers = await getGroupMembers({
-        chatId
-      });
+      const groupUsers = await getGroupMembers(chatId);
       setGroupUsers(groupUsers);
     } catch (e) {}
   };
 
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
-  const handleInitChat = async () => {
-    try {
-      const accessToken = await renewTwilioToken({
-        userId: profile.userId
-      });
-
-      if (!accessToken || (accessToken && accessToken === '')) {
-        handleInitChat();
-        return;
-      }
-
-      const client = await updateClientToken(accessToken);
-      let paginator = await client.getSubscribedChannels();
-
-      while (paginator.hasNextPage) {
-        // eslint-disable-next-line no-await-in-loop
-        paginator = await paginator.nextPage();
-      }
-      setClient(client);
-    } finally {
-    }
-  };
-
   const handleSetInviteVisible = () => setInviteVisible(true);
-
-  const handleShutdownChat = () => {
-    client.shutdown();
-    setClient(null);
-  };
 
   // Effects
   useEffect(() => {
@@ -121,17 +88,8 @@ const StartVideo = () => {
     return () => {
       window.removeEventListener('offline', handleOffline);
       window.removeEventListener('online', handleOnline);
-      handleShutdownChat();
     };
   }, []);
-
-  useEffect(() => {
-    if (profile.userId === '' || !online) {
-      handleShutdownChat();
-    } else {
-      handleInitChat();
-    }
-  }, [profile.userId, online]);
 
   return (
     <>

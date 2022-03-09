@@ -19,7 +19,6 @@ type Props = {
   name?: string;
   avatar?: string;
   isOnline?: boolean;
-  role?: string;
   date?: string;
   channelId: string;
   isGroupChannel?: boolean;
@@ -37,7 +36,6 @@ type Props = {
 const ChatMessage = ({
   userId,
   name,
-  role,
   date,
   channelId,
   avatar,
@@ -131,7 +129,6 @@ const ChatMessage = ({
             message={message}
             name={name}
             authorUserId={userId}
-            role={role}
             avatar={avatar}
             channelId={channelId}
             isOnline={isOnline}

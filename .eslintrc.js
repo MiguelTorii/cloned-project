@@ -95,6 +95,9 @@ module.exports = {
         'import/no-named-as-default': 'off',
         'import/no-duplicates': 'error',
         'import/newline-after-import': 'error',
+        // TODO Turn on
+        // 'max-depth': [2, 3],
+        curly: [2, 'multi-line'],
 
         // TODO turn the 'import' rules back on
         'import/first': 'off',
@@ -126,7 +129,6 @@ module.exports = {
 
         indent: 'off',
         'no-multiple-empty-lines': 'error',
-        curly: ['error', 'all'],
         'brace-style': 'error',
         'no-nested-ternary': 'error',
         'function-call-argument-newline': ['error', 'consistent'],

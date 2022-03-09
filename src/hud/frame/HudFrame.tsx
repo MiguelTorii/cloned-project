@@ -26,7 +26,6 @@ import {
   CHAT_AREA
 } from '../navigationState/hudNavigation';
 import HudControlPanel from '../controlPanel/HudControlPanel';
-import ChatArea from '../../hudAreas/chat/ChatArea';
 import {
   KEY_IS_FIRST_TIME,
   KEY_IS_FIRST_TIME_OPTION_YES,
@@ -47,11 +46,13 @@ import { HudStoryState } from '../storyState/hudStoryState';
 import { openOnboardingPopup } from '../storyState/hudStoryActions';
 import HudRightPanel from './HudRightPanel';
 import useOnboarding from '../storyState/useOnboarding';
+import ChatPage from 'containers/CommunityChat/ChatPage';
 
-let onboardingPopupTriggered = false;
 import UserDialog from '../../containers/UserDialog/UserDialog';
 import WebNotification from 'containers/WebNotifications';
 import { useNotifier } from 'hooks';
+
+let onboardingPopupTriggered = false;
 
 const HudFrame = () => {
   const classes: any = useStyles();
@@ -149,7 +150,7 @@ const HudFrame = () => {
 
                   {selectedMainArea === ACHIEVEMENTS_MAIN_AREA && <AchievementsArea />}
 
-                  {selectedMainArea === CHAT_MAIN_AREA && <ChatArea />}
+                  {selectedMainArea === CHAT_MAIN_AREA && <ChatPage />}
                 </div>
                 <div className={classes.mainFooter}>
                   <HudStory />

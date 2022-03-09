@@ -1,5 +1,5 @@
-import { APICommunity } from './APICommunity';
+import { ChatCommunityData } from './APICommunity';
 
 export type APICommunities = {
-  communities: APICommunity[];
+  communities: ChatCommunityData[];
 };

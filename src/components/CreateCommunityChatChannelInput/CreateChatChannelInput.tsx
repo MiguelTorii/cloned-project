@@ -11,9 +11,9 @@ import { PERMISSIONS } from '../../constants/common';
 import { sendMessage, createChannel } from '../../api/chat';
 import { searchUsers } from '../../api/user';
 import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
 import { getInitials } from '../../utils/chat';
 import SelectClassmates from './SelectClassmates';
+import { useChatClient } from 'features/chat';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -99,7 +99,7 @@ const styles = (theme) => ({
 type Props = {
   classes?: Record<string, any>;
   onClosePopover?: (...args: Array<any>) => any;
-  onOpenChannel?: (...args: Array<any>) => any;
+  onOpenChannel?: (id: string) => void;
   setIsOpen?: (...args: Array<any>) => any;
   createMessage?: Record<string, any>;
   handleClearCreateMessage?: (...args: Array<any>) => any;
@@ -130,9 +130,8 @@ const CreateChatChannelInput = ({
   const {
     data: { userId, schoolId }
   } = useSelector((state: { user: UserState }) => state.user);
-  const {
-    data: { client }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
+
+  const client = useChatClient();
 
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') {
@@ -209,24 +208,24 @@ const CreateChatChannelInput = ({
 
         if (chatId !== '') {
           try {
-            const channel = await client.getChannelBySid(chatId);
+            const channel = await client?.getChannelBySid(chatId);
 
-            if (channelName.length && isShow) {
-              const res = await channel.updateFriendlyName(channelName);
-              await handleUpdateGroupName(res);
+            if (channel) {
+              if (channelName.length && isShow) {
+                const res = await channel?.updateFriendlyName(channelName);
+                await handleUpdateGroupName(res);
+              }
+
+              if (createMessage) {
+                await sendMessage({
+                  message: createMessage.message,
+                  ...createMessage.messageAttributes,
+                  chatId: channel.sid
+                });
+              }
+
+              onOpenChannel?.(channel.sid);
             }
-
-            if (createMessage) {
-              await sendMessage({
-                message: createMessage.message,
-                ...createMessage.messageAttributes,
-                chatId: channel.sid
-              });
-            }
-
-            onOpenChannel({
-              channel
-            });
           } catch (e) {
             setIsLoading(false);
           }

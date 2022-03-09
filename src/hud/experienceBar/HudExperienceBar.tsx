@@ -1,11 +1,12 @@
 import { Typography } from '@material-ui/core';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { ExperienceState } from '../experienceBarState/hudExperienceState';
 import { useStyles } from './HudExperienceBarStyles';
 import { apiGetExperiencePoints } from '../../api/user';
-import usePrevious from 'hooks/usePrevious';
+import { usePrevious } from 'hooks';
+
 import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
 import { UserState } from '../../reducers/user';

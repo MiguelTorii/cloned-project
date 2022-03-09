@@ -12,10 +12,10 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import Avatar from 'components/Avatar';
 import Chat from './Chat';
-import { fetchAvatars } from '../../utils/chat';
+import { AvatarData, fetchAvatars } from '../../utils/chat';
 import { getGroupMembers } from '../../api/chat';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { ChatState } from '../../reducers/chat';
+import { ChannelMetadata, useChannelMetadataById, useSelectChannelById } from 'features/chat';
 
 const styles = (theme) => ({
   root: {
@@ -124,12 +124,17 @@ type Props = {
   handleClose?: any;
 };
 
+export type User = ChannelMetadata['users'][0];
+export type StudyRoomChatMembers = { [index: string]: User };
+export type StudyRoomAvatars = { [index: AvatarData['identity']]: string };
+
 const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }: Props) => {
-  const [members, setMembers] = useState({});
+  // TODO Replace and optimize
+  const [members, setMembers] = useState<StudyRoomChatMembers>({});
+  const [avatars, setAvatars] = useState<StudyRoomAvatars>({});
   const [tabs, setTabs] = useState(1);
 
   const router = useSelector((state) => (state as any).router);
-  const chat = useSelector((state: { chat: ChatState }) => state.chat);
 
   useEffect(() => {
     if (typeof selectedTab === 'number') {
@@ -148,30 +153,25 @@ const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }
     return null;
   }, [router]);
 
-  const channel = useMemo(() => {
-    if (channelId) {
-      return get(chat, `data.local.${channelId}`);
-    }
+  const { data: channel } = useSelectChannelById(channelId);
+  const { data: channelMetadata } = useChannelMetadataById(channelId);
 
-    return null;
-  }, [channelId, chat]);
-
+  // TODO Fix, replace with metadata in react-query
   useEffect(() => {
     const initAvatars = async () => {
-      const twilioChannel = get(channel, 'twilioChannel');
-      const av = await fetchAvatars(twilioChannel);
-      setMembers((members) => {
-        av.forEach((a) => {
-          set(members, `${a.identity}.avatar`, a.profileImageUrl);
-        });
-        return members;
+      if (!channel) return;
+      const av = await fetchAvatars(channel);
+      const avatarObj: typeof avatars = {};
+
+      av.forEach((a) => {
+        avatarObj[a.identity] = a.profileImageUrl;
       });
+
+      setAvatars(avatarObj);
     };
 
     const getMembers = async () => {
-      const res = await getGroupMembers({
-        chatId: channelId
-      });
+      const res: ChannelMetadata['users'] = await getGroupMembers(channelId);
       const members = res.map((m) => ({
         registered: m.registered,
         firstname: m.firstName,
@@ -190,20 +190,20 @@ const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }
       await initAvatars();
     };
 
-    if (channel && channel.members) {
-      const { members } = channel;
-      const newMembers = {};
-      members.forEach((m) => {
+    if (channel && channelMetadata?.users) {
+      const { users } = channelMetadata;
+      const newMembers: typeof members = {};
+      users.forEach((m) => {
         newMembers[m.userId] = m;
       });
       setMembers(newMembers);
       initAvatars();
     }
 
-    if (channel?.twilioChannel && !channel?.members) {
+    if (channel && channelMetadata && !channelMetadata?.users) {
       getMembers();
     }
-  }, [channel, channelId]);
+  }, [channel, channelId, channelMetadata]);
 
   const handleChangeTabs = useCallback((_, value) => {
     setTabs(value);
@@ -238,21 +238,21 @@ const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }
               <Typography className={classes.memberTitle}>All</Typography>
               {memberListOnVideo.map((member) => {
                 const memberObj = members[member];
-                const { avatar, firstname, lastname, isOnline } = memberObj;
+                const { firstName, lastName, isOnline } = memberObj;
                 return (
                   isOnline && (
                     <div key={member} className={classes.member}>
                       <Avatar
                         isOnline={isOnline}
                         onlineBadgeBackground="circleIn.palette.feedBackground"
-                        profileImage={avatar}
-                        fullName={`${firstname} ${lastname}`}
+                        profileImage={avatars[member]}
+                        fullName={`${firstName} ${lastName}`}
                         fromChat
                         mobileSize={50}
                         desktopSize={50}
                       />
                       <Typography className={classes.fullname}>
-                        {firstname} {lastname}
+                        {firstName} {lastName}
                       </Typography>
                     </div>
                   )
@@ -261,7 +261,7 @@ const StudyRoomChat = ({ handleClose, open, classes, selectedTab, participants }
             </div>
           </TabPanel>
           <TabPanel value={tabs} index={1}>
-            <Chat channel={channel} members={members} />
+            <Chat channel={channel} avatars={avatars} members={members} />
           </TabPanel>
         </div>
       </ClickAwayListener>

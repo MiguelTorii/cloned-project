@@ -4,36 +4,40 @@ import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import { push } from 'connected-react-router';
 import Typography from '@material-ui/core/Typography';
-import { useDispatch, useSelector } from 'react-redux';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import CollapseNavbar from '../../components/CollapseNavbar/CollapseNavbar';
+import { useDispatch } from 'react-redux';
+import LoadImg from 'components/LoadImg/LoadImg';
+import CollapseNavbar from 'components/CollapseNavbar/CollapseNavbar';
 import useStyles from './_styles/courseChannels';
-import { cypherClass } from '../../utils/crypto';
-import { ChannelWrapper } from '../../reducers/chat';
+import { cypherClass } from 'utils/crypto';
+import { CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
+import { useSelectChannelById } from 'features/chat';
+import { ChatCommunity } from 'api/models/APICommunity';
+import { useAppSelector } from 'redux/store';
 
 type Props = {
-  currentCommunity?: Record<string, any>;
-  selectedChannel?: Record<string, any>;
-  currentCommunityChannel?: Record<string, any>;
-  communityChannels?: Array<any>;
-  local?: Record<string, ChannelWrapper>;
+  communityChannels: CommunityChannelsData[];
+  currentCommunity: ChatCommunity;
+  selectedChannel?: CommunityChannelData;
   setSelectedChannel?: (...args: Array<any>) => any;
 };
 
 const CourseChannels = ({
+  communityChannels,
   currentCommunity,
   selectedChannel,
-  currentCommunityChannel,
-  communityChannels,
-  local,
   setSelectedChannel
 }: Props) => {
-  const classes: any = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
 
-  const userClasses = useSelector((state) => (state as any).user.userClasses);
+  const { data: currentCommunityChannel } = useSelectChannelById(selectedChannel?.chat_id);
+  const userClasses = useAppSelector((state) => state.user.userClasses);
+
   const handleGoToFeed = useCallback(() => {
-    const communityClass = [...userClasses.classList, ...userClasses.pastClasses].find((item) =>
+    const communityClass = [
+      ...(userClasses.classList || []),
+      ...(userClasses.pastClasses || [])
+    ].find((item) =>
       (item.section || []).map((section) => section.sectionId).includes(currentCommunity.section_id)
     );
 
@@ -53,7 +57,7 @@ const CourseChannels = ({
   }, [currentCommunity, userClasses, dispatch]);
   return (
     <Box>
-      {currentCommunity.communityBannerUrl && (
+      {currentCommunity.community_banner_url && (
         <Box
           className={classes.courseLogo}
           display="flex"
@@ -61,12 +65,12 @@ const CourseChannels = ({
           alignItems="center"
           mb={3}
         >
-          <LoadImg url={currentCommunity.communityBannerUrl} className={classes.courseBanner} />
+          <LoadImg url={currentCommunity.community_banner_url} className={classes.courseBanner} />
         </Box>
       )}
       <Box
         className={cx(
-          currentCommunity.communityBannerUrl ? classes.courseNameWithLogo : classes.courseName
+          currentCommunity.community_banner_url ? classes.courseNameWithLogo : classes.courseName
         )}
         display="flex"
         justifyContent="center"
@@ -84,7 +88,6 @@ const CourseChannels = ({
       <CollapseNavbar
         channels={communityChannels}
         currentCommunityChannel={currentCommunityChannel}
-        local={local}
         selectedChannel={selectedChannel}
         setSelectedChannel={setSelectedChannel}
       />

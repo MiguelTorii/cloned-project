@@ -3,7 +3,7 @@ import { APIChat } from 'api/models/APIChat';
 import { objectToCamel } from 'ts-case-convert';
 import { CamelCasedPropertiesDeep } from 'type-fest';
 
-export type ChannelMetadata = CamelCasedPropertiesDeep<APIChat>;
+export type ChannelMetadata = CamelCasedPropertiesDeep<APIChat> & { showFirst?: boolean };
 
 export type ChannelsMetadata = {
   [key: string]: ChannelMetadata;

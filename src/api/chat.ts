@@ -2,7 +2,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import get from 'lodash/get';
-import type { CreateChat, ChatUser, Classmate } from '../types/models';
+import type { CreateChat, Classmate } from 'types/models';
 import { API_ROUTES } from '../constants/routes';
 import { callApi } from './api_base';
 import { getToken } from './utils';
@@ -10,6 +10,9 @@ import { APICreateChat } from './models/APICreateChat';
 import { APIClassmate } from './models/APIClassmate';
 import { APIChat } from './models/APIChat';
 import retry from 'async-retry';
+import { APIChatUser } from './models/APIChatUser';
+import { objectToCamel } from 'ts-case-convert';
+import { ChannelMetadata } from 'features/chat';
 
 export const sendMessage = async ({
   message,
@@ -161,7 +164,7 @@ export const getChannelMetadata = async (): Promise<APIChat[]> => {
   return result.chats;
 };
 
-export const renewTwilioToken = async ({ userId }: { userId: string }): Promise<string> =>
+export const renewTwilioToken = async (userId: string): Promise<string> =>
   await retry(
     async (_bail) => {
       const token = await getToken();
@@ -299,7 +302,7 @@ export const getChannels = async () => {
   return local;
 };
 
-export const leaveChat = async ({ sid }: { sid: string }): Promise<Record<string, any>> => {
+export const leaveChat = async (sid: string): Promise<Record<string, any>> => {
   const token = await getToken();
   const result = await axios.post(
     `${API_ROUTES.CHAT}/${sid}/leave`,
@@ -330,31 +333,12 @@ export const blockChatUser = async (blockedUserId: string): Promise<Record<strin
   return data;
 };
 
-export const getGroupMembers = async ({ chatId }: { chatId: string }): Promise<Array<ChatUser>> => {
-  const token = await getToken();
-  const result = await axios.get(`${API_ROUTES.CHAT}/${chatId}/members`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const getGroupMembers = async (chatId: string): Promise<ChannelMetadata['users']> => {
+  const { users } = await callApi<{ users: APIChatUser[] }>({
+    url: `${API_ROUTES.CHAT}/${chatId}/members`,
+    method: 'GET'
   });
-  const { data = {} } = result;
-  const { users = [] } = data;
-  return users.map((user) => ({
-    registered: user.registered || false,
-    firstName: user.first_name || '',
-    hours: user.hours || 0,
-    role: user.role || '',
-    roleId: user.role_id || 0,
-    joined: user.joined || '',
-    lastName: user.last_name || '',
-    profileImageUrl: user.profile_image_url || '',
-    rank: user.rank || 0,
-    scholarshipPoints: user.scholarship_points || 0,
-    schoolId: user.school_id || 0,
-    state: user.state || '',
-    userId: user.user_id ? String(user.user_id) : '',
-    isOnline: user.is_online
-  }));
+  return users.map((user) => objectToCamel(user));
 };
 
 export const addGroupMembers = async ({

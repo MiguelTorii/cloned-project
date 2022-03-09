@@ -10,7 +10,7 @@ import SendClass from './SendClass';
 type Props = {
   classes?: Record<string, any>;
   onClosePopover?: (...args: Array<any>) => any;
-  onOpenChannel?: (...args: Array<any>) => any;
+  onOpenChannel?: (id: string) => void;
   setIsOpen?: (...args: Array<any>) => any;
   createMessage?: Record<string, any>;
   handleClearCreateMessage?: (...args: Array<any>) => any;

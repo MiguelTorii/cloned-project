@@ -67,8 +67,13 @@
       crossorigin="anonymous"
       type="module"
     ></script>
-    <script>
+    <script type="module">
+      import { Buffer } from 'buffer';
+
+      // Needed for lightweight.js
       window.global = window;
+      // TODO Temporary, for objectToCamel
+      window.Buffer = Buffer;
     </script>
   </head>
 

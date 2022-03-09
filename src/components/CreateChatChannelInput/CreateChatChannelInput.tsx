@@ -10,14 +10,14 @@ import SelectClassmates from '../CreateCommunityChatChannelInput/SelectClassmate
 import { sendMessage, createChannel } from '../../api/chat';
 import { searchUsers } from '../../api/user';
 import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
 import { getInitials } from '../../utils/chat';
 import AutoComplete from '../AutoComplete/AutoComplete';
 import { styles } from '../_styles/CreateChatChannelInput';
+import { useChatClient } from 'features/chat';
 
 type Props = {
   classes?: Record<string, any>;
-  onOpenChannel?: (...args: Array<any>) => any;
+  onOpenChannel?: (id: string) => void;
   createMessage?: Record<string, any>;
   handleClearCreateMessage?: (...args: Array<any>) => any;
   isFloatChat?: boolean;
@@ -42,9 +42,8 @@ const CreateChatChannelInput = ({
   const {
     data: { userId, schoolId }
   } = useSelector((state: { user: UserState }) => state.user);
-  const {
-    data: { client }
-  } = useSelector((state: { chat: ChatState }) => state.chat);
+
+  const client = useChatClient();
 
   useEffect(() => {
     if (users.length > 1 && chatType === 'single') {
@@ -71,19 +70,21 @@ const CreateChatChannelInput = ({
         query,
         schoolId: from === 'school' ? Number(schoolId) : undefined
       });
-      const options = users.map((user) => {
-        const name = `${user.firstName} ${user.lastName}`;
-        const initials = getInitials(name);
-        return {
-          ...user,
-          value: user.userId,
-          label: name,
-          userId: user.userId,
-          avatar: user.profileImageUrl,
-          role: user?.role,
-          initials
-        };
-      });
+      const options = users
+        .filter((u) => u.userId !== userId)
+        .map((user) => {
+          const name = `${user.firstName} ${user.lastName}`;
+          const initials = getInitials(name);
+          return {
+            ...user,
+            value: user.userId,
+            label: name,
+            userId: user.userId,
+            avatar: user.profileImageUrl,
+            role: user?.role,
+            initials
+          };
+        });
       const ordered = options.sort((a: any, b: any) => {
         if (a.relationship && !b.relationship) {
           return -1;
@@ -115,25 +116,25 @@ const CreateChatChannelInput = ({
           thumbnailUrl: ''
         });
 
-        if (chatId !== '') {
-          try {
-            const channel = await client.getChannelBySid(chatId);
+        if (!chatId) {
+          setIsLoading(false);
+          return;
+        }
+        try {
+          const channel = await client?.getChannelBySid(chatId);
 
-            if (createMessage) {
-              await sendMessage({
-                message: createMessage.message,
-                ...createMessage.messageAttributes,
-                chatId: channel.sid
-              });
-            }
-
-            onOpenChannel({
-              channel
-            });
-          } catch (e) {
-            setIsLoading(false);
+          if (!channel || !createMessage) {
+            return;
           }
-        } else {
+
+          await sendMessage({
+            message: createMessage.message,
+            ...createMessage.messageAttributes,
+            chatId: channel.sid
+          });
+
+          onOpenChannel?.(channel?.sid);
+        } catch (e) {
           setIsLoading(false);
         }
       } finally {

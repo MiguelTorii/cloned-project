@@ -15,13 +15,13 @@ axios.defaults.paramsSerializer = (params) =>
   });
 
 // TODO Refactor: This function should not be called for every type of request
-export const callApi = async (apiConfig) => {
+export const callApi = async <T>(apiConfig) => {
   try {
     const headers = {
       Accept: 'application/json',
       Authorization: `Bearer ${await getToken()}`
     };
-    const response = await axios.request({
+    const response = await axios.request<T>({
       headers,
       ...apiConfig
     });

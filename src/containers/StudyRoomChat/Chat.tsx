@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
+import { Channel } from 'twilio-chat';
 import { useSelector } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +11,7 @@ import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import cx from 'classnames';
 import ChatTextField from './ChatTextField';
-import { processMessages, getFileAttributes } from '../../utils/chat';
+import { processMessages, getFileAttributes, AvatarData } from '../../utils/chat';
 import ChatMessage from './ChatMessage';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import { sendMessage } from '../../api/chat';
@@ -19,7 +20,9 @@ import { getPresignedURL } from '../../api/media';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { UserState } from '../../reducers/user';
 import { showNotification } from '../../actions/notifications';
-import { useTyping } from 'features/chat';
+import { setChannelRead, useTyping } from 'features/chat';
+import { useQueryClient } from 'react-query';
+import { StudyRoomAvatars, StudyRoomChatMembers, User } from './StudyRoomChat';
 
 const styles = (theme) => ({
   messageScroll: {
@@ -83,11 +86,12 @@ const styles = (theme) => ({
 
 type Props = {
   classes?: Record<string, any>;
-  channel?: Record<string, any>;
-  members?: any;
+  channel?: Channel;
+  members: StudyRoomChatMembers;
+  avatars: StudyRoomAvatars;
 };
 
-const StudyRoomChat = ({ members, channel, classes }: Props) => {
+const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
   const end = useRef(null);
   const fileInput = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -100,7 +104,9 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
   const [hasMore, setHasMore] = useState(false);
   const [mainMessage, setMainMessage] = useState('');
 
-  const { typing, onTyping } = useTyping(channel?.twilioChannel);
+  const client = useQueryClient();
+
+  const { typing, onTyping } = useTyping(channel);
 
   const onSend = () => {};
 
@@ -188,9 +194,11 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const twilioChannel = get(channel, 'twilioChannel');
-        twilioChannel.setAllMessagesConsumed();
-        const p = await twilioChannel.getMessages(10);
+        if (!channel || !client) {
+          return;
+        }
+        setChannelRead(client, channel);
+        const p = await channel.getMessages(10);
         setMessages(p.items);
         setPaginator(p);
         setHasMore(!(p.items.length < 10));
@@ -209,6 +217,7 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
       }
     ]);
   }, []);
+
   const isMemberOnline = useCallback((userId) => members[userId]?.isOnline, [members]);
   const renderMessage = useCallback(
     (item) => {
@@ -229,7 +238,7 @@ const StudyRoomChat = ({ members, channel, classes }: Props) => {
                 userId={item.author}
                 name={item.name}
                 messageList={item.messageList}
-                avatar={get(members, `${item.author}.avatar`)}
+                avatar={avatars[item.author]}
                 onImageLoaded={handleScrollToBottom}
                 onStartVideoCall={() => {}}
                 onImageClick={handleImageClick}

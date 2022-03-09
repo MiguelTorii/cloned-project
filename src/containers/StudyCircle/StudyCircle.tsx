@@ -12,6 +12,7 @@ import { removeFromStudyCircle } from '../../api/posts';
 import * as chatActions from '../../actions/chat';
 import { CampaignState } from '../../reducers/campaign';
 import { ChatState } from '../../reducers/chat';
+import { ChatClientContext } from 'features/chat';
 
 const styles = () => ({});
 
@@ -28,6 +29,8 @@ type State = {
 };
 
 class StudyCircle extends React.PureComponent<Props, State> {
+  static contextType = ChatClientContext;
+
   state = {
     isLoading: true,
     circle: []
@@ -85,13 +88,14 @@ class StudyCircle extends React.PureComponent<Props, State> {
     this.setState({
       isLoading: true
     });
+    const client = this.context;
     openChannelWithEntity({
       entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false,
       isHud: campaign.hud,
-      client: chat.data.client
+      client
     });
     setTimeout(() => {
       this.setState({

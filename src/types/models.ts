@@ -330,6 +330,20 @@ export type ChatMessage = {
   messageList: Array<Record<string, any>>;
   files?: string[];
 };
+export type CustomMessageAttributes = {
+  communityId: null | string;
+  files: {
+    file_name: string;
+    file_size: string;
+    file_type: string;
+    file_extension: string;
+    file_read_url: string;
+  }[];
+  firstName: 'Jon';
+  imageKey: '';
+  isVideoNotification: false;
+  lastName: 'Tseng';
+};
 export type ChatMessages = Array<ChatMessage>;
 export type ChatUser = {
   firstName: string;

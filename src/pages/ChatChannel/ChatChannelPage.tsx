@@ -1,3 +1,4 @@
+// TODO Remove, unused
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useParams } from 'react-router';
@@ -8,7 +9,6 @@ import withRoot from '../../withRoot';
 import Layout from '../../containers/Layout/Layout';
 import ChatPage from '../../containers/CommunityChat/ChatPage';
 import { getChatIdFromHash } from '../../api/chat';
-import { setCurrentChannel } from '../../actions/chat';
 import { Dispatch } from '../../types/store';
 import { enqueueSnackbar } from '../../actions/notifications';
 import { ChatState } from '../../reducers/chat';
@@ -74,7 +74,6 @@ const ChatChannelPage = ({ history }: Props) => {
 
     if (!loaded && channel) {
       setLoaded(true);
-      setCurrentChannel(channel)(dispatch);
     }
   }, [chatId, history, loaded, channels]);
 

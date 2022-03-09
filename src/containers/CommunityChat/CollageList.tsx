@@ -4,29 +4,21 @@ import Divider from '@material-ui/core/Divider';
 import CommunityMenu from '../../components/CommunityMenu/CommunityMenu';
 import useStyles from './_styles/collageList';
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
+import { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
+import { CommunityChannels } from 'reducers/chat';
 
 type Props = {
-  unreadMessageCount: number;
-  communities: any[];
-  communityChannels: any[];
-  handleSelect: (...args: Array<any>) => any;
+  communities: ChatCommunityData[];
+  communityChannels: CommunityChannels[];
+  handleSelect: (course: ChatCommunity) => void;
 };
 
-const CollageList = ({
-  unreadMessageCount,
-  communities,
-  communityChannels,
-  handleSelect
-}: Props) => {
-  const classes: any = useStyles();
+const CollageList = ({ communities, communityChannels, handleSelect }: Props) => {
+  const classes = useStyles();
   return (
     <List component="nav">
-      <CommunityMenu
-        key="chat"
-        item={DEFAULT_COMMUNITY_MENU_ITEMS}
-        unreadMessageCount={unreadMessageCount}
-        handleSelect={handleSelect}
-      />
+      {/* TODO Create separate default community menu item component */}
+      <CommunityMenu key="chat" item={DEFAULT_COMMUNITY_MENU_ITEMS} handleSelect={handleSelect} />
       <Divider
         classes={{
           root: classes.divider
@@ -37,8 +29,6 @@ const CollageList = ({
           <CommunityMenu
             key={course.community.id}
             item={course.community}
-            communityChannels={communityChannels}
-            unreadMessageCount={unreadMessageCount}
             handleSelect={handleSelect}
           />
         ))}

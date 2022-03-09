@@ -1,44 +1,39 @@
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AppState } from 'redux/store';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import { useSelector } from 'react-redux';
 
 import Avatar from 'components/Avatar';
-import ShareLinkWidget from 'components/ShareLinkWidget';
-import RoleBadge from '../../components/RoleBadge/RoleBadge';
-import HoverPopup from '../../components/HoverPopup/HoverPopup';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import HoverPopup from 'components/HoverPopup/HoverPopup';
 import useStyles from './_styles/rightMenu';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
-import { ChannelWrapper } from '../../reducers/chat';
+import ShareLinkWidget from 'components/ShareLinkWidget/ShareLinkWidget';
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+import { useChannelMetadataById, useChatShareLink } from 'features/chat';
+import { selectLocalById } from 'redux/chat/selectors';
+import { useAppSelector } from 'redux/store';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
 ));
 
 type Props = {
-  channel?: any;
-  isCommunityChat?: any;
+  channelId: string;
+  isCommunityChat?: boolean;
 };
 
-const RightMenu = ({ channel, isCommunityChat }: Props) => {
-  const classes: any = useStyles();
-  const local = useSelector<AppState, Record<string, ChannelWrapper>>(
-    (state) => state.chat.data.local
-  );
-  const localChannel = useMemo(() => channel && local[channel.sid], [channel, local]);
+const RightMenu = ({ channelId, isCommunityChat }: Props) => {
+  const classes = useStyles();
+  const { data: channelMetadata } = useChannelMetadataById(channelId);
+  const { data: shareLink } = useChatShareLink(channelId);
+  const local = useAppSelector((state) => selectLocalById(state, channelId));
 
-  console.log('localChannel', localChannel);
-
-  if (!channel || !localChannel) {
-    return null;
-  }
+  const users = channelMetadata?.users || local?.users || [];
 
   return (
     <Box display="flex" flexDirection="column" className={classes.container}>
@@ -50,22 +45,16 @@ const RightMenu = ({ channel, isCommunityChat }: Props) => {
           root: classes.header
         }}
         item
-      >
-        {
-          // eslint-disable-next-line react/jsx-closing-tag-location
-        }
-      </Grid>
+      />
       <Grid
         classes={{
           root: classes.usersContainer
         }}
       >
-        <Typography className={classes.usersTitle}>
-          Members - {localChannel?.members?.length}
-        </Typography>
+        <Typography className={classes.usersTitle}>Members - {users?.length}</Typography>
         <List dense className={classes.listRoot}>
-          {localChannel?.members.map((m) => {
-            const fullName = `${m.firstname} ${m.lastname}`;
+          {users.map((m) => {
+            const fullName = `${m.firstName} ${m.lastName}`;
             return (
               <HoverPopup userId={m.userId} key={m.userId} profileSource={PROFILE_PAGE_SOURCE.CHAT}>
                 <ListItem
@@ -83,7 +72,7 @@ const RightMenu = ({ channel, isCommunityChat }: Props) => {
                     <Avatar
                       isOnline={m.isOnline}
                       onlineBadgeBackground="circleIn.palette.primaryBackground"
-                      profileImage={m.image}
+                      profileImage={m.profileImageUrl}
                       fullName={fullName}
                       fromChat
                     />
@@ -105,7 +94,7 @@ const RightMenu = ({ channel, isCommunityChat }: Props) => {
       </Grid>
       {!isCommunityChat && (
         <Box padding={2}>
-          {/* <ShareLinkWidget shareLink={localChannel.shareLink} headerText="Share an invite link" /> */}
+          <ShareLinkWidget shareLink={shareLink} headerText="Share an invite link" />
         </Box>
       )}
     </Box>

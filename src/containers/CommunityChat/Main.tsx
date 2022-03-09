@@ -1,8 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useQueryClient } from 'react-query';
 import Lightbox from 'react-images';
-import { AppState } from 'redux/store';
+import { useAppSelector } from 'redux/store';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Channel } from 'twilio-chat';
 import Typography from '@material-ui/core/Typography';
@@ -13,60 +14,66 @@ import { logEvent } from '../../api/analytics';
 import MessageQuill from './MessageQuill';
 import ChatHeader from './ChatHeader';
 import EmptyMain from './EmptyMain';
-import InitialAlert from './InitialAlert';
+import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
 import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
 import ChatMessage from '../../components/FloatingChat/CommunityChatMessage';
 import LoadImg from '../../components/LoadImg/LoadImg';
-import { processMessages, fetchAvatars, getAvatar, getFileAttributes } from '../../utils/chat';
+import {
+  processMessages,
+  fetchAvatars,
+  getAvatar,
+  getFileAttributes,
+  AvatarData
+} from 'utils/chat';
 import LoadingMessageGif from '../../assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
 import { MessageItemType, PERMISSIONS } from '../../constants/common';
 import useStyles from './_styles/main';
 import { Member } from '../../types/models';
-import { CurrentCommunity, ChatData } from 'reducers/chat';
 import { messageLoadingAction } from '../../actions/chat';
-import { UserState } from '../../reducers/user';
-import { useTyping } from 'features/chat';
-import usePrevious from 'hooks/usePrevious';
+import { useChannelMetadataById, setChannelRead, useTyping, ChannelMetadata } from 'features/chat';
+import { usePrevious } from 'hooks';
+import { selectLocalById } from 'redux/chat/selectors';
 
 type Props = {
-  isCommunityChat?: boolean;
-  selectedChannelId?: string;
-  selectedChannel?: any;
-  currentCommunity?: CurrentCommunity | null;
   channel?: Channel;
-  channelList?: Array<any>;
-  rightSpace?: number;
-  onSend?: (...args: Array<any>) => any;
-  setRightPanel?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
-  lastReadMessageIndex?: number;
+  isCommunityChat?: boolean;
+  lastReadMessageIndex: Channel['lastConsumedMessageIndex'];
+  onSend?: (...args: Array<any>) => any;
+  rightSpace?: number;
+  selectedChannel?: any;
+  setRightPanel?: (...args: Array<any>) => any;
+  channelLength: number;
 };
 
 const Main = ({
   isCommunityChat = false,
-  currentCommunity,
   channel,
-  channelList,
   selectedChannel,
   rightSpace,
-  selectedChannelId = '',
   onSend,
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  lastReadMessageIndex
+  lastReadMessageIndex,
+  channelLength
 }: Props) => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
 
-  const user = useSelector((state: { user: UserState }) => state.user);
-  const permission = useSelector<AppState, Array<string>>((state) => state.user.data.permission);
-  const isLoading = useSelector<AppState, boolean>((state) => state.chat.isLoading);
-  const { newChannel, local, newMessage, messageLoading } = useSelector<AppState, ChatData>(
+  const {
+    expertMode,
+    data: { userId, firstName, lastName }
+  } = useAppSelector((state) => state.user);
+  const permission = useAppSelector((state) => state.user.data.permission);
+  const isLoading = useAppSelector((state) => state.chat.isLoading);
+  const { newChannel, newMessage, messageLoading, selectedChannelId } = useAppSelector(
     (state) => state.chat.data
   );
+
+  const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
 
   const end = useRef(null);
   const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
@@ -75,21 +82,23 @@ const Main = ({
   const [hasMore, setHasMore] = useState(false);
   const [scroll, setScroll] = useState(true);
   const [value, setValue] = useState('');
-  const [avatars, setAvatars] = useState([]);
+  const [avatars, setAvatars] = useState<AvatarData[]>([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState<{ [index: number]: Member }>({});
   const [showError, setShowError] = useState(false);
   const [focusMessageBox, setFocusMessageBox] = useState(0);
   const [files, setFiles] = useState([]);
+  const queryClient = useQueryClient();
+
   const memberKeys = useMemo(() => Object.keys(members), [members]);
   const otherUser = useMemo(() => {
     if (memberKeys.length !== 2) {
       return null;
     }
 
-    return members[memberKeys.find((key) => key !== user.data.userId)];
-  }, [memberKeys, members, user.data.userId]);
+    return members[memberKeys.find((key) => key !== userId)];
+  }, [memberKeys, members, userId]);
 
   const { typing, onTyping } = useTyping(channel);
 
@@ -101,11 +110,8 @@ const Main = ({
     }
   }, [onTyping]);
 
-  const {
-    expertMode,
-    data: { userId, firstName, lastName }
-  } = user;
-  const channelMembers = useMemo(() => channel && local[channel.sid].members, [channel, local]);
+  const channelMembers = channelMetadata?.users;
+
   const handleScrollToBottom = useCallback(() => {
     try {
       if (scroll && end.current) {
@@ -118,21 +124,36 @@ const Main = ({
     } // eslint-disable-next-line
   }, [scroll]);
 
+  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
+
   useEffect(() => {
-    if (channel && local && local[channel.sid]) {
-      const { members } = local[channel.sid];
+    if (channel && (channelMetadata?.users || local?.users)) {
+      // TODO Replace
+      let users: ChannelMetadata['users'] = [];
+      if (channelMetadata?.users) {
+        users = channelMetadata.users;
+      } else if (local?.users) {
+        users = local.users;
+      }
       const newMembers = {};
-      members.forEach((m) => {
+      users.forEach((m) => {
         newMembers[m.userId] = m;
       });
       setMembers(newMembers);
     }
-  }, [local, channel]);
+  }, [channel, channelMetadata?.users, local?.users]);
+
+  const previousNewMessage = usePrevious(newMessage);
 
   useEffect(() => {
-    if (channel && newMessage && channel.sid === newMessage.channel.sid) {
+    if (
+      channel &&
+      newMessage &&
+      channel.sid === newMessage.channel.sid &&
+      previousNewMessage !== newMessage
+    ) {
       try {
-        channel.setAllMessagesConsumed();
+        setChannelRead(queryClient, channel);
       } catch (e) {
         setErrorLoadingMessage(true);
       }
@@ -143,30 +164,35 @@ const Main = ({
         setMessages([...messages, newMessage]);
         setTimeout(handleScrollToBottom, 100);
       }
-    } // eslint-disable-next-line
-  }, [newMessage]);
+    }
+  }, [channel, handleScrollToBottom, messages, newMessage, previousNewMessage, queryClient]);
 
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
-    if (channelList.length && !channel) {
+    if (channelLength && !channel) {
       dispatch(messageLoadingAction(true));
-    } else if (!channelList.length && !isLoading) {
+    } else if (!channelLength && !isLoading) {
       dispatch(messageLoadingAction(false));
     }
-  }, [channelList, channel, isLoading, dispatch]);
+  }, [channelLength, channel, isLoading, dispatch]);
 
   const usePreviousChannelSid = usePrevious(channel?.sid);
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     const init = async () => {
+      if (!selectedChannelId || !channel) {
+        return;
+      }
       dispatch(messageLoadingAction(true));
 
       try {
-        channel.setAllMessagesConsumed();
+        setChannelRead(queryClient, channel);
+
         const [avatars, chatData] = await Promise.all([
           fetchAvatars(channel),
           channel.getMessages(10)
         ]);
+
         setAvatars(avatars);
 
         if (!chatData?.items?.length || selectedChannelId === chatData?.items?.[0]?.channel?.sid) {
@@ -184,6 +210,7 @@ const Main = ({
             behavior: 'auto'
           });
         }
+        dispatch(messageLoadingAction(false));
       } catch (e) {
         setErrorLoadingMessage(true);
       }
@@ -193,7 +220,7 @@ const Main = ({
     if (channel && channel.sid !== usePreviousChannelSid) {
       init();
     }
-  }, [channel, dispatch, selectedChannelId, usePreviousChannelSid]);
+  }, [channel, dispatch, queryClient, selectedChannelId, usePreviousChannelSid]);
 
   const messageItems = useMemo(
     () =>
@@ -282,33 +309,31 @@ const Main = ({
       if (!members[userId]) {
         return null;
       }
-
       const { isOnline } = members[userId];
       return isOnline;
     },
     [members]
   );
 
+  // TODO Refactor to separate component
   const renderMessage = useCallback(
     (item, profileURLs, isLastMessage) => {
       const { id, type } = item;
-      const role = getRole(item.author);
-      const isOnline = getIsOnline(item.author);
-
       try {
         switch (type) {
           case 'date':
             return <ChatMessageDate key={id} body={item.body} />;
 
           case 'message':
-          case 'own':
+          case 'own': {
+            const role = getRole(item.author);
+            const isOnline = getIsOnline(item.author);
             // TODO `members` is an object which doesn't have a length property.
             // I'm confused as to how this code has ever ever worked correctly,
             // so just using any type for now
             return (
               <ChatMessage
                 key={id}
-                role={role}
                 isCommunityChat={isCommunityChat}
                 date={item.date}
                 channelId={channel.sid}
@@ -333,7 +358,7 @@ const Main = ({
                 handleBlock={handleBlock}
               />
             );
-
+          }
           case 'end':
             return (
               <div
@@ -355,17 +380,19 @@ const Main = ({
       }
     },
     [
-      isCommunityChat,
+      channel?.sid,
+      channelMembers,
       getIsOnline,
       getRole,
+      handleBlock,
       handleImageClick,
+      handleRemoveMessage,
       handleScrollToBottom,
       handleStartVideoCall,
-      handleBlock,
+      isCommunityChat,
+      lastReadIndex,
       members,
-      channelMembers,
-      userId,
-      lastReadMessageIndex
+      userId
     ]
   );
   const onSendMessage = useCallback(
@@ -467,24 +494,24 @@ const Main = ({
     loadingErrorMessage()
   ) : (
     <div className={classes.root}>
-      {channel && (
+      {channel && channelMetadata && (
         <ChatHeader
-          isCommunityChat={isCommunityChat}
           channel={channel}
           currentUserName={`${firstName} ${lastName}`}
-          title={isCommunityChat ? selectedChannel?.chat_name : local[channel.sid].title}
-          rightSpace={rightSpace}
-          otherUser={otherUser}
-          memberKeys={memberKeys}
-          startVideo={startVideo}
-          local={local}
-          onOpenRightPanel={setRightPanel}
           handleUpdateGroupName={handleUpdateGroupName}
+          isCommunityChat={isCommunityChat}
+          memberKeys={memberKeys}
+          members={channelMetadata?.users}
+          onOpenRightPanel={setRightPanel}
+          otherUser={otherUser}
+          rightSpace={rightSpace}
+          startVideo={startVideo}
+          title={isCommunityChat ? selectedChannel?.chat_name : channelMetadata?.groupName}
         />
       )}
       <div className={classes.messageRoot}>
         <div className={classes.messageContainer}>
-          {!channelList.length && !isLoading && (
+          {!channelLength && !isLoading && (
             <EmptyMain
               otherUser={otherUser}
               noChannel={!channel}
@@ -503,24 +530,20 @@ const Main = ({
               initialLoad={false}
               isReverse
             >
-              {!hasMore && (
-                <InitialAlert
-                  hasPermission={hasPermission}
-                  focusMessageBox={focusMessageBox}
-                  setFocusMessageBox={setFocusMessageBox}
-                  handleUpdateGroupName={handleUpdateGroupName}
-                  isCommunityChat={isCommunityChat}
-                  currentCommunity={currentCommunity}
-                  selectedChannel={selectedChannel}
-                  local={local}
-                  userId={userId}
-                  channel={channel}
-                />
-              )}
+              {!hasMore &&
+                (isCommunityChat ? (
+                  <CommunityInitialAlert channel={channel} selectedChannel={selectedChannel} />
+                ) : channelMetadata ? (
+                  <DefaultInitialAlert metadata={channelMetadata} userId={userId} />
+                ) : null)}
               {/* check if it's last message using length - 2, because we have `end` message at the end. */}
               {messageItems.map((item, index) =>
                 renderMessage(item, avatars, index === messageItems.length - 2)
               )}
+              {/* {!!Object.keys(members).length &&
+                messageItems.map((item, index) =>
+                  renderMessage(item, avatars, index === messageItems.length - 2)
+                )} */}
               {loading && (
                 <div className={classes.progress}>
                   <CircularProgress size={20} />

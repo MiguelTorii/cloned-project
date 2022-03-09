@@ -11,12 +11,12 @@ import { Create } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 
 import Avatar from '@material-ui/core/Avatar';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
-import TextField from '../../components/Basic/TextField/TextField';
-import { handleUpdateGroupPhoto } from '../../actions/chat';
-import { ChannelWrapper } from '../../reducers/chat';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+import AvatarEditor from 'components/AvatarEditor/AvatarEditor';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import TextField from 'components/Basic/TextField/TextField';
+import { handleUpdateGroupPhoto } from 'actions/chat';
+import { ChannelMetadata } from 'features/chat';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -84,38 +84,38 @@ const styles = (theme) => ({
 });
 
 type Props = {
-  isLoading?: any;
+  channel: Channel;
   classes?: any;
-  title?: string | null | undefined;
-  channel?: Channel;
-  open?: any;
+  isLoading?: any;
+  metadata: ChannelMetadata;
   onClose?: (...args: Array<any>) => any;
+  open?: any;
+  title?: string | null | undefined;
   updateGroupName?: (...args: Array<any>) => any;
-  localChannel?: ChannelWrapper;
 };
 
 const EditGroupDetailsDialog = ({
-  isLoading,
-  classes,
-  title,
   channel,
-  open,
+  classes,
+  isLoading,
+  metadata,
   onClose,
-  updateGroupName,
-  localChannel
+  open,
+  title,
+  updateGroupName
 }: Props) => {
-  const [name, setName] = useState(localChannel.title);
+  const [name, setName] = useState(metadata.groupName);
   const dispatch = useDispatch();
   const [isEditingGroupPhoto, setIsEditingGroupPhoto] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [groupImage, setGroupImage] = useState(undefined); // Group Image can be URL or Blob
+  const [groupImage, setGroupImage] = useState<string | Blob>(); // Group Image can be URL or Blob
 
   useEffect(() => {
-    setName(localChannel.title);
-  }, [localChannel]);
+    setName(metadata.groupName);
+  }, [metadata]);
   useEffect(() => {
-    setGroupImage(localChannel.thumbnail);
-  }, [localChannel.thumbnail]);
+    setGroupImage(metadata.thumbnail);
+  }, [metadata.thumbnail]);
   const groupImageUrl = useMemo(() => {
     if (groupImage instanceof Blob) {
       return window.URL.createObjectURL(groupImage);
@@ -135,19 +135,19 @@ const EditGroupDetailsDialog = ({
   );
   const handleClose = useCallback(() => {
     setIsSaving(false);
-    onClose();
-    setName(localChannel.title);
-  }, [localChannel.title, onClose]);
+    onClose?.();
+    setName(metadata.groupName);
+  }, [metadata.groupName, onClose]);
 
   const updateChannelName = async () => {
     // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
-    if (name === (channel as any).channelState.friendlyName) {
+    if (channel.friendlyName) {
       return;
     }
 
     try {
       const res = await channel.updateFriendlyName(name);
-      await updateGroupName(res);
+      await updateGroupName?.(res);
     } catch (err) {}
   };
 
@@ -156,7 +156,7 @@ const EditGroupDetailsDialog = ({
     await updateChannelName();
 
     if (groupImage instanceof Blob) {
-      dispatch(handleUpdateGroupPhoto(channel.sid, groupImage, handleClose));
+      dispatch(handleUpdateGroupPhoto(metadata.id, groupImage, handleClose));
     } else {
       handleClose();
     }

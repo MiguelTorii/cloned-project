@@ -1,4 +1,4 @@
-export type APICommunityData = {
+export type ChatCommunity = {
   about: string;
   bg_color: string;
   class_id: number;
@@ -12,7 +12,7 @@ export type APICommunityData = {
   section_id: number;
 };
 
-export type APICommunity = {
-  community: APICommunityData;
+export type ChatCommunityData = {
+  community: ChatCommunity;
   permissions: string[];
 };

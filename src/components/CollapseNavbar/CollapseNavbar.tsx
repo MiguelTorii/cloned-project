@@ -1,7 +1,5 @@
-/* eslint-disable no-nested-ternary */
-
-/* eslint-disable no-use-before-define */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Channel } from 'twilio-chat';
 import cx from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
@@ -12,16 +10,16 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { useDispatch } from 'react-redux';
-import { ReactComponent as ChannelIcon } from '../../assets/svg/public-channel.svg';
-import { ReactComponent as UnreadMessageChannelIcon } from '../../assets/svg/unread-message-channel-icon.svg';
-import { ChannelWrapper } from '../../reducers/chat';
+import { ReactComponent as ChannelIcon } from 'assets/svg/public-channel.svg';
+import { ReactComponent as UnreadMessageChannelIcon } from 'assets/svg/unread-message-channel-icon.svg';
+import { CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
 import {
   messageLoadingAction,
   setCurrentChannelSidAction,
   setCurrentCommunityChannel
-} from '../../actions/chat';
-import { Dispatch } from '../../types/store';
+} from 'actions/chat';
+import { useChannels, useUnreadCount } from 'features/chat';
+import { useAppDispatch } from 'redux/store';
 
 const useStyles = makeStyles((theme) => ({
   navLink: {
@@ -71,24 +69,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
-  channels?: Array<any>;
-  selectedChannel?: any;
-  local?: Record<string, ChannelWrapper>;
-  currentCommunityChannel?: Record<string, any>;
+  channels?: CommunityChannelsData[];
+  selectedChannel?: CommunityChannelData;
+  currentCommunityChannel?: Channel;
   setSelectedChannel?: (...args: Array<any>) => any;
 };
 
 const CollapseNavbar = ({
   channels,
   selectedChannel,
-  local,
   currentCommunityChannel,
   setSelectedChannel
 }: Props) => {
-  const classes: any = useStyles();
-  const dispatch: Dispatch = useDispatch();
+  const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   const [collapsedStates, setCollapsedStates] = useState({});
+  const { data: unread } = useUnreadCount();
+  const { data: localChannels } = useChannels();
 
   const handleSwitchCollapsedState = (channel) => {
     // We decide `undefined` means collapsed.
@@ -108,79 +106,95 @@ const CollapseNavbar = ({
 
     if (!channel?.channels && currentCommunityChannel.sid !== channel.chat_id) {
       dispatch(setCurrentChannelSidAction(channel.chat_id));
-      setCurrentCommunityChannel(local[channel.chat_id].twilioChannel)(dispatch);
+      const localChannel = localChannels?.find((c) => c.sid === channel.chat_id);
+      setCurrentCommunityChannel(localChannel)(dispatch);
       setSelectedChannel(channel);
       dispatch(messageLoadingAction(true));
     }
   };
 
-  const renderChannels = (channels) => {
-    const content = [];
+  const renderSubChannels = (channels: CommunityChannelData[] = []) => {
+    const content: React.ReactElement[] = [];
     channels.forEach((channel) => {
       content.push(
         <ListItem
-          key={channel?.channels ? `${channel.id}-${channel.name}` : channel.chat_name}
-          className={cx(
-            classes.navLink,
-            !channel?.channels && classes.childChannel,
-            !channel?.channels && !local[channel.chat_id] && classes.hide
-          )}
-          selected={selectedChannel && selectedChannel.chat_id === channel.chat_id}
+          key={channel.chat_name}
+          className={cx(classes.navLink, classes.childChannel)}
+          selected={selectedChannel?.chat_id === channel.chat_id}
           classes={{
             selected: classes.selected,
             button: classes.listItem
           }}
-          onClick={handleSubList(channel?.channels ? channel.name : channel.chat_name, channel)}
+          onClick={handleSubList(channel.chat_name, channel)}
           button
         >
-          {channel?.channels ? (
-            <ListItemIcon
-              classes={{
-                root: classes.channelIcon
-              }}
-            >
-              {!getCollapsedState(channel) ? <ExpandLess /> : <ExpandMore />}
-            </ListItemIcon>
-          ) : local[channel.chat_id] ? (
-            <ListItemIcon
-              classes={{
-                root: classes.channelIcon
-              }}
-            >
-              {local[channel.chat_id]?.unread ? <UnreadMessageChannelIcon /> : <ChannelIcon />}
-            </ListItemIcon>
-          ) : null}
-          {channel?.channels ? (
+          <ListItemIcon
+            classes={{
+              root: classes.channelIcon
+            }}
+          >
+            {unread?.[channel.chat_id] ? <UnreadMessageChannelIcon /> : <ChannelIcon />}
+          </ListItemIcon>
+          <div className={classes.list}>
             <ListItemText
               classes={{
-                primary: classes.channelName
+                primary: cx(
+                  classes.channelName,
+                  unread?.[channel.chat_id] && classes.unreadMessageChannel
+                )
               }}
-              primary={channel.name}
+              primary={channel.chat_name}
             />
-          ) : local[channel.chat_id] ? (
-            <div className={classes.list}>
-              <ListItemText
+            {unread?.[channel.chat_id] > 0 && (
+              <Badge
+                badgeContent={unread?.[channel.chat_id]}
+                color="secondary"
                 classes={{
-                  primary: cx(
-                    classes.channelName,
-                    local[channel.chat_id]?.unread && classes.unreadMessageChannel
-                  )
+                  badge: classes.badge
                 }}
-                primary={local[channel.chat_id] && channel.chat_name}
-              />
-              {local[channel.chat_id]?.unread > 0 && (
-                <Badge
-                  badgeContent={local[channel.chat_id]?.unread}
-                  color="secondary"
-                  classes={{
-                    badge: classes.badge
-                  }}
-                >
-                  <span />
-                </Badge>
-              )}
-            </div>
-          ) : null}
+              >
+                <span />
+              </Badge>
+            )}
+          </div>
+        </ListItem>
+      );
+    });
+    return content;
+  };
+
+  // TODO Split into separate components
+  const renderChannels = (channels: CommunityChannelsData[] = []) => {
+    const content: React.ReactElement[] = [];
+    channels.forEach((channel) => {
+      content.push(
+        <ListItem
+          key={`${channel.id}-${channel.name}`}
+          className={cx(
+            classes.navLink,
+            !channel?.channels && classes.childChannel
+            // !channel?.channels && !channelMetadata?.[channel.chat_id] && classes.hide
+          )}
+          classes={{
+            selected: classes.selected,
+            button: classes.listItem
+          }}
+          onClick={handleSubList(channel.name, channel)}
+          button
+        >
+          <ListItemIcon
+            classes={{
+              root: classes.channelIcon
+            }}
+          >
+            {!getCollapsedState(channel) ? <ExpandLess /> : <ExpandMore />}
+          </ListItemIcon>
+          <ListItemText
+            classes={{
+              primary: classes.channelName
+            }}
+            primary={channel.name}
+          />
         </ListItem>,
         channel?.channels && renderSubList(channel.channels, channel)
       );
@@ -188,14 +202,17 @@ const CollapseNavbar = ({
     return content;
   };
 
-  const renderSubList = (childChannels, parentChannel) => (
+  const renderSubList = (
+    childChannels: CommunityChannelData[],
+    parentChannel: CommunityChannelsData
+  ) => (
     <Collapse
       in={getCollapsedState(parentChannel)}
       timeout="auto"
       unmountOnExit
       key={parentChannel.id}
     >
-      <List component="div">{renderChannels(childChannels)}</List>
+      <List component="div">{renderSubChannels(childChannels)}</List>
     </Collapse>
   );
 

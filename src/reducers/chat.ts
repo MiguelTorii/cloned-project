@@ -4,6 +4,8 @@ import moment from 'moment';
 import { getTitle } from 'utils/chat';
 import { chatActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
+import { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
+import { ChannelMetadata } from 'features/chat';
 
 export type ChatUser = {
   firstname: string;
@@ -28,7 +30,7 @@ export type ChannelWrapper = {
     message: string;
     user: ChatUser;
   };
-  members: DetailedChatUser[];
+  users: ChannelMetadata['users'];
   muted: boolean;
   sectionId: number;
   sid: string;
@@ -37,25 +39,6 @@ export type ChannelWrapper = {
   twilioChannel: Channel;
   unread: number;
   shareLink?: string;
-};
-
-export type ChatCommunityData = {
-  community: ChatCommunity;
-  permissions: string[];
-};
-
-export type ChatCommunity = {
-  about: string;
-  bg_color: string;
-  class_id: number;
-  community_banner_url: string;
-  community_icon_url: string;
-  created: string;
-  id: number;
-  name: string;
-  private: boolean;
-  school_id: number;
-  section_id: number;
 };
 
 export type CommunityChannels = {
@@ -87,7 +70,7 @@ export type CurrentCommunity = {
   communityBannerUrl: string;
   communityIconUrl: string;
   created: string;
-  id: number | string; // Direct chat uses the string 'chat' as an id, the rest of the communities use numbers for ids.  TODO make them all strings for consistency.
+  id: number;
   name: string;
   private: boolean;
   school_id: number;
@@ -100,8 +83,8 @@ export type ChatData = {
   communities: ChatCommunityData[];
   communityChannels: CommunityChannels[];
   currentChannel: Channel | null;
-  currentCommunity: CurrentCommunity | null;
-  currentCommunityChannel: Channel | null;
+  currentCommunity: ChatCommunity | null;
+  currentCommunityChannelId: string;
   currentCommunityId: string | null;
   entityFirstName: string;
   entityId: number;
@@ -138,7 +121,7 @@ const defaultState = {
     communityChannels: [],
     currentChannel: null,
     currentCommunity: null,
-    currentCommunityChannel: null,
+    currentCommunityChannelId: '',
     currentCommunityId: null,
     entityFirstName: '',
     entityId: 0,
@@ -153,7 +136,7 @@ const defaultState = {
     oneTouchSendOpen: false,
     online: false,
     openChannels: [],
-    selectedChannelId: '',
+    selectedChannelId: localStorage.getItem('currentDMChannel') || '',
     unread: 0,
     uuid: ''
   },
@@ -221,15 +204,16 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       };
 
     case chatActions.SET_CURRENT_CHANNEL_ID:
+      localStorage.setItem('currentDMChannel', action.payload.selectedChannelId);
       return {
         ...state,
         data: { ...state.data, selectedChannelId: action.payload.selectedChannelId }
       };
 
-    case chatActions.SET_CURRENT_COMMUNITY_CHANNEL:
+    case chatActions.SET_CURRENT_COMMUNITY_CHANNEL_ID:
       return {
         ...state,
-        data: { ...state.data, currentCommunityChannel: action.payload.currentChannel }
+        data: { ...state.data, currentCommunityChannelId: action.payload.currentChannelId }
       };
 
     case chatActions.SET_CURRENT_COMMUNITY:
@@ -407,7 +391,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
             ...state.data.local,
             [action.payload.channelId]: {
               ...state.data.local[action.payload.channelId],
-              members: action.payload.members
+              users: action.payload.members
             }
           }
         }
@@ -437,7 +421,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
             ...state.data.local,
             [action.payload.member.channel.sid]: {
               ...state.data.local[action.payload.member.channel.sid],
-              members: state.data.local[action.payload.member.channel.sid]?.members.filter(
+              members: state.data.local[action.payload.member.channel.sid]?.users.filter(
                 (m) => Number(m.userId) !== Number(action.payload.member.identity)
               )
             }

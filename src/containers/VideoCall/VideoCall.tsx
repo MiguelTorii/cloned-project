@@ -6,7 +6,7 @@ import { push } from 'connected-react-router';
 import adapter from 'webrtc-adapter';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { sendMessage, renewTwilioToken } from '../../api/chat';
+import { sendMessage } from '../../api/chat';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import Preview from './Preview';
@@ -14,7 +14,7 @@ import MeetUp from './MeetUp';
 import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { updateClientToken } from 'lib/chat';
+import { ChatClientContext } from 'features/chat';
 
 const styles = (theme) => ({
   root: {
@@ -60,6 +60,8 @@ type State = {
 };
 
 class VideoCall extends React.Component<Props, State> {
+  static contextType = ChatClientContext;
+
   mounted: boolean;
 
   meetupRef: RefObject<any>;
@@ -229,15 +231,7 @@ class VideoCall extends React.Component<Props, State> {
     });
 
     try {
-      const accessToken = await renewTwilioToken({
-        userId
-      });
-
-      if (!accessToken || (accessToken && accessToken === '')) {
-        return;
-      }
-
-      const client = await updateClientToken(accessToken);
+      const client = this.context;
       const channel = await client.getChannelBySid(roomId);
       const messageAttributes = {
         firstName,
@@ -255,21 +249,6 @@ class VideoCall extends React.Component<Props, State> {
         channel,
         selectedaudioinput: audioinput,
         selectedvideoinput: videoinput
-      });
-      client.on('tokenAboutToExpire', async () => {
-        if (!this.mounted) {
-          return;
-        }
-
-        const newToken = await renewTwilioToken({
-          userId
-        });
-
-        if (!newToken || (newToken && newToken === '')) {
-          return;
-        }
-
-        await client.updateToken(newToken);
       });
     } catch (err) {
       this.setState({

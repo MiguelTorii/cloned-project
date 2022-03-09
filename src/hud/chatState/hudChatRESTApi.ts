@@ -1,14 +1,14 @@
-import { getCommunityChannels } from '../../api/community';
-import { APICommunityChannelGroups } from '../../api/models/APICommunityChannelGroups';
-import { APICommunity } from '../../api/models/APICommunity';
-import { getCommunityMembers } from '../../api/chat';
-import { Classmate, ClassmateGroup } from '../../types/models';
+import { getCommunityChannels } from 'api/community';
+import { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
+import { ChatCommunityData } from 'api/models/APICommunity';
+import { getCommunityMembers } from 'api/chat';
+import { Classmate, ClassmateGroup } from 'types/models';
 
 export const fetchCommunityChannels = (
-  communities: APICommunity[]
+  communities: ChatCommunityData[]
 ): Promise<APICommunityChannelGroups[]> => {
   const promises: Promise<APICommunityChannelGroups>[] = communities.map(
-    (community: APICommunity) =>
+    (community: ChatCommunityData) =>
       getCommunityChannels({
         communityId: community.community.id
       })
@@ -17,8 +17,10 @@ export const fetchCommunityChannels = (
   return Promise.all(promises);
 };
 
-export const fetchCommunityMembers = (communities: APICommunity[]): Promise<ClassmateGroup[]> => {
-  const promises: Promise<ClassmateGroup>[] = communities.map((community: APICommunity) =>
+export const fetchCommunityMembers = (
+  communities: ChatCommunityData[]
+): Promise<ClassmateGroup[]> => {
+  const promises: Promise<ClassmateGroup>[] = communities.map((community: ChatCommunityData) =>
     getCommunityMembers({
       classId: community.community.class_id,
       sectionId: community.community.section_id

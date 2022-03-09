@@ -1,15 +1,16 @@
-/* eslint-disable no-nested-ternary */
-
-/* eslint-disable no-await-in-loop */
-
-/* eslint-disable no-restricted-syntax */
-import { Channel } from 'twilio-chat';
+import { AttributeUser, Channel } from 'twilio-chat';
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 import parse from 'html-react-parser';
-import { ChatMessages } from '../types/models';
+import { ChatMessages, ChatUser } from '../types/models';
+import { DetailedChatUser } from 'reducers/chat';
+import { ChannelMetadata } from 'features/chat';
 
-export const getTitle = (channel: Channel, userId: string, members: any[]) => {
+export const getTitle = (
+  channel: Channel,
+  userId: string,
+  members?: (DetailedChatUser | ChatUser)[]
+) => {
   try {
     // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
     const {
@@ -23,30 +24,44 @@ export const getTitle = (channel: Channel, userId: string, members: any[]) => {
       return attributes.friendlyName;
     }
 
-    if (users) {
-      const filter = members.filter((o) => {
-        if (o.userId) {
-          return o.userId !== userId;
-        }
-
-        return false;
-      });
-
-      if (filter.length > 0) {
-        return filter.map((user) => `${user.firstname} ${user.lastname}`).join(', ');
+    if (!users || !members) {
+      if (friendlyName !== '') {
+        return friendlyName;
+      } else if (state && state.friendlyName !== '') {
+        return state.friendlyName;
       }
-    } else if (friendlyName !== '') {
-      return friendlyName;
-    } else if (state && state.friendlyName !== '') {
-      return state.friendlyName;
+      return 'NN';
     }
 
-    return 'NN';
+    const filter = members.filter((o) => {
+      if (o.userId) {
+        return o.userId !== userId;
+      }
+
+      return false;
+    });
+
+    if (filter.length > 0) {
+      return filter
+        .map(
+          (user) =>
+            `${'firstname' in user ? user.firstname : user.firstName} ${
+              'lastname' in user ? user.lastname : user.lastName
+            }`
+        )
+        .join(', ');
+    }
   } catch (err) {
     console.log(err);
     return '';
   }
 };
+
+export const getGroupTitle = (userId: string, users: ChannelMetadata['users'] | AttributeUser[]) =>
+  users
+    .filter((user) => String(user.userId) !== String(userId))
+    .map((user) => capitalize(user.firstName) + ' ' + capitalize(user.lastName))
+    .join(', ');
 
 export const getSubTitle = (message: Record<string, any>, userId: string) => {
   const { state } = message;
@@ -60,33 +75,25 @@ export const getSubTitle = (message: Record<string, any>, userId: string) => {
   return `${firstName} ${lastName}: ${body}`;
 };
 
-interface AvatarData {
+export interface AvatarData {
   identity: string;
   profileImageUrl: string;
 }
 
-export const fetchAvatars = async (channel: {
-  members: Map<string, any>;
-}): Promise<AvatarData[]> => {
-  const { members } = channel;
-  const result: AvatarData[] = [];
+export const fetchAvatars = async (channel: Channel): Promise<AvatarData[]> => {
+  const members = await channel.getMembers();
 
-  const memberPromises = [];
-  for (const member of members) {
-    memberPromises.push(member[1].getUserDescriptor());
-  }
+  const promises = members.map((member) => member.getUserDescriptor());
 
-  const userDescriptors: any[] = await Promise.all(memberPromises);
-  for (const userDescriptor of userDescriptors) {
-    const { identity = '', attributes = {} } = userDescriptor;
+  const userDescriptors = await Promise.all(promises);
+
+  return userDescriptors.map(({ identity = '', attributes = {} }) => {
     const { profileImageUrl = '' } = attributes;
-    result.push({
+    return {
       identity,
       profileImageUrl
-    });
-  }
-
-  return result;
+    };
+  });
 };
 
 const capitalize = (string) => {
@@ -248,12 +255,14 @@ export const getInitials = (name = ''): string => {
   return '';
 };
 
-export const containsImage = (message: string) =>
-  message.includes('<img')
-    ? 'Uploaded a image'
-    : message.includes('File Attachment')
-    ? 'Uploaded a file'
-    : parse(message);
+export const containsImage = (message: string) => {
+  if (message.includes('<img')) {
+    return 'Uploaded a image';
+  } else if (message.includes('File Attachment')) {
+    return 'Uploaded a file';
+  }
+  return parse(message);
+};
 
 export const bytesToSize = (bytes, decimals = 1) => {
   if (bytes === 0) {
@@ -265,4 +274,27 @@ export const bytesToSize = (bytes, decimals = 1) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   const exponent = Math.floor(Math.log(bytes) / Math.log(kb));
   return `${parseFloat((bytes / Math.pow(kb, exponent)).toFixed(decimal))} ${sizes[exponent]}`;
+};
+
+// TODO: Test if we get better performance and is a better abstraction as a react-query selector function
+export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata) => {
+  const userLength = metadata?.users?.length;
+  const isDirectChat = Boolean(userLength && metadata.users.length === 2);
+  const isGroupChat = Boolean(userLength && metadata.users.length > 2);
+
+  const otherUsers = metadata?.users.filter((user) => String(user.userId) !== String(userId));
+  const lastUser = otherUsers?.[otherUsers.length - 1];
+  const name = lastUser ? `${lastUser.firstName} ${lastUser.lastName}` : '';
+  const isOnline = Boolean(otherUsers?.some((user) => user.isOnline));
+  const thumbnail = (isDirectChat ? lastUser?.profileImageUrl : metadata?.thumbnail) || '';
+
+  return {
+    isDirectChat,
+    isGroupChat,
+    isOnline,
+    name,
+    otherUsers,
+    thumbnail,
+    userLength
+  };
 };

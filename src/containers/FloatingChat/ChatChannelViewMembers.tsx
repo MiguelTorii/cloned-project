@@ -64,9 +64,7 @@ class ChatChannelViewMembers extends React.PureComponent<Props, State> {
     const { chatId, open } = this.props;
 
     if (open && !prevProps.open) {
-      const members = await getGroupMembers({
-        chatId
-      });
+      const members = await getGroupMembers(chatId);
       this.setState({
         members
       });

@@ -1,10 +1,10 @@
-import { APIChat } from '../../api/models/APIChat';
-import { APICommunity } from '../../api/models/APICommunity';
-import { APICommunityChannel } from '../../api/models/APICommunityChannel';
-import { APICommunityChannelGroup } from '../../api/models/APICommunityChannelGroup';
-import { APICommunityChannelGroups } from '../../api/models/APICommunityChannelGroups';
-import DEFAULT_COMMUNITY_MENU_ITEMS from '../../containers/CommunityChat/constants';
-import { Classmate, ClassmateGroup } from '../../types/models';
+import { APIChat } from 'api/models/APIChat';
+import { ChatCommunityData } from 'api/models/APICommunity';
+import { APICommunityChannel } from 'api/models/APICommunityChannel';
+import { APICommunityChannelGroup } from 'api/models/APICommunityChannelGroup';
+import { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
+import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
+import { Classmate, ClassmateGroup } from 'types/models';
 import { ChannelData, CommunityData } from './hudChatState';
 
 export interface IBuiltCommunities {
@@ -12,7 +12,7 @@ export interface IBuiltCommunities {
   idToCommunity: Record<string, CommunityData>;
 }
 
-export const buildCommunities = (communities: APICommunity[]): IBuiltCommunities => {
+export const buildCommunities = (communities: ChatCommunityData[]): IBuiltCommunities => {
   const communityIdsInDisplayOrder: string[] = [DEFAULT_COMMUNITY_MENU_ITEMS.id];
 
   const idToCommunity: Record<string, CommunityData> = {
@@ -28,7 +28,7 @@ export const buildCommunities = (communities: APICommunity[]): IBuiltCommunities
     }
   };
 
-  communities.forEach((community: APICommunity) => {
+  communities.forEach((community: ChatCommunityData) => {
     if (community) {
       const id = String(community.community.id);
       const communityData: CommunityData = {
