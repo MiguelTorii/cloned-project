@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Typography from '@material-ui/core/Typography';
+import parse from 'html-react-parser';
+
 import Box from '@material-ui/core/Box';
+
 import useStyles from './styles';
 import { extractTextFromHtml } from '../../utils/helpers';
 import withRoot from '../../withRoot';
@@ -48,7 +50,7 @@ const ContentCard = ({
           <img src={image} alt="Flashcard" className={classes.contentImage} />
         </Box>
       )}
-      {extractText && <Typography className={classes.contentText}>{extractText}</Typography>}
+      {extractText && <div className={clsx('ql-editor', classes.contentText)}>{parse(text)}</div>}
     </Box>
   );
 };

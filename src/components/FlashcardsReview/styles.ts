@@ -102,8 +102,10 @@ export default makeStyles((theme: any): any => ({
   },
   cardBoardContent: {
     flexGrow: 1,
+    padding: 0,
     paddingTop: theme.spacing(3),
-    height: '60%'
+    height: '60%',
+    maxHeight: 'none !important'
   },
   cardBoardTextContainer: {
     width: '100%',

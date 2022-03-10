@@ -18,7 +18,7 @@ const CardBoardContent = ({ content, image, isQuestion, onFlip, onAction }) => {
   return (
     <div className={classes.cardBoardContainer}>
       {isEditing && <div className={classes.gradientBar} />}
-      <div className={classes.cardBoardContent}>
+      <div className={clsx('ql-editor', classes.cardBoardContent)}>
         <Box display="flex" width="100%" height="100%" alignItems="center">
           {image && (
             <Box

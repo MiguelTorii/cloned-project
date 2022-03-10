@@ -115,8 +115,13 @@ export default makeStyles((theme: any): any => ({
     }
   },
   contentText: {
+    fontSize: 16,
     maxHeight: 250,
-    overflowY: 'auto'
+    overflowY: 'auto',
+    padding: '0 !important',
+    '& *': {
+      cursor: 'move'
+    }
   },
   imageContainer: {
     width: 96,
