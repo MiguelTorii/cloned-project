@@ -1,34 +1,33 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import cx from 'classnames';
-import Lightbox from 'react-images';
 import { withSnackbar } from 'notistack';
-import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
+
+import Lightbox from 'react-images';
+import InfiniteScroll from 'react-infinite-scroller';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-  getTitle,
-  fetchAvatars,
-  processMessages,
-  getAvatar,
-  getFileAttributes
-} from '../../utils/chat';
-import CreateChatChannelInput from '../../components/CreateChatChannelInput/CreateChatChannelInput';
-import { sendMessage } from '../../api/chat';
-import type { UserState } from '../../reducers/user';
-import ChatItem from '../../components/FloatingChat/ChatItem';
-import ChatMessage from '../../components/FloatingChat/FloatChatMessage';
-import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
-import ChatTextField from '../../components/FloatingChat/ChatTextField';
+
+import { Member } from 'types/models';
+import { sendMessage } from 'api/chat';
+import { logEvent } from 'api/analytics';
+import { getPresignedURL } from 'api/media';
+import type { UserState } from 'reducers/user';
+import { ChannelWrapper } from 'reducers/chat';
+import { CHANNEL_SID_NAME } from 'constants/enums';
+import { getTitle, fetchAvatars, processMessages, getAvatar, getFileAttributes } from 'utils/chat';
+
+import ChatItem from 'components/FloatingChat/ChatItem';
+import ChatMessage from 'components/FloatingChat/FloatChatMessage';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import CreateChatChannelInput from 'components/CreateChatChannelInput/CreateChatChannelInput';
+import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+import ChatTextField from 'components/FloatingChat/ChatTextField';
+
 import ChatChannelViewMembers from './ChatChannelViewMembers';
 import ChatChannelAddMembers from './ChatChannelAddMembers';
-import { getPresignedURL } from '../../api/media';
-import { logEvent } from '../../api/analytics';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { Member } from '../../types/models';
-import { ChannelWrapper } from '../../reducers/chat';
 
 const styles = (theme) => ({
   list: {
@@ -331,7 +330,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           event: 'Chat- Send Message',
           props: {
             Content: 'Text',
-            'Channel SID': channel.sid
+            CHANNEL_SID_NAME: channel.sid
           }
         });
         this.setState(({ count }) => ({
@@ -401,7 +400,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         event: 'Chat- Send Message',
         props: {
           Content: 'Image',
-          'Channel SID': channel.sid
+          CHANNEL_SID_NAME: channel.sid
         }
       });
       this.setState(({ count }) => ({

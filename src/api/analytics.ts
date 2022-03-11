@@ -1,6 +1,7 @@
 import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from '../constants/app';
 import createEvent from './events';
 import { EventData } from '../types/models';
+import { CHANNEL_SID_NAME } from 'constants/enums';
 
 const toEventData = (eventName: string, props: any): EventData => {
   const [category, eventType] = eventName.split('- ');
@@ -12,7 +13,7 @@ const toEventData = (eventName: string, props: any): EventData => {
   }
 
   if (category === LOG_EVENT_CATEGORIES.CHAT) {
-    objectId = props['Channel SID'];
+    objectId = props[CHANNEL_SID_NAME];
     customProps.type = 'Sent';
   }
 

@@ -1,29 +1,27 @@
-// TODO Unused, remove
-/* eslint-disable no-restricted-syntax */
-
-/* eslint-disable no-console */
-
-/* eslint-disable jsx-a11y/media-has-caption */
-import React, { Fragment } from 'react';
+import React from 'react';
 import cx from 'classnames';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
-import Lightbox from 'react-images';
 import { withSnackbar } from 'notistack';
+
+import Lightbox from 'react-images';
+import { Channel, RestPaginator } from 'twilio-chat';
 import InfiniteScroll from 'react-infinite-scroller';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Channel, RestPaginator } from 'twilio-chat';
-import { processMessages, getAvatar, fetchAvatars, getFileAttributes } from '../../utils/chat';
-import { sendMessage } from '../../api/chat';
-import ChatMessage from '../../components/FloatingChat/ChatMessage';
-import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
-import ChatTextField from '../../components/FloatingChat/ChatTextField';
-import type { User } from '../../types/models';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { logEvent } from '../../api/analytics';
-import { getPresignedURL } from '../../api/media';
+
+import { sendMessage } from 'api/chat';
+import type { User } from 'types/models';
+import { logEvent } from 'api/analytics';
+import { getPresignedURL } from 'api/media';
+import { CHANNEL_SID_NAME } from 'constants/enums';
+import { processMessages, getAvatar, fetchAvatars, getFileAttributes } from 'utils/chat';
+
+import ChatMessage from 'components/FloatingChat/ChatMessage';
+import ChatTextField from 'components/FloatingChat/ChatTextField';
+import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 
 const styles = (theme) => ({
   root: {
@@ -112,7 +110,7 @@ class VideoChatChannel extends React.Component<Props, State> {
           });
         });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
 
       try {
@@ -121,7 +119,7 @@ class VideoChatChannel extends React.Component<Props, State> {
           profileURLs
         });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
 
       channel.on('messageAdded', (message) => {
@@ -137,7 +135,6 @@ class VideoChatChannel extends React.Component<Props, State> {
         if (!open) {
           onUnreadUpdate(1);
         } else {
-          console.log('update');
           channel.setAllMessagesConsumed();
           onUnreadUpdate();
         }
@@ -171,7 +168,7 @@ class VideoChatChannel extends React.Component<Props, State> {
         props: {}
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -183,13 +180,11 @@ class VideoChatChannel extends React.Component<Props, State> {
     const { channel, open, onUnreadUpdate } = this.props;
 
     if (prevProps.open !== open && open === true) {
-      console.log('update');
-
       try {
         channel.setAllMessagesConsumed();
         onUnreadUpdate();
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
   };
@@ -225,11 +220,11 @@ class VideoChatChannel extends React.Component<Props, State> {
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          'Channel SID': channel.sid
+          CHANNEL_SID_NAME: channel.sid
         }
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       this.setState({
         loading: false
@@ -273,11 +268,11 @@ class VideoChatChannel extends React.Component<Props, State> {
         event: 'Chat- Send Message',
         props: {
           Content: 'Image',
-          'Channel SID': channel.sid
+          CHANNEL_SID_NAME: channel.sid
         }
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       this.setState({
         loading: false
@@ -293,18 +288,20 @@ class VideoChatChannel extends React.Component<Props, State> {
     const { paginator } = this.state;
 
     try {
-      if (paginator.hasPrevPage) {
-        paginator.prevPage().then((result) => {
-          this.setState((prevState) => ({
-            messages: [...result.items, ...prevState.messages],
-            paginator: result,
-            hasMore: result.hasPrevPage && result.items.length >= 10,
-            scroll: false
-          }));
-        });
+      if (!paginator.hasPrevPage) {
+        return;
       }
+
+      paginator.prevPage().then((result) => {
+        this.setState((prevState) => ({
+          messages: [...result.items, ...prevState.messages],
+          paginator: result,
+          hasMore: result.hasPrevPage && result.items.length >= 10,
+          scroll: false
+        }));
+      });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -314,7 +311,7 @@ class VideoChatChannel extends React.Component<Props, State> {
     try {
       channel.typing();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -328,7 +325,7 @@ class VideoChatChannel extends React.Component<Props, State> {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

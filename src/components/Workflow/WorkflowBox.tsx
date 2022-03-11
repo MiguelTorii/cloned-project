@@ -2,7 +2,7 @@ import React, { memo, useContext, useMemo, useCallback } from 'react';
 import List from '@material-ui/core/List';
 import { useDrop } from 'react-dnd';
 import { Motion, spring } from 'react-motion';
-import { DragTypes } from 'constants/enums';
+import { DRAG_TYPES } from 'constants/enums';
 import WorkflowItem from './WorkflowItem';
 import WorkflowListBox from './WorkflowListBox';
 import WorkflowBoardBox from './WorkflowBoardBox';
@@ -25,7 +25,7 @@ const WorkflowBox = ({ bgcolor, tasks, categoryId, name, buttonColor }) => {
   const { expanded, listView, handleExpand, updateCategory } = useContext(WorkflowContext);
   const classes: any = useStyles();
   const [, drop] = useDrop({
-    accept: DragTypes.TASK,
+    accept: DRAG_TYPES.TASK,
     drop: () => ({
       categoryId
     }),

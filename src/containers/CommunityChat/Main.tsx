@@ -1,39 +1,44 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo, useMemo, useCallback, useRef, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import findIndex from 'lodash/findIndex';
 import { useQueryClient } from 'react-query';
-import Lightbox from 'react-images';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'redux/store';
-import InfiniteScroll from 'react-infinite-scroller';
+import { selectLocalById } from 'redux/chat/selectors';
+
 import { Channel } from 'twilio-chat';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import findIndex from 'lodash/findIndex';
-import { sendMessage } from '../../api/chat';
-import { logEvent } from '../../api/analytics';
-import MessageQuill from './MessageQuill';
-import ChatHeader from './ChatHeader';
-import EmptyMain from './EmptyMain';
-import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
-import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
-import ChatMessage from '../../components/FloatingChat/CommunityChatMessage';
-import LoadImg from '../../components/LoadImg/LoadImg';
+import InfiniteScroll from 'react-infinite-scroller';
+
+import { sendMessage } from 'api/chat';
+import { logEvent } from 'api/analytics';
+import { messageLoadingAction } from 'actions/chat';
+import { MessageItemType, PERMISSIONS } from 'constants/common';
+import { ChannelMetadata, setChannelRead, useChannelMetadataById, useTyping } from 'features/chat';
 import {
-  processMessages,
+  AvatarData,
   fetchAvatars,
   getAvatar,
   getFileAttributes,
-  AvatarData
+  processMessages
 } from 'utils/chat';
-import LoadingMessageGif from '../../assets/gif/loading-chat.gif';
-import LoadingErrorMessageSvg from '../../assets/svg/loading-error-message.svg';
-import { MessageItemType, PERMISSIONS } from '../../constants/common';
+
+import LoadingMessageGif from 'assets/gif/loading-chat.gif';
+import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
+import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
+import LoadImg from 'components/LoadImg/LoadImg';
+import usePrevious from 'hooks/usePrevious';
+import Lightbox from 'react-images';
+import { Member } from 'types/models';
+
+import EmptyMain from './EmptyMain';
+import ChatHeader from './ChatHeader';
+import MessageQuill from './MessageQuill';
+import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
+
 import useStyles from './_styles/main';
-import { Member } from '../../types/models';
-import { messageLoadingAction } from '../../actions/chat';
-import { useChannelMetadataById, setChannelRead, useTyping, ChannelMetadata } from 'features/chat';
-import { usePrevious } from 'hooks';
-import { selectLocalById } from 'redux/chat/selectors';
 
 type Props = {
   channel?: Channel;
@@ -407,7 +412,7 @@ const Main = ({
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          'Channel SID': channel.sid
+          CHANNEL_SID_NAME: channel.sid
         }
       });
       const fileAttributes = getFileAttributes(files);
@@ -430,7 +435,7 @@ const Main = ({
           event: 'Chat- Send Message',
           props: {
             Content: 'Text',
-            'Channel SID': channel.sid
+            CHANNEL_SID_NAME: channel.sid
           }
         });
 

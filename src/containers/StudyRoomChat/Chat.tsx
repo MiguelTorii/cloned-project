@@ -1,28 +1,32 @@
-import React, { useEffect, useRef, useMemo, useCallback, useState } from 'react';
-import { Channel } from 'twilio-chat';
-import { useSelector } from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
-import get from 'lodash/get';
-import InfiniteScroll from 'react-infinite-scroller';
-import Lightbox from 'react-images';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import uuidv4 from 'uuid/v4';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import cx from 'classnames';
-import ChatTextField from './ChatTextField';
-import { processMessages, getFileAttributes, AvatarData } from '../../utils/chat';
-import ChatMessage from './ChatMessage';
-import ChatMessageDate from '../../components/FloatingChat/ChatMessageDate';
-import { sendMessage } from '../../api/chat';
-import { logEvent } from '../../api/analytics';
-import { getPresignedURL } from '../../api/media';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { UserState } from '../../reducers/user';
-import { showNotification } from '../../actions/notifications';
-import { setChannelRead, useTyping } from 'features/chat';
+import uuidv4 from 'uuid/v4';
+import { useSelector } from 'react-redux';
 import { useQueryClient } from 'react-query';
-import { StudyRoomAvatars, StudyRoomChatMembers, User } from './StudyRoomChat';
+
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import Lightbox from 'react-images';
+import { Channel } from 'twilio-chat';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import InfiniteScroll from 'react-infinite-scroller';
+
+import { sendMessage } from 'api/chat';
+import { logEvent } from 'api/analytics';
+import { UserState } from 'reducers/user';
+import { getPresignedURL } from 'api/media';
+import { setChannelRead, useTyping } from 'features/chat';
+import { showNotification } from 'actions/notifications';
+import { getFileAttributes, processMessages } from 'utils/chat';
+
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+
+import ChatMessage from './ChatMessage';
+import ChatTextField from './ChatTextField';
+import { StudyRoomAvatars, StudyRoomChatMembers } from './StudyRoomChat';
 
 const styles = (theme) => ({
   messageScroll: {
@@ -156,7 +160,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          'Channel SID': channel.sid
+          CHANNEL_SID_NAME: channel.sid
         }
       });
       const fileAttributes = getFileAttributes(files);
@@ -179,7 +183,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
           event: 'Chat- Send Message',
           props: {
             Content: 'Text',
-            'Channel SID': channel.sid
+            CHANNEL_SID_NAME: channel.sid
           }
         });
         onSend();
@@ -329,7 +333,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
           event: 'Chat- Send Message',
           props: {
             Content: 'Image',
-            'Channel SID': channel.sid
+            CHANNEL_SID_NAME: channel.sid
           }
         });
       } catch (err) {

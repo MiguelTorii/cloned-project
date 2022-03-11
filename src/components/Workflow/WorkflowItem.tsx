@@ -4,7 +4,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import cx from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { DragTypes } from 'constants/enums';
+import { DRAG_TYPES } from 'constants/enums';
 import WorkflowEdit from './WorkflowEdit';
 import Dialog from '../Dialog/Dialog';
 import WorkflowListItem from './WorkflowListItem';
@@ -23,7 +23,7 @@ const WorkflowItem = ({ index, task }: Props) => {
   const taskRef = useRef(null);
   const [showDetails, setShowDetails] = useState(false);
   const [, drop] = useDrop({
-    accept: DragTypes.TASK,
+    accept: DRAG_TYPES.TASK,
     hover(item: any, monitor) {
       if (!taskRef.current) {
         return;
@@ -55,11 +55,11 @@ const WorkflowItem = ({ index, task }: Props) => {
     }
   });
   const [{ isDragging }, drag, preview] = useDrag({
-    type: DragTypes.TASK,
+    type: DRAG_TYPES.TASK,
     item: () => {
       onDrag(task.id);
       return {
-        type: DragTypes.TASK,
+        type: DRAG_TYPES.TASK,
         index,
         ...task
       };

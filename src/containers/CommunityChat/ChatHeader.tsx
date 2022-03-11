@@ -1,34 +1,38 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { UserState } from 'reducers/user';
+
 import { Channel } from 'twilio-chat';
-import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Popover from '@material-ui/core/Popover';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconShare from '@material-ui/icons/Share';
-import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
-import ShareLinkDialog from 'components/ShareLinkDialog/ShareLinkDialog';
-import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDialog';
-import { searchUsers } from 'api/user';
-import { addGroupMembers, sendMessage } from 'api/chat';
+
 import { logEvent } from 'api/analytics';
-import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg';
-import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg';
+import { searchUsers } from 'api/user';
+import { getInitials } from 'utils/chat';
+import { PERMISSIONS } from 'constants/common';
+import { ChannelMetadata } from 'features/chat';
+import { addGroupMembers, sendMessage } from 'api/chat';
+
+import { ReactComponent as ChatActiveStudyRoomMembers } from 'assets/svg/chat-active-studyroom-members.svg';
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg';
 import { ReactComponent as ChatStudyRoomMembers } from 'assets/svg/chat-studyroom-members.svg';
-import { ReactComponent as ChatActiveStudyRoomMembers } from 'assets/svg/chat-active-studyroom-members.svg';
-import { PERMISSIONS } from 'constants/common';
-import { getInitials } from 'utils/chat';
-import { UserState } from 'reducers/user';
-import { ChannelMetadata } from 'features/chat';
+import { ReactComponent as ChatStudyRoom } from 'assets/svg/chat-studyroom.svg';
+import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg';
+import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
+import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDialog';
+import ShareLinkDialog from 'components/ShareLinkDialog/ShareLinkDialog';
+
 import useStyles from './_styles/chatHeader';
 
 type Props = {
@@ -205,7 +209,7 @@ const ChatHeader = ({
             event: 'Chat- Send Message',
             props: {
               Content: 'Text',
-              'Channel SID': channel.sid
+              CHANNEL_SID_NAME: channel.sid
             }
           });
         });

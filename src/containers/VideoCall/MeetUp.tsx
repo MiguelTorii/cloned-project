@@ -2,38 +2,43 @@
 
 /* eslint-disable no-restricted-syntax */
 import React, { RefObject } from 'react';
-import cx from 'classnames';
-import Video from 'twilio-video';
 import moment from 'moment';
-import queryString from 'query-string';
-import { connect } from 'react-redux';
+import cx from 'classnames';
+import get from 'lodash/get';
 import first from 'lodash/first';
 import debounce from 'lodash/debounce';
+import queryString from 'query-string';
+import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
+
+import Video from 'twilio-video';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import SettingsIcon from '@material-ui/icons/Settings';
-import get from 'lodash/get';
-import StudyRoomChat from '../StudyRoomChat/StudyRoomChat';
-import { decypherClass } from '../../utils/crypto';
-import Tooltip from '../Tooltip/Tooltip';
-import GalleryViewMode from './GalleryView';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import Controls from '../../components/MeetUp/CallControls';
-import DeviceSettings from '../../components/MeetUp/DeviceSettings';
-import Thumbnails from '../../components/MeetUp/Thumbnails';
-import VideoGrid from '../../components/MeetUp/VideoGrid';
-import MeetingDetails from '../../components/MeetUp/MeetingDetails';
-import ClassmatesDialog from '../../components/ClassmatesDialog/ClassmatesDialog';
-import VideoPointsDialog from '../../components/VideoPointsDialog/VideoPointsDialog';
-import { renewTwilioToken } from '../../api/chat';
-import { getUserProfile } from '../../api/user';
-import { checkVideoSession, setVideoInitiator, postVideoPoints } from '../../api/video';
-import { logEvent } from '../../api/analytics';
+
+import { logEvent } from 'api/analytics';
+import { getUserProfile } from 'api/user';
+import { renewTwilioToken } from 'api/chat';
+import { decypherClass } from 'utils/crypto';
+import { VIDEO_SHARE_URL } from 'constants/routes';
+import { CHANNEL_SID_NAME } from 'constants/enums';
+import type { State as StoreState } from 'types/state';
+import { checkVideoSession, setVideoInitiator, postVideoPoints } from 'api/video';
+
+import Tooltip from 'containers/Tooltip/Tooltip';
+import VideoGrid from 'components/MeetUp/VideoGrid';
+import Thumbnails from 'components/MeetUp/Thumbnails';
+import Controls from 'components/MeetUp/CallControls';
+import MeetingDetails from 'components/MeetUp/MeetingDetails';
+import DeviceSettings from 'components/MeetUp/DeviceSettings';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import StudyRoomChat from 'containers/StudyRoomChat/StudyRoomChat';
+import ClassmatesDialog from 'components/ClassmatesDialog/ClassmatesDialog';
+import VideoPointsDialog from 'components/VideoPointsDialog/VideoPointsDialog';
+
 import * as utils from './utils';
-import { VIDEO_SHARE_URL } from '../../constants/routes';
-import type { State as StoreState } from '../../types/state';
+import GalleryViewMode from './GalleryView';
 
 const styles = (theme) => ({
   root: {
@@ -308,7 +313,7 @@ class MeetUp extends React.Component<Props, State> {
           start_time: this.startTime,
           end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
           type: 'Ended',
-          'Channel SID': videoRoom.sid
+          CHANNEL_SID_NAME: videoRoom.sid
         }
       });
     }
@@ -381,7 +386,7 @@ class MeetUp extends React.Component<Props, State> {
           channelName: videoRoom.name,
           start_time: moment().format('YYYY-MM-DD hh:mm:ss'),
           type: 'Started',
-          'Channel SID': videoRoom.sid
+          CHANNEL_SID_NAME: videoRoom.sid
         }
       });
       this.setState({
@@ -535,7 +540,7 @@ class MeetUp extends React.Component<Props, State> {
             start_time: this.startTime,
             end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
             type: 'Ended',
-            'Channel SID': videoRoom.sid
+            CHANNEL_SID_NAME: videoRoom.sid
           }
         });
       }

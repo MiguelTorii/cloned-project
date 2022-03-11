@@ -11,6 +11,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
+import { CHANNEL_SID_NAME } from 'constants/enums';
+
 import Avatar from 'components/Avatar';
 import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
 import { ReactComponent as UndoIcon } from '../../assets/svg/undo.svg';
@@ -55,7 +57,7 @@ const RemoveStudentDialog = ({
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          'Channel SID': channel.sid
+          CHANNEL_SID_NAME: channel.sid
         }
       });
     }
