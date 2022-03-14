@@ -300,7 +300,6 @@ export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
   }
 };
 
-
 export const setCurrentCommunityChannel = (currentChannel) => async (dispatch: Dispatch) => {
   if (currentChannel) {
     const [members, shareLink] = await Promise.all([

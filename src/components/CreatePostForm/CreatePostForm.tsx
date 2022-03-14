@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
+import store from 'store';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -16,6 +18,7 @@ import Dialog from '../Dialog/Dialog';
 import { styles } from '../_styles/CreatePostForm';
 import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
 import SimpleErrorDialog from 'components/SimpleErrorDialog';
+import { STORAGE_KEYS } from 'constants/app';
 
 type Props = {
   currentTag?: any;
@@ -49,7 +52,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       errorOpen: false,
       errorTitle: null,
       errorBody: null,
-      termsAndConditionAccepted: false
+      termsAndConditionAccepted: store.get(STORAGE_KEYS.CIRCLEIN_101_TC_SAVED)
     };
   }
 
@@ -95,6 +98,18 @@ class CreatePostForm extends React.PureComponent<Props, State> {
     });
   };
 
+  handleSubmitForm = (event) => {
+    const { handleSubmit, sectionId } = this.props;
+
+    if (sectionId === CIRCLEIN101_SECTION_ID) {
+      store.set(STORAGE_KEYS.CIRCLEIN_101_TC_SAVED, true);
+    }
+
+    if (handleSubmit) {
+      handleSubmit(event);
+    }
+  };
+
   render() {
     const { sectionId } = this.props;
     const {
@@ -106,14 +121,13 @@ class CreatePostForm extends React.PureComponent<Props, State> {
       changed,
       toggleAnonymousActive,
       anonymousActive,
-      errorMessage,
-      handleSubmit
+      errorMessage
     } = this.props;
     const { open, errorBody, errorOpen, errorTitle, termsAndConditionAccepted } = this.state;
     return (
       <>
         <ValidatorForm
-          onSubmit={handleSubmit}
+          onSubmit={this.handleSubmitForm}
           onError={this.handleFormError}
           className={classes.form}
         >
@@ -124,6 +138,7 @@ class CreatePostForm extends React.PureComponent<Props, State> {
                 <Box>
                   <Checkbox
                     checked={termsAndConditionAccepted}
+                    disabled={store.get(STORAGE_KEYS.CIRCLEIN_101_TC_SAVED)}
                     onChange={this.handleChangeTermsAndCondition}
                   />
                 </Box>

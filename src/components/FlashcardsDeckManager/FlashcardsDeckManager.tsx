@@ -37,12 +37,13 @@ const FlashcardsDeckManager = ({
   disableClass,
   onSubmit
 }) => {
+  const isCircleIn101TCSaved = store.get(STORAGE_KEYS.CIRCLEIN_101_TC_SAVED);
   // Hooks
   const myClasses = useSelector((state) => (state as any).user.userClasses.classList);
   const dispatch = useDispatch();
   // States
   const [isValidated, setIsValidated] = useState(false);
-  const [termsAndConditionAccepted, setTermsAndConditionAccepted] = useState(false);
+  const [termsAndConditionAccepted, setTermsAndConditionAccepted] = useState(isCircleIn101TCSaved);
   const [editorRefs, setEditorRefs] = useState({});
   const [formData, setFormData] = useState({
     title: null,
@@ -201,6 +202,11 @@ const FlashcardsDeckManager = ({
       return;
     }
 
+    // Save checkbox state for Terms and Conditions for CircleIn101 to localStorage.
+    if (formData.sectionId === CIRCLEIN101_SECTION_ID) {
+      store.set(STORAGE_KEYS.CIRCLEIN_101_TC_SAVED, true);
+    }
+
     onSubmit({ ...formData, deck: data });
   }, [formData, deckData, onSubmit, dispatch, mergeEditorData]);
   const handleChangeClass = useCallback(
@@ -228,6 +234,7 @@ const FlashcardsDeckManager = ({
           <Box>
             <Checkbox
               checked={termsAndConditionAccepted}
+              disabled={isCircleIn101TCSaved}
               onChange={(event) => setTermsAndConditionAccepted(event.target.checked)}
             />
           </Box>
