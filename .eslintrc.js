@@ -42,42 +42,78 @@ module.exports = {
         // TODO turn this on once we can use typescript to generate the prop types
         'react/prop-types': 'off',
         // TODO Find a way to dynamically have mui component imports come after externals
-        // 'import/order': [
-        //   'error',
-        //   {
-        //     groups: [
-        //       'builtin',
-        //       'external',
-        //       'internal',
-        //       'parent',
-        //       'sibling',
-        //       'index',
-        //       'object',
-        //       'type'
-        //     ],
-        //     'newlines-between': 'always',
-        //     alphabetize: { order: 'asc', caseInsensitive: true },
-        //     pathGroups: [
-        //       {
-        //         pattern: '@material-ui/*',
-        //         group: 'external',
-        //         position: 'after'
-        //       },
-        //       {
-        //         pattern: 'components/**',
-        //         group: 'internal',
-        //         position: 'before'
-        //       },
-        //       {
-        //         pattern: 'react*',
-        //         group: 'builtin',
-        //         position: 'before'
-        //       }
-        //     ],
-        //     pathGroupsExcludedImportTypes: ['@material-ui*', 'react*', 'components/**'],
-        //     warnOnUnassignedImports: true
-        //   }
-        // ],
+        'import/order': [
+          'error',
+          {
+            groups: [
+              'builtin',
+              'external',
+              // Used to organize constants and utils
+              'unknown',
+              'internal',
+              'parent',
+              'sibling',
+              'index',
+              'object',
+              'type'
+            ],
+            'newlines-between': 'always',
+            alphabetize: { order: 'asc', caseInsensitive: true },
+            pathGroups: [
+              {
+                pattern: '@material-ui/**',
+                group: 'external',
+                position: 'after'
+              },
+              {
+                pattern: 'constants/**',
+                group: 'unknown'
+              },
+              {
+                pattern: 'utils/**',
+                group: 'unknown'
+              },
+              {
+                pattern: '**/_styles/**',
+                group: 'sibling',
+                position: 'after'
+              }
+            ],
+            pathGroupsExcludedImportTypes: ['@material-ui/**']
+          }
+        ],
+        'no-restricted-imports': [
+          'error',
+          {
+            patterns: [
+              { group: ['../../*'], message: 'Usage of relative parent imports is not allowed.' },
+              {
+                group: [
+                  '../actions*',
+                  '../api*',
+                  '../assets*',
+                  '../components*',
+                  '../constants**',
+                  '../containers*',
+                  '../contexts*',
+                  '../deps*',
+                  '../features*',
+                  '../hooks*',
+                  '../hud*',
+                  '../hudAreas*',
+                  '../lib*',
+                  '../pages*',
+                  '../reducers*',
+                  '../redux*',
+                  '../styles*',
+                  '../types*',
+                  '../utils*'
+                ],
+                message: 'Usage of relative imports for folders in src is not allowed.'
+              }
+            ]
+          }
+        ],
         'import/extensions': [
           'error',
           'never',
@@ -110,6 +146,7 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
 
         // TODO Turn on
+        '@typescript-eslint/consistent-type-imports': 'error',
         '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
 
         '@typescript-eslint/explicit-function-return-type': ['off'],
