@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import adapter from 'webrtc-adapter';
+import store from 'store';
+
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { sendMessage } from '../../api/chat';
@@ -15,6 +17,7 @@ import * as utils from './utils';
 import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { ChatClientContext } from 'features/chat';
+import { STORAGE_KEYS } from 'constants/app';
 
 const styles = (theme) => ({
   root: {
@@ -69,8 +72,8 @@ class VideoCall extends React.Component<Props, State> {
   state: State = {
     loading: true,
     join: false,
-    selectedaudioinput: '',
-    selectedvideoinput: '',
+    selectedaudioinput: store.get(STORAGE_KEYS.SAVED_AUDIO_INPUT) || '',
+    selectedvideoinput: store.get(STORAGE_KEYS.SAVED_VIDEO_INPUT) || '',
     errorDialog: false,
     errorTitle: '',
     errorBody: '',
@@ -107,6 +110,7 @@ class VideoCall extends React.Component<Props, State> {
   };
 
   initialDevices = async () => {
+
     try {
       if (navigator && navigator.mediaDevices) {
         navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
@@ -130,8 +134,10 @@ class VideoCall extends React.Component<Props, State> {
         } as any);
 
         if (devices.length > 0) {
+          const selectedDevice = this.state[`selected${kind}`];
+          const matchedDeviceId = devices.findIndex((device) => device.value === selectedDevice);
           // eslint-disable-next-line no-await-in-loop
-          await this.handleUpdateDeviceSelection(kind, devices[0].value);
+          await this.handleUpdateDeviceSelection(kind, devices[matchedDeviceId < 0 ? 0 : matchedDeviceId].value);
           this.setState({
             [`${kind}Enabled`]: true
           } as any);

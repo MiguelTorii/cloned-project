@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { withSnackbar } from 'notistack';
+import store from 'store';
+
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -12,6 +14,7 @@ import { ReactComponent as ReportFlag } from '../../assets/svg/report-flag.svg';
 import Dialog from '../Dialog/Dialog';
 import ReportIssue from '../StudyRoomReport/ReportIssue';
 import { styles } from '../_styles/MeetUp/DeviceSettings';
+import { STORAGE_KEYS } from 'constants/app';
 
 type Props = {
   classes?: any;
@@ -39,6 +42,14 @@ const DeviceSettings = ({
   const [openReport, setOpenReport] = useState(false);
   const handleClick = useCallback(() => setOpenReport(true), []);
   const handleClose = useCallback(() => setOpenReport(false), []);
+
+  const handleCloseSettings = () => {
+    store.set(STORAGE_KEYS.SAVED_VIDEO_INPUT, selectedvideoinput);
+    store.set(STORAGE_KEYS.SAVED_AUDIO_INPUT, selectedaudioinput);
+
+    closeSettings();
+  };
+
   return (
     <Dialog
       className={classes.dialog}
@@ -134,7 +145,7 @@ const DeviceSettings = ({
           variant="contained"
           color="primary"
           className={classes.letsGo}
-          onClick={closeSettings}
+          onClick={handleCloseSettings}
         >
           Save
         </Button>
