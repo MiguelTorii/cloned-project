@@ -9,29 +9,25 @@ import LoadImg from 'components/LoadImg/LoadImg';
 import CollapseNavbar from 'components/CollapseNavbar/CollapseNavbar';
 import useStyles from './_styles/courseChannels';
 import { cypherClass } from 'utils/crypto';
-import { CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
+import { CommunityChannelData, selectCurrentCommunityWithChannels } from 'reducers/chat';
 import { useSelectChannelById } from 'features/chat';
 import { ChatCommunity } from 'api/models/APICommunity';
 import { useAppSelector } from 'redux/store';
 
 type Props = {
-  communityChannels: CommunityChannelsData[];
   currentCommunity: ChatCommunity;
   selectedChannel?: CommunityChannelData;
-  setSelectedChannel?: (...args: Array<any>) => any;
 };
 
-const CourseChannels = ({
-  communityChannels,
-  currentCommunity,
-  selectedChannel,
-  setSelectedChannel
-}: Props) => {
+const CourseChannels = ({ currentCommunity, selectedChannel }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const { data: currentCommunityChannel } = useSelectChannelById(selectedChannel?.chat_id);
   const userClasses = useAppSelector((state) => state.user.userClasses);
+
+  const currentCommunityWithChannels = useAppSelector(selectCurrentCommunityWithChannels);
+  const communityChannels = currentCommunityWithChannels?.channels;
 
   const handleGoToFeed = useCallback(() => {
     const communityClass = [
@@ -89,7 +85,6 @@ const CourseChannels = ({
         channels={communityChannels}
         currentCommunityChannel={currentCommunityChannel}
         selectedChannel={selectedChannel}
-        setSelectedChannel={setSelectedChannel}
       />
     </Box>
   );

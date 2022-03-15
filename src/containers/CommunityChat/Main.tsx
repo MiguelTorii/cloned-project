@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useParams } from 'react-router';
 import findIndex from 'lodash/findIndex';
 import { useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
@@ -15,7 +16,7 @@ import { sendMessage } from 'api/chat';
 import { logEvent } from 'api/analytics';
 import { messageLoadingAction } from 'actions/chat';
 import { MessageItemType, PERMISSIONS } from 'constants/common';
-import { ChannelMetadata, setChannelRead, useChannelMetadataById, useTyping } from 'features/chat';
+import { setChannelRead, useChannelMetadataById, useTyping } from 'features/chat';
 import {
   AvatarData,
   fetchAvatars,
@@ -29,7 +30,7 @@ import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
 import LoadImg from 'components/LoadImg/LoadImg';
-import usePrevious from 'hooks/usePrevious';
+import { usePrevious } from 'hooks';
 import Lightbox from 'react-images';
 import { Member } from 'types/models';
 
@@ -74,11 +75,16 @@ const Main = ({
   } = useAppSelector((state) => state.user);
   const permission = useAppSelector((state) => state.user.data.permission);
   const isLoading = useAppSelector((state) => state.chat.isLoading);
-  const { newChannel, newMessage, messageLoading, selectedChannelId } = useAppSelector(
+  const { newChannel, newMessage, messageLoading, currentCommunityChannelId } = useAppSelector(
     (state) => state.chat.data
   );
 
+  const { chatId } = useParams();
+  const usePreviousChannelSid = usePrevious(channel?.sid);
+
   const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
+  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
+  const { current: emptyArr } = useRef([]);
 
   const end = useRef(null);
   const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
@@ -115,7 +121,7 @@ const Main = ({
     }
   }, [onTyping]);
 
-  const channelMembers = channelMetadata?.users;
+  const channelMembers = channelMetadata?.users || local?.users || emptyArr;
 
   const handleScrollToBottom = useCallback(() => {
     try {
@@ -129,24 +135,15 @@ const Main = ({
     } // eslint-disable-next-line
   }, [scroll]);
 
-  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
-
   useEffect(() => {
-    if (channel && (channelMetadata?.users || local?.users)) {
-      // TODO Replace
-      let users: ChannelMetadata['users'] = [];
-      if (channelMetadata?.users) {
-        users = channelMetadata.users;
-      } else if (local?.users) {
-        users = local.users;
-      }
+    if (channel && channelMembers?.length) {
       const newMembers = {};
-      users.forEach((m) => {
+      channelMembers.forEach((m) => {
         newMembers[m.userId] = m;
       });
       setMembers(newMembers);
     }
-  }, [channel, channelMetadata?.users, local?.users]);
+  }, [channel, channelMembers]);
 
   const previousNewMessage = usePrevious(newMessage);
 
@@ -173,6 +170,7 @@ const Main = ({
   }, [channel, handleScrollToBottom, messages, newMessage, previousNewMessage, queryClient]);
 
   // TODO CHAT_REFACTOR: Move logic into a chat hook
+  // TODO Set loading logic by react-query
   useEffect(() => {
     if (channelLength && !channel) {
       dispatch(messageLoadingAction(true));
@@ -181,13 +179,11 @@ const Main = ({
     }
   }, [channelLength, channel, isLoading, dispatch]);
 
-  const usePreviousChannelSid = usePrevious(channel?.sid);
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
     const init = async () => {
-      if (!selectedChannelId || !channel) {
-        return;
-      }
+      if (!channel) return;
+
       dispatch(messageLoadingAction(true));
 
       try {
@@ -195,12 +191,20 @@ const Main = ({
 
         const [avatars, chatData] = await Promise.all([
           fetchAvatars(channel),
+          // TODO move channel messages to react-query cache
           channel.getMessages(10)
         ]);
 
+        // TODO move channel avatars to react-query cache
         setAvatars(avatars);
 
-        if (!chatData?.items?.length || selectedChannelId === chatData?.items?.[0]?.channel?.sid) {
+        if (
+          // If there are no messages
+          !chatData?.items?.length ||
+          // Or if there are messages when chat id changes
+          (chatData?.items?.[0]?.channel?.sid &&
+            [chatId, currentCommunityChannelId].includes(chatData.items[0].channel.sid))
+        ) {
           if (!chatData.hasNextPage) {
             dispatch(messageLoadingAction(false));
           }
@@ -222,10 +226,10 @@ const Main = ({
     };
 
     // Only init if the SID itself is different, not when selectedChannelId changes
-    if (channel && channel.sid !== usePreviousChannelSid) {
+    if (channel && channel.sid !== usePreviousChannelSid && chatId === channel.sid) {
       init();
     }
-  }, [channel, dispatch, queryClient, selectedChannelId, usePreviousChannelSid]);
+  }, [channel, currentCommunityChannelId, dispatch, queryClient, chatId, usePreviousChannelSid]);
 
   const messageItems = useMemo(
     () =>
@@ -261,6 +265,36 @@ const Main = ({
     () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
     [permission]
   );
+
+  const currentTitle = useMemo(() => {
+    const title = isCommunityChat ? selectedChannel?.chat_name : channelMetadata?.groupName;
+    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
+    if (!channel?.friendlyName) {
+      let customTitle = '';
+      let currentIndex = 0;
+
+      if (channelMembers.length > 3) {
+        channelMembers.forEach((member, index) => {
+          if (index < 3) {
+            customTitle += `${member.firstName} ${member.lastName}, `;
+            currentIndex = index;
+          }
+        });
+        customTitle += `${channelMembers.length - currentIndex - 1} others`;
+        return customTitle;
+      }
+
+      return title;
+    }
+
+    return title;
+  }, [
+    channel?.friendlyName,
+    channelMembers,
+    channelMetadata?.groupName,
+    isCommunityChat,
+    selectedChannel?.chat_name
+  ]);
 
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   const handleLoadMore = useCallback(() => {
@@ -506,12 +540,12 @@ const Main = ({
           handleUpdateGroupName={handleUpdateGroupName}
           isCommunityChat={isCommunityChat}
           memberKeys={memberKeys}
-          members={channelMetadata?.users}
+          members={channelMembers}
           onOpenRightPanel={setRightPanel}
           otherUser={otherUser}
           rightSpace={rightSpace}
           startVideo={startVideo}
-          title={isCommunityChat ? selectedChannel?.chat_name : channelMetadata?.groupName}
+          title={currentTitle}
         />
       )}
       <div className={classes.messageRoot}>
@@ -539,16 +573,16 @@ const Main = ({
                 (isCommunityChat ? (
                   <CommunityInitialAlert channel={channel} selectedChannel={selectedChannel} />
                 ) : channelMetadata ? (
-                  <DefaultInitialAlert metadata={channelMetadata} userId={userId} />
+                  <DefaultInitialAlert
+                    metadata={channelMetadata}
+                    title={currentTitle}
+                    userId={userId}
+                  />
                 ) : null)}
               {/* check if it's last message using length - 2, because we have `end` message at the end. */}
               {messageItems.map((item, index) =>
                 renderMessage(item, avatars, index === messageItems.length - 2)
               )}
-              {/* {!!Object.keys(members).length &&
-                messageItems.map((item, index) =>
-                  renderMessage(item, avatars, index === messageItems.length - 2)
-                )} */}
               {loading && (
                 <div className={classes.progress}>
                   <CircularProgress size={20} />

@@ -10,7 +10,6 @@ import { getGroupMembers, getShareLink } from 'api/chat';
 import { getGroupTitle } from 'utils/chat';
 
 import { useAppDispatch, useAppSelector } from 'redux/store';
-import { CustomMessageAttributes } from 'types/models';
 import {
   fetchMembers,
   handleInitChat,
@@ -361,17 +360,19 @@ const useMemberJoinedSubscription = () => {
           channel: { sid }
         } = member;
         const members = await fetchMembers(sid);
-        dispatch(
-          updateMembers({
-            members,
-            channelId: sid
-          })
-        );
-
+        if (member.channel?.attributes?.community_id) {
+          dispatch(
+            updateMembers({
+              members,
+              channelId: sid
+            })
+          );
+        }
         const metadata = queryClient.getQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA);
         if (metadata) {
           const nextMetadata = produce(metadata, (draft) => {
             draft[sid].users = members;
+            draft[sid].groupName = getGroupTitle(userId, members);
           });
 
           queryClient.setQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA, nextMetadata);

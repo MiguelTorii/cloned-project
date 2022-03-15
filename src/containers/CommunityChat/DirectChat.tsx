@@ -20,6 +20,7 @@ import Main from './Main';
 import RightMenu from './RightMenu';
 import blockUser from './_styles/blockUser';
 import useStyles from './_styles/directChat';
+import { useParams } from 'react-router';
 
 const RIGHT_GRID_SPAN = 2;
 
@@ -39,29 +40,17 @@ const DirectChat = ({ width }: Props) => {
     data: { selectedChannelId, newChannel, openChannels }
   } = useAppSelector((state) => state.chat);
 
+  const { chatId } = useParams();
+
   const {
     data: { userId }
   } = useAppSelector((state) => state.user);
 
   const onboardingListVisible = useAppSelector((state) => state.onboarding.onboardingList.visible);
 
-  const channelList = useOrderedChannelList();
+  const channelListLength = useOrderedChannelList().length;
 
-  useEffect(() => {
-    if (!selectedChannelId && channelList?.length) {
-      dispatch(
-        setCurrentChannelSidAction(localStorage.getItem('currentDMChannel') || channelList[0])
-      );
-    } else if (
-      selectedChannelId &&
-      channelList.length &&
-      !channelList.includes(selectedChannelId)
-    ) {
-      dispatch(setCurrentChannelSidAction(channelList[0]));
-    }
-  }, [channelList, dispatch, selectedChannelId]);
-
-  const { data: currentChannel } = useSelectChannelById(selectedChannelId);
+  const { data: currentChannel } = useSelectChannelById(chatId);
 
   const [leftSpace, setLeftSpace] = useState<NumberGridSizes>(2);
   const [rightSpace, setRightSpace] = useState<NumberGridSizes>(0);
@@ -237,7 +226,7 @@ const DirectChat = ({ width }: Props) => {
       {leftSpace !== 12 && (
         <Grid item xs={12 - leftSpace - rightSpace} className={classes.main}>
           <Main
-            channelLength={channelList.length}
+            channelLength={channelListLength}
             channel={currentChannel}
             handleBlock={handleBlock}
             handleUpdateGroupName={updateGroupName}
@@ -257,7 +246,7 @@ const DirectChat = ({ width }: Props) => {
         </Grid>
       )}
       <Grid item xs={rightSpace || 1} className={rightSpace !== 0 ? classes.right : classes.hidden}>
-        <RightMenu channelId={selectedChannelId} />
+        <RightMenu channelId={chatId} />
       </Grid>
     </Grid>
   );

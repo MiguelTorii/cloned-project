@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import cx from 'classnames';
-import { useDispatch } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -18,11 +17,17 @@ import Main from './Main';
 import RightMenu from './RightMenu';
 import CourseChannels from './CourseChannels';
 import useStyles from './_styles/styles';
-import { CommunityChannels, CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
-import { setCurrentChannelSidAction, setCurrentCommunityChannel } from 'actions/chat';
-import { Dispatch } from 'types/store';
-import { useAppSelector } from 'redux/store';
+import {
+  selectCurrentCommunity,
+  selectCurrentCommunityChannel,
+  selectCurrentCommunityChannels,
+  selectCurrentCommunityId
+} from 'reducers/chat';
+import { setCurrentCommunityChannel, setCurrentCommunityId } from 'actions/chat';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 import { useChannels, useSelectChannelById } from 'features/chat';
+import { usePrevious } from 'hooks';
+import { useParams } from 'react-router';
 
 const RIGHT_GRID_SPAN = 2;
 
@@ -30,16 +35,84 @@ type Props = {
   width?: string;
 };
 
+/**
+ * TODO Replace with approach that handle communities properly:
+ * chat/communityId/channelid
+ * chat/channelid
+ */
+const useCommunityNavigationHandling = () => {
+  const dispatch = useAppDispatch();
+
+  const {
+    data: { currentCommunityChannelId }
+  } = useAppSelector((state) => state.chat);
+
+  const { data: channels } = useChannels();
+  // TODO Clean up by changing naming convention and removing redundant state
+  const currentCommunityId = useAppSelector(selectCurrentCommunityId);
+  const previousCommunityId = usePrevious(currentCommunityId);
+  const selectedChannel = useAppSelector(selectCurrentCommunityChannel);
+  const allCurrentCommunityChannels = useAppSelector(selectCurrentCommunityChannels);
+
+  const { chatId } = useParams();
+
+  useEffect(() => {
+    if (!channels?.length) return;
+
+    const channelInCommunity = allCurrentCommunityChannels?.find(
+      (c) => c.chat_id === currentCommunityChannelId
+    );
+    const channel = channels.find((c) => c.sid === chatId);
+    if (
+      /**
+       * If user chooses a different community from a stored or previously selected one
+       * the channel exists but doesn't match current community id
+       * So we need to set aset different community
+       */
+      chatId &&
+      currentCommunityChannelId &&
+      currentCommunityChannelId !== chatId &&
+      !allCurrentCommunityChannels?.some((c) => c.chat_id === chatId) &&
+      channel &&
+      channels?.attributes?.community_id
+    ) {
+      dispatch(setCurrentCommunityChannel(channel));
+      dispatch(setCurrentCommunityId(Number(channel.attributes.community_id)));
+    } else if (
+      // Through normal navigation, if a community is selected but no channel is selected
+      (currentCommunityId !== 0 && allCurrentCommunityChannels?.length && !selectedChannel) ||
+      /**
+       * When changing community, select first channel
+       * Ideally we'd store what channel was selected in each community
+       */
+      (previousCommunityId && previousCommunityId !== currentCommunityId && !channelInCommunity)
+    ) {
+      const defaultChannel = channels?.find(
+        (c) => c.sid === allCurrentCommunityChannels?.[0].chat_id
+      );
+      if (defaultChannel) {
+        dispatch(setCurrentCommunityChannel(defaultChannel));
+      }
+    }
+  }, [
+    allCurrentCommunityChannels,
+    channels,
+    chatId,
+    currentCommunityChannelId,
+    currentCommunityId,
+    dispatch,
+    previousCommunityId,
+    selectedChannel
+  ]);
+};
+
 // TODO: Refactor width, open and close logic to reusable sidebar component
 const CommunityChat = ({ width }: Props) => {
   const classes = useStyles();
-  const dispatch: Dispatch = useDispatch();
 
   const [leftSpace, setLeftSpace] = useState(2);
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
-  const [communityChannels, setCommunityChannels] = useState<CommunityChannelsData[]>([]);
-  const [selectedChannel, setSelectedChannel] = useState<CommunityChannelData>();
   const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
     channelId: string;
     lastIndex: number;
@@ -52,89 +125,41 @@ const CommunityChat = ({ width }: Props) => {
 
   const {
     isLoading,
-    data: {
-      currentCommunity,
-      communityChannels: allCommunityChannels,
-      currentCommunityChannelId,
-      selectedChannelId
-    }
+    data: { currentCommunityChannelId, selectedChannelId }
   } = useAppSelector((state) => state.chat);
 
-  const { data: localChannels } = useChannels();
-  const { data: currentCommunityChannel } = useSelectChannelById(currentCommunityChannelId);
+  useCommunityNavigationHandling();
+
+  const { data: currentCommunitySDKChannel } = useSelectChannelById(currentCommunityChannelId);
+
+  const currentCommunity = useAppSelector(selectCurrentCommunity);
+  const selectedChannel = useAppSelector(selectCurrentCommunityChannel);
+  const allCurrentCommunityChannels = useAppSelector(selectCurrentCommunityChannels);
 
   useEffect(() => {
-    const currentCommunityChannels: CommunityChannelData[] = [];
-    const filterCurrentCommunityChannel: CommunityChannels[] = allCommunityChannels.filter(
-      (communityChannel) => communityChannel.courseId === currentCommunity?.id
-    );
-
-    if (currentCommunity?.id !== 0 && filterCurrentCommunityChannel[0]) {
-      const { channels } = filterCurrentCommunityChannel[0];
-      channels.forEach((communityChannel) => {
-        const { channels } = communityChannel;
-        currentCommunityChannels.push(...channels);
-      });
-      setCommunityChannels(channels);
-
-      const defaultChannel = localChannels?.find(
-        (c) => c.sid === currentCommunityChannels[0]?.chat_id
-      );
-
-      if (currentCommunityChannel) {
-        // currentCommunityChannel is exists, need to find the channel and select channel
-        const filterChannel = currentCommunityChannels.filter(
-          (channel) => channel.chat_id === currentCommunityChannel.sid
-        );
-
-        if (filterChannel.length) {
-          // set select channel
-          setSelectedChannel(filterChannel[0]);
-          dispatch(setCurrentChannelSidAction(filterChannel[0]?.chat_id));
-        } else {
-          // currentCommunityChannel is not in course channels, set the default first channel
-          setSelectedChannel(currentCommunityChannels[0]);
-          dispatch(setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id));
-          setCurrentCommunityChannel(defaultChannel)(dispatch);
-        }
-      } else {
-        // currentCommunityChannel is not exists, set the default first channel
-        // TODO Fix integration with react query
-        setSelectedChannel(currentCommunityChannels[0]);
-        setCurrentCommunityChannel(defaultChannel)(dispatch);
-        dispatch(setCurrentChannelSidAction(currentCommunityChannels[0]?.chat_id));
-      }
-    }
-  }, [allCommunityChannels, currentCommunity, currentCommunityChannel, dispatch, localChannels]);
-
-  useEffect(() => {
-    const targetSelectedChannel = selectedChannel ? localChannels?.[selectedChannel.chat_id] : null;
-
-    if (targetSelectedChannel) {
+    if (currentCommunitySDKChannel) {
       if (['xs'].includes(width)) {
         setLeftSpace(0);
       }
     }
-  }, [selectedChannel, width, isLoading, localChannels]);
+  }, [currentCommunitySDKChannel, width]);
 
   // This effect is to keep the index of last read message.
   useEffect(() => {
     // We just want to update the last read message info only if the channel is changed.
-    if (selectedChannel?.chat_id === lastReadMessageInfo.channelId) {
+    if (
+      selectedChannel?.chat_id === lastReadMessageInfo.channelId ||
+      !currentCommunitySDKChannel ||
+      !selectedChannel
+    ) {
       return;
     }
 
-    const localChannel = localChannels?.find((c) => c.sid === selectedChannel?.chat_id);
-    if (!localChannel) {
-      return;
-    }
-
-    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
     setLastReadMessageInfo({
       channelId: selectedChannel?.chat_id,
-      lastIndex: localChannel.lastConsumedMessageIndex
+      lastIndex: currentCommunitySDKChannel.lastConsumedMessageIndex
     });
-  }, [selectedChannel, lastReadMessageInfo, localChannels]);
+  }, [selectedChannel, lastReadMessageInfo, currentCommunitySDKChannel]);
 
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
@@ -155,7 +180,7 @@ const CommunityChat = ({ width }: Props) => {
       if (['xs', 'sm', 'md'].includes(width)) {
         setRightSpace(0);
 
-        if (currentCommunityChannel) {
+        if (currentCommunitySDKChannel) {
           setLeftSpace(0);
         } else {
           setLeftSpace(curSize);
@@ -165,12 +190,12 @@ const CommunityChat = ({ width }: Props) => {
       }
     }
 
-    if (currentCommunityChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) {
+    if (currentCommunitySDKChannel && !isLoading && !['xs', 'sm', 'md'].includes(width)) {
       setRightSpace(RIGHT_GRID_SPAN);
     }
 
     setPrevWidth(width);
-  }, [prevWidth, width, curSize, currentCommunityChannel, isLoading]);
+  }, [prevWidth, width, curSize, currentCommunitySDKChannel, isLoading]);
 
   const onCollapseLeft = useCallback(() => {
     if (['xs', 'sm', 'md'].includes(width)) {
@@ -214,7 +239,7 @@ const CommunityChat = ({ width }: Props) => {
           xs={(leftSpace || 1) as any}
           className={leftSpace !== 0 ? classes.left : classes.hidden}
         >
-          {isLoading || !currentCommunity ? (
+          {isLoading || !currentCommunity || !allCurrentCommunityChannels?.length ? (
             <Box
               className={classes.loading}
               display="flex"
@@ -224,20 +249,15 @@ const CommunityChat = ({ width }: Props) => {
               <CircularProgress />
             </Box>
           ) : (
-            <CourseChannels
-              communityChannels={communityChannels}
-              currentCommunity={currentCommunity}
-              selectedChannel={selectedChannel}
-              setSelectedChannel={setSelectedChannel}
-            />
+            <CourseChannels currentCommunity={currentCommunity} selectedChannel={selectedChannel} />
           )}
         </Grid>
       )}
       {!isLoading && leftSpace !== 12 && (
         <Grid item xs={(12 - leftSpace - rightSpace) as any} className={classes.main}>
           <Main
-            channel={currentCommunityChannel}
-            channelLength={communityChannels.length}
+            channel={currentCommunitySDKChannel}
+            channelLength={allCurrentCommunityChannels?.length || 0}
             isCommunityChat
             lastReadMessageIndex={
               lastReadMessageInfo.channelId === selectedChannelId
@@ -250,13 +270,13 @@ const CommunityChat = ({ width }: Props) => {
           />
         </Grid>
       )}
-      {!isLoading && currentCommunityChannel && (
+      {!isLoading && currentCommunitySDKChannel && (
         <Grid
           item
           xs={(rightSpace || 1) as any}
           className={rightSpace !== 0 ? classes.right : classes.hidden}
         >
-          <RightMenu isCommunityChat channelId={currentCommunityChannel.sid} />
+          <RightMenu isCommunityChat channelId={currentCommunitySDKChannel.sid} />
         </Grid>
       )}
     </Grid>

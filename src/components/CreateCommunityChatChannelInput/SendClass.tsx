@@ -130,7 +130,6 @@ const CreateChatChannelInput = ({
       dispatch(
         setCurrentCommunityIdAction(selectedClasses[selectedClasses.length - 1]?.community?.id)
       );
-      setCurrentCommunity(selectedClasses[selectedClasses.length - 1]?.community);
       setShowError(false);
       onClosePopover();
       setLoading(false);
@@ -181,16 +180,14 @@ const CreateChatChannelInput = ({
       });
     }
   }, [
-    value,
-    local,
-    channels,
     chatIds,
-    onClosePopover,
-    selectedClasses,
-    setCurrentCommunityId,
+    classes.snackbarStyle,
     dispatch,
-    setCurrentCommunity,
-    enqueueSnackbarAction
+    enqueueSnackbarAction,
+    onClosePopover,
+    selectChannel,
+    selectedClasses,
+    value
   ]);
   const handleRetry = useCallback(() => {
     setShowError(false);
@@ -320,7 +317,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
       closeNewChannel: chatActions.closeNewChannel,
       setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
-      setCurrentCommunity: chatActions.setCurrentCommunity,
       enqueueSnackbarAction: enqueueSnackbar
     },
     dispatch

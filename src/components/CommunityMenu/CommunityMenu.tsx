@@ -12,6 +12,7 @@ import StyledBadge from './StyledBadge';
 import useStyles from './_styles/styles';
 import { useUnreadCount } from 'features/chat';
 import { ChatCommunity } from 'api/models/APICommunity';
+import { selectCurrentCommunity } from 'reducers/chat';
 
 type Props = {
   item: ChatCommunity;
@@ -21,7 +22,8 @@ type Props = {
 const CommunityMenu = ({ item, handleSelect }: Props) => {
   const classes = useStyles();
 
-  const { currentCommunity, communityChannels } = useAppSelector((state) => state.chat.data);
+  const { communityChannels } = useAppSelector((state) => state.chat.data);
+  const currentCommunity = useAppSelector(selectCurrentCommunity);
 
   const { data: unreadCountData } = useUnreadCount();
 

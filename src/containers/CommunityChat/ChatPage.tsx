@@ -5,9 +5,7 @@ import Box from '@material-ui/core/Box';
 import {
   setCommunitiesAction,
   setCommunityChannelsAction,
-  setCurrentCommunityAction,
-  setCurrentCommunityIdAction,
-  setCurrentChannelSidAction
+  setCurrentCommunityIdAction
 } from 'actions/chat';
 import { useAppSelector } from 'redux/store';
 import { getCommunities, getCommunityChannels } from 'api/community';
@@ -16,12 +14,13 @@ import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import DirectChat from './DirectChat';
 import CollageList from './CollageList';
 import CommunityChat from './CommunityChat';
-import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
 import useStyles from './_styles/styles';
-import { useSelectChatByHash } from 'features/chat';
+import { useSelectChatByIdURL } from 'features/chat';
+import { useParams } from 'react-router';
 
 const ChatPage = () => {
-  useSelectChatByHash();
+  useSelectChatByIdURL();
+  const { chatId } = useParams();
 
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const ChatPage = () => {
     data: {
       communityChannels,
       communities,
-      currentCommunity,
       currentCommunityId,
       oneTouchSendOpen,
       currentCommunityChannelId
@@ -83,9 +81,6 @@ const ChatPage = () => {
         if (currentCommunityId && !currentCommunityChannelId && nonEmptyCommunities.length > 0) {
           const defaultCommunity = nonEmptyCommunities[0].community;
           dispatch(setCurrentCommunityIdAction(defaultCommunity.id));
-          if (defaultCommunity) {
-            dispatch(setCurrentCommunityAction(defaultCommunity));
-          }
         }
 
         setLoading(false);
@@ -100,38 +95,19 @@ const ChatPage = () => {
 
   const handleSelect = useCallback(
     (course) => {
-      if (course.id !== currentCommunity?.id) {
-        // TODO CHAT_REFACTOR: Dispatch a single, atomic action, not 3 actions here
+      if (course.id !== currentCommunityId) {
         dispatch(setCurrentCommunityIdAction(course.id));
-        dispatch(setCurrentChannelSidAction(''));
-        dispatch(setCurrentCommunityAction(course));
       }
     },
-    [currentCommunity, dispatch]
+    [currentCommunityId, dispatch]
   );
 
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   useEffect(() => {
-    if (oneTouchSendOpen || currentCommunityId === 'chat' || !currentCommunityId) {
-      dispatch(setCurrentCommunityAction(DEFAULT_COMMUNITY_MENU_ITEMS));
-    } else if (currentCommunity && !!communities?.length && currentCommunity.id !== 'chat') {
-      const targetCourse = communities.filter(
-        (course) => course.community.id === currentCommunity.id
-      );
-
-      if (targetCourse.length && targetCourse[0]?.community) {
-        dispatch(setCurrentCommunityAction(targetCourse[0]?.community));
-      }
-    } else if (currentCommunityId && !!communities?.length && currentCommunityId !== 'chat') {
-      const targetCourseChannel = communities.filter(
-        (community) => community.community.id === Number(currentCommunityId)
-      );
-
-      if (targetCourseChannel.length && targetCourseChannel[0].community) {
-        dispatch(setCurrentCommunityAction(targetCourseChannel[0].community));
-      }
+    if (oneTouchSendOpen) {
+      dispatch(setCurrentCommunityIdAction(null));
     }
-  }, [communities, currentCommunity, currentCommunityId, dispatch, oneTouchSendOpen]);
+  }, [oneTouchSendOpen, dispatch]);
 
   if (loading) {
     return <LoadingSpin />;
@@ -147,7 +123,7 @@ const ChatPage = () => {
         />
       </Box>
       <Box className={classes.directChat}>
-        {!currentCommunity?.id ? <DirectChat /> : <CommunityChat />}
+        {currentCommunityId && chatId ? <CommunityChat /> : <DirectChat />}
       </Box>
     </div>
   );

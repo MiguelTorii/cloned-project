@@ -6,6 +6,9 @@ import { chatActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
 import { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
 import { ChannelMetadata } from 'features/chat';
+import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
+import { createSelector } from '@reduxjs/toolkit';
+import { AppState } from 'redux/store';
 
 export type ChatUser = {
   firstname: string;
@@ -41,7 +44,7 @@ export type ChannelWrapper = {
   shareLink?: string;
 };
 
-export type CommunityChannels = {
+export type ChatCommunityWithChannels = {
   channels: CommunityChannelsData[];
   courseId: number;
 };
@@ -64,28 +67,14 @@ export type CommunityChannelData = {
   ordering: number;
 };
 
-export type CurrentCommunity = {
-  about: string;
-  color: string;
-  communityBannerUrl: string;
-  communityIconUrl: string;
-  created: string;
-  id: number;
-  name: string;
-  private: boolean;
-  school_id: number;
-  section_id: string;
-};
-
 export type ChatData = {
   channels: Channel[];
   client: Client | null;
+  defaultCommunity: ChatCommunity;
   communities: ChatCommunityData[];
-  communityChannels: CommunityChannels[];
-  currentChannel: Channel | null;
-  currentCommunity: ChatCommunity | null;
+  communityChannels: ChatCommunityWithChannels[];
   currentCommunityChannelId: string;
-  currentCommunityId: string | null;
+  currentCommunityId: number | null;
   entityFirstName: string;
   entityId: number;
   entityLastName: string;
@@ -99,7 +88,7 @@ export type ChatData = {
   oneTouchSendOpen: boolean;
   online: boolean;
   openChannels: Channel[];
-  selectedChannelId: string;
+  selectedChannelId: string | null;
   unread: number;
   uuid: string;
 };
@@ -117,12 +106,11 @@ const defaultState = {
   data: {
     channels: [],
     client: null,
+    defaultCommunity: DEFAULT_COMMUNITY_MENU_ITEMS,
     communities: [],
     communityChannels: [],
-    currentChannel: null,
-    currentCommunity: null,
-    currentCommunityChannelId: '',
-    currentCommunityId: null,
+    currentCommunityChannelId: localStorage.getItem('currentCommunityChannelId'),
+    currentCommunityId: Number(localStorage.getItem('currentCommunityId')),
     entityFirstName: '',
     entityId: 0,
     entityLastName: '',
@@ -136,7 +124,7 @@ const defaultState = {
     oneTouchSendOpen: false,
     online: false,
     openChannels: [],
-    selectedChannelId: localStorage.getItem('currentDMChannel') || '',
+    selectedChannelId: localStorage.getItem('currentDMChannel') || null,
     unread: 0,
     uuid: ''
   },
@@ -178,21 +166,18 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     case chatActions.MAIN_MESSAGE_LOADING:
       return { ...state, data: { ...state.data, messageLoading: action.payload.loading } };
 
-    case chatActions.SET_CURRENT_COMMUNITY_ID:
+    case chatActions.SET_CURRENT_CHANNEL_ID: {
+      const id = action.payload.selectedChannelId;
+      if (id) {
+        localStorage.setItem('currentDMChannel', action.payload.selectedChannelId);
+      } else {
+        localStorage.removeItem('currentDMChannel');
+      }
       return {
         ...state,
-        data: { ...state.data, currentCommunityId: action.payload.currentCommunityId }
+        data: { ...state.data, selectedChannelId: action.payload.selectedChannelId }
       };
-
-    case chatActions.SET_CURRENT_CHANNEL:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          currentChannel: action.payload.currentChannel,
-          currentCommunityId: null
-        }
-      };
+    }
 
     case chatActions.SET_COMMUNITIES:
       return { ...state, data: { ...state.data, communities: action.payload.communities } };
@@ -203,21 +188,34 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: { ...state.data, communityChannels: action.payload.communityChannels }
       };
 
-    case chatActions.SET_CURRENT_CHANNEL_ID:
-      localStorage.setItem('currentDMChannel', action.payload.selectedChannelId);
+    case chatActions.SET_CURRENT_COMMUNITY_ID: {
+      const currentCommunityId = action.payload.currentCommunityId;
+      if (currentCommunityId) {
+        localStorage.setItem('currentCommunityId', currentCommunityId);
+      } else {
+        localStorage.removeItem('currentCommunityId');
+      }
+
       return {
         ...state,
-        data: { ...state.data, selectedChannelId: action.payload.selectedChannelId }
+        data: { ...state.data, currentCommunityId: action.payload.currentCommunityId }
       };
+    }
 
-    case chatActions.SET_CURRENT_COMMUNITY_CHANNEL_ID:
+    case chatActions.SET_CURRENT_COMMUNITY_CHANNEL_ID: {
+      const currentCommunityChannelId = action.payload.currentChannelId;
+
+      if (currentCommunityChannelId) {
+        localStorage.setItem('currentCommunityChannelId', currentCommunityChannelId);
+      } else {
+        localStorage.removeItem('currentCommunityChannelId');
+      }
+
       return {
         ...state,
-        data: { ...state.data, currentCommunityChannelId: action.payload.currentChannelId }
+        data: { ...state.data, currentCommunityChannelId: currentCommunityChannelId }
       };
-
-    case chatActions.SET_CURRENT_COMMUNITY:
-      return { ...state, data: { ...state.data, currentCommunity: action.payload.channel } };
+    }
 
     case chatActions.CREATE_NEW_CHANNEL:
       return {
@@ -489,3 +487,40 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       return state;
   }
 };
+
+export const selectCurrentCommunityId = (state: AppState) => state.chat.data.currentCommunityId;
+export const selectCommunitiesMetadata = (state: AppState) => state.chat.data.communities;
+export const selectDefaultCommunity = (state: AppState) => state.chat.data.defaultCommunity;
+export const selectCommunitiesWithChannels = (state: AppState) => state.chat.data.communityChannels;
+
+export const selectCurrentCommunityChannelId = (state: AppState) =>
+  state.chat.data.currentCommunityChannelId;
+
+export const selectCurrentCommunity = createSelector(
+  selectCurrentCommunityId,
+  selectCommunitiesMetadata,
+  selectDefaultCommunity,
+  (communityId, communities, defaultCommunity) =>
+    communityId
+      ? communities.find((community) => String(community.community.id) === String(communityId))
+          ?.community
+      : defaultCommunity
+);
+
+export const selectCurrentCommunityWithChannels = createSelector(
+  selectCommunitiesWithChannels,
+  selectCurrentCommunityId,
+  (communiyChannels, communityId) =>
+    communiyChannels.find((community) => community.courseId === communityId)
+);
+
+export const selectCurrentCommunityChannels = createSelector(
+  selectCurrentCommunityWithChannels,
+  (community) => community?.channels.map((channel) => channel.channels).flat()
+);
+
+export const selectCurrentCommunityChannel = createSelector(
+  selectCurrentCommunityChannels,
+  selectCurrentCommunityChannelId,
+  (channels, channelId) => channels?.find((c) => c.chat_id === channelId)
+);

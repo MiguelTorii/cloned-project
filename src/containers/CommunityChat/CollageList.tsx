@@ -5,11 +5,11 @@ import CommunityMenu from '../../components/CommunityMenu/CommunityMenu';
 import useStyles from './_styles/collageList';
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
 import { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
-import { CommunityChannels } from 'reducers/chat';
+import { ChatCommunityWithChannels } from 'reducers/chat';
 
 type Props = {
   communities: ChatCommunityData[];
-  communityChannels: CommunityChannels[];
+  communityChannels: ChatCommunityWithChannels[];
   handleSelect: (course: ChatCommunity) => void;
 };
 

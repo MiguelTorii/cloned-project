@@ -1,13 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 import uuidv4 from 'uuid/v4';
 import update from 'immutability-helper';
-import { Channel, Client } from 'twilio-chat';
 import { push } from 'connected-react-router';
-import moment from 'moment';
+
+import { Channel, Client } from 'twilio-chat';
+
 import {
   getGroupMembers,
-  getShareLink,
-  getChannels,
   muteChannel,
   unmuteChannel,
   renewTwilioToken,
@@ -15,14 +14,15 @@ import {
   createChannel,
   apiUpdateChat
 } from 'api/chat';
+import store from 'redux/store';
 import { chatActions } from 'constants/action-types';
 import type { Action } from 'types/action';
 import type { Dispatch } from 'types/store';
+import { ChannelWrapper } from 'reducers/chat';
+import { ChatCommunityData } from 'api/models/APICommunity';
+import { ChannelMetadata } from 'features/chat';
+
 import { uploadMedia } from './user';
-import { ChannelWrapper, CurrentCommunity } from 'reducers/chat';
-import { ChatCommunityData, ChatCommunity } from 'api/models/APICommunity';
-import { ChannelMetadata, SHARE_LINK_KEY } from 'features/chat';
-import { queryClient } from 'lib/query';
 
 const getAvailableSlots = (width) => {
   try {
@@ -115,20 +115,6 @@ export const updateChannel = ({
   }
 });
 
-const updateShareLink = ({
-  shareLink,
-  channelId
-}: {
-  channelId: string;
-  shareLink: string;
-}): Action => ({
-  type: chatActions.UPDATE_SHARE_LINK_CHAT,
-  payload: {
-    shareLink,
-    channelId
-  }
-});
-
 export const updateMembers = ({
   members,
   channelId
@@ -210,34 +196,61 @@ const setCurrentChannelAction = ({
   }
 });
 
-export const setCurrentChannelSidAction = (selectedChannelId: string) => ({
-  type: chatActions.SET_CURRENT_CHANNEL_ID,
-  payload: {
-    selectedChannelId
-  }
-});
+export const setCurrentChannelSidAction =
+  (selectedChannelId: string | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
+    if (selectedChannelId && getState().router.location.pathname.includes('/chat')) {
+      dispatch(push(`/chat/${selectedChannelId}`));
+    }
 
-// TODO resolve the type discrepancy between CurrentCommunity and APICommunityData
-export const setCurrentCommunityAction = (channel: CurrentCommunity | ChatCommunity | null) => ({
-  type: chatActions.SET_CURRENT_COMMUNITY,
-  payload: {
-    channel
-  }
-});
+    dispatch({
+      type: chatActions.SET_CURRENT_CHANNEL_ID,
+      payload: {
+        selectedChannelId
+      }
+    });
+  };
 
-const setCurrentCommunityChannelIdAction = (currentChannelId: string) => ({
+export const setCurrentCommunityChannelIdAction = (currentChannelId: string | null) => ({
   type: chatActions.SET_CURRENT_COMMUNITY_CHANNEL_ID,
   payload: {
     currentChannelId
   }
 });
 
-export const setCurrentCommunityIdAction = (currentCommunityId: number | null) => ({
-  type: chatActions.SET_CURRENT_COMMUNITY_ID,
-  payload: {
-    currentCommunityId
-  }
-});
+export const setCurrentCommunityIdAction =
+  (newCommunityId: number | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
+    const selectedChannelId = getState().chat.data.selectedChannelId;
+    const currentCommunityChannelId = getState().chat.data.currentCommunityChannelId;
+    const newSelectedCommunity = getState().chat.data.communityChannels.find(
+      (c) => c.courseId === newCommunityId
+    );
+
+    dispatch({
+      type: chatActions.SET_CURRENT_COMMUNITY_ID,
+      payload: {
+        currentCommunityId: newCommunityId
+      }
+    });
+
+    if (!getState().router.location.pathname.includes('/chat')) return;
+
+    /**
+     * TODO Replace with approach that handle communities properly:
+     * chat/communityId/channelid
+     * chat/channelid
+     */
+    // chatId may not update when switching from community to DMs
+    if (!newCommunityId && selectedChannelId) {
+      dispatch(push(`/chat/${selectedChannelId}`));
+    } else if (newCommunityId) {
+      const allChannelIds = newSelectedCommunity?.channels
+        .map((c) => c.channels.map((cc) => cc.chat_id))
+        .flat();
+      const sameCommunity = allChannelIds?.some((id) => id === currentCommunityChannelId);
+      if (!sameCommunity) return;
+      dispatch(push(`/chat/${currentCommunityChannelId}`));
+    }
+  };
 
 export const setOneTouchSendAction = (open: boolean) => ({
   type: chatActions.SET_OPEN_ONE_TOUCH_SEND,
@@ -294,38 +307,32 @@ export const fetchMembers = async (sid): Promise<ChannelMetadata['users']> => {
   return members;
 };
 
-export const setCurrentCommunity = (channel) => async (dispatch: Dispatch) => {
-  if (channel) {
-    dispatch(setCurrentCommunityAction(channel));
-  }
-};
-
-export const setCurrentCommunityChannel = (currentChannel) => async (dispatch: Dispatch) => {
-  if (currentChannel) {
-    const [members, shareLink] = await Promise.all([
-      fetchMembers(currentChannel.sid),
-      getShareLink(currentChannel.sid)
-    ]);
-
-    // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
-    // user's selected navigation state after some arbitrary amount of time,
-    // i.e. after we have finished "awaiting" the promise result.
-    // TODO Currently community channels users are held in redux, should be changed to react-query but channelMetadata doesn't fit the community channel model
-    dispatch(
-      updateMembers({
-        members,
-        channelId: currentChannel.sid
-      })
-    );
+export const setCurrentCommunityChannel =
+  (currentChannel: Channel) => async (dispatch: Dispatch, getState: typeof store.getState) => {
     dispatch(setCurrentCommunityChannelIdAction(currentChannel.sid));
-    dispatch(
-      updateShareLink({
-        shareLink,
-        channelId: currentChannel.sid
-      })
-    );
-  }
-};
+    if (getState().router.location.pathname.includes('/chat')) {
+      dispatch(push(`/chat/${currentChannel.sid}`));
+    }
+    const local = getState().chat.data.local;
+    if (currentChannel) {
+      if (!local[currentChannel.sid]) {
+        const members = await fetchMembers(currentChannel.sid);
+
+        /**
+         * TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
+         * user's selected navigation state after some arbitrary amount of time,
+         * i.e. after we have finished "awaiting" the promise result.
+         * TODO Currently community channels users are held in redux, should be changed to react-query but channelMetadata doesn't fit the community channel
+         */
+        dispatch(
+          updateMembers({
+            members,
+            channelId: currentChannel.sid
+          })
+        );
+      }
+    }
+  };
 
 export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
   dispatch(setCurrentCommunityIdAction(currentCommunityId));
@@ -391,14 +398,7 @@ export const openChannelWithEntity =
       const channel = await client.getChannelBySid(chatId);
 
       if (channel) {
-        // TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
-        // user's selected navigation state after some arbitrary amount of time,
-        // i.e. after we have finished "awaiting" the promise results.
-        // The user state could have changed, and maybe some other channel besides
-        // this channel was selected as the current channel.
-        // If that occurred, this code resets the state erroneously.
         dispatch(setCurrentChannelSidAction(channel.sid));
-
         if (entityVideo) {
           dispatch(push(`/video-call/${chatId}`));
         } else {

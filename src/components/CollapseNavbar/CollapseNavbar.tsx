@@ -13,11 +13,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { ReactComponent as ChannelIcon } from 'assets/svg/public-channel.svg';
 import { ReactComponent as UnreadMessageChannelIcon } from 'assets/svg/unread-message-channel-icon.svg';
 import { CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
-import {
-  messageLoadingAction,
-  setCurrentChannelSidAction,
-  setCurrentCommunityChannel
-} from 'actions/chat';
+import { messageLoadingAction, setCurrentCommunityChannel } from 'actions/chat';
 import { useChannels, useUnreadCount } from 'features/chat';
 import { useAppDispatch } from 'redux/store';
 
@@ -72,15 +68,9 @@ type Props = {
   channels?: CommunityChannelsData[];
   selectedChannel?: CommunityChannelData;
   currentCommunityChannel?: Channel;
-  setSelectedChannel?: (...args: Array<any>) => any;
 };
 
-const CollapseNavbar = ({
-  channels,
-  selectedChannel,
-  currentCommunityChannel,
-  setSelectedChannel
-}: Props) => {
+const CollapseNavbar = ({ channels, selectedChannel, currentCommunityChannel }: Props) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
@@ -104,12 +94,12 @@ const CollapseNavbar = ({
       handleSwitchCollapsedState(channel);
     }
 
-    if (!channel?.channels && currentCommunityChannel.sid !== channel.chat_id) {
-      dispatch(setCurrentChannelSidAction(channel.chat_id));
+    if (!channel?.channels && currentCommunityChannel?.sid !== channel.chat_id) {
       const localChannel = localChannels?.find((c) => c.sid === channel.chat_id);
-      setCurrentCommunityChannel(localChannel)(dispatch);
-      setSelectedChannel(channel);
-      dispatch(messageLoadingAction(true));
+      if (localChannel) {
+        dispatch(setCurrentCommunityChannel(localChannel));
+        dispatch(messageLoadingAction(true));
+      }
     }
   };
 

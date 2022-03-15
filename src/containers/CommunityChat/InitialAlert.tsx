@@ -15,9 +15,11 @@ import { Channel } from 'twilio-chat';
 
 export const DefaultInitialAlert = ({
   metadata,
+  title,
   userId
 }: {
   metadata: ChannelMetadata;
+  title?: string;
   userId: string;
 }) => {
   const classes = useStyles();
@@ -31,7 +33,7 @@ export const DefaultInitialAlert = ({
         {isGroupChat ? <GroupIcon /> : initials}
       </Avatar>
       <Typography className={classes.members} variant="h5">
-        {isDirectChat ? `You and ${name}` : name}
+        {isDirectChat ? `You and ${name}` : title || name}
       </Typography>
       <Typography className={classes.initialAlertDescription} variant="subtitle2">
         This is the beginning of your chat with

@@ -298,3 +298,9 @@ export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata)
     userLength
   };
 };
+
+export const getChatShareLink = (id?: string) => {
+  if (id) return `${window.location.origin}/chat/${id}`;
+  // In case ID is undefined in chat for some reason
+  return `${window.location.href}`;
+};

@@ -93,28 +93,7 @@ const ChatHeader = ({
   const {
     data: { userId, schoolId, permission }
   } = user;
-  const currentChannelTitle = useMemo(() => {
-    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
-    if (!channel.friendlyName) {
-      let customTitle = '';
-      let currentIndex = 0;
 
-      if (members.length > 3) {
-        members.forEach((member, index) => {
-          if (index < 3) {
-            customTitle += `${member.firstName} ${member.lastName}, `;
-            currentIndex = index;
-          }
-        });
-        customTitle += `${members.length - currentIndex - 1} others`;
-        return customTitle;
-      }
-
-      return title;
-    }
-
-    return title;
-  }, [title, channel, members]);
   const isShow = useMemo(
     () =>
       permission &&
@@ -259,7 +238,7 @@ const ChatHeader = ({
       {channel && (
         <Grid container justifyContent="space-between">
           <Typography className={classes.headerTitle}>
-            <ChatIcon className={classes.headerIcon} /> {currentChannelTitle}
+            <ChatIcon className={classes.headerIcon} /> {title}
             {/* Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.` */}
             {members.length > 3 && !(channel as any).channelState.friendlyName && (
               <ArrowDropDownIcon onClick={handleClick} />

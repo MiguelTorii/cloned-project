@@ -21,6 +21,7 @@ import useStyles from './_styles/leftMenu';
 import { handleNewChannel, setCurrentChannelSidAction, setOneTouchSendAction } from 'actions/chat';
 import { useChannels, useOrderedChannelList, useChannelsMetadata } from 'features/chat';
 import BaseChatItem from 'components/CommunityChatListItem/BaseChatItem';
+import { useParams } from 'react-router';
 
 type Props = {
   onOpenChannel?: (id: string) => void;
@@ -48,6 +49,9 @@ const LeftMenu = ({
     data: { newChannel, selectedChannelId, oneTouchSendOpen, openChannels },
     isLoading: isChatLoading
   } = useAppSelector((state) => state.chat);
+
+  const { chatId } = useParams();
+
   const { userId, permission } = useAppSelector((state) => state.user.data);
 
   const { isLoading: channelsIsLoading, data: channels } = useChannels();
@@ -203,7 +207,7 @@ const LeftMenu = ({
             {channelList.map((id) => (
               <div key={id} className={clsx(!searchChannels.includes(id) && classes.hidden)}>
                 <ChatListItem
-                  selected={id === selectedChannelId}
+                  selected={id === chatId}
                   channelId={id}
                   onOpenChannel={onOpenChannel}
                   handleRemoveChannel={handleRemoveChannel}

@@ -1,15 +1,13 @@
-import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import useStyles from '../_styles/ShareLinkDialog';
 import ShareLink from './ShareLink';
 import Dialog from '../Dialog/Dialog';
-import { useChatShareLink } from 'features/chat';
+import { getChatShareLink } from 'utils/chat';
 
 const ShareLinkDialog = ({ open, handleClose, channelId }) => {
-  const { data: shareLink } = useChatShareLink(channelId);
-
   const classes = useStyles();
+  const shareLink = getChatShareLink(channelId);
 
   return (
     <Dialog

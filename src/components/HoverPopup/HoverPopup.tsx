@@ -27,8 +27,6 @@ type Props = {
   children?: any;
   userId?: any;
   profileSource?: any;
-  setCurrentCommunityId?: any;
-  setCurrentCommunity?: any;
   openChannelWithEntity?: any;
 };
 
@@ -37,8 +35,6 @@ const HoverPopup = ({
   children = null,
   userId,
   profileSource,
-  setCurrentCommunityId,
-  setCurrentCommunity,
   ...props
 }: Props) => {
   const classes: any = useStyles();
@@ -277,9 +273,7 @@ const mapStateToProps = ({ user }: StoreState): {} => ({
 const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
-      openChannelWithEntity: chatActions.openChannelWithEntity,
-      setCurrentCommunityId: chatActions.setCurrentCommunityId,
-      setCurrentCommunity: chatActions.setCurrentCommunity
+      openChannelWithEntity: chatActions.openChannelWithEntity
     },
     dispatch
   );

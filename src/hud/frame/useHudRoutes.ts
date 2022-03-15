@@ -1,8 +1,8 @@
+import { setCurrentCommunityIdAction } from 'actions/chat';
 import { push } from 'connected-react-router';
-import { Dispatch, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Action } from 'redux';
-import { CampaignState } from '../../reducers/campaign';
+import { useOrderedChannelList } from 'features/chat';
+import { useCallback, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 import { CREATE_POST_PATHNAME, EDIT_POST_PATHNAME_PREFIX } from '../../routeConstants';
 import {
   CHAT_MAIN_AREA,
@@ -32,7 +32,6 @@ import {
   SHARE_NOTES_AREA
 } from '../navigationState/hudNavigation';
 import { setSelectedMainSubArea } from '../navigationState/hudNavigationActions';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 type TAreaIds = {
   mainArea: string;
@@ -124,18 +123,14 @@ const areasToUrl: Record<string, Record<string, string>> = {
  * Updates the selected HUD area based on the current route.
  */
 const useHudRoutes = () => {
-  const pathname: string = useSelector((state: any) => state.router.location.pathname);
-  const query = useSelector((state: any) => state.router.location.query);
+  const pathname: string = useAppSelector((state) => state.router.location.pathname);
+  const query = useAppSelector((state) => state.router.location.query);
+  const selectedChannelId = useAppSelector((state) => state.chat.data.selectedChannelId);
+  const isHud: boolean | null = useAppSelector((state) => state.campaign.hud);
+  const selectedMainSubAreas = useAppSelector((state) => state.hudNavigation.selectedMainSubAreas);
+  const orderedDMChannelList = useOrderedChannelList();
 
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
-
-  const dispatch: Dispatch<Action> = useDispatch();
-
-  const selectedMainSubAreas = useSelector(
-    (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainSubAreas
-  );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isHud && pathname) {
@@ -175,14 +170,22 @@ const useHudRoutes = () => {
         dispatch(setSelectedMainSubArea(areaIds.mainArea, areaIds.mainSubArea));
       }
     }
-  }, [pathname, isHud, query]);
+  }, [pathname, isHud, query, dispatch]);
 
-  const setHudArea = (mainArea: string, mainSubArea?: string) => {
-    const url = areasToUrl[mainArea][mainSubArea || selectedMainSubAreas[mainArea]];
-    if (url) {
-      dispatch(push(url));
-    }
-  };
+  const setHudArea = useCallback(
+    (mainArea: string, mainSubArea?: string) => {
+      const url = areasToUrl[mainArea][mainSubArea || selectedMainSubAreas[mainArea]];
+      if (!url) return;
+
+      if (url.includes(areasToUrl[CHAT_MAIN_AREA][CHAT_AREA])) {
+        dispatch(setCurrentCommunityIdAction(0));
+        dispatch(push(`${url}/${selectedChannelId || orderedDMChannelList[0]}`));
+      } else {
+        dispatch(push(url));
+      }
+    },
+    [dispatch, orderedDMChannelList, selectedChannelId, selectedMainSubAreas]
+  );
 
   return setHudArea;
 };

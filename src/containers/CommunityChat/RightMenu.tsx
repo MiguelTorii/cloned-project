@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -14,9 +14,10 @@ import useStyles from './_styles/rightMenu';
 import ShareLinkWidget from 'components/ShareLinkWidget/ShareLinkWidget';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
 import { buildPath } from 'utils/helpers';
-import { useChannelMetadataById, useChatShareLink } from 'features/chat';
+import { useChannelMetadataById } from 'features/chat';
 import { selectLocalById } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
+import { getChatShareLink } from 'utils/chat';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
@@ -30,10 +31,11 @@ type Props = {
 const RightMenu = ({ channelId, isCommunityChat }: Props) => {
   const classes = useStyles();
   const { data: channelMetadata } = useChannelMetadataById(channelId);
-  const { data: shareLink } = useChatShareLink(channelId);
   const local = useAppSelector((state) => selectLocalById(state, channelId));
 
   const users = channelMetadata?.users || local?.users || [];
+
+  const shareLink = getChatShareLink(channelId);
 
   return (
     <Box display="flex" flexDirection="column" className={classes.container}>
