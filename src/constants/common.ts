@@ -214,3 +214,4 @@ export const QuillModules = {
 export const FEED_CLEARED_INDEX = -1;
 export const POST_PREVIEW_INTERVAL = 5 * 1000;
 export const POST_PREVIEW_THRESHOLD_PX = '-50px';
+export const VIRAL_LOOP_SOURCE_PREFIX = 'viral-loop-';

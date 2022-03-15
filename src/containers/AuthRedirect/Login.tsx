@@ -140,7 +140,6 @@ const Login = ({ role, setScreen, school, signIn, isLoginAsExternalUser }) => {
               className={classes.loginButton}
               variant="contained"
               type="submit"
-              onClick={onLogin}
               color="primary"
             >
               Login

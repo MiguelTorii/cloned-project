@@ -16,6 +16,7 @@ import { apiSetExpertMode, apiGetExpertMode, apiJoinWithReferralCode } from 'api
 import { showErrorModal } from './dialog';
 import { INSIGHTS_DASHBOARD_URI, STORAGE_KEYS } from 'constants/app';
 import { showNotification } from './notifications';
+import { apiLogViralLoopEmailLogin } from 'api/viral_loop';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST
@@ -121,6 +122,14 @@ export const signIn =
           user
         })
       );
+
+      // Check if this is sign-in from viral loop email.
+      // If so, call a logging api.
+      const viralLoopType = store.get(STORAGE_KEYS.VIRAL_LOOP_TYPE);
+
+      if (viralLoopType) {
+        apiLogViralLoopEmailLogin(Number(user.userId), viralLoopType);
+      }
 
       return dispatch(push('/'));
     } catch (err: any) {

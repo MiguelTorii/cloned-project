@@ -1,12 +1,18 @@
 import React, { useEffect, useMemo } from 'react';
+import { useHistory, withRouter } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import store from 'store';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Box, CircularProgress } from '@material-ui/core';
-import { useHistory, withRouter } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+
 import withRoot from '../../withRoot';
 import Auth from '../../containers/AuthRedirect/Auth';
 import { masquerade } from '../../actions/user';
+import { VIRAL_LOOP_SOURCE_PREFIX } from 'constants/common';
+import { STORAGE_KEYS } from 'constants/app';
+import { apiLogViralLoopEmailClicked } from 'api/viral_loop';
 
 const styles = () => ({});
 
@@ -26,12 +32,13 @@ const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => 
   const dispatch = useDispatch();
   const history = useHistory();
   const userData = useSelector((state) => (state as any).user.data);
-  const { userId, refreshToken, email } = useMemo(() => {
+  const { userId, refreshToken, email, source } = useMemo(() => {
     const query = new URLSearchParams(search);
     return {
       userId: query.get('user_id'),
       refreshToken: query.get('refresh_token'),
-      email: query.get('acting_user_email')
+      email: query.get('acting_user_email'),
+      source: query.get('source')
     };
   }, [search]);
   const isMasquerading = !!(pathname === '/auth' && userId && refreshToken && email);
@@ -57,6 +64,19 @@ const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => 
       </Box>
     );
   }
+
+  // Check if the page is visited from viral loop email.
+  useEffect(() => {
+    if (userId && source && source.startsWith(VIRAL_LOOP_SOURCE_PREFIX)) {
+      const viralLoopType = source.substring(VIRAL_LOOP_SOURCE_PREFIX.length);
+
+      // Store `viralLoopType` for checking after login.
+      store.set(STORAGE_KEYS.VIRAL_LOOP_TYPE, viralLoopType);
+
+      // Call Logging API
+      apiLogViralLoopEmailClicked(Number(userId), viralLoopType);
+    }
+  }, [userId, source]);
 
   /** *
    * Logic for masquerading ends
