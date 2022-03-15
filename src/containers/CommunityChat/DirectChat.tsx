@@ -65,8 +65,8 @@ const DirectChat = ({ width }: Props) => {
   const iconClasses = useIconClasses();
 
   const onNewChannel = useCallback(() => {
-    handleNewChannel(true, openChannels)(dispatch);
-  }, [dispatch, openChannels]);
+    dispatch(handleNewChannel(true));
+  }, [dispatch]);
 
   const handleOpenRightPanel = useCallback(() => {
     if (['xs'].includes(width)) {
@@ -84,13 +84,9 @@ const DirectChat = ({ width }: Props) => {
         setLeftSpace(0);
       }
 
-      if (newChannel) {
-        handleNewChannel(false, openChannels)(dispatch);
-      }
-
       dispatch(setCurrentChannelSidAction(sid));
     },
-    [dispatch, width, newChannel, openChannels]
+    [dispatch, width]
   );
 
   const handleRemove = useCallback(async (sid) => {

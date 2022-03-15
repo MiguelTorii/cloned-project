@@ -14,6 +14,8 @@ import type { UserState } from '../../reducers/user';
 import { getInitials } from '../../utils/chat';
 import SelectClassmates from './SelectClassmates';
 import { useChatClient } from 'features/chat';
+import { handleNewChannel, messageLoadingAction } from 'actions/chat';
+import { useAppDispatch } from 'redux/store';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -99,7 +101,6 @@ const styles = (theme) => ({
 type Props = {
   classes?: Record<string, any>;
   onClosePopover?: (...args: Array<any>) => any;
-  onOpenChannel?: (id: string) => void;
   setIsOpen?: (...args: Array<any>) => any;
   createMessage?: Record<string, any>;
   handleClearCreateMessage?: (...args: Array<any>) => any;
@@ -112,7 +113,6 @@ const CreateChatChannelInput = ({
   onClosePopover,
   createMessage,
   setIsOpen,
-  onOpenChannel,
   handleClearCreateMessage,
   permission,
   handleUpdateGroupName
@@ -126,6 +126,7 @@ const CreateChatChannelInput = ({
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [channelName, setChannelName] = useState('');
+  const dispatch = useAppDispatch();
 
   const {
     data: { userId, schoolId }
@@ -196,7 +197,7 @@ const CreateChatChannelInput = ({
   const onSubmit = useCallback(
     async (params: any) => {
       setIsLoading(true);
-
+      dispatch(messageLoadingAction(true));
       try {
         const userIds = users.map((item) => Number(item.userId));
         const { chatId } = await createChannel({
@@ -206,42 +207,43 @@ const CreateChatChannelInput = ({
           thumbnailUrl: ''
         });
 
-        if (chatId !== '') {
-          try {
-            const channel = await client?.getChannelBySid(chatId);
-
-            if (channel) {
-              if (channelName.length && isShow) {
-                const res = await channel?.updateFriendlyName(channelName);
-                await handleUpdateGroupName(res);
-              }
-
-              if (createMessage) {
-                await sendMessage({
-                  message: createMessage.message,
-                  ...createMessage.messageAttributes,
-                  chatId: channel.sid
-                });
-              }
-
-              onOpenChannel?.(channel.sid);
-            }
-          } catch (e) {
-            setIsLoading(false);
-          }
-        } else {
-          setIsLoading(false);
+        if (!chatId) {
+          throw new Error('No chat ID returned.');
         }
+
+        const channel = await client?.getChannelBySid(chatId);
+
+        if (!channel) {
+          throw new Error('No channel returned.');
+        }
+
+        if (channelName.length && isShow) {
+          const res = await channel?.updateFriendlyName(channelName);
+          await handleUpdateGroupName?.(res);
+        }
+
+        if (createMessage) {
+          await sendMessage({
+            message: createMessage.message,
+            ...createMessage.messageAttributes,
+            chatId: channel.sid
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        dispatch(messageLoadingAction(false));
       } finally {
+        dispatch(handleNewChannel(false));
         setIsLoading(false);
+        // Handling of global chat loading tate in useChatSubscription
       }
     },
     [
+      dispatch,
       users,
       chatType,
       client,
       name,
-      onOpenChannel,
       type,
       channelName,
       createMessage,

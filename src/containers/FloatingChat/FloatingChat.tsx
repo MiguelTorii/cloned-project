@@ -165,10 +165,10 @@ const FloatingChat = ({
     data: { userId, profileImage }
   } = user;
   const handleNewChannelOpen = useCallback(() => {
-    handleNewChannel(true);
+    handleNewChannel?.(true);
   }, [handleNewChannel]);
   const handleNewChannelClose = useCallback(() => {
-    handleNewChannel(false);
+    handleNewChannel?.(false);
   }, [handleNewChannel]);
 
   const handleOpenChannel = (channel) => {

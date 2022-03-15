@@ -75,7 +75,7 @@ const LeftMenu = ({
 
     dispatch(setOneTouchSendAction(false));
 
-    handleNewChannel(false, openChannels)(dispatch);
+    dispatch(handleNewChannel(false));
     // TODO Remove and only use channelId
     const lastChannelSid = localStorage.getItem('currentDMChannel') || channels?.[0].sid;
     if (lastChannelSid) {
@@ -190,7 +190,6 @@ const LeftMenu = ({
             <CreateChatChannelInput
               setIsOpen={setIsOpen}
               onClosePopover={handleClose}
-              onOpenChannel={onOpenChannel}
               permission={permission}
               handleUpdateGroupName={handleUpdateGroupName}
             />

@@ -6,14 +6,13 @@ import { Channel } from 'twilio-chat';
 import { usePrevious } from 'hooks';
 
 import moment from 'moment';
-import { getGroupMembers, getShareLink } from 'api/chat';
+import { getGroupMembers } from 'api/chat';
 import { getGroupTitle } from 'utils/chat';
 
-import { useAppDispatch, useAppSelector } from 'redux/store';
+import { AppDispatch, AppGetState, useAppDispatch, useAppSelector } from 'redux/store';
 import {
   fetchMembers,
   handleInitChat,
-  messageLoadingAction,
   newMessage,
   removeMember,
   setCurrentChannelSidAction,
@@ -30,8 +29,7 @@ import {
   Unreads,
   useChatClient,
   useOrderedChannelList,
-  useChannels,
-  SHARE_LINK_KEY
+  useChannels
 } from 'features/chat';
 
 export const useChatSubscription = () => {
@@ -104,6 +102,13 @@ const usePreloadChat = () => {
   }, [client, queryClient, userId]);
 };
 
+const handleChannelJoined = (sid: string) => (dispatch: AppDispatch, getState: AppGetState) => {
+  const messageLoading = getState().chat.data.messageLoading;
+  if (messageLoading) {
+    dispatch(setCurrentChannelSidAction(sid));
+  }
+};
+
 const useChannelJoinedSubscription = () => {
   const client = useChatClient();
   const queryClient = useQueryClient();
@@ -116,16 +121,16 @@ const useChannelJoinedSubscription = () => {
     }
 
     client.on('channelJoined', async (channel) => {
-      if (!isPaginatorDone()) {
-        return;
+      if (!isPaginatorDone()) return;
+
+      const channels = queryClient.getQueryData<Channel[]>(QUERY_KEY_CHANNELS);
+
+      if (!channels?.some((c) => c.sid === channel.sid)) {
+        queryClient.setQueryData<Channel[]>(QUERY_KEY_CHANNELS, (currentChannels) => [
+          ...(currentChannels || []),
+          channel
+        ]);
       }
-
-      queryClient.setQueryData<Channel[]>(QUERY_KEY_CHANNELS, (currentChannels) => [
-        ...(currentChannels || []),
-        channel
-      ]);
-
-      dispatch(messageLoadingAction(true));
 
       queryClient.setQueryData<Unreads>(UNREAD_COUNT_QUERY_KEY, (currentUnreads) => {
         const newUnreads = produce(currentUnreads, (draft) => {
@@ -139,8 +144,6 @@ const useChannelJoinedSubscription = () => {
       const isCommunityChat = channel.attributes.community_id;
 
       if (isCommunityChat) return;
-
-      queryClient.prefetchQuery([SHARE_LINK_KEY, channel.sid], () => getShareLink(channel.sid));
 
       setTimeout(async () => {
         // Put new channel first
@@ -169,7 +172,7 @@ const useChannelJoinedSubscription = () => {
           queryClient.setQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA, nextMetadata);
           // TODO Improve performance when creating new chat
           // Currently there's too big of a delay when changing channels and the previously selected channel still shows for a second
-          dispatch(setCurrentChannelSidAction(channel.sid));
+          dispatch(handleChannelJoined(channel.sid));
         }
       }, 1500);
     });
@@ -408,6 +411,7 @@ const useMemberLeftSubscription = () => {
         );
       }
 
+      // TODO remove channel when a user leaves and there's only one user
       const metadata = queryClient.getQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA);
       if (metadata) {
         const nextMetadata = produce(metadata, (draft) => {

@@ -1,12 +1,13 @@
 /* eslint-disable import/prefer-default-export */
-import uuidv4 from 'uuid/v4';
-import update from 'immutability-helper';
 import { push } from 'connected-react-router';
+import update from 'immutability-helper';
+import { Client } from 'twilio-chat';
+import uuidv4 from 'uuid/v4';
 
-import { Channel, Client } from 'twilio-chat';
-
+import { chatActions } from 'constants/action-types';
 import {
   getGroupMembers,
+  getShareLink,
   muteChannel,
   unmuteChannel,
   renewTwilioToken,
@@ -14,13 +15,14 @@ import {
   createChannel,
   apiUpdateChat
 } from 'api/chat';
-import store from 'redux/store';
-import { chatActions } from 'constants/action-types';
+
 import type { Action } from 'types/action';
 import type { Dispatch } from 'types/store';
-import { ChannelWrapper } from 'reducers/chat';
-import { ChatCommunityData } from 'api/models/APICommunity';
+
+import { ChatCommunityData, ChatCommunity } from 'api/models/APICommunity';
 import { ChannelMetadata } from 'features/chat';
+import { ChannelWrapper, CurrentCommunity } from 'reducers/chat';
+import { AppGetState } from 'redux/store';
 
 import { uploadMedia } from './user';
 
@@ -341,7 +343,8 @@ export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction());
 };
 export const handleNewChannel =
-  (newChannel: boolean, openChannels: Channel[]) => (dispatch: Dispatch) => {
+  (newChannel: boolean) => (dispatch: Dispatch, getState: AppGetState) => {
+    const openChannels = getState().chat.data.openChannels;
     const availableSlots = getAvailableSlots(window.innerWidth);
     const newState = update(openChannels || [], {
       $apply: (b) => {
