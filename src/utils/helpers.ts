@@ -1,7 +1,9 @@
 import moment from 'moment';
 import _ from 'lodash';
 import qs from 'query-string';
-import { TIME_ZONE } from '../constants/app';
+import { convert } from 'html-to-text';
+
+import { TIME_ZONE } from 'constants/app';
 
 export const getPointsText = (points: number) =>
   points ? Math.floor(points).toLocaleString() : '0';
@@ -63,10 +65,8 @@ export const extractTextFromHtml = (html) => {
   if (!html) {
     return '';
   }
-  const tempDivElement = document.createElement('div');
-  tempDivElement.innerHTML = html;
-  const result = tempDivElement.textContent || tempDivElement.innerText || '';
-  return _.trim(result);
+
+  return convert(html);
 };
 
 export const englishIdFromNumber = (aNumber: number) => {
