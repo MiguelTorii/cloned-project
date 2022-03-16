@@ -320,7 +320,7 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
             <TabPanel value={value} index={1} {...a11yProps(1)}>
               <Question
                 classList={selectedClasses}
-                currentSelectedClassId={classId}
+                classId={classId}
                 sectionId={sectionId}
                 currentTag={value}
                 questionId={questionId}
