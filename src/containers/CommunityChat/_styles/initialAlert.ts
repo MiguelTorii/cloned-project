@@ -5,13 +5,18 @@ const useStyles = makeStyles((theme: any) => ({
     margin: theme.spacing(0, 6)
   },
   avatarProfile: {
-    backgroundColor: theme.circleIn.palette.brand,
     marginBottom: theme.spacing(2),
-    color: 'white',
-    fontSize: 40,
-    fontWeight: 600,
     width: 80,
     height: 80
+  },
+  iconProfile: {
+    backgroundColor: theme.circleIn.palette.brand,
+    fontWeight: 600,
+    color: 'white',
+    fontSize: 40
+  },
+  imageProfile: {
+    backgroundColor: theme.circleIn.palette.profilebgColor
   },
   members: {
     fontWeight: 700

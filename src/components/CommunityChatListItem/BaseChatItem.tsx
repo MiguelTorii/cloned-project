@@ -1,5 +1,5 @@
+import clsx from 'clsx';
 import { memo } from 'react';
-import cx from 'classnames';
 
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
@@ -47,7 +47,7 @@ const BaseChatItem = ({
 
   return (
     <ButtonBase
-      className={cx(classes.root, {
+      className={clsx(classes.root, {
         [classes.dark]: dark,
         [classes.selected]: selected
       })}
@@ -58,7 +58,10 @@ const BaseChatItem = ({
         isOnline={isOnline}
         bgColorPath={dark ? 'circleIn.palette.feedBackground' : 'circleIn.palette.appBar'}
       >
-        <Avatar className={classes.avatarProfile} src={imageProfile}>
+        <Avatar
+          className={clsx(imageProfile ? classes.avatarProfile : classes.iconProfile)}
+          src={imageProfile}
+        >
           {isDirectChat ? initials || <GroupIcon /> : <GroupIcon />}
         </Avatar>
       </OnlineBadge>

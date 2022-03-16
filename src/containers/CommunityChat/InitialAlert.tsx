@@ -12,6 +12,7 @@ import { CommunityChannelData } from 'reducers/chat';
 import useStyles from './_styles/initialAlert';
 import { ChannelMetadata } from 'features/chat';
 import { Channel } from 'twilio-chat';
+import clsx from 'clsx';
 
 export const DefaultInitialAlert = ({
   metadata,
@@ -29,7 +30,13 @@ export const DefaultInitialAlert = ({
 
   return (
     <Box className={classes.root}>
-      <Avatar className={classes.avatarProfile} src={thumbnail}>
+      <Avatar
+        className={clsx(
+          classes.avatarProfile,
+          thumbnail ? classes.imageProfile : classes.iconProfile
+        )}
+        src={thumbnail}
+      >
         {isGroupChat ? <GroupIcon /> : initials}
       </Avatar>
       <Typography className={classes.members} variant="h5">
@@ -71,7 +78,7 @@ export const CommunityInitialAlert = ({
     </Box>
   ) : (
     <Box className={classes.root}>
-      <CommunityGroupIcon />
+      <CommunityGroupIcon className={classes.avatarProfile} />
       <Typography className={classes.members} variant="h5">
         #{selectedChannel?.chat_name}
       </Typography>

@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+
 import { dialogStyle } from '../../Dialog/Dialog';
 
 const useStyles = makeStyles((theme: any) => ({
@@ -28,9 +29,12 @@ const useStyles = makeStyles((theme: any) => ({
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
-  avatarProfile: {
+  iconProfile: {
     backgroundColor: theme.circleIn.palette.brand,
     color: 'white'
+  },
+  avatarProfile: {
+    backgroundColor: theme.circleIn.palette.profilebgColor
   },
   grow: {
     flex: 1,
