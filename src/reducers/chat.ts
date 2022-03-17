@@ -242,6 +242,9 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     case chatActions.CHAT_START_LOADING:
       return { ...state, isLoading: true };
 
+    case chatActions.CHAT_END_LOADING:
+      return { ...state, isLoading: false };
+
     case chatActions.OPEN_CREATE_CHAT_GROUP_CHANNEL_REQUEST:
       return update(state, {
         data: {

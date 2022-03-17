@@ -64,8 +64,13 @@ export const newMessage = ({ message }): Action => ({
     message
   }
 });
-const startLoading = (): Action => ({
+
+export const startLoading = (): Action => ({
   type: chatActions.CHAT_START_LOADING
+});
+
+export const endLoading = (): Action => ({
+  type: chatActions.CHAT_END_LOADING
 });
 
 const initLocal = ({ local }: { local: Record<string, ChannelWrapper> }): Action => ({

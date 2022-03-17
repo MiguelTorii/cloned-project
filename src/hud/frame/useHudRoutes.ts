@@ -2,7 +2,7 @@ import { setCurrentCommunityIdAction } from 'actions/chat';
 import { push } from 'connected-react-router';
 import { useOrderedChannelList } from 'features/chat';
 import { useCallback, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'redux/store';
+import { AppDispatch, AppGetState, useAppDispatch, useAppSelector } from 'redux/store';
 import { CREATE_POST_PATHNAME, EDIT_POST_PATHNAME_PREFIX } from '../../routeConstants';
 import {
   CHAT_MAIN_AREA,
@@ -125,10 +125,9 @@ const areasToUrl: Record<string, Record<string, string>> = {
 const useHudRoutes = () => {
   const pathname: string = useAppSelector((state) => state.router.location.pathname);
   const query = useAppSelector((state) => state.router.location.query);
-  const selectedChannelId = useAppSelector((state) => state.chat.data.selectedChannelId);
   const isHud: boolean | null = useAppSelector((state) => state.campaign.hud);
   const selectedMainSubAreas = useAppSelector((state) => state.hudNavigation.selectedMainSubAreas);
-  const orderedDMChannelList = useOrderedChannelList();
+  const DMChannelList = useOrderedChannelList();
 
   const dispatch = useAppDispatch();
 
@@ -178,16 +177,35 @@ const useHudRoutes = () => {
       if (!url) return;
 
       if (url.includes(areasToUrl[CHAT_MAIN_AREA][CHAT_AREA])) {
-        dispatch(setCurrentCommunityIdAction(0));
-        dispatch(push(`${url}/${selectedChannelId || orderedDMChannelList[0]}`));
+        dispatch(handleChatNavigate(url, DMChannelList));
       } else {
         dispatch(push(url));
       }
     },
-    [dispatch, orderedDMChannelList, selectedChannelId, selectedMainSubAreas]
+    [DMChannelList, dispatch, selectedMainSubAreas]
   );
 
   return setHudArea;
 };
+
+const handleChatNavigate =
+  (url: string, channelIds: string[]) => (dispatch: AppDispatch, getState: AppGetState) => {
+    const communitiesWithChannels = getState().chat.data.communityChannels;
+
+    const community = communitiesWithChannels?.[0];
+    const communityId = community?.courseId || 0;
+
+    dispatch(setCurrentCommunityIdAction(communityId));
+
+    // If user is in chat page, redirection to correct chat is handled by previous hook
+    if (getState().router.location.pathname.includes('/chat')) return;
+
+    if (communityId) {
+      const chatId = community.channels[0].channels[0].chat_id;
+      dispatch(push(`${url}/${chatId}`));
+    } else {
+      dispatch(push(channelIds?.length ? `${url}/${channelIds[0]}` : url));
+    }
+  };
 
 export default useHudRoutes;

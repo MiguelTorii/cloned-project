@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import produce from 'immer';
 import { objectToCamel } from 'ts-case-convert';
@@ -31,6 +31,7 @@ import {
   useOrderedChannelList,
   useChannels
 } from 'features/chat';
+import { useCommunityChatAPI } from '../api/communityChannels';
 
 export const useChatSubscription = () => {
   useHandleClient();
@@ -85,21 +86,27 @@ const usePreloadChat = () => {
   const client = useChatClient();
   const queryClient = useQueryClient();
   const userId = useAppSelector((state) => state.user.data.userId);
+  const dispatch = useAppDispatch();
+  const preloadCommunities = useCommunityChatAPI();
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
     const preloadChat = async () => {
-      if (!userId || !client) {
+      if (!userId || !client || hasLoaded) {
         return;
       }
 
-      Promise.all([
+      await Promise.all([
         queryClient.prefetchQuery(QUERY_KEY_CHANNELS, async () => getChannelsFromClient(client)),
-        queryClient.prefetchQuery(QUERY_KEY_CHANNEL_METADATA, getTransformedChannelsMetada)
+        queryClient.prefetchQuery(QUERY_KEY_CHANNEL_METADATA, getTransformedChannelsMetada),
+        // TODO Reimplement in react-query
+        preloadCommunities()
       ]);
+      setHasLoaded(true);
     };
 
     preloadChat();
-  }, [client, queryClient, userId]);
+  }, [client, dispatch, hasLoaded, preloadCommunities, queryClient, userId]);
 };
 
 const handleChannelJoined = (sid: string) => (dispatch: AppDispatch, getState: AppGetState) => {
