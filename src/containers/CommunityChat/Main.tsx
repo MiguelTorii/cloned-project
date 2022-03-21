@@ -533,7 +533,7 @@ const Main = ({
     loadingErrorMessage()
   ) : (
     <div className={classes.root}>
-      {channel && channelMetadata && (
+      {channel && (channelMetadata || local) && (
         <ChatHeader
           channel={channel}
           currentUserName={`${firstName} ${lastName}`}

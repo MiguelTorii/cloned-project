@@ -87,7 +87,7 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/getTheMobileApp': { mainArea: PROFILE_MAIN_AREA, mainSubArea: GET_THE_MOBILE_APP_AREA }
 };
 
-const areasToUrl: Record<string, Record<string, string>> = {
+export const areasToUrl: Record<string, Record<string, string>> = {
   [PROFILE_MAIN_AREA]: {
     [ABOUT_ME_AREA]: '/profile',
     [POINTS_HISTORY_AREA]: '/pointsHistory',
@@ -198,7 +198,7 @@ const handleChatNavigate =
     dispatch(setCurrentCommunityIdAction(communityId));
 
     // If user is in chat page, redirection to correct chat is handled by previous hook
-    if (getState().router.location.pathname.includes('/chat')) return;
+    if (getState().router.location.pathname.includes(areasToUrl[CHAT_MAIN_AREA][CHAT_AREA])) return;
 
     if (communityId) {
       const chatId = community.channels[0].channels[0].chat_id;

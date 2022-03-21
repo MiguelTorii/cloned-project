@@ -1,10 +1,13 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
-import { UserState } from '../../reducers/user';
-import Tooltip from '../Tooltip/Tooltip';
-import BatchMessageDialog from '../BatchMessageDialog/BatchMessageDialog';
-import { PERMISSIONS } from '../../constants/common';
+
+import { UserState } from 'reducers/user';
+import { PERMISSIONS } from 'constants/common';
+
+import Tooltip from 'containers/Tooltip/Tooltip';
+import BatchMessageDialog from 'containers/BatchMessageDialog/BatchMessageDialog';
+
 import useStyles from './_styles/batchMessage';
 
 const BatchMessage = ({
@@ -37,7 +40,7 @@ const BatchMessage = ({
     closeNewChannel();
   }, [closeNewChannel]);
 
-  if (!canBatchMessage || pathname !== '/chat') {
+  if (!canBatchMessage || pathname !== CHAT_URL) {
     return null;
   }
 

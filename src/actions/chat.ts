@@ -18,11 +18,12 @@ import {
 
 import type { Action } from 'types/action';
 import type { Dispatch } from 'types/store';
-
-import { ChatCommunityData, ChatCommunity } from 'api/models/APICommunity';
+import { ChannelWrapper } from 'reducers/chat';
+import { ChatCommunityData } from 'api/models/APICommunity';
+import { inChatPage } from 'utils/chat';
+import { CHAT_URL } from 'constants/chat';
 import { ChannelMetadata } from 'features/chat';
-import { ChannelWrapper, CurrentCommunity } from 'reducers/chat';
-import { AppGetState } from 'redux/store';
+import store, { AppGetState } from 'redux/store';
 
 import { uploadMedia } from './user';
 
@@ -205,7 +206,7 @@ const setCurrentChannelAction = ({
 
 export const setCurrentChannelSidAction =
   (selectedChannelId: string | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
-    if (selectedChannelId && getState().router.location.pathname.includes('/chat')) {
+    if (selectedChannelId && inChatPage(getState)) {
       dispatch(push(`/chat/${selectedChannelId}`));
     }
 
@@ -224,6 +225,14 @@ export const setCurrentCommunityChannelIdAction = (currentChannelId: string | nu
   }
 });
 
+export const setCurrentCommunityChannel =
+  (currentChannel: Channel) => async (dispatch: Dispatch, getState: typeof store.getState) => {
+    dispatch(setCurrentCommunityChannelIdAction(currentChannel.sid));
+    if (inChatPage(getState) && getState().chat.data.currentCommunityId) {
+      dispatch(push(`/chat/${currentChannel.sid}`));
+    }
+  };
+
 export const setCurrentCommunityIdAction =
   (newCommunityId: number | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
     const selectedChannelId = getState().chat.data.selectedChannelId;
@@ -239,7 +248,7 @@ export const setCurrentCommunityIdAction =
       }
     });
 
-    if (!getState().router.location.pathname.includes('/chat')) return;
+    if (!inChatPage(getState)) return;
 
     /**
      * TODO Replace with approach that handle communities properly:
@@ -314,31 +323,30 @@ export const fetchMembers = async (sid): Promise<ChannelMetadata['users']> => {
   return members;
 };
 
-export const setCurrentCommunityChannel =
-  (currentChannel: Channel) => async (dispatch: Dispatch, getState: typeof store.getState) => {
-    dispatch(setCurrentCommunityChannelIdAction(currentChannel.sid));
-    if (getState().router.location.pathname.includes('/chat')) {
-      dispatch(push(`/chat/${currentChannel.sid}`));
-    }
-    const local = getState().chat.data.local;
-    if (currentChannel) {
-      if (!local[currentChannel.sid]) {
-        const members = await fetchMembers(currentChannel.sid);
+export const loadCommunityChannelData =
+  (channelId: string, channels: Channel[]) =>
+  async (dispatch: Dispatch, getState: typeof store.getState) => {
+    if (!inChatPage(getState)) return;
 
-        /**
-         * TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
-         * user's selected navigation state after some arbitrary amount of time,
-         * i.e. after we have finished "awaiting" the promise result.
-         * TODO Currently community channels users are held in redux, should be changed to react-query but channelMetadata doesn't fit the community channel
-         */
-        dispatch(
-          updateMembers({
-            members,
-            channelId: currentChannel.sid
-          })
-        );
-      }
-    }
+    const local = getState().chat.data.local;
+    const channel = channels.find((c) => c.sid === channelId);
+
+    if (!channel || local[channel.sid]) return;
+
+    const members = await fetchMembers(channelId);
+
+    /**
+     * TODO CHAT_REFACTOR: Move logic into a chat hook and stop resetting the
+     * user's selected navigation state after some arbitrary amount of time,
+     * i.e. after we have finished "awaiting" the promise result.
+     * TODO Currently community channels users are held in redux, should be changed to react-query but channelMetadata doesn't fit the community channel
+     */
+    dispatch(
+      updateMembers({
+        members,
+        channelId
+      })
+    );
   };
 
 export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
@@ -410,7 +418,7 @@ export const openChannelWithEntity =
         if (entityVideo) {
           dispatch(push(`/video-call/${chatId}`));
         } else {
-          dispatch(push('/chat'));
+          dispatch(push(CHAT_URL));
         }
       }
     }

@@ -13,6 +13,7 @@ import { AppDispatch, AppGetState, useAppDispatch, useAppSelector } from 'redux/
 import {
   fetchMembers,
   handleInitChat,
+  loadCommunityChannelData,
   newMessage,
   removeMember,
   setCurrentChannelSidAction,
@@ -32,6 +33,7 @@ import {
   useChannels
 } from 'features/chat';
 import { useCommunityChatAPI } from '../api/communityChannels';
+import { CHAT_URL } from 'constants/chat';
 
 export const useChatSubscription = () => {
   useHandleClient();
@@ -89,6 +91,10 @@ const usePreloadChat = () => {
   const dispatch = useAppDispatch();
   const preloadCommunities = useCommunityChatAPI();
   const [hasLoaded, setHasLoaded] = useState(false);
+  const currentCommunityChannelId = useAppSelector(
+    (state) => state.chat.data.currentCommunityChannelId
+  );
+  const { data: channels } = useChannels();
 
   useEffect(() => {
     const preloadChat = async () => {
@@ -107,6 +113,12 @@ const usePreloadChat = () => {
 
     preloadChat();
   }, [client, dispatch, hasLoaded, preloadCommunities, queryClient, userId]);
+
+  // TODO Reimplement in react-query
+  useEffect(() => {
+    if (!currentCommunityChannelId || !channels?.length) return;
+    dispatch(loadCommunityChannelData(currentCommunityChannelId, channels));
+  }, [channels, currentCommunityChannelId, dispatch]);
 };
 
 const handleChannelJoined = (sid: string) => (dispatch: AppDispatch, getState: AppGetState) => {
@@ -275,7 +287,7 @@ const useChannelMessageAddedSubscription = () => {
        */
 
       // Do not set new unread if user is looking at current chat
-      if (pathname === '/chat' && message.channel.sid !== selectedChannelId) {
+      if (pathname === CHAT_URL && message.channel.sid !== selectedChannelId) {
         // Update message count
         queryClient.invalidateQueries([UNREAD_COUNT_QUERY_KEY, message.channel.sid]);
         // Other unreadCount hooks use an API call that fetches all channels' unread messages

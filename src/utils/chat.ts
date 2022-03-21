@@ -5,6 +5,8 @@ import parse from 'html-react-parser';
 import { ChatMessages, ChatUser } from '../types/models';
 import { DetailedChatUser } from 'reducers/chat';
 import { ChannelMetadata } from 'features/chat';
+import { AppGetState } from 'redux/store';
+import { CHAT_URL } from 'constants/chat';
 
 export const getTitle = (
   channel: Channel,
@@ -307,3 +309,6 @@ export const getChatShareLink = (id?: string) => {
   // In case ID is undefined in chat for some reason
   return `${window.location.href}`;
 };
+
+export const inChatPage = (getState: AppGetState) =>
+  getState().router.location.pathname.includes(CHAT_URL);

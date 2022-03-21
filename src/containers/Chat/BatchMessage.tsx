@@ -8,6 +8,7 @@ import Tooltip from '../Tooltip/Tooltip';
 import BatchMessageDialog from '../BatchMessageDialog/BatchMessageDialog';
 import { PERMISSIONS } from '../../constants/common';
 import { closeNewChannelAction } from '../../actions/chat';
+import { CHAT_URL } from 'constants/chat';
 
 const useStyles = makeStyles((theme) => ({
   selectClasses: {
@@ -41,7 +42,7 @@ const BatchMessage = ({
     dispatch(closeNewChannelAction());
   }, [dispatch]);
 
-  if (!canBatchMessage || pathname !== '/chat') {
+  if (!canBatchMessage || pathname !== CHAT_URL) {
     return null;
   }
 
