@@ -1,3 +1,4 @@
 export const URL = {
-  PROFILE: '/profile'
+  PROFILE: '/profile',
+  CHAT: '/chat'
 };

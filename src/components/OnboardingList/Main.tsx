@@ -8,6 +8,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
+import { URL } from 'constants/navigation';
 import type {
   OnboardingList as OnboardingListType,
   OnboardingListItem as OnboardingListItemType
@@ -20,7 +21,7 @@ import type { State as StoreState } from '../../types/state';
 
 const ID_TO_URL = {
   1: '/reminders',
-  2: '/chat',
+  2: URL.CHAT,
   3: '/store',
   4: '/create/flashcards'
 };

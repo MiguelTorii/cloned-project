@@ -37,10 +37,6 @@ const fetchCommunityChannels = async (communities) => {
 
 export const useCommunityChatAPI = () => {
   const dispatch = useAppDispatch();
-  const currentCommunityId = useAppSelector((state) => state.chat.data.currentCommunityId);
-  const currentCommunityChannelId = useAppSelector(
-    (state) => state.chat.data.currentCommunityChannelId
-  );
 
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   const fetchCommunities = useCallback(async () => {
@@ -54,11 +50,7 @@ export const useCommunityChatAPI = () => {
     );
     dispatch(setCommunitiesAction(nonEmptyCommunities));
     dispatch(setCommunityChannelsAction(communityChannels));
-    if (currentCommunityId && !currentCommunityChannelId && nonEmptyCommunities.length > 0) {
-      const defaultCommunity = nonEmptyCommunities[0].community;
-      dispatch(setCurrentCommunityIdAction(defaultCommunity.id));
-    }
-  }, [currentCommunityChannelId, currentCommunityId, dispatch]);
+  }, [dispatch]);
 
   return fetchCommunities;
 };

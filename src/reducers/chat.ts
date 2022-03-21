@@ -100,6 +100,7 @@ export type ChatState = {
     title: string;
     body: string;
   };
+  communitiesLoaded: boolean;
   isLoading: boolean;
 };
 const defaultState = {
@@ -185,6 +186,7 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     case chatActions.SET_COMMUNITY_CHANNELS:
       return {
         ...state,
+        communitiesLoaded: true,
         data: { ...state.data, communityChannels: action.payload.communityChannels }
       };
 

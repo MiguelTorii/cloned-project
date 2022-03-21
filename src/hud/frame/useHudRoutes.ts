@@ -3,6 +3,8 @@ import { push } from 'connected-react-router';
 import { useOrderedChannelList } from 'features/chat';
 import { useCallback, useEffect } from 'react';
 import { AppDispatch, AppGetState, useAppDispatch, useAppSelector } from 'redux/store';
+
+import { URL } from 'constants/navigation';
 import { CREATE_POST_PATHNAME, EDIT_POST_PATHNAME_PREFIX } from '../../routeConstants';
 import {
   CHAT_MAIN_AREA,
@@ -63,7 +65,7 @@ const pathnameToAreaIds: Record<string, TAreaIds> = {
   '/edit/question': { mainArea: COMMUNITIES_MAIN_AREA, mainSubArea: FEEDS_AREA },
 
   // CHAT_MAIN_AREA
-  '/chat': { mainArea: CHAT_MAIN_AREA, mainSubArea: CHAT_AREA },
+  [URL.CHAT]: { mainArea: CHAT_MAIN_AREA, mainSubArea: CHAT_AREA },
 
   // STUDY_TOOLS_MAIN_AREA
   '/notes': { mainArea: STUDY_TOOLS_MAIN_AREA, mainSubArea: NOTES_AREA },
@@ -96,7 +98,7 @@ export const areasToUrl: Record<string, Record<string, string>> = {
     [GET_THE_MOBILE_APP_AREA]: '/getTheMobileApp'
   },
   [CHAT_MAIN_AREA]: {
-    [CHAT_AREA]: '/chat'
+    [CHAT_AREA]: URL.CHAT
   },
   [COMMUNITIES_MAIN_AREA]: {
     [CLASSES_AREA]: '/classes',

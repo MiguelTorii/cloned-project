@@ -558,7 +558,7 @@ const Main = ({
               expertMode={expertMode}
             />
           )}
-          {channel && (
+          {channel && channelLength && (
             <InfiniteScroll
               className={classes.messageScroll}
               threshold={50}

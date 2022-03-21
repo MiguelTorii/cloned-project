@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import { ButtonBase } from '@material-ui/core';
 import type { UserState } from '../../reducers/user';
+import { URL } from 'constants/navigation';
 import type { State as StoreState } from '../../types/state';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import QuestionMark from '../../assets/svg/question-mark.svg';
@@ -50,7 +51,7 @@ const StudyCircleIn = ({ user }: Props) => {
   };
 
   const goToChat = () => {
-    history.push('/chat');
+    history.push(URL.CHAT);
   };
 
   const goToProfile = () => {

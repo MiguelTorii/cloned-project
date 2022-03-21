@@ -29,6 +29,7 @@ import DrawerMenu from './Drawer';
 import GetAppDialog from '../GetAppDialog/GetAppDialog';
 import GetStudentJob from '../GetStudentJob/GetAppDialog';
 import QuickNotes from '../../containers/QuickNotes/QuickNotes';
+import { URL } from 'constants/navigation';
 import { ReactComponent as IconChat } from '../../assets/svg/chat.svg';
 import { ReactComponent as IconHome } from '../../assets/svg/home.svg';
 import logo from '../../assets/svg/circlein_logo.svg';
@@ -333,7 +334,7 @@ const MainLayout = ({
   );
   return (
     <>
-      <div className={clsx(classes.root, pathname.indexOf('/chat') === -1 && classes.marginChat)}>
+      <div className={clsx(classes.root, pathname.indexOf(URL.CHAT) === -1 && classes.marginChat)}>
         <UserDialog />
         <AppBar
           position="fixed"

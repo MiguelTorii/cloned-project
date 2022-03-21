@@ -5,6 +5,7 @@ import { Client } from 'twilio-chat';
 import uuidv4 from 'uuid/v4';
 
 import { chatActions } from 'constants/action-types';
+import { URL } from 'constants/navigation';
 import {
   getGroupMembers,
   getShareLink,
@@ -15,13 +16,11 @@ import {
   createChannel,
   apiUpdateChat
 } from 'api/chat';
-
 import type { Action } from 'types/action';
 import type { Dispatch } from 'types/store';
 import { ChannelWrapper } from 'reducers/chat';
 import { ChatCommunityData } from 'api/models/APICommunity';
 import { inChatPage } from 'utils/chat';
-import { CHAT_URL } from 'constants/chat';
 import { ChannelMetadata } from 'features/chat';
 import store, { AppGetState } from 'redux/store';
 
@@ -207,7 +206,7 @@ const setCurrentChannelAction = ({
 export const setCurrentChannelSidAction =
   (selectedChannelId: string | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
     if (selectedChannelId && inChatPage(getState)) {
-      dispatch(push(`/chat/${selectedChannelId}`));
+      dispatch(push(`${URL.CHAT}/${selectedChannelId}`));
     }
 
     dispatch({
@@ -229,7 +228,7 @@ export const setCurrentCommunityChannel =
   (currentChannel: Channel) => async (dispatch: Dispatch, getState: typeof store.getState) => {
     dispatch(setCurrentCommunityChannelIdAction(currentChannel.sid));
     if (inChatPage(getState) && getState().chat.data.currentCommunityId) {
-      dispatch(push(`/chat/${currentChannel.sid}`));
+      dispatch(push(`${URL.CHAT}/${currentChannel.sid}`));
     }
   };
 
@@ -255,9 +254,13 @@ export const setCurrentCommunityIdAction =
      * chat/communityId/channelid
      * chat/channelid
      */
-    // chatId may not update when switching from community to DMs
-    if (!newCommunityId && selectedChannelId) {
-      dispatch(push(`/chat/${selectedChannelId}`));
+    /**
+     * ChatId may not update when switching from community to DMs
+     * If there's a channel list but selectedChannelId is not set
+     * useSelectChatByIdURL will handle selecting it
+     */
+    if (!newCommunityId) {
+      dispatch(push(`/chat${selectedChannelId ? '/' + selectedChannelId : ''}`));
     } else if (newCommunityId) {
       const allChannelIds = newSelectedCommunity?.channels
         .map((c) => c.channels.map((cc) => cc.chat_id))
@@ -418,7 +421,7 @@ export const openChannelWithEntity =
         if (entityVideo) {
           dispatch(push(`/video-call/${chatId}`));
         } else {
-          dispatch(push(CHAT_URL));
+          dispatch(push(URL.CHAT));
         }
       }
     }

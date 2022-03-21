@@ -33,7 +33,7 @@ import {
   useChannels
 } from 'features/chat';
 import { useCommunityChatAPI } from '../api/communityChannels';
-import { CHAT_URL } from 'constants/chat';
+import { URL } from 'constants/navigation';
 
 export const useChatSubscription = () => {
   useHandleClient();
@@ -287,7 +287,7 @@ const useChannelMessageAddedSubscription = () => {
        */
 
       // Do not set new unread if user is looking at current chat
-      if (pathname === CHAT_URL && message.channel.sid !== selectedChannelId) {
+      if (pathname === URL.CHAT && message.channel.sid !== selectedChannelId) {
         // Update message count
         queryClient.invalidateQueries([UNREAD_COUNT_QUERY_KEY, message.channel.sid]);
         // Other unreadCount hooks use an API call that fetches all channels' unread messages

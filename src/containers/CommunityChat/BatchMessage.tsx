@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 
 import { UserState } from 'reducers/user';
+import { URL } from 'constants/navigation';
 import { PERMISSIONS } from 'constants/common';
 
 import Tooltip from 'containers/Tooltip/Tooltip';
@@ -40,7 +41,7 @@ const BatchMessage = ({
     closeNewChannel();
   }, [closeNewChannel]);
 
-  if (!canBatchMessage || pathname !== CHAT_URL) {
+  if (!canBatchMessage || pathname !== URL.CHAT) {
     return null;
   }
 

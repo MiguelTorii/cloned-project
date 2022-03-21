@@ -6,7 +6,7 @@ import { ChatMessages, ChatUser } from '../types/models';
 import { DetailedChatUser } from 'reducers/chat';
 import { ChannelMetadata } from 'features/chat';
 import { AppGetState } from 'redux/store';
-import { CHAT_URL } from 'constants/chat';
+import { URL } from 'constants/navigation';
 
 export const getTitle = (
   channel: Channel,
@@ -311,4 +311,4 @@ export const getChatShareLink = (id?: string) => {
 };
 
 export const inChatPage = (getState: AppGetState) =>
-  getState().router.location.pathname.includes(CHAT_URL);
+  getState().router.location.pathname.includes(URL.CHAT);
