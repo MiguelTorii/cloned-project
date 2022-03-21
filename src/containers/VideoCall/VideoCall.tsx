@@ -110,7 +110,6 @@ class VideoCall extends React.Component<Props, State> {
   };
 
   initialDevices = async () => {
-
     try {
       if (navigator && navigator.mediaDevices) {
         navigator.mediaDevices.ondevicechange = this.handleUpdateDeviceSelectionOptions;
@@ -137,7 +136,10 @@ class VideoCall extends React.Component<Props, State> {
           const selectedDevice = this.state[`selected${kind}`];
           const matchedDeviceId = devices.findIndex((device) => device.value === selectedDevice);
           // eslint-disable-next-line no-await-in-loop
-          await this.handleUpdateDeviceSelection(kind, devices[matchedDeviceId < 0 ? 0 : matchedDeviceId].value);
+          await this.handleUpdateDeviceSelection(
+            kind,
+            devices[matchedDeviceId < 0 ? 0 : matchedDeviceId].value
+          );
           this.setState({
             [`${kind}Enabled`]: true
           } as any);

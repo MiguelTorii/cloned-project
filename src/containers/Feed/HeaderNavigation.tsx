@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import head from 'lodash/head';
+import cx from 'clsx';
+import queryString from 'query-string';
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import cx from 'clsx';
-import queryString from 'query-string';
 import { Typography } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+
 import Tooltip from '../Tooltip/Tooltip';
 import { getPastClassIds } from '../../utils/helpers';
 import { cypherClass, decypherClass } from '../../utils/crypto';
@@ -122,6 +125,9 @@ const HeaderNavigation = ({
     },
     [setSelectedSectionIds]
   );
+  const handleVisitClassLeaderboard = () => {
+    push(`/leaderboard?class=${cypherClass(head(selectedClasses))}`);
+  };
   const classes = useStyles();
   return (
     <Box>
@@ -185,12 +191,7 @@ const HeaderNavigation = ({
         {selectedClasses.length === 1 && !expertMode && (
           <>
             <span> | </span>
-            <Button
-              onClick={() => push('/leaderboard')}
-              className={cx(pathname === '/leaderboard' && classes.currentPath)}
-            >
-              Class Leaderboard
-            </Button>
+            <Button onClick={handleVisitClassLeaderboard}>Class Leaderboard</Button>
           </>
         )}
       </Box>

@@ -415,7 +415,7 @@ const Feed = ({ from }: Props) => {
             openClassmatesDialog={setOpenClassmates}
             pathname={location.pathname}
             expertMode={isExpertMode}
-            push={push}
+            push={(path) => dispatch(push(path))}
           />
           {selectedClasses.length === 1 && !selectedClasses[0].isCurrent ? null : (
             <PostCreationHeader />
