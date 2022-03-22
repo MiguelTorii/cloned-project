@@ -2,17 +2,17 @@ import store from 'store';
 import isEqual from 'lodash/isEqual';
 import axios from 'axios';
 import { userActions } from '../constants/action-types';
-import { getAnnouncement as fetchAnnouncement, getAnnouncementCampaign } from '../api/announcement';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
   getSync,
   apiSetExpertMode,
-  apiGetPointsHistory
-} from '../api/user';
+  apiGetPointsHistory,
+  apiGetCampaigns
+} from 'api/user';
 import type { Action } from '../types/action';
 import type { Dispatch } from '../types/store';
-import { Announcement, SyncSuccessData, TFeedItem } from 'types/models';
+import { SyncSuccessData, TFeedItem } from 'types/models';
 import { checkUserSession } from './sign-in';
 import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
 import { bookmark } from '../api/posts';
@@ -191,30 +191,12 @@ export const updateOnboarding =
     dispatch(updateOnboardingAction(viewedOnboarding));
   };
 
-const getAnnouncementSuccessAction = (announcement: Announcement): Action => ({
-  type: userActions.GET_ANNOUNCEMENT_SUCCESS,
-  payload: {
-    announcement
-  }
-});
-
 export const updateProfileImage = (imageUrl) => ({
   type: userActions.UPDATE_PROFILE_IMAGE,
   payload: {
     imageUrl
   }
 });
-export const getAnnouncement = () => async (dispatch: Dispatch) => {
-  const { is_disabled, variation_key, data } = await getAnnouncementCampaign();
-
-  if (!is_disabled && variation_key !== 'hidden' && data) {
-    const { end_date, announcement_id } = data;
-    const announcement: Announcement = await fetchAnnouncement(announcement_id);
-    dispatch(
-      getAnnouncementSuccessAction({ ...announcement, endDate: end_date, id: announcement_id })
-    );
-  }
-};
 export const getPointsHistory = (
   userId: string,
   index: number,
@@ -320,3 +302,8 @@ export const uploadMedia = async (userId: string, type: number, file: Blob) => {
     return null;
   }
 };
+
+export const loadCampaigns = (userId: number) => ({
+  type: userActions.LOAD_CAMPAIGNS,
+  apiCall: () => apiGetCampaigns(userId)
+});

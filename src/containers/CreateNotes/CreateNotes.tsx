@@ -13,7 +13,6 @@ import { processClasses } from '../ClassesSelector/utils';
 import { decypherClass, cypherClass } from '../../utils/crypto';
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import { PERMISSIONS } from '../../constants/common';
-import type { CampaignState } from '../../reducers/campaign';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
 import type { SelectType, UserClass } from '../../types/models';
@@ -64,7 +63,6 @@ type Props = {
   noteId: number;
   user?: UserState;
   pushTo?: (...args: Array<any>) => any;
-  campaign?: CampaignState;
   width?: string;
   enqueueSnackbar?: (...args: Array<any>) => any;
   location?: {
@@ -115,15 +113,11 @@ class CreateNotes extends React.PureComponent<Props, State> {
   };
 
   handlePush = (path) => {
-    const { pushTo, campaign } = this.props;
+    const { pushTo } = this.props;
     const { sectionId, classId } = this.state;
+    const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
 
-    if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
-      pushTo(`${path}${search}`);
-    } else {
-      pushTo(path);
-    }
+    pushTo(`${path}${search}`);
   };
 
   componentDidMount = async () => {
@@ -735,9 +729,8 @@ class CreateNotes extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>

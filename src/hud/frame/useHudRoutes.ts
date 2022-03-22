@@ -127,14 +127,13 @@ export const areasToUrl: Record<string, Record<string, string>> = {
 const useHudRoutes = () => {
   const pathname: string = useAppSelector((state) => state.router.location.pathname);
   const query = useAppSelector((state) => state.router.location.query);
-  const isHud: boolean | null = useAppSelector((state) => state.campaign.hud);
   const selectedMainSubAreas = useAppSelector((state) => state.hudNavigation.selectedMainSubAreas);
   const DMChannelList = useOrderedChannelList();
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isHud && pathname) {
+    if (pathname) {
       // Find the root part of the pathname, for example:
       // if the pathname is `/notes/:noteId`,
       // then find just the `/notes` part.
@@ -171,7 +170,7 @@ const useHudRoutes = () => {
         dispatch(setSelectedMainSubArea(areaIds.mainArea, areaIds.mainSubArea));
       }
     }
-  }, [pathname, isHud, query, dispatch]);
+  }, [pathname, query, dispatch]);
 
   const setHudArea = useCallback(
     (mainArea: string, mainSubArea?: string) => {

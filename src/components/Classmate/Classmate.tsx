@@ -19,7 +19,6 @@ import { useMediaQuery } from 'hooks';
 import { Dispatch } from 'types/store';
 import { getInitials } from 'utils/chat';
 import { buildPath } from 'utils/helpers';
-import { CampaignState } from 'reducers/campaign';
 import { openChannelWithEntity } from 'actions/chat';
 import InviteIcon from 'assets/svg/invite-icon.svg';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
@@ -54,10 +53,6 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
   const dispatch: Dispatch = useDispatch();
   const { isMobileScreen } = useMediaQuery();
 
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
-
   const client = useChatClient();
 
   const [loadingMessage, setLoadingMessage] = useState(false);
@@ -78,7 +73,6 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
         entityLastName: classmate.lastName,
         entityVideo: isVideo,
         fullscreen: true && !isVideo,
-        isHud,
         client
       })(dispatch);
 

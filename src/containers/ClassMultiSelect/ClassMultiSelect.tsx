@@ -12,7 +12,6 @@ import Paper from '@material-ui/core/Paper';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Tooltip from '../Tooltip/Tooltip';
 import type { State as StoreState } from '../../types/state';
-import { CampaignState } from '../../reducers/campaign';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
@@ -58,10 +57,6 @@ const ClassMultiSelect = ({
   schoolId
 }: Props) => {
   const classes: any = useStyles();
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   const options = useMemo(() => {
     if (externalOptions) {
@@ -150,10 +145,7 @@ const ClassMultiSelect = ({
         )}
         renderTags={(value, getTagProps) => {
           if (allSelected) {
-            if (isHud) {
-              return 'All Classes';
-            }
-            return allLabel || 'All Classes Selected';
+            return 'All Classes';
           }
 
           return value.map(

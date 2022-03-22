@@ -1,13 +1,11 @@
 import { push } from 'connected-react-router';
 import store from 'store';
-import { LANDING_PAGE_CAMPAIGN } from '../constants/campaigns';
-import * as campaignActions from './campaign';
-import { signUpActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
-import type { User, UpdateProfile } from '../types/models';
-import { createAccount, setReferral } from '../api/sign-up';
-import { APIUser } from '../api/models/APIUser';
+import { signUpActions } from 'constants/action-types';
+import type { Action } from 'types/action';
+import type { Dispatch } from 'types/store';
+import type { User } from 'types/models';
+import { createAccount, setReferral } from 'api/sign-up';
+import { APIUser } from 'api/models/APIUser';
 
 const requestSignUp = (): Action => ({
   type: signUpActions.SIGN_UP_USER_REQUEST
@@ -104,12 +102,6 @@ export const signUp =
       await dispatch(
         setUser({
           user
-        })
-      );
-      await dispatch(
-        campaignActions.requestCampaign({
-          campaignId: LANDING_PAGE_CAMPAIGN,
-          reset: true
         })
       );
 

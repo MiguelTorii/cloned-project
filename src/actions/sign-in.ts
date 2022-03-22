@@ -1,8 +1,5 @@
 import { push } from 'connected-react-router';
 import store from 'store';
-import { LANDING_PAGE_CAMPAIGN } from '../constants/campaigns';
-import * as campaignActions from './campaign';
-import * as chatActions from './chat';
 import * as userActions from './user';
 import { sync } from './user';
 import { deepLinkCheck } from '../utils/helpers';
@@ -104,12 +101,6 @@ export const updateUser =
       })
     );
     dispatch(userActions.fetchClasses());
-    await dispatch(
-      campaignActions.requestCampaign({
-        campaignId: LANDING_PAGE_CAMPAIGN,
-        reset: true
-      })
-    );
   };
 export const signIn =
   ({ email, password, schoolId }: { email: string; password: string; schoolId: number }) =>

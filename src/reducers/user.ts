@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import store from 'store';
 import { signInActions, signUpActions, userActions, rootActions } from '../constants/action-types';
 import type { Action } from '../types/action';
-import type { User, Announcement, TFeedItem, UserClass } from '../types/models';
+import type { User, TFeedItem, UserClass, GetCampaignsResponse, Campaign } from 'types/models';
 import { normalizeArray } from '../utils/helpers';
 
 export type UserClassList = {
@@ -36,7 +36,6 @@ export type TUserClasses = {
 
 export type UserState = {
   action: any;
-  announcementData: Announcement | null;
   bannerHeight: number;
   data: User;
   dialogMessage: {
@@ -67,11 +66,11 @@ export type UserState = {
     helpLink: string;
   };
   userClasses: TUserClasses;
+  campaignsByName: Record<string, Campaign>;
 };
 
 const defaultState = {
   action: null,
-  announcementData: null,
   bannerHeight: 0,
   data: {
     userId: '',
@@ -134,7 +133,8 @@ const defaultState = {
     viewedTooltips: [],
     viewedOnboarding: null,
     helpLink: ''
-  }
+  },
+  campaignsByName: {}
 };
 
 export default (state: UserState = defaultState, action: Action): UserState => {
@@ -309,13 +309,6 @@ export default (state: UserState = defaultState, action: Action): UserState => {
         }
       });
 
-    case userActions.GET_ANNOUNCEMENT_SUCCESS:
-      return update(state, {
-        announcementData: {
-          $set: action.payload.announcement
-        }
-      });
-
     case userActions.SET_EXPERT_MODE: {
       return update(state, {
         isLoading: {
@@ -386,6 +379,19 @@ export default (state: UserState = defaultState, action: Action): UserState => {
             $set: action.payload.imageUrl
           }
         }
+      });
+    }
+
+    case userActions.LOAD_CAMPAIGNS: {
+      const { campaigns } = action.payload as GetCampaignsResponse;
+      const campaignsByName = {};
+
+      campaigns.forEach((campaign) => {
+        campaignsByName[campaign.campaign_name] = campaign;
+      });
+
+      return update(state, {
+        campaignsByName: { $set: campaignsByName }
       });
     }
 

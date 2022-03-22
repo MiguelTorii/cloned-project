@@ -45,7 +45,6 @@ type Props = {
   isStudyCircleLoading?: boolean;
   isCirclein?: boolean;
   isOnline?: boolean;
-  isHud?: boolean;
   roleId?: number;
   role?: string;
   profile?: UserProfile;
@@ -129,8 +128,7 @@ class Header extends React.PureComponent<Props, State> {
       onStartVideo,
       onChange,
       onEditProfile,
-      onSeePointsHistoryDetails,
-      isHud
+      onSeePointsHistoryDetails
     } = this.props;
     const name = `${firstName} ${lastName}`;
     const bio = this.findAboutField(6);
@@ -245,7 +243,7 @@ class Header extends React.PureComponent<Props, State> {
             </Grid>
           </Grid>
         </Paper>
-        {isHud ? this.renderPointsHistory() : <Hidden lgUp>{this.renderPointsHistory()}</Hidden>}
+        {this.renderPointsHistory()}
         <Tabs
           value={tab}
           textColor="primary"

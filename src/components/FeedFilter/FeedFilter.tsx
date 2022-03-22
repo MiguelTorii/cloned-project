@@ -64,7 +64,6 @@ type Props = {
   classes?: Record<string, any>;
   courseDisplayName?: string;
   expertMode?: boolean;
-  newClassExperience?: boolean;
   query?: string;
   userClasses?: Array<string>;
   postTypes?: Array<string>;
@@ -282,12 +281,8 @@ class FeedFilter extends React.PureComponent<Props, State> {
   };
 
   getFilterCount = () => {
-    const { newClassExperience, userClasses, postTypes } = this.props;
+    const { postTypes } = this.props;
     let count = 0;
-
-    if (!newClassExperience && userClasses.length > 0) {
-      count += 1;
-    }
 
     if (postTypes.length > 0) {
       count += 1;
@@ -306,7 +301,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
       toDate,
       onRefresh,
       onChangeDateRange,
-      newClassExperience,
       userClasses,
       onChangeSearch
     } = this.props;
@@ -415,46 +409,6 @@ class FeedFilter extends React.PureComponent<Props, State> {
           title="Filter Class Feed"
         >
           <Grid container>
-            {!newClassExperience && (
-              <Grid item xs={12} sm={6} className={classes.option}>
-                <FormControl className={classes.formControl}>
-                  <FormLabel component="legend">Courses</FormLabel>
-                  <FormGroup>
-                    {classesList.map((item) => (
-                      <FormControlLabel
-                        key={item.label}
-                        control={
-                          <Checkbox
-                            checked={userClasses.findIndex((o) => o === item.value) > -1}
-                            onChange={this.handleChange('userClasses')}
-                            value={item.value}
-                          />
-                        }
-                        label={item.label}
-                      />
-                    ))}
-                  </FormGroup>
-                </FormControl>
-
-                {isUserClassesSelected ? (
-                  <Button
-                    color="primary"
-                    className={classes.formButton}
-                    onClick={this.handleDeselectAll('userClasses')}
-                  >
-                    Deselect All
-                  </Button>
-                ) : (
-                  <Button
-                    color="primary"
-                    className={classes.formButton}
-                    onClick={this.handleSelectAll('userClasses')}
-                  >
-                    Select All
-                  </Button>
-                )}
-              </Grid>
-            )}
             <Grid item xs={12} className={classes.option}>
               <FormControl className={classes.formControl}>
                 <FormLabel className={classes.filterDescription} component="legend">

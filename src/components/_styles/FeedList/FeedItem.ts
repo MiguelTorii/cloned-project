@@ -57,10 +57,6 @@ export default makeStyles((theme: any) => ({
     display: 'flex',
     margin: theme.spacing()
   },
-  stat: {
-    color: (theme.palette as any).primary.primaryColor,
-    margin: theme.spacing()
-  },
   stat2: {
     color: (theme.palette as any).primary.primaryColor,
     margin: theme.spacing()

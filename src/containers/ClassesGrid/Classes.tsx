@@ -19,7 +19,6 @@ import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
 import * as userActions from '../../actions/user';
-import { CampaignState } from '../../reducers/campaign';
 import { AppState } from 'redux/store';
 import { User } from '../../types/models';
 import { openSupportWidget } from '../../utils/helpers';
@@ -87,10 +86,6 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [openAddClasses, setOpenAddClasses] = useState(false);
   const [currentFilter, setCurrentFilter] = useState('current');
   const [loading, setLoading] = useState(false);
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   const profile = useSelector<AppState, User>((state) => state.user.data);
 
@@ -185,49 +180,14 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   }, [profile]);
 
   return (
-    <div className={!isHud && classes.wrapper}>
-      {isHud ? (
-        <Grid item>
-          <FiltersBar
-            data={arrFilters}
-            activeValue={currentFilter}
-            onSelectItem={handleSelectFilter}
-          />
-        </Grid>
-      ) : (
-        <>
-          <Grid item>
-            <Typography variant="h5">Classes</Typography>
-          </Grid>
-          <Grid item className={classes.pastNote}>
-            {currentFilter === 'current' ? (
-              <Typography variant="body1">
-                Hey!&nbsp;
-                <span role="img" aria-label="Clap">
-                  👋
-                </span>
-                These are the current classes you are enrolled in on CircleIn. Click on the classes
-                below to see the Class Feed where you can connect with your classmates, ask
-                questions and share study materials!
-              </Typography>
-            ) : (
-              <Typography variant="body1">
-                You can access the materials from past classes, but keep in mind this is read-only,
-                you cannot post new comments, or share posts on this feed.
-              </Typography>
-            )}
-          </Grid>
-          <Grid item>
-            <Box mt={4}>
-              <FiltersBar
-                data={arrFilters}
-                activeValue={currentFilter}
-                onSelectItem={handleSelectFilter}
-              />
-            </Box>
-          </Grid>
-        </>
-      )}
+    <div>
+      <Grid item>
+        <FiltersBar
+          data={arrFilters}
+          activeValue={currentFilter}
+          onSelectItem={handleSelectFilter}
+        />
+      </Grid>
       {classList.length > 0 && (
         <Box display="flex" mt={1} mb={1}>
           <Typography>

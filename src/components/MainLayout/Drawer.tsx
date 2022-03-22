@@ -48,8 +48,6 @@ import { checkPath } from 'utils/helpers';
 import { setOneTouchSendAction } from 'actions/chat';
 
 type Props = {
-  newClassExperience?: any;
-  newNotesScreen?: any;
   handleOpenGetApp?: any;
   handleOpenFeedback?: any;
   MyLink?: any;
@@ -57,7 +55,6 @@ type Props = {
   pathname?: any;
   handleManageClasses?: any;
   appBarHeight?: any;
-  landingPageCampaign?: any;
   expertMode?: any;
   isExpert?: any;
   toggleExpertMode?: any;
@@ -68,8 +65,6 @@ type Props = {
 };
 
 const Drawer = ({
-  newClassExperience,
-  newNotesScreen,
   handleOpenGetApp,
   handleOpenFeedback,
   MyLink,
@@ -77,7 +72,6 @@ const Drawer = ({
   pathname,
   handleManageClasses,
   appBarHeight,
-  landingPageCampaign,
   expertMode,
   isExpert,
   toggleExpertMode,
@@ -154,19 +148,6 @@ const Drawer = ({
           OffIcon={<ChatIconOff />}
           listItemClass={classes.otherPath}
         />
-        {landingPageCampaign && (
-          <DrawerItem
-            listItemClass={classNames(
-              ['/feed', '/'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-            link="/"
-            pathname={pathname}
-            OnIcon={<ClassFeedIconOn />}
-            primaryText="Class Feed"
-            component={MyLink}
-            OffIcon={<ClassFeedIconOff />}
-          />
-        )}
         <ListItem
           button
           component={MyLink}
@@ -214,32 +195,6 @@ const Drawer = ({
             ['/classes'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
-        {landingPageCampaign && (
-          <DrawerItem
-            OnIcon={<WorkflowIconOn />}
-            primaryText="Workflow"
-            pathname={pathname}
-            component={MyLink}
-            link="/workflow"
-            OffIcon={<WorkflowIconOff />}
-            listItemClass={classNames(
-              ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          />
-        )}
-        {newNotesScreen && (
-          <DrawerItem
-            OnIcon={<NotesIconOn />}
-            primaryText="My Notes"
-            pathname={pathname}
-            component={MyLink}
-            link="/notes"
-            OffIcon={<NotesIconOff />}
-            listItemClass={classNames(
-              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          />
-        )}
         <DrawerItem
           OnIcon={
             <img src={FlashcardsIconOn} alt="flashcards on" className={classes.flashcardIconOn} />
@@ -253,19 +208,6 @@ const Drawer = ({
             pathname.includes('/flashcards') ? classes.currentPath : classes.otherPath
           )}
         />
-        {!newClassExperience && (
-          <div className={classes.myClasses}>
-            <ListItemIcon className={classes.menuIcon}>
-              <GradCapIcon className={classNames('whiteSvg')} />
-            </ListItemIcon>
-            <ListItemText primary="Classes" />
-          </div>
-        )}
-        {!newClassExperience && (
-          <ListItemText>
-            <ClassList onClick={handleManageClasses} />
-          </ListItemText>
-        )}
         <DrawerItem
           OnIcon={<OneTouchSendIconOn />}
           primaryText="One-Touch Send"
@@ -304,16 +246,7 @@ const Drawer = ({
         />
       </>
     ),
-    [
-      MyLink,
-      landingPageCampaign,
-      pathname,
-      newClassExperience,
-      classes,
-      newNotesScreen,
-      qs,
-      handleManageClasses
-    ]
+    [MyLink, pathname, classes, qs, handleManageClasses]
   );
   const renderStudentMenu = useCallback(
     () => (
@@ -375,19 +308,6 @@ const Drawer = ({
             ['/workflow'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
-        {newNotesScreen && (
-          <DrawerItem
-            OnIcon={<NotesIconOn />}
-            primaryText="My Notes"
-            pathname={pathname}
-            component={MyLink}
-            link="/notes"
-            OffIcon={<NotesIconOff />}
-            listItemClass={classNames(
-              ['/notes'].includes(pathname) ? classes.currentPath : classes.otherPath
-            )}
-          />
-        )}
         <DrawerItem
           OnIcon={<LeaderboardIconOn />}
           primaryText="Leaderboard"
@@ -412,32 +332,6 @@ const Drawer = ({
             ['/store'].includes(pathname) ? classes.currentPath : classes.otherPath
           )}
         />
-        {!newClassExperience && (
-          <div className={classes.myClasses}>
-            <ListItemIcon className={classes.menuIcon}>
-              <GradCapIcon className={classNames('whiteSvg')} />
-            </ListItemIcon>
-            <ListItemText primary="Classes" />
-          </div>
-        )}
-        {!newClassExperience && (
-          <ListItemText>
-            <ClassList onClick={handleManageClasses} />
-          </ListItemText>
-        )}
-        {!newClassExperience && (
-          <div className={classes.myClasses}>
-            <ListItemIcon className={classes.menuIcon}>
-              <GradCapIcon className={classNames('whiteSvg')} />
-            </ListItemIcon>
-            <ListItemText primary="Classes" />
-          </div>
-        )}
-        {!newClassExperience && (
-          <ListItemText>
-            <ClassList onClick={handleManageClasses} />
-          </ListItemText>
-        )}
         <DrawerItem
           OnIcon={<MyClassOn />}
           primaryText="My Classes"
@@ -479,16 +373,7 @@ const Drawer = ({
         />
       </>
     ),
-    [
-      MyLink,
-      landingPageCampaign,
-      newClassExperience,
-      pathname,
-      classes,
-      newNotesScreen,
-      qs,
-      handleManageClasses
-    ]
+    [MyLink, pathname, classes, qs, handleManageClasses]
   );
   return (
     <>

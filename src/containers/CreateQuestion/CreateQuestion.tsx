@@ -24,7 +24,6 @@ import * as api from '../../api/posts';
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   stackbar: {
@@ -39,7 +38,6 @@ const styles = (theme) => ({
 type Props = {
   classes?: Record<string, any>;
   user?: UserState;
-  campaign?: CampaignState;
   pushTo?: (...args: Array<any>) => any;
   questionId: number;
   location?: {
@@ -56,7 +54,6 @@ const CreateQuestion = ({
     data: { permission, segment, userId },
     userClasses
   },
-  campaign,
   pushTo,
   questionId,
   location: { pathname },
@@ -82,14 +79,10 @@ const CreateQuestion = ({
   );
   const handlePush = useCallback(
     (path) => {
-      if (campaign.newClassExperience) {
-        const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
-        pushTo(`${path}${search}`);
-      } else {
-        pushTo(path);
-      }
+      const search = !canBatchPost ? `?class=${cypherClass({ classId, sectionId })}` : '';
+      pushTo(`${path}${search}`);
     },
-    [campaign.newClassExperience, classId, canBatchPost, pushTo, sectionId]
+    [classId, canBatchPost, pushTo, sectionId]
   );
   const loadData = useCallback(async () => {
     const question = await api.getQuestion({
@@ -432,9 +425,8 @@ const CreateQuestion = ({
   );
 };
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>

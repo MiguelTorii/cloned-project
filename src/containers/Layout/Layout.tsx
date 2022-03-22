@@ -14,7 +14,6 @@ import * as userActions from '../../actions/user';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import type { State as StoreState } from '../../types/state';
 import type { UserState } from '../../reducers/user';
-import type { CampaignState } from '../../reducers/campaign';
 import * as signInActions from '../../actions/sign-in';
 import Notifications from '../Notifications/Feed';
 import BlockedUsersManager from '../BlockedUsersManager/BlockedUsersManager';
@@ -41,7 +40,6 @@ type Props = {
   children?: any;
   user?: UserState;
   chat?: any;
-  campaign?: CampaignState;
   isNaked?: boolean;
   location?: {
     pathname: string;
@@ -59,7 +57,6 @@ const Layout = ({
   children,
   user,
   chat,
-  campaign,
   isNaked = false,
   location: { pathname },
   signOut,
@@ -191,10 +188,6 @@ const Layout = ({
     [fetchFeed, updateFilter]
   );
 
-  if (campaign.newClassExperience === null || campaign.landingPageCampaign === null) {
-    return null;
-  }
-
   if (isNaked) {
     return renderChildren();
   }
@@ -216,9 +209,6 @@ const Layout = ({
           unreadMessages={unreadMessages}
           userId={userId}
           runningTour={runningTour}
-          landingPageCampaign={campaign.landingPageCampaign}
-          newNotesScreen={campaign.newNotesScreen}
-          newClassExperience={campaign.newClassExperience}
           initials={initials}
           pushTo={push}
           userProfileUrl={profileImage}
@@ -276,10 +266,9 @@ const Layout = ({
   );
 };
 
-const mapStateToProps = ({ chat, user, campaign }: StoreState): {} => ({
+const mapStateToProps = ({ chat, user }: StoreState): {} => ({
   user,
-  chat,
-  campaign
+  chat
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>

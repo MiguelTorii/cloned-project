@@ -10,15 +10,11 @@ import { usePrevious } from 'hooks';
 import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
 import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
 import { UserState } from '../../reducers/user';
-import { AppState } from 'redux/store';
 import useStorySequence from 'hud/storyState/useStorySequence';
 
 const HudExperienceBar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const showExpBar = useSelector<AppState, boolean>(
-    (state) => state.campaign.showScholarshipTracker
-  );
   const history = useHistory();
 
   useEffect(() => {
@@ -58,7 +54,7 @@ const HudExperienceBar = () => {
     history.push(`/leaderboard?tab=grand`);
   };
 
-  if (experiencePoints === null || !showExpBar) {
+  if (experiencePoints === null) {
     return null;
   }
 

@@ -29,7 +29,6 @@ import {
 import { logEvent, logEventLocally } from '../../api/analytics';
 import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   preview: {
@@ -45,7 +44,6 @@ type Props = {
   classes?: Record<string, any>;
   user?: UserState;
   pushTo?: (...args: Array<any>) => any;
-  campaign?: CampaignState;
   sharelinkId?: number;
   location?: {
     pathname: string;
@@ -97,15 +95,11 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   };
 
   handlePush = (path) => {
-    const { pushTo, campaign } = this.props;
+    const { pushTo } = this.props;
     const { sectionId, classId } = this.state;
+    const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
 
-    if (campaign.newClassExperience) {
-      const search = !this.canBatchPost() ? `?class=${cypherClass({ classId, sectionId })}` : '';
-      pushTo(`${path}${search}`);
-    } else {
-      pushTo(path);
-    }
+    pushTo(`${path}${search}`);
   };
 
   componentDidMount = () => {
@@ -548,9 +542,8 @@ class CreateShareLink extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>

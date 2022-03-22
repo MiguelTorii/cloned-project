@@ -57,7 +57,6 @@ type Props = {
   bookmarked?: boolean;
   role?: string;
   onBookmark?: (...args: Array<any>) => any;
-  newClassExperience?: boolean;
   onReport?: (...args: Array<any>) => any;
   postId?: number;
   typeId?: number;
@@ -184,7 +183,6 @@ class PostItemHeader extends React.PureComponent<Props, State> {
       isMarkdown,
       bookmarked,
       role,
-      newClassExperience,
       onBookmark,
       router,
       classId,
@@ -320,7 +318,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
               </Typography>
               {role && <RoleBadge text={role} />}
             </Box>
-            {!newClassExperience || expertMode ? (
+            {expertMode ? (
               <Typography component="p" variant="subtitle1" noWrap>
                 {classroomName} • {fromNow}
               </Typography>

@@ -12,7 +12,6 @@ import AvailableRewards from '../../components/AvailableRewards/AvailableRewards
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { User } from '../../types/models';
 import useHudEvents from '../../hud/events/useHudEvents';
-import { CampaignState } from '../../reducers/campaign';
 import { hudEventNames } from '../../hud/events/hudEventNames';
 
 const REWARDS_SLOT_COUNT = 3;

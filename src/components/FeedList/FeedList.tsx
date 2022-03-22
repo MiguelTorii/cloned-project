@@ -33,7 +33,6 @@ type Props = {
     pathname: string;
   };
   isFiltering: boolean;
-  newClassExperience?: boolean;
   handleShare?: (...args: Array<any>) => any;
   onPostClick?: (...args: Array<any>) => any;
   onBookmark?: (...args: Array<any>) => any;
@@ -174,7 +173,6 @@ class FeedList extends React.PureComponent<Props, State> {
       pushTo,
       fromFeedId,
       onLoadMore,
-      newClassExperience,
       expertMode,
       onUserClick,
       schoolId,
@@ -253,7 +251,6 @@ class FeedList extends React.PureComponent<Props, State> {
                     }
                   }}
                   onPostClick={onPostClick}
-                  newClassExperience={newClassExperience}
                   onBookmark={onBookmark}
                   pushTo={pushTo}
                   onReport={onReport}

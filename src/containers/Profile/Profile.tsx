@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { push as routePush } from 'connected-react-router';
 import { Redirect } from 'react-router-dom';
@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { withRouter } from 'react-router';
-import Hidden from '@material-ui/core/Hidden';
 import type { UserProfile, About, UserStatistic, TFeedItem, StudyCircle } from '../../types/models';
 import type { UserState } from '../../reducers/user';
 import type { State as StoreState } from '../../types/state';
@@ -32,7 +31,6 @@ import StudyCircleDialog from '../../components/StudyCircleDialog/StudyCircleDia
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { processSeasons } from './utils';
 import { logEvent, logEventLocally } from '../../api/analytics';
-import PointsHistoryCard from '../../components/Profile/PointsHistoryCard';
 import PointsHistoryDetails from '../../components/PointsHistoryDetails/PointsHistoryDetails';
 import EditProfileModal from '../../components/Profile/EditProfileModal';
 import { updateProfileImage, uploadMedia } from '../../actions/user';
@@ -79,7 +77,6 @@ type Props = {
   updateProfileImage?: (...args: Array<any>) => any;
   match?: any;
   defaultPage?: string;
-  isHud?: boolean;
   chat?: ChatState;
 };
 
@@ -294,7 +291,7 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStartChat = () => {
-    const { openChannelWithEntity, isHud } = this.props;
+    const { openChannelWithEntity } = this.props;
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
@@ -308,7 +305,6 @@ class Profile extends React.PureComponent<Props, State> {
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false,
-      isHud,
       client
     });
     setTimeout(() => {
@@ -319,7 +315,7 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStartVideo = () => {
-    const { openChannelWithEntity, isHud, chat } = this.props;
+    const { openChannelWithEntity, chat } = this.props;
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
@@ -331,7 +327,6 @@ class Profile extends React.PureComponent<Props, State> {
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: true,
-      isHud,
       client: chat.data.client
     });
     setTimeout(() => {
@@ -617,7 +612,6 @@ class Profile extends React.PureComponent<Props, State> {
     const {
       classes,
       push,
-      isHud,
       user: {
         data: userData,
         userClasses: { classList }
@@ -676,7 +670,7 @@ class Profile extends React.PureComponent<Props, State> {
     return (
       <>
         <Grid container spacing={4}>
-          <Grid item xs={12} lg={isHud ? 12 : 8}>
+          <Grid item xs={12}>
             <Grid container alignItems="stretch">
               <Grid item xs={12} md={12}>
                 <ErrorBoundary>
@@ -709,7 +703,6 @@ class Profile extends React.PureComponent<Props, State> {
                     onStudyCircle={this.handleStudyCircle}
                     onEditProfile={this.handleEditProfileOpen}
                     onSeePointsHistoryDetails={() => this.switchPage(PROFILE_PAGES.points_history)}
-                    isHud={isHud}
                   />
                 </ErrorBoundary>
               </Grid>
@@ -750,20 +743,6 @@ class Profile extends React.PureComponent<Props, State> {
               </Grid>
             </Grid>
           </Grid>
-          {!isHud && (
-            <Grid item xs={12} lg={4}>
-              <Grid container spacing={4}>
-                <Hidden mdDown>
-                  <Grid item xs={12}>
-                    <PointsHistoryCard
-                      profile={userProfile}
-                      onSeeMore={() => this.switchPage(PROFILE_PAGES.points_history)}
-                    />
-                  </Grid>
-                </Hidden>
-              </Grid>
-            </Grid>
-          )}
         </Grid>
 
         <ErrorBoundary>

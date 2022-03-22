@@ -38,7 +38,6 @@ import UseCases from '../UseCases/UseCases';
 import Dialog from '../Dialog/Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints/HowDoIEarnPoints';
 import GiveFeedback from '../../containers/GiveFeedback/GiveFeedback';
-import { AnnouncementBanner } from '../../containers/Announcements/AnnouncementBanner';
 import { styles } from '../_styles/MainLayout/index';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => {
@@ -66,7 +65,6 @@ type Props = {
   initials?: string;
   userProfileUrl?: string;
   children?: any;
-  newNotesScreen?: boolean;
   unreadCount?: number;
   unreadMessages?: number;
   pathname?: string;
@@ -75,9 +73,7 @@ type Props = {
   onManageClasses?: (...args: Array<any>) => any;
   userClasses?: Record<string, any>;
   onManageBlockedUsers?: (...args: Array<any>) => any;
-  newClassExperience?: boolean;
   onOpenReferralStatus?: (...args: Array<any>) => any;
-  landingPageCampaign?: boolean;
   location?: {
     search: string;
   };
@@ -87,7 +83,6 @@ type Props = {
   toggleExpertMode?: (...args: Array<any>) => any;
   fullName?: string;
   bannerHeight?: number;
-  setBannerHeight?: number;
 };
 
 const MainLayout = ({
@@ -100,10 +95,8 @@ const MainLayout = ({
   expertMode,
   isExpert,
   bannerHeight,
-  setBannerHeight,
   toggleExpertMode,
   initials,
-  newNotesScreen,
   userProfileUrl,
   children,
   unreadCount,
@@ -114,8 +107,6 @@ const MainLayout = ({
   onManageClasses,
   userClasses,
   onManageBlockedUsers,
-  newClassExperience,
-  landingPageCampaign,
   onOpenReferralStatus,
   location: { search }
 }: Props) => {
@@ -298,8 +289,6 @@ const MainLayout = ({
         isExpert={isExpert}
         toggleExpertMode={toggleExpertMode}
         appBarHeight={appBarHeight}
-        newNotesScreen={newNotesScreen}
-        newClassExperience={newClassExperience}
         userId={userId}
         initials={initials}
         fullName={fullName}
@@ -310,7 +299,6 @@ const MainLayout = ({
         search={search}
         pathname={pathname}
         handleManageClasses={handleManageClasses}
-        landingPageCampaign={landingPageCampaign}
       />
     ),
     [
@@ -322,9 +310,6 @@ const MainLayout = ({
       handleOpenGetApp,
       initials,
       isExpert,
-      landingPageCampaign,
-      newClassExperience,
-      newNotesScreen,
       pathname,
       search,
       toggleExpertMode,
@@ -399,12 +384,6 @@ const MainLayout = ({
               </IconButton>
             </div>
           </Toolbar>
-
-          <AnnouncementBanner
-            bannerHeight={bannerHeight}
-            setBannerHeight={setBannerHeight}
-            onLoaded={handleAnnouncementLoaded}
-          />
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
@@ -455,7 +434,7 @@ const MainLayout = ({
         onCancel={handleCloseUseCases}
         title="How to use CircleIn for Studying"
       >
-        <UseCases onRedirect={handleCloseUseCases} landingPageCampaign={landingPageCampaign} />
+        <UseCases onRedirect={handleCloseUseCases} />
       </Dialog>
     </>
   );

@@ -18,7 +18,7 @@ import { UserState } from '../../reducers/user';
 import { User } from '../../types/models';
 import { openOnboardingCompletedPopup } from './hudStoryActions';
 import { onboardingStorySectionsNoRewards } from './onboardingStorySectionsNoRewards';
-import { CampaignState } from '../../reducers/campaign';
+import useCampaigns from 'hooks/useCampaigns';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;
@@ -44,14 +44,11 @@ const getNextStorySections = (allOnboardingStorySections: StorySection[]): Story
 
 const useOnboarding = () => {
   const dispatch = useDispatch();
+  const { isRewardsCampaignActive } = useCampaigns();
 
   const { postEvent, listenToEvents } = useHudEvents();
 
   const { startNextStory } = useStorySequence();
-
-  const showScholarshipTracker: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.showScholarshipTracker
-  );
 
   const [allOnboardingStorySections, setAllOnboardingStorySections] = useState(
     onboardingStorySectionsNoRewards
@@ -90,12 +87,12 @@ const useOnboarding = () => {
   };
 
   useEffect(() => {
-    if (showScholarshipTracker) {
+    if (isRewardsCampaignActive) {
       setAllOnboardingStorySections(onboardingStorySections);
     } else {
       setAllOnboardingStorySections(onboardingStorySectionsNoRewards);
     }
-  }, [showScholarshipTracker]);
+  }, [isRewardsCampaignActive]);
 
   useEffect(() => {
     if (!onboardingTriggered && onboardingFlowTriggered) {

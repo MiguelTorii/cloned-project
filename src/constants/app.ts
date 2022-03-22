@@ -112,12 +112,6 @@ export const CIRCLEIN_EVENT_NAMES = [
   'Notification- Viewed',
   'Chat- Viewed'
 ];
-export const CAMPAIGN_IDS = {
-  CONTEST_BANNER: 12, // Not used currently, but tracked here for the historical record.
-  CHAT_LANDING: 16,
-  LEADERBOARD_AND_SUPPORTCENTER_VISIBILITY: 17, // Leaderboard and Support Center Visibility
-  HUD: 18
-};
 export const MEMBER_ROLES = {
   STUDENT: 'Student',
   TUTOR: 'Tutor',

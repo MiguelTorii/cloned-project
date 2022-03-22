@@ -1,18 +1,11 @@
-/* eslint-disable valid-typeof */
-
-/* eslint-disable no-sequences */
-
-/* eslint-disable prefer-rest-params */
-
-/* eslint-disable no-unused-expressions */
-
-/* eslint-disable no-restricted-syntax */
 import React, { useState, useEffect, useCallback } from 'react';
 import amplitude from 'amplitude-js';
 import { hotjar } from 'react-hotjar';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import { withStyles } from '@material-ui/core/styles';
+
 import useScript from '../../hooks/useScript';
 import { AMPLITUDE_IDS, ENV, HOTJAR_ID, HOTJAR_SV } from '../../constants/app';
 import {
@@ -23,18 +16,10 @@ import {
 } from './constants';
 import withRoot from '../../withRoot';
 import type { State as StoreState } from '../../types/state';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import { confirmTooltip as confirmTooltipAction } from '../../actions/user';
-import * as userActions from '../../actions/user';
+import { dialogStyle } from 'components/Dialog/Dialog';
+import { confirmTooltip as confirmTooltipAction, loadCampaigns } from 'actions/user';
 import * as signInActions from '../../actions/sign-in';
-import {
-  getChatLandingCampaign,
-  getHudCampaign,
-  getLeaderboardAndSupportCenterVisibilityCampaign
-} from '../../actions/campaign';
 import useHudRoutes from '../../hud/frame/useHudRoutes';
-import { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   root: {
@@ -60,7 +45,6 @@ const styles = (theme) => ({
 type Props = {
   classes?: any;
   user?: any;
-  campaign?: any;
   checkUserSession?: Function;
   confirmTooltip?: Function;
 };
@@ -159,18 +143,15 @@ const UserInitializer = ({ user, checkUserSession }: Props) => {
 
   useEffect(() => {
     if (userId !== '') {
-      dispatch(getChatLandingCampaign());
-      dispatch(getHudCampaign());
-      dispatch(getLeaderboardAndSupportCenterVisibilityCampaign());
+      dispatch(loadCampaigns(userId));
     }
   }, [dispatch, userId]);
 
   return <></>;
 };
 
-const mapStateToProps = ({ user, campaign }: StoreState): {} => ({
-  user,
-  campaign
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>

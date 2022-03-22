@@ -1,25 +1,10 @@
-/* eslint-disable no-nested-ternary */
-
-/* eslint-disable func-names */
-
-/* eslint-disable no-sequences */
-
-/* eslint-disable prefer-rest-params */
-
-/* eslint-disable no-unused-expressions */
 import React, { useEffect, useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Redirect } from 'react-router';
 import useScript from '../../hooks/useScript';
-import Classes from '../../pages/Classes/ClassesPage';
-import Feed from '../../pages/Feed/FeedPage';
 import AuthRedirect from '../../pages/AuthRedirect/AuthRedirectPage';
 import type { State as StoreState } from '../../types/state';
-import { isApiCalling } from '../../utils/helpers';
-import { campaignActions } from '../../constants/action-types';
-import { CampaignState } from '../../reducers/campaign';
 import HudFrame from '../../hud/frame/HudFrame';
 
 const styles = () => ({
@@ -33,24 +18,18 @@ const styles = () => ({
 });
 
 type Props = {
-  campaign?: any;
   classes?: any;
   user?: any;
 };
 
-const Home = ({ campaign, classes, user }: Props) => {
+const Home = ({ classes, user }: Props) => {
   const {
     data: { userId },
-    isLoading,
-    expertMode
+    isLoading
   } = user;
-  const isLoadingCampaign = useSelector(isApiCalling(campaignActions.GET_CHAT_LANDING_CAMPAIGN));
   const widgetUrl = useMemo(
     () => !userId && 'https://widget.freshworks.com/widgets/67000003041.js',
     [userId]
-  );
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
   );
 
   const widgetId = useMemo(() => !userId && 67000003041, [userId]);
@@ -85,7 +64,7 @@ const Home = ({ campaign, classes, user }: Props) => {
     hideWidget();
   }, [widgetId, widgetUrl, status, userId]);
 
-  if (isLoadingCampaign || (isLoading && !userId)) {
+  if (isLoading && !userId) {
     return (
       <div className={classes.loading}>
         <CircularProgress />
@@ -97,31 +76,10 @@ const Home = ({ campaign, classes, user }: Props) => {
     return <AuthRedirect />;
   }
 
-  if (isHud) {
-    return <HudFrame />;
-  }
-
-  if (expertMode) {
-    return <Feed />;
-  }
-
-  if (!campaign.newClassExperience) {
-    return <Feed />;
-  }
-
-  if (!campaign.landingPageCampaign) {
-    return <Classes />;
-  }
-
-  if (campaign.chatLanding) {
-    return <Redirect to="/chat" />;
-  }
-
-  return <Redirect to="/home" />;
+  return <HudFrame />;
 };
 
-const mapStateToProps = ({ campaign, user }: StoreState): {} => ({
-  campaign,
+const mapStateToProps = ({ user }: StoreState): {} => ({
   user
 });
 

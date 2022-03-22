@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { push } from 'connected-react-router';
-import { Badge, Typography } from '@material-ui/core';
+import { Badge } from '@material-ui/core';
 
 import Avatar from 'components/Avatar';
 import { useStyles } from './HudNavigationStyles';
@@ -38,6 +38,7 @@ import HudTool from './HudTool';
 import Notifications from '../../containers/Notifications/Feed';
 import { POST_TYPES } from '../../constants/app';
 import { PERMISSIONS } from '../../constants/common';
+import useCampaigns from 'hooks/useCampaigns';
 
 const ICON_SIZE = 30;
 
@@ -49,6 +50,7 @@ const HudRightNavigation = () => {
 
   const isExpertMode: boolean = useSelector((state: { user: UserState }) => state.user.expertMode);
   const profile: User = useSelector((state: { user: UserState }) => state.user.data);
+  const { isInviteFriendsActive } = useCampaigns();
 
   const hasExpertModeFunctionality =
     profile.permission.includes(PERMISSIONS.EXPERT_MODE_ACCESS) &&
@@ -86,11 +88,6 @@ const HudRightNavigation = () => {
       icon: <IconSubmitAnIdea />
     },
     {
-      id: INVITE_FRIENDS_AREA,
-      displayName: 'Invite Friends',
-      icon: <IconInvite />
-    },
-    {
       id: SUPPORT_AREA,
       displayName: 'CircleIn Support',
       icon: <IconSupport />
@@ -101,6 +98,14 @@ const HudRightNavigation = () => {
       icon: <IconMobileApp />
     }
   ];
+
+  if (isInviteFriendsActive) {
+    profileNavigationItems.push({
+      id: INVITE_FRIENDS_AREA,
+      displayName: 'Invite Friends',
+      icon: <IconInvite />
+    });
+  }
 
   if (hasExpertModeFunctionality) {
     profileNavigationItems.push(expertNavigationItem);

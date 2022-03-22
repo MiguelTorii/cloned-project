@@ -298,18 +298,6 @@ export type ReferralData = {
   schoolId: number;
   school: string;
 };
-export type Announcement = {
-  id: number;
-  endDate: string;
-  hourlyReward: string;
-  imageUrl: string;
-  title: string;
-  subtitle: string;
-  popupTitleImage: string;
-  popupTitle: string;
-  popupContent: string;
-  variationId: number;
-};
 export type ChatMessageListItem = {
   sid: string;
   body: string;
@@ -684,4 +672,14 @@ export type InviteLinkData = {
 export type JoinWithReferralCodeResponse = {
   success: boolean;
   message?: string;
+};
+export type Campaign = {
+  campaign_id: number;
+  campaign_name: string;
+  variation_key: string;
+  is_active: boolean;
+  is_default: boolean;
+};
+export type GetCampaignsResponse = {
+  campaigns: Array<Campaign>;
 };

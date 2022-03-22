@@ -7,13 +7,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useSelector } from 'react-redux';
 import { getMoreGrandStudents, getMoreTuesdayStudents } from '../../api/leaderboards';
 import Student from './student';
 import { styles } from '../_styles/LeaderBoardTabs/table';
 import { buildPath } from '../../utils/helpers';
 import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { CampaignState } from '../../reducers/campaign';
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -35,10 +33,6 @@ const StudentTable = ({
   const [tuesdayIndex, setTuesdayIndex] = useState(0);
   const [grandIndex, setGrandIndex] = useState(0);
   const [students, setStudents] = useState(initialStudents);
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   useEffect(() => {
     setStudents(initialStudents);
@@ -73,7 +67,7 @@ const StudentTable = ({
         loadMore={handleLoadMore}
         hasMore={hasMore}
         initialLoad={false}
-        scrollableTarget={isHud ? 'achievements-scroll-container' : null}
+        scrollableTarget="achievements-scroll-container"
       >
         <Table className={classes.table}>
           <TableHead>

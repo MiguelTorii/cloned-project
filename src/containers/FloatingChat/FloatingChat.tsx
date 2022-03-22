@@ -1,18 +1,13 @@
 /* eslint-disable no-empty */
 import React, { useCallback, useState, useEffect } from 'react';
-import moment from 'moment';
 import debounce from 'lodash/debounce';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import parse from 'html-react-parser';
 import { bindActionCreators } from 'redux';
 import { push as routePush } from 'connected-react-router';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import withRoot from '../../withRoot';
-import ChatListItem from '../../components/ChatListItem/ChatListItem';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import FloatingMainChat from '../../components/FloatingChat/FloatingMainChat';
 import * as OnboardingActions from '../../actions/onboarding';
 import * as chatActions from '../../actions/chat';
 import { updateTitle } from '../../actions/web-notifications';
@@ -21,18 +16,11 @@ import { selectChannelList, selectUnread } from 'redux/chat/selectors';
 import { enqueueSnackbar } from '../../actions/notifications';
 import type { UserState } from '../../reducers/user';
 import type { ChatState } from '../../reducers/chat';
-import FloatEmptyChat from '../../assets/svg/float_empty_chat.svg';
-import FloatLoadingChat from '../../assets/svg/float_chat_loading.svg';
 import usePrevious from '../../hooks/usePrevious';
 import type { State as StoreState } from '../../types/state';
 import { logEvent } from '../../api/analytics';
 import { truncate } from '../../utils/helpers';
-import ChatChannel from './ChatChannel';
-import CreateChatChannel from '../CreateChatChannel/CreateChatChannel';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { CampaignState } from '../../reducers/campaign';
 import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
-import { blockChatUser } from '../../api/chat';
 import { useChatClient } from 'features/chat';
 
 const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
@@ -109,17 +97,13 @@ const FloatingChat = ({
   const dispatch = useDispatch();
 
   const [createChannel, setCreateChat] = useState(null);
-  const channelList = useAppSelector(selectChannelList);
 
   const {
-    isLoading,
     data: {
       uuid,
-      channels,
       newMessage,
       online,
       local,
-      newChannel,
       openChannels,
       currentChannel,
       currentCommunityChannel,
@@ -146,27 +130,9 @@ const FloatingChat = ({
     },
     [currentCommunityId, currentChannel, currentCommunityChannel, pathname]
   );
-  const getMembers = useCallback(
-    (channel) => {
-      if (channel && local && local[channel.sid]) {
-        const { members } = local[channel.sid];
-        const newMembers = {};
-        members.forEach((m) => {
-          newMembers[m.userId] = m;
-        });
-        return newMembers;
-      }
-
-      return [];
-    },
-    [local]
-  );
   const {
     data: { userId, profileImage }
   } = user;
-  const handleNewChannelOpen = useCallback(() => {
-    handleNewChannel?.(true);
-  }, [handleNewChannel]);
   const handleNewChannelClose = useCallback(() => {
     handleNewChannel?.(false);
   }, [handleNewChannel]);
@@ -215,10 +181,6 @@ const FloatingChat = ({
   };
 
   const unread = useAppSelector(selectUnread);
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   const [prevMessageId, setPrevMessageId] = useState('');
   useEffect(() => {
@@ -327,145 +289,8 @@ const FloatingChat = ({
     } // eslint-disable-next-line
   }, [user, chat, online]);
 
-  const onChannelOpen = ({ channel }) => {
-    handleRoomClick(channel);
-    dispatch(setCurrentChannelSidAction(channel.sid));
-  };
-
-  const handleChannelCreated = ({
-    channel,
-    startVideo = false
-  }: {
-    channel: Record<string, any>;
-    startVideo: boolean;
-  }) => {
-    handleNewChannelClose();
-    handleRoomClick(channel);
-
-    if (startVideo) {
-      logEvent({
-        event: 'Video- Start Video',
-        props: {
-          'Initiated From': 'Profile'
-        }
-      });
-      const win = window.open(`/video-call/${channel.sid}`, '_blank');
-
-      if (win && win.focus) {
-        win.focus();
-      }
-
-      if (!win || win.closed || typeof win.closed === 'undefined') {
-        push(`/video-call/${channel.sid}`);
-      }
-    }
-  };
-
-  const handleCreateChannelClose = () => {
-    setCreateChat(null);
-  };
-
-  if (pathname === '/chat' || isHud === null || isHud === true || userId === '' || !client) {
-    return null;
-  }
-
-  return (
-    <>
-      <ErrorBoundary>
-        <div className={classes.root}>
-          {openChannels.map((item) => (
-            <ChatChannel
-              key={`op${item.sid}`}
-              push={push}
-              setCurrentCommunityId={setCurrentCommunityId}
-              getMembers={getMembers}
-              user={user}
-              channel={item}
-              channels={channelList}
-              localChannel={local[item.sid]}
-              local={local}
-              onClose={handleChannelClose}
-              onRemove={handleRemoveChannel}
-              onBlock={(blockedUserId) => blockChatUser(blockedUserId)}
-              onSend={() => {
-                if (onboardingListVisible) {
-                  setTimeout(() => getOnboardingList(), 1000);
-                }
-              }}
-            />
-          ))}
-          <ErrorBoundary>
-            {newChannel && (
-              <ChatChannel
-                push={push}
-                user={user}
-                setCurrentCommunityId={setCurrentCommunityId}
-                onClose={handleNewChannelClose}
-                newChannel
-                handleChannelCreated={handleChannelCreated}
-                channel={{
-                  sid: '',
-                  setAllMessagesConsumed: () => {},
-                  getMessages: () => {},
-                  on: () => {},
-                  typing: () => {},
-                  sendMessage: () => {},
-                  channelState: {
-                    attributes: {
-                      friendlyName: 'New Chat'
-                    }
-                  }
-                }}
-              />
-            )}
-          </ErrorBoundary>
-          <FloatingMainChat unread={unread} onCreateChannel={handleNewChannelOpen}>
-            {channelList.length === 0 ? (
-              <div className={classes.noMessages}>
-                {!isLoading ? (
-                  <>
-                    <LoadImg url={FloatEmptyChat} />
-                    <Typography variant="subtitle1" align="center">
-                      You have no chats yet. Start a conversation with a classmate!
-                    </Typography>
-                  </>
-                ) : (
-                  <div className={classes.loading}>
-                    <LoadImg url={FloatLoadingChat} />
-                    <Typography variant="subtitle1" align="center">
-                      Loading chats...
-                    </Typography>
-                  </div>
-                )}
-              </div>
-            ) : (
-              channelList.map(
-                (c) =>
-                  local[c] && (
-                    <ChatListItem
-                      key={local[c].sid}
-                      channel={local[c]}
-                      handleMuteChannel={handleMuteChannel}
-                      handleRemoveChannel={handleRemoveChannel}
-                      onOpenChannel={onChannelOpen}
-                    />
-                  )
-              )
-            )}
-          </FloatingMainChat>
-        </div>
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <CreateChatChannel
-          type={createChannel}
-          client={client}
-          channels={channels}
-          onClose={handleCreateChannelClose}
-          onChannelCreated={handleChannelCreated}
-        />
-      </ErrorBoundary>
-    </>
-  );
+  // TODO: Since it returns null now, we need to move the used logic into hook or somewhere and remove this component.
+  return null;
 };
 
 const mapStateToProps = ({ router, user, chat, onboarding }: StoreState): {} => ({

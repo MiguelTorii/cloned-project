@@ -385,7 +385,6 @@ export const openChannelWithEntity =
     entityLastName,
     entityVideo,
     fullscreen = false,
-    isHud,
     client
   }: {
     entityId: number;
@@ -393,11 +392,10 @@ export const openChannelWithEntity =
     entityLastName: string;
     entityVideo: boolean;
     fullscreen: boolean;
-    isHud: boolean;
     client: Client;
   }) =>
   async (dispatch: Dispatch) => {
-    if (!isHud && !fullscreen) {
+    if (!fullscreen) {
       dispatch(
         requestStartChannelWithEntity({
           entityId,

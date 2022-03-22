@@ -27,7 +27,6 @@ const Recommendations = () => {
   const dispatch = useDispatch();
   const me = useSelector((state) => (state as any).user.data);
   const [posts, setPosts] = useState([]);
-  const newClassExperience = useSelector((state) => (state as any).campaign.newClassExperience);
   const [shareFeedId, setShareFeedId] = useState(null);
   const [deleteFeedId, setDeleteFeedId] = useState(null);
   const [reportData, setReportData] = useState(null);
@@ -188,7 +187,6 @@ const Recommendations = () => {
                   <FeedItem
                     data={post}
                     showComments={false}
-                    newClassExperience={newClassExperience}
                     showSimple
                     handleShareClick={handleShare}
                     onBookmark={handleBookmark}

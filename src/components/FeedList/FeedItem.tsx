@@ -99,7 +99,6 @@ const FeedTypes = {
 
 type Props = {
   data?: TFeedItem;
-  newClassExperience?: any;
   handleShareClick?: any;
   onBookmark?: any;
   onReport?: any;
@@ -125,7 +124,6 @@ type Props = {
 
 const FeedItem = ({
   data,
-  newClassExperience,
   handleShareClick,
   onBookmark,
   onReport,
@@ -304,15 +302,6 @@ const FeedItem = ({
 
     switch (data.typeId) {
       case FeedTypes.flashcards.id:
-        if (!newClassExperience) {
-          return (
-            <div className={classes.flashCardsImage}>
-              <img src={flashcardPost} className={classes.flashcardImage} alt="Flascarhds" />
-              <div className={classes.deckCount}>{`${data.deckCount} Cards`}</div>
-            </div>
-          );
-        }
-
         return (
           <Box mt={3}>
             <Box className={classes.flashCards}>
@@ -335,21 +324,6 @@ const FeedItem = ({
         );
 
       case FeedTypes.note.id:
-        if (!newClassExperience) {
-          return (
-            <div className={classes.imageContainer}>
-              {isPdf ? (
-                <PdfComponent url={data.noteUrl} height={75} width={75} radius={10} />
-              ) : (
-                <Image noLazyLoad className={classes.notePost} src={data.noteUrl} />
-              )}
-              {numberOfNotes > 1 && (
-                <div className={classes.numberOfCardsStyle}>+{numberOfNotes - 1}</div>
-              )}
-            </div>
-          );
-        }
-
         return (
           <div className={classes.photoNotes}>
             {data.notes.slice(0, 1).map((note, i) => (
@@ -369,16 +343,12 @@ const FeedItem = ({
         );
 
       case FeedTypes.resource.id:
-        if (!newClassExperience) {
-          return <img src={linkPost} className={classes.imagePost} alt="Link" />;
-        }
-
         return <LinkPreview uri={data.uri} />;
 
       default:
         return null;
     }
-  }, [classes, data, newClassExperience, showSimple]);
+  }, [classes, data, showSimple]);
 
   const renderMenu = useMemo(
     () => (
@@ -454,15 +424,13 @@ const FeedItem = ({
             <IconButton aria-label="Share" onClick={handleShareLinkClick}>
               <ShareIcon />
             </IconButton>
-            {newClassExperience && (
-              <IconButton aria-label="Bookmark" onClick={handleBookmark}>
-                {data.bookmarked ? (
-                  <BookmarkIcon className={classes.bookmarked} />
-                ) : (
-                  <BookmarkBorderIcon />
-                )}
-              </IconButton>
-            )}
+            <IconButton aria-label="Bookmark" onClick={handleBookmark}>
+              {data.bookmarked ? (
+                <BookmarkIcon className={classes.bookmarked} />
+              ) : (
+                <BookmarkBorderIcon />
+              )}
+            </IconButton>
             {(data.userId !== currentUserId || isCurrent) && (
               <IconButton onClick={handleMenuOpen}>
                 <MoreVertIcon />
@@ -494,7 +462,7 @@ const FeedItem = ({
       >
         <CardContent className={classes.postTitle}>
           <Typography component="p" variant="h5" className={classes.boldTitle}>
-            {!newClassExperience ? data.title : getTitle(data)}
+            {getTitle(data)}
           </Typography>
         </CardContent>
         {data.typeId !== FeedTypes.question.id && (
@@ -511,20 +479,9 @@ const FeedItem = ({
         )}
         {data.tags.length > 0 && (
           <CardContent className={classes.tags}>
-            {data.tags.map((tag) =>
-              !newClassExperience ? (
-                <Chip
-                  key={tag.id}
-                  label={`#${tag.name}`}
-                  className={classes.chip}
-                  classes={{
-                    label: classes.label
-                  }}
-                />
-              ) : (
-                <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
-              )
-            )}
+            {data.tags.map((tag) => (
+              <span key={tag.id} className={classes.hashtag}>{`#${tag.name}`}</span>
+            ))}
           </CardContent>
         )}
       </CardActionArea>
@@ -605,11 +562,7 @@ const FeedItem = ({
             <strong>{commentCount}</strong>
           </Typography>
         </div>
-        <Typography
-          component="p"
-          variant="subtitle1"
-          className={!newClassExperience ? classes.stat : classes.stat2}
-        >
+        <Typography component="p" variant="subtitle1" className={classes.stat2}>
           <strong>{data.postInfo.viewCount}</strong> &nbsp; views
         </Typography>
       </CardActions>

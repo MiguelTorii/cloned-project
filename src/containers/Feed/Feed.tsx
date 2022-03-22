@@ -34,7 +34,6 @@ import {
   updateFilterFields,
   updateScrollDataRequest
 } from '../../actions/feed';
-import { CampaignState } from '../../reducers/campaign';
 import { TFeedData } from '../../reducers/feed';
 import { logEvent } from '../../api/analytics';
 import { buildPath, isSame } from '../../utils/helpers';
@@ -74,7 +73,6 @@ const Feed = ({ from }: Props) => {
   const profile = useSelector<AppState, User>((state) => state.user.data);
   const myClasses = useSelector<AppState, TUserClasses>((state) => state.user.userClasses);
   const isExpertMode = useSelector<AppState, boolean>((state) => state.user.expertMode);
-  const campaign = useSelector<AppState, CampaignState>((state) => state.campaign);
   const isLoadingPosts = !!useSelector<AppState, boolean>(
     (state) => state.api[feedActionTypes.FETCH_FEED]?.inProgress
   );
@@ -431,7 +429,6 @@ const Feed = ({ from }: Props) => {
               classes: classList
             })}
             classList={classList}
-            newClassExperience={campaign.newClassExperience}
             fromDate={feedFilters.fromDate}
             toDate={feedFilters.toDate}
             onApplyFilters={handleUpdateFilters}
@@ -452,7 +449,6 @@ const Feed = ({ from }: Props) => {
               schoolId={profile.schoolId}
               items={feedItems}
               expertMode={isExpertMode}
-              newClassExperience={campaign.newClassExperience}
               hasMore={hasMoreFeed}
               // fromFeedId={fromFeedId}
               classList={classList}
@@ -465,7 +461,6 @@ const Feed = ({ from }: Props) => {
               onLoadMore={handleFetchMorePosts}
               onUserClick={handleClickUser}
               // isFiltering={isFiltering}
-              isHud={campaign.hud}
             />
           </Tooltip>
         </div>

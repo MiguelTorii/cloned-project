@@ -3,12 +3,9 @@ import { Redirect } from 'react-router';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useSelector } from 'react-redux';
 import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
 import { getPostInfo } from '../../api/posts';
 import { logEvent } from '../../api/analytics';
-import { CampaignState } from '../../reducers/campaign';
 
 const styles = (theme) => ({
   progress: {
@@ -31,10 +28,6 @@ type Props = {
 const SharePage = ({ classes, match }: Props) => {
   const [redirect, setRedirect] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   useEffect(() => {
     const init = async () => {
@@ -97,25 +90,12 @@ const SharePage = ({ classes, match }: Props) => {
     return <Redirect to="/" />;
   }
 
-  if (isHud) {
-    return (
-      <main>
-        <CssBaseline />
-        <div className={classes.progress}>
-          <CircularProgress />
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main>
       <CssBaseline />
-      <Layout>
-        <div className={classes.progress}>
-          <CircularProgress />
-        </div>
-      </Layout>
+      <div className={classes.progress}>
+        <CircularProgress />
+      </div>
     </main>
   );
 };

@@ -18,7 +18,6 @@ import { buildPath } from '../../utils/helpers';
 import type { State as StoreState } from '../../types/state';
 import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
 import { UserState } from '../../reducers/user';
-import { CampaignState } from '../../reducers/campaign';
 import { Dispatch } from '../../types/store';
 import { useChatClient } from 'features/chat';
 
@@ -41,10 +40,6 @@ const HoverPopup = ({
   const dispatch: Dispatch = useDispatch();
 
   const myUserId = useSelector((state: { user: UserState }) => state.user.data.userId);
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   const client = useChatClient();
 
@@ -147,7 +142,6 @@ const HoverPopup = ({
       entityLastName: (profile as any).lastName,
       entityVideo: false,
       fullscreen: true,
-      isHud,
       client
     });
     setTimeout(() => {
@@ -164,7 +158,6 @@ const HoverPopup = ({
       entityLastName: (profile as any).lastName,
       entityVideo: true,
       fullscreen: true,
-      isHud,
       client
     });
     setTimeout(() => {

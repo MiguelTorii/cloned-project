@@ -25,6 +25,7 @@ import { getToken } from './utils';
 import callApi from './api_base';
 import { APIProfile } from './models/APIProfile';
 import { APIAbout } from './models/APIAbout';
+import { GetCampaignsResponse } from 'types/models';
 
 export const getUserProfile = async ({ userId }: { userId: string }): Promise<Profile> => {
   if (!userId) {
@@ -727,4 +728,10 @@ export const apiJoinWithReferralCode = async (
   callApi({
     url: `${API_URL}/referral/join/${referralCode}`,
     method: 'POST'
+  });
+
+export const apiGetCampaigns = async (userId: number): Promise<GetCampaignsResponse> =>
+  callApi({
+    url: `${API_URL}/campaigns/${userId}`,
+    method: 'GET'
   });

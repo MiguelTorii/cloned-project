@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -23,11 +22,8 @@ import CreatePostSt from './PostSt';
 import CreateShareLink from './ShareLink';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import type { State as StoreState } from '../../types/state';
-import Appbar from './Appbar';
 import { buildPath } from '../../utils/helpers';
 import { cypherClass } from '../../utils/crypto';
-import { AppState } from 'redux/store';
-import { CampaignState } from '../../reducers/campaign';
 import TabPanel from './TabPanel';
 
 const styles = (theme) => ({
@@ -105,9 +101,6 @@ type Props = {
 
 const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelinkId }: Props) => {
   const dispatch = useDispatch();
-  const newClassExperience = useSelector<AppState, boolean>(
-    (state) => state.campaign.newClassExperience
-  );
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [value, setValue] = useState(0);
   const [classId, setClassId] = useState(0);
@@ -116,10 +109,6 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
   const [noteImages, setNoteImages] = useState([]);
   const [isFormValidated, setIsFormValidated] = useState(false);
   const location = useLocation();
-
-  const isHud: boolean | null = useSelector(
-    (state: { campaign: CampaignState }) => state.campaign.hud
-  );
 
   useEffect(
     () => () => {
@@ -203,20 +192,16 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
 
   const handleAfterCreation = useCallback(
     (path) => {
-      if (newClassExperience) {
-        dispatch(
-          push(
-            buildPath(path, {
-              class: !canBatchPost ? cypherClass({ classId, sectionId }) : undefined,
-              reload: true
-            })
-          )
-        );
-      } else {
-        dispatch(push(path));
-      }
+      dispatch(
+        push(
+          buildPath(path, {
+            class: !canBatchPost ? cypherClass({ classId, sectionId }) : undefined,
+            reload: true
+          })
+        )
+      );
     },
-    [newClassExperience, dispatch, canBatchPost, classId, sectionId]
+    [dispatch, canBatchPost, classId, sectionId]
   );
 
   const renderClassSelector = () => (
@@ -290,20 +275,10 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid justifyContent="flex-start" className={classes.container} container spacing={2}>
-        {!isHud && (
-          <Grid item xs={12} md={9}>
-            <div className={classes.title}>
-              <Typography component="h1" variant="h4" color="textPrimary">
-                Create New Post
-              </Typography>
-            </div>
-          </Grid>
-        )}
-        {!isHud && renderClassSelector()}
+        {renderClassSelector()}
         <Grid item xs={12} lg={9}>
           <div className={classes.paperRoot}>
-            {isHud && renderHudClassSelector()}
-            {!isHud && <Appbar value={value} handleChange={handleChange} />}
+            {renderHudClassSelector()}
             <TabPanel value={value} index={0} {...a11yProps(0)}>
               <CreatePostSt
                 classList={selectedClasses}

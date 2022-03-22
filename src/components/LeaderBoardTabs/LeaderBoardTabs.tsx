@@ -24,6 +24,7 @@ import { styles } from '../_styles/LeaderBoardTabs';
 import { SCHOLARSHIP_HELP_URL } from '../../constants/app';
 import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
 import { REWARDS_STORE_AREA } from '../../hud/navigationState/hudNavigation';
+import useCampaigns from 'hooks/useCampaigns';
 
 const IMAGE_STYLE = {
   width: 75,
@@ -51,12 +52,9 @@ const LeaderBoardTabs = ({
   updateGrandLeaderboards
 }) => {
   const highlightedButtonClasses = useHighlightedButtonStyles();
-  // On this page, scholarship tracker is called `grand board`.
-  const showScholarshipTracker = useSelector(
-    (state) => (state as any).campaign.showScholarshipTracker
-  );
   const { search } = useLocation();
   const { isMobileScreen } = useMediaQuery();
+  const { isRewardsCampaignActive } = useCampaigns();
 
   const [selectedTab, setSelectedTab] = useState<string>(
     (qs.parse(search).tab as string) || 'tuesday'
@@ -178,7 +176,7 @@ const LeaderBoardTabs = ({
             label={tuesdayBoardName}
             value="tuesday"
           />
-          {showScholarshipTracker && (
+          {isRewardsCampaignActive && (
             <Tab
               classes={{
                 wrapper: classes.tabs

@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { useSelector } from 'react-redux';
 import useStyles from '../_styles/MainLayout/TopMenu';
 
 const TopMenu = ({
@@ -17,7 +16,6 @@ const TopMenu = ({
   search
 }) => {
   const classes: any = useStyles();
-  const showSupportCenter = useSelector((state) => (state as any).campaign.showSupportCenter);
   return (
     <Menu
       anchorEl={anchorEl}
@@ -41,11 +39,9 @@ const TopMenu = ({
         My Profile
       </MenuItem>
       <MenuItem onClick={handleBlockedUsers}>Unblock Classmates</MenuItem>
-      {showSupportCenter && (
-        <MenuItem onClick={handleOpenHowEarnPoints}>
-          {expertMode ? 'Expert Mode Support Center' : 'Student Help Center'}
-        </MenuItem>
-      )}
+      <MenuItem onClick={handleOpenHowEarnPoints}>
+        {expertMode ? 'Expert Mode Support Center' : 'Student Help Center'}
+      </MenuItem>
       <MenuItem onClick={handleSignOut}>Logout</MenuItem>
     </Menu>
   );
