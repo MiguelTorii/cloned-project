@@ -3,4 +3,4 @@ export const URL = {
   CHAT: '/chat'
 };
 
-export const CHAT_PATH_EXP = `${URL.CHAT}/:communityId?/:chatId?'`;
+export const CHAT_PATH_EXP = `${URL.CHAT}/:communityId?/:chatId?`;
