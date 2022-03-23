@@ -1,14 +1,17 @@
 import React from 'react';
+
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
-import FormControl from '@material-ui/core/FormControl';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Dialog from '../Dialog/Dialog';
-import AutoComplete from '../AutoComplete/AutoComplete';
+import withStyles from '@material-ui/core/styles/withStyles';
+
 import { styles } from '../_styles/FloatingChat/AddMembers';
+import AutoComplete from '../AutoComplete/AutoComplete';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes: Record<string, any>;

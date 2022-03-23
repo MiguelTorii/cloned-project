@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { userToCamelCase } from './utils';
-import { LMSSchool } from '../types/models';
-import { APILMSSchool } from './models/APILMSSchool';
+
+import type { APILMSSchool } from './models/APILMSSchool';
+import type { LMSSchool } from 'types/models';
 
 export const getLMSSchools = async (): Promise<LMSSchool[]> => {
   try {

@@ -1,9 +1,12 @@
 import React from 'react';
+
+import { isMobile } from 'react-device-detect';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { isMobile } from 'react-device-detect';
-import Workflow from '../../containers/Workflow/Workflow';
+
+import Workflow from 'containers/Workflow/Workflow';
+
 import { useStyles } from './CalendarSubAreaStyles';
 
 const CalendarSubArea = () => {

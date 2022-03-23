@@ -1,21 +1,25 @@
 import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
+import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CallEndIcon from '@material-ui/icons/CallEnd';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
-import MicIcon from '@material-ui/icons/Mic';
-import MicOffIcon from '@material-ui/icons/MicOff';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import Badge from '@material-ui/core/Badge';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import { ReactComponent as ChatIcon } from '../../assets/svg/chat.svg';
-import { ReactComponent as ParticipantIcon } from '../../assets/svg/participants.svg';
-import { ReactComponent as ShareScreenIcon } from '../../assets/svg/share-screen.svg';
-import { ReactComponent as SharedScreenIcon } from '../../assets/svg/shared-screen.svg';
+import CallEndIcon from '@material-ui/icons/CallEnd';
+import MicIcon from '@material-ui/icons/Mic';
+import MicOffIcon from '@material-ui/icons/MicOff';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+
+import { ReactComponent as ChatIcon } from 'assets/svg/chat.svg';
+import { ReactComponent as ParticipantIcon } from 'assets/svg/participants.svg';
+import { ReactComponent as ShareScreenIcon } from 'assets/svg/share-screen.svg';
+import { ReactComponent as SharedScreenIcon } from 'assets/svg/shared-screen.svg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import { styles } from '../_styles/MeetUp/CallControls';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { Action } from '../../types/action';
+import type { Action } from 'types/action';
 
 export const hudNavigationActions = {
   TOGGLE_SIDE_AREA_VISIBILITY: 'TOGGLE_SIDE_AREA_VISIBILITY',

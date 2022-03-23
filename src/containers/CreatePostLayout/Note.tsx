@@ -2,32 +2,36 @@
 
 /* eslint-disable no-nested-ternary */
 import React from 'react';
+
+import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
-import clsx from 'clsx';
 
 import { Box } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 
-import { processClasses } from '../ClassesSelector/utils';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
-import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from '../RichTextEditor/RichTextEditor';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { SelectType, ClassSectionIds } from 'types/models';
-import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from '../../api/posts';
-import * as notificationsActions from '../../actions/notifications';
-import { logEventLocally } from '../../api/analytics';
-import UploadImages from '../UploadImages/UploadImages';
 import { extractTextFromHtml } from 'utils/helpers';
+
+import * as notificationsActions from 'actions/notifications';
+import { logEventLocally } from 'api/analytics';
+import { createBatchPhotoNote, getNotes, updatePhotoNote, createPhotoNote } from 'api/posts';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
+import { processClasses } from '../ClassesSelector/utils';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import RichTextEditor from '../RichTextEditor/RichTextEditor';
+import UploadImages from '../UploadImages/UploadImages';
+
+import type { UserState } from 'reducers/user';
+import type { SelectType, ClassSectionIds } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   stackbar: {

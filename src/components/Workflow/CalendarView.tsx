@@ -1,20 +1,26 @@
 import React, { useContext, useRef, useEffect, useState, useCallback } from 'react';
+
 // TODO Vite issue
 // https://github.com/fullcalendar/fullcalendar-react/issues/150
 import '@fullcalendar/react/dist/vdom';
-import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import Typography from '@material-ui/core/Typography';
+import listPlugin from '@fullcalendar/list';
+import FullCalendar from '@fullcalendar/react';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import moment from 'moment';
-import { workflowCategories } from '../../constants/common';
-import WorkflowEdit from './WorkflowEdit';
-import Dialog from '../Dialog/Dialog';
-import CalendarControls from './CalendarControls';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
+
+import Typography from '@material-ui/core/Typography';
+
+import { workflowCategories } from 'constants/common';
+
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/CalendarView';
+import Dialog from '../Dialog/Dialog';
+
+import CalendarControls from './CalendarControls';
+import WorkflowEdit from './WorkflowEdit';
 
 const CalendarView = () => {
   const { tasks, archiveTask, setCurrentCalendarView, updateItem, currentCalendarView } =

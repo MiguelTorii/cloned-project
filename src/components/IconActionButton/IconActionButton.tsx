@@ -1,7 +1,8 @@
 import React from 'react';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import withStyles from '@material-ui/core/styles/withStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const StyledIconButton = withStyles((theme) => ({
   root: {

@@ -1,18 +1,24 @@
 /* eslint-disable no-nested-ternary */
 import { memo } from 'react';
+
+import clsx from 'clsx';
+
+import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import GroupIcon from '@material-ui/icons/Group';
+
+import { getInitials, parseChannelMetadata } from 'utils/chat';
+
+import { ReactComponent as CommunityGroupIcon } from 'assets/svg/community_chat_group.svg';
 import avatarImg from 'assets/svg/icon-kobe.svg';
 import LoadImg from 'components/LoadImg/LoadImg';
-import { getInitials, parseChannelMetadata } from 'utils/chat';
-import { ReactComponent as CommunityGroupIcon } from 'assets/svg/community_chat_group.svg';
-import { CommunityChannelData } from 'reducers/chat';
+
 import useStyles from './_styles/initialAlert';
-import { ChannelMetadata } from 'features/chat';
-import { Channel } from 'twilio-chat';
-import clsx from 'clsx';
+
+import type { ChannelMetadata } from 'features/chat';
+import type { CommunityChannelData } from 'reducers/chat';
+import type { Channel } from 'twilio-chat';
 
 export const DefaultInitialAlert = ({
   metadata,

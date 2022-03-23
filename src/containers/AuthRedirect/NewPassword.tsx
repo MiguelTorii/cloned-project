@@ -1,12 +1,16 @@
 import React, { useMemo, memo, useCallback, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import queryString from 'query-string';
+
 import { FormControl, FormHelperText } from '@material-ui/core';
-import { changePassword } from '../../api/sign-in';
-import AuthTitle from './AuthTitle';
-import AuthTextInput from './AuthTextInput';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { changePassword } from 'api/sign-in';
+
 import AuthButton from './AuthButton';
+import AuthTextInput from './AuthTextInput';
+import AuthTitle from './AuthTitle';
 
 const useStyles = makeStyles((theme) => ({
   container: {

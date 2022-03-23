@@ -1,11 +1,14 @@
 import React from 'react';
-import { Action, Dispatch } from 'redux';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { useStyles } from './HudChatStyles';
+
 import ChatLoadIndicator from './ChatLoadIndicator';
 import ChatMessages from './ChatMessages';
 import ChatQuill from './ChatQuill';
-import { ChannelData, HudChatState } from '../chatState/hudChatState';
+import { useStyles } from './HudChatStyles';
+
+import type { ChannelData, HudChatState } from '../chatState/hudChatState';
+import type { Action, Dispatch } from 'redux';
 
 const ChatMessagesSection = () => {
   const classes: any = useStyles();

@@ -1,21 +1,26 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
+
+import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { push } from 'connected-react-router';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { bindActionCreators } from 'redux';
+
 import Grid from '@material-ui/core/Grid';
-import SignInForm from '../../components/SignInForm/SignInForm';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import type { AuthState } from '../../reducers/auth';
-import * as signInActions from '../../actions/sign-in';
-import * as authActions from '../../actions/auth';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import * as authActions from 'actions/auth';
+import * as signInActions from 'actions/sign-in';
+import * as signInApi from 'api/sign-in';
+import loginBackground from 'assets/img/login-background.png';
+import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
+import SignInForm from 'components/SignInForm/SignInForm';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import loginBackground from '../../assets/img/login-background.png';
-import * as signInApi from '../../api/sign-in';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
+
+import type { AuthState } from 'reducers/auth';
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   main: {

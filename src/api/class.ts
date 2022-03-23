@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import type { Class } from '../types/models';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
+
+import type { Class } from 'types/models';
 
 const searchClasses = async (query: string): Promise<Class[]> => {
   const token = await getToken();

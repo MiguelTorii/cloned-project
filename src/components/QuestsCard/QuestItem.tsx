@@ -1,12 +1,15 @@
 import React from 'react';
+
 import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
+
+import ButtonBase from '@material-ui/core/ButtonBase';
 import { withStyles } from '@material-ui/core/styles';
 // import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
 // import IconButton from '@material-ui/core/IconButton';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import { styles } from '../_styles/QuestsCard/QuestItem';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;

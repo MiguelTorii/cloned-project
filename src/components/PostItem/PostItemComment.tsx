@@ -1,42 +1,46 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
+
 import cx from 'classnames';
 import moment from 'moment';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Collapse from '@material-ui/core/Collapse';
-import Chip from '@material-ui/core/Chip';
-import Link from '@material-ui/core/Link';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import Box from '@material-ui/core/Box';
+import Chip from '@material-ui/core/Chip';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import PenIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FlagIcon from '@material-ui/icons/Flag';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReplyIcon from '@material-ui/icons/Reply';
-import FlagIcon from '@material-ui/icons/Flag';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PenIcon from '@material-ui/icons/Create';
 
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
+import IconBadge from 'assets/svg/badge.svg';
+import commentSvg from 'assets/svg/comment.svg';
+import { ReactComponent as ThanksIcon } from 'assets/svg/ic_thanks_hands.svg';
+import { ReactComponent as ThankedIcon } from 'assets/svg/thanked.svg';
+import thanksSvg from 'assets/svg/thanks.svg';
 import Avatar from 'components/Avatar';
-import RoleBadge from '../RoleBadge/RoleBadge';
-import CustomQuill from '../CustomQuill/CustomQuill';
-import SkeletonLoad from './SkeletonLoad';
-import Report from '../Report/ReportIssue';
-import IconBadge from '../../assets/svg/badge.svg';
-import PostItemAddComment from './PostItemAddComment';
-import Dialog from '../Dialog/Dialog';
-import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
-import { ReactComponent as ThankedIcon } from '../../assets/svg/thanked.svg';
-import thanksSvg from '../../assets/svg/thanks.svg';
-import commentSvg from '../../assets/svg/comment.svg';
+
 import { styles } from '../_styles/PostItem/PostItemComment';
+import CustomQuill from '../CustomQuill/CustomQuill';
+import Dialog from '../Dialog/Dialog';
 import HoverPopup from '../HoverPopup/HoverPopup';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
+import Report from '../Report/ReportIssue';
+import RoleBadge from '../RoleBadge/RoleBadge';
+
+import PostItemAddComment from './PostItemAddComment';
+import SkeletonLoad from './SkeletonLoad';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />

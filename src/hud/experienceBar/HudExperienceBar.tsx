@@ -1,16 +1,21 @@
-import { Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { ExperienceState } from '../experienceBarState/hudExperienceState';
-import { useStyles } from './HudExperienceBarStyles';
-import { apiGetExperiencePoints } from '../../api/user';
-import { usePrevious } from 'hooks';
 
+import { Typography } from '@material-ui/core';
+
+import { apiGetExperiencePoints } from 'api/user';
 import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
-import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
-import { UserState } from '../../reducers/user';
+import { usePrevious } from 'hooks';
 import useStorySequence from 'hud/storyState/useStorySequence';
+
+import { setExperiencePoints } from '../experienceBarState/hudExperienceActions';
+
+import { useStyles } from './HudExperienceBarStyles';
+
+import type { ExperienceState } from '../experienceBarState/hudExperienceState';
+import type { UserState } from 'reducers/user';
 
 const HudExperienceBar = () => {
   const classes = useStyles();

@@ -1,7 +1,9 @@
 import React from 'react';
-import emptyNotes from '../../assets/svg/emptyNotes.svg';
-import LoadImg from '../LoadImg/LoadImg';
+
+import emptyNotes from 'assets/svg/emptyNotes.svg';
+
 import { useStyles } from '../_styles/UserNotesEditor';
+import LoadImg from '../LoadImg/LoadImg';
 
 const Empty = () => {
   const classes: any = useStyles();

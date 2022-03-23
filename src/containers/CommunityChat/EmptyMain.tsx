@@ -1,9 +1,12 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+
 import Box from '@material-ui/core/Box';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import ExpertEmptyChat from '../../assets/svg/empty_chat.svg';
-import EmptyUnregistered from '../../assets/svg/emptyCommunityChatUnregistered.svg';
+import Typography from '@material-ui/core/Typography';
+
+import ExpertEmptyChat from 'assets/svg/empty_chat.svg';
+import EmptyUnregistered from 'assets/svg/emptyCommunityChatUnregistered.svg';
+import LoadImg from 'components/LoadImg/LoadImg';
+
 import useStyles from './_styles/emptyMain';
 
 type Props = {

@@ -4,14 +4,17 @@
  * - Jira Ticket: https://circleinapp.atlassian.net/browse/NCGNT-669
  */
 import axios from 'axios';
+
 import { API_BASE_URL, API_ROUTES } from 'constants/routes';
-import type { TFeedItem } from '../types/models';
-import { logEvent } from './analytics';
-import { getToken, feedToCamelCase, generateFeedURL, feedToCamelCaseV2 } from './utils';
+
 import reduxStore from 'redux/store';
 
+import { logEvent } from './analytics';
 import { callApi } from './api_base';
-import { APIFetchFeedsParams } from './params/APIFetchFeedsParams';
+import { getToken, feedToCamelCase, generateFeedURL, feedToCamelCaseV2 } from './utils';
+
+import type { APIFetchFeedsParams } from './params/APIFetchFeedsParams';
+import type { TFeedItem } from 'types/models';
 
 export const fetchFeed = async ({
   userId,

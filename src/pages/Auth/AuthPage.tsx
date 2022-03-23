@@ -1,8 +1,10 @@
 import React from 'react';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../../withRoot';
-import Auth from '../../containers/Auth/Auth';
+
+import Auth from 'containers/Auth/Auth';
+import withRoot from 'withRoot';
 
 const styles = () => ({});
 

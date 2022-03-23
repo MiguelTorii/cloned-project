@@ -1,9 +1,11 @@
 import update from 'immutability-helper';
 import store from 'store';
-import { signInActions, signUpActions, userActions, rootActions } from '../constants/action-types';
-import type { Action } from '../types/action';
+
+import { signInActions, signUpActions, userActions, rootActions } from 'constants/action-types';
+import { normalizeArray } from 'utils/helpers';
+
+import type { Action } from 'types/action';
 import type { User, TFeedItem, UserClass, GetCampaignsResponse, Campaign } from 'types/models';
-import { normalizeArray } from '../utils/helpers';
 
 export type UserClassList = {
   classList: Array<UserClass> | null;

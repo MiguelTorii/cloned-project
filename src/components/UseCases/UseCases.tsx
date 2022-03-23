@@ -1,22 +1,27 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState, useMemo } from 'react';
+
+import { push as routePush } from 'connected-react-router';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
-import { push as routePush } from 'connected-react-router';
-import { bindActionCreators } from 'redux';
-import withRoot from '../../withRoot';
-import LoadImg from '../LoadImg/LoadImg';
-import bookmarks from '../../assets/svg/bookmarks.svg';
-import flashcards from '../../assets/svg/flashcards.svg';
-import groupchat from '../../assets/svg/group_chat.svg';
-import links from '../../assets/svg/links.svg';
-import notes from '../../assets/svg/notes.svg';
-import question from '../../assets/svg/questions.svg';
-import reminders from '../../assets/svg/reminders.svg';
-import videos from '../../assets/svg/videos.svg';
+
+import bookmarks from 'assets/svg/bookmarks.svg';
+import flashcards from 'assets/svg/flashcards.svg';
+import groupchat from 'assets/svg/group_chat.svg';
+import links from 'assets/svg/links.svg';
+import notes from 'assets/svg/notes.svg';
+import question from 'assets/svg/questions.svg';
+import reminders from 'assets/svg/reminders.svg';
+import videos from 'assets/svg/videos.svg';
+import withRoot from 'withRoot';
+
 import { styles } from '../_styles/UseCases';
-import type { State as StoreState } from '../../types/state';
+import LoadImg from '../LoadImg/LoadImg';
+
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   classes?: Record<string, any>;

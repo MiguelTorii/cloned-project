@@ -1,8 +1,12 @@
 import React, { useState, useMemo } from 'react';
+
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Grid from '@material-ui/core/Grid';
-import FiltersBar from '../../components/FiltersBar/FiltersBar';
+import { makeStyles } from '@material-ui/core/styles';
+
+import FiltersBar from 'components/FiltersBar/FiltersBar';
+
 import ClassesFolders from './ClassesFolders';
 
 const useStyles = makeStyles((theme) => ({

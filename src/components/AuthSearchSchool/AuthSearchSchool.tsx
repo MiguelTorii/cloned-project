@@ -1,12 +1,16 @@
 import React from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import Link from '@material-ui/core/Link';
-import AutoComplete from '../AutoComplete/AutoComplete';
-import type { SelectType } from '../../types/models';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/AuthSearchSchool';
+import AutoComplete from '../AutoComplete/AutoComplete';
+
+import type { SelectType } from 'types/models';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to="/terms-of-use" target="_blank" {...props} ref={ref} />

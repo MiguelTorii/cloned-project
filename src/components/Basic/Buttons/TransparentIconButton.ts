@@ -1,5 +1,5 @@
-import withStyles from '@material-ui/core/styles/withStyles';
 import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const TransparentIconButton = withStyles((theme) => ({
   root: {

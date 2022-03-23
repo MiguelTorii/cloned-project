@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
-import { useDragLayer } from 'react-dnd';
-import moment from 'moment';
+
 import clsx from 'clsx';
-import WorkflowListItem from './WorkflowListItem';
-import WorkflowBoardCard from './WorkflowBoardCard';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
+import moment from 'moment';
+import { useDragLayer } from 'react-dnd';
+
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/DragPreview';
+
+import WorkflowBoardCard from './WorkflowBoardCard';
+import WorkflowListItem from './WorkflowListItem';
 
 const getItemStyles = (initialOffset, currentOffset) => {
   if (!initialOffset || !currentOffset) {

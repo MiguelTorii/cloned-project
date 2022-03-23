@@ -1,4 +1,6 @@
-import React, { ComponentType, memo, useEffect, useState } from 'react';
+import type { ComponentType } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+
 import ReactGA from 'react-ga';
 
 const withTracker = (WrappedComponent: ComponentType<any>, options: Record<string, any> = {}) => {

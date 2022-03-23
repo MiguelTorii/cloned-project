@@ -1,7 +1,14 @@
 import axios from 'axios';
-import store from 'store';
 import moment from 'moment';
-import { API_ROUTES, API_URL } from '../constants/routes';
+import store from 'store';
+
+import { API_ROUTES, API_URL } from 'constants/routes';
+
+import callApi from './api_base';
+import { getToken } from './utils';
+
+import type { APIAbout } from './models/APIAbout';
+import type { APIProfile } from './models/APIProfile';
 import type {
   Profile,
   UserClasses,
@@ -19,13 +26,9 @@ import type {
   TMission,
   InviteLinkData,
   UserProfile,
-  JoinWithReferralCodeResponse
+  JoinWithReferralCodeResponse,
+  GetCampaignsResponse
 } from 'types/models';
-import { getToken } from './utils';
-import callApi from './api_base';
-import { APIProfile } from './models/APIProfile';
-import { APIAbout } from './models/APIAbout';
-import { GetCampaignsResponse } from 'types/models';
 
 export const getUserProfile = async ({ userId }: { userId: string }): Promise<Profile> => {
   if (!userId) {

@@ -1,19 +1,24 @@
 import React from 'react';
+
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
+
 import { withStyles } from '@material-ui/core/styles';
-import type { State as StoreState } from '../../types/state';
-import type { Notification as NotificationState } from '../../types/models';
-import type { UserState } from '../../reducers/user';
-import Notifications from '../../components/Notifications/Notifications';
-import CustomNotification from '../../components/Notifications/CustomNotification';
+
 import {
   getNotifications,
   postPing,
   setNotificationsRead,
   getNotification
-} from '../../api/notifications';
+} from 'api/notifications';
+import CustomNotification from 'components/Notifications/CustomNotification';
+import Notifications from 'components/Notifications/Notifications';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { Notification as NotificationState } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({
   root: {}

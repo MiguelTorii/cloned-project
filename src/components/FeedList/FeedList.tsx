@@ -1,23 +1,30 @@
 import React from 'react';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Box from '@material-ui/core/Box';
-import EmptyFeed from '../../assets/svg/empty-feed.svg';
-import EmptyBookmarks from '../../assets/svg/empty-bookmarks.svg';
-import EmptyMyPosts from '../../assets/svg/empty-my-posts.svg';
-import ExpertFeedEmpty from '../../assets/svg/expertFeedEmpty.svg';
-import ImgLoading from '../../assets/gif/class-feed-loading.gif';
-import FilterLoading from '../../assets/gif/feed-loading.gif';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { COMMUNITY_SCROLL_CONTAINER_ID } from 'constants/common';
+
+import ImgLoading from 'assets/gif/class-feed-loading.gif';
+import FilterLoading from 'assets/gif/feed-loading.gif';
+import EmptyBookmarks from 'assets/svg/empty-bookmarks.svg';
+import EmptyFeed from 'assets/svg/empty-feed.svg';
+import EmptyMyPosts from 'assets/svg/empty-my-posts.svg';
+import ExpertFeedEmpty from 'assets/svg/expertFeedEmpty.svg';
+
+import styles from '../_styles/FeedList';
 import LoadImg from '../LoadImg/LoadImg';
+
 import EmptyState from './EmptyState';
 import FeedItem from './FeedItem';
-import styles from '../_styles/FeedList';
-import { TFeedItem } from '../../types/models';
-import { COMMUNITY_SCROLL_CONTAINER_ID } from '../../constants/common';
+
+import type { TFeedItem } from 'types/models';
 
 type Props = {
   classes?: Record<string, any>;

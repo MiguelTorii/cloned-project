@@ -1,17 +1,22 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Action, Dispatch } from 'redux';
+
 import { useSelector, useDispatch } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+
 import { Box, ListItem, ListItemAvatar } from '@material-ui/core';
 
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
 import Avatar from 'components/Avatar';
+import HoverPopup from 'components/HoverPopup/HoverPopup';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+
 import { useStyles } from './HudChatStyles';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
-import RoleBadge from '../../components/RoleBadge/RoleBadge';
-import HoverPopup from '../../components/HoverPopup/HoverPopup';
-import { Classmate } from '../../types/models';
-import { HudChatState } from '../chatState/hudChatState';
+
+import type { HudChatState } from '../chatState/hudChatState';
+import type { Action, Dispatch } from 'redux';
+import type { Classmate } from 'types/models';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />

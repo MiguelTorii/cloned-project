@@ -1,24 +1,27 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react';
+
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import store from 'store';
 
-import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
+import { Checkbox } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import { Checkbox } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 
-import CustomSwitch from '../MainLayout/Switch';
-import Dialog from '../Dialog/Dialog';
-import { styles } from '../_styles/CreatePostForm';
-import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
-import SimpleErrorDialog from 'components/SimpleErrorDialog';
 import { STORAGE_KEYS } from 'constants/app';
+import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
+
+import SimpleErrorDialog from 'components/SimpleErrorDialog';
+
+import { styles } from '../_styles/CreatePostForm';
+import Dialog from '../Dialog/Dialog';
+import CustomSwitch from '../MainLayout/Switch';
 
 type Props = {
   currentTag?: any;

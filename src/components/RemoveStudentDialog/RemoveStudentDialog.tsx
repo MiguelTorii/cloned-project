@@ -1,26 +1,29 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, useState } from 'react';
+
 import cx from 'classnames';
+
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import { CHANNEL_SID_NAME } from 'constants/enums';
 
+import { logEvent } from 'api/analytics';
+import { removeUser, sendMessage, addGroupMembers } from 'api/chat';
+import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
+import { ReactComponent as UndoIcon } from 'assets/svg/undo.svg';
 import Avatar from 'components/Avatar';
-import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
-import { ReactComponent as UndoIcon } from '../../assets/svg/undo.svg';
-import RoleBadge from '../RoleBadge/RoleBadge';
-import Dialog from '../Dialog/Dialog';
+
 import useStyles from '../_styles/RemoveStudentDialog';
-import { removeUser, sendMessage, addGroupMembers } from '../../api/chat';
-import { logEvent } from '../../api/analytics';
+import Dialog from '../Dialog/Dialog';
+import RoleBadge from '../RoleBadge/RoleBadge';
 
 const RemoveStudentDialog = ({
   open,

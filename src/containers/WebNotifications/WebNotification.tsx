@@ -1,15 +1,18 @@
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import React, { Fragment } from 'react';
+
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import Notification from 'react-web-notification';
-import withRoot from '../../withRoot';
-import type { WebNotificationsState } from '../../reducers/web-notifications';
-import type { State as StoreState } from '../../types/state';
-import mp3Sound from '../../assets/media/sound.mp3';
-import oggSound from '../../assets/media/sound.ogg';
-import icon from '../../assets/img/circlein-web-notification.png';
-import * as webNotificationsActions from '../../actions/web-notifications';
+import { bindActionCreators } from 'redux';
+
+import * as webNotificationsActions from 'actions/web-notifications';
+import icon from 'assets/img/circlein-web-notification.png';
+import mp3Sound from 'assets/media/sound.mp3';
+import oggSound from 'assets/media/sound.ogg';
+import withRoot from 'withRoot';
+
+import type { WebNotificationsState } from 'reducers/web-notifications';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   webNotifications: WebNotificationsState;

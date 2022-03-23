@@ -1,14 +1,19 @@
 import 'react-quill/dist/quill.snow.css';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+
 import { useHistory, withRouter } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
+
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
 import BlockMemberModal from '../BlockMemberModal/BlockMemberModal';
-import StudyRoomReport from '../StudyRoomReport/ReportIssue';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
-import { ChatMessageItem } from '../../types/models';
-import CommunityChatMessageItem from './CommunityChatMessageItem';
 import NewMessageLine from '../NewMessageLine/NewMessageLine';
+import StudyRoomReport from '../StudyRoomReport/ReportIssue';
+
+import CommunityChatMessageItem from './CommunityChatMessageItem';
+
+import type { ChatMessageItem } from 'types/models';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />

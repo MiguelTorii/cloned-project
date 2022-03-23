@@ -1,17 +1,22 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import { withStyles } from '@material-ui/core/styles';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { StudyCircle as StudyCircleState } from '../../types/models';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import MyStudyCircle from '../../components/MyStudyCircle/MyStudyCircle';
-import { getStudyCircle } from '../../api/user';
-import { removeFromStudyCircle } from '../../api/posts';
-import * as chatActions from '../../actions/chat';
-import { ChatState } from '../../reducers/chat';
+
+import * as chatActions from 'actions/chat';
+import { removeFromStudyCircle } from 'api/posts';
+import { getStudyCircle } from 'api/user';
+import MyStudyCircle from 'components/MyStudyCircle/MyStudyCircle';
 import { ChatClientContext } from 'features/chat';
+
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
+import type { StudyCircle as StudyCircleState } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({});
 

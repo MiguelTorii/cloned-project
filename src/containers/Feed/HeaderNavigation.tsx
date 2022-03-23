@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import head from 'lodash/head';
-import cx from 'clsx';
-import queryString from 'query-string';
 
+import cx from 'clsx';
+import head from 'lodash/head';
+import queryString from 'query-string';
+import { useSelector } from 'react-redux';
+
+import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
 
-import Tooltip from '../Tooltip/Tooltip';
-import { getPastClassIds } from '../../utils/helpers';
-import { cypherClass, decypherClass } from '../../utils/crypto';
+import { FEED_NAVIGATION_TABS, POST_WRITER } from 'constants/common';
+import { cypherClass, decypherClass } from 'utils/crypto';
+import { getPastClassIds } from 'utils/helpers';
+
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
-import { FEED_NAVIGATION_TABS, POST_WRITER } from '../../constants/common';
+import Tooltip from '../Tooltip/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
   allClasses: {

@@ -1,29 +1,35 @@
 import React from 'react';
-import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { Hidden } from '@material-ui/core';
-import { Message, Videocam, Create } from '@material-ui/icons';
-import IconButton from '@material-ui/core/IconButton';
-import _ from 'lodash';
-import Box from '@material-ui/core/Box';
 
+import _ from 'lodash';
+import moment from 'moment';
+
+import { Hidden } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import { Message, Videocam, Create } from '@material-ui/icons';
+
+import { getPointsText } from 'utils/helpers';
+
+import ImgEmptyCover from 'assets/img/empty_cover.png';
+import ImgLogo from 'assets/svg/app-logo.svg';
+import schoolIcon from 'assets/svg/ic_school.svg';
 import Avatar from 'components/Avatar';
-import RoleBadge from '../RoleBadge/RoleBadge';
-import ImgEmptyCover from '../../assets/img/empty_cover.png';
-import ImgLogo from '../../assets/svg/app-logo.svg';
-import schoolIcon from '../../assets/svg/ic_school.svg';
-import LoadImg from '../LoadImg/LoadImg';
-import { getPointsText } from '../../utils/helpers';
+
+import { styles } from '../_styles/Profile/header';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
-import type { About, UserProfile } from '../../types/models';
+import LoadImg from '../LoadImg/LoadImg';
+import RoleBadge from '../RoleBadge/RoleBadge';
+
 import PointsHistoryCard from './PointsHistoryCard';
-import { styles } from '../_styles/Profile/header';
+
+import type { About, UserProfile } from 'types/models';
 
 type Props = {
   classes?: Record<string, any>;

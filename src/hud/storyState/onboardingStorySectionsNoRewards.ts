@@ -1,3 +1,4 @@
+import { hudEventNames } from '../events/hudEventNames';
 import {
   ACHIEVEMENTS_MAIN_AREA,
   CHAT_AREA,
@@ -7,12 +8,13 @@ import {
   LEADERBOARD_AREA,
   STUDY_TOOLS_MAIN_AREA
 } from '../navigationState/hudNavigation';
-import { StorySection } from './StorySection';
-import { hudEventNames } from '../events/hudEventNames';
+
 import {
   CHAT_EXPERIENCE_DELAY_IN_MS,
   STUDY_TOOL_HOVER_EXPERIENCE_DELAY_IN_MS
 } from './onboardingStorySections';
+
+import type { StorySection } from './StorySection';
 
 const LEADERBOARD_INTRO_DELAY_IN_MS = 5000;
 

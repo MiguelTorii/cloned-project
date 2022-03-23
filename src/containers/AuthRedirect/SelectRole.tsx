@@ -1,17 +1,21 @@
 import React, { memo, useState, useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Tooltip from '@material-ui/core/Tooltip';
+
 import auth0 from 'auth0-js';
 import store from 'store';
+
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '../../constants/app';
-import more from '../../assets/svg/ic_moreinfo.svg';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import Dialog from '../../components/Dialog/Dialog';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from 'constants/app';
+
+import more from 'assets/svg/ic_moreinfo.svg';
+import Dialog from 'components/Dialog/Dialog';
+import LoadImg from 'components/LoadImg/LoadImg';
 
 const useStyles = makeStyles((theme) => ({
   container: {

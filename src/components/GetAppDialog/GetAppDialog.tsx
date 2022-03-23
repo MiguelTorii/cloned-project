@@ -1,13 +1,16 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+
 import Grid from '@material-ui/core/Grid';
-import Dialog from '../Dialog/Dialog';
-import getappqrcode from '../../assets/img/getappqrcode.png';
-import getappandroid from '../../assets/img/getappandroid.png';
-import getappios from '../../assets/img/getappios.png';
-import getappphone from '../../assets/img/getappphone.png';
-import LoadImg from '../LoadImg/LoadImg';
+import Typography from '@material-ui/core/Typography';
+
+import getappandroid from 'assets/img/getappandroid.png';
+import getappios from 'assets/img/getappios.png';
+import getappphone from 'assets/img/getappphone.png';
+import getappqrcode from 'assets/img/getappqrcode.png';
+
 import { useStyles } from '../_styles/GetAppDialog';
+import Dialog from '../Dialog/Dialog';
+import LoadImg from '../LoadImg/LoadImg';
 
 type Props = {
   open: boolean;

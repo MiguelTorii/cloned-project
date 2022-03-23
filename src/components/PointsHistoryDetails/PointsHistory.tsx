@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Hidden, Paper, Typography, Box, Grid, CircularProgress } from '@material-ui/core';
+
+import update from 'immutability-helper';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from 'react-redux';
-import update from 'immutability-helper';
-import withRoot from '../../withRoot';
-import { getPointsHistory } from '../../actions/user';
-import { isApiCalling } from '../../utils/helpers';
-import { userActions } from '../../constants/action-types';
+
+import { Hidden, Paper, Typography, Box, Grid, CircularProgress } from '@material-ui/core';
+
+import { userActions } from 'constants/action-types';
+import { isApiCalling } from 'utils/helpers';
+
+import { getPointsHistory } from 'actions/user';
+import withRoot from 'withRoot';
+
+import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
-import { useStyles } from '../_styles/PointsHistoryDetails/PointsHistory';
 
 type Props = {
   userId: string;

@@ -1,24 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Action, Dispatch } from 'redux';
-import { Channel, Client } from 'twilio-chat';
-import { getCommunities } from '../../api/community';
-import { APICommunities } from '../../api/models/APICommunities';
-import { APICommunityChannelGroups } from '../../api/models/APICommunityChannelGroups';
-import {
-  buildChannels,
-  buildCommunities,
-  IBuiltChannels,
-  IBuiltCommunities
-} from './chatDataBuilder';
-import { ClassmateGroup, User } from '../../types/models';
-import { setCommunitiesAndChannels, startChatLoad } from './hudChatActions';
-import { HudChatState } from './hudChatState';
-import { fetchCommunityChannels, fetchCommunityMembers } from './hudChatRESTApi';
-import { UserState } from '../../reducers/user';
-import { getChannelMetadata, renewTwilioToken } from '../../api/chat';
-import { APIChat } from '../../api/models/APIChat';
-import { loadLocalChannels } from 'lib/chat/channels';
+
+import { getChannelMetadata, renewTwilioToken } from 'api/chat';
+import { getCommunities } from 'api/community';
+import { getChannelsFromClient } from 'lib/chat/channels';
 import { renewTokenAndGetClient } from 'lib/chat/client';
+
+import { buildChannels, buildCommunities } from './chatDataBuilder';
+import { setCommunitiesAndChannels, startChatLoad } from './hudChatActions';
+import { fetchCommunityChannels, fetchCommunityMembers } from './hudChatRESTApi';
+
+import type { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
+import type { HudChatState } from './hudChatState';
+import type { APIChat } from 'api/models/APIChat';
+import type { APICommunities } from 'api/models/APICommunities';
+import type { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
+import type { UserState } from 'reducers/user';
+import type { Action, Dispatch } from 'redux';
+import type { Channel, Client } from 'twilio-chat';
+import type { ClassmateGroup, User } from 'types/models';
 
 export interface IChatLoadOptions {
   channelId: string;
@@ -81,7 +80,7 @@ const loadCommunities = async (userId: string): Promise<CommunityChannelData> =>
 
 const loadClientAndChannels = async (userId: string): Promise<ChatSocketData> => {
   const client = await renewTokenAndGetClient(userId);
-  const channels = await loadLocalChannels(userId);
+  const channels = await getChannelsFromClient(client);
 
   registerForClientEvents(client, userId);
 

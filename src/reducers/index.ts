@@ -1,22 +1,25 @@
-import { combineReducers } from 'redux';
 import { connectRouter, go, goBack, goForward, push, replace } from 'connected-react-router';
-import type { History } from 'history';
-import user from './user';
-import chat from './chat';
-import feed from './feed';
-import auth from './auth';
-import leaderboard from './leaderboard';
-import webNotifications from './web-notifications';
-import notifications from './notifications';
-import dialog from './dialog';
-import onboarding from './onboarding';
-import notes from './notes';
+import { combineReducers } from 'redux';
+
+import hudChat from 'hud/chatState/hudChatReducers';
+import hudExperience from 'hud/experienceBarState/hudExperienceReducers';
+import hudNavigation from 'hud/navigationState/hudNavigationReducers';
+import hudRightPanel from 'hud/rightPanelState/hudRightPanelReducers';
+import hudStory from 'hud/storyState/hudStoryReducers';
+
 import api from './api';
-import hudStory from '../hud/storyState/hudStoryReducers';
-import hudChat from '../hud/chatState/hudChatReducers';
-import hudNavigation from '../hud/navigationState/hudNavigationReducers';
-import hudExperience from '../hud/experienceBarState/hudExperienceReducers';
-import hudRightPanel from '../hud/rightPanelState/hudRightPanelReducers';
+import auth from './auth';
+import chat from './chat';
+import dialog from './dialog';
+import feed from './feed';
+import leaderboard from './leaderboard';
+import notes from './notes';
+import notifications from './notifications';
+import onboarding from './onboarding';
+import user from './user';
+import webNotifications from './web-notifications';
+
+import type { History } from 'history';
 
 const routerActions = {
   push: typeof push,

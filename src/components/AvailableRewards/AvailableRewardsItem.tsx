@@ -1,9 +1,12 @@
 import React from 'react';
+
 import cx from 'classnames';
+
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+
 import { styles } from '../_styles/AvailableRewards';
 
 type Props = {

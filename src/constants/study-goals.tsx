@@ -1,14 +1,15 @@
 import React from 'react';
-import { ReactComponent as IconPostsThanked } from '../assets/svg/study-goals-posts-thanked.svg';
-import { ReactComponent as IconStudentsHelped } from '../assets/svg/study-goals-students-helped.svg';
-import { ReactComponent as IconRoomsJoined } from '../assets/svg/study-goals-rooms-joined.svg';
-import { ReactComponent as IconCompletedTasks } from '../assets/svg/study-goals-completed-tasks.svg';
-import { ReactComponent as IconResourcesShared } from '../assets/svg/study-goals-resources-shared.svg';
-import { ReactComponent as IconNotesCreated } from '../assets/svg/study-goals-notes-created.svg';
-import { ReactComponent as IconDecksReviewed } from '../assets/svg/study-goals-decks-reviewed.svg';
-import { ReactComponent as IconMessagesSent } from '../assets/svg/study-goals-messages-sent.svg';
-import { ReactComponent as IconNotesShared } from '../assets/svg/study-goals-notes-shared.svg';
-import { ReactComponent as IconDecksCreated } from '../assets/svg/study-goals-decks-created.svg';
+
+import { ReactComponent as IconCompletedTasks } from 'assets/svg/study-goals-completed-tasks.svg';
+import { ReactComponent as IconDecksCreated } from 'assets/svg/study-goals-decks-created.svg';
+import { ReactComponent as IconDecksReviewed } from 'assets/svg/study-goals-decks-reviewed.svg';
+import { ReactComponent as IconMessagesSent } from 'assets/svg/study-goals-messages-sent.svg';
+import { ReactComponent as IconNotesCreated } from 'assets/svg/study-goals-notes-created.svg';
+import { ReactComponent as IconNotesShared } from 'assets/svg/study-goals-notes-shared.svg';
+import { ReactComponent as IconPostsThanked } from 'assets/svg/study-goals-posts-thanked.svg';
+import { ReactComponent as IconResourcesShared } from 'assets/svg/study-goals-resources-shared.svg';
+import { ReactComponent as IconRoomsJoined } from 'assets/svg/study-goals-rooms-joined.svg';
+import { ReactComponent as IconStudentsHelped } from 'assets/svg/study-goals-students-helped.svg';
 
 export default [
   {

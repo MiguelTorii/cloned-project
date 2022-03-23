@@ -1,10 +1,13 @@
 import React from 'react';
+
+import Image from 'react-graceful-image';
 import Lightbox from 'react-images';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
+import withStyles from '@material-ui/core/styles/withStyles';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
-import Image from 'react-graceful-image';
+
 import { styles } from '../_styles/ImageGallery';
 
 const ImgComponent = React.forwardRef<any, any>(({ item }, ref) => (

@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import PropTypes from 'prop-types';
 import ReactCardFlip from 'react-card-flip';
-import withRoot from '../../withRoot';
+
+import withRoot from 'withRoot';
+
 import CardBoardContent from './CardBoardContent';
 
 const CardBoard = ({ data, onAction }) => {

@@ -1,9 +1,14 @@
 import React from 'react';
-import queryString, { ParsedQuery } from 'query-string';
+
+import queryString from 'query-string';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import withRoot from '../../withRoot';
-import SignUp from '../../containers/SignUp/SignUp';
+
+import SignUp from 'containers/SignUp/SignUp';
+import withRoot from 'withRoot';
+
+import type { ParsedQuery } from 'query-string';
 
 const styles = () => ({});
 

@@ -1,10 +1,14 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import { LinearProgress } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
+
+import withRoot from 'withRoot';
+
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 
 const GradientProgress = withStyles((theme) => ({
   root: {

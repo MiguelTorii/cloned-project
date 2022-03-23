@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { animations } from 'react-animation';
+
 import clsx from 'clsx';
-import { ReactComponent as DeactiveCreatePost } from '../../assets/svg/inactive_create_post.svg';
-import { ReactComponent as DeactiveCreateQuestion } from '../../assets/svg/inactive_create_question.svg';
-import { ReactComponent as DeactiveCreateNote } from '../../assets/svg/inactive_create_note.svg';
-import { ReactComponent as DeactiveCreateShare } from '../../assets/svg/inactive_create_share.svg';
-import { ReactComponent as ActiveCreatePost } from '../../assets/svg/active_create_post.svg';
-import { ReactComponent as ActiveCreateQuestion } from '../../assets/svg/smile-green.svg';
-import { ReactComponent as ActiveCreateNote } from '../../assets/svg/active_create_note.svg';
-import { ReactComponent as ActiveCreateShare } from '../../assets/svg/active_create_share.svg';
+import { animations } from 'react-animation';
+
+import AppBar from '@material-ui/core/AppBar';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+
+import { ReactComponent as ActiveCreateNote } from 'assets/svg/active_create_note.svg';
+import { ReactComponent as ActiveCreatePost } from 'assets/svg/active_create_post.svg';
+import { ReactComponent as ActiveCreateShare } from 'assets/svg/active_create_share.svg';
+import { ReactComponent as DeactiveCreateNote } from 'assets/svg/inactive_create_note.svg';
+import { ReactComponent as DeactiveCreatePost } from 'assets/svg/inactive_create_post.svg';
+import { ReactComponent as DeactiveCreateQuestion } from 'assets/svg/inactive_create_question.svg';
+import { ReactComponent as DeactiveCreateShare } from 'assets/svg/inactive_create_share.svg';
+import { ReactComponent as ActiveCreateQuestion } from 'assets/svg/smile-green.svg';
 
 const styles = (theme) => ({
   appBar: {

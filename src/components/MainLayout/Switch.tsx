@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
+
 import Switch from '@material-ui/core/Switch';
+
 import { useStyles } from '../_styles/MainLayout/Switch';
 
 const CustomSwitch = ({ ...props }) => {

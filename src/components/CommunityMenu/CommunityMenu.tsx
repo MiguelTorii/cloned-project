@@ -1,18 +1,21 @@
 import React, { useCallback, useMemo } from 'react';
-import { useAppSelector } from 'redux/store';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import LoadImg from '../LoadImg/LoadImg';
-import { ReactComponent as Chat } from '../../assets/svg/community-chat.svg';
-import StyledBadge from './StyledBadge';
-import useStyles from './_styles/styles';
+import { ReactComponent as Chat } from 'assets/svg/community-chat.svg';
 import { useUnreadCount } from 'features/chat';
-import { ChatCommunity } from 'api/models/APICommunity';
 import { selectCurrentCommunity } from 'reducers/chat';
+import { useAppSelector } from 'redux/store';
+
+import LoadImg from '../LoadImg/LoadImg';
+
+import useStyles from './_styles/styles';
+import StyledBadge from './StyledBadge';
+
+import type { ChatCommunity } from 'api/models/APICommunity';
 
 type Props = {
   item: ChatCommunity;

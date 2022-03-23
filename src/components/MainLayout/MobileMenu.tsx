@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import ChatIcon from '@material-ui/icons/Chat';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import Avatar from 'components/Avatar';
 

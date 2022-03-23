@@ -1,11 +1,15 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Quests from './Quests';
-import type { QuestsCard as QuestsCardState } from '../../types/models';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/QuestsCard/index';
+
+import Quests from './Quests';
+
+import type { QuestsCard as QuestsCardState } from 'types/models';
 
 type Props = {
   classes: Record<string, any>;

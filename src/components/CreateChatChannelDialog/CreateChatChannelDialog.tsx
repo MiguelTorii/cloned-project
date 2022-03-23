@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '../Dialog/Dialog';
-import AutoComplete from '../AutoComplete/AutoComplete';
+
 import styles from '../_styles/CreateChatChannelDialog';
+import AutoComplete from '../AutoComplete/AutoComplete';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes?: Record<string, any>;

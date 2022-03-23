@@ -1,23 +1,30 @@
 /* eslint-disable no-restricted-syntax */
-import React, { RefObject } from 'react';
+import type { RefObject } from 'react';
+import React from 'react';
+
+import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
-import adapter from 'webrtc-adapter';
 import store from 'store';
+import adapter from 'webrtc-adapter';
 
-import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { sendMessage } from '../../api/chat';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import Preview from './Preview';
-import MeetUp from './MeetUp';
-import * as utils from './utils';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { ChatClientContext } from 'features/chat';
+import { withStyles } from '@material-ui/core/styles';
+
 import { STORAGE_KEYS } from 'constants/app';
+
+import { sendMessage } from 'api/chat';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+import { ChatClientContext } from 'features/chat';
+
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import MeetUp from './MeetUp';
+import Preview from './Preview';
+import * as utils from './utils';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {
@@ -133,6 +140,7 @@ class VideoCall extends React.Component<Props, State> {
         } as any);
 
         if (devices.length > 0) {
+          // eslint-disable-next-line react/destructuring-assignment
           const selectedDevice = this.state[`selected${kind}`];
           const matchedDeviceId = devices.findIndex((device) => device.value === selectedDevice);
           // eslint-disable-next-line no-await-in-loop

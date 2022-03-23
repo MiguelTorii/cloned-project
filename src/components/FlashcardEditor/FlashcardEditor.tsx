@@ -1,16 +1,21 @@
 import React, { useMemo, useRef, Fragment, useState, useEffect, useCallback } from 'react';
+
+import clsx from 'clsx';
 import { ValidatorForm } from 'react-material-ui-form-validator';
+
+import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import withWidth from '@material-ui/core/withWidth';
-import clsx from 'clsx';
-import RichTextEditor from '../../containers/RichTextEditor/RichTextEditor';
-import SelectedImage from '../SelectedImage/SelectedImage';
-import FlashcardDetail from '../FlashcardDetail/FlashcardList';
-import ToolbarTooltip from './ToolbarTooltip';
-import Dialog from '../Dialog/Dialog';
+
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
+
 import { styles } from '../_styles/FlashcardEditor/index';
+import Dialog from '../Dialog/Dialog';
+import FlashcardDetail from '../FlashcardDetail/FlashcardList';
+import SelectedImage from '../SelectedImage/SelectedImage';
+
+import ToolbarTooltip from './ToolbarTooltip';
 
 const strip = (s) => s.replace(/<[^>]*>?/gm, '').trim();
 

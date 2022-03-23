@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
+
 import moment from 'moment';
-import * as api from '../api/notes';
-import { logEventLocally } from '../api/analytics';
-import UserNotesEditor from '../components/UserNotesEditor/UserNotesEditor';
-import DeleteNote from '../containers/UserNotes/DeleteNote';
+
+import { logEventLocally } from 'api/analytics';
+import * as api from 'api/notes';
+import UserNotesEditor from 'components/UserNotesEditor/UserNotesEditor';
+import DeleteNote from 'containers/UserNotes/DeleteNote';
 
 const useNotes = () => {
   const [notesBySectionId, setNotesBySectionId] = useState({});

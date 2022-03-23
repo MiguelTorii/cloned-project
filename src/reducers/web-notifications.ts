@@ -1,6 +1,8 @@
 import update from 'immutability-helper';
-import { webNotificationsActions, rootActions } from '../constants/action-types';
-import type { Action } from '../types/action';
+
+import { webNotificationsActions, rootActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
 
 export type WebNotificationsState = {
   isLoading: boolean;

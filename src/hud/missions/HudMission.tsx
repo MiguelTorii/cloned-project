@@ -1,9 +1,13 @@
 import React from 'react';
+
 import { Box, Tooltip, Typography } from '@material-ui/core';
 import IconInformation from '@material-ui/icons/InfoOutlined';
-import { TMission } from '../../types/models';
+
+import MissionProgress from 'components/MissionProgress/MissionProgress';
+
 import { useStyles } from './HudMissionsStyles';
-import MissionProgress from '../../components/MissionProgress/MissionProgress';
+
+import type { TMission } from 'types/models';
 
 type Props = {
   data: TMission;

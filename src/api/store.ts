@@ -1,11 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import type { Rewards } from '../types/models';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
-import { APIRewards } from './models/APIRewards';
-import { APISlot } from './models/APISlot';
-import { APIAvailableReward } from './models/APIAvailableReward';
+
+import type { APIAvailableReward } from './models/APIAvailableReward';
+import type { APIRewards } from './models/APIRewards';
+import type { APISlot } from './models/APISlot';
+import type { Rewards } from 'types/models';
 
 export const getRewards = async ({ userId }: { userId: string }): Promise<Rewards> => {
   try {

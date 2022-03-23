@@ -1,9 +1,10 @@
 import React from 'react';
-import ImageMidLessThan50 from '../../assets/gif/study-goal-mid-less-than-50.gif';
-import ImageMidLessThan100 from '../../assets/gif/study-goal-mid-less-than-100.gif';
-import ImageMid100 from '../../assets/gif/study-goal-mid-100.gif';
-import ImageEndLessThan100 from '../../assets/gif/study-goals-end-less-than-100.gif';
-import ImageEnd100 from '../../assets/gif/study-goals-end-100.gif';
+
+import ImageMid100 from 'assets/gif/study-goal-mid-100.gif';
+import ImageMidLessThan100 from 'assets/gif/study-goal-mid-less-than-100.gif';
+import ImageMidLessThan50 from 'assets/gif/study-goal-mid-less-than-50.gif';
+import ImageEnd100 from 'assets/gif/study-goals-end-100.gif';
+import ImageEndLessThan100 from 'assets/gif/study-goals-end-less-than-100.gif';
 
 export default {
   1: {

@@ -1,30 +1,35 @@
 import React, { Fragment } from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import Avatar from '@material-ui/core/Avatar';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Link from '@material-ui/core/Link';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import type { HomeCard } from '../../types/models';
-import bronze from '../../assets/svg/rank_bronze.svg';
-import silver from '../../assets/svg/rank_silver.svg';
-import gold from '../../assets/svg/rank_gold.svg';
-import platinum from '../../assets/svg/rank_platinum.svg';
-import diamond from '../../assets/svg/rank_diamond.svg';
-import master from '../../assets/svg/rank_master.svg';
-import amazonLogo from '../../assets/svg/amazon_logo.svg';
-import trophy from '../../assets/svg/trophy.svg';
-import ring from '../../assets/svg/ring.svg';
-import appLogo from '../../assets/svg/app-logo.svg';
+
+import amazonLogo from 'assets/svg/amazon_logo.svg';
+import appLogo from 'assets/svg/app-logo.svg';
+import bronze from 'assets/svg/rank_bronze.svg';
+import diamond from 'assets/svg/rank_diamond.svg';
+import gold from 'assets/svg/rank_gold.svg';
+import master from 'assets/svg/rank_master.svg';
+import platinum from 'assets/svg/rank_platinum.svg';
+import silver from 'assets/svg/rank_silver.svg';
+import ring from 'assets/svg/ring.svg';
+import trophy from 'assets/svg/trophy.svg';
+
 import { styles } from '../_styles/YourMonthCard';
+
+import type { HomeCard } from 'types/models';
 
 const ranks = [
   {

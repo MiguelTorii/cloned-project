@@ -1,20 +1,24 @@
 import React, { Fragment } from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import withStyles from '@material-ui/core/styles/withStyles';
 import AddIcon from '@material-ui/icons/Add';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ViewListIcon from '@material-ui/icons/ViewList';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChatIcon from '@material-ui/icons/Chat';
-import Dialog from '../Dialog/Dialog';
-import { ReactComponent as LeaderboardIcon } from '../../assets/svg/ic_leaderboard.svg';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ViewListIcon from '@material-ui/icons/ViewList';
+
+import { ReactComponent as LeaderboardIcon } from 'assets/svg/ic_leaderboard.svg';
+
 import { styles } from '../_styles/BottomNav';
+import Dialog from '../Dialog/Dialog';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink ref={ref} to={href} {...props} />

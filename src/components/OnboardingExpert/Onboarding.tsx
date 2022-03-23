@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
-import ErrorBoundary from '../../containers/ErrorBoundary/ErrorBoundary';
+import { withStyles } from '@material-ui/core/styles';
+
+import expertOnboardingSecond from 'assets/gif/expert-onboarding-step2.gif';
+import expertOnboardingFirst from 'assets/svg/expert-onboarding-step1.svg';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+
+import { styles } from '../_styles/OnboardingExpert';
 import Dialog from '../Dialog/Dialog';
 import LoadImg from '../LoadImg/LoadImg';
-import expertOnboardingFirst from '../../assets/svg/expert-onboarding-step1.svg';
-import expertOnboardingSecond from '../../assets/gif/expert-onboarding-step2.gif';
-import { styles } from '../_styles/OnboardingExpert';
 
 type Props = {
   classes?: Record<string, any>;

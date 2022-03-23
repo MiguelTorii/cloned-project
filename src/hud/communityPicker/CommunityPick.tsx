@@ -1,15 +1,21 @@
 import React from 'react';
-import { Action, Dispatch } from 'redux';
+
 import { useSelector, useDispatch } from 'react-redux';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import StyledBadge from '../../components/CommunityMenu/StyledBadge';
-import useStyles from './CommunityPickerStyles';
-import { CommunityData, HudChatState } from '../chatState/hudChatState';
+
+import StyledBadge from 'components/CommunityMenu/StyledBadge';
+import LoadImg from 'components/LoadImg/LoadImg';
+
 import { selectCommunityId } from '../chatState/hudChatActions';
+
+import useStyles from './CommunityPickerStyles';
+
+import type { CommunityData, HudChatState } from '../chatState/hudChatState';
+import type { Action, Dispatch } from 'redux';
 
 type Props = {
   communityId: string;

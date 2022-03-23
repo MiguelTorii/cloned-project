@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import IconLink from '../../assets/svg/link.svg';
-import LoadImg from '../LoadImg/LoadImg';
+
+import Box from '@material-ui/core/Box';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+
+import IconLink from 'assets/svg/link.svg';
+import withRoot from 'withRoot';
+
 import GradientButton from '../Basic/Buttons/GradientButton';
-import useStyles from './styles';
 import Dialog from '../Dialog/Dialog';
-import withRoot from '../../withRoot';
+import LoadImg from '../LoadImg/LoadImg';
+
+import useStyles from './styles';
 
 type Props = {
   open: boolean;

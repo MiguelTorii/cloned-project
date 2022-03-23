@@ -1,11 +1,14 @@
 import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import Grid from '@material-ui/core/Grid';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import ForgotPasswordForm from '../../components/ForgotPasswordForm/ForgotPasswordForm';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
+
+import { recoverPassword } from 'api/sign-in';
+import ForgotPasswordForm from 'components/ForgotPasswordForm/ForgotPasswordForm';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { recoverPassword } from '../../api/sign-in';
 
 const styles = (theme) => ({
   success: {

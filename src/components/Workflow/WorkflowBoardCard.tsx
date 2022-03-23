@@ -1,13 +1,16 @@
 import React, { memo, useMemo, useState, useEffect } from 'react';
+
+import cx from 'classnames';
+
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
-import cx from 'classnames';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+
 import { useStyles } from '../_styles/Workflow/WorkflowBoardCard';
 
 const getHeight = (text) => {

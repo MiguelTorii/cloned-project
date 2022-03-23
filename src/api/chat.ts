@@ -1,18 +1,21 @@
 /* eslint-disable import/prefer-default-export */
+import retry from 'async-retry';
 import axios from 'axios';
-import moment from 'moment';
 import get from 'lodash/get';
-import type { CreateChat, Classmate } from 'types/models';
-import { API_ROUTES } from '../constants/routes';
+import moment from 'moment';
+import { objectToCamel } from 'ts-case-convert';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { callApi } from './api_base';
 import { getToken } from './utils';
-import { APICreateChat } from './models/APICreateChat';
-import { APIClassmate } from './models/APIClassmate';
-import { APIChat } from './models/APIChat';
-import retry from 'async-retry';
-import { APIChatUser } from './models/APIChatUser';
-import { objectToCamel } from 'ts-case-convert';
-import { ChannelMetadata } from 'features/chat';
+
+import type { APIChat } from './models/APIChat';
+import type { APIChatUser } from './models/APIChatUser';
+import type { APIClassmate } from './models/APIClassmate';
+import type { APICreateChat } from './models/APICreateChat';
+import type { ChannelMetadata } from 'features/chat';
+import type { CreateChat, Classmate } from 'types/models';
 
 export const sendMessage = async ({
   message,

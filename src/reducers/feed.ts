@@ -1,9 +1,11 @@
 import update from 'immutability-helper';
-import { rootActions, feedActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { TFeedItem } from '../types/models';
+
+import { rootActions, feedActions } from 'constants/action-types';
+import { FEEDS_PER_PAGE } from 'constants/app';
 import { FEED_CLEARED_INDEX, POST_WRITER } from 'constants/common';
-import { FEEDS_PER_PAGE } from '../constants/app';
+
+import type { Action } from 'types/action';
+import type { TFeedItem } from 'types/models';
 
 export type TFeedFilters = {
   userClasses: Array<string>;

@@ -1,7 +1,9 @@
 import update from 'immutability-helper';
-import { rootActions, authActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { School, ReferralData } from '../types/models';
+
+import { rootActions, authActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
+import type { School, ReferralData } from 'types/models';
 
 export type AuthState = {
   data: {

@@ -1,5 +1,15 @@
 import axios from 'axios';
 import clsx from 'clsx';
+
+import { API_ROUTES } from 'constants/routes';
+
+import { logEvent } from './analytics';
+import callApi from './api_base';
+import { getToken, postToCamelCase, commentsToCamelCase, postResponseToCamelCase } from './utils';
+
+import type { APIPostMetaData } from './models/APIPostMetaData';
+import type { APIRecommendedPost } from './models/APIRecommendedPost';
+import type { APITag } from './models/APITag';
 import type {
   Post,
   PhotoNote,
@@ -10,14 +20,7 @@ import type {
   Comments,
   PostMetaData,
   PostResponse
-} from '../types/models';
-import { API_ROUTES } from '../constants/routes';
-import { logEvent } from './analytics';
-import { getToken, postToCamelCase, commentsToCamelCase, postResponseToCamelCase } from './utils';
-import callApi from './api_base';
-import { APIPostMetaData } from './models/APIPostMetaData';
-import { APIRecommendedPost } from './models/APIRecommendedPost';
-import { APITag } from './models/APITag';
+} from 'types/models';
 
 export const createBatchFlashcards = async ({
   userId,

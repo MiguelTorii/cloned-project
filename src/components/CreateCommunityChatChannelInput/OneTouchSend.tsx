@@ -1,11 +1,14 @@
 import React, { useCallback } from 'react';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import MuiTabs from '../Tabs/TabPanel';
+
 import styles from '../_styles/CreateCommunityChatChannelInput/oneTouchSend';
-import SendStudent from './SendStudent';
+import MuiTabs from '../Tabs/TabPanel';
+
 import SendClass from './SendClass';
+import SendStudent from './SendStudent';
 
 type Props = {
   classes?: Record<string, any>;

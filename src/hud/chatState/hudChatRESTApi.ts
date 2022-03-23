@@ -1,8 +1,9 @@
-import { getCommunityChannels } from 'api/community';
-import { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
-import { ChatCommunityData } from 'api/models/APICommunity';
 import { getCommunityMembers } from 'api/chat';
-import { Classmate, ClassmateGroup } from 'types/models';
+import { getCommunityChannels } from 'api/community';
+
+import type { ChatCommunityData } from 'api/models/APICommunity';
+import type { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
+import type { Classmate, ClassmateGroup } from 'types/models';
 
 export const fetchCommunityChannels = (
   communities: ChatCommunityData[]

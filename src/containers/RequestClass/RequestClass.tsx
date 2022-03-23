@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
+import Typography from '@material-ui/core/Typography';
+
+import { logEvent } from 'api/analytics';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { logEvent } from '../../api/analytics';
 
 const styles = (theme) => ({
   container: {

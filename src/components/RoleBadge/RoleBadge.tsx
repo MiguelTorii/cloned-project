@@ -1,7 +1,10 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import Chip from '@material-ui/core/Chip';
-import { ReactComponent as BadgeVector } from '../../assets/svg/badge_vector.svg';
+import { withStyles } from '@material-ui/core/styles';
+
+import { ReactComponent as BadgeVector } from 'assets/svg/badge_vector.svg';
+
 import styles from '../_styles/RoleBadge';
 
 type Props = {

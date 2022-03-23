@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { Paper, Typography } from '@material-ui/core';
-import withRoot from '../../withRoot';
+
+import withRoot from 'withRoot';
+
 import { useStyles } from '../_styles/PointsHistoryDetails/StudyStats';
 
 type Props = {

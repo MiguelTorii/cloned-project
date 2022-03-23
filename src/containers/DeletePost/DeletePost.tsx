@@ -1,13 +1,18 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../../components/Dialog/Dialog';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { deletePost } from '../../api/posts';
+
+import { deletePost } from 'api/posts';
+import Dialog from 'components/Dialog/Dialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   wrapper: {

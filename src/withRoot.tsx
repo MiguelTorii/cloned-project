@@ -1,11 +1,13 @@
 import React from 'react';
 import type { ComponentType } from 'react';
+
+import MomentUtils from '@date-io/moment';
+import { SnackbarProvider } from 'notistack';
+
+import { responsiveFontSizes } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { SnackbarProvider } from 'notistack';
-import { responsiveFontSizes } from '@material-ui/core';
 
 const circleInTheme = {
   brand: '#03A9F4',

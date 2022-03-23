@@ -1,8 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
+
 import clsx from 'clsx';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+
+import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
+
 import useStyles from './styles';
 
 const StudyGoalProgress = ({ title, content, value, total }) => {

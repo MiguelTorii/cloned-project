@@ -1,13 +1,19 @@
 import React, { memo, useContext, useMemo, useCallback } from 'react';
-import List from '@material-ui/core/List';
+
 import { useDrop } from 'react-dnd';
 import { Motion, spring } from 'react-motion';
+
+import List from '@material-ui/core/List';
+
 import { DRAG_TYPES } from 'constants/enums';
+
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
+import { useStyles } from '../_styles/Workflow/WorkflowBox';
+
+import WorkflowBoardBox from './WorkflowBoardBox';
 import WorkflowItem from './WorkflowItem';
 import WorkflowListBox from './WorkflowListBox';
-import WorkflowBoardBox from './WorkflowBoardBox';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
-import { useStyles } from '../_styles/Workflow/WorkflowBox';
 
 const getHeight = (text) => {
   const el = document.createElement('div');

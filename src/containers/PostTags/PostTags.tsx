@@ -1,10 +1,14 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Chip from '@material-ui/core/Chip';
-import type { Tag } from '../../types/models';
-import { getPostMetadata } from '../../api/posts';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
+
+import { getPostMetadata } from 'api/posts';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { Tag } from 'types/models';
 
 const styles = (theme) => ({
   root: {

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { Dialog, Box, Typography } from '@material-ui/core';
-import RocketImage from '../../assets/gif/rocket-loading.gif';
+
+import RocketImage from 'assets/gif/rocket-loading.gif';
 
 const FullScreenLoader = () => (
   <Dialog fullScreen open>

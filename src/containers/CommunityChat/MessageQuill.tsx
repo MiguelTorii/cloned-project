@@ -1,21 +1,26 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+
 import cx from 'classnames';
-import { useQuill } from 'react-quilljs';
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import Popover from '@material-ui/core/Popover';
 import { Picker } from 'emoji-mart';
-import AttachFile from '../../components/FileUpload/AttachFile';
-import { FILE_LIMIT_SIZE } from '../../constants/chat';
-import { uploadMedia } from '../../actions/user';
-import EditorToolbar, { formats } from './Toolbar';
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
+import { useQuill } from 'react-quilljs';
+import { useDispatch } from 'react-redux';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Popover from '@material-ui/core/Popover';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { FILE_LIMIT_SIZE } from 'constants/chat';
+import { isMac } from 'utils/helpers';
+
+import { showNotification } from 'actions/notifications';
+import { uploadMedia } from 'actions/user';
+import AttachFile from 'components/FileUpload/AttachFile';
+
 import styles from './_styles/messageQuill';
-import { isMac } from '../../utils/helpers';
-import { showNotification } from '../../actions/notifications';
+import EditorToolbar, { formats } from './Toolbar';
 
 type Props = {
   classes?: any;

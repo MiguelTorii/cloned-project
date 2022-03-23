@@ -1,29 +1,35 @@
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { processClasses } from '../ClassesSelector/utils';
-import { cypherClass, decypherClass } from '../../utils/crypto';
-import AnonymousButton from '../../components/AnonymousButton/AnonymousButton';
-import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
-import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
-import Tooltip from '../Tooltip/Tooltip';
-import { PERMISSIONS } from '../../constants/common';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
+import { bindActionCreators } from 'redux';
+
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { PERMISSIONS } from 'constants/common';
+import { cypherClass, decypherClass } from 'utils/crypto';
+
+import * as notificationsActions from 'actions/notifications';
+import { logEvent, logEventLocally } from 'api/analytics';
+import * as api from 'api/posts';
+import AnonymousButton from 'components/AnonymousButton/AnonymousButton';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import ClassesSelector from '../ClassesSelector/ClassesSelector';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import RichTextEditor from '../RichTextEditor/RichTextEditor';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import * as api from '../../api/posts';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import * as notificationsActions from '../../actions/notifications';
+import { processClasses } from '../ClassesSelector/utils';
+import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import RichTextEditor from '../RichTextEditor/RichTextEditor';
+import Tooltip from '../Tooltip/Tooltip';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   stackbar: {

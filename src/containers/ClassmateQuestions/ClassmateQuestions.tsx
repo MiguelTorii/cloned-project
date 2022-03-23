@@ -1,9 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Tab, Tabs, Typography } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+
 import _ from 'lodash';
+import { useSelector } from 'react-redux';
+
+import { Box, Tab, Tabs, Typography } from '@material-ui/core';
+
+import ClassQuestions from 'components/ClassQuestions/ClassQuestions';
+
 import useStyles from './styles';
-import ClassQuestions from '../../components/ClassQuestions/ClassQuestions';
 
 const ClassmateQuestions = () => {
   const classes: any = useStyles();

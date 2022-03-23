@@ -1,18 +1,20 @@
 import React, { useEffect, useMemo } from 'react';
-import { useHistory, withRouter } from 'react-router';
+
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, withRouter } from 'react-router';
 import store from 'store';
 
+import { Box, CircularProgress } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Box, CircularProgress } from '@material-ui/core';
 
-import withRoot from '../../withRoot';
-import Auth from '../../containers/AuthRedirect/Auth';
-import { masquerade } from '../../actions/user';
-import { VIRAL_LOOP_SOURCE_PREFIX } from 'constants/common';
 import { STORAGE_KEYS } from 'constants/app';
+import { VIRAL_LOOP_SOURCE_PREFIX } from 'constants/common';
+
+import { masquerade } from 'actions/user';
 import { apiLogViralLoopEmailClicked } from 'api/viral_loop';
+import Auth from 'containers/AuthRedirect/Auth';
+import withRoot from 'withRoot';
 
 const styles = () => ({});
 
@@ -66,6 +68,7 @@ const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => 
   }
 
   // Check if the page is visited from viral loop email.
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     if (userId && source && source.startsWith(VIRAL_LOOP_SOURCE_PREFIX)) {
       const viralLoopType = source.substring(VIRAL_LOOP_SOURCE_PREFIX.length);

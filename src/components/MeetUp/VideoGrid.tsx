@@ -1,13 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
 import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
-import VideoGridItem from './VideoGridItem';
-import AudioTrack from './AudioTrack';
+
 import { styles } from '../_styles/MeetUp/VideoGrid';
+
+import AudioTrack from './AudioTrack';
+import VideoGridItem from './VideoGridItem';
 
 type Props = {
   classes: Record<string, any>;

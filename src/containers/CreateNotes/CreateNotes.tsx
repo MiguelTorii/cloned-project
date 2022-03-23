@@ -1,26 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import withWidth from '@material-ui/core/withWidth';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import Tooltip from '../Tooltip/Tooltip';
-import { processClasses } from '../ClassesSelector/utils';
-import { decypherClass, cypherClass } from '../../utils/crypto';
-import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
-import { PERMISSIONS } from '../../constants/common';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { SelectType, UserClass } from '../../types/models';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
-import UploadImages from '../UploadImages/UploadImages';
-import ClassesSelector from '../ClassesSelector/ClassesSelector';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
+import { bindActionCreators } from 'redux';
+
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+
+import { PERMISSIONS } from 'constants/common';
+import { decypherClass, cypherClass } from 'utils/crypto';
+
+import * as notificationsActions from 'actions/notifications';
+import { logEventLocally } from 'api/analytics';
 import {
   createBatchShareLink,
   createBatchPhotoNote,
@@ -28,10 +23,21 @@ import {
   updatePhotoNote,
   createPhotoNote,
   createShareLink
-} from '../../api/posts';
-import * as notificationsActions from '../../actions/notifications';
+} from 'api/posts';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
+import ClassesSelector from '../ClassesSelector/ClassesSelector';
+import { processClasses } from '../ClassesSelector/utils';
+import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { logEventLocally } from '../../api/analytics';
+import Tooltip from '../Tooltip/Tooltip';
+import UploadImages from '../UploadImages/UploadImages';
+
+import type { UserState } from 'reducers/user';
+import type { SelectType, UserClass } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   stackbar: {

@@ -1,21 +1,29 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
-import get from 'lodash/get';
-import Typography from '@material-ui/core/Typography';
-import set from 'lodash/set';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import CloseIcon from '@material-ui/icons/Close';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
+import get from 'lodash/get';
+import set from 'lodash/set';
+import { useSelector } from 'react-redux';
+
+import Box from '@material-ui/core/Box';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+
+import type { AvatarData } from 'utils/chat';
+import { fetchAvatars } from 'utils/chat';
+
+import { getGroupMembers } from 'api/chat';
 import Avatar from 'components/Avatar';
-import Chat from './Chat';
-import { AvatarData, fetchAvatars } from '../../utils/chat';
-import { getGroupMembers } from '../../api/chat';
+import { useChannelMetadataById, useSelectChannelById } from 'features/chat';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { ChannelMetadata, useChannelMetadataById, useSelectChannelById } from 'features/chat';
+
+import Chat from './Chat';
+
+import type { ChannelMetadata } from 'features/chat';
 
 const styles = (theme) => ({
   root: {

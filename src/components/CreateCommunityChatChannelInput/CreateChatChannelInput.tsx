@@ -1,21 +1,27 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+
 import { ValidatorForm } from 'react-material-ui-form-validator';
+import { useSelector } from 'react-redux';
+
+import { CircularProgress } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
-import { CircularProgress } from '@material-ui/core';
-import { PERMISSIONS } from '../../constants/common';
-import { sendMessage, createChannel } from '../../api/chat';
-import { searchUsers } from '../../api/user';
-import type { UserState } from '../../reducers/user';
-import { getInitials } from '../../utils/chat';
-import SelectClassmates from './SelectClassmates';
-import { useChatClient } from 'features/chat';
+
+import { PERMISSIONS } from 'constants/common';
+import { getInitials } from 'utils/chat';
+
 import { handleNewChannel, messageLoadingAction } from 'actions/chat';
+import { sendMessage, createChannel } from 'api/chat';
+import { searchUsers } from 'api/user';
+import { useChatClient } from 'features/chat';
 import { useAppDispatch } from 'redux/store';
+
+import SelectClassmates from './SelectClassmates';
+
+import type { UserState } from 'reducers/user';
 
 const styles = (theme) => ({
   validatorForm: {

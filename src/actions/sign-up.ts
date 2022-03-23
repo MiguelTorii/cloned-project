@@ -1,11 +1,14 @@
 import { push } from 'connected-react-router';
 import store from 'store';
+
 import { signUpActions } from 'constants/action-types';
-import type { Action } from 'types/action';
-import type { Dispatch } from 'types/store';
-import type { User } from 'types/models';
+
 import { createAccount, setReferral } from 'api/sign-up';
-import { APIUser } from 'api/models/APIUser';
+
+import type { APIUser } from 'api/models/APIUser';
+import type { Action } from 'types/action';
+import type { User } from 'types/models';
+import type { Dispatch } from 'types/store';
 
 const requestSignUp = (): Action => ({
   type: signUpActions.SIGN_UP_USER_REQUEST

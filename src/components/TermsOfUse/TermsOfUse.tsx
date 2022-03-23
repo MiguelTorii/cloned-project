@@ -1,6 +1,9 @@
 import React from 'react';
+
 import Iframe from 'react-iframe';
+
 import { withStyles } from '@material-ui/core/styles';
+
 import { styles } from '../_styles/TermsOfUse';
 
 type Props = {

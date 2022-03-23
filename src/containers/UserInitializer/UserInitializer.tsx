@@ -3,8 +3,9 @@
 /* eslint-disable prefer-rest-params */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-restricted-syntax */
-import amplitude from 'amplitude-js';
 import { useState, useEffect, useCallback } from 'react';
+
+import amplitude from 'amplitude-js';
 import { hotjar } from 'react-hotjar';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';

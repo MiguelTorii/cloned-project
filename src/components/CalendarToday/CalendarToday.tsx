@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
-import { Box, Typography } from '@material-ui/core';
+
 import moment from 'moment';
+
+import { Box, Typography } from '@material-ui/core';
+
 import useStyles from './styles';
 
 const CalendarToday = () => {

@@ -1,6 +1,7 @@
-import { Client } from 'twilio-chat';
-import { renewTwilioToken } from 'api/chat';
 import retry from 'async-retry';
+import { Client } from 'twilio-chat';
+
+import { renewTwilioToken } from 'api/chat';
 
 const CONNECTION_STATE_CONNECTED = 'connected';
 

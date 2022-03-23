@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react';
+
 import debounce from 'lodash/debounce';
-import { withStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import TreeView from '@material-ui/lab/TreeView';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TreeItem from '@material-ui/lab/TreeItem';
+import TreeView from '@material-ui/lab/TreeView';
+
+import * as notificationsActions from 'actions/notifications';
+import * as userActions from 'actions/user';
+import searchClasses from 'api/class';
 import {
   leaveUserClass,
   joinClass,
   getAvailableClassesSections,
   getAvailableSubjectsClasses,
   getAvailableSubjects
-} from '../../api/user';
-import searchClasses from '../../api/class';
-import * as notificationsActions from '../../actions/notifications';
-import * as userActions from '../../actions/user';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import Dialog from '../Dialog/Dialog';
+} from 'api/user';
+
 import { styles } from '../_styles/AddRemoveClasses';
+import Dialog from '../Dialog/Dialog';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   classes?: Record<string, any>;

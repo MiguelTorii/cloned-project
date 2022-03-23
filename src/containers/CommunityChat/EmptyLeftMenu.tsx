@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+
 import useStyles from './_styles/emptyLeftMenu';
 
 type Props = {

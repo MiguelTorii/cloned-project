@@ -1,22 +1,25 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { RefObject } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import type { RefObject } from 'react';
+import React from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Box from '@material-ui/core/Box';
 import ReplyIcon from '@material-ui/icons/Reply';
-import DeviceSettings from '../MeetUp/DeviceSettings';
-import Dialog from '../Dialog/Dialog';
+import SettingsIcon from '@material-ui/icons/Settings';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+
 import { styles } from '../_styles/MeetUpPreview';
+import Dialog from '../Dialog/Dialog';
+import DeviceSettings from '../MeetUp/DeviceSettings';
 
 type Props = {
   classes?: Record<string, any>;

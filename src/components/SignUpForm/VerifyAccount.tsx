@@ -1,10 +1,13 @@
 import React from 'react';
+
 import cx from 'classnames';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
+
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/SignUpForm/VerifyAccount';
 
 type Props = {

@@ -2,11 +2,14 @@
 
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+
 import cx from 'classnames';
 import ReactDOMServer from 'react-dom/server';
 import { Quill } from 'react-quill';
+
 import Tooltip from '@material-ui/core/Tooltip';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+
 import { useStyles } from '../_styles/UserNotesEditor';
 
 const icons = Quill.import('ui/icons');

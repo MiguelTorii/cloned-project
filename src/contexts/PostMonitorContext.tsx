@@ -1,8 +1,10 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { POST_PREVIEW_INTERVAL } from 'constants/common';
-import { logEventLocally } from 'api/analytics';
 import { EVENT_TYPES, LOG_EVENT_CATEGORIES } from 'constants/app';
+import { POST_PREVIEW_INTERVAL } from 'constants/common';
+
+import { logEventLocally } from 'api/analytics';
 
 interface PostMonitorContextTypes {
   previewPost: (postId: number) => void;

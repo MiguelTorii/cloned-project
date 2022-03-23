@@ -1,7 +1,10 @@
 import React from 'react';
+
 import Button from '@material-ui/core/Button';
-import withRoot from '../../../withRoot';
-import { useStyles } from '../../_styles/Basic/Buttons/TransparentButton';
+
+import withRoot from 'withRoot';
+
+import { useStyles } from 'components/_styles/Basic/Buttons/TransparentButton';
 
 type Props = {
   children: React.ElementType;

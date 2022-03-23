@@ -1,44 +1,50 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import ReactDOM from 'react-dom';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import IconLeft from '@material-ui/icons/ArrowBack';
-import IconRight from '@material-ui/icons/ArrowForward';
-import Slide from '@material-ui/core/Slide';
+
 import clsx from 'clsx';
-import Link from '@material-ui/core/Link';
-import IconBack from '@material-ui/icons/ChevronLeft';
-import IconNote from '@material-ui/icons/LibraryBooks';
-import IconClose from '@material-ui/icons/Close';
+import moment from 'moment';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import moment from 'moment';
-import IconShare from '@material-ui/icons/ShareOutlined';
+import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
+
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import IconPrev from '@material-ui/icons/SkipPrevious';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import Slide from '@material-ui/core/Slide';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import useIconStyles from 'components/_styles/Icons';
-import StartupModal from './StartupModal';
-import GifCongrats from '../../assets/gif/match-game-congrats.gif';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
+import Typography from '@material-ui/core/Typography';
+import IconLeft from '@material-ui/icons/ArrowBack';
+import IconRight from '@material-ui/icons/ArrowForward';
+import IconBack from '@material-ui/icons/ChevronLeft';
+import IconClose from '@material-ui/icons/Close';
+import IconNote from '@material-ui/icons/LibraryBooks';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import IconShare from '@material-ui/icons/ShareOutlined';
+import IconPrev from '@material-ui/icons/SkipPrevious';
+
+import { APP_ROOT_PATH } from 'constants/app';
+import { formatSeconds } from 'utils/helpers';
+
 import {
   apiEndMatchGame,
   apiGetMatchStats,
   apiInitializeMatchGame,
   apiSaveMatchGameRecords
-} from '../../api/flashcards';
-import ContentCard from './ContentCard';
-import { formatSeconds } from '../../utils/helpers';
-import { APP_ROOT_PATH } from '../../constants/app';
-import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
+} from 'api/flashcards';
+import GifCongrats from 'assets/gif/match-game-congrats.gif';
+import IconDown from 'assets/svg/arrow-green-down.svg';
+import IconUp from 'assets/svg/arrow-up-red.svg';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import withRoot from 'withRoot';
+
+import TransparentButton from '../Basic/Buttons/TransparentButton';
 import Dialog from '../Dialog/Dialog';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
-import IconUp from '../../assets/svg/arrow-up-red.svg';
-import IconDown from '../../assets/svg/arrow-green-down.svg';
+import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
+
+import ContentCard from './ContentCard';
+import DraggableCard from './DraggableCard';
 import reducer, {
   dragCardCorrect,
   dragCardIncorrect,
@@ -48,10 +54,11 @@ import reducer, {
   recordDraggedCards,
   removeLogs
 } from './reducer';
-import DraggableCard from './DraggableCard';
 import SidebarCard from './SidebarCard';
+import StartupModal from './StartupModal';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
+
+import useIconStyles from 'components/_styles/Icons';
 
 const ANIMATION_TYPES = {
   CORRECT: 'correct',

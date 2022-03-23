@@ -1,5 +1,9 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import clsx, { ClassValue } from 'clsx';
+import type { ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+
+import type { ClassValue } from 'clsx';
 
 const AnimateOnChange = ({
   current,

@@ -1,4 +1,4 @@
-import type { UpdateProfile } from '../../types/models';
+import type { UpdateProfile } from 'types/models';
 
 export type APIUser = {
   user_id: number;

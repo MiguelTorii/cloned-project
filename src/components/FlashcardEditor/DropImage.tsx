@@ -1,8 +1,11 @@
 import React from 'react';
+
 import Dropzone from 'react-dropzone';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import ImageIcon from '@material-ui/icons/Image';
+
 import { styles } from '../_styles/FlashcardEditor/DropImage';
 // type Image = {
 //   id: string,

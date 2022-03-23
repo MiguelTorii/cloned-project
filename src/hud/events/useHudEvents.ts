@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
+
 import { useSelector } from 'react-redux';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
+
 import { hudEventNames } from './hudEventNames';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
 
 export type HudEvent = {
   eventName: string;

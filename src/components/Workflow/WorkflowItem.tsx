@@ -1,16 +1,22 @@
 import React, { memo, useContext, useRef, useState, useCallback, useMemo } from 'react';
-import Typography from '@material-ui/core/Typography';
-import { useDrag, useDrop } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend';
+
 import cx from 'classnames';
 import { isMobile } from 'react-device-detect';
+import { useDrag, useDrop } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
+
+import Typography from '@material-ui/core/Typography';
+
 import { DRAG_TYPES } from 'constants/enums';
-import WorkflowEdit from './WorkflowEdit';
-import Dialog from '../Dialog/Dialog';
-import WorkflowListItem from './WorkflowListItem';
-import WorkflowBoardItem from './WorkflowBoardItem';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
+
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/WorkflowItem';
+import Dialog from '../Dialog/Dialog';
+
+import WorkflowBoardItem from './WorkflowBoardItem';
+import WorkflowEdit from './WorkflowEdit';
+import WorkflowListItem from './WorkflowListItem';
 
 type Props = {
   task: Record<string, any>;

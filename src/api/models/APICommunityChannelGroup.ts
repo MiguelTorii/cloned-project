@@ -1,4 +1,4 @@
-import { APICommunityChannel } from './APICommunityChannel';
+import type { APICommunityChannel } from './APICommunityChannel';
 
 export type APICommunityChannelGroup = {
   channels: APICommunityChannel[];

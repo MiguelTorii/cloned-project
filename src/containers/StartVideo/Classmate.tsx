@@ -1,22 +1,26 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Link as RouterLink } from 'react-router-dom';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import withWidth from '@material-ui/core/withWidth';
-import Button from '@material-ui/core/Button';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Link from '@material-ui/core/Link';
-import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import clsx from 'clsx';
+import { Link as RouterLink } from 'react-router-dom';
+
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import withWidth from '@material-ui/core/withWidth';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
+
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { getInitials } from 'utils/chat';
+import { buildPath } from 'utils/helpers';
 
 import Avatar from 'components/Avatar';
-import { getInitials } from '../../utils/chat';
+
 import useStyles from './_styles/Classmate';
-import { buildPath } from '../../utils/helpers';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
 
 type ClassmateType = {
   userId: string;

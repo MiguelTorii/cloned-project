@@ -1,5 +1,6 @@
+import { API_ROUTES } from 'constants/routes';
+
 import callApi from './api_base';
-import { API_ROUTES } from '../constants/routes';
 
 export const fetchWeeklyStudyGoals = async () =>
   callApi({

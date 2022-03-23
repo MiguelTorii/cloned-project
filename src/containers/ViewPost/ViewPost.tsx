@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+
 import { goBack, push as routePush } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import PostItem from '../../components/PostItem/PostItem';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { getPost, bookmark } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
-import PostItemHeader from '../../components/PostItem/PostItemHeader';
-import PostItemActions from '../PostItemActions/PostItemActions';
-import ViewNotes from '../PostComments/ViewNotes';
-import PostTags from '../PostTags/PostTags';
-import Report from '../Report/Report';
+import { withStyles } from '@material-ui/core/styles';
+
+import { logEvent } from 'api/analytics';
+import { getPost, bookmark } from 'api/posts';
+import PostItem from 'components/PostItem/PostItem';
+import PostItemHeader from 'components/PostItem/PostItemHeader';
+
 import DeletePost from '../DeletePost/DeletePost';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import ViewNotes from '../PostComments/ViewNotes';
+import PostItemActions from '../PostItemActions/PostItemActions';
+import PostTags from '../PostTags/PostTags';
+import Report from '../Report/Report';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {

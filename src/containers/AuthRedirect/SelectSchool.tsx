@@ -1,15 +1,20 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
+
+import auth0 from 'auth0-js';
+
+import { Box, Grid } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import auth0 from 'auth0-js';
-import Link from '@material-ui/core/Link';
-import { Box, Grid } from '@material-ui/core';
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, GONDOR_URL } from '../../constants/app';
-import { searchSchools } from '../../api/sign-in';
-import AutoComplete from '../../components/AutoComplete/AutoComplete';
-import SemiBoldTypography from '../../components/SemiBoldTypography/SemiBoldTypography';
+
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, GONDOR_URL } from 'constants/app';
+
+import { searchSchools } from 'api/sign-in';
+import AutoComplete from 'components/AutoComplete/AutoComplete';
+import SemiBoldTypography from 'components/SemiBoldTypography/SemiBoldTypography';
+
 import AuthButton from './AuthButton';
 
 const useStyles = makeStyles((theme) => ({

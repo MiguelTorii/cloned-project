@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { getToken } from './utils';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import reduxStore from 'redux/store';
+
+import { getToken } from './utils';
 
 const createEvent = async ({
   category,

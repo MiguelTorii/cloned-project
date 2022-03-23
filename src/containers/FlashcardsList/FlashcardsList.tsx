@@ -1,27 +1,33 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect, useDispatch, useSelector } from 'react-redux';
+
 import { push } from 'connected-react-router';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { bindActionCreators } from 'redux';
+
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import withRoot from '../../withRoot';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
-import FiltersBar from '../../components/FiltersBar/FiltersBar';
-import FlashcardsDeck from '../../components/FlashcardsDeck/FlashcardsDeck';
-import Dialog from '../../components/Dialog/Dialog';
-import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckCreator';
-import SlideUp from '../../components/Transition/SlideUp';
-import ImgEmptyState from '../../assets/svg/empty_flashcards.svg';
-import { isApiCalling, getPastClassIds } from '../../utils/helpers';
-import { userActions } from '../../constants/action-types';
-import { getFlashcards, confirmTooltip as confirmTooltipAction } from '../../actions/user';
-import useStyles from './styles';
-import type { State as StoreState } from '../../types/state';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+import { userActions } from 'constants/action-types';
+import { isApiCalling, getPastClassIds } from 'utils/helpers';
+
+import { getFlashcards, confirmTooltip as confirmTooltipAction } from 'actions/user';
+import ImgEmptyState from 'assets/svg/empty_flashcards.svg';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import Dialog from 'components/Dialog/Dialog';
+import FiltersBar from 'components/FiltersBar/FiltersBar';
+import FlashcardsDeck from 'components/FlashcardsDeck/FlashcardsDeck';
+import FlashcardsDeckCreator from 'components/FlashcardsDeckManager/FlashcardsDeckCreator';
+import SlideUp from 'components/Transition/SlideUp';
 import { useAppSelector } from 'redux/store';
+import withRoot from 'withRoot';
+
+import useStyles from './styles';
+
+import type { State as StoreState } from 'types/state';
 
 const Filters = {
   mine: {

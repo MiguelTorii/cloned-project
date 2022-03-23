@@ -1,12 +1,16 @@
 import React from 'react';
+
 import Typography from '@material-ui/core/Typography';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import ImageAppPhone from '../../assets/img/getappphone.png';
-import ImageAppIos from '../../assets/img/getappios.png';
-import ImageAppAndroid from '../../assets/img/getappandroid.png';
-import ImageQrCode from '../../assets/img/getappqrcode.png';
+
+import { MOBILE_APP_ANDROID_URL, MOBILE_APP_IOS_URL } from 'constants/app';
+
+import ImageAppAndroid from 'assets/img/getappandroid.png';
+import ImageAppIos from 'assets/img/getappios.png';
+import ImageAppPhone from 'assets/img/getappphone.png';
+import ImageQrCode from 'assets/img/getappqrcode.png';
+import LoadImg from 'components/LoadImg/LoadImg';
+
 import { useStyles } from './GetMobileAppStyles';
-import { MOBILE_APP_ANDROID_URL, MOBILE_APP_IOS_URL } from '../../constants/app';
 
 const GetMobileApp = () => {
   const classes = useStyles();

@@ -1,14 +1,17 @@
-import { Client, Channel, Message } from 'twilio-chat';
+import { createSelector } from '@reduxjs/toolkit';
 import update from 'immutability-helper';
 import moment from 'moment';
+
+import { chatActions, rootActions } from 'constants/action-types';
 import { getTitle } from 'utils/chat';
-import { chatActions, rootActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
-import { ChannelMetadata } from 'features/chat';
+
 import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
-import { createSelector } from '@reduxjs/toolkit';
-import { AppState } from 'redux/store';
+
+import type { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
+import type { ChannelMetadata } from 'features/chat';
+import type { AppState } from 'redux/store';
+import type { Client, Channel, Message } from 'twilio-chat';
+import type { Action } from 'types/action';
 
 export type ChatUser = {
   firstname: string;

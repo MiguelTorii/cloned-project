@@ -1,19 +1,19 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback } from 'react';
-import classNames from 'classnames';
+
 import axios from 'axios';
+import classNames from 'classnames';
 import { useQuill } from 'react-quilljs';
-import { withStyles } from '@material-ui/core/styles';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-import { useMediaQuery } from 'hooks';
 import { getPresignedURL } from 'api/media';
-
 import PostItemToolbar, { formats } from 'components/PostItemToolbar';
+import { useMediaQuery } from 'hooks';
 
 import styles from './PostItemCommentQuillStyles';
 

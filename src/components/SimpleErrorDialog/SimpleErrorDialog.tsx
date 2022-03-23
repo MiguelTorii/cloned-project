@@ -1,13 +1,16 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
+import { bindActionCreators } from 'redux';
+
 import withStyles from '@material-ui/core/styles/withStyles';
-import Dialog from '../Dialog/Dialog';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
-import GradientButton from '../Basic/Buttons/GradientButton';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/SimpleErrorDialog';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes?: Record<string, any>;

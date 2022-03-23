@@ -1,7 +1,10 @@
-import React, { useCallback, FC, ReactElement, useState } from 'react';
+import type { FC, ReactElement } from 'react';
+import React, { useCallback, useState } from 'react';
+
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Dialog from '../components/Dialog/Dialog';
+
+import Dialog from 'components/Dialog/Dialog';
 
 type TDeleteCallbackMethod = () => void;
 type TElement = ReactElement | string;

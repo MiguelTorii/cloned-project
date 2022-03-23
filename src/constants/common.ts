@@ -1,4 +1,4 @@
-import { commandHotkeyText, isMac } from '../utils/helpers';
+import { commandHotkeyText, isMac } from 'utils/helpers';
 
 const collegeGrades = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
 

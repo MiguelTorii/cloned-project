@@ -1,11 +1,17 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
+
 import { Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { useStyles } from './HudStoryStyles';
-import avatarImg from '../../assets/svg/icon-kobe.svg';
-import { HudStoryState } from '../storyState/hudStoryState';
+
+import avatarImg from 'assets/svg/icon-kobe.svg';
+
 import useStorySequence from '../storyState/useStorySequence';
+
+import { useStyles } from './HudStoryStyles';
+
+import type { HudStoryState } from '../storyState/hudStoryState';
 
 const HudStory = () => {
   const classes: any = useStyles();

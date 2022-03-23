@@ -1,11 +1,17 @@
 import React, { useRef } from 'react';
+
 import { useSelector } from 'react-redux';
-import Classes from '../../containers/ClassesGrid/Classes';
-import { useStyles } from './CommunitiesAreaStyles';
-import { CLASSES_AREA, FEEDS_AREA } from '../../hud/navigationState/hudNavigation';
-import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
+
+import { COMMUNITY_SCROLL_CONTAINER_ID } from 'constants/common';
+
+import Classes from 'containers/ClassesGrid/Classes';
+import { CLASSES_AREA, FEEDS_AREA } from 'hud/navigationState/hudNavigation';
+
 import ClassFeedSubArea from '../classFeed/ClassFeedSubArea';
-import { COMMUNITY_SCROLL_CONTAINER_ID } from '../../constants/common';
+
+import { useStyles } from './CommunitiesAreaStyles';
+
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
 
 const CommunitiesArea = () => {
   const classes: any = useStyles();

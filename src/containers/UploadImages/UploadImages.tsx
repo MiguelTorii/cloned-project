@@ -1,19 +1,24 @@
 import React from 'react';
+
+import arrayMove from 'array-move';
+import axios from 'axios';
+import imageCompression from 'browser-image-compression';
+import update from 'immutability-helper';
+import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
-import fetch from 'isomorphic-fetch';
-import update from 'immutability-helper';
 import uuidv4 from 'uuid/v4';
-import arrayMove from 'array-move';
+
 import { withStyles } from '@material-ui/core/styles';
-import imageCompression from 'browser-image-compression';
-import * as notificationsActions from '../../actions/notifications';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import UploadImagesForm from '../../components/UploadImagesForm/UploadImagesForm';
-import { getPresignedURLs } from '../../api/media';
+
+import * as notificationsActions from 'actions/notifications';
+import { getPresignedURLs } from 'api/media';
+import UploadImagesForm from 'components/UploadImagesForm/UploadImagesForm';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   stackbar: {

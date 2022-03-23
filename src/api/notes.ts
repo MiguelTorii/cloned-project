@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { NotesType } from '../reducers/notes';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
+
+import type { NotesType } from 'reducers/notes';
 
 export const getNotes = async ({ sectionId }) => {
   const token = await getToken();

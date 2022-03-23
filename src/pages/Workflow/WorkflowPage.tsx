@@ -1,14 +1,15 @@
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
+import { isMobile } from 'react-device-detect';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { isMobile } from 'react-device-detect';
-import Layout from '../../containers/Layout/Layout';
-import withRoot from '../../withRoot';
-import Workflow from '../../containers/Workflow/Workflow';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import Layout from 'containers/Layout/Layout';
+import Workflow from 'containers/Workflow/Workflow';
+import withRoot from 'withRoot';
 
 const styles = () => ({
   item: {

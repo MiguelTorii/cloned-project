@@ -1,22 +1,25 @@
 import React, { Fragment } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Box from '@material-ui/core/Box';
 
+import { getGroupMembers } from 'api/chat';
+import { blockUser } from 'api/user';
 import Avatar from 'components/Avatar';
-import RoleBadge from '../../components/RoleBadge/RoleBadge';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import type { ChatUser } from '../../types/models';
-import { blockUser } from '../../api/user';
-import { getGroupMembers } from '../../api/chat';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { ChatUser } from 'types/models';
 
 const styles = (theme) => ({
   list: {

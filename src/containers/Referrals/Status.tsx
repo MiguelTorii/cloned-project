@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
-import DoneIcon from '@material-ui/icons/Done';
 import Typography from '@material-ui/core/Typography';
-import { getReferralStatus } from '../../api/referral';
+import DoneIcon from '@material-ui/icons/Done';
+
+import { getReferralStatus } from 'api/referral';
 
 const styles = () => ({
   row: {

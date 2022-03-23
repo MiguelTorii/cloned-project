@@ -1,10 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import type { Notifications, CustomNotification } from '../types/models';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
-import { APINotifications } from './models/APINotifications';
-import { APINotification } from './models/APINotification';
+
+import type { APINotification } from './models/APINotification';
+import type { APINotifications } from './models/APINotifications';
+import type { Notifications, CustomNotification } from 'types/models';
 
 export const getNotifications = async ({
   userId,

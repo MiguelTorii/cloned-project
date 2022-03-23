@@ -1,22 +1,28 @@
 import React, { useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+
 import { Badge } from '@material-ui/core';
-import { ReactComponent as IconChat } from '../../assets/svg/ic_nav_chat.svg';
-import { ReactComponent as IconWorkflow } from '../../assets/svg/workflow-mark.svg';
-import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_question.svg';
-import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
-import { ReactComponent as ShareNotesIcon } from '../../assets/svg/ic_notes.svg';
-import { ReactComponent as ActiveCreatePost } from '../../assets/svg/posts.svg';
-import { ReactComponent as FlashcardMark } from '../../assets/svg/flashcard-mark.svg';
-import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/ic_in_app_notes.svg';
-import { ReactComponent as IconClasses } from '../../assets/svg/ic_nav_classes.svg';
-import { ReactComponent as IconLeaderboard } from '../../assets/svg/ic_nav_leaderboard.svg';
-import { ReactComponent as IconMyClasses } from '../../assets/svg/ic_classes.svg';
-import { ReactComponent as IconClassFeed } from '../../assets/svg/ic_class_feeds.svg';
-import { ReactComponent as IconStudyTools } from '../../assets/svg/flashcards.svg';
-import { ReactComponent as IconAchievements } from '../../assets/svg/achievements.svg';
-import { useStyles } from './HudNavigationStyles';
+
+import AREA_TITLES from 'constants/area-titles';
+
+import { ReactComponent as IconAchievements } from 'assets/svg/achievements.svg';
+import { ReactComponent as FlashcardMark } from 'assets/svg/flashcard-mark.svg';
+import { ReactComponent as IconStudyTools } from 'assets/svg/flashcards.svg';
+import { ReactComponent as QuestionIcon } from 'assets/svg/ic_ask_a_question.svg';
+import { ReactComponent as IconClassFeed } from 'assets/svg/ic_class_feeds.svg';
+import { ReactComponent as IconMyClasses } from 'assets/svg/ic_classes.svg';
+import { ReactComponent as PrivateNotesIcon } from 'assets/svg/ic_in_app_notes.svg';
+import { ReactComponent as IconChat } from 'assets/svg/ic_nav_chat.svg';
+import { ReactComponent as IconClasses } from 'assets/svg/ic_nav_classes.svg';
+import { ReactComponent as IconLeaderboard } from 'assets/svg/ic_nav_leaderboard.svg';
+import { ReactComponent as ShareNotesIcon } from 'assets/svg/ic_notes.svg';
+import { ReactComponent as ResourceIcon } from 'assets/svg/ic_share_a_resource.svg';
+import { ReactComponent as ActiveCreatePost } from 'assets/svg/posts.svg';
+import { ReactComponent as IconWorkflow } from 'assets/svg/workflow-mark.svg';
+import { useAllUnreadCount } from 'features/chat';
+import { STUDY_TOOLS_NAV_OPTION } from 'routeConstants';
+
 import {
   ACHIEVEMENTS_MAIN_AREA,
   CALENDAR_AREA,
@@ -34,12 +40,12 @@ import {
   SHARE_NOTES_AREA,
   CREATE_A_POST_AREA
 } from '../navigationState/hudNavigation';
+
+import { useStyles } from './HudNavigationStyles';
 import HudToolWithDropdown from './HudToolWithDropdown';
-import { HudToolData } from './HudToolData';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
-import { STUDY_TOOLS_NAV_OPTION } from '../../routeConstants';
-import { useAllUnreadCount } from 'features/chat';
-import AREA_TITLES from 'constants/area-titles';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
+import type { HudToolData } from './HudToolData';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 const NAVBAR_ICON_SIZE = { width: '50px', height: '50px' };

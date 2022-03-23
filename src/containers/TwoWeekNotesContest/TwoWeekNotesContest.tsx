@@ -1,18 +1,23 @@
 import React from 'react';
-import store from 'store';
-import { withSnackbar } from 'notistack';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import store from 'store';
+
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../../components/Dialog/Dialog';
-import withRoot from '../../withRoot';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
+
+import { ReactComponent as Frame } from 'assets/svg/two_week_notes_contest.svg';
+import Dialog from 'components/Dialog/Dialog';
+import withRoot from 'withRoot';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 // @ts-ignore
-import { ReactComponent as Frame } from '../../assets/svg/two_week_notes_contest.svg';
 
 const styles = (theme) => ({
   frame: {

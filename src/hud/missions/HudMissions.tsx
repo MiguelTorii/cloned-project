@@ -1,13 +1,20 @@
 import React, { useEffect } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import { Grid, Link } from '@material-ui/core';
-import RightPanelCard from '../../components/RightPanelCard/RightPanelCard';
-import { apiGetMissions } from '../../api/user';
+
+import { CIRCLEIN_REWARDS_URL } from 'constants/app';
+
+import { apiGetMissions } from 'api/user';
+import RightPanelCard from 'components/RightPanelCard/RightPanelCard';
+
 import { setMissions } from '../rightPanelState/hudRightPanelActions';
-import { AppState } from 'redux/store';
-import { TMission } from '../../types/models';
+
 import HudMission from './HudMission';
-import { CIRCLEIN_REWARDS_URL } from '../../constants/app';
+
+import type { AppState } from 'redux/store';
+import type { TMission } from 'types/models';
 
 const HudMissions = () => {
   const dispatch = useDispatch();

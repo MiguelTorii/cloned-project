@@ -1,34 +1,40 @@
 import React, { useEffect, memo, useCallback, useMemo, useState } from 'react';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import TextField from '@material-ui/core/TextField';
+
 import { Box, Hidden } from '@material-ui/core';
-import ImageBackgroundDesktop from '../../assets/img/auth-ui-bg-desktop.png';
-import ImageBackgroundMobile from '../../assets/img/auth-ui-bg-mobile.png';
-import ImageContentLeft from '../../assets/img/auth-ui-content-people-left.png';
-import ImageContentRight from '../../assets/img/auth-ui-content-people-right.png';
-import ImageLogoText from '../../assets/img/logo-text.png';
-import ImageLogoIcon from '../../assets/img/logo-icon.png';
-import SelectSchool from './SelectSchool';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+
+import { deepLinkCheck } from 'utils/helpers';
+
+import * as authActions from 'actions/auth';
+import * as signInActions from 'actions/sign-in';
+import * as signUpActions from 'actions/sign-up';
+import { emailRequest, getSchool } from 'api/sign-in';
+import ImageBackgroundDesktop from 'assets/img/auth-ui-bg-desktop.png';
+import ImageBackgroundMobile from 'assets/img/auth-ui-bg-mobile.png';
+import ImageContentLeft from 'assets/img/auth-ui-content-people-left.png';
+import ImageContentRight from 'assets/img/auth-ui-content-people-right.png';
+import ImageLogoIcon from 'assets/img/logo-icon.png';
+import ImageLogoText from 'assets/img/logo-text.png';
+import Dialog from 'components/Dialog/Dialog';
+
+import FirstTime from './FirstTime';
+import ForgotPassword from './ForgotPassword';
 import Login from './Login';
+import NewPassword from './NewPassword';
+import SelectSchool from './SelectSchool';
 import SignUp from './SignUp';
 import WalkThrough from './WalkThrough';
-import ForgotPassword from './ForgotPassword';
-import FirstTime from './FirstTime';
-import NewPassword from './NewPassword';
-import Dialog from '../../components/Dialog/Dialog';
-import { emailRequest, getSchool } from '../../api/sign-in';
-import * as signInActions from '../../actions/sign-in';
-import * as authActions from '../../actions/auth';
-import * as signUpActions from '../../actions/sign-up';
-import { deepLinkCheck } from '../../utils/helpers';
-import type { State as StoreState } from '../../types/state';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   main: {

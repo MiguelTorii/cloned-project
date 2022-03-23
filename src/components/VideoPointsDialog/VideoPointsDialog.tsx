@@ -1,18 +1,22 @@
 import React from 'react';
+
+import { DateTimePicker } from 'material-ui-pickers';
 import moment from 'moment';
 import { ValidatorForm, SelectValidator } from 'react-material-ui-form-validator';
-import { DateTimePicker } from 'material-ui-pickers';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Switch from '@material-ui/core/Switch';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog from '../Dialog/Dialog';
-import ClassesSelector from '../../containers/ClassesSelector/ClassesSelector';
-import OutlinedTextValidator from '../OutlinedTextValidator/OutlinedTextValidator';
+import Typography from '@material-ui/core/Typography';
+
+import ClassesSelector from 'containers/ClassesSelector/ClassesSelector';
+
 import { styles } from '../_styles/VideoPointsDialog';
+import Dialog from '../Dialog/Dialog';
+import OutlinedTextValidator from '../OutlinedTextValidator/OutlinedTextValidator';
 
 type Props = {
   classes?: Record<string, any>;

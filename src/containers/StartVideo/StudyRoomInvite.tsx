@@ -1,19 +1,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import List from '@material-ui/core/List';
+
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
 import SearchIcon from '@material-ui/icons/Search';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 
 import { getClassmates } from 'api/chat';
 import LoadingImg from 'assets/svg/astro-shuttle.svg';
-
 import Dialog from 'components/Dialog/Dialog';
-import Classmate from './Classmate';
 
 import useStyles from './_styles/StudyRoomInvite';
+import Classmate from './Classmate';
 
 const StudyRoomInvite = ({
   open,

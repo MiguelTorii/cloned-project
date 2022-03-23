@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +16,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import { openSupportWidget } from 'utils/helpers';
 
+import { signOut } from 'actions/sign-in';
 import { toggleExpertMode } from 'actions/user';
 import InviteFriendsModal from 'components/InviteFriendsModal/InviteFriendsModal';
 import useHudAreaSetter from 'hud/frame/useHudRoutes';
@@ -27,7 +29,7 @@ import {
   ACHIEVEMENTS_MAIN_AREA,
   INVITE_FRIENDS_AREA
 } from 'hud/navigationState/hudNavigation';
-import reduxStore from 'redux/store';
+import reduxStore, { useAppDispatch } from 'redux/store';
 import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
 
 import { useStyles } from './HudNavigationStyles';
@@ -45,7 +47,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
   const classes: any = useStyles();
   const highlightedButtonStyles = useHighlightedButtonStyles();
 
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 

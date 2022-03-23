@@ -1,7 +1,9 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+
 import { CircularProgress } from '@material-ui/core';
-import { useStyles } from '../../_styles/Basic/Buttons/GradientButton';
+import Button from '@material-ui/core/Button';
+
+import { useStyles } from 'components/_styles/Basic/Buttons/GradientButton';
 
 type Props = {
   children?: any;

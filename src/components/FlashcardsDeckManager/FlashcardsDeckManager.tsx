@@ -1,22 +1,27 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+
 import update from 'immutability-helper';
-import store from 'store';
-import { useDispatch, useSelector } from 'react-redux';
-import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
-import Container from '@material-ui/core/Container';
-import { extractTextFromHtml } from '../../utils/helpers';
-import { showNotification } from '../../actions/notifications';
-import GradientButton from '../Basic/Buttons/GradientButton';
-import FlashcardsListEditor from '../FlashcardsListEditor/FlashcardsListEditor';
-import TextField from '../Basic/TextField/TextField';
-import { INTERVAL, STORAGE_KEYS } from '../../constants/app';
-import HotKeyGuide from '../HotKeyGuide/HotKeyGuide';
-import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
+import { useDispatch, useSelector } from 'react-redux';
+import store from 'store';
+
 import { Checkbox } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
+
+import { INTERVAL, STORAGE_KEYS } from 'constants/app';
+import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
+import { extractTextFromHtml } from 'utils/helpers';
+
+import { showNotification } from 'actions/notifications';
+
+import GradientButton from '../Basic/Buttons/GradientButton';
+import TextField from '../Basic/TextField/TextField';
+import FlashcardsListEditor from '../FlashcardsListEditor/FlashcardsListEditor';
+import HotKeyGuide from '../HotKeyGuide/HotKeyGuide';
 
 const HOT_KEYS = [
   {

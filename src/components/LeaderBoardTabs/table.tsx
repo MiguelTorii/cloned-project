@@ -1,17 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import cx from 'classnames';
+import InfiniteScroll from 'react-infinite-scroller';
+
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import InfiniteScroll from 'react-infinite-scroller';
-import { getMoreGrandStudents, getMoreTuesdayStudents } from '../../api/leaderboards';
-import Student from './student';
+
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
+import { getMoreGrandStudents, getMoreTuesdayStudents } from 'api/leaderboards';
+
 import { styles } from '../_styles/LeaderBoardTabs/table';
-import { buildPath } from '../../utils/helpers';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+
+import Student from './student';
 
 const StyledTableRow = withStyles((theme) => ({
   root: {

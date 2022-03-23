@@ -1,25 +1,30 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
+
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { withSnackbar } from 'notistack';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { bindActionCreators } from 'redux';
+
 import Grid from '@material-ui/core/Grid';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import type { AuthState } from '../../reducers/auth';
-import SignUpForm from '../../components/SignUpForm/SignUpForm';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import TypeSelect from '../../components/SignUpForm/TypeSelect';
-import AccountForm from '../../components/SignUpForm/AccountForm';
-import VerifyAccount from '../../components/SignUpForm/VerifyAccount';
-import * as signUpActions from '../../actions/sign-up';
-import * as authActions from '../../actions/auth';
-import { sendCode, verifyCode } from '../../api/sign-up';
+
+import * as authActions from 'actions/auth';
+import * as signUpActions from 'actions/sign-up';
+import { sendCode, verifyCode } from 'api/sign-up';
+import loginBackground from 'assets/img/login-background.png';
+import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
+import AccountForm from 'components/SignUpForm/AccountForm';
+import SignUpForm from 'components/SignUpForm/SignUpForm';
+import TypeSelect from 'components/SignUpForm/TypeSelect';
+import VerifyAccount from 'components/SignUpForm/VerifyAccount';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import loginBackground from '../../assets/img/login-background.png';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
+
+import type { AuthState } from 'reducers/auth';
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   main: {

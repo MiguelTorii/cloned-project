@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react';
+
 import { Avatar as MuiAvatar, Box } from '@material-ui/core';
 
-import { UserAvatar } from 'types/models';
-import OnlineBadge from 'components/OnlineBadge';
 import { getInitials } from 'utils/chat';
+
 import { useStyles } from 'components/Avatar/AvatarStyles';
+import OnlineBadge from 'components/OnlineBadge';
+
+import type { UserAvatar } from 'types/models';
 
 const Avatar = ({
   profileImage,

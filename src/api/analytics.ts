@@ -1,7 +1,9 @@
-import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from '../constants/app';
-import createEvent from './events';
-import { EventData } from '../types/models';
+import { LOG_EVENT_CATEGORIES, CIRCLEIN_EVENT_NAMES, EVENT_TYPES } from 'constants/app';
 import { CHANNEL_SID_NAME } from 'constants/enums';
+
+import createEvent from './events';
+
+import type { EventData } from 'types/models';
 
 const toEventData = (eventName: string, props: any): EventData => {
   const [category, eventType] = eventName.split('- ');

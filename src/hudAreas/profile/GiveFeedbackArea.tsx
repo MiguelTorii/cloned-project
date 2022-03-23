@@ -1,11 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
+
 import { Box, Button, DialogContent } from '@material-ui/core';
-import Dialog from 'components/Dialog/Dialog';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import { sendFeedback as sendFeedbackAPI } from 'api/user';
 import GradientButton from 'components/Basic/Buttons/GradientButton';
-import { sendFeedback as sendFeedbackAPI } from '../../api/user';
+import Dialog from 'components/Dialog/Dialog';
 
 const GiveFeedback = () => {
   const [feedback, setFeedback] = useState('');

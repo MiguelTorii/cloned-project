@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { Box, Grid, IconButton, Link, Paper, Typography } from '@material-ui/core';
 import IconHelp from '@material-ui/icons/HelpOutline';
-import useStyles from './styles';
-import StudyGoalProgress from '../../components/StudyGoalProgress/StudyGoalProgress';
+
+import { fetchWeeklyStudyGoals } from 'api/home';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import StudyGoalProgress from 'components/StudyGoalProgress/StudyGoalProgress';
+
 import HelpModal from './HelpModal';
-import ReportModal from './ReportModal';
-import { fetchWeeklyStudyGoals } from '../../api/home';
-import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
 import ModalData from './modal-data';
+import ReportModal from './ReportModal';
+import useStyles from './styles';
 
 const WeeklyGoals = () => {
   const classes: any = useStyles();

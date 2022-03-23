@@ -1,11 +1,15 @@
 import React, { useEffect, useMemo } from 'react';
-import { connect, useSelector } from 'react-redux';
+
+import { connect } from 'react-redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
-import useScript from '../../hooks/useScript';
-import AuthRedirect from '../../pages/AuthRedirect/AuthRedirectPage';
-import type { State as StoreState } from '../../types/state';
-import HudFrame from '../../hud/frame/HudFrame';
+
+import useScript from 'hooks/useScript';
+import HudFrame from 'hud/frame/HudFrame';
+import AuthRedirect from 'pages/AuthRedirect/AuthRedirectPage';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({
   loading: {
@@ -44,6 +48,7 @@ const Home = ({ classes, user }: Props) => {
 
         if (typeof (window as any).FreshworksWidget !== 'function') {
           const n = function () {
+            // eslint-disable-next-line prefer-rest-params
             n.q.push(arguments);
           };
           n.q = [];

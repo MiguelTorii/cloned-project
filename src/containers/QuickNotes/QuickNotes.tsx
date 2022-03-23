@@ -1,30 +1,37 @@
 import React, { useEffect, useMemo, useCallback, useState, useRef } from 'react';
-import { bindActionCreators } from 'redux';
-import ReactQuill from 'react-quill';
+
 import { useDebounce } from '@react-hook/debounce';
+import { Picker } from 'emoji-mart';
+import ReactQuill from 'react-quill';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import CloseIcon from '@material-ui/icons/Close';
-import Button from '@material-ui/core/Button';
-import Popover from '@material-ui/core/Popover';
-import Paper from '@material-ui/core/Paper';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import { Picker } from 'emoji-mart';
-import { ReactComponent as DropdownCheckIcon } from '../../assets/svg/dropdown-check.svg';
-import * as notesActions from '../../actions/notes';
-import * as notificationsActions from '../../actions/notifications';
-import EditorToolbar, { modules, formats } from './QuickNoteToolbar';
+import CloseIcon from '@material-ui/icons/Close';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import { isMac } from 'utils/helpers';
+
+import * as notesActions from 'actions/notes';
+import * as notificationsActions from 'actions/notifications';
+import { ReactComponent as DropdownCheckIcon } from 'assets/svg/dropdown-check.svg';
+import { ReactComponent as IconNote } from 'assets/svg/note.svg';
+
 import Tooltip from '../Tooltip/Tooltip';
-import { ReactComponent as IconNote } from '../../assets/svg/note.svg';
+
 import useStyles from './_styles/style';
-import { isMac } from '../../utils/helpers';
-import type { State as StoreState } from '../../types/state';
+import EditorToolbar, { modules, formats } from './QuickNoteToolbar';
+
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   enqueueSnackbar?: any;

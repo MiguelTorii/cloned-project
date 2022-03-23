@@ -1,6 +1,8 @@
 import update from 'immutability-helper';
-import { onboardingActions } from '../constants/action-types';
-import type { OnboardingList } from '../types/models';
+
+import { onboardingActions } from 'constants/action-types';
+
+import type { OnboardingList } from 'types/models';
 
 export type OnboardingState = {
   onboardingList: OnboardingList;

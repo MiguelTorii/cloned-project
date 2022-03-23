@@ -1,12 +1,17 @@
 import React, { useMemo } from 'react';
-import Paper from '@material-ui/core/Paper';
-import { Box } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+
 import moment from 'moment';
-import LoadImg from '../LoadImg/LoadImg';
-import type { PointsHistoryItem } from '../../types/models';
-import withRoot from '../../withRoot';
+
+import { Box } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+import withRoot from 'withRoot';
+
 import { useStyles } from '../_styles/PointsRecordItem';
+import LoadImg from '../LoadImg/LoadImg';
+
+import type { PointsHistoryItem } from 'types/models';
 
 const IMAGE_SIZE = 32;
 type Props = {

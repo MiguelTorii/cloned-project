@@ -1,15 +1,18 @@
 import React, { useMemo, useCallback, useState } from 'react';
+
 import { withRouter } from 'react-router';
+
 import Button from '@material-ui/core/Button';
 
-import { UserState } from 'reducers/user';
-import { URL } from 'constants/navigation';
 import { PERMISSIONS } from 'constants/common';
+import { URL } from 'constants/navigation';
 
-import Tooltip from 'containers/Tooltip/Tooltip';
 import BatchMessageDialog from 'containers/BatchMessageDialog/BatchMessageDialog';
+import Tooltip from 'containers/Tooltip/Tooltip';
 
 import useStyles from './_styles/batchMessage';
+
+import type { UserState } from 'reducers/user';
 
 const BatchMessage = ({
   user,

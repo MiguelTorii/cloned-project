@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
+
+import withRoot from 'withRoot';
+
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 
 type Props = {
   elementId: string;

@@ -1,21 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { push } from 'connected-react-router';
+import lodash from 'lodash';
+import qs from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
-import { push } from 'connected-react-router';
+
 import { makeStyles } from '@material-ui/core/styles';
-import qs from 'query-string';
-import lodash from 'lodash';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import ClassmatesDialog from '../../components/ClassmatesDialog/ClassmatesDialog';
-import HeaderNavigation from './HeaderNavigation';
-import PostCreationHeader from './PostCreationHeader';
-import FeedFilter from '../../components/FeedFilter/FeedFilter';
-import { processClasses } from '../ClassesSelector/utils';
-import Tooltip from '../Tooltip/Tooltip';
-import FeedList from '../../components/FeedList/FeedList';
-import SharePost from '../SharePost/SharePost';
-import Report from '../../components/Report/ReportIssue';
-import DeletePost from '../DeletePost/DeletePost';
+
+import { feedActions as feedActionTypes } from 'constants/action-types';
+import { FEEDS_PER_PAGE, POST_TYPES } from 'constants/app';
 import {
   COMMUNITY_SCROLL_CONTAINER_ID,
   FEED_CLEARED_INDEX,
@@ -23,8 +17,10 @@ import {
   POST_WRITER,
   PROFILE_PAGE_SOURCE
 } from 'constants/common';
-import { AppState } from 'redux/store';
-import { User } from '../../types/models';
+import { URL } from 'constants/navigation';
+import { decipherClassId } from 'utils/crypto';
+import { buildPath, isSame } from 'utils/helpers';
+
 import {
   actionBookmarkFeed,
   actionDeleteFeed,
@@ -33,16 +29,27 @@ import {
   resetScrollData,
   updateFilterFields,
   updateScrollDataRequest
-} from '../../actions/feed';
-import { TFeedData } from '../../reducers/feed';
-import { logEvent } from '../../api/analytics';
-import { buildPath, isSame } from '../../utils/helpers';
-import { FEEDS_PER_PAGE, POST_TYPES } from '../../constants/app';
-import { TUserClasses } from '../../reducers/user';
-import { decipherClassId } from '../../utils/crypto';
-import { APIFetchFeedsParams } from '../../api/params/APIFetchFeedsParams';
-import { feedActions as feedActionTypes } from '../../constants/action-types';
-import { URL } from 'constants/navigation';
+} from 'actions/feed';
+import { logEvent } from 'api/analytics';
+import ClassmatesDialog from 'components/ClassmatesDialog/ClassmatesDialog';
+import FeedFilter from 'components/FeedFilter/FeedFilter';
+import FeedList from 'components/FeedList/FeedList';
+import Report from 'components/Report/ReportIssue';
+
+import { processClasses } from '../ClassesSelector/utils';
+import DeletePost from '../DeletePost/DeletePost';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import SharePost from '../SharePost/SharePost';
+import Tooltip from '../Tooltip/Tooltip';
+
+import HeaderNavigation from './HeaderNavigation';
+import PostCreationHeader from './PostCreationHeader';
+
+import type { APIFetchFeedsParams } from 'api/params/APIFetchFeedsParams';
+import type { TFeedData } from 'reducers/feed';
+import type { TUserClasses } from 'reducers/user';
+import type { AppState } from 'redux/store';
+import type { User } from 'types/models';
 
 type Props = {
   from?: string;

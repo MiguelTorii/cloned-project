@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { dialogStyle } from '../../components/Dialog/Dialog';
+
+import { dialogStyle } from 'components/Dialog/Dialog';
 
 export const useStyles = makeStyles((theme: any) => ({
   modalOverlay: {

@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { Typography } from '@material-ui/core';
+
+import LoadingMessageGif from 'assets/gif/loading-chat.gif';
+import LoadImg from 'components/LoadImg/LoadImg';
+
 import { useStyles } from './ChatLoadIndicatorStyles';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import LoadingMessageGif from '../../assets/gif/loading-chat.gif';
 
 const ChatLoadIndicator = () => {
   const classes: any = useStyles();

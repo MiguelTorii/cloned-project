@@ -1,9 +1,12 @@
 import React from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+
 import { makeStyles, Grid, Typography, Button, Box } from '@material-ui/core';
 import { DesktopMac, Stop } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import withRoot from '../../withRoot';
-import { signOut } from '../../actions/sign-in';
+
+import { signOut } from 'actions/sign-in';
+import withRoot from 'withRoot';
 
 const useStyles = makeStyles((theme) => ({
   root: {

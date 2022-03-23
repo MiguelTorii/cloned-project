@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
-import ChatMessages from './ChatMessages';
-import ChatChannels from './ChatChannels';
+
 import useChat from '../chatState/useChat';
+
+import ChatChannels from './ChatChannels';
+import ChatMessages from './ChatMessages';
 import { useStyles } from './HudChatStyles';
 
 const HudChat = () => {

@@ -1,18 +1,22 @@
 import React from 'react';
+
 import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles';
+
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
+import flashcardImage from 'assets/svg/ic_flashcard_post.svg';
+import linkImage from 'assets/svg/ic_link_post.svg';
+import questionImage from 'assets/svg/ic_question_post.svg';
 import Avatar from 'components/Avatar';
-import type { Notification as NotificationState } from '../../types/models';
-import questionImage from '../../assets/svg/ic_question_post.svg';
-import flashcardImage from '../../assets/svg/ic_flashcard_post.svg';
-import linkImage from '../../assets/svg/ic_link_post.svg';
+
 import { styles } from '../_styles/Notifications/notification-item';
+
+import type { Notification as NotificationState } from 'types/models';
 
 type Props = {
   classes: Record<string, any>;

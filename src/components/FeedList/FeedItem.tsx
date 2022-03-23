@@ -2,67 +2,72 @@
 
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+
 import cx from 'classnames';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import Image from 'react-graceful-image';
+import { push } from 'connected-react-router';
 import moment from 'moment';
 import pluralize from 'pluralize';
-import Grid from '@material-ui/core/Grid';
+import Image from 'react-graceful-image';
+import { connect, useDispatch, useSelector } from 'react-redux';
+
+import { Button } from '@material-ui/core';
+import MuiAvatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import MuiAvatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
-import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import FlagIcon from '@material-ui/icons/Flag';
-import DeleteIcon from '@material-ui/icons/Delete';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CreateIcon from '@material-ui/icons/Create';
-import { push } from 'connected-react-router';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FlagIcon from '@material-ui/icons/Flag';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ShareIcon from '@material-ui/icons/Share';
 
-import Avatar from 'components/Avatar';
-import ViewNotes from '../../containers/PostComments/ViewNotes';
-import RoleBadge from '../RoleBadge/RoleBadge';
-import PdfComponent from '../PdfGallery/PdfComponent';
-import LinkPreview from '../LinkPreview/LinkPreview';
-import * as api from '../../api/posts';
-import linkPost from '../../assets/svg/ic_link_post.svg';
-import flashcardPost from '../../assets/svg/ic_flashcard_post.svg';
-import thanksSvg from '../../assets/svg/thanks.svg';
-import thankedSvg from '../../assets/svg/thanked.svg';
-import commentSvg from '../../assets/svg/comment.svg';
-import FeedIconFlashcards from '../../assets/svg/flashcard-mark.svg';
-import FeedIconResource from '../../assets/svg/ic_share_a_resource.svg';
-import FeedIconQuestion from '../../assets/svg/ic_ask_a_question.svg';
-import FeedIconNote from '../../assets/svg/ic_notes.svg';
-import FeedIconPost from '../../assets/svg/ic_create_a_post.svg';
-import { getPastClassIds } from '../../utils/helpers';
-import HoverPopup from '../HoverPopup/HoverPopup';
+import { POST_TYPES } from 'constants/app';
 import {
   ANONYMOUS_USER_ID,
   POST_PREVIEW_THRESHOLD_PX,
   PROFILE_PAGE_SOURCE
 } from 'constants/common';
-import type { State as StoreState } from '../../types/state';
-import { TFeedItem } from '../../types/models';
-import { POST_TYPES } from 'constants/app';
+import { getPastClassIds } from 'utils/helpers';
+
+import * as api from 'api/posts';
+import commentSvg from 'assets/svg/comment.svg';
+import FeedIconFlashcards from 'assets/svg/flashcard-mark.svg';
+import FeedIconQuestion from 'assets/svg/ic_ask_a_question.svg';
+import FeedIconPost from 'assets/svg/ic_create_a_post.svg';
+import flashcardPost from 'assets/svg/ic_flashcard_post.svg';
+import linkPost from 'assets/svg/ic_link_post.svg';
+import FeedIconNote from 'assets/svg/ic_notes.svg';
+import FeedIconResource from 'assets/svg/ic_share_a_resource.svg';
+import thankedSvg from 'assets/svg/thanked.svg';
+import thanksSvg from 'assets/svg/thanks.svg';
+import Avatar from 'components/Avatar';
 import CustomQuill from 'components/CustomQuill/CustomQuill';
+import ViewNotes from 'containers/PostComments/ViewNotes';
+import { usePostMonitor } from 'contexts/PostMonitorContext';
+import useIntersection from 'hooks/useIntersection';
+
+import HoverPopup from '../HoverPopup/HoverPopup';
+import LinkPreview from '../LinkPreview/LinkPreview';
+import PdfComponent from '../PdfGallery/PdfComponent';
+import RoleBadge from '../RoleBadge/RoleBadge';
 
 import useStyles from 'components/_styles/FeedList/FeedItem';
-import { Button } from '@material-ui/core';
-import useIntersection from 'hooks/useIntersection';
-import { usePostMonitor } from 'contexts/PostMonitorContext';
+
+import type { TFeedItem } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const FeedTypes = {
   flashcards: {

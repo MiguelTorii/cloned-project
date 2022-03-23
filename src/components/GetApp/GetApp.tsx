@@ -1,8 +1,10 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+
 import { withStyles } from '@material-ui/core/styles';
-import Dialog from '../Dialog/Dialog';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/GetApp';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes?: Record<string, any>;

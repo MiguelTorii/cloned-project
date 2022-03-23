@@ -1,7 +1,9 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+
 import { makeStyles } from '@material-ui/core/styles';
-import Dialog from '../../components/Dialog/Dialog';
+import Typography from '@material-ui/core/Typography';
+
+import Dialog from 'components/Dialog/Dialog';
 
 const useStyles = makeStyles(() => ({
   archiveTitle: {},

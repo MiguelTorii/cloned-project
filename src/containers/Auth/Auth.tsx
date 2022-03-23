@@ -1,20 +1,26 @@
 import React, { useCallback, useState } from 'react';
+
+import auth0 from 'auth0-js';
+import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
+
+import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import auth0 from 'auth0-js';
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, REDIRECT_URI } from '../../constants/app';
-import type { State as StoreState } from '../../types/state';
+
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, REDIRECT_URI } from 'constants/app';
+
+import * as authActions from 'actions/auth';
+import { searchSchools } from 'api/sign-in';
+import loginBackground from 'assets/img/login-background.png';
+import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
+import AuthSearchSchool from 'components/AuthSearchSchool/AuthSearchSchool';
+import Dialog from 'components/Dialog/Dialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import loginBackground from '../../assets/img/login-background.png';
-import AuthSearchSchool from '../../components/AuthSearchSchool/AuthSearchSchool';
-import { searchSchools } from '../../api/sign-in';
-import * as authActions from '../../actions/auth';
-import Dialog from '../../components/Dialog/Dialog';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   main: {

@@ -1,12 +1,17 @@
-import React, { MouseEvent } from 'react';
-import { Button, Tooltip } from '@material-ui/core';
+import type { MouseEvent } from 'react';
+import React from 'react';
+
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
+
+import { Button, Tooltip } from '@material-ui/core';
+
 import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
-import { HudToolData } from './HudToolData';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
 
 import { useStyles } from './HudToolbarStyles';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
+import type { HudToolData } from './HudToolData';
 
 type Props = {
   navbarItem: HudToolData;

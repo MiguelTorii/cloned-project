@@ -1,4 +1,4 @@
-import { Action } from '../../types/action';
+import type { Action } from 'types/action';
 
 export const hudStoryActions = {
   SET_CURRENT_STATEMENT: 'SET_CURRENT_STATEMENT',

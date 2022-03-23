@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
 
 export const getReferralCodeInfo = async (code: string): Promise<Record<string, any>> => {

@@ -1,4 +1,4 @@
-import { Channel } from 'twilio-chat';
+import type { Channel } from 'twilio-chat';
 
 export type Unreads = {
   [x: string]: number;

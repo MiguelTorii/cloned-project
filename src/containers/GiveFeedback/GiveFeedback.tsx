@@ -1,10 +1,12 @@
 import React, { useCallback, useState, useEffect } from 'react';
+
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../../components/Dialog/Dialog';
-import { sendFeedback as sendFeedbackAPI } from '../../api/user';
+
+import { sendFeedback as sendFeedbackAPI } from 'api/user';
+import Dialog from 'components/Dialog/Dialog';
 
 const useStyles = makeStyles((theme) => ({
   container: {},

@@ -1,8 +1,11 @@
 import React from 'react';
+
 import ReactMarkdown from 'markdown-to-jsx';
+
+import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+
 import { styles } from '../_styles/Markdown';
 
 type Props = {

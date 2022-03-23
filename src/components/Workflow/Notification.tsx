@@ -1,12 +1,16 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+
+import moment from 'moment';
+
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import moment from 'moment';
-import { remiderTime } from '../../constants/common';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import CloseIcon from '@material-ui/icons/Close';
+
+import { remiderTime } from 'constants/common';
+
 import { useStyles } from '../_styles/Workflow/Notification';
 
 type Props = {

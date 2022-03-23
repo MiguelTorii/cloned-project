@@ -1,7 +1,12 @@
-import { QueryClient, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
+
+import { getChannelsUnreadCount, getChannelUnreadCount } from 'features/chat/api/unread';
+
 import { useSelectChannelById, useChannels } from './useChannels';
-import { Unreads, getChannelsUnreadCount, getChannelUnreadCount } from '../api/unread';
-import { Channel } from 'twilio-chat';
+
+import type { Unreads } from 'features/chat/api/unread';
+import type { QueryClient } from 'react-query';
+import type { Channel } from 'twilio-chat';
 
 export const UNREAD_COUNT_QUERY_KEY = 'unreadCount';
 

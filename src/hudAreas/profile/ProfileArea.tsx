@@ -1,22 +1,27 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import Profile, { PROFILE_PAGES } from '../../containers/Profile/Profile';
-import { useStyles } from './ProfileAreaStyles';
-import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
+
+import Profile, { PROFILE_PAGES } from 'containers/Profile/Profile';
 import {
   ABOUT_ME_AREA,
   GET_THE_MOBILE_APP_AREA,
   GIVE_FEEDBACK_AREA,
   POINTS_HISTORY_AREA,
   REWARDS_STORE_AREA
-} from '../../hud/navigationState/hudNavigation';
-import { UserState } from '../../reducers/user';
+} from 'hud/navigationState/hudNavigation';
+import { PROFILE_SOURCE_KEY } from 'routeConstants';
+
 import AboutMeSubarea from '../aboutMe/AboutMeSubarea';
-import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 import RewardsStoreSubArea from '../rewardsStore/RewardsStoreSubArea';
-import GiveFeedbackArea from './GiveFeedbackArea';
+
 import GetMobileAppArea from './GetMobileAppArea';
+import GiveFeedbackArea from './GiveFeedbackArea';
+import { useStyles } from './ProfileAreaStyles';
+
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
+import type { UserState } from 'reducers/user';
 
 const ProfileArea = () => {
   const classes: any = useStyles();

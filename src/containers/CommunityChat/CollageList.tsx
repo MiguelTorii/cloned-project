@@ -1,11 +1,15 @@
 import React from 'react';
-import List from '@material-ui/core/List';
+
 import Divider from '@material-ui/core/Divider';
-import CommunityMenu from '../../components/CommunityMenu/CommunityMenu';
+import List from '@material-ui/core/List';
+
+import CommunityMenu from 'components/CommunityMenu/CommunityMenu';
+
 import useStyles from './_styles/collageList';
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
-import { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
-import { ChatCommunityWithChannels } from 'reducers/chat';
+
+import type { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
+import type { ChatCommunityWithChannels } from 'reducers/chat';
 
 type Props = {
   communities: ChatCommunityData[];

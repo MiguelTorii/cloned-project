@@ -1,13 +1,15 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import learnGif from '../../assets/gif/reading-education-career.gif';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
+
+import learnGif from 'assets/gif/reading-education-career.gif';
+import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
+import LoadImg from 'components/LoadImg/LoadImg';
 
 const WalkThrough = ({ setScreen, school }) => {
   const centered = {

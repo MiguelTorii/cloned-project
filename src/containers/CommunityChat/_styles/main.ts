@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-import CoverImg from '../../../assets/svg/community-chat-default-cover.svg';
+
+import CoverImg from 'assets/svg/community-chat-default-cover.svg';
 
 const useStyles = makeStyles((theme: any) => ({
   root: {

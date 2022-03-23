@@ -1,6 +1,8 @@
-import type { Action } from '../../types/action';
 import { hudStoryActions, setCurrentStatement } from './hudStoryActions';
-import { defaultState, HudStoryState } from './hudStoryState';
+import { defaultState } from './hudStoryState';
+
+import type { HudStoryState } from './hudStoryState';
+import type { Action } from 'types/action';
 
 export default (state: HudStoryState = defaultState, action: Action): HudStoryState => {
   switch (action.type) {

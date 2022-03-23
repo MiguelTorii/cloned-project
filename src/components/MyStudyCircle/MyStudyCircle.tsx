@@ -1,22 +1,27 @@
 import React from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Link from '@material-ui/core/Link';
-import Avatar from '@material-ui/core/Avatar';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { getInitials } from '../../utils/chat';
-import type { StudyCircle } from '../../types/models';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { getInitials } from 'utils/chat';
+import { buildPath } from 'utils/helpers';
+
 import { styles } from '../_styles/MyStudyCircle';
-import { buildPath } from '../../utils/helpers';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
+
+import type { StudyCircle } from 'types/models';
 
 const MyLink = ({ href, ...props }) => <RouterLink to={href} {...props} />;
 

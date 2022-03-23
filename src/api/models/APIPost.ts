@@ -1,4 +1,4 @@
-import { APIPostInfo } from './APIPostInfo';
+import type { APIPostInfo } from './APIPostInfo';
 
 export type APIPost = {
   body: string;

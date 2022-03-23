@@ -1,38 +1,45 @@
-import React, { useEffect, useState, useRef, MutableRefObject } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import type { MutableRefObject } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+
+import axios from 'axios';
+import cx from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
-import CheckIcon from '@material-ui/icons/Check';
+
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import cx from 'classnames';
 import Paper from '@material-ui/core/Paper';
-import CompletedAddProfilePhoto from '../../assets/svg/completed_add_profile_photo.svg';
-import CompletedInvite from '../../assets/svg/completed_invite.svg';
-import CompletedClassGroupChatOne from '../../assets/svg/completed_class_group_chat_one.svg';
-import CompletedClassGroupChatTwo from '../../assets/svg/completed_class_group_chat_two.svg';
-import EmptyAddProfilePhotoOne from '../../assets/svg/empty_add_profile_photo_one.svg';
-import EmptyAddProfilePhotoTwo from '../../assets/svg/empty_add_profile_photo_two.svg';
-import EmptyClassGroupChatOne from '../../assets/svg/empty_class_group_chat_one.svg';
-import EmptyClassGroupChatTwo from '../../assets/svg/empty_class_group_chat_two.svg';
-import EmptyInvite from '../../assets/svg/empty_invite.svg';
-import * as chatActions from '../../actions/chat';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import type { State as StoreState } from '../../types/state';
-import { updateUserProfileUrl } from '../../api/user';
-import { getPresignedURL } from '../../api/media';
-import CreateChatChannel from '../../containers/CreateChatChannel/CreateChatChannel';
-import * as signInActions from '../../actions/sign-in';
-import * as userActions from '../../actions/user';
-import InviteDialog from '../InviteDialog/InviteDialog';
-import MoreMenu from './EmptyFeed/MoreMenu';
-import { postEvent } from '../../api/feed';
+import Typography from '@material-ui/core/Typography';
+import CheckIcon from '@material-ui/icons/Check';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import * as chatActions from 'actions/chat';
+import * as signInActions from 'actions/sign-in';
+import * as userActions from 'actions/user';
+import { postEvent } from 'api/feed';
+import { getPresignedURL } from 'api/media';
+import { updateUserProfileUrl } from 'api/user';
+import CompletedAddProfilePhoto from 'assets/svg/completed_add_profile_photo.svg';
+import CompletedClassGroupChatOne from 'assets/svg/completed_class_group_chat_one.svg';
+import CompletedClassGroupChatTwo from 'assets/svg/completed_class_group_chat_two.svg';
+import CompletedInvite from 'assets/svg/completed_invite.svg';
+import EmptyAddProfilePhotoOne from 'assets/svg/empty_add_profile_photo_one.svg';
+import EmptyAddProfilePhotoTwo from 'assets/svg/empty_add_profile_photo_two.svg';
+import EmptyClassGroupChatOne from 'assets/svg/empty_class_group_chat_one.svg';
+import EmptyClassGroupChatTwo from 'assets/svg/empty_class_group_chat_two.svg';
+import EmptyInvite from 'assets/svg/empty_invite.svg';
+import CreateChatChannel from 'containers/CreateChatChannel/CreateChatChannel';
+
 import { useStyles } from '../_styles/FeedList/EmptyFeed';
+import InviteDialog from '../InviteDialog/InviteDialog';
+
+import MoreMenu from './EmptyFeed/MoreMenu';
+
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   user?: UserState;

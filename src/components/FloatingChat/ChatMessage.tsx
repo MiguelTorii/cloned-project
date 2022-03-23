@@ -1,20 +1,24 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
+
 import cx from 'classnames';
 import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Typography from '@material-ui/core/Typography';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { getInitials } from 'utils/chat';
+import { buildPath } from 'utils/helpers';
 
 import Avatar from 'components/Avatar';
-import RoleBadge from '../RoleBadge/RoleBadge';
-import { getInitials } from '../../utils/chat';
+
 import { styles } from '../_styles/FloatingChat/ChatMessage';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
+import RoleBadge from '../RoleBadge/RoleBadge';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />

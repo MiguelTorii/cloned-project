@@ -1,15 +1,16 @@
 import React, { useState, useCallback } from 'react';
+
 import classNames from 'classnames';
 import { Quill } from 'react-quill';
 
-import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import { useMediaQuery } from 'hooks';
 import { QUILL_TOOLBAR_SHORT_KEYS } from 'constants/common';
 
 import EmojiSelector from 'components/EmojiSelector';
+import { useMediaQuery } from 'hooks';
 
 import { useStyles } from './PostItemToolbarStyles';
 

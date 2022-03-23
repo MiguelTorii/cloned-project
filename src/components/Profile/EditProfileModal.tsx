@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, Box } from '@material-ui/core';
-import { Create } from '@material-ui/icons';
+
 import _ from 'lodash';
 
+import { Button, Grid, Box } from '@material-ui/core';
+import { Create } from '@material-ui/icons';
+
 import Avatar from 'components/Avatar';
-import withRoot from '../../withRoot';
-import Dialog from '../Dialog/Dialog';
-import TextField from '../Basic/TextField/TextField';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
-import GradientButton from '../Basic/Buttons/GradientButton';
-import AvatarEditor from '../AvatarEditor/AvatarEditor';
-import type { About, UserProfile } from '../../types/models';
+import withRoot from 'withRoot';
+
 import { useStyles } from '../_styles/Profile/EditProfileModal';
+import AvatarEditor from '../AvatarEditor/AvatarEditor';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
+import TextField from '../Basic/TextField/TextField';
+import Dialog from '../Dialog/Dialog';
+
+import type { About, UserProfile } from 'types/models';
 
 type Props = {
   profile: UserProfile;

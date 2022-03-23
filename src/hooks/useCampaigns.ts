@@ -1,5 +1,6 @@
-import { useAppSelector } from 'redux/store';
 import { CAMPAIGN_NAMES } from 'constants/common';
+
+import { useAppSelector } from 'redux/store';
 
 type CampaignsData = {
   isInviteFriendsActive: boolean;

@@ -1,23 +1,29 @@
 import React, { useEffect } from 'react';
+
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-import withWidth from '@material-ui/core/withWidth';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Typography from '@material-ui/core/Typography';
+import { bindActionCreators } from 'redux';
+
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
 import CloseIcon from '@material-ui/icons/Close';
+
 import { URL } from 'constants/navigation';
+
+import * as onboardingActions from 'actions/onboarding';
+import checkmarkSvg from 'assets/svg/checkmark.svg';
+import checkmarkEmptySvg from 'assets/svg/checkmark_empty.svg';
+
+import { useStyles } from '../_styles/OnboardingList';
+
 import type {
   OnboardingList as OnboardingListType,
   OnboardingListItem as OnboardingListItemType
-} from '../../types/models';
-import * as onboardingActions from '../../actions/onboarding';
-import checkmarkSvg from '../../assets/svg/checkmark.svg';
-import checkmarkEmptySvg from '../../assets/svg/checkmark_empty.svg';
-import { useStyles } from '../_styles/OnboardingList';
-import type { State as StoreState } from '../../types/state';
+} from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const ID_TO_URL = {
   1: '/reminders',

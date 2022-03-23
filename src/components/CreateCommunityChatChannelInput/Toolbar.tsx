@@ -1,13 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
+
 import cx from 'classnames';
 import { Quill } from 'react-quill';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
+
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import EmojiSelector from '../EmojiSelector/EmojiSelector';
+
+import { QUILL_TOOLBAR_SHORT_KEYS } from 'constants/common';
+
 import useStyles from '../_styles/CreateCommunityChatChannelInput/toolbar';
-import { QUILL_TOOLBAR_SHORT_KEYS } from '../../constants/common';
+import EmojiSelector from '../EmojiSelector/EmojiSelector';
 
 const Link = Quill.import('formats/link');
 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+
+import Store from 'containers/Store/Store';
+
 import { useStyles } from './RewardsStoreSubAreaStyles';
-import Store from '../../containers/Store/Store';
 
 const RewardsStoreSubArea = () => {
   const classes: any = useStyles();

@@ -1,15 +1,20 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+
 import { connect } from 'react-redux';
-import Dialog from '../../components/Dialog/Dialog';
+
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { sendBatchMessage } from 'api/chat';
+import Dialog from 'components/Dialog/Dialog';
+
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import MultipleChatTextField from '../CommunityChat/MultipleChatTextField';
-import { sendBatchMessage } from '../../api/chat';
 import Tooltip from '../Tooltip/Tooltip';
-import type { State as StoreState } from '../../types/state';
+
+import type { State as StoreState } from 'types/state';
 
 const useStyles = makeStyles((theme) => ({
   dialogRoot: {

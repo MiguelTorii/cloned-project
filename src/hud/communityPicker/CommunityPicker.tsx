@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+
 import { useSelector } from 'react-redux';
-import { HudChatState } from '../chatState/hudChatState';
+
 import CommunityPick from './CommunityPick';
 import useStyles from './CommunityPickerStyles';
+
+import type { HudChatState } from '../chatState/hudChatState';
 
 const CommunityPicker = () => {
   const classes: any = useStyles();

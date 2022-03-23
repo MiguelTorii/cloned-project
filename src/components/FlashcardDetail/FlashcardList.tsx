@@ -1,12 +1,15 @@
 import React, { useMemo } from 'react';
-import Grid from '@material-ui/core/Grid';
+
 import clsx from 'clsx';
-import CreateIcon from '@material-ui/icons/Create';
-import ClearIcon from '@material-ui/icons/Clear';
+
 import Button from '@material-ui/core/Button';
-import SelectedImage from '../SelectedImage/SelectedImage';
-import CustomQuill from '../CustomQuill/CustomQuill';
+import Grid from '@material-ui/core/Grid';
+import ClearIcon from '@material-ui/icons/Clear';
+import CreateIcon from '@material-ui/icons/Create';
+
 import { useStyles } from '../_styles/FlashcardDetail';
+import CustomQuill from '../CustomQuill/CustomQuill';
+import SelectedImage from '../SelectedImage/SelectedImage';
 
 type Props = {
   id?: string;

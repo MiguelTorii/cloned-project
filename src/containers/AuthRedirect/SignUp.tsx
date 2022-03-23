@@ -1,13 +1,16 @@
 import React, { memo, useReducer, useMemo, useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import { FormControl, FormHelperText } from '@material-ui/core';
-import { sendCode, verifyCode } from '../../api/sign-up';
-import AuthTextInput from './AuthTextInput';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import { sendCode, verifyCode } from 'api/sign-up';
+
 import AuthButton from './AuthButton';
+import AuthTextInput from './AuthTextInput';
 
 const useStyles = makeStyles((theme) => ({
   container: {

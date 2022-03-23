@@ -1,22 +1,26 @@
 import React, { useRef } from 'react';
-import { useParams } from 'react-router';
+
 import { useSelector } from 'react-redux';
-import { decypherClass } from '../../utils/crypto';
-import Feed from '../../containers/Feed/Feed';
-import { useStyles } from './ClassFeedSubAreaStyles';
+import { useParams } from 'react-router';
+
+import { decypherClass } from 'utils/crypto';
+
+import CreatePostLayout from 'containers/CreatePostLayout/CreatePostLayout';
+import CreateShareLink from 'containers/CreateShareLink/CreateShareLink';
+import Feed from 'containers/Feed/Feed';
+import ViewNotes from 'containers/ViewNotes/ViewNotes';
+import ViewPost from 'containers/ViewPost/ViewPost';
+import ViewQuestion from 'containers/ViewQuestion/ViewQuestion';
+import ViewShareLink from 'containers/ViewShareLink/ViewShareLink';
 import {
   CREATE_NOTES_PATHNAME,
   CREATE_POST_PATHNAME,
   EDIT_NOTES_PATHNAME_PREFIX,
   EDIT_POST_PATHNAME_PREFIX,
   PROFILE_SOURCE_KEY
-} from '../../routeConstants';
-import CreatePostLayout from '../../containers/CreatePostLayout/CreatePostLayout';
-import ViewPost from '../../containers/ViewPost/ViewPost';
-import ViewNotes from '../../containers/ViewNotes/ViewNotes';
-import ViewShareLink from '../../containers/ViewShareLink/ViewShareLink';
-import CreateShareLink from '../../containers/CreateShareLink/CreateShareLink';
-import ViewQuestion from '../../containers/ViewQuestion/ViewQuestion';
+} from 'routeConstants';
+
+import { useStyles } from './ClassFeedSubAreaStyles';
 
 const ClassFeedSubArea = () => {
   const classes: any = useStyles();

@@ -1,11 +1,15 @@
 import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import FeedItem from '../FeedList/FeedItem';
+
 import { styles } from '../_styles/Profile/posts';
-import { TFeedItem } from '../../types/models';
+import FeedItem from '../FeedList/FeedItem';
+
+import type { TFeedItem } from 'types/models';
 
 type Props = {
   classes?: Record<string, any>;

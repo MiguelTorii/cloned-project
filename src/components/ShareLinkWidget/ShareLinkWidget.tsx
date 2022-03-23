@@ -1,11 +1,12 @@
 import { useState } from 'react';
+
 import clsx from 'clsx';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import IconClip from 'assets/svg/clip.svg';
 import IconLink from 'assets/svg/ic_link.svg';

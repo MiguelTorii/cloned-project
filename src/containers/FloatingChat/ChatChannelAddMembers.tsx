@@ -1,13 +1,19 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
+
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import { getInitials } from '../../utils/chat';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import AddMembers from '../../components/FloatingChat/AddMembers';
-import { searchUsers } from '../../api/user';
-import { addGroupMembers } from '../../api/chat';
+
+import { getInitials } from 'utils/chat';
+
+import { addGroupMembers } from 'api/chat';
+import { searchUsers } from 'api/user';
+import AddMembers from 'components/FloatingChat/AddMembers';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   user?: UserState;

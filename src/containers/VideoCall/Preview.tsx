@@ -2,10 +2,14 @@
 
 /* eslint-disable jsx-a11y/media-has-caption */
 import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
-import type { User } from '../../types/models';
+
+import MeetupPreview from 'components/MeetUpPreview/Preview';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import MeetupPreview from '../../components/MeetUpPreview/Preview';
+
+import type { User } from 'types/models';
 
 const styles = () => ({
   root: {

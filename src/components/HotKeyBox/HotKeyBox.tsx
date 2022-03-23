@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Box, Typography } from '@material-ui/core';
-import useStyles from './styles';
+
 import HotKey from './HotKey';
+import useStyles from './styles';
 
 const HotKeyBox = ({ data }) => {
   const classes: any = useStyles();

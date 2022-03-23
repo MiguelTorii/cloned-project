@@ -1,12 +1,16 @@
 import React from 'react';
+
 import cx from 'classnames';
 import { ValidatorForm, TextValidator, SelectValidator } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
-import { states } from '../../constants/clients';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import { states } from 'constants/clients';
+
 import { styles } from '../_styles/SignUpForm/ProfileSetup';
 
 type Props = {

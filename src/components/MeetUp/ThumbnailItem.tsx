@@ -1,13 +1,18 @@
 /* eslint-disable no-nested-ternary */
 
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { RefObject } from 'react';
+import type { RefObject } from 'react';
+import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { ReactComponent as Mute } from '../../assets/svg/mute.svg';
+
+import { ReactComponent as Mute } from 'assets/svg/mute.svg';
+
 import { styles } from '../_styles/MeetUp/ThumbnailItem';
 
 type Props = {

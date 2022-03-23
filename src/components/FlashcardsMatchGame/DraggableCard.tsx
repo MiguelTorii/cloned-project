@@ -1,8 +1,12 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
-import Box from '@material-ui/core/Box';
 import { useDrag, useDrop } from 'react-dnd';
+
+import Box from '@material-ui/core/Box';
+
 import { DRAG_TYPES } from 'constants/enums';
+
 import ContentCard from './ContentCard';
 
 const DraggableCard = ({

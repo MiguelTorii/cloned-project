@@ -1,6 +1,8 @@
 import update from 'immutability-helper';
-import { leaderboardActions, rootActions } from '../constants/action-types';
-import type { Action } from '../types/action';
+
+import { leaderboardActions, rootActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
 
 export type StudentType = {
   position: number;

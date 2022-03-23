@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+
 import Button from '@material-ui/core/Button';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+
+// import { ReactComponent as FullScreenView } from 'assets/svg/fullscreen-view.svg';
+import { ReactComponent as GalleryView } from 'assets/svg/gallery-view.svg';
+import { ReactComponent as SideBySideView } from 'assets/svg/side-by-side.svg';
+import { ReactComponent as SpeakerView } from 'assets/svg/speaker-view.svg';
+import { ReactComponent as ViewChecked } from 'assets/svg/view-checked.svg';
+
 import Tooltip from '../Tooltip/Tooltip';
-// import { ReactComponent as FullScreenView } from '../../assets/svg/fullscreen-view.svg';
-import { ReactComponent as SpeakerView } from '../../assets/svg/speaker-view.svg';
-import { ReactComponent as GalleryView } from '../../assets/svg/gallery-view.svg';
-import { ReactComponent as SideBySideView } from '../../assets/svg/side-by-side.svg';
-import { ReactComponent as ViewChecked } from '../../assets/svg/view-checked.svg';
 
 const useStyles = makeStyles((theme) => ({
   typography: {

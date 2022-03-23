@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/StartVideoForm';
 
 type Props = {

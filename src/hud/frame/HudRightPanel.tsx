@@ -1,13 +1,19 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
+
 import { Box } from '@material-ui/core';
-import { CALENDAR_AREA } from '../navigationState/hudNavigation';
-import { STUDY_TOOLS_TOP_OPTION } from '../../routeConstants';
-import HudStudyTools from '../missions/HudStudyTools';
+
+import MiniWorkflows from 'containers/MiniWorkflows/MiniWorkflows';
+import { STUDY_TOOLS_TOP_OPTION } from 'routeConstants';
+
 import HudMissions from '../missions/HudMissions';
+import HudStudyTools from '../missions/HudStudyTools';
+import { CALENDAR_AREA } from '../navigationState/hudNavigation';
+
 import { useStyles } from './HudFrameStyles';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
-import MiniWorkflows from '../../containers/MiniWorkflows/MiniWorkflows';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const HudRightPanel = () => {
   const classes = useStyles();

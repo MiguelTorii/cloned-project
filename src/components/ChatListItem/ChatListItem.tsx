@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+
 import clsx from 'clsx';
-import MainChatItem from './MainChatItem';
+
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
-import { ChannelWrapper } from 'reducers/chat';
+
+import MainChatItem from './MainChatItem';
+
+import type { ChannelWrapper } from 'reducers/chat';
 
 type Props = {
   channel?: ChannelWrapper;

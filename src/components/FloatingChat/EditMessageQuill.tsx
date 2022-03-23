@@ -1,21 +1,28 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+
 import cx from 'classnames';
-import { useQuill } from 'react-quilljs';
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Typography from '@material-ui/core/Typography';
-import Popover from '@material-ui/core/Popover';
 import { Picker } from 'emoji-mart';
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
+import { useQuill } from 'react-quilljs';
+import { useDispatch } from 'react-redux';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Popover from '@material-ui/core/Popover';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { FILE_LIMIT_SIZE } from 'constants/chat';
+import { isMac } from 'utils/helpers';
+
+import { showNotification } from 'actions/notifications';
+import { uploadMedia } from 'actions/user';
+
 import AttachFile from '../FileUpload/AttachFile';
-import { FILE_LIMIT_SIZE } from '../../constants/chat';
-import { uploadMedia } from '../../actions/user';
+
 import EditorToolbar, { formats } from './Toolbar';
-import styles from '../../containers/CommunityChat/_styles/messageQuill';
-import { isMac } from '../../utils/helpers';
-import { showNotification } from '../../actions/notifications';
+
+import styles from 'containers/CommunityChat/_styles/messageQuill';
 
 type Props = {
   classes?: any;

@@ -1,20 +1,33 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Action, Dispatch } from 'redux';
-import CssBaseline from '@material-ui/core/CssBaseline';
+
 import cx from 'classnames';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { Box, Hidden, IconButton, SvgIcon } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import { useTheme } from '@material-ui/core/styles';
+
 import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import useIconClasses from 'components/_styles/Icons';
-import { useStyles } from './HudFrameStyles';
-import StudyToolsArea from '../../hudAreas/studyTools/StudyToolsArea';
-import CommunitiesArea from '../../hudAreas/communities/CommunitiesArea';
-import ProfileArea from '../../hudAreas/profile/ProfileArea';
-import AchievementsArea from '../../hudAreas/achievements/AchievementsArea';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
+import ChatPage from 'containers/CommunityChat/ChatPage';
+import UserDialog from 'containers/UserDialog/UserDialog';
+import WebNotification from 'containers/WebNotifications';
+import { useNotifier } from 'hooks';
+import AchievementsArea from 'hudAreas/achievements/AchievementsArea';
+import CommunitiesArea from 'hudAreas/communities/CommunitiesArea';
+import ProfileArea from 'hudAreas/profile/ProfileArea';
+import StudyToolsArea from 'hudAreas/studyTools/StudyToolsArea';
+import {
+  KEY_IS_FIRST_TIME,
+  KEY_IS_FIRST_TIME_OPTION_YES,
+  STUDY_TOOLS_QUERY_KEY
+} from 'routeConstants';
+
+import HudControlPanel from '../controlPanel/HudControlPanel';
+import HudExperienceBar from '../experienceBar/HudExperienceBar';
+import MobileActions from '../mobileActions/MobileActions';
+import MobileMenu from '../mobileMenu/MobileMenu';
 import {
   CALENDAR_AREA,
   CHAT_MAIN_AREA,
@@ -25,32 +38,25 @@ import {
   RIGHT_SIDE_AREA,
   CHAT_AREA
 } from '../navigationState/hudNavigation';
-import HudControlPanel from '../controlPanel/HudControlPanel';
-import {
-  KEY_IS_FIRST_TIME,
-  KEY_IS_FIRST_TIME_OPTION_YES,
-  STUDY_TOOLS_QUERY_KEY
-} from '../../routeConstants';
 import {
   setSideAreaVisibility,
   setStudyToolsOption,
   toggleSideAreaVisibility
 } from '../navigationState/hudNavigationActions';
-import HudTitle from '../title/HudTitle';
-import MobileActions from '../mobileActions/MobileActions';
-import MobileMenu from '../mobileMenu/MobileMenu';
 import OnboardingModal from '../onboardingModal/OnboardingModal';
 import HudStory from '../story/HudStory';
-import HudExperienceBar from '../experienceBar/HudExperienceBar';
-import { HudStoryState } from '../storyState/hudStoryState';
 import { openOnboardingPopup } from '../storyState/hudStoryActions';
-import HudRightPanel from './HudRightPanel';
 import useOnboarding from '../storyState/useOnboarding';
-import ChatPage from 'containers/CommunityChat/ChatPage';
+import HudTitle from '../title/HudTitle';
 
-import UserDialog from '../../containers/UserDialog/UserDialog';
-import WebNotification from 'containers/WebNotifications';
-import { useNotifier } from 'hooks';
+import { useStyles } from './HudFrameStyles';
+import HudRightPanel from './HudRightPanel';
+
+import useIconClasses from 'components/_styles/Icons';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
+import type { HudStoryState } from '../storyState/hudStoryState';
+import type { Action, Dispatch } from 'redux';
 
 let onboardingPopupTriggered = false;
 

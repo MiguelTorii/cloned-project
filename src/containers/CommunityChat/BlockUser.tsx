@@ -1,9 +1,12 @@
 import React, { useCallback, useState } from 'react';
+
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../../components/Dialog/Dialog';
-import BlockUserIcon from '../../assets/svg/block-user.svg';
+
+import BlockUserIcon from 'assets/svg/block-user.svg';
+import Dialog from 'components/Dialog/Dialog';
+
 import useStyles from './_styles/blockUser';
 
 const BlockUser = ({ otherUser, userId, handleBlock }) => {

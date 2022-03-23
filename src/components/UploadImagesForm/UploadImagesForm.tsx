@@ -1,14 +1,17 @@
 import React from 'react';
+
 import Dropzone from 'react-dropzone';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+
 import { Box } from '@material-ui/core';
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@material-ui/core/styles/withStyles';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+
+import { styles } from '../_styles/UploadImagesForm';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
 import EditPhotoThumbnail from '../EditPhotoThumbnail/EditPhotoThumbnail';
-import { styles } from '../_styles/UploadImagesForm';
 
 const UploadImagesForm = ({
   classes,

@@ -1,10 +1,16 @@
 import React from 'react';
+
 import algoliasearch from 'algoliasearch/lite';
+
 import { withStyles } from '@material-ui/core/styles';
-import type { SelectType } from '../../types/models';
-import AutoComplete from '../../components/AutoComplete/AutoComplete';
-import { ALGOLIA_APP_ID, ALGOLIA_API_KEY, ALGOLIA_INDEX } from '../../constants/app';
+
+import { ALGOLIA_APP_ID, ALGOLIA_API_KEY, ALGOLIA_INDEX } from 'constants/app';
+
+import AutoComplete from 'components/AutoComplete/AutoComplete';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { SelectType } from 'types/models';
 
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const index = searchClient.initIndex(ALGOLIA_INDEX);

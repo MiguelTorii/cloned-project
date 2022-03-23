@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { useDispatch } from 'react-redux';
-import Profile, { PROFILE_PAGES } from '../../containers/Profile/Profile';
+
+import Profile, { PROFILE_PAGES } from 'containers/Profile/Profile';
+
 import { useStyles } from './AboutMeSubareaStyles';
 
 type Props = {

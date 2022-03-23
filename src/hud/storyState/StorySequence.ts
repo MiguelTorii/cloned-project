@@ -1,5 +1,6 @@
-import { Action, Dispatch } from 'redux';
 import { setCurrentStatement } from './hudStoryActions';
+
+import type { Action, Dispatch } from 'redux';
 
 const DEFAULT_STORY_SEQUENCE_DELAY_IN_MS = 5000;
 

@@ -1,11 +1,12 @@
-import { APIChat } from 'api/models/APIChat';
-import { ChatCommunityData } from 'api/models/APICommunity';
-import { APICommunityChannel } from 'api/models/APICommunityChannel';
-import { APICommunityChannelGroup } from 'api/models/APICommunityChannelGroup';
-import { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
 import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
-import { Classmate, ClassmateGroup } from 'types/models';
-import { ChannelData, CommunityData } from './hudChatState';
+
+import type { ChannelData, CommunityData } from './hudChatState';
+import type { APIChat } from 'api/models/APIChat';
+import type { ChatCommunityData } from 'api/models/APICommunity';
+import type { APICommunityChannel } from 'api/models/APICommunityChannel';
+import type { APICommunityChannelGroup } from 'api/models/APICommunityChannelGroup';
+import type { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
+import type { Classmate, ClassmateGroup } from 'types/models';
 
 export interface IBuiltCommunities {
   communityIdsInDisplayOrder: string[];

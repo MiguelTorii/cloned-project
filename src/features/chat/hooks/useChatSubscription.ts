@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
-import produce from 'immer';
-import { objectToCamel } from 'ts-case-convert';
-import { Channel } from 'twilio-chat';
-import { usePrevious } from 'hooks';
 
+import produce from 'immer';
 import moment from 'moment';
-import { getGroupMembers } from 'api/chat';
+import { useQueryClient } from 'react-query';
+import { objectToCamel } from 'ts-case-convert';
+
+import { URL } from 'constants/navigation';
 import { getGroupTitle } from 'utils/chat';
 
-import { AppDispatch, AppGetState, useAppDispatch, useAppSelector } from 'redux/store';
 import {
   fetchMembers,
   handleInitChat,
@@ -20,20 +18,24 @@ import {
   shutdown,
   updateMembers
 } from 'actions/chat';
-import { getChannelsFromClient, isPaginatorDone, resetChannels } from 'lib/chat';
+import { getGroupMembers } from 'api/chat';
 import {
-  ChannelsMetadata,
   getTransformedChannelsMetada,
   QUERY_KEY_CHANNEL_METADATA,
   QUERY_KEY_CHANNELS,
   UNREAD_COUNT_QUERY_KEY,
-  Unreads,
   useChatClient,
   useOrderedChannelList,
   useChannels
 } from 'features/chat';
-import { useCommunityChatAPI } from '../api/communityChannels';
-import { URL } from 'constants/navigation';
+import { useCommunityChatAPI } from 'features/chat/api/communityChannels';
+import { usePrevious } from 'hooks';
+import { getChannelsFromClient, isPaginatorDone, resetChannels } from 'lib/chat';
+import { useAppDispatch, useAppSelector } from 'redux/store';
+
+import type { ChannelsMetadata, Unreads } from 'features/chat';
+import type { AppDispatch, AppGetState } from 'redux/store';
+import type { Channel } from 'twilio-chat';
 
 export const useChatSubscription = () => {
   useHandleClient();

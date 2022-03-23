@@ -1,11 +1,16 @@
 import React, { ReactElement } from 'react';
+
 import { useDispatch } from 'react-redux';
-import { Action, Dispatch } from 'redux';
+
 import IconChat from '@material-ui/icons/Chat';
-import { useStyles } from './HudNavigationStyles';
+
 import { LEFT_SIDE_AREA } from '../navigationState/hudNavigation';
 import { toggleSideAreaVisibility } from '../navigationState/hudNavigationActions';
+
+import { useStyles } from './HudNavigationStyles';
 import HudTool from './HudTool';
+
+import type { Action, Dispatch } from 'redux';
 
 const HudLeftNavigation = () => {
   const classes: any = useStyles();

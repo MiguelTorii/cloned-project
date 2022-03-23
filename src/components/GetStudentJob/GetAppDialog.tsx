@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { pdfjs } from 'react-pdf';
-import studentJobPdf from '../../assets/pdf/CircleIn-Student-Ambassador.pdf';
+
+import studentJobPdf from 'assets/pdf/CircleIn-Student-Ambassador.pdf';
+
 import Dialog from '../Dialog/Dialog';
 import PdfComponent from '../PdfGallery/PdfComponent';
 

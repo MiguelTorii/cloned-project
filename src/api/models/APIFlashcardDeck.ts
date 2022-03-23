@@ -1,5 +1,5 @@
-import { APIFlashCard2 } from './APIFlashcard';
-import { APIPostInfo } from './APIPostInfo';
+import type { APIFlashCard2 } from './APIFlashcard';
+import type { APIPostInfo } from './APIPostInfo';
 
 export type APIFlashcardDeck = {
   best_answer: boolean;

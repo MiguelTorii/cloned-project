@@ -1,6 +1,8 @@
-import type { Action } from '../../types/action';
 import { hudChatActions } from './hudChatActions';
-import { defaultState, HudChatState } from './hudChatState';
+import { defaultState } from './hudChatState';
+
+import type { HudChatState } from './hudChatState';
+import type { Action } from 'types/action';
 
 export default (state: HudChatState = defaultState, action: Action): HudChatState => {
   switch (action.type) {

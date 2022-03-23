@@ -1,9 +1,12 @@
 import React from 'react';
+
+import ButtonBase from '@material-ui/core/ButtonBase';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import appStore from '../../assets/img/app-store.png';
-import googlePlay from '../../assets/img/google-play.png';
+
+import appStore from 'assets/img/app-store.png';
+import googlePlay from 'assets/img/google-play.png';
+
 import { styles } from '../_styles/OpenApp';
 
 type Props = {

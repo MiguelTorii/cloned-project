@@ -1,26 +1,32 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Grid, Paper, Typography } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { push } from 'connected-react-router';
 import update from 'immutability-helper';
+import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+
+import { Grid, Paper, Typography } from '@material-ui/core';
+
+import { EVENT_TYPES, LOG_EVENT_CATEGORIES, POST_TYPES } from 'constants/app';
 import {
   COMMUNITY_SCROLL_CONTAINER_ID,
   PROFILE_PAGE_SOURCE,
   RECOMMENDATION_FETCH_UNIT
 } from 'constants/common';
-import withRoot from '../../withRoot';
-import { fetchRecommendations } from '../../api/feed';
-import FeedItem from '../../components/FeedList/FeedItem';
-import useStyles from './styles';
-import SharePost from '../SharePost/SharePost';
-import { EVENT_TYPES, LOG_EVENT_CATEGORIES, POST_TYPES } from '../../constants/app';
-import { updateBookmark } from '../../actions/feed';
+import { buildPath } from 'utils/helpers';
+
+import { updateBookmark } from 'actions/feed';
+import { logEventLocally } from 'api/analytics';
+import { fetchRecommendations } from 'api/feed';
+import FeedItem from 'components/FeedList/FeedItem';
+import ReportIssue from 'components/Report/ReportIssue';
+import { PROFILE_SOURCE_KEY } from 'routeConstants';
+import withRoot from 'withRoot';
+
 import DeletePost from '../DeletePost/DeletePost';
-import { buildPath } from '../../utils/helpers';
-import ReportIssue from '../../components/Report/ReportIssue';
-import { PROFILE_SOURCE_KEY } from '../../routeConstants';
-import { logEventLocally } from '../../api/analytics';
+import SharePost from '../SharePost/SharePost';
+
+import useStyles from './styles';
 
 const Recommendations = () => {
   const classes: any = useStyles();

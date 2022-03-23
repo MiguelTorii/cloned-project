@@ -1,15 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+
 import update from 'immutability-helper';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import PostItemAddComment from '../../components/PostItem/PostItemAddComment';
-import PostItemComment from '../../components/PostItem/PostItemComment';
-import SkeletonLoad from '../../components/PostItem/SkeletonLoad';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
+
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { showNotification } from 'actions/notifications';
+import { logEvent } from 'api/analytics';
 import {
   getPostComments,
   createComment,
@@ -17,12 +17,18 @@ import {
   bestAnswer,
   deleteComment,
   updateComment
-} from '../../api/posts';
-import { logEvent } from '../../api/analytics';
-import type { Comments, TComment } from '../../types/models';
-import { processComments } from './utils';
+} from 'api/posts';
+import PostItemAddComment from 'components/PostItem/PostItemAddComment';
+import PostItemComment from 'components/PostItem/PostItemComment';
+import SkeletonLoad from 'components/PostItem/SkeletonLoad';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { showNotification } from '../../actions/notifications';
+
+import { processComments } from './utils';
+
+import type { UserState } from 'reducers/user';
+import type { Comments, TComment } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   readOnly: {

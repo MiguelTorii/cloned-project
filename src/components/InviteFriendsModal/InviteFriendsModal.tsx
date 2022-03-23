@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@material-ui/core';
 
-import ShareLinkModal from 'components/ShareLinkModal/ShareLinkModal';
 import { apiGetInviteLink } from 'api/user';
+import ShareLinkModal from 'components/ShareLinkModal/ShareLinkModal';
 
 type Props = {
   open: boolean;

@@ -1,16 +1,18 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import Fab from '@material-ui/core/Fab';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import CallEndIcon from '@material-ui/icons/CallEnd';
+import FeaturedVideoIcon from '@material-ui/icons/FeaturedVideo';
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
-import CallEndIcon from '@material-ui/icons/CallEnd';
-import Tooltip from '@material-ui/core/Tooltip';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import FeaturedVideoIcon from '@material-ui/icons/FeaturedVideo';
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
+
 import { styles } from '../_styles/MeetUp/Controls';
 
 type Props = {

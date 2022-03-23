@@ -1,30 +1,37 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
+
+import { push } from 'connected-react-router';
 import { connect, useDispatch } from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { useLocation } from 'react-router';
+
+import Dialog from '@material-ui/core/Dialog';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import { useLocation } from 'react-router';
-import { push } from 'connected-react-router';
-import LoadImg from '../../components/LoadImg/LoadImg';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+
+import { cypherClass } from 'utils/crypto';
+import { buildPath } from 'utils/helpers';
+
+import postingImage from 'assets/gif/loading-rocket.gif';
+import circleinLogo from 'assets/svg/circlein_logo_minimal.svg';
+import LoadImg from 'components/LoadImg/LoadImg';
+
 import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import ClassSelector from '../ClassSelector/ClassesSelector';
-import circleinLogo from '../../assets/svg/circlein_logo_minimal.svg';
-import postingImage from '../../assets/gif/loading-rocket.gif';
-import Question from './Question';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
 import CreateNotes from './Note';
 import CreatePostSt from './PostSt';
+import Question from './Question';
 import CreateShareLink from './ShareLink';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import type { State as StoreState } from '../../types/state';
-import { buildPath } from '../../utils/helpers';
-import { cypherClass } from '../../utils/crypto';
 import TabPanel from './TabPanel';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   item: {

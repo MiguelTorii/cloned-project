@@ -1,11 +1,15 @@
 import React from 'react';
+
 import cx from 'classnames';
+
+import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import AutoComplete from '../AutoComplete/AutoComplete';
-import type { SelectType } from '../../types/models';
+
 import { styles } from '../_styles/FederatedIdentities';
+import AutoComplete from '../AutoComplete/AutoComplete';
+
+import type { SelectType } from 'types/models';
 
 type Props = {
   classes: Record<string, any>;

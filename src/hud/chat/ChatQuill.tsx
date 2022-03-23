@@ -1,10 +1,15 @@
 import React from 'react';
-import { Action, Dispatch } from 'redux';
+
 import { useSelector, useDispatch } from 'react-redux';
+
 import { Typography } from '@material-ui/core';
+
+import MessageQuill from 'containers/CommunityChat/MessageQuill';
+
 import { useStyles } from './HudChatStyles';
-import MessageQuill from '../../containers/CommunityChat/MessageQuill';
-import { ChannelData, HudChatState } from '../chatState/hudChatState';
+
+import type { ChannelData, HudChatState } from '../chatState/hudChatState';
+import type { Action, Dispatch } from 'redux';
 
 const ChatQuill = () => {
   const classes: any = useStyles();

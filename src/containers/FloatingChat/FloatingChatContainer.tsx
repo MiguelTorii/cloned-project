@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
+
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+
 import withWidth from '@material-ui/core/withWidth';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import FloatingChat from './FloatingChat';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import FloatingChat from './FloatingChat';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   width: string;

@@ -1,20 +1,26 @@
 import React, { memo, useMemo, useRef, useContext, useState, useEffect, useCallback } from 'react';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+
+import moment from 'moment';
+
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import moment from 'moment';
-import Dialog from '../Dialog/Dialog';
-import DateInput from './DateInput';
-import AddRemoveClasses from '../AddRemoveClasses/AddRemoveClasses';
-import ToolbarTooltip from '../FlashcardEditor/ToolbarTooltip';
-import { workflowCategories, remiderTime } from '../../constants/common';
-import RichTextEditor from '../../containers/RichTextEditor/RichTextEditor';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
-import Notification from './Notification';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+
+import { workflowCategories, remiderTime } from 'constants/common';
+
+import RichTextEditor from 'containers/RichTextEditor/RichTextEditor';
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/WorkflowEdit';
+import AddRemoveClasses from '../AddRemoveClasses/AddRemoveClasses';
+import Dialog from '../Dialog/Dialog';
+import ToolbarTooltip from '../FlashcardEditor/ToolbarTooltip';
+
+import DateInput from './DateInput';
+import Notification from './Notification';
 
 type Props = {
   task: Record<string, any>;

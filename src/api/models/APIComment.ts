@@ -1,4 +1,4 @@
-import { APICommentUser } from './APICommentUser';
+import type { APICommentUser } from './APICommentUser';
 
 export type APIComment = {
   accepted: boolean;

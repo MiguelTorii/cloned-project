@@ -1,4 +1,5 @@
 import React from 'react';
+
 import LoadImg from '../LoadImg/LoadImg';
 
 const Student = ({ student, you }) => {

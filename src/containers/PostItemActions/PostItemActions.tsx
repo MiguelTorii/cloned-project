@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react';
-import PostActions from '../../components/PostItem/PostItemActions';
-import StudyCircleDialog from '../../components/StudyCircleDialog/StudyCircleDialog';
-import {
-  updateThanks,
-  addToStudyCircle,
-  removeFromStudyCircle,
-  updatePostView
-} from '../../api/posts';
-import { getStudyCircle } from '../../api/user';
-import type { StudyCircle } from '../../types/models';
-import { logEvent } from '../../api/analytics';
+
+import { logEvent } from 'api/analytics';
+import { updateThanks, addToStudyCircle, removeFromStudyCircle, updatePostView } from 'api/posts';
+import { getStudyCircle } from 'api/user';
+import PostActions from 'components/PostItem/PostItemActions';
+import StudyCircleDialog from 'components/StudyCircleDialog/StudyCircleDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { StudyCircle } from 'types/models';
 
 type Props = {
   userId: string;

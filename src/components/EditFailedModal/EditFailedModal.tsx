@@ -1,7 +1,9 @@
 import React from 'react';
+
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../Dialog/Dialog';
+
 import useStyles from '../_styles/ChatModal';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   onOk: (...args: Array<any>) => any;

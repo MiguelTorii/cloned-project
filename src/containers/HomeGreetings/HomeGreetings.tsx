@@ -1,10 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Box, Paper, Typography } from '@material-ui/core';
+
 import moment from 'moment';
 import { useSelector } from 'react-redux';
+
+import { Box, Paper, Typography } from '@material-ui/core';
+
+import { fetchGreetings } from 'api/home';
+import CalendarToday from 'components/CalendarToday/CalendarToday';
+
 import useStyles from './styles';
-import CalendarToday from '../../components/CalendarToday/CalendarToday';
-import { fetchGreetings } from '../../api/home';
 
 const HomeGreetings = () => {
   const classes: any = useStyles();

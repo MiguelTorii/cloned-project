@@ -1,18 +1,23 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import _ from 'lodash';
-import Grid from '@material-ui/core/Grid';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
-import GradientButton from '../Basic/Buttons/GradientButton';
-import { getPointsHistory } from '../../actions/user';
-import withRoot from '../../withRoot';
-import type { UserProfile } from '../../types/models';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+import { getPointsHistory } from 'actions/user';
+import withRoot from 'withRoot';
+
 import { useStyles } from '../_styles/Profile/PointsHistoryCard';
-import { UserState } from '../../reducers/user';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import PointsRecordItem from '../PointsRecordItem/PointsRecordItem';
+
+import type { UserState } from 'reducers/user';
+import type { UserProfile } from 'types/models';
 
 type Props = {
   profile: UserProfile;

@@ -1,13 +1,17 @@
 import React from 'react';
-import ReactQuill, { Quill } from 'react-quill';
+
+import cx from 'classnames';
 import quillEmoji from 'quill-emoji';
+import ReactQuill, { Quill } from 'react-quill';
+
 import 'react-quill/dist/quill.snow.css';
 import 'quill-emoji/dist/quill-emoji.css';
 import withStyles from '@material-ui/core/styles/withStyles';
-import cx from 'classnames';
+
 import './quill.custom.css';
-import MathQuill from './Math';
 import { styles } from '../_styles/CustomQuill';
+
+import MathQuill from './Math';
 
 const { EmojiBlot, ShortNameEmoji, ToolbarEmoji, TextAreaEmoji } = quillEmoji;
 Quill.register(

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
+
 import { push } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { decypherClass } from '../../utils/crypto';
-import type { State as StoreState } from '../../types/state';
-import LeaderBoardTabs from '../../components/LeaderBoardTabs/LeaderBoardTabs';
-import leaderboardActions from '../../actions/leaderboard';
+import { bindActionCreators } from 'redux';
+
+import { withStyles } from '@material-ui/core/styles';
+
+import { decypherClass } from 'utils/crypto';
+
+import leaderboardActions from 'actions/leaderboard';
+import LeaderBoardTabs from 'components/LeaderBoardTabs/LeaderBoardTabs';
+
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   classes?: any;

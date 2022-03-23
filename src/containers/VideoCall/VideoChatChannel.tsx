@@ -1,27 +1,29 @@
 import React from 'react';
-import cx from 'classnames';
-import axios from 'axios';
-import uuidv4 from 'uuid/v4';
-import { withSnackbar } from 'notistack';
 
+import axios from 'axios';
+import cx from 'classnames';
+import { withSnackbar } from 'notistack';
 import Lightbox from 'react-images';
-import { Channel, RestPaginator } from 'twilio-chat';
 import InfiniteScroll from 'react-infinite-scroller';
+import uuidv4 from 'uuid/v4';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { sendMessage } from 'api/chat';
-import type { User } from 'types/models';
-import { logEvent } from 'api/analytics';
-import { getPresignedURL } from 'api/media';
 import { CHANNEL_SID_NAME } from 'constants/enums';
 import { processMessages, getAvatar, fetchAvatars, getFileAttributes } from 'utils/chat';
 
+import { logEvent } from 'api/analytics';
+import { sendMessage } from 'api/chat';
+import { getPresignedURL } from 'api/media';
 import ChatMessage from 'components/FloatingChat/ChatMessage';
-import ChatTextField from 'components/FloatingChat/ChatTextField';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+import ChatTextField from 'components/FloatingChat/ChatTextField';
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+
+import type { Channel, RestPaginator } from 'twilio-chat';
+import type { User } from 'types/models';
 
 const styles = (theme) => ({
   root: {

@@ -1,11 +1,14 @@
 import React from 'react';
-import { Redirect } from 'react-router';
+
 import queryString from 'query-string';
+import { Redirect } from 'react-router';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import withStyles from '@material-ui/core/styles/withStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import withRoot from '../../withRoot';
-import SignIn from '../../containers/ResetPassword/SignIn';
+
+import SignIn from 'containers/ResetPassword/SignIn';
+import withRoot from 'withRoot';
 
 const styles = (theme) => ({
   progress: {

@@ -1,29 +1,35 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import cx from 'classnames';
 import shuffle from 'lodash/shuffle';
-import uuidv4 from 'uuid/v4';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { bindActionCreators } from 'redux';
+import store from 'store';
+import uuidv4 from 'uuid/v4';
+
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Slide from '@material-ui/core/Slide';
+import { withStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import store from 'store';
 import ShareIcon from '@material-ui/icons/Share';
-import Dialog from '../Dialog/Dialog';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import FlashcardQuiz from '../FlashcardQuiz/FlashcardQuiz';
-import type { Flashcard } from '../../types/models';
-import { logEventLocally } from '../../api/analytics';
-import { updateVisibility as updateVisiblityAction } from '../../actions/dialog';
-import SharePost from '../../containers/SharePost/SharePost';
-import FlashcardItem from './Flashcard';
+
+import { updateVisibility as updateVisiblityAction } from 'actions/dialog';
+import { logEventLocally } from 'api/analytics';
+import SharePost from 'containers/SharePost/SharePost';
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import { styles } from '../_styles/FlashcardManager/Main';
+import Dialog from '../Dialog/Dialog';
+import FlashcardQuiz from '../FlashcardQuiz/FlashcardQuiz';
+
+import FlashcardItem from './Flashcard';
+
+import type { Flashcard } from 'types/models';
 
 const Transition = React.forwardRef((props: any, ref) => (
   <Slide ref={ref} direction="up" {...props} />

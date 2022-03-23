@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react';
-import { Box, Chip, Paper, Typography } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
+import { Box, Chip, Paper, Typography } from '@material-ui/core';
 import IconCalendar from '@material-ui/icons/CalendarToday';
+
 import useStyles from './styles';
 
 const Task = ({ title, dueDate, sectionId }) => {

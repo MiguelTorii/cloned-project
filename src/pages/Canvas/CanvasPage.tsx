@@ -1,7 +1,9 @@
 import React from 'react';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
-import withRoot from '../../withRoot';
-import Canvas from '../../containers/Canvas/Canvas';
+
+import Canvas from 'containers/Canvas/Canvas';
+import withRoot from 'withRoot';
 
 type Props = {
   match: {

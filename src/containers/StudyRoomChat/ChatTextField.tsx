@@ -1,20 +1,24 @@
 /* eslint-disable react/no-danger */
 import React, { useRef, useCallback, useState } from 'react';
-import Textarea from 'react-textarea-autosize';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SendIcon from '@material-ui/icons/Send';
+import Textarea from 'react-textarea-autosize';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
-import ClearIcon from '@material-ui/icons/Clear';
+import IconButton from '@material-ui/core/IconButton';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import EmojiSelector from '../../components/EmojiSelector/EmojiSelector';
-import AttachFile from '../../components/FileUpload/AttachFile';
-import { ReactComponent as PaperClip } from '../../assets/svg/quill-paper.svg';
-import { FILE_LIMIT_SIZE } from '../../constants/chat';
-import { uploadMedia } from '../../actions/user';
+import ClearIcon from '@material-ui/icons/Clear';
+import SendIcon from '@material-ui/icons/Send';
+
+import { FILE_LIMIT_SIZE } from 'constants/chat';
+
+import { uploadMedia } from 'actions/user';
+import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
+import AttachFile from 'components/FileUpload/AttachFile';
 
 const styles = (theme) => ({
   input: {

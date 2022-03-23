@@ -1,5 +1,6 @@
-import callApi from './api_base';
 import { API_URL } from 'constants/routes';
+
+import callApi from './api_base';
 
 export const apiLogViralLoopEmailClicked = async (
   userId: number,

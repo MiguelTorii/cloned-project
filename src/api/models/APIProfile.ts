@@ -1,6 +1,6 @@
-import { APIAbout } from './APIAbout';
-import { APIUserProfile } from './APIUserProfile';
-import { APIUserStatistic } from './APIUserStatistics';
+import type { APIAbout } from './APIAbout';
+import type { APIUserProfile } from './APIUserProfile';
+import type { APIUserStatistic } from './APIUserStatistics';
 
 export type APIProfile = {
   user_profile: APIUserProfile;

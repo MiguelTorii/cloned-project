@@ -1,27 +1,33 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import Typography from '@material-ui/core/Typography';
+
+import { ButtonBase } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
-import { ButtonBase } from '@material-ui/core';
-import type { UserState } from '../../reducers/user';
+import Typography from '@material-ui/core/Typography';
+
 import { URL } from 'constants/navigation';
-import type { State as StoreState } from '../../types/state';
-import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
-import QuestionMark from '../../assets/svg/question-mark.svg';
-import MessageMark from '../../assets/svg/message-mark.svg';
-import ResourceMark from '../../assets/svg/ic_share_a_resource.svg';
-import FlashcardMark from '../../assets/svg/flashcard-mark.svg';
-import NoteMark from '../../assets/svg/note-mark.svg';
-import WorkflowMark from '../../assets/svg/workflow-mark.svg';
-import BookMark from '../../assets/svg/bookmark.svg';
-import Question from '../../assets/svg/question.svg';
-import Group from '../../assets/svg/group.svg';
-import Exam from '../../assets/svg/exam.svg';
-import Organization from '../../assets/svg/organization.svg';
+
+import BookMark from 'assets/svg/bookmark.svg';
+import Exam from 'assets/svg/exam.svg';
+import FlashcardMark from 'assets/svg/flashcard-mark.svg';
+import Group from 'assets/svg/group.svg';
+import ResourceMark from 'assets/svg/ic_share_a_resource.svg';
+import MessageMark from 'assets/svg/message-mark.svg';
+import NoteMark from 'assets/svg/note-mark.svg';
+import Organization from 'assets/svg/organization.svg';
+import QuestionMark from 'assets/svg/question-mark.svg';
+import Question from 'assets/svg/question.svg';
+import WorkflowMark from 'assets/svg/workflow-mark.svg';
+import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
+
 import useStyles from './styles';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   user?: UserState;

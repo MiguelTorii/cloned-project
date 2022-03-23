@@ -1,12 +1,15 @@
 import React from 'react';
+
 import cx from 'classnames';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
+
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 import { styles } from '../_styles/SignUpForm/ReferralCode';
 
 type Props = {

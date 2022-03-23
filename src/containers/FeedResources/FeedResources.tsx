@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect, useSelector } from 'react-redux';
+
 import { push as routePush } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
+import Linkify from 'react-linkify';
+import { connect, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
-import Linkify from 'react-linkify';
-import ReferralCTA from '../Referrals/CTA';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
+
 import Recommendations from '../Recommendations/Recommendations';
+import ReferralCTA from '../Referrals/CTA';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   container: {

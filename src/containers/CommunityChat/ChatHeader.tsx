@@ -1,8 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { UserState } from 'reducers/user';
 
-import { Channel } from 'twilio-chat';
+import { useSelector } from 'react-redux';
+
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -17,13 +16,12 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconShare from '@material-ui/icons/Share';
 
-import { logEvent } from 'api/analytics';
-import { searchUsers } from 'api/user';
-import { getInitials } from 'utils/chat';
 import { PERMISSIONS } from 'constants/common';
-import { ChannelMetadata } from 'features/chat';
-import { addGroupMembers, sendMessage } from 'api/chat';
+import { getInitials } from 'utils/chat';
 
+import { logEvent } from 'api/analytics';
+import { addGroupMembers, sendMessage } from 'api/chat';
+import { searchUsers } from 'api/user';
 import { ReactComponent as ChatActiveStudyRoomMembers } from 'assets/svg/chat-active-studyroom-members.svg';
 import { ReactComponent as ChatAddMember } from 'assets/svg/chat-addmember.svg';
 import { ReactComponent as ChatStudyRoomMembers } from 'assets/svg/chat-studyroom-members.svg';
@@ -34,6 +32,10 @@ import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDia
 import ShareLinkDialog from 'components/ShareLinkDialog/ShareLinkDialog';
 
 import useStyles from './_styles/chatHeader';
+
+import type { ChannelMetadata } from 'features/chat';
+import type { UserState } from 'reducers/user';
+import type { Channel } from 'twilio-chat';
 
 type Props = {
   channel: Channel;

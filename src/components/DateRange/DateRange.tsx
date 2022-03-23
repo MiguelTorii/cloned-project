@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react';
+
+import DateFnsUtils from '@date-io/date-fns';
 import cx from 'classnames';
 import moment from 'moment';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import { withStyles } from '@material-ui/core/styles';
+
 import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 import styles from '../_styles/DateRange';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
 
 type Props = {
   classes: Record<string, any>;

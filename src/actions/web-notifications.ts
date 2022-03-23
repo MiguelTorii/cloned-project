@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import { webNotificationsActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
+import { webNotificationsActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
+import type { Dispatch } from 'types/store';
 
 const requestUpdateTitle = (): Action => ({
   type: webNotificationsActions.UPDATE_TITLE_REQUEST

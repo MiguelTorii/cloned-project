@@ -1,20 +1,20 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, useMemo } from 'react';
 
-import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
 import SearchIcon from '@material-ui/icons/Search';
 
 import { decypherClass } from 'utils/crypto';
+
 import { getClassmates } from 'api/chat';
 import { getReferralProgram } from 'api/referral';
-
 import Classmate from 'components/Classmate';
 import ReferralInvite from 'containers/Referrals/Invite';
 
-import Dialog from '../Dialog/Dialog';
 import { useStyles } from '../_styles/ClassmatesDialog/index';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   meetingInvite?: boolean;

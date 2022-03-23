@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
-import Typography from '@material-ui/core/Typography';
+
 import Grid from '@material-ui/core/Grid';
-import LoadImg from '../LoadImg/LoadImg';
-import CustomQuill from '../CustomQuill/CustomQuill';
+import Typography from '@material-ui/core/Typography';
+
 import { useStyles } from '../_styles/FeedList/FeedFlashcards';
+import CustomQuill from '../CustomQuill/CustomQuill';
+import LoadImg from '../LoadImg/LoadImg';
 
 const strip = (s) => s.replace(/<[^>]*>?/gm, '');
 

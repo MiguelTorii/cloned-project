@@ -1,5 +1,8 @@
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import React from 'react';
+
 import { Box, Paper, Typography } from '@material-ui/core';
+
 import { useStyles } from './RightPanelCardStyles';
 
 type Props = {

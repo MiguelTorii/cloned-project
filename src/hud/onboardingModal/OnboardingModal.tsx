@@ -1,14 +1,20 @@
-import { Button, Typography } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
-import Dialog from '../../components/Dialog/Dialog';
+
+import { Button, Typography } from '@material-ui/core';
+
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import Dialog from 'components/Dialog/Dialog';
+
 import HudStory from '../story/HudStory';
-import { useStyles } from './OnboardingModalStyles';
-import useStorySequence from '../storyState/useStorySequence';
 import { closeOnboardingPopup } from '../storyState/hudStoryActions';
 import { introToOnboarding, onboardingCompleted } from '../storyState/onboardingStorySections';
-import { HudStoryState } from '../storyState/hudStoryState';
+import useStorySequence from '../storyState/useStorySequence';
+
+import { useStyles } from './OnboardingModalStyles';
+
+import type { HudStoryState } from '../storyState/hudStoryState';
 
 const OnboardingModal = () => {
   const classes: any = useStyles();

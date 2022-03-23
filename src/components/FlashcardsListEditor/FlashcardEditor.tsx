@@ -1,16 +1,20 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import IconMove from '@material-ui/icons/OpenWith';
-import IconDelete from '@material-ui/icons/DeleteOutlined';
+
 import clsx from 'clsx';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
-import RichTextEditor from './RichTextEditor';
+
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import IconDelete from '@material-ui/icons/DeleteOutlined';
+import IconMove from '@material-ui/icons/OpenWith';
+
 import QuillToolbar from '../QillToolbar/QuillToolbar';
-import useStyles from './styles';
+
 import { FlashcardListContext } from './FlashcardListContext';
 import { EDITOR_TYPES } from './FlashcardsListEditor';
+import RichTextEditor from './RichTextEditor';
+import useStyles from './styles';
 
 type Props = {
   index?: any;

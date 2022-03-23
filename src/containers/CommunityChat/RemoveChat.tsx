@@ -1,9 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+
 import Button from '@material-ui/core/Button';
-import Dialog from '../../components/Dialog/Dialog';
-import leaveGroup from '../../assets/svg/leave-group.svg';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+import leaveGroup from 'assets/svg/leave-group.svg';
+import Dialog from 'components/Dialog/Dialog';
+
 import useStyles from './_styles/removeChat';
 
 const RemoveChat = ({ channel, handleRemoveChannel }) => {

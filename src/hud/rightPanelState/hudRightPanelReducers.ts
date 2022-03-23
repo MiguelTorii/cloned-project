@@ -1,6 +1,8 @@
-import { defaultState, HudRightPanelState } from './hudRightPanelState';
-import { Action } from '../../types/action';
 import { rightPanelActions } from './hudRightPanelActions';
+import { defaultState } from './hudRightPanelState';
+
+import type { HudRightPanelState } from './hudRightPanelState';
+import type { Action } from 'types/action';
 
 export default (state: HudRightPanelState = defaultState, action: Action): HudRightPanelState => {
   switch (action.type) {

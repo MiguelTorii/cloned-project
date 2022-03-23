@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+
 import debounce from 'lodash/debounce';
-import { withStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
+
 import Divider from '@material-ui/core/Divider';
-import type { UserState } from '../../reducers/user';
-import type { AvailableReward, Slot } from '../../types/models';
-import { getRewards, updateRewards } from '../../api/store';
-import StoreLayout from '../../components/StoreLayout/StoreLayout';
-import SelectedRewards from '../../components/SelectedRewards/SelectedRewards';
-import AvailableRewards from '../../components/AvailableRewards/AvailableRewards';
+import { withStyles } from '@material-ui/core/styles';
+
+import { getRewards, updateRewards } from 'api/store';
+import AvailableRewards from 'components/AvailableRewards/AvailableRewards';
+import SelectedRewards from 'components/SelectedRewards/SelectedRewards';
+import StoreLayout from 'components/StoreLayout/StoreLayout';
+import { hudEventNames } from 'hud/events/hudEventNames';
+import useHudEvents from 'hud/events/useHudEvents';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { User } from '../../types/models';
-import useHudEvents from '../../hud/events/useHudEvents';
-import { hudEventNames } from '../../hud/events/hudEventNames';
+
+import type { UserState } from 'reducers/user';
+import type { User, AvailableReward, Slot } from 'types/models';
 
 const REWARDS_SLOT_COUNT = 3;
 

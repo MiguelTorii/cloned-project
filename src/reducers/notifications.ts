@@ -1,5 +1,6 @@
-import { notificationsActions, rootActions } from '../constants/action-types';
-import type { Action } from '../types/action';
+import { notificationsActions, rootActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
 
 export type NotificationsState = {
   items: Array<Record<string, any>>;

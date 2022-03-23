@@ -1,44 +1,50 @@
 /* eslint-disable no-unused-expressions */
-import React, { useMemo, memo, useState, useCallback } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
+
 import classNames from 'classnames';
-import { withRouter } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
-import { Link as RouterLink } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Badge from '@material-ui/core/Badge';
-import Link from '@material-ui/core/Link';
-import IconButton from '@material-ui/core/IconButton';
-import Avatar from 'components/Avatar';
-import Hidden from '@material-ui/core/Hidden';
-import MenuIcon from '@material-ui/icons/Menu';
-import HelpIcon from '@material-ui/icons/Help';
-import Typography from '@material-ui/core/Typography';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
-import UserDialog from '../../containers/UserDialog/UserDialog';
-import TopMenu from './TopMenu';
-import MobileMenu from './MobileMenu';
-import CreatePostMenu from './CreatePostMenu';
-import DrawerMenu from './Drawer';
+import { push } from 'connected-react-router';
+import { useDispatch } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
+
+import AppBar from '@material-ui/core/AppBar';
+import Badge from '@material-ui/core/Badge';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import { withStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+import HelpIcon from '@material-ui/icons/Help';
+import MenuIcon from '@material-ui/icons/Menu';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
+import { URL } from 'constants/navigation';
+
+import { ReactComponent as IconChat } from 'assets/svg/chat.svg';
+import logo from 'assets/svg/circlein_logo.svg';
+import { ReactComponent as IconHome } from 'assets/svg/home.svg';
+import Avatar from 'components/Avatar';
+import GiveFeedback from 'containers/GiveFeedback/GiveFeedback';
+import QuickNotes from 'containers/QuickNotes/QuickNotes';
+import UserDialog from 'containers/UserDialog/UserDialog';
+
+import { styles } from '../_styles/MainLayout/index';
+import Dialog from '../Dialog/Dialog';
 import GetAppDialog from '../GetAppDialog/GetAppDialog';
 import GetStudentJob from '../GetStudentJob/GetAppDialog';
-import QuickNotes from '../../containers/QuickNotes/QuickNotes';
-import { URL } from 'constants/navigation';
-import { ReactComponent as IconChat } from '../../assets/svg/chat.svg';
-import { ReactComponent as IconHome } from '../../assets/svg/home.svg';
-import logo from '../../assets/svg/circlein_logo.svg';
-import './currentRoute.css';
-import UseCases from '../UseCases/UseCases';
-import Dialog from '../Dialog/Dialog';
 import HowDoIEarnPoints from '../HowDoIEarnPoints/HowDoIEarnPoints';
-import GiveFeedback from '../../containers/GiveFeedback/GiveFeedback';
-import { styles } from '../_styles/MainLayout/index';
+import UseCases from '../UseCases/UseCases';
+
+import CreatePostMenu from './CreatePostMenu';
+import './currentRoute.css';
+import DrawerMenu from './Drawer';
+import MobileMenu from './MobileMenu';
+import TopMenu from './TopMenu';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => {
   if (

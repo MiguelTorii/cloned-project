@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
 
-import {Typography, Grid, Box } from '@material-ui/core';
+import { Typography, Grid, Box } from '@material-ui/core';
 
-import ImgEmptyTask from 'assets/svg/empty-tasks.svg';
-import useStyles from './styles';
 import { getTodos } from 'api/workflow';
-import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
-import Task from './Task';
-import RightPanelCard from 'components/RightPanelCard/RightPanelCard';
+import ImgEmptyTask from 'assets/svg/empty-tasks.svg';
 import TransparentButton from 'components/Basic/Buttons/TransparentButton';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import RightPanelCard from 'components/RightPanelCard/RightPanelCard';
+
+import useStyles from './styles';
+import Task from './Task';
 
 const WORKFLOW_HEADING = 'Upcoming Tasks';
 

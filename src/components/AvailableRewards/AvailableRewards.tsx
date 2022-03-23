@@ -1,9 +1,13 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import type { AvailableReward } from '../../types/models';
-import AvailableRewardsItem from './AvailableRewardsItem';
+import { withStyles } from '@material-ui/core/styles';
+
 import { styles } from '../_styles/AvailableRewards';
+
+import AvailableRewardsItem from './AvailableRewardsItem';
+
+import type { AvailableReward } from 'types/models';
 
 type Props = {
   classes: Record<string, any>;

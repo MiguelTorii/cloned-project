@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Paper, Typography } from '@material-ui/core';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
+
 import clsx from 'clsx';
-import Image1 from '../../assets/img/rating_1.png';
-import Image2 from '../../assets/img/rating_2.png';
-import Image3 from '../../assets/img/rating_3.png';
-import Image4 from '../../assets/img/rating_4.png';
-import useStyles from './style';
-import { logEventLocally } from '../../api/analytics';
+import PropTypes from 'prop-types';
+
+import { Grid, Paper, Typography } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+
+import { logEventLocally } from 'api/analytics';
+import Image1 from 'assets/img/rating_1.png';
+import Image2 from 'assets/img/rating_2.png';
+import Image3 from 'assets/img/rating_3.png';
+import Image4 from 'assets/img/rating_4.png';
+
 import TransparentButton from '../Basic/Buttons/TransparentButton';
+
+import useStyles from './style';
 
 const ratings = [
   {

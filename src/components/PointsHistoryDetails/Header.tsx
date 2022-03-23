@@ -1,13 +1,18 @@
 import React from 'react';
-import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
+
 import clsx from 'clsx';
+
+import { Grid, Typography, Paper, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 
+import { getPointsText } from 'utils/helpers';
+
 import Avatar from 'components/Avatar';
-import type { UserProfile } from '../../types/models';
-import withRoot from '../../withRoot';
-import { getPointsText } from '../../utils/helpers';
+import withRoot from 'withRoot';
+
 import { useStyles } from '../_styles/PointsHistoryDetails/Header';
+
+import type { UserProfile } from 'types/models';
 
 type Props = {
   profile: UserProfile;

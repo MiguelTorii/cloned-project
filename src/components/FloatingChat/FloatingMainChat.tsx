@@ -1,13 +1,17 @@
 import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
+import Badge from '@material-ui/core/Badge';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
-import Badge from '@material-ui/core/Badge';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import RemoveIcon from '@material-ui/icons/Remove';
-import FloatChatNewIcon from '../../assets/svg/float_chat_new.svg';
+
+import FloatChatNewIcon from 'assets/svg/float_chat_new.svg';
+
 import styles from '../_styles/FloatingChat/MainChat';
 
 type Props = {

@@ -1,9 +1,12 @@
 import axios from 'axios';
 import store from 'store';
-import { API_ROUTES } from '../constants/routes';
-import type { User, School } from '../types/models';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { userToCamelCase } from './utils';
-import { APISchool } from './models/APISchool';
+
+import type { APISchool } from './models/APISchool';
+import type { User, School } from 'types/models';
 
 export const emailRequest = async ({
   email,

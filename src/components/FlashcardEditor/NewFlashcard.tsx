@@ -1,9 +1,12 @@
 import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
+
 import { styles } from '../_styles/FlashcardEditor/NewFlashcard';
 
 type Props = {

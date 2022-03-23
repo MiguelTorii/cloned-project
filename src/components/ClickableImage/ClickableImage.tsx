@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
+
 import ImageDialog from '../ImageDialog/ImageDialog';
+
 import useStyles from './styles';
 
 const ClickableImage = ({ src, className, alt }) => {

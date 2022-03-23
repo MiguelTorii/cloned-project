@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { RefObject } from 'react';
+import type { RefObject } from 'react';
+import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = () => ({

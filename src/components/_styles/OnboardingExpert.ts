@@ -1,4 +1,5 @@
-import backgroundImg from '../../assets/img/onboarding-background.png';
+import backgroundImg from 'assets/img/onboarding-background.png';
+
 import { dialogStyle } from './Dialog';
 
 const centered = {

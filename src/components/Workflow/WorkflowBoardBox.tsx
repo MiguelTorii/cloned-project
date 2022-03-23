@@ -1,12 +1,17 @@
 import React, { memo, useContext, useMemo, useCallback, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+
 import cx from 'classnames';
-import WorkflowBoardCard from './WorkflowBoardCard';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
+
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/WorkflowBoardBox';
+
+import WorkflowBoardCard from './WorkflowBoardCard';
 
 type Props = {
   buttonColor?: any;

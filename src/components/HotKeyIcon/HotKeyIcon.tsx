@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { Box } from '@material-ui/core';
 import IconKeyboardOutlined from '@material-ui/icons/KeyboardOutlined';
+
 import useStyles from './styles';
 
 const HotKeyIcon = (props, ref) => {

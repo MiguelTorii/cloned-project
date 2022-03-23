@@ -1,44 +1,47 @@
 /* eslint-disable no-await-in-loop */
 
 /* eslint-disable no-restricted-syntax */
-import React, { RefObject } from 'react';
-import moment from 'moment';
+import type { RefObject } from 'react';
+import React from 'react';
+
 import cx from 'classnames';
-import get from 'lodash/get';
-import first from 'lodash/first';
 import debounce from 'lodash/debounce';
+import first from 'lodash/first';
+import get from 'lodash/get';
+import moment from 'moment';
+import { withSnackbar } from 'notistack';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
-import { withStyles } from '@material-ui/core/styles';
-
 import Video from 'twilio-video';
+
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import { logEvent } from 'api/analytics';
-import { getUserProfile } from 'api/user';
-import { renewTwilioToken } from 'api/chat';
-import { decypherClass } from 'utils/crypto';
-import { VIDEO_SHARE_URL } from 'constants/routes';
 import { CHANNEL_SID_NAME } from 'constants/enums';
-import type { State as StoreState } from 'types/state';
-import { checkVideoSession, setVideoInitiator, postVideoPoints } from 'api/video';
+import { VIDEO_SHARE_URL } from 'constants/routes';
+import { decypherClass } from 'utils/crypto';
 
-import Tooltip from 'containers/Tooltip/Tooltip';
-import VideoGrid from 'components/MeetUp/VideoGrid';
-import Thumbnails from 'components/MeetUp/Thumbnails';
+import { logEvent } from 'api/analytics';
+import { renewTwilioToken } from 'api/chat';
+import { getUserProfile } from 'api/user';
+import { checkVideoSession, setVideoInitiator, postVideoPoints } from 'api/video';
+import ClassmatesDialog from 'components/ClassmatesDialog/ClassmatesDialog';
 import Controls from 'components/MeetUp/CallControls';
-import MeetingDetails from 'components/MeetUp/MeetingDetails';
 import DeviceSettings from 'components/MeetUp/DeviceSettings';
+import MeetingDetails from 'components/MeetUp/MeetingDetails';
+import Thumbnails from 'components/MeetUp/Thumbnails';
+import VideoGrid from 'components/MeetUp/VideoGrid';
+import VideoPointsDialog from 'components/VideoPointsDialog/VideoPointsDialog';
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import StudyRoomChat from 'containers/StudyRoomChat/StudyRoomChat';
-import ClassmatesDialog from 'components/ClassmatesDialog/ClassmatesDialog';
-import VideoPointsDialog from 'components/VideoPointsDialog/VideoPointsDialog';
+import Tooltip from 'containers/Tooltip/Tooltip';
 
-import * as utils from './utils';
 import GalleryViewMode from './GalleryView';
+import * as utils from './utils';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {

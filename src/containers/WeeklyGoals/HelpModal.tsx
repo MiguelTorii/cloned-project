@@ -1,4 +1,7 @@
 import React from 'react';
+
+import PropTypes from 'prop-types';
+
 import {
   Box,
   Dialog,
@@ -9,11 +12,13 @@ import {
   IconButton,
   Typography
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import IconClose from '@material-ui/icons/Close';
-import StudyGoals from '../../constants/study-goals';
+
+import StudyGoals from 'constants/study-goals';
+
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+
 import useStyles from './styles';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
 
 const HelpModal = ({ open, onClose }) => {
   const classes: any = useStyles();

@@ -1,17 +1,19 @@
 import 'core-js/stable';
 import React from 'react';
+
+import { init as sentryInit } from '@sentry/browser';
+import axios from 'axios';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import ReactGA from 'react-ga';
+import { Provider } from 'react-redux';
+
+import { GOOGLE_ANALYTICS, SENTRY, ENV, RELEASE } from 'constants/app';
+import defaultKatexRender from 'utils/quill';
+
+import App from 'App';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import store from 'redux/store';
 import * as serviceWorker from 'serviceWorker';
-import App from 'App';
-import axios from 'axios';
-import { init as sentryInit } from '@sentry/browser';
-
-import defaultKatexRender from 'utils/quill';
-import { GOOGLE_ANALYTICS, SENTRY, ENV, RELEASE } from 'constants/app';
-import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 
 import 'wdyr';
 import './index.css';

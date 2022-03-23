@@ -1,25 +1,31 @@
 import React, { useRef, useMemo, useEffect, useState, useCallback } from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Slide from '@material-ui/core/Slide';
-import ReactQuill from 'react-quill';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
+
 import { useDebounce } from '@react-hook/debounce';
+import { differenceInMilliseconds } from 'date-fns';
 import moment from 'moment';
 import { useIdleTimer } from 'react-idle-timer';
-import { differenceInMilliseconds } from 'date-fns';
-import MathQuill from '../CustomQuill/Math';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import setFormulasColor from '../../utils/quill';
-import { TIMEOUT } from '../../constants/common';
-import { logEvent } from '../../api/analytics';
-import { INTERVAL } from '../../constants/app';
-import EditorToolbar, { modules, formats } from './Toolbar';
-import CircleInLogo from '../../assets/svg/circlein_logo_minimal.svg';
+import ReactQuill from 'react-quill';
+
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
+import Slide from '@material-ui/core/Slide';
+import TextField from '@material-ui/core/TextField';
+import Toolbar from '@material-ui/core/Toolbar';
+
+import { INTERVAL } from 'constants/app';
+import { TIMEOUT } from 'constants/common';
+import setFormulasColor from 'utils/quill';
+
+import { logEvent } from 'api/analytics';
+import CircleInLogo from 'assets/svg/circlein_logo_minimal.svg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import { useStyles } from '../_styles/UserNotesEditor/index';
+import MathQuill from '../CustomQuill/Math';
+
+import EditorToolbar, { modules, formats } from './Toolbar';
 
 const timeout = TIMEOUT.FLASHCARD_REVEIW;
 const Transition = React.forwardRef<any, any>(function Transition(props: any, ref) {

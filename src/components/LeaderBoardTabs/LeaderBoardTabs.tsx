@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
-import { push } from 'connected-react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import qs from 'query-string';
+
 import cx from 'classnames';
+import { push } from 'connected-react-router';
+import qs from 'query-string';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
-import { withStyles } from '@material-ui/core/styles';
 
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import withWidth from '@material-ui/core/withWidth';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
 
-import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
+import { SCHOLARSHIP_HELP_URL } from 'constants/app';
 
 import { useMediaQuery } from 'hooks';
-import withRoot from '../../withRoot';
-import Table from './table';
-import LoadImg from '../LoadImg/LoadImg';
-import { styles } from '../_styles/LeaderBoardTabs';
-import { SCHOLARSHIP_HELP_URL } from '../../constants/app';
-import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
-import { REWARDS_STORE_AREA } from '../../hud/navigationState/hudNavigation';
 import useCampaigns from 'hooks/useCampaigns';
+import { REWARDS_STORE_AREA } from 'hud/navigationState/hudNavigation';
+import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
+import withRoot from 'withRoot';
+
+import { styles } from '../_styles/LeaderBoardTabs';
+import LoadImg from '../LoadImg/LoadImg';
+
+import Table from './table';
+
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
 
 const IMAGE_STYLE = {
   width: 75,

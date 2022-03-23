@@ -1,10 +1,13 @@
 import React from 'react';
+
+import cx from 'classnames';
+
 import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import cx from 'classnames';
+
 import { useStyles } from '../_styles/Workflow/WorkflowListBox';
 
 type Props = {

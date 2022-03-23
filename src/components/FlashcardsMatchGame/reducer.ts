@@ -1,7 +1,8 @@
 import update from 'immutability-helper';
 import _ from 'lodash';
 import moment from 'moment';
-import { shuffleArray } from '../../utils/helpers';
+
+import { shuffleArray } from 'utils/helpers';
 
 // Action Types
 const INITIALIZE_GAME = 'INITIALIZE_GAME';

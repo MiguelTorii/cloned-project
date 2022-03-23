@@ -1,6 +1,6 @@
-import type { Store as ReduxStore, Dispatch as ReduxDispatch } from '@reduxjs/toolkit';
 import type { Action } from './action';
 import type { State } from './state';
+import type { Store as ReduxStore, Dispatch as ReduxDispatch } from '@reduxjs/toolkit';
 
 export type Store = ReduxStore<State, Action>;
 export type GetState = () => State;

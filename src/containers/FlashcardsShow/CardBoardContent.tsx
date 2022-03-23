@@ -1,15 +1,20 @@
 import React, { useMemo } from 'react';
-import Box from '@material-ui/core/Box';
+
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
+
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import IconRepeat from '@material-ui/icons/Replay';
-import PropTypes from 'prop-types';
-import ClickableImage from '../../components/ClickableImage/ClickableImage';
-import { extractTextFromHtml } from '../../utils/helpers';
+
+import { extractTextFromHtml } from 'utils/helpers';
+
+import ClickableImage from 'components/ClickableImage/ClickableImage';
+import QuillToolbar from 'components/QillToolbar/QuillToolbar';
+import withRoot from 'withRoot';
+
 import useStyles from './styles';
-import QuillToolbar from '../../components/QillToolbar/QuillToolbar';
-import withRoot from '../../withRoot';
 
 const CardBoardContent = ({ content, image, editable, toolbarId, onFlip }) => {
   const classes: any = useStyles();

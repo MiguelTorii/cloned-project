@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 
 /* eslint-disable import/prefer-default-export */
-import type { UserClass, SelectType } from '../../types/models';
+import type { UserClass, SelectType } from 'types/models';
 
 export const processClasses = ({
   classes,

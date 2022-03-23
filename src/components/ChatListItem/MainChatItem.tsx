@@ -1,22 +1,25 @@
 import React, { useCallback, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import GroupIcon from '@material-ui/icons/Group';
+
 import cx from 'classnames';
-import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+
+import Badge from '@material-ui/core/Badge';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import Avatar from 'components/Avatar';
-import Dialog from '../Dialog/Dialog';
-import { styles } from '../_styles/ChatListItem/MainChatItem';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import GroupIcon from '@material-ui/icons/Group';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 
 import { containsImage, getInitials } from 'utils/chat';
+
+import Avatar from 'components/Avatar';
+
+import { styles } from '../_styles/ChatListItem/MainChatItem';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes?: Record<string, any>;

@@ -1,4 +1,4 @@
-import { TMission } from '../../types/models';
+import type { TMission } from 'types/models';
 
 export type HudRightPanelState = {
   missions: Array<TMission>;

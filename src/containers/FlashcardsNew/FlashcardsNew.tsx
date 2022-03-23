@@ -1,7 +1,9 @@
 import React from 'react';
-import withRoot from '../../withRoot';
+
+import FlashcardsDeckCreator from 'components/FlashcardsDeckManager/FlashcardsDeckManager';
+import withRoot from 'withRoot';
+
 import useStyles from './styles';
-import FlashcardsDeckCreator from '../../components/FlashcardsDeckManager/FlashcardsDeckManager';
 
 const FlashcardsNew = () => {
   const classes: any = useStyles();

@@ -1,19 +1,25 @@
 import React from 'react';
+
 import cx from 'classnames';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Popover from '@material-ui/core/Popover';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import List from '@material-ui/core/List';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
-import LoadImg from '../LoadImg/LoadImg';
-import emptyNotification from '../../assets/svg/no-notification.svg';
-import readNotificationAll from '../../assets/svg/read_all.svg';
-import NotificationItem from './notification-item';
-import type { Notification as NotificationState } from '../../types/models';
+
+import emptyNotification from 'assets/svg/no-notification.svg';
+import readNotificationAll from 'assets/svg/read_all.svg';
+
 import { styles } from '../_styles/Notifications/index';
+import LoadImg from '../LoadImg/LoadImg';
+
+import NotificationItem from './notification-item';
+
+import type { Notification as NotificationState } from 'types/models';
 
 type Props = {
   classes?: Record<string, any>;

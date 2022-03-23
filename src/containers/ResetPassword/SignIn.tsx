@@ -1,15 +1,20 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
+
 import { connect } from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { bindActionCreators } from 'redux';
+
 import Grid from '@material-ui/core/Grid';
-import ResetPasswordForm from '../../components/ResetPasswordForm/ResetPasswordForm';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import * as signInActions from '../../actions/sign-in';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import * as signInActions from 'actions/sign-in';
+import { changePassword } from 'api/sign-in';
+import ResetPasswordForm from 'components/ResetPasswordForm/ResetPasswordForm';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { changePassword } from '../../api/sign-in';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({});
 

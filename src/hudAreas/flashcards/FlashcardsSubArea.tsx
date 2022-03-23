@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { useLocation, useParams } from 'react-router';
-import FlashcardsList from '../../containers/FlashcardsList/FlashcardsList';
-import FlashcardsShow from '../../containers/FlashcardsShow/FlashcardsShow';
+
 import FlashcardsEdit from 'containers/FlashcardsEdit/FlashcardsEdit';
+import FlashcardsList from 'containers/FlashcardsList/FlashcardsList';
+import FlashcardsShow from 'containers/FlashcardsShow/FlashcardsShow';
 
 const FlashcardsSubArea = () => {
   const { flashcardId } = useParams();

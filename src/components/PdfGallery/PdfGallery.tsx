@@ -1,17 +1,21 @@
 import React, { memo, useEffect, useState } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
-import ButtonBase from '@material-ui/core/ButtonBase';
+
 import { pdfjs } from 'react-pdf';
+
+import AppBar from '@material-ui/core/AppBar';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
-import AppBar from '@material-ui/core/AppBar';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import PdfComponent from './PdfComponent';
+
 import { styles } from '../_styles/PdfGallery/index';
+
+import PdfComponent from './PdfComponent';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 

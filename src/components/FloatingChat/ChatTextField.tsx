@@ -2,23 +2,28 @@
 
 /* eslint-disable react/no-danger */
 import React, { useState } from 'react';
+
 import Textarea from 'react-textarea-autosize';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
+
+import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import SendIcon from '@material-ui/icons/Send';
-import Box from '@material-ui/core/Box';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { ReactComponent as PaperClip } from '../../assets/svg/quill-paper.svg';
-import AttachFile from '../FileUpload/AttachFile';
-import { FILE_LIMIT_SIZE } from '../../constants/chat';
-import { uploadMedia } from '../../actions/user';
-import EmojiSelector from '../EmojiSelector/EmojiSelector';
+import SendIcon from '@material-ui/icons/Send';
+
+import { FILE_LIMIT_SIZE } from 'constants/chat';
+
+import { showNotification } from 'actions/notifications';
+import { uploadMedia } from 'actions/user';
+import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+
 import styles from '../_styles/FloatingChat/ChatTextField';
-import { showNotification } from '../../actions/notifications';
+import EmojiSelector from '../EmojiSelector/EmojiSelector';
+import AttachFile from '../FileUpload/AttachFile';
 
 type Props = {
   classes?: Record<string, any>;

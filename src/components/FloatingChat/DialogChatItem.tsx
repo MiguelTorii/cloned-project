@@ -1,25 +1,28 @@
 import React, { Fragment } from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
+
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import VideoCamIcon from '@material-ui/icons/Videocam';
-import SettingsIcon from '@material-ui/icons/Settings';
+import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
-import GroupIcon from '@material-ui/icons/Group';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import DialogTitle from '../DialogTitle/DialogTitle';
+import EditIcon from '@material-ui/icons/Edit';
+import GroupIcon from '@material-ui/icons/Group';
+import SettingsIcon from '@material-ui/icons/Settings';
+import VideoCamIcon from '@material-ui/icons/Videocam';
+
 import { styles } from '../_styles/FloatingChat/DialogChatItem';
+import DialogTitle from '../DialogTitle/DialogTitle';
 
 type Props = {
   classes: Record<string, any>;

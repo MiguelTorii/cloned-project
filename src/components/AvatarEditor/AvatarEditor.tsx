@@ -1,16 +1,21 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Grid } from '@material-ui/core';
-import DefaultAvatarEditor from 'react-avatar-editor';
-import _ from 'lodash';
-import Hidden from '@material-ui/core/Hidden';
+
 import clsx from 'clsx';
+import _ from 'lodash';
+import DefaultAvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
-import withRoot from '../../withRoot';
+
+import { Box, Grid } from '@material-ui/core';
+import Hidden from '@material-ui/core/Hidden';
+
+import withRoot from 'withRoot';
+
+import { useStyles } from '../_styles/AvatarEditor/index';
 import GradientButton from '../Basic/Buttons/GradientButton';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
-import Toolbar from './Toolbar';
 import Dialog from '../Dialog/Dialog';
-import { useStyles } from '../_styles/AvatarEditor/index';
+
+import Toolbar from './Toolbar';
 
 type Props = {
   originalImage: any;

@@ -1,13 +1,19 @@
 import React from 'react';
+
 import cx from 'classnames';
-import { Action, Dispatch } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { Badge, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { ReactComponent as ChannelIcon } from '../../assets/svg/public-channel.svg';
-import { ReactComponent as UnreadMessageChannelIcon } from '../../assets/svg/unread-message-channel-icon.svg';
-import { useStyles } from './HudChatStyles';
-import { ChannelData, HudChatState } from '../chatState/hudChatState';
+
+import { ReactComponent as ChannelIcon } from 'assets/svg/public-channel.svg';
+import { ReactComponent as UnreadMessageChannelIcon } from 'assets/svg/unread-message-channel-icon.svg';
+
 import { selectChannelId } from '../chatState/hudChatActions';
+
+import { useStyles } from './HudChatStyles';
+
+import type { ChannelData, HudChatState } from '../chatState/hudChatState';
+import type { Action, Dispatch } from 'redux';
 
 type Props = {
   channelId: string;

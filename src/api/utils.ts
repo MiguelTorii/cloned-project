@@ -1,17 +1,20 @@
 import axios from 'axios';
-import store from 'store';
 import decode from 'jwt-decode';
 import moment from 'moment';
-import { API_ROUTES } from '../constants/routes';
-import type { Post, TComment, Comments, User, TFeedItem, PostResponse } from '../types/models';
-import { APIPost } from './models/APIPost';
-import { APIPostResponse } from './models/APIPostResponse';
-import { APIComments } from './models/APIComments';
-import { APIComment } from './models/APIComment';
-import { APIUser } from './models/APIUser';
-import { APIFeedItem, APIFeedItemV2 } from './models/APIFeedItem';
+import store from 'store';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { APIFlashcard } from './models/APIFlashcard';
-import { APINote } from './models/APINote';
+
+import type { APIComment } from './models/APIComment';
+import type { APIComments } from './models/APIComments';
+import type { APIFeedItem, APIFeedItemV2 } from './models/APIFeedItem';
+import type { APINote } from './models/APINote';
+import type { APIPost } from './models/APIPost';
+import type { APIPostResponse } from './models/APIPostResponse';
+import type { APIUser } from './models/APIUser';
+import type { Post, TComment, Comments, User, TFeedItem, PostResponse } from 'types/models';
 
 export const getToken = async (): Promise<string> => {
   try {

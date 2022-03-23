@@ -1,8 +1,11 @@
 import React from 'react';
-import validate from 'validate.js';
-import normalizeUrl from 'normalize-url';
+
 import MicrolinkCard from '@microlink/react';
+import normalizeUrl from 'normalize-url';
+import validate from 'validate.js';
+
 import { withStyles } from '@material-ui/core/styles';
+
 import { styles } from '../_styles/LinkPreview';
 
 type Props = {

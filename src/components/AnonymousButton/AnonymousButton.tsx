@@ -1,7 +1,10 @@
 import React, { memo, useMemo } from 'react';
+
 import Grid from '@material-ui/core/Grid';
-import anon from '../../assets/svg/anon.svg';
-import anoff from '../../assets/svg/anoff.svg';
+
+import anoff from 'assets/svg/anoff.svg';
+import anon from 'assets/svg/anon.svg';
+
 import { useStyles } from '../_styles/AnonymousButton';
 
 const AnonymousButton = ({ active = false, toggleActive }) => {

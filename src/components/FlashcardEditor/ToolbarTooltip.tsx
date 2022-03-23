@@ -1,5 +1,7 @@
 import React, { useCallback, useReducer, useEffect } from 'react';
+
 import Tooltip from '@material-ui/core/Tooltip';
+
 import { useStyles } from '../_styles/FlashcardEditor/ToolbarTooltip';
 
 const ctrl = window.navigator.platform.includes('Mac') ? '⌘' : 'Ctrl';

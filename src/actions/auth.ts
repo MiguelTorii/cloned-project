@@ -1,8 +1,9 @@
 /* eslint-disable import/prefer-default-export */
-import { authActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
-import type { ReferralData, School } from '../types/models';
+import { authActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
+import type { ReferralData, School } from 'types/models';
+import type { Dispatch } from 'types/store';
 
 const setRole = ({ role }): Action => ({
   type: authActions.UPDATE_AUTH_ROLE,

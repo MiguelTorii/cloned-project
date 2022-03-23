@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react';
+
 import PropTypes from 'prop-types';
-import Select from '@material-ui/core/Select';
+
 import MenuItem from '@material-ui/core/MenuItem';
-import { twoDigitsNumber } from '../../utils/helpers';
+import Select from '@material-ui/core/Select';
+
+import { twoDigitsNumber } from 'utils/helpers';
+
 import useStyles from './styles';
 
 const NumberSelector = ({ value, limit, onChange }) => {

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Typography from '@material-ui/core/Typography';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 import Tooltip from '@material-ui/core/Tooltip';
-import GradientButton from '../Basic/Buttons/GradientButton';
-import IconLink from '../../assets/svg/ic_link.svg';
+import Typography from '@material-ui/core/Typography';
+
+import IconLink from 'assets/svg/ic_link.svg';
+
 import { styles } from '../_styles/ShareLinkWidget';
+import GradientButton from '../Basic/Buttons/GradientButton';
 
 type Props = {
   classes: Record<string, any>;

@@ -1,16 +1,19 @@
 /* eslint-disable react/no-danger */
 import React, { useRef, useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+
 import ReactCardFlip from 'react-card-flip';
-import { withStyles } from '@material-ui/core/styles';
+import styled, { keyframes } from 'styled-components';
+
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+
+import { styles } from '../_styles/FlashcardManager/Flashcard';
 import CustomQuill from '../CustomQuill/CustomQuill';
 import SelectedImage from '../SelectedImage/SelectedImage';
-import { styles } from '../_styles/FlashcardManager/Flashcard';
 
 type Props = {
   answer: string;

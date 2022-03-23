@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import useStyles from '../_styles/MainLayout/TopMenu';
 
 const TopMenu = ({

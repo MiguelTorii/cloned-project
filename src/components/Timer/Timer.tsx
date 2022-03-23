@@ -1,19 +1,25 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import IconTimer from '@material-ui/icons/Timer';
-import Box from '@material-ui/core/Box';
+
 import clsx from 'clsx';
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { INTERVAL } from '../../constants/app';
+
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import IconTimer from '@material-ui/icons/Timer';
+
+import { INTERVAL } from 'constants/app';
+import { twoDigitsNumber } from 'utils/helpers';
+
+import { showNotification } from 'actions/notifications';
+import withRoot from 'withRoot';
+
 import GradientButton from '../Basic/Buttons/GradientButton';
 import TransparentButton from '../Basic/Buttons/TransparentButton';
-import { twoDigitsNumber } from '../../utils/helpers';
+
 import NumberSelector from './NumberSelector';
-import withRoot from '../../withRoot';
 import useStyles from './styles';
-import { showNotification } from '../../actions/notifications';
 
 export const TIMER_STATUS = {
   INITIALIZED: 'initialized',

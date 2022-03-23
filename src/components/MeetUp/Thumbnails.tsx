@@ -1,18 +1,22 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Pagination from '@material-ui/lab/Pagination';
-import PaginationItem from '@material-ui/lab/PaginationItem';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ThumbnailItem from './ThumbnailItem';
-import AudioTrack from './AudioTrack';
+import Pagination from '@material-ui/lab/Pagination';
+import PaginationItem from '@material-ui/lab/PaginationItem';
+
 import { styles } from '../_styles/MeetUp/Thumbnails';
+
+import AudioTrack from './AudioTrack';
+import ThumbnailItem from './ThumbnailItem';
 
 type Props = {
   classes?: any;

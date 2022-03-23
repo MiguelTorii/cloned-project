@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react';
+
+import clsx from 'clsx';
+import Lightbox from 'react-images';
+
+import Button from '@material-ui/core/Button';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
-import Button from '@material-ui/core/Button';
-import Lightbox from 'react-images';
-import clsx from 'clsx';
-import LoadImg from '../LoadImg/LoadImg';
+
 import { useStyles } from '../_styles/SelectedImage';
+import LoadImg from '../LoadImg/LoadImg';
 
 type Props = {
   handleRemoveImg?: any;

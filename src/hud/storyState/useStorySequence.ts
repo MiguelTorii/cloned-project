@@ -1,15 +1,21 @@
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import store from 'store';
-import { fetchGreetings } from '../../api/home';
-import { StorySequence, IStorySequenceOptions } from './StorySequence';
-import useHudEvents from '../events/useHudEvents';
+
+import { STORAGE_KEYS } from 'constants/app';
+import { DATE_FORMAT } from 'constants/common';
+
+import { fetchGreetings } from 'api/home';
+
 import { hudEventNames } from '../events/hudEventNames';
-import { UserState } from '../../reducers/user';
-import { User } from '../../types/models';
+import useHudEvents from '../events/useHudEvents';
+
 import { currentStoryCompleted, setCurrentStatement } from './hudStoryActions';
-import { STORAGE_KEYS } from '../../constants/app';
-import { DATE_FORMAT } from '../../constants/common';
+import { StorySequence } from './StorySequence';
+
+import type { IStorySequenceOptions } from './StorySequence';
+import type { UserState } from 'reducers/user';
+import type { User } from 'types/models';
 
 const STORY_COMPLETION_DELAY_IN_MS = 30000;
 

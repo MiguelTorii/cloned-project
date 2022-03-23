@@ -1,16 +1,20 @@
 import { useCallback, useContext, memo } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import update from 'immutability-helper';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { useHotkeys } from 'react-hotkeys-hook';
+
 import { useClickOutside } from '@mantine/hooks';
-import useStyles from './styles';
+import update from 'immutability-helper';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { useHotkeys } from 'react-hotkeys-hook';
+
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+
 import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
+
 import FlashcardEditor from './FlashcardEditor';
 import { FlashcardListContext, FlashcardListContextProvider } from './FlashcardListContext';
+import useStyles from './styles';
 
 export const EDITOR_TYPES = {
   QUESTION: 'question',

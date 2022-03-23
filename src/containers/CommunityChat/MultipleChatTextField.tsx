@@ -1,14 +1,18 @@
 /* eslint-disable react/no-danger */
 import React, { useRef, useState, useCallback } from 'react';
+
+import get from 'lodash/get';
 import Textarea from 'react-textarea-autosize';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-// import IconButton from '@material-ui/core/IconButton'
+
 import ButtonBase from '@material-ui/core/ButtonBase';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+// import IconButton from '@material-ui/core/IconButton'
 // import InsertPhotoIcon from '@material-ui/icons/InsertPhoto'
 import ClearIcon from '@material-ui/icons/Clear';
-import get from 'lodash/get';
-import EmojiSelector from '../../components/EmojiSelector/EmojiSelector';
+
+import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
+
 import useStyles from './_styles/multipleChatTextField';
 
 type Props = {

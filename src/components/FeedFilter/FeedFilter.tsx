@@ -1,31 +1,37 @@
 import React, { Fragment } from 'react';
-import update from 'immutability-helper';
+
 import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
+import update from 'immutability-helper';
+import lodash from 'lodash';
+
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Chip from '@material-ui/core/Chip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import SearchIcon from '@material-ui/icons/Search';
-import RefreshIcon from '@material-ui/icons/Refresh';
+import InputBase from '@material-ui/core/InputBase';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
-import lodash from 'lodash';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
-import Dialog from '../Dialog/Dialog';
-import DateRange from '../DateRange/DateRange';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import SearchIcon from '@material-ui/icons/Search';
+
+import { DEFAULT_DEBOUNCE_DURATION_IN_MS } from 'constants/common';
+
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import styles from '../_styles/FeedFilter';
-import { DEFAULT_DEBOUNCE_DURATION_IN_MS } from '../../constants/common';
-import { UserClass } from '../../types/models';
+import TransparentButton from '../Basic/Buttons/TransparentButton';
+import DateRange from '../DateRange/DateRange';
+import Dialog from '../Dialog/Dialog';
+
+import type { UserClass } from 'types/models';
 
 const types = [
   {

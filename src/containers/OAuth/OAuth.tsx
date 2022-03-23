@@ -1,14 +1,18 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { bindActionCreators } from 'redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { signLMSUser } from '../../api/lms';
-import * as signInActions from '../../actions/sign-in';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import * as signInActions from 'actions/sign-in';
+import { signLMSUser } from 'api/lms';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({
   main: {

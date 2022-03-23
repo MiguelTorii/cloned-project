@@ -1,31 +1,38 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
+
+import cx from 'classnames';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import cx from 'classnames';
-import withStyles from '@material-ui/core/styles/withStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import CloseIcon from '@material-ui/icons/Close';
 import ReplayIcon from '@material-ui/icons/Replay';
-import { getCommunityTemplates, batchMessage } from '../../api/community';
-import { PERMISSIONS } from '../../constants/common';
-import { getChannelName } from '../../utils/chat';
-import * as chatActions from '../../actions/chat';
-import { enqueueSnackbar } from '../../actions/notifications';
-import { ReactComponent as ClassIcon } from '../../assets/svg/class-book-icon.svg';
-import { ReactComponent as HashTag } from '../../assets/svg/hashtag-icon.svg';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import { PERMISSIONS } from 'constants/common';
+import { getChannelName } from 'utils/chat';
+
+import * as chatActions from 'actions/chat';
+import { setCurrentCommunityIdAction, setOneTouchSendAction } from 'actions/chat';
+import { enqueueSnackbar } from 'actions/notifications';
+import { getCommunityTemplates, batchMessage } from 'api/community';
+import { ReactComponent as ClassIcon } from 'assets/svg/class-book-icon.svg';
+import { ReactComponent as HashTag } from 'assets/svg/hashtag-icon.svg';
+
 import styles from '../_styles/CreateCommunityChatChannelInput/sendClass';
+
 import MessageQuill from './MessageQuill';
-import type { State as StoreState } from '../../types/state';
-import { setCurrentCommunityIdAction, setOneTouchSendAction } from '../../actions/chat';
+
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   classes?: Record<string, any>;

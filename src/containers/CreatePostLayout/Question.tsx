@@ -1,25 +1,31 @@
 /* eslint-disable no-nested-ternary */
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { withStyles } from '@material-ui/core/styles';
+import { bindActionCreators } from 'redux';
+
 import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+
+import { cypherClass } from 'utils/crypto';
+
+import * as notificationsActions from 'actions/notifications';
+import { logEvent, logEventLocally } from 'api/analytics';
+import * as api from 'api/posts';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import { processClasses } from '../ClassesSelector/utils';
-import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import { cypherClass } from '../../utils/crypto';
-import RichTextEditor from '../RichTextEditor/RichTextEditor';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import * as api from '../../api/posts';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { ClassSectionIds } from 'types/models';
+import RichTextEditor from '../RichTextEditor/RichTextEditor';
+
+import type { UserState } from 'reducers/user';
+import type { ClassSectionIds } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   stackbar: {

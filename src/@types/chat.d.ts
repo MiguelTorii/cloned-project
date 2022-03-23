@@ -1,4 +1,4 @@
-import { Client, ReplayEventEmitter } from 'twilio-chat';
+import type { Client, ReplayEventEmitter } from 'twilio-chat';
 
 type NotInEventEmitter<T> = Omit<T, keyof Omit<T, keyof ReplayEventEmitter<{}>>>;
 

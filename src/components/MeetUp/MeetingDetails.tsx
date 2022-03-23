@@ -1,17 +1,20 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
+
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import { ReactComponent as AddUser } from '../../assets/svg/add-user.svg';
-import { ReactComponent as ClipIcon } from '../../assets/svg/clip.svg';
+
+import { ReactComponent as AddUser } from 'assets/svg/add-user.svg';
+import { ReactComponent as ClipIcon } from 'assets/svg/clip.svg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import { styles } from '../_styles/MeetUp/MeetingDetails';
 
 type Props = {

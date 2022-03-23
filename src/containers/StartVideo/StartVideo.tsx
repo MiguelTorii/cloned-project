@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+
 import { useSelector } from 'react-redux';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import StudyRoomImg from '../../assets/svg/video-chat-image.svg';
-import StudyRoomInvite from './StudyRoomInvite';
-import useStyles from './_styles/index';
+
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+import { logEvent } from 'api/analytics';
 import { addGroupMembers, createChannel, getGroupMembers } from 'api/chat';
-import { logEvent } from '../../api/analytics';
-import { AppState } from 'redux/store';
-import { User, UserClass } from '../../types/models';
+import StudyRoomImg from 'assets/svg/video-chat-image.svg';
+
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import useStyles from './_styles/index';
+import StudyRoomInvite from './StudyRoomInvite';
+
+import type { AppState } from 'redux/store';
+import type { User, UserClass } from 'types/models';
 
 const StartVideo = () => {
   const classes = useStyles();

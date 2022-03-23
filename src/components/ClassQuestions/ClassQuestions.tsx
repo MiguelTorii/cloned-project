@@ -1,22 +1,28 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { Box, Grid, Paper, Typography } from '@material-ui/core';
-import { push } from 'connected-react-router';
-import ImageEmpty from '../../assets/svg/class-question-empty.svg';
-import { fetchFeed } from '../../api/feed';
-import { updateBookmark } from '../../actions/feed';
-import FeedItem from '../FeedList/FeedItem';
-import DeletePost from '../../containers/DeletePost/DeletePost';
-import Report from '../../containers/Report/Report';
-import SharePost from '../../containers/SharePost/SharePost';
-import useStyles from './styles';
-import { POST_TYPES } from '../../constants/app';
+
+import { POST_TYPES } from 'constants/app';
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { cypherClass } from 'utils/crypto';
+import { buildPath } from 'utils/helpers';
+
+import { updateBookmark } from 'actions/feed';
+import { fetchFeed } from 'api/feed';
+import ImageEmpty from 'assets/svg/class-question-empty.svg';
+import DeletePost from 'containers/DeletePost/DeletePost';
+import Report from 'containers/Report/Report';
+import SharePost from 'containers/SharePost/SharePost';
+
 import GradientButton from '../Basic/Buttons/GradientButton';
+import FeedItem from '../FeedList/FeedItem';
 import LoadingSpin from '../LoadingSpin/LoadingSpin';
-import { cypherClass } from '../../utils/crypto';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
+
+import useStyles from './styles';
 
 type Props = {
   classId: number;

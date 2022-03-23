@@ -1,14 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+
 import { isAndroid, isIOS, isBrowser, osVersion } from 'react-device-detect';
 import { Link as RouterLink, Redirect as RouterRedirect } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+
 // @ts-ignore
-import { ReactComponent as Logo } from '../../assets/svg/circlein_logo.svg';
-import { IOS_REDIRECT_URI, IOS_13_REDIRECT_URI, ANDROID_REDIRECT_URI } from '../../constants/app';
+import { IOS_REDIRECT_URI, IOS_13_REDIRECT_URI, ANDROID_REDIRECT_URI } from 'constants/app';
+
+import { ReactComponent as Logo } from 'assets/svg/circlein_logo.svg';
 
 const MyLink = ({ to, ...props }) => <RouterLink to={to} {...props} target="_top" />;
 

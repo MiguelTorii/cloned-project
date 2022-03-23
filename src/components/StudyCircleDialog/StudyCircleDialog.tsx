@@ -1,13 +1,17 @@
 import React from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 
+import { getInitials } from 'utils/chat';
+
 import Avatar from 'components/Avatar';
-import { getInitials } from '../../utils/chat';
-import Dialog from '../Dialog/Dialog';
-import type { StudyCircle } from '../../types/models';
+
 import { styles } from '../_styles/StudyCircleDialog';
+import Dialog from '../Dialog/Dialog';
+
+import type { StudyCircle } from 'types/models';
 
 type Props = {
   classes: Record<string, any>;

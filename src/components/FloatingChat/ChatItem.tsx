@@ -1,27 +1,32 @@
 import React, { Fragment, useState } from 'react';
-import { useDispatch } from 'react-redux';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { useDispatch } from 'react-redux';
+
+import Badge from '@material-ui/core/Badge';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Divider from '@material-ui/core/Divider';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Badge from '@material-ui/core/Badge';
-import SettingsIcon from '@material-ui/icons/Settings';
-import RemoveIcon from '@material-ui/icons/Remove';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
-import { ReactComponent as VideoCameraIcon } from '../../assets/svg/float_chat_camera.svg';
-import { ReactComponent as ExpandChatIcon } from '../../assets/svg/float_chat_collapse.svg';
-import { ReactComponent as CollapseChatIcon } from '../../assets/svg/float_chat_expand.svg';
-import Dialog from '../Dialog/Dialog';
-import styles from '../_styles/FloatingChat/ChatItem';
-import { ChannelWrapper } from '../../reducers/chat';
-import { Dispatch } from '../../types/store';
+import RemoveIcon from '@material-ui/icons/Remove';
+import SettingsIcon from '@material-ui/icons/Settings';
+
 import { setCurrentChannelSidAction } from 'actions/chat';
+import { ReactComponent as VideoCameraIcon } from 'assets/svg/float_chat_camera.svg';
+import { ReactComponent as ExpandChatIcon } from 'assets/svg/float_chat_collapse.svg';
+import { ReactComponent as CollapseChatIcon } from 'assets/svg/float_chat_expand.svg';
+
+import styles from '../_styles/FloatingChat/ChatItem';
+import Dialog from '../Dialog/Dialog';
+
+import type { ChannelWrapper } from 'reducers/chat';
+import type { Dispatch } from 'types/store';
 
 type Props = {
   classes?: Record<string, any>;

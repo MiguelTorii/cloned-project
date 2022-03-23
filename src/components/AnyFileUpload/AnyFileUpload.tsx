@@ -1,11 +1,15 @@
 import React from 'react';
+
 import cx from 'classnames';
 import clsx from 'clsx';
-import Typography from '@material-ui/core/Typography';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
-import FileUpload from '../FileUpload/FileUploadContainer';
-import { bytesToSize } from '../../utils/chat';
+import Typography from '@material-ui/core/Typography';
+
+import { bytesToSize } from 'utils/chat';
+
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
+import FileUpload from '../FileUpload/FileUploadContainer';
 
 const AnyFileUpload = ({
   message = '',

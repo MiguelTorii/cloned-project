@@ -1,16 +1,19 @@
 /* eslint-disable react/no-danger */
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import MuiDialog from '@material-ui/core/Dialog';
-import { CircularProgress } from '@material-ui/core';
-import DialogContent from '@material-ui/core/DialogContent';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
-import CloseIcon from '@material-ui/icons/Close';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 import cx from 'classnames';
-import ScrollToTop from '../ScrollToTop/ScrollToTop';
+
+import { CircularProgress } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import MuiDialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles } from '@material-ui/core/styles';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import CloseIcon from '@material-ui/icons/Close';
+
 import { styles } from '../_styles/Dialog';
+import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
 export const dialogStyle = {
   borderRadius: 20,

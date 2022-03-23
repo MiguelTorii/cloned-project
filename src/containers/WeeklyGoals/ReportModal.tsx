@@ -1,8 +1,12 @@
 import React from 'react';
-import { Box, Dialog, DialogContent, Typography } from '@material-ui/core';
+
 import PropTypes from 'prop-types';
-import DialogTitle from '../../components/DialogTitle/DialogTitle';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
+
+import { Box, Dialog, DialogContent, Typography } from '@material-ui/core';
+
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import DialogTitle from 'components/DialogTitle/DialogTitle';
+
 import useStyles from './styles';
 
 const ReportModal = ({ open, data, onClose, value, total }) => {

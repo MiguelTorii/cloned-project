@@ -1,25 +1,32 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useLocation } from 'react-router';
+
 import cx from 'classnames';
-import _ from 'lodash';
 import clsx from 'clsx';
-import moment from 'moment';
 import { push } from 'connected-react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { animations } from 'react-animation';
+import _ from 'lodash';
+import moment from 'moment';
 import pluralize from 'pluralize';
-import Typography from '@material-ui/core/Typography';
+import { animations } from 'react-animation';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
+
 import Box from '@material-ui/core/Box';
-import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
-import { bookmarkFlashcards, deleteFlashcard } from '../../actions/user';
-import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
-import { APP_ROOT_PATH } from '../../constants/app';
+import Chip from '@material-ui/core/Chip';
+import Typography from '@material-ui/core/Typography';
+
+import { APP_ROOT_PATH } from 'constants/app';
+
+import { bookmarkFlashcards, deleteFlashcard } from 'actions/user';
+import withRoot from 'withRoot';
+
 import Dialog from '../Dialog/Dialog';
+import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
+
 import ActionBar from './ActionBar';
-import withRoot from '../../withRoot';
 import useStyles from './styles';
-import { TFeedItem } from 'types/models';
+
+import type { TFeedItem } from 'types/models';
 
 type Props = {
   data: TFeedItem;

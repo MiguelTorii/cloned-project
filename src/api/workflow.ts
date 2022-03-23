@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
 
 export const getTodos = async (params?: any) => {

@@ -1,33 +1,35 @@
 import React from 'react';
-import uuidv4 from 'uuid/v4';
+
 import axios from 'axios';
 import cx from 'classnames';
 import { withSnackbar } from 'notistack';
-import { withStyles } from '@material-ui/core/styles';
-
 import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import uuidv4 from 'uuid/v4';
 
-import { Member } from 'types/models';
-import { sendMessage } from 'api/chat';
-import { logEvent } from 'api/analytics';
-import { getPresignedURL } from 'api/media';
-import type { UserState } from 'reducers/user';
-import { ChannelWrapper } from 'reducers/chat';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import { CHANNEL_SID_NAME } from 'constants/enums';
 import { getTitle, fetchAvatars, processMessages, getAvatar, getFileAttributes } from 'utils/chat';
 
-import ChatItem from 'components/FloatingChat/ChatItem';
-import ChatMessage from 'components/FloatingChat/FloatChatMessage';
-import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import { logEvent } from 'api/analytics';
+import { sendMessage } from 'api/chat';
+import { getPresignedURL } from 'api/media';
 import CreateChatChannelInput from 'components/CreateChatChannelInput/CreateChatChannelInput';
+import ChatItem from 'components/FloatingChat/ChatItem';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatTextField from 'components/FloatingChat/ChatTextField';
+import ChatMessage from 'components/FloatingChat/FloatChatMessage';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 
-import ChatChannelViewMembers from './ChatChannelViewMembers';
 import ChatChannelAddMembers from './ChatChannelAddMembers';
+import ChatChannelViewMembers from './ChatChannelViewMembers';
+
+import type { ChannelWrapper } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
+import type { Member } from 'types/models';
 
 const styles = (theme) => ({
   list: {

@@ -1,6 +1,8 @@
-import { Action } from '../../types/action';
 import { experienceActions } from './hudExperienceActions';
-import { defaultState, ExperienceState } from './hudExperienceState';
+import { defaultState } from './hudExperienceState';
+
+import type { ExperienceState } from './hudExperienceState';
+import type { Action } from 'types/action';
 
 export default (state: ExperienceState = defaultState, action: Action): ExperienceState => {
   switch (action.type) {

@@ -1,7 +1,9 @@
-import { onboardingActions } from '../constants/action-types';
-import { fetchOnboardingList, completeOnboardingList } from '../api/onboarding';
-import type { Dispatch } from '../types/store';
-import type { OnboardingList } from '../types/models';
+import { onboardingActions } from 'constants/action-types';
+
+import { fetchOnboardingList, completeOnboardingList } from 'api/onboarding';
+
+import type { OnboardingList } from 'types/models';
+import type { Dispatch } from 'types/store';
 
 const getAnnouncementSuccessAction = (onboardingList: OnboardingList) => ({
   type: onboardingActions.GET_ONBOARDING_LIST_SUCCESS,

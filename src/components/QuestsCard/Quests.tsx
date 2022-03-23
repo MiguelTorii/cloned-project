@@ -1,11 +1,15 @@
 import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+
 import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import QuestItem from './QuestItem';
+
 import { styles } from '../_styles/QuestsCard/Quests';
+
+import QuestItem from './QuestItem';
 
 type Props = {
   classes: Record<string, any>;

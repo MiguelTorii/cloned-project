@@ -1,33 +1,34 @@
 import React from 'react';
+
+import { push } from 'connected-react-router';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
 import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+
+import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+
+import { cypherClass } from 'utils/crypto';
+
+import * as notificationsActions from 'actions/notifications';
+import { logEvent, logEventLocally } from 'api/analytics';
+import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from 'api/posts';
+import postingImage from 'assets/gif/loading-rocket.gif';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import ToolbarTooltip from 'components/FlashcardEditor/ToolbarTooltip';
+import LinkPreview from 'components/LinkPreview/LinkPreview';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import { processClasses } from '../ClassesSelector/utils';
-import { cypherClass } from '../../utils/crypto';
-import ToolbarTooltip from '../../components/FlashcardEditor/ToolbarTooltip';
-import RichTextEditor from '../RichTextEditor/RichTextEditor';
-import postingImage from '../../assets/gif/loading-rocket.gif';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { SelectType, ClassSectionIds } from 'types/models';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import LinkPreview from '../../components/LinkPreview/LinkPreview';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import {
-  updateShareURL,
-  createBatchShareLink,
-  createShareLink,
-  getShareLink
-} from '../../api/posts';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import * as notificationsActions from '../../actions/notifications';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import RichTextEditor from '../RichTextEditor/RichTextEditor';
+
+import type { UserState } from 'reducers/user';
+import type { SelectType, ClassSectionIds } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   preview: {

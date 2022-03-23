@@ -1,9 +1,13 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
-import LeaderBoards from '../../containers/LeaderBoards/LeaderBoards';
+
+import LeaderBoards from 'containers/LeaderBoards/LeaderBoards';
+import { LEADERBOARD_AREA } from 'hud/navigationState/hudNavigation';
+
 import { useStyles } from './AchievementsAreaStyles';
-import { LEADERBOARD_AREA } from '../../hud/navigationState/hudNavigation';
-import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
+
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
 
 const AchievementsArea = () => {
   const classes: any = useStyles();

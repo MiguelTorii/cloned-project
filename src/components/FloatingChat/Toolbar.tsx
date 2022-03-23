@@ -1,14 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
+
 import cx from 'classnames';
 import { Quill } from 'react-quill';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
+
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+
+import { QUILL_TOOLBAR_SHORT_KEYS } from 'constants/common';
+
+import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
+
 import EmojiSelector from '../EmojiSelector/EmojiSelector';
-import useStyles from '../../containers/CommunityChat/_styles/toolbar';
-import { ReactComponent as PaperClip } from '../../assets/svg/quill-paper.svg';
-import { QUILL_TOOLBAR_SHORT_KEYS } from '../../constants/common';
+
+import useStyles from 'containers/CommunityChat/_styles/toolbar';
 
 const Link = Quill.import('formats/link');
 

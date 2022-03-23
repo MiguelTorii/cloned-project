@@ -1,22 +1,26 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
+import { getBlockedUsers, unblockUser } from 'api/user';
 import Avatar from 'components/Avatar';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { BlockedUsers } from '../../types/models';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import { getBlockedUsers, unblockUser } from '../../api/user';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { BlockedUsers } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({
   dialog: {

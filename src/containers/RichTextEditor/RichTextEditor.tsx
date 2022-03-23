@@ -1,17 +1,23 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
+
 import axios from 'axios';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CustomQuill from '../../components/CustomQuill/CustomQuill';
-import AvatarEditor from '../../components/AvatarEditor/AvatarEditor';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { getPresignedURL } from '../../api/media';
-import { uploadMedia } from '../../actions/user';
-import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
+import { withStyles } from '@material-ui/core/styles';
+
+import { UPLOAD_MEDIA_TYPES } from 'constants/app';
+
+import { uploadMedia } from 'actions/user';
+import { getPresignedURL } from 'api/media';
+import AvatarEditor from 'components/AvatarEditor/AvatarEditor';
+import CustomQuill from 'components/CustomQuill/CustomQuill';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {

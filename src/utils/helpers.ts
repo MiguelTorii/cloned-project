@@ -1,7 +1,7 @@
-import moment from 'moment';
-import _ from 'lodash';
-import qs from 'query-string';
 import { convert } from 'html-to-text';
+import _ from 'lodash';
+import moment from 'moment';
+import qs from 'query-string';
 
 import { TIME_ZONE } from 'constants/app';
 

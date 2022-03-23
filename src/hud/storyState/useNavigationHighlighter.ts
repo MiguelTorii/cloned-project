@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import { clearNavigationHighlight } from '../navigationState/hudNavigationActions';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const useNavigationHighlighter = () => {
   const dispatch = useDispatch();

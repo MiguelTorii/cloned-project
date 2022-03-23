@@ -1,14 +1,20 @@
 import React, { useMemo, useCallback, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router';
+
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router';
-import { UserState } from '../../reducers/user';
-import Tooltip from '../Tooltip/Tooltip';
-import BatchMessageDialog from '../BatchMessageDialog/BatchMessageDialog';
-import { PERMISSIONS } from '../../constants/common';
-import { closeNewChannelAction } from '../../actions/chat';
+
+import { PERMISSIONS } from 'constants/common';
 import { URL } from 'constants/navigation';
+
+import { closeNewChannelAction } from 'actions/chat';
+
+import BatchMessageDialog from '../BatchMessageDialog/BatchMessageDialog';
+import Tooltip from '../Tooltip/Tooltip';
+
+import type { UserState } from 'reducers/user';
 
 const useStyles = makeStyles((theme) => ({
   selectClasses: {

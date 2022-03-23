@@ -1,15 +1,23 @@
-import React, { FC, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box, Typography } from '@material-ui/core';
+import type { FC } from 'react';
+import React, { useCallback } from 'react';
+
 import parse from 'html-react-parser';
-import { AppState } from 'redux/store';
-import { TErrorModalData } from '../../types/models';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Box, Typography } from '@material-ui/core';
+
+import { ERROR_MODAL_TITLE } from 'constants/common';
+
+import { closeErrorModal } from 'actions/dialog';
+import { ReactComponent as ImageError } from 'assets/svg/error-modal.svg';
+
 import Dialog from '../Dialog/Dialog';
-import { ReactComponent as ImageError } from '../../assets/svg/error-modal.svg';
-import { closeErrorModal } from '../../actions/dialog';
-import { ERROR_MODAL_TITLE } from '../../constants/common';
-import useStyles from './styles';
 import SemiBoldTypography from '../SemiBoldTypography/SemiBoldTypography';
+
+import useStyles from './styles';
+
+import type { AppState } from 'redux/store';
+import type { TErrorModalData } from 'types/models';
 
 const ErrorModal: FC = ({ children }) => {
   const classes = useStyles();

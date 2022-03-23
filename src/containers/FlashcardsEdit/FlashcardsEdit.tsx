@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Box from '@material-ui/core/Box';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { push } from 'connected-react-router';
-import withRoot from '../../withRoot';
-import FlashcardsDeckEditor from '../../components/FlashcardsDeckManager/FlashcardsDeckEditor';
-import { getFlashcards } from '../../api/posts';
-import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Box from '@material-ui/core/Box';
+
+import { getFlashcards } from 'api/posts';
+import FlashcardsDeckEditor from 'components/FlashcardsDeckManager/FlashcardsDeckEditor';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import withRoot from 'withRoot';
 
 const FlashcardsEdit = ({ flashcardId }) => {
   const [data, setData] = useState({});

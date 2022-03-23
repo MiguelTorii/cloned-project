@@ -1,4 +1,4 @@
-import { APINotification } from './APINotification';
+import type { APINotification } from './APINotification';
 
 export type APINotifications = {
   notifications: APINotification[];

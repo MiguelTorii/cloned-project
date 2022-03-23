@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import Dialog from '../Dialog/Dialog';
+
 import { styles } from '../_styles/ShareDialog';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes: Record<string, any>;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyledTextField } from '../../_styles/Basic/TextField/index';
+
+import { StyledTextField } from 'components/_styles/Basic/TextField';
 
 type Props = Record<string, any>;
 

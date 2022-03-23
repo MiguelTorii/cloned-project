@@ -1,6 +1,8 @@
-import type { Action } from '../../types/action';
 import { hudNavigationActions } from './hudNavigationActions';
-import { defaultState, HudNavigationState } from './hudNavigationState';
+import { defaultState } from './hudNavigationState';
+
+import type { HudNavigationState } from './hudNavigationState';
+import type { Action } from 'types/action';
 
 export default (state: HudNavigationState = defaultState, action: Action): HudNavigationState => {
   switch (action.type) {

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Button, IconButton, Tooltip } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+
 import clsx from 'clsx';
-import { HudToolData } from './HudToolData';
-import { useStyles } from './HudToolbarStyles';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
+import { useSelector } from 'react-redux';
+
+import { Button, IconButton, Tooltip } from '@material-ui/core';
+
 import HudTool from './HudTool';
+import { useStyles } from './HudToolbarStyles';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
+import type { HudToolData } from './HudToolData';
 
 type Props = {
   navbarItems: HudToolData[];

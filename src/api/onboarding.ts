@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
-import type { OnboardingList } from '../types/models';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken, onboardingToCamelCase } from './utils';
+
+import type { OnboardingList } from 'types/models';
 
 export const completeOnboardingList = async (): Promise<void> => {
   const token = await getToken();

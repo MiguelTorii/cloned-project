@@ -1,8 +1,12 @@
 import React from 'react';
+
+import _ from 'lodash';
+
 import { Paper, Grid, IconButton } from '@material-ui/core';
 import { ZoomIn, ZoomOut, RotateRight, RotateLeft } from '@material-ui/icons';
-import _ from 'lodash';
-import withRoot from '../../withRoot';
+
+import withRoot from 'withRoot';
+
 import { useStyles } from '../_styles/AvatarEditor/Toolbar';
 
 type Props = {

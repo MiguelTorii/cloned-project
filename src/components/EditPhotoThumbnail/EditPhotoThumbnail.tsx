@@ -1,25 +1,28 @@
 import React, { Fragment } from 'react';
-import fetch from 'isomorphic-fetch';
+
 import cx from 'classnames';
+import clsx from 'clsx';
+import fetch from 'isomorphic-fetch';
 import AvatarEditor from 'react-avatar-editor';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
+
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CreateIcon from '@material-ui/icons/Create';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import ClearIcon from '@material-ui/icons/Clear';
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import CreateIcon from '@material-ui/icons/Create';
+import DoneIcon from '@material-ui/icons/Done';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import RotateRightIcon from '@material-ui/icons/RotateRight';
-import DoneIcon from '@material-ui/icons/Done';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import clsx from 'clsx';
-import Dialog from '../Dialog/Dialog';
-import GradientButton from '../Basic/Buttons/GradientButton';
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+
 import { styles } from '../_styles/EditPhotoThumbnail';
+import GradientButton from '../Basic/Buttons/GradientButton';
+import Dialog from '../Dialog/Dialog';
 
 type Props = {
   classes?: Record<string, any>;

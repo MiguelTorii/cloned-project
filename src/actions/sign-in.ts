@@ -1,19 +1,23 @@
 import { push } from 'connected-react-router';
 import store from 'store';
+
+import { signInActions } from 'constants/action-types';
+import { INSIGHTS_DASHBOARD_URI, STORAGE_KEYS } from 'constants/app';
+import { PERMISSIONS } from 'constants/common';
+import { deepLinkCheck } from 'utils/helpers';
+
+import { signInUser, checkUser, samlLogin as samlSignin } from 'api/sign-in';
+import { apiSetExpertMode, apiGetExpertMode, apiJoinWithReferralCode } from 'api/user';
+import { apiLogViralLoopEmailLogin } from 'api/viral_loop';
+
+import { showErrorModal } from './dialog';
+import { showNotification } from './notifications';
 import * as userActions from './user';
 import { sync } from './user';
-import { deepLinkCheck } from '../utils/helpers';
-import { PERMISSIONS } from '../constants/common';
-import { signInActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
-import type { TLoginError, User } from '../types/models';
-import { signInUser, checkUser, samlLogin as samlSignin } from '../api/sign-in';
-import { apiSetExpertMode, apiGetExpertMode, apiJoinWithReferralCode } from 'api/user';
-import { showErrorModal } from './dialog';
-import { INSIGHTS_DASHBOARD_URI, STORAGE_KEYS } from 'constants/app';
-import { showNotification } from './notifications';
-import { apiLogViralLoopEmailLogin } from 'api/viral_loop';
+
+import type { Action } from 'types/action';
+import type { TLoginError, User } from 'types/models';
+import type { Dispatch } from 'types/store';
 
 const requestSignIn = (): Action => ({
   type: signInActions.SIGN_IN_USER_REQUEST

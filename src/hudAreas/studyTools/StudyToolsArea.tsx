@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
-import UserNotesContainer from '../../containers/UserNotes/UserNotesContainer';
-import { NotesContextProvider } from '../../hooks/useNotes';
-import { useStyles } from './StudyToolsAreaStyles';
-import { HudNavigationState } from '../../hud/navigationState/hudNavigationState';
+
+import Study from 'containers/Study/Study';
+import UserNotesContainer from 'containers/UserNotes/UserNotesContainer';
+import { NotesContextProvider } from 'hooks/useNotes';
 import {
   CALENDAR_AREA,
   FLASHCARDS_AREA,
@@ -13,11 +14,15 @@ import {
   CREATE_A_POST_AREA,
   SHARE_NOTES_AREA,
   SHARE_RESOURCES_AREA
-} from '../../hud/navigationState/hudNavigation';
+} from 'hud/navigationState/hudNavigation';
+
 import CalendarSubArea from '../calendar/CalendarSubArea';
-import Study from '../../containers/Study/Study';
-import FlashcardsSubArea from '../flashcards/FlashcardsSubArea';
 import ClassFeedSubArea from '../classFeed/ClassFeedSubArea';
+import FlashcardsSubArea from '../flashcards/FlashcardsSubArea';
+
+import { useStyles } from './StudyToolsAreaStyles';
+
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
 
 const StudyToolsArea = () => {
   const classes: any = useStyles();

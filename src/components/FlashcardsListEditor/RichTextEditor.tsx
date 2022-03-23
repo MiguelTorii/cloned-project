@@ -1,16 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
-import { useDropzone } from 'react-dropzone';
-import IconImage from '@material-ui/icons/ImageOutlined';
+
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
-import { UPLOAD_MEDIA_TYPES } from '../../constants/app';
-import { uploadMedia } from '../../actions/user';
-import useStyles from './styles';
-import PlainClipboard from './PlainClipboard';
+import { useDropzone } from 'react-dropzone';
+import ReactQuill from 'react-quill';
+import { useSelector } from 'react-redux';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import IconImage from '@material-ui/icons/ImageOutlined';
+
+import { UPLOAD_MEDIA_TYPES } from 'constants/app';
 import { QuillModules } from 'constants/common';
+
+import { uploadMedia } from 'actions/user';
+
+import PlainClipboard from './PlainClipboard';
+import useStyles from './styles';
 
 const { Quill } = ReactQuill;
 

@@ -1,34 +1,34 @@
 import React, { useRef, useEffect, useState, useCallback, useReducer } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { bindActionCreators } from 'redux';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import update from 'immutability-helper';
-import Typography from '@material-ui/core/Typography';
-import moment from 'moment';
-import Button from '@material-ui/core/Button';
+
 import cx from 'classnames';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import IconButton from '@material-ui/core/IconButton';
+import update from 'immutability-helper';
+import moment from 'moment';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import RefreshIcon from '@material-ui/icons/Refresh';
+
+import * as notificationsActions from 'actions/notifications';
+import { createTodo, updateTodo, archiveTodo, updateTodosOrdering, getTodos } from 'api/workflow';
+import CalendarView from 'components/Workflow/CalendarView';
+import CreateWorkflow from 'components/Workflow/CreateWorkflow';
+import Tips from 'components/Workflow/Tips';
+import WorkflowList from 'components/Workflow/WorkflowList';
 import { experienceActions } from 'hud/experienceBarState/hudExperienceActions';
-import CreateWorkflow from '../../components/Workflow/CreateWorkflow';
-import WorkflowList from '../../components/Workflow/WorkflowList';
-import CalendarView from '../../components/Workflow/CalendarView';
-import {
-  createTodo,
-  updateTodo,
-  archiveTodo,
-  updateTodosOrdering,
-  getTodos
-} from '../../api/workflow';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import Tips from '../../components/Workflow/Tips';
+
 import { WorkflowProvider } from './WorkflowContext';
-import * as notificationsActions from '../../actions/notifications';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const createSnackbar = (message, style, variant) => ({
   notification: {

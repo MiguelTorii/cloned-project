@@ -1,5 +1,7 @@
 import React, { memo, useMemo } from 'react';
+
 import moment from 'moment';
+
 import WorkflowBoardCard from './WorkflowBoardCard';
 
 const WorkflowBoardItem = ({ task, classList, openConfirmArchive, onOpen, showDetails, drag }) => {

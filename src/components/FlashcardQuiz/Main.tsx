@@ -2,19 +2,23 @@
 
 /* eslint-disable camelcase */
 import React, { useCallback, useState, useEffect } from 'react';
+
 import sanitizeHtml from 'sanitize-html';
 import uuidv4 from 'uuid/v4';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
+
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import CloseIcon from '@material-ui/icons/Close';
+import Select from '@material-ui/core/Select';
 import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import Dialog from '../Dialog/Dialog';
-import { saveQuizAnswers, generateQuiz } from '../../api/feed';
+
+import { saveQuizAnswers, generateQuiz } from 'api/feed';
+
 import { useStyles } from '../_styles/FlashcardQuiz';
+import Dialog from '../Dialog/Dialog';
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 

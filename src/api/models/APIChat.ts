@@ -1,4 +1,4 @@
-import { APIChatUser } from './APIChatUser';
+import type { APIChatUser } from './APIChatUser';
 
 export type APIChat = {
   id: string;

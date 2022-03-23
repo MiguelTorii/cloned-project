@@ -1,12 +1,15 @@
 import React, { useCallback, useState, useRef } from 'react';
-import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import Popper from '@material-ui/core/Popper';
-import Fade from '@material-ui/core/Fade';
-import Paper from '@material-ui/core/Paper';
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+
 import { Draggable } from '@fullcalendar/interaction';
+
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import Tooltip from '@material-ui/core/Tooltip';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
+
 import { useStyles } from '../_styles/Workflow/CalendarEmptyDateTasks';
 
 const CalendarEmptyDateTasks = ({ tasksEmptyDate, onOpenEdit }) => {

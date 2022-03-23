@@ -1,45 +1,47 @@
 /* eslint-disable func-names */
 import React from 'react';
-import { connect } from 'react-redux';
+
 import { push as routePush } from 'connected-react-router';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { withStyles } from '@material-ui/core/styles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import { withRouter } from 'react-router';
-import type { UserProfile, About, UserStatistic, TFeedItem, StudyCircle } from '../../types/models';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import {
-  getUserProfile,
-  updateProfile,
-  updateUserProfileUrl,
-  getStudyCircle
-} from '../../api/user';
-import { addToStudyCircle, removeFromStudyCircle } from '../../api/posts';
+import { withStyles } from '@material-ui/core/styles';
+
+import { EVENT_TYPES, LOG_EVENT_CATEGORIES, UPLOAD_MEDIA_TYPES } from 'constants/app';
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
+import * as chatActions from 'actions/chat';
+import * as feedActions from 'actions/feed';
+import * as signInActions from 'actions/sign-in';
+import { updateProfileImage, uploadMedia } from 'actions/user';
+import { logEvent, logEventLocally } from 'api/analytics';
 import { apiFetchFeeds } from 'api/feed';
-import * as signInActions from '../../actions/sign-in';
-import * as chatActions from '../../actions/chat';
-import * as feedActions from '../../actions/feed';
-import SharePost from '../SharePost/SharePost';
-import Report from '../Report/Report';
-import DeletePost from '../DeletePost/DeletePost';
-import ProfileHeader from '../../components/Profile/header';
-import ProfilePosts from '../../components/Profile/posts';
-import StudyCircleDialog from '../../components/StudyCircleDialog/StudyCircleDialog';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { processSeasons } from './utils';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import PointsHistoryDetails from '../../components/PointsHistoryDetails/PointsHistoryDetails';
-import EditProfileModal from '../../components/Profile/EditProfileModal';
-import { updateProfileImage, uploadMedia } from '../../actions/user';
-import { EVENT_TYPES, LOG_EVENT_CATEGORIES, UPLOAD_MEDIA_TYPES } from '../../constants/app';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
-import { PROFILE_SOURCE_KEY } from '../../routeConstants';
-import { ChatState } from '../../reducers/chat';
+import { addToStudyCircle, removeFromStudyCircle } from 'api/posts';
+import { getUserProfile, updateProfile, updateUserProfileUrl, getStudyCircle } from 'api/user';
+import PointsHistoryDetails from 'components/PointsHistoryDetails/PointsHistoryDetails';
+import EditProfileModal from 'components/Profile/EditProfileModal';
+import ProfileHeader from 'components/Profile/header';
+import ProfilePosts from 'components/Profile/posts';
+import StudyCircleDialog from 'components/StudyCircleDialog/StudyCircleDialog';
 import { ChatClientContext } from 'features/chat';
+import { PROFILE_SOURCE_KEY } from 'routeConstants';
+
+import DeletePost from '../DeletePost/DeletePost';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Report from '../Report/Report';
+import SharePost from '../SharePost/SharePost';
+
+import { processSeasons } from './utils';
+
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
+import type { UserProfile, About, UserStatistic, TFeedItem, StudyCircle } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {

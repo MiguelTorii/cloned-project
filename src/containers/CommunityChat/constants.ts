@@ -1,4 +1,4 @@
-import { ChatCommunity } from 'api/models/APICommunity';
+import type { ChatCommunity } from 'api/models/APICommunity';
 
 const DEFAULT_COMMUNITY_MENU_ITEMS: ChatCommunity = {
   id: 0,

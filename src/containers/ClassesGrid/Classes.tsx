@@ -1,27 +1,33 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from '@material-ui/core/Grid';
-import withWidth from '@material-ui/core/withWidth';
-import { connect, useSelector } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { bindActionCreators } from 'redux';
+
 import { push } from 'connected-react-router';
+import { connect, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { Link } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import withWidth from '@material-ui/core/withWidth';
+
+import { cypherClass } from 'utils/crypto';
+import { openSupportWidget } from 'utils/helpers';
+
+import * as userActions from 'actions/user';
+import { leaveUserClass } from 'api/user';
+import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
+import FiltersBar from 'components/FiltersBar/FiltersBar';
+import withRoot from 'withRoot';
+
 import ClassCard from './ClassCard';
-import { leaveUserClass } from '../../api/user';
-import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
-import FiltersBar from '../../components/FiltersBar/FiltersBar';
-import { cypherClass } from '../../utils/crypto';
-import withRoot from '../../withRoot';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import * as userActions from '../../actions/user';
-import { AppState } from 'redux/store';
-import { User } from '../../types/models';
-import { openSupportWidget } from '../../utils/helpers';
+
+import type { UserState } from 'reducers/user';
+import type { AppState } from 'redux/store';
+import type { User } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const Filters = {
   current: {

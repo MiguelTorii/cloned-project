@@ -1,9 +1,12 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { callApi } from './api_base';
-import { APICommunities } from './models/APICommunities';
-import { APICommunityChannelGroups } from './models/APICommunityChannelGroups';
 import { getToken } from './utils';
+
+import type { APICommunities } from './models/APICommunities';
+import type { APICommunityChannelGroups } from './models/APICommunityChannelGroups';
 
 export const getCommunities = async (): Promise<APICommunities> => {
   const token = await getToken();

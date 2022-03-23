@@ -1,6 +1,8 @@
 import update from 'immutability-helper';
-import { notesActions, rootActions } from '../constants/action-types';
-import type { Action } from '../types/action';
+
+import { notesActions, rootActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
 
 export type NotesType = {
   title: string;

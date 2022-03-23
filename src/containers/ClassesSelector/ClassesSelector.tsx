@@ -1,16 +1,22 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+
 import { SelectValidator } from 'react-material-ui-form-validator';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
-import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { processClasses } from './utils';
+import { withStyles } from '@material-ui/core/styles';
+
+import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import RequestClass from '../RequestClass/RequestClass';
+
+import { processClasses } from './utils';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   formControl: {

@@ -1,19 +1,24 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+
 import PropTypes from 'prop-types';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import List from '@material-ui/core/List';
-import useStyles from './styles';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import { NotesContext } from 'hooks/useNotes';
+
 import Tooltip from '../Tooltip/Tooltip';
-import { NotesContext } from '../../hooks/useNotes';
-import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
+
 import Note from './Note';
+import useStyles from './styles';
 
 const ClassNotes = ({ classData, arrayIndex }) => {
   const classes: any = useStyles();

@@ -1,24 +1,30 @@
 import { useEffect, useState } from 'react';
+
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import useStorySequence from './useStorySequence';
-import useHudEvents, { HudEvent } from '../events/useHudEvents';
+
+import { updateOnboardingAction } from 'actions/user';
+import { logEventLocally } from 'api/analytics';
+import useCampaigns from 'hooks/useCampaigns';
+
+import { hudEventNames } from '../events/hudEventNames';
+import useHudEvents from '../events/useHudEvents';
 import {
   clearNavigationHighlight,
   setNavigationHighlight
 } from '../navigationState/hudNavigationActions';
-import useNavigationHighlighter from './useNavigationHighlighter';
-import { onboardingStorySections } from './onboardingStorySections';
-import { StorySection } from './StorySection';
-import { hudEventNames } from '../events/hudEventNames';
-import { HudStoryState } from './hudStoryState';
-import { updateOnboardingAction } from '../../actions/user';
-import { logEventLocally } from '../../api/analytics';
-import { UserState } from '../../reducers/user';
-import { User } from '../../types/models';
+
 import { openOnboardingCompletedPopup } from './hudStoryActions';
+import { onboardingStorySections } from './onboardingStorySections';
 import { onboardingStorySectionsNoRewards } from './onboardingStorySectionsNoRewards';
-import useCampaigns from 'hooks/useCampaigns';
+import useNavigationHighlighter from './useNavigationHighlighter';
+import useStorySequence from './useStorySequence';
+
+import type { HudEvent } from '../events/useHudEvents';
+import type { HudStoryState } from './hudStoryState';
+import type { StorySection } from './StorySection';
+import type { UserState } from 'reducers/user';
+import type { User } from 'types/models';
 
 let onboardingTriggered = false;
 let currentStorySection: StorySection | null = null;

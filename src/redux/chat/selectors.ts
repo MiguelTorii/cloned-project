@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import moment from 'moment';
-import { AppState } from 'redux/store';
+
+import type { AppState } from 'redux/store';
 
 // Temporary, transition to react-query
 export const selectLocal = (state: AppState) => state.chat.data.local;

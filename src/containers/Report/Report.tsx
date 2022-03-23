@@ -1,16 +1,21 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { report } from '../../api/posts';
+
+import { report } from 'api/posts';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   paper: {

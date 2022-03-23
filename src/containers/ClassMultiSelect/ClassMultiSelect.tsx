@@ -1,17 +1,21 @@
 /* eslint-disable no-use-before-define */
 import React, { useCallback, useMemo, memo } from 'react';
+
 import { connect, useSelector } from 'react-redux';
+
+import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Paper from '@material-ui/core/Paper';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 import Tooltip from '../Tooltip/Tooltip';
-import type { State as StoreState } from '../../types/state';
+
+import type { State as StoreState } from 'types/state';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 

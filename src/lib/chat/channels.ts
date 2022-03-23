@@ -1,5 +1,6 @@
-import { Channel, Client } from 'twilio-chat';
 import { waitUntil } from 'utils/helpers';
+
+import type { Channel, Client } from 'twilio-chat';
 
 let channels: Channel[] | undefined;
 let hasStartedPaginator = false;

@@ -1,23 +1,28 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+
 import { push as routePush, goBack } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { getNotes, bookmark } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
-import PostItem from '../../components/PostItem/PostItem';
-import PostItemHeader from '../../components/PostItem/PostItemHeader';
-import PostItemActions from '../PostItemActions/PostItemActions';
-import PostComments from '../PostComments/ViewNotes';
-import ImageGallery from '../../components/ImageGallery/ImageGallery';
-import PdfGallery from '../../components/PdfGallery/PdfGallery';
-import PostTags from '../PostTags/PostTags';
-import Report from '../Report/Report';
+import { withStyles } from '@material-ui/core/styles';
+
+import { logEvent } from 'api/analytics';
+import { getNotes, bookmark } from 'api/posts';
+import ImageGallery from 'components/ImageGallery/ImageGallery';
+import PdfGallery from 'components/PdfGallery/PdfGallery';
+import PostItem from 'components/PostItem/PostItem';
+import PostItemHeader from 'components/PostItem/PostItemHeader';
+
 import DeletePost from '../DeletePost/DeletePost';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import PostComments from '../PostComments/ViewNotes';
+import PostItemActions from '../PostItemActions/PostItemActions';
+import PostTags from '../PostTags/PostTags';
+import Report from '../Report/Report';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {

@@ -1,11 +1,17 @@
 import React, { useContext, useMemo } from 'react';
-import Grid from '@material-ui/core/Grid';
+
 import cx from 'classnames';
-import WorkflowBox from './WorkflowBox';
-import DragPreview from './DragPreview';
-import { workflowCategories } from '../../constants/common';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
+
+import Grid from '@material-ui/core/Grid';
+
+import { workflowCategories } from 'constants/common';
+
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/WorkflowList';
+
+import DragPreview from './DragPreview';
+import WorkflowBox from './WorkflowBox';
 
 const WorkflowList = () => {
   const { tasks, listView } = useContext(WorkflowContext);

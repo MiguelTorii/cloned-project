@@ -1,23 +1,28 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+
 import { differenceInMilliseconds } from 'date-fns';
 import { useIdleTimer } from 'react-idle-timer';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Hidden from '@material-ui/core/Hidden';
-import { Grid } from '@material-ui/core';
 import { useLocation } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
+
+import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import { TIMEOUT } from '../../constants/common';
-import { logEvent } from '../../api/analytics';
+import Hidden from '@material-ui/core/Hidden';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { POST_SOURCE } from 'constants/app';
+import { TIMEOUT } from 'constants/common';
+
+import { logEvent } from 'api/analytics';
+import Recommendations from 'containers/Recommendations/Recommendations';
+import { PROFILE_SOURCE_KEY } from 'routeConstants';
+
 import { styles } from '../_styles/PostItem';
-import Recommendations from '../../containers/Recommendations/Recommendations';
 import RecommendationsFeedback from '../RecommendationsFeedback/RecommendationsFeedback';
-import { POST_SOURCE } from '../../constants/app';
-import { PROFILE_SOURCE_KEY } from '../../routeConstants';
 
 const timeout = TIMEOUT.POST_ITEM;
 const MyLink = React.forwardRef<any, any>(

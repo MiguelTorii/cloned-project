@@ -1,17 +1,17 @@
 import React from 'react';
+
+import Box from '@material-ui/core/Box';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 
-import Box from '@material-ui/core/Box';
-
-import withRoot from '../../withRoot';
-import Dialog from '../Dialog/Dialog';
-import LoadImg from '../LoadImg/LoadImg';
-import shareNotes from '../../assets/svg/share_notes.svg';
-import answerQuestions from '../../assets/svg/answer_questions.svg';
-import studyVirtually from '../../assets/svg/study-virtually.svg';
+import answerQuestions from 'assets/svg/answer_questions.svg';
+import shareNotes from 'assets/svg/share_notes.svg';
+import studyVirtually from 'assets/svg/study-virtually.svg';
+import withRoot from 'withRoot';
 
 import { styles } from '../_styles/LeaderBoardTabs/PrizeDialog';
+import Dialog from '../Dialog/Dialog';
+import LoadImg from '../LoadImg/LoadImg';
 
 const mvpActions = [
   {

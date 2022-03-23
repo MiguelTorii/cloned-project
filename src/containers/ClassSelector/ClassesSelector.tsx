@@ -1,23 +1,27 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import clsx from 'clsx';
 
-import { withStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { connect } from 'react-redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import { ReactComponent as ClassFeedIcon } from '../../assets/svg/myclass-active.svg';
-import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import { processClasses } from './utils';
+import { ReactComponent as ClassFeedIcon } from 'assets/svg/myclass-active.svg';
+import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import RequestClass from '../RequestClass/RequestClass';
+
+import { processClasses } from './utils';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   formControl: {

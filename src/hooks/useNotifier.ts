@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { useSnackbar } from 'notistack';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { removeSnackbar } from 'actions/notifications';
 

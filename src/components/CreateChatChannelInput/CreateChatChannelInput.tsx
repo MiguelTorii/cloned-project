@@ -1,19 +1,25 @@
 import React, { useCallback, useState, useEffect } from 'react';
+
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
 import { useSelector } from 'react-redux';
-import IconButton from '@material-ui/core/IconButton';
-import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import BatchMessage from '../../containers/Chat/BatchMessage';
-import SelectClassmates from '../CreateCommunityChatChannelInput/SelectClassmates';
-import { sendMessage, createChannel } from '../../api/chat';
-import { searchUsers } from '../../api/user';
-import type { UserState } from '../../reducers/user';
-import { getInitials } from '../../utils/chat';
-import AutoComplete from '../AutoComplete/AutoComplete';
-import { styles } from '../_styles/CreateChatChannelInput';
+import IconButton from '@material-ui/core/IconButton';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
+
+import { getInitials } from 'utils/chat';
+
+import { sendMessage, createChannel } from 'api/chat';
+import { searchUsers } from 'api/user';
+import BatchMessage from 'containers/Chat/BatchMessage';
 import { useChatClient } from 'features/chat';
+
+import { styles } from '../_styles/CreateChatChannelInput';
+import AutoComplete from '../AutoComplete/AutoComplete';
+import SelectClassmates from '../CreateCommunityChatChannelInput/SelectClassmates';
+
+import type { UserState } from 'reducers/user';
 
 type Props = {
   classes?: Record<string, any>;

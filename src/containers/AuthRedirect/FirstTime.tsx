@@ -1,13 +1,16 @@
 import React, { memo, useCallback, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { recoverPassword } from '../../api/sign-in';
-import AuthTitle from './AuthTitle';
-import AuthTextInput from './AuthTextInput';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import { recoverPassword } from 'api/sign-in';
+
 import AuthButton from './AuthButton';
+import AuthTextInput from './AuthTextInput';
+import AuthTitle from './AuthTitle';
 
 const useStyles = makeStyles((theme) => ({
   container: {

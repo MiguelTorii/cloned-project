@@ -1,6 +1,6 @@
-import { Client } from 'twilio-chat';
-import { Action } from '../../types/action';
-import { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
+import type { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
+import type { Client } from 'twilio-chat';
+import type { Action } from 'types/action';
 
 export const hudChatActions = {
   START_CHAT_LOAD: 'START_CHAT_LOAD',

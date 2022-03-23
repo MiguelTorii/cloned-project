@@ -1,5 +1,5 @@
-import Video from 'twilio-video';
 import update from 'immutability-helper';
+import Video from 'twilio-video';
 
 const getDevicesOfKind = (deviceInfos, kind) =>
   deviceInfos.filter((deviceInfo) => deviceInfo.kind === kind);

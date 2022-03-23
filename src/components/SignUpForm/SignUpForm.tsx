@@ -1,6 +1,8 @@
 import React from 'react';
+
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
+
 import { styles } from '../_styles/SignUpForm/index';
 
 type Props = {

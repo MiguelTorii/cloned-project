@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
-
-import { useChatSubscription } from 'features/chat';
-import { PostMonitorContextProvider } from 'contexts/PostMonitorContext';
-import { DeleteModalContextProvider } from 'contexts/DeleteModalContext';
+import type { FC } from 'react';
+import React from 'react';
 
 import ErrorModal from 'components/ErrorModal/ErrorModal';
+import { DeleteModalContextProvider } from 'contexts/DeleteModalContext';
+import { PostMonitorContextProvider } from 'contexts/PostMonitorContext';
+import { useChatSubscription } from 'features/chat';
 
 // Prevent re-rendering all child components when context changes
 const ChatSubscriptionConsumer = ({ children }) => {

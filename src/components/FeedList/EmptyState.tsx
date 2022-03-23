@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { withStyles } from '@material-ui/core/styles';
-import LoadImg from '../LoadImg/LoadImg';
+
 import { styles } from '../_styles/FeedList/EmptyState';
+import LoadImg from '../LoadImg/LoadImg';
 
 type Props = {
   children?: any;

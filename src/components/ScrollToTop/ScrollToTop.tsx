@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import IconArrow from '@material-ui/icons/ArrowUpward';
+
 import clsx from 'clsx';
+
+import IconArrow from '@material-ui/icons/ArrowUpward';
+
 import GradientButton from '../Basic/Buttons/GradientButton';
+
 import useStyles from './styles';
 
 const SCROLL_THRESHOLD = 100;

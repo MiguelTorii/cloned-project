@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Channel, KeyOfChannelEvents, Member } from 'twilio-chat';
+
+import type { Channel, KeyOfChannelEvents, Member } from 'twilio-chat';
 
 const INITIAL_STATE = { channelId: '', friendlyName: '' };
 const EVENT_TYPING_STARTED: KeyOfChannelEvents = 'typingStarted';

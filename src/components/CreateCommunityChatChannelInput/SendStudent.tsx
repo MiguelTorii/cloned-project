@@ -1,23 +1,26 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { ValidatorForm } from 'react-material-ui-form-validator';
-import withStyles from '@material-ui/core/styles/withStyles';
 
-import TextField from '@material-ui/core/TextField';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import { useSelector } from 'react-redux';
+
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import withStyles from '@material-ui/core/styles/withStyles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import { PERMISSIONS } from 'constants/common';
-import { searchUsers } from 'api/user';
-import { sendMessage, createChannel } from 'api/chat';
-import type { UserState } from 'reducers/user';
-import type { ChatState } from 'reducers/chat';
 import { getInitials } from 'utils/chat';
+
+import { sendMessage, createChannel } from 'api/chat';
+import { searchUsers } from 'api/user';
+
+import styles from '../_styles/CreateCommunityChatChannelInput/sendStudent';
 
 import SelectClassmates from './SelectClassmates';
 
-import styles from '../_styles/CreateCommunityChatChannelInput/sendStudent';
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
 
 type Props = {
   classes?: Record<string, any>;

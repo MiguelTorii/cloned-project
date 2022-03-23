@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
+
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import { getInitials } from '../../utils/chat';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import CreateChatChannelDialog from '../../components/CreateChatChannelDialog/CreateChatChannelDialog';
-import { searchUsers } from '../../api/user';
-import { getPresignedURL } from '../../api/media';
-import { createChannel } from '../../api/chat';
+
+import { getInitials } from 'utils/chat';
+
+import { createChannel } from 'api/chat';
+import { getPresignedURL } from 'api/media';
+import { searchUsers } from 'api/user';
+import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
 
 type Props = {
   type?: string | null | undefined;

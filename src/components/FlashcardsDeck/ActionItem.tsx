@@ -1,6 +1,9 @@
-import Box from '@material-ui/core/Box';
-import clsx from 'clsx';
 import React, { useState } from 'react';
+
+import clsx from 'clsx';
+
+import Box from '@material-ui/core/Box';
+
 import useStyles from './styles';
 
 type Props = {

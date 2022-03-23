@@ -1,15 +1,21 @@
 import React, { useMemo } from 'react';
-import Box from '@material-ui/core/Box';
+
 import clsx from 'clsx';
+import parse from 'html-react-parser';
+import PropTypes from 'prop-types';
+
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import IconRepeat from '@material-ui/icons/Replay';
-import PropTypes from 'prop-types';
-import parse from 'html-react-parser';
+
+import { extractTextFromHtml } from 'utils/helpers';
+
+import withRoot from 'withRoot';
+
 import ClickableImage from '../ClickableImage/ClickableImage';
-import { extractTextFromHtml } from '../../utils/helpers';
+
 import { ANSWER_LEVELS } from './FlashcardsReview';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 
 const CardBoardContent = ({ content, image, isQuestion, onFlip, onAction }) => {
   const classes: any = useStyles();

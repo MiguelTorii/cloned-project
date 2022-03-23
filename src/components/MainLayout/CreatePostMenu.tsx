@@ -1,12 +1,15 @@
 import React, { memo, useMemo } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Menu from '@material-ui/core/Menu';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import Notes from '../../assets/svg/notes.svg';
-import Questions from '../../assets/svg/questions.svg';
-import Links from '../../assets/svg/links.svg';
-import Videos from '../../assets/svg/videos.svg';
-import FlashCards from '../../assets/svg/flashcards.svg';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import FlashCards from 'assets/svg/flashcards.svg';
+import Links from 'assets/svg/links.svg';
+import Notes from 'assets/svg/notes.svg';
+import Questions from 'assets/svg/questions.svg';
+import Videos from 'assets/svg/videos.svg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import { useStyles } from '../_styles/MainLayout/CreatePostMenu';
 
 const CreatePostMenu = ({

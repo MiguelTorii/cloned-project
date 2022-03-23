@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+
 import clsx from 'clsx';
 import parse from 'html-react-parser';
+import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 
+import { extractTextFromHtml } from 'utils/helpers';
+
+import withRoot from 'withRoot';
+
 import useStyles from './styles';
-import { extractTextFromHtml } from '../../utils/helpers';
-import withRoot from '../../withRoot';
 
 const ContentCard = ({
   dragRef,

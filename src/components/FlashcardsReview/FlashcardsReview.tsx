@@ -1,46 +1,53 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import IconSchool from '@material-ui/icons/School';
+
+import clsx from 'clsx';
+import { differenceInMilliseconds } from 'date-fns';
+import _ from 'lodash';
+import { useIdleTimer } from 'react-idle-timer';
+import { useSelector } from 'react-redux';
+import store from 'store';
+import uuidv4 from 'uuid/v4';
+
 import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
-import IconPrev from '@material-ui/icons/SkipPrevious';
-import IconClose from '@material-ui/icons/Close';
-import IconShuffle from '@material-ui/icons/Shuffle';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import Slide from '@material-ui/core/Slide';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import Typography from '@material-ui/core/Typography';
 import IconLeft from '@material-ui/icons/ArrowBack';
 import IconRight from '@material-ui/icons/ArrowForward';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import useIconClasses from 'components/_styles/Icons';
-import clsx from 'clsx';
-import store from 'store';
-import _ from 'lodash';
-import uuidv4 from 'uuid/v4';
-import { useIdleTimer } from 'react-idle-timer';
-import { differenceInMilliseconds } from 'date-fns';
-import Link from '@material-ui/core/Link';
 import IconBack from '@material-ui/icons/ChevronLeft';
-import { useSelector } from 'react-redux';
-import IconShare from '@material-ui/icons/ShareOutlined';
+import IconClose from '@material-ui/icons/Close';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import IconReturn from '@material-ui/icons/Reply';
-import { TIMEOUT } from '../../constants/common';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import { APP_ROOT_PATH, INTERVAL } from '../../constants/app';
-import GifCongrats from '../../assets/gif/match-game-congrats.gif';
-import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
+import IconSchool from '@material-ui/icons/School';
+import IconShare from '@material-ui/icons/ShareOutlined';
+import IconShuffle from '@material-ui/icons/Shuffle';
+import IconPrev from '@material-ui/icons/SkipPrevious';
+
+import { APP_ROOT_PATH, INTERVAL } from 'constants/app';
+import { TIMEOUT } from 'constants/common';
+import { shuffleArray } from 'utils/helpers';
+
+import { logEvent, logEventLocally } from 'api/analytics';
+import GifCongrats from 'assets/gif/match-game-congrats.gif';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import ImgNoCards from 'assets/svg/no-cards.svg';
+import withRoot from 'withRoot';
+
 import TransparentButton from '../Basic/Buttons/TransparentButton';
-import ImgNoCards from '../../assets/svg/no-cards.svg';
-import Dialog from '../Dialog/Dialog';
-import { shuffleArray } from '../../utils/helpers';
-import CardBoard from './CardBoard';
-import LinearProgressBar from '../LinearProgressBar/LinearProgressBar';
 import TransparentIconButton from '../Basic/Buttons/TransparentIconButton';
+import Dialog from '../Dialog/Dialog';
+import LinearProgressBar from '../LinearProgressBar/LinearProgressBar';
+import ShareLinkModal from '../ShareLinkModal/ShareLinkModal';
+
+import CardBoard from './CardBoard';
 import MarkCard from './MarkCard';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
+
+import useIconClasses from 'components/_styles/Icons';
 
 export const ANSWER_LEVELS = [
   {

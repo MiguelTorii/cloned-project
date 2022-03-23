@@ -1,14 +1,19 @@
 /* eslint-disable no-nested-ternary */
-import React, { RefObject } from 'react';
+import type { RefObject } from 'react';
+import React from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { ReactComponent as Mute } from '../../assets/svg/mute.svg';
+
+import { ReactComponent as Mute } from 'assets/svg/mute.svg';
+
 import { styles } from '../_styles/MeetUp/VideoGridItem';
 
 type Props = {

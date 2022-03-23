@@ -1,7 +1,9 @@
 import React from 'react';
-import Radio from '@material-ui/core/Radio';
-import { makeStyles } from '@material-ui/core';
+
 import clsx from 'clsx';
+
+import { makeStyles } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
 
 const useStyles = makeStyles({
   root: {

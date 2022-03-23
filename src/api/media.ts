@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
-import type { PresignedURL } from '../types/models';
-import { APIPresignedURL } from './models/APIPresignedURL';
+
+import type { APIPresignedURL } from './models/APIPresignedURL';
+import type { PresignedURL } from 'types/models';
 
 export const getPresignedURLs = async ({
   userId,

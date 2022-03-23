@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+
+import backgroundImg from 'assets/img/onboarding-background.png';
+import notesOnboardingFirst from 'assets/svg/notesOnboardingFirst.svg';
+import notesOnboardingSecond from 'assets/svg/notesOnboardingSecond.svg';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+import LoadImg from 'components/LoadImg/LoadImg';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import LoadImg from '../../components/LoadImg/LoadImg';
-import notesOnboardingFirst from '../../assets/svg/notesOnboardingFirst.svg';
-import notesOnboardingSecond from '../../assets/svg/notesOnboardingSecond.svg';
-import backgroundImg from '../../assets/img/onboarding-background.png';
 
 const centered = {
   alignItems: 'center',

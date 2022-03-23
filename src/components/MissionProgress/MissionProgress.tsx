@@ -1,8 +1,12 @@
 import React, { useCallback } from 'react';
+
+import lodash from 'lodash';
+
 import { Box, LinearProgress, Tooltip, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import lodash from 'lodash';
+
 import SemiBoldTypography from '../SemiBoldTypography/SemiBoldTypography';
+
 import { useStyles } from './MissionProgressStyles';
 
 type Props = {

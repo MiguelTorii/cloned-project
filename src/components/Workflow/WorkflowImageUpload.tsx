@@ -1,19 +1,23 @@
 import React, { useMemo, useContext, useState, useCallback } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Dropzone from 'react-dropzone';
+
+import axios from 'axios';
 import imageCompression from 'browser-image-compression';
+import update from 'immutability-helper';
+import Dropzone from 'react-dropzone';
 import Lightbox from 'react-images';
 import uuidv4 from 'uuid/v4';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import AddIcon from '@material-ui/icons/Add';
-import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import update from 'immutability-helper';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
-import WorkflowContext from '../../containers/Workflow/WorkflowContext';
-import { getPresignedURLs } from '../../api/media';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
+
+import { getPresignedURLs } from 'api/media';
+import WorkflowContext from 'containers/Workflow/WorkflowContext';
+
 import { useStyles } from '../_styles/Workflow/WorkflowImageUpload';
 
 const WorkflowImageUpload = React.forwardRef<any, any>(({ imagesProps }, ref) => {

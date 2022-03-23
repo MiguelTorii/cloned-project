@@ -1,46 +1,48 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import Typography from '@material-ui/core/Typography';
-import IconSchool from '@material-ui/icons/School';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import useIconClasses from 'components/_styles/Icons';
+
 import clsx from 'clsx';
-import Slide from '@material-ui/core/Slide';
-import update from 'immutability-helper';
-import Grid from '@material-ui/core/Grid';
-import { Select } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
-import _ from 'lodash';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import IconCheck from '@material-ui/icons/Check';
-import IconRetry from '@material-ui/icons/Replay';
-import Link from '@material-ui/core/Link';
-import IconBack from '@material-ui/icons/ChevronLeft';
-import { useIdleTimer } from 'react-idle-timer';
 import { differenceInMilliseconds } from 'date-fns';
+import update from 'immutability-helper';
+import _ from 'lodash';
+import { useIdleTimer } from 'react-idle-timer';
+
+import { Select } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import MenuItem from '@material-ui/core/MenuItem';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Slide from '@material-ui/core/Slide';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import Typography from '@material-ui/core/Typography';
+import IconCheck from '@material-ui/icons/Check';
+import IconBack from '@material-ui/icons/ChevronLeft';
 import IconClose from '@material-ui/icons/Close';
-import ChoiceRadio from './ChoiceRadio';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import IconRetry from '@material-ui/icons/Replay';
+import IconSchool from '@material-ui/icons/School';
+
+import { INTERVAL } from 'constants/app';
+import { TIMEOUT } from 'constants/common';
+import { arrElemToId, englishIdFromNumber, extractTextFromHtml, shuffleArray } from 'utils/helpers';
+
+import { logEvent } from 'api/analytics';
+import ImageCorrect from 'assets/svg/answer-correct.svg';
+import ImageWrong from 'assets/svg/answer-wrong.svg';
+import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
+import withRoot from 'withRoot';
+
 import GradientButton from '../Basic/Buttons/GradientButton';
-import ImageCorrect from '../../assets/svg/answer-correct.svg';
-import ImageWrong from '../../assets/svg/answer-wrong.svg';
-import Timer, { TIMER_STATUS } from '../Timer/Timer';
 import ImageDialog from '../ImageDialog/ImageDialog';
-import { TIMEOUT } from '../../constants/common';
-import { logEvent } from '../../api/analytics';
-import { INTERVAL } from '../../constants/app';
-import {
-  arrElemToId,
-  englishIdFromNumber,
-  extractTextFromHtml,
-  shuffleArray
-} from '../../utils/helpers';
+import Timer, { TIMER_STATUS } from '../Timer/Timer';
+
+import ChoiceRadio from './ChoiceRadio';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
+
+import useIconClasses from 'components/_styles/Icons';
 
 const PROBLEM_COUNT_THRESHOLD = 3;
 const MULTIPLE_CHOICE_OPTIONS_COUNT = 4;

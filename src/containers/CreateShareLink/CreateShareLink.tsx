@@ -1,34 +1,35 @@
 import React from 'react';
+
+import { push } from 'connected-react-router';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router';
-import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
-import { processClasses } from '../ClassesSelector/utils';
-import { cypherClass, decypherClass } from '../../utils/crypto';
-import Tooltip from '../Tooltip/Tooltip';
-import { PERMISSIONS } from '../../constants/common';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
-import type { SelectType } from '../../types/models';
-import CreatePostForm from '../../components/CreatePostForm/CreatePostForm';
+import { bindActionCreators } from 'redux';
+
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { PERMISSIONS } from 'constants/common';
+import { cypherClass, decypherClass } from 'utils/crypto';
+
+import * as notificationsActions from 'actions/notifications';
+import { logEvent, logEventLocally } from 'api/analytics';
+import { updateShareURL, createBatchShareLink, createShareLink, getShareLink } from 'api/posts';
+import CreatePostForm from 'components/CreatePostForm/CreatePostForm';
+import LinkPreview from 'components/LinkPreview/LinkPreview';
+import OutlinedTextValidator from 'components/OutlinedTextValidator/OutlinedTextValidator';
+import SimpleErrorDialog from 'components/SimpleErrorDialog/SimpleErrorDialog';
+
 import ClassesSelector from '../ClassesSelector/ClassesSelector';
-import OutlinedTextValidator from '../../components/OutlinedTextValidator/OutlinedTextValidator';
-import LinkPreview from '../../components/LinkPreview/LinkPreview';
-import SimpleErrorDialog from '../../components/SimpleErrorDialog/SimpleErrorDialog';
-import {
-  updateShareURL,
-  createBatchShareLink,
-  createShareLink,
-  getShareLink
-} from '../../api/posts';
-import { logEvent, logEventLocally } from '../../api/analytics';
-import * as notificationsActions from '../../actions/notifications';
+import { processClasses } from '../ClassesSelector/utils';
+import ClassMultiSelect from '../ClassMultiSelect/ClassMultiSelect';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Tooltip from '../Tooltip/Tooltip';
+
+import type { UserState } from 'reducers/user';
+import type { SelectType } from 'types/models';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   preview: {

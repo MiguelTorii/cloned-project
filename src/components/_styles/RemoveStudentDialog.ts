@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+
 import { dialogStyle } from '../Dialog/Dialog';
 
 const useStyles = makeStyles((theme: any) => ({

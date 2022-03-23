@@ -1,8 +1,11 @@
 import React, { useState, useCallback, memo } from 'react';
-import ListItemText from '@material-ui/core/ListItemText';
+
+import clsx from 'clsx';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import clsx from 'clsx';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import { useStyles } from '../_styles/MainLayout/DrawerItem';
 
 type Props = {

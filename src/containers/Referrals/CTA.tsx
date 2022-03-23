@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import { withRouter } from 'react-router';
+
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { getReferralProgram } from '../../api/referral';
+
+import { getReferralProgram } from 'api/referral';
+
 import Invite from './Invite';
 
 const styles = () => ({

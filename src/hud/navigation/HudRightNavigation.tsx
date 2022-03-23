@@ -1,14 +1,25 @@
 import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Action, Dispatch } from 'redux';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+
 import { push } from 'connected-react-router';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Badge } from '@material-ui/core';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
+import { POST_TYPES } from 'constants/app';
+import { PERMISSIONS } from 'constants/common';
+
+import { ReactComponent as IconSubmitAnIdea } from 'assets/svg/ic_feedback.svg';
+import { ReactComponent as IconMobileApp } from 'assets/svg/ic_get_mobile_app.svg';
+import { ReactComponent as IconExpertModeToggle } from 'assets/svg/ic_go_to_expert_mode.svg';
+import { ReactComponent as IconSignOut } from 'assets/svg/ic_logout.svg';
+import { ReactComponent as IconPointsHistory } from 'assets/svg/ic_points_history.svg';
+import { ReactComponent as IconAboutMe } from 'assets/svg/ic_profile.svg';
+import { ReactComponent as IconSupport } from 'assets/svg/ic_support.svg';
+import { ReactComponent as IconInvite } from 'assets/svg/invite-icon.svg';
 import Avatar from 'components/Avatar';
-import { useStyles } from './HudNavigationStyles';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
-
+import Notifications from 'containers/Notifications/Feed';
+import useCampaigns from 'hooks/useCampaigns';
 import {
   ABOUT_ME_AREA,
   NOTIFICATIONS_AREA,
@@ -22,23 +33,16 @@ import {
   RIGHT_SIDE_AREA,
   INVITE_FRIENDS_AREA
 } from 'hud/navigationState/hudNavigation';
-import { UserState } from '../../reducers/user';
-import HudToolWithDropdown from './HudToolWithDropdown';
-import { HudToolData } from './HudToolData';
-import { ReactComponent as IconAboutMe } from '../../assets/svg/ic_profile.svg';
-import { ReactComponent as IconPointsHistory } from '../../assets/svg/ic_points_history.svg';
-import { ReactComponent as IconSubmitAnIdea } from '../../assets/svg/ic_feedback.svg';
-import { ReactComponent as IconSupport } from '../../assets/svg/ic_support.svg';
-import { ReactComponent as IconMobileApp } from '../../assets/svg/ic_get_mobile_app.svg';
-import { ReactComponent as IconExpertModeToggle } from '../../assets/svg/ic_go_to_expert_mode.svg';
-import { ReactComponent as IconSignOut } from '../../assets/svg/ic_logout.svg';
-import { ReactComponent as IconInvite } from 'assets/svg/invite-icon.svg';
-import { User } from '../../types/models';
+
+import { useStyles } from './HudNavigationStyles';
 import HudTool from './HudTool';
-import Notifications from '../../containers/Notifications/Feed';
-import { POST_TYPES } from '../../constants/app';
-import { PERMISSIONS } from '../../constants/common';
-import useCampaigns from 'hooks/useCampaigns';
+import HudToolWithDropdown from './HudToolWithDropdown';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
+import type { HudToolData } from './HudToolData';
+import type { UserState } from 'reducers/user';
+import type { Action, Dispatch } from 'redux';
+import type { User } from 'types/models';
 
 const ICON_SIZE = 30;
 

@@ -1,13 +1,15 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import ReplyIcon from '@material-ui/icons/Reply';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import ReplyIcon from '@material-ui/icons/Reply';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+
 import { styles } from '../_styles/RecommendedPostsCard';
 
 type Props = {

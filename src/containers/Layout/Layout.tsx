@@ -1,28 +1,34 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+
 import { push as routePush } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
-import AddRemoveClasses from '../../components/AddRemoveClasses/AddRemoveClasses';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import ReferralStatus from '../Referrals/Status';
-import { getInitials } from '../../utils/chat';
-import * as userActions from '../../actions/user';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import type { State as StoreState } from '../../types/state';
-import type { UserState } from '../../reducers/user';
-import * as signInActions from '../../actions/sign-in';
-import Notifications from '../Notifications/Feed';
-import BlockedUsersManager from '../BlockedUsersManager/BlockedUsersManager';
-import WebNotifications from '../WebNotifications/WebNotification';
-import RequestClass from '../RequestClass/RequestClass';
-import BottomNav from '../../components/BottomNav/BottomNav';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import * as feedActions from '../../actions/feed';
+import { withStyles } from '@material-ui/core/styles';
+
+import { getInitials } from 'utils/chat';
+
+import * as feedActions from 'actions/feed';
+import * as signInActions from 'actions/sign-in';
+import * as userActions from 'actions/user';
+import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
+import BottomNav from 'components/BottomNav/BottomNav';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+import MainLayout from 'components/MainLayout/MainLayout';
 import { useNotifier } from 'hooks';
+
+import BlockedUsersManager from '../BlockedUsersManager/BlockedUsersManager';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Notifications from '../Notifications/Feed';
+import ReferralStatus from '../Referrals/Status';
+import RequestClass from '../RequestClass/RequestClass';
+import WebNotifications from '../WebNotifications/WebNotification';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   loader: {

@@ -1,13 +1,17 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { Link as RouterLink } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { ReactComponent as AppLogo } from '../../assets/svg/circlein_logo.svg';
+import Typography from '@material-ui/core/Typography';
+
+import { ReactComponent as AppLogo } from 'assets/svg/circlein_logo.svg';
+
 import { styles } from '../_styles/ForgotPasswordForm';
 
 const MyLink = ({ link, ...props }) => <RouterLink to={link} {...props} />;

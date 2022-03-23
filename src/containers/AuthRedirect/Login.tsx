@@ -1,16 +1,19 @@
 import React, { memo, useCallback, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+
+import { Box, Hidden } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Box, Hidden } from '@material-ui/core';
-import getappqrcode from '../../assets/img/getappqrcode.png';
-import getappandroid from '../../assets/img/getappandroid.png';
-import getappios from '../../assets/img/getappios.png';
-import LoadImg from '../../components/LoadImg/LoadImg';
+import Typography from '@material-ui/core/Typography';
+
+import getappandroid from 'assets/img/getappandroid.png';
+import getappios from 'assets/img/getappios.png';
+import getappqrcode from 'assets/img/getappqrcode.png';
+import LoadImg from 'components/LoadImg/LoadImg';
+import SemiBoldTypography from 'components/SemiBoldTypography/SemiBoldTypography';
+
 import AuthButton from './AuthButton';
-import SemiBoldTypography from '../../components/SemiBoldTypography/SemiBoldTypography';
 import AuthTextInput from './AuthTextInput';
 import AuthTitle from './AuthTitle';
 

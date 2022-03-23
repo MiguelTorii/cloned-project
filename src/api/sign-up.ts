@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { API_ROUTES } from '../constants/routes';
+
+import { API_ROUTES } from 'constants/routes';
+
 import { getToken } from './utils';
 
 export const fetchSchools = async ({ stateId }: { stateId: number }) => {

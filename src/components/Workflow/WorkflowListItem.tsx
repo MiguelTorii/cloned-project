@@ -1,17 +1,20 @@
 import React, { memo, useMemo } from 'react';
+
+import cx from 'classnames';
+import moment from 'moment';
+
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Grid from '@material-ui/core/Grid';
-import moment from 'moment';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Chip from '@material-ui/core/Chip';
-import cx from 'classnames';
 import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+
 import { useStyles } from '../_styles/Workflow/WorkflowListItem';
 
 const getTitle = (downMd, downSm, downXs, title) => {

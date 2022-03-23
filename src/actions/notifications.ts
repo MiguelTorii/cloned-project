@@ -1,8 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import uuidV4 from 'uuid/v4';
-import { notificationsActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
+
+import { notificationsActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
+import type { Dispatch } from 'types/store';
 
 const enqueueSnackbarRequest = ({ notification }): Action => ({
   type: notificationsActions.ENQUEUE_SNACKBAR_REQUEST,

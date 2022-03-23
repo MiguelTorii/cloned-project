@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from 'redux/store';
+
 import { useQueryClient } from 'react-query';
+import { useDispatch } from 'react-redux';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
@@ -10,8 +10,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import { parseChannelMetadata } from 'utils/chat';
 import { PERMISSIONS } from 'constants/common';
+import { parseChannelMetadata } from 'utils/chat';
+
+import Dialog from 'components/Dialog';
+import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import {
   useSelectChannelById,
   useChannelMetadataById,
@@ -20,13 +24,10 @@ import {
   UNREAD_COUNT_QUERY_KEY,
   setChannelRead
 } from 'features/chat';
-
-import Dialog from 'components/Dialog';
-import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
-import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
-import BaseChatItem from './BaseChatItem';
+import { useAppSelector } from 'redux/store';
 
 import useStyles from './_styles/mainChatItem';
+import BaseChatItem from './BaseChatItem';
 
 type Props = {
   channelId: string;

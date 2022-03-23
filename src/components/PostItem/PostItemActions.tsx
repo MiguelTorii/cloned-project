@@ -1,12 +1,15 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Tooltip from '../../containers/Tooltip/Tooltip';
-import { ReactComponent as ThanksIcon } from '../../assets/svg/ic_thanks_hands.svg';
-import thanksSvg from '../../assets/svg/thanks.svg';
-import commentSvg from '../../assets/svg/comment.svg';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import commentSvg from 'assets/svg/comment.svg';
+import { ReactComponent as ThanksIcon } from 'assets/svg/ic_thanks_hands.svg';
+import thanksSvg from 'assets/svg/thanks.svg';
+import Tooltip from 'containers/Tooltip/Tooltip';
+
 import { styles } from '../_styles/PostItem/PostItemActions';
 
 type Props = {

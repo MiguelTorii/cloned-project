@@ -1,13 +1,16 @@
 import React from 'react';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../Dialog/Dialog';
-import TipsAnimation from '../../assets/gif/tips.gif';
-import tipsBubbles from '../../assets/svg/tipsBubbles.svg';
-import tipsCards from '../../assets/svg/tipsCards.svg';
-import tipsPad from '../../assets/svg/tipsPad.svg';
-import LoadImg from '../LoadImg/LoadImg';
+
+import TipsAnimation from 'assets/gif/tips.gif';
+import tipsBubbles from 'assets/svg/tipsBubbles.svg';
+import tipsCards from 'assets/svg/tipsCards.svg';
+import tipsPad from 'assets/svg/tipsPad.svg';
+
 import { useStyles } from '../_styles/Workflow/Tips';
+import Dialog from '../Dialog/Dialog';
+import LoadImg from '../LoadImg/LoadImg';
 
 const Tips = ({ open, close }) => {
   const classes: any = useStyles();

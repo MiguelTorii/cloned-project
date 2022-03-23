@@ -1,27 +1,32 @@
 /* eslint-disable no-empty */
 import React, { useCallback, useState, useEffect } from 'react';
+
+import { push as routePush } from 'connected-react-router';
+import parse from 'html-react-parser';
 import debounce from 'lodash/debounce';
 import { connect, useDispatch } from 'react-redux';
-import parse from 'html-react-parser';
 import { bindActionCreators } from 'redux';
-import { push as routePush } from 'connected-react-router';
-import { withStyles } from '@material-ui/core/styles';
+
 import Button from '@material-ui/core/Button';
-import withRoot from '../../withRoot';
-import * as OnboardingActions from '../../actions/onboarding';
-import * as chatActions from '../../actions/chat';
-import { updateTitle } from '../../actions/web-notifications';
-import { useAppSelector } from 'redux/store';
-import { selectChannelList, selectUnread } from 'redux/chat/selectors';
-import { enqueueSnackbar } from '../../actions/notifications';
-import type { UserState } from '../../reducers/user';
-import type { ChatState } from '../../reducers/chat';
-import usePrevious from '../../hooks/usePrevious';
-import type { State as StoreState } from '../../types/state';
-import { logEvent } from '../../api/analytics';
-import { truncate } from '../../utils/helpers';
+import { withStyles } from '@material-ui/core/styles';
+
+import { truncate } from 'utils/helpers';
+
+import * as chatActions from 'actions/chat';
 import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
+import { enqueueSnackbar } from 'actions/notifications';
+import * as OnboardingActions from 'actions/onboarding';
+import { updateTitle } from 'actions/web-notifications';
+import { logEvent } from 'api/analytics';
 import { useChatClient } from 'features/chat';
+import usePrevious from 'hooks/usePrevious';
+import { selectChannelList, selectUnread } from 'redux/chat/selectors';
+import { useAppSelector } from 'redux/store';
+import withRoot from 'withRoot';
+
+import type { ChatState } from 'reducers/chat';
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 const MESSAGE_CONTENT_CHARACTER_LIMIT = 50;
 

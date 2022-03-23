@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
+
 import cx from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
 import { Picker } from 'emoji-mart';
+
 import IconButton from '@material-ui/core/IconButton';
 import Popover from '@material-ui/core/Popover';
+import { withStyles } from '@material-ui/core/styles';
 import SentimentSatisfiedOutlinedIcon from '@material-ui/icons/SentimentSatisfiedOutlined';
+
 import 'emoji-mart/css/emoji-mart.css';
 import { styles } from '../_styles/EmojiSelector';
 

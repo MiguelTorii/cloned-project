@@ -1,7 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
-import usePreloadImage from './usePreloadImage';
+
 import { animations, easings } from './easings';
+import usePreloadImage from './usePreloadImage';
 import './keyframes.css';
 
 /**

@@ -61,6 +61,11 @@ module.exports = {
             alphabetize: { order: 'asc', caseInsensitive: true },
             pathGroups: [
               {
+                pattern: 'react',
+                group: 'external',
+                position: 'before'
+              },
+              {
                 pattern: '@material-ui/**',
                 group: 'external',
                 position: 'after'
@@ -79,7 +84,7 @@ module.exports = {
                 position: 'after'
               }
             ],
-            pathGroupsExcludedImportTypes: ['@material-ui/**']
+            pathGroupsExcludedImportTypes: ['@material-ui/**', 'react']
           }
         ],
         'no-restricted-imports': [

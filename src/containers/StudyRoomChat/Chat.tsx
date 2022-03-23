@@ -1,32 +1,33 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import axios from 'axios';
 import cx from 'classnames';
-import uuidv4 from 'uuid/v4';
-import { useSelector } from 'react-redux';
-import { useQueryClient } from 'react-query';
-
-import withStyles from '@material-ui/core/styles/withStyles';
-
 import Lightbox from 'react-images';
-import { Channel } from 'twilio-chat';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
+import { useQueryClient } from 'react-query';
+import { useSelector } from 'react-redux';
+import uuidv4 from 'uuid/v4';
 
-import { sendMessage } from 'api/chat';
-import { logEvent } from 'api/analytics';
-import { UserState } from 'reducers/user';
-import { getPresignedURL } from 'api/media';
-import { setChannelRead, useTyping } from 'features/chat';
-import { showNotification } from 'actions/notifications';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+
 import { getFileAttributes, processMessages } from 'utils/chat';
 
-import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import { showNotification } from 'actions/notifications';
+import { logEvent } from 'api/analytics';
+import { sendMessage } from 'api/chat';
+import { getPresignedURL } from 'api/media';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
+import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
+import { setChannelRead, useTyping } from 'features/chat';
 
 import ChatMessage from './ChatMessage';
 import ChatTextField from './ChatTextField';
-import { StudyRoomAvatars, StudyRoomChatMembers } from './StudyRoomChat';
+
+import type { StudyRoomAvatars, StudyRoomChatMembers } from './StudyRoomChat';
+import type { UserState } from 'reducers/user';
+import type { Channel } from 'twilio-chat';
 
 const styles = (theme) => ({
   messageScroll: {

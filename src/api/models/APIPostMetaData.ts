@@ -1,5 +1,5 @@
-import { APIRecommendedPost } from './APIRecommendedPost';
-import { APITag } from './APITag';
+import type { APIRecommendedPost } from './APIRecommendedPost';
+import type { APITag } from './APITag';
 
 export type APIPostMetaData = {
   recommended_posts: APIRecommendedPost[];

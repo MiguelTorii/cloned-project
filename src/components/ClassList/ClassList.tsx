@@ -1,9 +1,13 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
+
 import { withStyles } from '@material-ui/core/styles';
-import type { UserState } from '../../reducers/user';
-import type { State as StoreState } from '../../types/state';
+
 import { styles } from '../_styles/ClassList';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   classes?: Record<string, any>;

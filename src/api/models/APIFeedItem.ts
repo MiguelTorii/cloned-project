@@ -1,7 +1,7 @@
-import { APINote } from './APINote';
-import { APITag } from './APITag';
-import { APIPostInfo } from './APIPostInfo';
-import { APIComment } from './APIComment';
+import type { APIComment } from './APIComment';
+import type { APINote } from './APINote';
+import type { APIPostInfo } from './APIPostInfo';
+import type { APITag } from './APITag';
 
 export type APIFeedItem = {
   user_id: number;

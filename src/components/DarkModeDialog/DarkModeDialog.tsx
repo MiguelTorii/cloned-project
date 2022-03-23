@@ -1,10 +1,13 @@
 import React from 'react';
+
 import Typography from '@material-ui/core/Typography';
-import Dialog from '../Dialog/Dialog';
-import DarkStar from '../../assets/svg/dark-star.svg';
-import DarkMoon from '../../assets/svg/dark-moon.svg';
-import LoadImg from '../LoadImg/LoadImg';
+
+import DarkMoon from 'assets/svg/dark-moon.svg';
+import DarkStar from 'assets/svg/dark-star.svg';
+
 import { useStyles } from '../_styles/DarkModeDialog';
+import Dialog from '../Dialog/Dialog';
+import LoadImg from '../LoadImg/LoadImg';
 
 const DarkModeDialog = ({ open, finish }) => {
   const classes: any = useStyles();

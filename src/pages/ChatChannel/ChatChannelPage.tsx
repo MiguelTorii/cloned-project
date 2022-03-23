@@ -1,17 +1,21 @@
 // TODO Remove, unused
 import React, { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, useParams } from 'react-router';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import withRoot from '../../withRoot';
-import Layout from '../../containers/Layout/Layout';
-import ChatPage from '../../containers/CommunityChat/ChatPage';
-import { getChatIdFromHash } from '../../api/chat';
-import { Dispatch } from '../../types/store';
-import { enqueueSnackbar } from '../../actions/notifications';
-import { ChatState } from '../../reducers/chat';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { enqueueSnackbar } from 'actions/notifications';
+import { getChatIdFromHash } from 'api/chat';
+import ChatPage from 'containers/CommunityChat/ChatPage';
+import Layout from 'containers/Layout/Layout';
+import withRoot from 'withRoot';
+
+import type { ChatState } from 'reducers/chat';
+import type { Dispatch } from 'types/store';
 
 const useStyles = makeStyles((theme) => ({
   item: {

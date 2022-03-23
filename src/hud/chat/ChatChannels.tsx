@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+
 import { useSelector } from 'react-redux';
+
 import { Tab, Tabs, withStyles } from '@material-ui/core';
 import IconChat from '@material-ui/icons/Chat';
-import { ReactComponent as IconChatMembers } from '../../assets/svg/chat-studyroom-members.svg';
+
+import { ReactComponent as IconChatMembers } from 'assets/svg/chat-studyroom-members.svg';
+
 import CommunityPicker from '../communityPicker/CommunityPicker';
-import { useStyles } from './HudChatStyles';
+
 import ChatChannel from './ChatChannel';
 import ChatMember from './ChatMember';
-import { CommunityData, HudChatState } from '../chatState/hudChatState';
+import { useStyles } from './HudChatStyles';
+
+import type { CommunityData, HudChatState } from '../chatState/hudChatState';
 
 const StyledTabs = withStyles((theme) => ({
   flexContainer: {

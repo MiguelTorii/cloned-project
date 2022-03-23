@@ -1,4 +1,4 @@
-import { IStorySequenceOptions } from './StorySequence';
+import type { IStorySequenceOptions } from './StorySequence';
 
 export interface StorySection extends IStorySequenceOptions {
   /**

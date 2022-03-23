@@ -1,5 +1,8 @@
 import { useQuery } from 'react-query';
-import { ChannelsMetadata, getTransformedChannelsMetada, ChannelMetadata } from '../api/channels';
+
+import { getTransformedChannelsMetada } from 'features/chat';
+
+import type { ChannelMetadata, ChannelsMetadata } from 'features/chat';
 
 export const QUERY_KEY_CHANNEL_METADATA = 'channelMetadata';
 

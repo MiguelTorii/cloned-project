@@ -1,10 +1,15 @@
 import React from 'react';
+
 import withStyles from '@material-ui/core/styles/withStyles';
-import type { SelectType } from '../../types/models';
-import FederatedIdentities from '../../components/FederatedIdentities/FederatedIdentities';
-import { REDIRECT_URI } from '../../constants/app';
+
+import { REDIRECT_URI } from 'constants/app';
+
+import { getLMSSchools } from 'api/lms';
+import FederatedIdentities from 'components/FederatedIdentities/FederatedIdentities';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import { getLMSSchools } from '../../api/lms';
+
+import type { SelectType } from 'types/models';
 
 // const REDIRECT_URI = 'http://localhost:2000/oauth';
 const styles = () => ({});

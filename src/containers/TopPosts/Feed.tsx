@@ -1,7 +1,11 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
+
 import { withStyles } from '@material-ui/core/styles';
-import PostsList from '../../components/PostsList/PostsList';
+
+import PostsList from 'components/PostsList/PostsList';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const styles = () => ({

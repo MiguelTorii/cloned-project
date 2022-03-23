@@ -1,8 +1,11 @@
 import React from 'react';
+
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
-import EmptyState from '../../components/FeedList/EmptyState';
-import EmptyPastClass from '../../assets/img/empty-past-class.png';
+
+import EmptyPastClass from 'assets/img/empty-past-class.png';
+import EmptyState from 'components/FeedList/EmptyState';
+
 import ClassNotes from './ClassNotes';
 
 const useStyles = makeStyles((theme) => ({

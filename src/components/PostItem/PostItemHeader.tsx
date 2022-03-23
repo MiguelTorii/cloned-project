@@ -1,41 +1,46 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
+
+import _ from 'lodash';
 import moment from 'moment';
 import queryString from 'query-string';
+import { connect } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import ReportIcon from '@material-ui/icons/Report';
+import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import CreateIcon from '@material-ui/icons/Create';
+import ReportIcon from '@material-ui/icons/Report';
 import ShareIcon from '@material-ui/icons/Share';
-import _ from 'lodash';
+
+import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
+import { getInitials } from 'utils/chat';
+import { buildPath, getPastClassIds } from 'utils/helpers';
 
 import Avatar from 'components/Avatar';
-import RoleBadge from '../RoleBadge/RoleBadge';
-import CustomQuill from '../CustomQuill/CustomQuill';
-import SharePost from '../../containers/SharePost/SharePost';
-import { getInitials } from '../../utils/chat';
-import { buildPath, getPastClassIds } from '../../utils/helpers';
+import SharePost from 'containers/SharePost/SharePost';
+import { PROFILE_SOURCE_KEY } from 'routeConstants';
+
 import { styles } from '../_styles/PostItem/PostItemHeader';
+import CustomQuill from '../CustomQuill/CustomQuill';
 import HoverPopup from '../HoverPopup/HoverPopup';
-import { ANONYMOUS_USER_ID, PROFILE_PAGE_SOURCE } from 'constants/common';
-import type { State as StoreState } from '../../types/state';
-import { PROFILE_SOURCE_KEY } from '../../routeConstants';
+import RoleBadge from '../RoleBadge/RoleBadge';
+
+import type { State as StoreState } from 'types/state';
 
 const BODY_LENGTH_THRESHOLD = 80;
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (

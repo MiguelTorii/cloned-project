@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+
 import { useSnackbar } from 'notistack';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { useSelector } from 'react-redux';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
-import type { UserState } from '../../reducers/user';
-import { createShareURL } from '../../api/posts';
-import { logEvent } from '../../api/analytics';
-import ShareDialog from '../../components/ShareDialog/ShareDialog';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import { logEvent } from 'api/analytics';
+import { createShareURL } from 'api/posts';
+import ShareDialog from 'components/ShareDialog/ShareDialog';
+
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
+import type { UserState } from 'reducers/user';
 
 const styles = (theme) => ({
   stackbar: {

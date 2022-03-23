@@ -1,6 +1,9 @@
 import React from 'react';
+
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+
 import { withStyles } from '@material-ui/core/styles';
+
 import { styles } from '../_styles/PostItem/SkeletonLoad';
 
 const SkeletonLoad = ({ classes }) => (

@@ -1,36 +1,42 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import parse from 'html-react-parser';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+
 import cx from 'classnames';
-import Button from '@material-ui/core/Button';
-import MoreVerticalIcon from '@material-ui/icons/MoreVert';
-import Popover from '@material-ui/core/Popover';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItem from '@material-ui/core/ListItem';
+import clsx from 'clsx';
+import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import clsx from 'clsx';
+import CardContent from '@material-ui/core/CardContent';
+import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
+import { showNotification } from 'actions/notifications';
+import { apiDeleteMessage, editMessage } from 'api/chat';
+import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import Avatar from 'components/Avatar';
-import { apiDeleteMessage, editMessage } from '../../api/chat';
+import { useDeleteModal } from 'contexts/DeleteModalContext';
+
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
-import EditFailedModal from '../EditFailedModal/EditFailedModal';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
-import { ChatMessageItem } from '../../types/models';
-import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
+import EditFailedModal from '../EditFailedModal/EditFailedModal';
+
 import MessageQuill from './EditMessageQuill';
-import { useDeleteModal } from '../../contexts/DeleteModalContext';
-import { showNotification } from '../../actions/notifications';
+
+import type { ChatMessageItem } from 'types/models';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />

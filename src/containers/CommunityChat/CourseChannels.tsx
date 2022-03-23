@@ -1,18 +1,25 @@
 import React, { useCallback } from 'react';
+
 import cx from 'classnames';
+import { push } from 'connected-react-router';
+import { useDispatch } from 'react-redux';
+
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
-import { push } from 'connected-react-router';
 import Typography from '@material-ui/core/Typography';
-import { useDispatch } from 'react-redux';
-import LoadImg from 'components/LoadImg/LoadImg';
-import CollapseNavbar from 'components/CollapseNavbar/CollapseNavbar';
-import useStyles from './_styles/courseChannels';
+
 import { cypherClass } from 'utils/crypto';
-import { CommunityChannelData, selectCurrentCommunityWithChannels } from 'reducers/chat';
+
+import CollapseNavbar from 'components/CollapseNavbar/CollapseNavbar';
+import LoadImg from 'components/LoadImg/LoadImg';
 import { useSelectChannelById } from 'features/chat';
-import { ChatCommunity } from 'api/models/APICommunity';
+import { selectCurrentCommunityWithChannels } from 'reducers/chat';
 import { useAppSelector } from 'redux/store';
+
+import useStyles from './_styles/courseChannels';
+
+import type { ChatCommunity } from 'api/models/APICommunity';
+import type { CommunityChannelData } from 'reducers/chat';
 
 type Props = {
   currentCommunity: ChatCommunity;

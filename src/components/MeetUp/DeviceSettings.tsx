@@ -1,20 +1,24 @@
 import React, { useCallback, useState } from 'react';
+
 import { withSnackbar } from 'notistack';
 import store from 'store';
 
-import { withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import Input from '@material-ui/core/Input';
-import Box from '@material-ui/core/Box';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import { ReactComponent as ReportFlag } from '../../assets/svg/report-flag.svg';
+
+import { STORAGE_KEYS } from 'constants/app';
+
+import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
+
+import { styles } from '../_styles/MeetUp/DeviceSettings';
 import Dialog from '../Dialog/Dialog';
 import ReportIssue from '../StudyRoomReport/ReportIssue';
-import { styles } from '../_styles/MeetUp/DeviceSettings';
-import { STORAGE_KEYS } from 'constants/app';
 
 type Props = {
   classes?: any;

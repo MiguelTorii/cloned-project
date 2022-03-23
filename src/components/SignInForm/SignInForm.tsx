@@ -1,13 +1,16 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { Link as RouterLink } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/SignInForm';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (

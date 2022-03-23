@@ -1,19 +1,21 @@
 import React, { useMemo, useEffect, useCallback, useRef, useState } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router';
+
 import cx from 'clsx';
 import { nanoid } from 'nanoid';
-import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
 
-import MuiTooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Zoom from '@material-ui/core/Fade';
+import { withStyles } from '@material-ui/core/styles';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { confirmTooltip as confirmTooltipAction } from 'actions/user';
+
 import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({

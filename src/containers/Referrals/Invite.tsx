@@ -1,11 +1,14 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+
 import { withSnackbar } from 'notistack';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Dialog, { dialogStyle } from '../../components/Dialog/Dialog';
-import { logEventLocally } from '../../api/analytics';
-import LoadImg from '../../components/LoadImg/LoadImg';
+
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+import { logEventLocally } from 'api/analytics';
+import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+import LoadImg from 'components/LoadImg/LoadImg';
 
 const styles = (theme) => ({
   action: {

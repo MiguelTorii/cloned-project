@@ -1,7 +1,9 @@
 import update from 'immutability-helper';
-import { dialogActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import { TErrorModalData } from '../types/models';
+
+import { dialogActions } from 'constants/action-types';
+
+import type { Action } from 'types/action';
+import type { TErrorModalData } from 'types/models';
 
 export type DialogState = {
   visible: boolean | null;

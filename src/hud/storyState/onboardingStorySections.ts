@@ -1,4 +1,4 @@
-import { StorySection } from './StorySection';
+import { hudEventNames } from '../events/hudEventNames';
 import {
   ACHIEVEMENTS_MAIN_AREA,
   REWARDS_STORE_AREA,
@@ -9,7 +9,8 @@ import {
   CHAT_AREA,
   CHAT_MAIN_AREA
 } from '../navigationState/hudNavigation';
-import { hudEventNames } from '../events/hudEventNames';
+
+import type { StorySection } from './StorySection';
 
 export const STUDY_TOOL_HOVER_EXPERIENCE_DELAY_IN_MS = 10000;
 export const CHAT_EXPERIENCE_DELAY_IN_MS = 15000;

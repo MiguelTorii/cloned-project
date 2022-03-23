@@ -1,13 +1,15 @@
 /* eslint-disable import/prefer-default-export */
-import { leaderboardActions } from '../constants/action-types';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
+import { leaderboardActions } from 'constants/action-types';
+
 import {
   getLeaderboards,
   getGrandPrizeScores,
   getGrandPrizeInfo,
   getTuesdayPrizeScores
-} from '../api/leaderboards';
+} from 'api/leaderboards';
+
+import type { Action } from 'types/action';
+import type { Dispatch } from 'types/store';
 
 const updateLeaderboardRequest = ({ leaderboards }): Action => ({
   type: leaderboardActions.UPDATE_LEADERBOARD_REQUEST,

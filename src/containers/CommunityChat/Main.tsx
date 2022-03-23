@@ -1,45 +1,41 @@
 /* eslint-disable no-nested-ternary */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router';
+
 import findIndex from 'lodash/findIndex';
+import Lightbox from 'react-images';
+import InfiniteScroll from 'react-infinite-scroller';
 import { useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from 'redux/store';
-import { selectLocalById } from 'redux/chat/selectors';
+import { useParams } from 'react-router';
 
-import { Channel } from 'twilio-chat';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InfiniteScroll from 'react-infinite-scroller';
+import Typography from '@material-ui/core/Typography';
 
-import { sendMessage } from 'api/chat';
-import { logEvent } from 'api/analytics';
-import { messageLoadingAction } from 'actions/chat';
 import { MessageItemType, PERMISSIONS } from 'constants/common';
-import { setChannelRead, useChannelMetadataById, useTyping } from 'features/chat';
-import {
-  AvatarData,
-  fetchAvatars,
-  getAvatar,
-  getFileAttributes,
-  processMessages
-} from 'utils/chat';
+import type { AvatarData } from 'utils/chat';
+import { fetchAvatars, getAvatar, getFileAttributes, processMessages } from 'utils/chat';
 
+import { messageLoadingAction } from 'actions/chat';
+import { logEvent } from 'api/analytics';
+import { sendMessage } from 'api/chat';
 import LoadingMessageGif from 'assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
 import LoadImg from 'components/LoadImg/LoadImg';
+import { setChannelRead, useChannelMetadataById, useTyping } from 'features/chat';
 import { usePrevious } from 'hooks';
-import Lightbox from 'react-images';
-import { Member } from 'types/models';
-
-import EmptyMain from './EmptyMain';
-import ChatHeader from './ChatHeader';
-import MessageQuill from './MessageQuill';
-import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
+import { selectLocalById } from 'redux/chat/selectors';
+import { useAppSelector } from 'redux/store';
 
 import useStyles from './_styles/main';
+import ChatHeader from './ChatHeader';
+import EmptyMain from './EmptyMain';
+import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
+import MessageQuill from './MessageQuill';
+
+import type { Channel } from 'twilio-chat';
+import type { Member } from 'types/models';
 
 type Props = {
   channel?: Channel;

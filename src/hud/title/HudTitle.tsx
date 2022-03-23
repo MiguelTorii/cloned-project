@@ -1,10 +1,14 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
+
 import { Typography } from '@material-ui/core';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
+
 import AREA_TITLES from 'constants/area-titles';
 
 import { useStyles } from './HudTitleStyles';
+
+import type { HudNavigationState } from '../navigationState/hudNavigationState';
 
 const subAreaToTitle = {
   ABOUT_ME_AREA: null,

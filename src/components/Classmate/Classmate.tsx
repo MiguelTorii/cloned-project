@@ -1,30 +1,34 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
 import clsx from 'clsx';
-import withWidth from '@material-ui/core/withWidth';
-import Fab from '@material-ui/core/Fab';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Link from '@material-ui/core/Link';
-import ChatIcon from '@material-ui/icons/Chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import withWidth from '@material-ui/core/withWidth';
+import ChatIcon from '@material-ui/icons/Chat';
 import VideocamRoundedIcon from '@material-ui/icons/VideocamRounded';
 
-import Avatar from 'components/Avatar';
-import { useMediaQuery } from 'hooks';
-import { Dispatch } from 'types/store';
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
 import { getInitials } from 'utils/chat';
 import { buildPath } from 'utils/helpers';
+
 import { openChannelWithEntity } from 'actions/chat';
 import InviteIcon from 'assets/svg/invite-icon.svg';
-import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import Avatar from 'components/Avatar';
+import { useChatClient } from 'features/chat';
+import { useMediaQuery } from 'hooks';
 
 import { useStyles } from './ClassmateStyles';
-import { useChatClient } from 'features/chat';
+
+import type { Dispatch } from 'types/store';
 
 type ClassmateType = {
   userId: string;
@@ -61,6 +65,8 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
   // TODO CHAT_REFACTOR: Move logic into a chat hook
   const openChat = useCallback(
     (videoButton: boolean, isVideo: boolean) => () => {
+      if (!client) return;
+
       if (videoButton) {
         setLoadingVideo(true);
       } else {

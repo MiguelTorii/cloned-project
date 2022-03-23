@@ -1,15 +1,21 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useQuill } from 'react-quilljs';
-import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 import { Picker } from 'emoji-mart';
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
+import { useQuill } from 'react-quilljs';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Popover from '@material-ui/core/Popover';
+import { withStyles } from '@material-ui/core/styles';
+
+import { isMac } from 'utils/helpers';
+
+import { uploadMedia } from 'actions/user';
+
 import styles from '../_styles/CreateCommunityChatChannelInput/messageQuill';
-import { uploadMedia } from '../../actions/user';
+
 import EditorToolbar, { formats } from './Toolbar';
-import { isMac } from '../../utils/helpers';
 
 const MessageQuill = ({ classes, onChange, setValue, userId }) => {
   const [loading, setLoading] = useState(false);

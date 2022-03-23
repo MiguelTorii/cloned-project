@@ -1,24 +1,28 @@
 /* eslint-disable react/no-danger */
 import React, { useEffect, useCallback } from 'react';
-import { withRouter } from 'react-router';
+
 import cx from 'classnames';
+import { withRouter } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
-import ListItem from '@material-ui/core/ListItem';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+
 import Button from '@material-ui/core/Button';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Link from '@material-ui/core/Link';
+import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Link from '@material-ui/core/Link';
 
+import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { buildPath } from 'utils/helpers';
+
+import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import Avatar from 'components/Avatar';
-import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
-import { ReactComponent as Camera } from '../../assets/svg/camera-join-room.svg';
+
 import useStyles from '../_styles/FloatingChat/FloatChatMessage';
-import { PROFILE_PAGE_SOURCE } from '../../constants/common';
-import { buildPath } from '../../utils/helpers';
+import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />

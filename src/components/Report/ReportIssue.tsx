@@ -1,27 +1,32 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+
+import cx from 'classnames';
 import { withSnackbar } from 'notistack';
-import { withStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import { connect } from 'react-redux';
+
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import cx from 'classnames';
-import { ReactComponent as ReportFlag } from '../../assets/svg/report-flag.svg';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+
+import { report, getReasons } from 'api/posts';
+import { ReactComponent as ReportFlag } from 'assets/svg/report-flag.svg';
+
+import styles from '../_styles/Report';
 import Dialog from '../Dialog/Dialog';
 import SimpleErrorDialog from '../SimpleErrorDialog/SimpleErrorDialog';
-import { report, getReasons } from '../../api/posts';
-import type { UserState } from '../../reducers/user';
-import styles from '../_styles/Report';
-import type { State as StoreState } from '../../types/state';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
 
 type Props = {
   user?: UserState;

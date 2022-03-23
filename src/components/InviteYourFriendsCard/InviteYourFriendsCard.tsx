@@ -1,12 +1,16 @@
 import React from 'react';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import type { InviteCard } from '../../types/models';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import { styles } from '../_styles/InviteYourFriendsCard';
+
+import type { InviteCard } from 'types/models';
 
 type Props = {
   classes?: Record<string, any>;

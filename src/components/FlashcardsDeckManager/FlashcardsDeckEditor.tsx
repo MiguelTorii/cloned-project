@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from 'react';
+
 import { useSelector } from 'react-redux';
+
+import { updateFlashcards } from 'api/posts';
+
 import FlashcardsDeckManager from './FlashcardsDeckManager';
-import { updateFlashcards } from '../../api/posts';
 
 const FlashcardsDeckEditor = ({ flashcardId, data, onAfterUpdate }) => {
   // Hooks

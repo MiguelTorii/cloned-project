@@ -1,7 +1,12 @@
-import store from 'store';
-import isEqual from 'lodash/isEqual';
 import axios from 'axios';
-import { userActions } from '../constants/action-types';
+import isEqual from 'lodash/isEqual';
+import store from 'store';
+
+import { userActions } from 'constants/action-types';
+
+import { apiDeleteFeed, apiFetchFeeds } from 'api/feed';
+import { getPresignedURL } from 'api/media';
+import { bookmark } from 'api/posts';
 import {
   confirmTooltip as postConfirmTooltip,
   getUserClasses,
@@ -10,15 +15,14 @@ import {
   apiGetPointsHistory,
   apiGetCampaigns
 } from 'api/user';
-import type { Action } from '../types/action';
-import type { Dispatch } from '../types/store';
-import { SyncSuccessData, TFeedItem } from 'types/models';
+
 import { checkUserSession } from './sign-in';
-import { apiDeleteFeed, apiFetchFeeds } from '../api/feed';
-import { bookmark } from '../api/posts';
-import { getPresignedURL } from '../api/media';
-import { UserClassList, EmptyState } from '../reducers/user';
-import { APIFetchFeedsParams } from '../api/params/APIFetchFeedsParams';
+
+import type { APIFetchFeedsParams } from 'api/params/APIFetchFeedsParams';
+import type { UserClassList, EmptyState } from 'reducers/user';
+import type { Action } from 'types/action';
+import type { SyncSuccessData, TFeedItem } from 'types/models';
+import type { Dispatch } from 'types/store';
 
 const setBannerHeightAction = ({ bannerHeight }: { bannerHeight: number }): Action => ({
   type: userActions.SET_BANNER_HEIGHT,

@@ -1,10 +1,14 @@
 import React, { useCallback } from 'react';
+
 import PropTypes from 'prop-types';
+
 import Box from '@material-ui/core/Box';
 import IconClose from '@material-ui/icons/Close';
-import SlideUp from '../Transition/SlideUp';
+
 import Dialog from '../Dialog/Dialog';
 import LoadImg from '../LoadImg/LoadImg';
+import SlideUp from '../Transition/SlideUp';
+
 import useStyles from './styles';
 
 const ImageDialog = ({ open, imageUrl, onClose }) => {

@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+
 import { push as routerPush } from 'connected-react-router';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
-import { withRouter } from 'react-router';
-import { logEventLocally } from '../../api/analytics';
-import * as authActions from '../../actions/auth';
-import { searchSchools } from '../../api/sign-in';
-import { getReferralCodeInfo } from '../../api/referral';
-import loginBackground from '../../assets/img/login-background.png';
-import type { State as StoreState } from '../../types/state';
+
+import * as authActions from 'actions/auth';
+import { logEventLocally } from 'api/analytics';
+import { getReferralCodeInfo } from 'api/referral';
+import { searchSchools } from 'api/sign-in';
+import loginBackground from 'assets/img/login-background.png';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = () => ({
   main: {

@@ -1,20 +1,22 @@
 import React from 'react';
+
+import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/es/hooks';
 import { useLocation } from 'react-router';
 
 import Box from '@material-ui/core/Box';
-import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/es/hooks';
+import MenuItem from '@material-ui/core/MenuItem';
 
-import IconEye from '../../assets/svg/icon-eye-gray.svg';
-import IconBookmark from '../../assets/svg/icon-bookmark-gray.svg';
-import IconThreeDots from '../../assets/svg/icon-dots-gray.svg';
-import IconEyeGradient from '../../assets/svg/icon-eye.svg';
-import IconBookmarkGradient from '../../assets/svg/icon-bookmark.svg';
-import IconDotsGradient from '../../assets/svg/icon-dots.svg';
+import IconBookmark from 'assets/svg/icon-bookmark-gray.svg';
+import IconBookmarkGradient from 'assets/svg/icon-bookmark.svg';
+import IconThreeDots from 'assets/svg/icon-dots-gray.svg';
+import IconDotsGradient from 'assets/svg/icon-dots.svg';
+import IconEye from 'assets/svg/icon-eye-gray.svg';
+import IconEyeGradient from 'assets/svg/icon-eye.svg';
+import withRoot from 'withRoot';
+
 import ActionItem from './ActionItem';
 import useStyles from './styles';
-import withRoot from '../../withRoot';
 
 type Props = {
   isOwn: boolean;
