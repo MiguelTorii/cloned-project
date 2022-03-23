@@ -1,11 +1,8 @@
-import {
-  setCommunitiesAction,
-  setCommunityChannelsAction,
-  setCurrentCommunityIdAction
-} from 'actions/chat';
-import { getCommunityChannels, getCommunities } from 'api/community';
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from 'redux/store';
+
+import { setCommunitiesAction, setCommunityChannelsAction } from 'actions/chat';
+import { getCommunityChannels, getCommunities } from 'api/community';
+import { useAppDispatch } from 'redux/store';
 
 const fetchCommunityChannels = async (communities) => {
   if (!communities?.length) {
@@ -33,12 +30,11 @@ const fetchCommunityChannels = async (communities) => {
   }
 };
 
-// TODO Reimplement in react-query
-
+// TODO: Reimplement in react-query
 export const useCommunityChatAPI = () => {
   const dispatch = useAppDispatch();
 
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
+  // TODO: CHAT_REFACTOR: Move logic into a chat hook
   const fetchCommunities = useCallback(async () => {
     const { communities } = await getCommunities();
     const communityChannels = await fetchCommunityChannels(communities);

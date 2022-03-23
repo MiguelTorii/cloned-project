@@ -187,8 +187,7 @@ const Main = ({
       dispatch(messageLoadingAction(true));
 
       try {
-        setChannelRead(queryClient, channel);
-
+        await setChannelRead(queryClient, channel);
         const [avatars, chatData] = await Promise.all([
           fetchAvatars(channel),
           // TODO move channel messages to react-query cache

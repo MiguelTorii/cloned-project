@@ -1,25 +1,33 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/* eslint-disable valid-typeof */
+/* eslint-disable no-sequences */
+/* eslint-disable prefer-rest-params */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-restricted-syntax */
 import amplitude from 'amplitude-js';
+import { useState, useEffect, useCallback } from 'react';
 import { hotjar } from 'react-hotjar';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import useScript from '../../hooks/useScript';
-import { AMPLITUDE_IDS, ENV, HOTJAR_ID, HOTJAR_SV } from '../../constants/app';
+import { AMPLITUDE_IDS, ENV, HOTJAR_ID, HOTJAR_SV } from 'constants/app';
+
+import * as signInActions from 'actions/sign-in';
+import { confirmTooltip as confirmTooltipAction, loadCampaigns } from 'actions/user';
+import { dialogStyle } from 'components/Dialog/Dialog';
+import useScript from 'hooks/useScript';
+import useHudAreaSetter from 'hud/frame/useHudRoutes';
+import withRoot from 'withRoot';
+
 import {
   LOGGED_IN_WIDGET_ID,
   LOGGED_OUT_WIDGET_ID,
   LOGGED_IN_WIDGET_URL,
   LOGGED_OUT_WIDGET_URL
 } from './constants';
-import withRoot from '../../withRoot';
-import type { State as StoreState } from '../../types/state';
-import { dialogStyle } from 'components/Dialog/Dialog';
-import { confirmTooltip as confirmTooltipAction, loadCampaigns } from 'actions/user';
-import * as signInActions from '../../actions/sign-in';
-import useHudRoutes from '../../hud/frame/useHudRoutes';
+
+import type { State as StoreState } from 'types/state';
 
 const styles = (theme) => ({
   root: {
@@ -54,7 +62,7 @@ const UserInitializer = ({ user, checkUserSession }: Props) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const dispatch = useDispatch();
 
-  useHudRoutes();
+  useHudAreaSetter();
 
   const {
     data: { userId, schoolId, school, email, firstName }

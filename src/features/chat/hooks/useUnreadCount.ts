@@ -33,11 +33,11 @@ export const useAllUnreadCount = () =>
 
 export const useUnreadById = (id: string) => useUnreadCount((data) => data[id]);
 
-export const setChannelRead = (queryClient: QueryClient, channel?: Channel) => {
+export const setChannelRead = async (queryClient: QueryClient, channel?: Channel) => {
   if (!channel) {
     return;
   }
-  channel.setAllMessagesConsumed();
+  await channel.setAllMessagesConsumed();
   queryClient.setQueryData<Unreads>(UNREAD_COUNT_QUERY_KEY, (currentUnreads) => {
     const unreads = currentUnreads || {};
     return { ...unreads, [channel.sid]: 0 };

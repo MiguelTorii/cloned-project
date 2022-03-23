@@ -1,25 +1,28 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import cx from 'classnames';
+import { push } from 'connected-react-router';
+import _ from 'lodash';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import { Box, Typography } from '@material-ui/core';
 import Popover from '@material-ui/core/Popover';
-import Box from '@material-ui/core/Box';
-import Avatar from 'components/Avatar';
 import { Message, Videocam } from '@material-ui/icons';
-import { Typography } from '@material-ui/core';
-import { push } from 'connected-react-router';
-import cx from 'classnames';
-import _ from 'lodash';
-import GradientButton from '../Basic/Buttons/GradientButton';
-import TransparentButton from '../Basic/Buttons/TransparentButton';
-import { getUserProfile } from '../../api/user';
-import * as chatActions from '../../actions/chat';
-import useStyles from '../_styles/HoverPopup';
-import { buildPath } from '../../utils/helpers';
-import type { State as StoreState } from '../../types/state';
-import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
-import { UserState } from '../../reducers/user';
-import { Dispatch } from '../../types/store';
+
+import { buildPath } from 'utils/helpers';
+
+import * as chatActions from 'actions/chat';
+import { getUserProfile } from 'api/user';
+import Avatar from 'components/Avatar';
+import GradientButton from 'components/Basic/Buttons/GradientButton';
+import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 import { useChatClient } from 'features/chat';
+
+import useStyles from 'components/_styles/HoverPopup';
+
+import type { UserState } from 'reducers/user';
+import type { State as StoreState } from 'types/state';
+import type { Dispatch } from 'types/store';
 
 type Props = {
   leftAligned?: boolean;
@@ -134,8 +137,6 @@ const HoverPopup = ({
     event.stopPropagation();
     const { openChannelWithEntity } = props;
     setChatLoading(true);
-    dispatch(setCurrentCommunityIdAction(null));
-    dispatch(setCurrentChannelSidAction(''));
     openChannelWithEntity({
       entityId: Number(userId),
       entityFirstName: (profile as any).firstName,

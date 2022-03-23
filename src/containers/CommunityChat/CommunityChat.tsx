@@ -1,109 +1,35 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import cx from 'classnames';
 
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import withWidth from '@material-ui/core/withWidth';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import withWidth from '@material-ui/core/withWidth';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
 import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import useIconClasses from 'components/_styles/Icons';
-
-import Main from './Main';
-import RightMenu from './RightMenu';
-import CourseChannels from './CourseChannels';
-import useStyles from './_styles/styles';
+import { useSelectChannelById } from 'features/chat';
 import {
   selectCurrentCommunity,
   selectCurrentCommunityChannel,
-  selectCurrentCommunityChannels,
-  selectCurrentCommunityId
+  selectCurrentCommunityChannels
 } from 'reducers/chat';
-import { setCurrentCommunityChannel, setCurrentCommunityId } from 'actions/chat';
-import { useAppDispatch, useAppSelector } from 'redux/store';
-import { useChannels, useSelectChannelById } from 'features/chat';
-import { usePrevious } from 'hooks';
-import { useParams } from 'react-router';
+import { useAppSelector } from 'redux/store';
+
+import useStyles from './_styles/styles';
+import CourseChannels from './CourseChannels';
+import Main from './Main';
+import RightMenu from './RightMenu';
+
+import useIconClasses from 'components/_styles/Icons';
 
 const RIGHT_GRID_SPAN = 2;
 
 type Props = {
   width?: string;
-};
-
-/**
- * TODO Replace with approach that handle communities properly:
- * chat/communityId/channelid
- * chat/channelid
- */
-const useCommunityNavigationHandling = () => {
-  const dispatch = useAppDispatch();
-
-  const {
-    data: { currentCommunityChannelId }
-  } = useAppSelector((state) => state.chat);
-
-  const { data: channels } = useChannels();
-  // TODO Clean up by changing naming convention and removing redundant state
-  const currentCommunityId = useAppSelector(selectCurrentCommunityId);
-  const previousCommunityId = usePrevious(currentCommunityId);
-  const selectedChannel = useAppSelector(selectCurrentCommunityChannel);
-  const allCurrentCommunityChannels = useAppSelector(selectCurrentCommunityChannels);
-
-  const { chatId } = useParams();
-
-  useEffect(() => {
-    if (!channels?.length) return;
-
-    const channelInCommunity = allCurrentCommunityChannels?.find(
-      (c) => c.chat_id === currentCommunityChannelId
-    );
-    const channel = channels.find((c) => c.sid === chatId);
-    if (
-      /**
-       * If user chooses a different community from a stored or previously selected one
-       * the channel exists but doesn't match current community id
-       * So we need to set aset different community
-       */
-      chatId &&
-      currentCommunityChannelId &&
-      currentCommunityChannelId !== chatId &&
-      !allCurrentCommunityChannels?.some((c) => c.chat_id === chatId) &&
-      channel &&
-      channels?.attributes?.community_id
-    ) {
-      dispatch(setCurrentCommunityChannel(channel));
-      dispatch(setCurrentCommunityId(Number(channel.attributes.community_id)));
-    } else if (
-      // Through normal navigation, if a community is selected but no channel is selected
-      (currentCommunityId !== 0 && allCurrentCommunityChannels?.length && !selectedChannel) ||
-      /**
-       * When changing community, select first channel
-       * Ideally we'd store what channel was selected in each community
-       */
-      (previousCommunityId && previousCommunityId !== currentCommunityId && !channelInCommunity)
-    ) {
-      const defaultChannel = channels?.find(
-        (c) => c.sid === allCurrentCommunityChannels?.[0].chat_id
-      );
-      if (defaultChannel) {
-        dispatch(setCurrentCommunityChannel(defaultChannel));
-      }
-    }
-  }, [
-    allCurrentCommunityChannels,
-    channels,
-    chatId,
-    currentCommunityChannelId,
-    currentCommunityId,
-    dispatch,
-    previousCommunityId,
-    selectedChannel
-  ]);
 };
 
 // TODO: Refactor width, open and close logic to reusable sidebar component
@@ -127,8 +53,6 @@ const CommunityChat = ({ width }: Props) => {
     isLoading,
     data: { currentCommunityChannelId, selectedChannelId }
   } = useAppSelector((state) => state.chat);
-
-  useCommunityNavigationHandling();
 
   const { data: currentCommunitySDKChannel } = useSelectChannelById(currentCommunityChannelId);
 

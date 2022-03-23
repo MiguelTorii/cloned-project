@@ -16,7 +16,7 @@ import {
   loadCommunityChannelData,
   newMessage,
   removeMember,
-  setCurrentChannelSidAction,
+  navigateToDM,
   shutdown,
   updateMembers
 } from 'actions/chat';
@@ -124,7 +124,7 @@ const usePreloadChat = () => {
 const handleChannelJoined = (sid: string) => (dispatch: AppDispatch, getState: AppGetState) => {
   const messageLoading = getState().chat.data.messageLoading;
   if (messageLoading) {
-    dispatch(setCurrentChannelSidAction(sid));
+    dispatch(navigateToDM(sid));
   }
 };
 
@@ -220,7 +220,7 @@ const useChannelLeaveSubscription = () => {
       if (channel.sid === selectedChannelId) {
         const nextSelectedChannelId = channelList.filter((id) => id !== channel.sid)[0];
         // TODO Replace with redux action dispatch
-        dispatch(setCurrentChannelSidAction(nextSelectedChannelId));
+        dispatch(navigateToDM(nextSelectedChannelId));
       }
 
       // Both API calls and calls to the client to refetch channels are expensive (1s>) so it's's better to manually change the cache

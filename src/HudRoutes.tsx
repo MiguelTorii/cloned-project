@@ -1,36 +1,42 @@
 import React from 'react';
-import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
+
+import { CHAT_PATH_EXP } from 'constants/navigation';
+
+import { HudRouteUpdater } from 'hud/frame/useHudRoutes';
 import { history } from 'redux/store';
-import Home from './containers/Home/Home';
-import VideoCallPage from './pages/VideoCall/VideoCallPage';
-import StartVideoPage from './pages/StartVideo/StartVideoPage';
-import FloatingChatContainer from './containers/FloatingChat/FloatingChatContainer';
-import Referral from './containers/Referrals/Referral';
+
+import Gondor from './containers/Auth/Gondor';
 import Saml from './containers/Auth/Saml';
+import FloatingChatContainer from './containers/FloatingChat/FloatingChatContainer';
+import Home from './containers/Home/Home';
+import Referral from './containers/Referrals/Referral';
+import HudFrame from './hud/frame/HudFrame';
 import AuthPage from './pages/Auth/AuthPage';
 import AuthRedirectPage from './pages/AuthRedirect/AuthRedirectPage';
-import SignInPage from './pages/SignIn/SignInPage';
-import SignUpPage from './pages/SignUp/SignUpPage';
-import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
-import OAuthPage from './pages/OAuthRedirect/OAuthPage';
 import CanvasPage from './pages/Canvas/CanvasPage';
-import TermsOfUsePage from './pages/TermsOfUse/TermsOfUsePage';
+import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
+import JoinWithReferralCode from './pages/JoinWithReferralCode/JoinWithReferralCode';
+import Miss from './pages/Miss/Miss';
+import OAuthPage from './pages/OAuthRedirect/OAuthPage';
 import RedirectPage from './pages/Redirect/RedirectPage';
 import Sandbox from './pages/Sandbox/Sandbox';
-import withTracker from './withTracker';
-import Gondor from './containers/Auth/Gondor';
-import HudFrame from './hud/frame/HudFrame';
-import Miss from './pages/Miss/Miss';
-import { CREATE_POST_PATHNAME } from './routeConstants';
 import SharePage from './pages/Share/SharePage';
-import JoinWithReferralCode from './pages/JoinWithReferralCode/JoinWithReferralCode';
+import SignInPage from './pages/SignIn/SignInPage';
+import SignUpPage from './pages/SignUp/SignUpPage';
+import StartVideoPage from './pages/StartVideo/StartVideoPage';
+import TermsOfUsePage from './pages/TermsOfUse/TermsOfUsePage';
+import VideoCallPage from './pages/VideoCall/VideoCallPage';
+import { CREATE_POST_PATHNAME } from './routeConstants';
+import withTracker from './withTracker';
 
 const HudRoutes = () => (
   <ConnectedRouter history={history}>
     <LastLocationProvider>
       <div>
+        <HudRouteUpdater />
         <FloatingChatContainer />
         <Switch>
           {/* Redirect to a default route based on context */}
@@ -81,7 +87,8 @@ const HudRoutes = () => (
           <Route exact path="/getTheMobileApp" component={withTracker(HudFrame)} />
 
           {/* Signed in routes: Chat routes */}
-          <Route exact path="/chat/:chatId?" component={withTracker(HudFrame)} />
+          <Route exact path="/chat/s/:hashId" component={withTracker(HudFrame)} />
+          <Route exact path={CHAT_PATH_EXP} component={withTracker(HudFrame)} />
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
           <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
 

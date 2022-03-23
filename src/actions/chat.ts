@@ -1,14 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import { push } from 'connected-react-router';
 import update from 'immutability-helper';
-import { Client } from 'twilio-chat';
 import uuidv4 from 'uuid/v4';
 
 import { chatActions } from 'constants/action-types';
 import { URL } from 'constants/navigation';
+import { generateChatPath, inChatPage } from 'utils/chat';
+
 import {
   getGroupMembers,
-  getShareLink,
   muteChannel,
   unmuteChannel,
   renewTwilioToken,
@@ -16,15 +16,17 @@ import {
   createChannel,
   apiUpdateChat
 } from 'api/chat';
-import type { Action } from 'types/action';
-import type { Dispatch } from 'types/store';
-import { ChannelWrapper } from 'reducers/chat';
-import { ChatCommunityData } from 'api/models/APICommunity';
-import { inChatPage } from 'utils/chat';
-import { ChannelMetadata } from 'features/chat';
-import store, { AppGetState } from 'redux/store';
 
 import { uploadMedia } from './user';
+
+import type { ChatCommunityData } from 'api/models/APICommunity';
+import type { ChannelMetadata } from 'features/chat';
+import type { ChannelWrapper } from 'reducers/chat';
+import type store from 'redux/store';
+import type { AppDispatch, AppGetState } from 'redux/store';
+import type { Client, Channel } from 'twilio-chat';
+import type { Action } from 'types/action';
+import type { Dispatch } from 'types/store';
 
 const getAvailableSlots = (width) => {
   try {
@@ -203,19 +205,15 @@ const setCurrentChannelAction = ({
   }
 });
 
-export const setCurrentChannelSidAction =
-  (selectedChannelId: string | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
-    if (selectedChannelId && inChatPage(getState)) {
-      dispatch(push(`${URL.CHAT}/${selectedChannelId}`));
-    }
+export const navigateToDM = (id?: string) => (dispatch: AppDispatch) =>
+  dispatch(push(generateChatPath(0, id)));
 
-    dispatch({
-      type: chatActions.SET_CURRENT_CHANNEL_ID,
-      payload: {
-        selectedChannelId
-      }
-    });
-  };
+export const setCurrentChannelSidAction = (selectedChannelId: string | null) => ({
+  type: chatActions.SET_CURRENT_CHANNEL_ID,
+  payload: {
+    selectedChannelId
+  }
+});
 
 export const setCurrentCommunityChannelIdAction = (currentChannelId: string | null) => ({
   type: chatActions.SET_CURRENT_COMMUNITY_CHANNEL_ID,
@@ -227,48 +225,28 @@ export const setCurrentCommunityChannelIdAction = (currentChannelId: string | nu
 export const setCurrentCommunityChannel =
   (currentChannel: Channel) => async (dispatch: Dispatch, getState: typeof store.getState) => {
     dispatch(setCurrentCommunityChannelIdAction(currentChannel.sid));
-    if (inChatPage(getState) && getState().chat.data.currentCommunityId) {
-      dispatch(push(`${URL.CHAT}/${currentChannel.sid}`));
-    }
   };
 
-export const setCurrentCommunityIdAction =
-  (newCommunityId: number | null) => (dispatch: Dispatch, getState: typeof store.getState) => {
+export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
+  dispatch(setCurrentCommunityIdAction(currentCommunityId));
+};
+
+export const setCurrentCommunityIdAction = (newCommunityId: number | null) => ({
+  type: chatActions.SET_CURRENT_COMMUNITY_ID,
+  payload: {
+    currentCommunityId: newCommunityId
+  }
+});
+
+export const navigateToOtherCommunity =
+  (id: number) => (dispatch: Dispatch, getState: typeof store.getState) => {
+    const communityChannels = getState().chat.data.communityChannels;
     const selectedChannelId = getState().chat.data.selectedChannelId;
-    const currentCommunityChannelId = getState().chat.data.currentCommunityChannelId;
-    const newSelectedCommunity = getState().chat.data.communityChannels.find(
-      (c) => c.courseId === newCommunityId
-    );
 
-    dispatch({
-      type: chatActions.SET_CURRENT_COMMUNITY_ID,
-      payload: {
-        currentCommunityId: newCommunityId
-      }
-    });
-
-    if (!inChatPage(getState)) return;
-
-    /**
-     * TODO Replace with approach that handle communities properly:
-     * chat/communityId/channelid
-     * chat/channelid
-     */
-    /**
-     * ChatId may not update when switching from community to DMs
-     * If there's a channel list but selectedChannelId is not set
-     * useSelectChatByIdURL will handle selecting it
-     */
-    if (!newCommunityId) {
-      dispatch(push(`/chat${selectedChannelId ? '/' + selectedChannelId : ''}`));
-    } else if (newCommunityId) {
-      const allChannelIds = newSelectedCommunity?.channels
-        .map((c) => c.channels.map((cc) => cc.chat_id))
-        .flat();
-      const sameCommunity = allChannelIds?.some((id) => id === currentCommunityChannelId);
-      if (!sameCommunity) return;
-      dispatch(push(`/chat/${currentCommunityChannelId}`));
-    }
+    const communityChannelId = communityChannels.find((c) => c.courseId === id)?.channels[0]
+      .channels[0].chat_id;
+    const channelId = id ? communityChannelId : selectedChannelId || undefined;
+    dispatch(push(generateChatPath(id, channelId)));
   };
 
 export const setOneTouchSendAction = (open: boolean) => ({
@@ -352,9 +330,6 @@ export const loadCommunityChannelData =
     );
   };
 
-export const setCurrentCommunityId = (currentCommunityId) => (dispatch: Dispatch) => {
-  dispatch(setCurrentCommunityIdAction(currentCommunityId));
-};
 export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction());
 };
@@ -415,11 +390,11 @@ export const openChannelWithEntity =
       const channel = await client.getChannelBySid(chatId);
 
       if (channel) {
-        dispatch(setCurrentChannelSidAction(channel.sid));
         if (entityVideo) {
+          dispatch(setCurrentChannelSidAction(channel.sid));
           dispatch(push(`/video-call/${chatId}`));
         } else {
-          dispatch(push(URL.CHAT));
+          dispatch(push(`${URL.CHAT}/0/${channel.sid}`));
         }
       }
     }

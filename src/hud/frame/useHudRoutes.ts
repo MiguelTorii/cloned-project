@@ -1,11 +1,13 @@
-import { setCurrentCommunityIdAction } from 'actions/chat';
-import { push } from 'connected-react-router';
-import { useOrderedChannelList } from 'features/chat';
 import { useCallback, useEffect } from 'react';
-import { AppDispatch, AppGetState, useAppDispatch, useAppSelector } from 'redux/store';
+import { push } from 'connected-react-router';
+import isEqual from 'lodash/isEqual';
+import { createSelectorCreator, defaultMemoize } from 'reselect';
 
 import { URL } from 'constants/navigation';
-import { CREATE_POST_PATHNAME, EDIT_POST_PATHNAME_PREFIX } from '../../routeConstants';
+import { generateChatPath } from 'utils/chat';
+
+import { navigateToDM } from 'actions/chat';
+import { useOrderedChannelList } from 'features/chat';
 import {
   CHAT_MAIN_AREA,
   CHAT_AREA,
@@ -32,8 +34,12 @@ import {
   ASK_A_QUESTION_AREA,
   SHARE_RESOURCES_AREA,
   SHARE_NOTES_AREA
-} from '../navigationState/hudNavigation';
-import { setSelectedMainSubArea } from '../navigationState/hudNavigationActions';
+} from 'hud/navigationState/hudNavigation';
+import { setSelectedMainSubArea } from 'hud/navigationState/hudNavigationActions';
+import { useAppDispatch, useAppSelector } from 'redux/store';
+import { CREATE_POST_PATHNAME, EDIT_POST_PATHNAME_PREFIX } from 'routeConstants';
+
+import type { AppDispatch, AppGetState, AppState } from 'redux/store';
 
 type TAreaIds = {
   mainArea: string;
@@ -121,14 +127,16 @@ export const areasToUrl: Record<string, Record<string, string>> = {
   }
 };
 
-/**
- * Updates the selected HUD area based on the current route.
- */
-const useHudRoutes = () => {
+const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
+// Prevents re-renders when router.location.query continuously returns an empty object
+const querySelector = createDeepEqualSelector(
+  (state: AppState) => state.router.location.query,
+  (query) => query
+);
+
+export const HudRouteUpdater = () => {
   const pathname: string = useAppSelector((state) => state.router.location.pathname);
-  const query = useAppSelector((state) => state.router.location.query);
-  const selectedMainSubAreas = useAppSelector((state) => state.hudNavigation.selectedMainSubAreas);
-  const DMChannelList = useOrderedChannelList();
+  const query = useAppSelector(querySelector);
 
   const dispatch = useAppDispatch();
 
@@ -172,6 +180,18 @@ const useHudRoutes = () => {
     }
   }, [pathname, query, dispatch]);
 
+  return null;
+};
+
+/**
+ * Updates the selected HUD area based on the current route.
+ */
+export const useHudAreaSetter = () => {
+  const selectedMainSubAreas = useAppSelector((state) => state.hudNavigation.selectedMainSubAreas);
+  const DMChannelList = useOrderedChannelList();
+
+  const dispatch = useAppDispatch();
+
   const setHudArea = useCallback(
     (mainArea: string, mainSubArea?: string) => {
       const url = areasToUrl[mainArea][mainSubArea || selectedMainSubAreas[mainArea]];
@@ -196,17 +216,12 @@ const handleChatNavigate =
     const community = communitiesWithChannels?.[0];
     const communityId = community?.courseId || 0;
 
-    dispatch(setCurrentCommunityIdAction(communityId));
-
-    // If user is in chat page, redirection to correct chat is handled by previous hook
-    if (getState().router.location.pathname.includes(areasToUrl[CHAT_MAIN_AREA][CHAT_AREA])) return;
-
     if (communityId) {
       const chatId = community.channels[0].channels[0].chat_id;
-      dispatch(push(`${url}/${chatId}`));
+      dispatch(push(generateChatPath(communityId, chatId)));
     } else {
-      dispatch(push(channelIds?.length ? `${url}/${channelIds[0]}` : url));
+      dispatch(navigateToDM(channelIds[0]));
     }
   };
 
-export default useHudRoutes;
+export default useHudAreaSetter;

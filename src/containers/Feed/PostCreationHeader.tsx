@@ -1,14 +1,18 @@
-import React, { useCallback } from 'react';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import QuestionIcon from '../../assets/svg/ic_ask_a_question.svg';
-import FlashcardMark from '../../assets/svg/flashcard-mark.svg';
-import ShareNotesIcon from '../../assets/svg/ic_notes.svg';
-import ActiveCreatePost from '../../assets/svg/ic_create_a_post.svg';
-import IconResource from '../../assets/svg/ic_share_a_resource.svg';
-import useHudRoutes from '../../hud/frame/useHudRoutes';
+import Paper from '@material-ui/core/Paper';
+
+import AREA_TITLES from 'constants/area-titles';
+
+import FlashcardMark from 'assets/svg/flashcard-mark.svg';
+import QuestionIcon from 'assets/svg/ic_ask_a_question.svg';
+import ActiveCreatePost from 'assets/svg/ic_create_a_post.svg';
+import ShareNotesIcon from 'assets/svg/ic_notes.svg';
+import IconResource from 'assets/svg/ic_share_a_resource.svg';
+import useHudAreaSetter from 'hud/frame/useHudRoutes';
 import {
   ASK_A_QUESTION_AREA,
   CREATE_A_POST_AREA,
@@ -16,8 +20,7 @@ import {
   SHARE_NOTES_AREA,
   SHARE_RESOURCES_AREA,
   STUDY_TOOLS_MAIN_AREA
-} from '../../hud/navigationState/hudNavigation';
-import AREA_TITLES from 'constants/area-titles';
+} from 'hud/navigationState/hudNavigation';
 
 import useStyles from './styles';
 
@@ -52,7 +55,7 @@ const HUD_POST_BUTTONS = [
 ];
 
 const PostCreationHeader = () => {
-  const setHudArea = useHudRoutes();
+  const setHudArea = useHudAreaSetter();
 
   const classes: any = useStyles();
   const dispatch = useDispatch();
@@ -85,4 +88,5 @@ const PostCreationHeader = () => {
 };
 
 PostCreationHeader.postTypes = {};
+
 export default PostCreationHeader;

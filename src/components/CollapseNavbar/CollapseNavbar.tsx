@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
-import { Channel } from 'twilio-chat';
 import cx from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
+import { push } from 'connected-react-router';
+
 import Badge from '@material-ui/core/Badge';
+import Collapse from '@material-ui/core/Collapse';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Collapse from '@material-ui/core/Collapse';
+import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+
+import { generateChatPath } from 'utils/chat';
+
+import { messageLoadingAction } from 'actions/chat';
 import { ReactComponent as ChannelIcon } from 'assets/svg/public-channel.svg';
 import { ReactComponent as UnreadMessageChannelIcon } from 'assets/svg/unread-message-channel-icon.svg';
-import { CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
-import { messageLoadingAction, setCurrentCommunityChannel } from 'actions/chat';
-import { useChannels, useUnreadCount } from 'features/chat';
+import { useUnreadCount } from 'features/chat';
 import { useAppDispatch } from 'redux/store';
+
+import type { CommunityChannelData, CommunityChannelsData } from 'reducers/chat';
+import type { Channel } from 'twilio-chat';
 
 const useStyles = makeStyles((theme) => ({
   navLink: {
@@ -76,7 +82,6 @@ const CollapseNavbar = ({ channels, selectedChannel, currentCommunityChannel }: 
 
   const [collapsedStates, setCollapsedStates] = useState({});
   const { data: unread } = useUnreadCount();
-  const { data: localChannels } = useChannels();
 
   const handleSwitchCollapsedState = (channel) => {
     // We decide `undefined` means collapsed.
@@ -88,20 +93,19 @@ const CollapseNavbar = ({ channels, selectedChannel, currentCommunityChannel }: 
 
   const getCollapsedState = (channel) => collapsedStates[channel.id] !== false;
 
-  const handleSubList = (parent, channel) => () => {
-    // If current channel has children, switch the collapsed state.
-    if (channel.channels) {
-      handleSwitchCollapsedState(channel);
-    }
+  const handleSubList =
+    (parent: string, channel: CommunityChannelData | CommunityChannelsData) => () => {
+      // If current channel has children, switch the collapsed state.
+      if ('channels' in channel) {
+        handleSwitchCollapsedState(channel);
+        return;
+      }
 
-    if (!channel?.channels && currentCommunityChannel?.sid !== channel.chat_id) {
-      const localChannel = localChannels?.find((c) => c.sid === channel.chat_id);
-      if (localChannel) {
-        dispatch(setCurrentCommunityChannel(localChannel));
+      if (currentCommunityChannel?.sid !== channel.chat_id) {
+        dispatch(push(generateChatPath(channel.community_id, channel.chat_id)));
         dispatch(messageLoadingAction(true));
       }
-    }
-  };
+    };
 
   const renderSubChannels = (channels: CommunityChannelData[] = []) => {
     const content: React.ReactElement[] = [];

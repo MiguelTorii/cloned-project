@@ -1,27 +1,30 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useAppSelector, useAppDispatch } from 'redux/store';
+import { useEffect, useState, useCallback } from 'react';
 import clsx from 'clsx';
 import Fuse from 'fuse.js';
+import { useParams } from 'react-router';
+
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputBase from '@material-ui/core/InputBase';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import InputAdornment from '@material-ui/core/InputAdornment';
 
-import ChatListItem from '../../components/CommunityChatListItem/ChatListItem';
-import CreateChatChannelInput from '../../components/CreateCommunityChatChannelInput/CreateChatChannelInput';
-import OneTouchSend from '../../components/CreateCommunityChatChannelInput/OneTouchSend';
-import Dialog from '../../components/Dialog/Dialog';
-import EmptyLeftMenu from './EmptyLeftMenu';
-import { ReactComponent as ChatSearchIcon } from '../../assets/svg/chat-search.svg';
+import { PERMISSIONS } from 'constants/common';
 import { getTitle } from 'utils/chat';
-import { PERMISSIONS } from '../../constants/common';
-import useStyles from './_styles/leftMenu';
-import { handleNewChannel, setCurrentChannelSidAction, setOneTouchSendAction } from 'actions/chat';
-import { useChannels, useOrderedChannelList, useChannelsMetadata } from 'features/chat';
+
+import { handleNewChannel, navigateToDM, setOneTouchSendAction } from 'actions/chat';
+import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import BaseChatItem from 'components/CommunityChatListItem/BaseChatItem';
-import { useParams } from 'react-router';
+import ChatListItem from 'components/CommunityChatListItem/ChatListItem';
+import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput/CreateChatChannelInput';
+import OneTouchSend from 'components/CreateCommunityChatChannelInput/OneTouchSend';
+import Dialog from 'components/Dialog/Dialog';
+import { useChannels, useOrderedChannelList, useChannelsMetadata } from 'features/chat';
+import { useAppSelector, useAppDispatch } from 'redux/store';
+
+import useStyles from './_styles/leftMenu';
+import EmptyLeftMenu from './EmptyLeftMenu';
 
 type Props = {
   onOpenChannel?: (id: string) => void;
@@ -79,7 +82,7 @@ const LeftMenu = ({
     // TODO Remove and only use channelId
     const lastChannelSid = localStorage.getItem('currentDMChannel') || channels?.[0].sid;
     if (lastChannelSid) {
-      dispatch(setCurrentChannelSidAction(lastChannelSid));
+      dispatch(navigateToDM(lastChannelSid));
     }
   };
 

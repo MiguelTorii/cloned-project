@@ -1,9 +1,10 @@
 import { useMemo, createContext, useState, useEffect, useCallback, useContext } from 'react';
-import { Client } from 'twilio-chat';
-import { renewTwilioToken } from 'api/chat';
 import retry from 'async-retry';
-import { useAppSelector } from 'redux/store';
+import { Client } from 'twilio-chat';
+
+import { renewTwilioToken } from 'api/chat';
 import { usePrevious } from 'hooks';
+import { useAppSelector } from 'redux/store';
 
 type ClientContext = Client | undefined;
 

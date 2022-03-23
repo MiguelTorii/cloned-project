@@ -31,7 +31,6 @@ type Props = {
   classes?: Record<string, any>;
   user?: UserState;
   onClosePopover?: (...args: Array<any>) => any;
-  setCurrentCommunityId?: (...args: Array<any>) => any;
   setCurrentCommunityChannel?: (...args: Array<any>) => any;
   setCurrentCommunity?: (...args: Array<any>) => any;
   enqueueSnackbarAction?: (...args: Array<any>) => any;
@@ -43,9 +42,7 @@ const CreateChatChannelInput = ({
   chat,
   user,
   onClosePopover,
-  setCurrentCommunity,
-  enqueueSnackbarAction,
-  setCurrentCommunityId
+  enqueueSnackbarAction
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -127,6 +124,7 @@ const CreateChatChannelInput = ({
         message: value,
         chatIds
       });
+      // TODO Replace?
       dispatch(
         setCurrentCommunityIdAction(selectedClasses[selectedClasses.length - 1]?.community?.id)
       );
@@ -315,7 +313,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
   bindActionCreators(
     {
       closeNewChannel: chatActions.closeNewChannel,
-      setCurrentCommunityId: chatActions.setCurrentCommunityId,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel,
       enqueueSnackbarAction: enqueueSnackbar
     },

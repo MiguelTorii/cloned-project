@@ -1,4 +1,7 @@
 import React, { useCallback, useState } from 'react';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   Button,
   ListItemIcon,
@@ -9,10 +12,12 @@ import {
   Typography
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { useDispatch, useSelector } from 'react-redux';
-import clsx from 'clsx';
-import { HudToolData } from './HudToolData';
-import { useStyles } from './HudNavigationStyles';
+
+import { openSupportWidget } from 'utils/helpers';
+
+import { toggleExpertMode } from 'actions/user';
+import InviteFriendsModal from 'components/InviteFriendsModal/InviteFriendsModal';
+import useHudAreaSetter from 'hud/frame/useHudRoutes';
 import {
   EXPERT_MODE_ACCESS,
   SIGN_OUT_BUTTON,
@@ -22,17 +27,14 @@ import {
   ACHIEVEMENTS_MAIN_AREA,
   INVITE_FRIENDS_AREA
 } from 'hud/navigationState/hudNavigation';
-import useHudRoutes from '../frame/useHudRoutes';
-import { signOut } from '../../actions/sign-in';
-import type { Dispatch } from '../../types/store';
 import reduxStore from 'redux/store';
-
-import { HudNavigationState } from '../navigationState/hudNavigationState';
-import { User } from '../../types/models';
-import { toggleExpertMode } from '../../actions/user';
-import { openSupportWidget } from '../../utils/helpers';
 import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
-import InviteFriendsModal from 'components/InviteFriendsModal/InviteFriendsModal';
+
+import { useStyles } from './HudNavigationStyles';
+
+import type { HudToolData } from './HudToolData';
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
+import type { User } from 'types/models';
 
 type Props = {
   parentNavigationItem: HudToolData;
@@ -47,7 +49,7 @@ const HudToolWithDropdown = ({ parentNavigationItem, profile }: Props) => {
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
-  const setHudArea = useHudRoutes();
+  const setHudArea = useHudAreaSetter();
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea

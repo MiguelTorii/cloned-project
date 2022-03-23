@@ -1,26 +1,31 @@
 /* eslint-disable no-nested-ternary */
-import { Channel } from 'twilio-chat';
-import Grid, { GridSize } from '@material-ui/core/Grid';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import cx from 'classnames';
+import { useParams } from 'react-router';
+
+import type { GridSize } from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import withWidth from '@material-ui/core/withWidth';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
-import { handleNewChannel, setCurrentChannelSidAction, updateFriendlyName } from 'actions/chat';
+
+import { handleNewChannel, navigateToDM, updateFriendlyName } from 'actions/chat';
 import { getOnboardingList } from 'actions/onboarding';
 import { blockChatUser, leaveChat } from 'api/chat';
 import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import cx from 'classnames';
-import useIconClasses from 'components/_styles/Icons';
 import { useSelectChannelById, useOrderedChannelList } from 'features/chat';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
+import blockUser from './_styles/blockUser';
+import useStyles from './_styles/directChat';
 import LeftMenu from './LeftMenu';
 import Main from './Main';
 import RightMenu from './RightMenu';
-import blockUser from './_styles/blockUser';
-import useStyles from './_styles/directChat';
-import { useParams } from 'react-router';
+
+import useIconClasses from 'components/_styles/Icons';
+
+import type { Channel } from 'twilio-chat';
 
 const RIGHT_GRID_SPAN = 2;
 
@@ -84,7 +89,7 @@ const DirectChat = ({ width }: Props) => {
         setLeftSpace(0);
       }
 
-      dispatch(setCurrentChannelSidAction(sid));
+      dispatch(navigateToDM(sid));
     },
     [dispatch, width]
   );
@@ -99,7 +104,7 @@ const DirectChat = ({ width }: Props) => {
 
   const updateGroupName = useCallback(
     (channel: Channel) => {
-      dispatch(setCurrentChannelSidAction(channel.sid));
+      dispatch(navigateToDM(channel.sid));
       dispatch(updateFriendlyName(channel));
     },
     [dispatch]
@@ -162,7 +167,7 @@ const DirectChat = ({ width }: Props) => {
           blockedUserId: blockedUserId
         });
         await blockChatUser(blockedUserId);
-        dispatch(setCurrentChannelSidAction(''));
+        dispatch(navigateToDM(''));
       } catch (err) {
         /* NONE */
       }

@@ -1,17 +1,21 @@
 import React from 'react';
-import { Avatar, Button, Hidden } from '@material-ui/core';
+
+import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
+
+import avatarImg from 'assets/svg/circlein_logo.svg';
+import useHudAreaSetter from 'hud/frame/useHudRoutes';
+import HudMainNavigation from 'hud/navigation/HudMainNavigation';
+import HudRightNavigation from 'hud/navigation/HudRightNavigation';
+import { COMMUNITIES_MAIN_AREA, FEEDS_AREA } from 'hud/navigationState/hudNavigation';
+import useStorySequence from 'hud/storyState/useStorySequence';
+
 import { useStyles } from './HudControlPanelStyles';
-import HudMainNavigation from '../navigation/HudMainNavigation';
-import HudRightNavigation from '../navigation/HudRightNavigation';
-import avatarImg from '../../assets/svg/circlein_logo.svg';
-import useHudRoutes from '../frame/useHudRoutes';
-import { COMMUNITIES_MAIN_AREA, FEEDS_AREA } from '../navigationState/hudNavigation';
-import useStorySequence from '../storyState/useStorySequence';
 
 const HudControlPanel = () => {
   const classes: any = useStyles();
 
-  const setHudArea = useHudRoutes();
+  const setHudArea = useHudAreaSetter();
 
   const { sayGreeting } = useStorySequence();
 

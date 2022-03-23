@@ -1,50 +1,58 @@
-import { useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
+
 import Box from '@material-ui/core/Box';
 
-import { setCurrentCommunityIdAction } from 'actions/chat';
-import { useAppSelector } from 'redux/store';
-import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import { URL } from 'constants/navigation';
 
-import DirectChat from './DirectChat';
+import { navigateToOtherCommunity } from 'actions/chat';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
+import {
+  useChannelsMetadata,
+  useChatParams,
+  useJoinChatByHash,
+  useSelectChatByIdURL
+} from 'features/chat';
+import { useAppSelector } from 'redux/store';
+
+import useStyles from './_styles/styles';
 import CollageList from './CollageList';
 import CommunityChat from './CommunityChat';
-import useStyles from './_styles/styles';
-import { useChannelsMetadata, useSelectChatByIdURL } from 'features/chat';
-import { useParams } from 'react-router';
+import DirectChat from './DirectChat';
 
 const ChatPage = () => {
+  useJoinChatByHash();
   useSelectChatByIdURL();
-  const { chatId } = useParams();
+  const { communityId } = useChatParams();
 
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data: channelMetadata } = useChannelsMetadata();
 
   const {
-    data: { communityChannels, communities, currentCommunityId, oneTouchSendOpen }
+    data: { communityChannels, communities, oneTouchSendOpen }
   } = useAppSelector((state) => state.chat);
 
   const handleSelect = useCallback(
     (course) => {
-      if (course.id !== currentCommunityId) {
-        dispatch(setCurrentCommunityIdAction(course.id));
-      }
+      if (course.id === communityId) return;
+      dispatch(navigateToOtherCommunity(course.id));
     },
-    [currentCommunityId, dispatch]
+    [communityId, dispatch]
   );
 
   useEffect(() => {
-    if (oneTouchSendOpen) {
-      dispatch(setCurrentCommunityIdAction(null));
+    if (oneTouchSendOpen && Number(communityId)) {
+      dispatch(push(`${URL.CHAT}/0}`));
     }
-  }, [oneTouchSendOpen, dispatch]);
+  }, [oneTouchSendOpen, dispatch, communityId]);
 
   if (
     // Loading of community channels does not block chat page loading if user is going to direct messages
-    (!currentCommunityId && !channelMetadata) ||
+    (!communityId && !channelMetadata) ||
     // Communities might take longer to load
-    (currentCommunityId && (!communities?.length || !communityChannels?.length))
+    (communityId && (!communities?.length || !communityChannels?.length))
   ) {
     return <LoadingSpin />;
   }
@@ -59,7 +67,7 @@ const ChatPage = () => {
         />
       </Box>
       <Box className={classes.directChat}>
-        {currentCommunityId && chatId ? <CommunityChat /> : <DirectChat />}
+        {Number(communityId) ? <CommunityChat /> : <DirectChat />}
       </Box>
     </div>
   );

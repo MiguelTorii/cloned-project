@@ -364,10 +364,12 @@ export const addGroupMembers = async ({
   return data;
 };
 
-export const getShareLink = async (chatId: string): Promise<string> => {
+export const getShareLink = async (chatId: string) => {
   const token = await getToken();
-  const response = await axios.post(
-    `${API_ROUTES.CHAT_SHARE_LINK}`,
+  const {
+    data: { chat_hash_id = '' }
+  } = await axios.post<{ chat_hash_id: string }>(
+    `${API_ROUTES.CHAT_SHARE_LINK_HASH}`,
     {
       chat_id: chatId
     },
@@ -377,7 +379,7 @@ export const getShareLink = async (chatId: string): Promise<string> => {
       }
     }
   );
-  return get(response, 'data.url', '');
+  return chat_hash_id;
 };
 
 // Fetches chat id with the given hashed chat id

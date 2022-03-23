@@ -1,16 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import cx from 'classnames';
-import { useStyles } from './HudMissionsStyles';
-import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
-import { ReactComponent as IconWorkflow } from '../../assets/svg/ic_workflow.svg';
-import { ReactComponent as QuestionIcon } from '../../assets/svg/ic_ask_a_question.svg';
-import { ReactComponent as ResourceIcon } from '../../assets/svg/ic_share_a_resource.svg';
-import { ReactComponent as ShareNotesIcon } from '../../assets/svg/ic_notes.svg';
-import { ReactComponent as CreatePostIcon } from '../../assets/svg/ic_create_a_post.svg';
-import { ReactComponent as ChatIcon } from '../../assets/svg/ic_chat.svg';
-import { ReactComponent as FlashcardMark } from '../../assets/svg/flashcard-mark.svg';
-import { ReactComponent as PrivateNotesIcon } from '../../assets/svg/ic_in_app_notes.svg';
+import { useSelector } from 'react-redux';
+
+import AREA_TITLES from 'constants/area-titles';
+
+import { ReactComponent as FlashcardMark } from 'assets/svg/flashcard-mark.svg';
+import { ReactComponent as QuestionIcon } from 'assets/svg/ic_ask_a_question.svg';
+import { ReactComponent as ChatIcon } from 'assets/svg/ic_chat.svg';
+import { ReactComponent as CreatePostIcon } from 'assets/svg/ic_create_a_post.svg';
+import { ReactComponent as PrivateNotesIcon } from 'assets/svg/ic_in_app_notes.svg';
+import { ReactComponent as ShareNotesIcon } from 'assets/svg/ic_notes.svg';
+import { ReactComponent as ResourceIcon } from 'assets/svg/ic_share_a_resource.svg';
+import { ReactComponent as IconWorkflow } from 'assets/svg/ic_workflow.svg';
+import useHudAreaSetter from 'hud/frame/useHudRoutes';
+import HudToolbar from 'hud/navigation/HudToolbar';
 import {
   CALENDAR_AREA,
   CHAT_MAIN_AREA,
@@ -22,12 +24,13 @@ import {
   SHARE_NOTES_AREA,
   CREATE_A_POST_AREA,
   NOTES_AREA
-} from '../navigationState/hudNavigation';
-import { HudToolData } from '../navigation/HudToolData';
-import HudToolbar from '../navigation/HudToolbar';
-import useHudRoutes from '../frame/useHudRoutes';
-import { HudNavigationState } from '../navigationState/hudNavigationState';
-import AREA_TITLES from 'constants/area-titles';
+} from 'hud/navigationState/hudNavigation';
+import { useStyles as useHighlightedButtonStyles } from 'styles/HighlightedButton';
+
+import { useStyles } from './HudMissionsStyles';
+
+import type { HudToolData } from 'hud/navigation/HudToolData';
+import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
 
 const ICON_SIZE = { width: '44px', height: '44px' };
 
@@ -35,7 +38,7 @@ const HudStudyTools = () => {
   const classes: any = useStyles();
   const highlightedButtonClasses = useHighlightedButtonStyles();
 
-  const setHudArea = useHudRoutes();
+  const setHudArea = useHudAreaSetter();
 
   const highlightedNavigation = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.highlightedNavigation

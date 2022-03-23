@@ -191,13 +191,6 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       };
 
     case chatActions.SET_CURRENT_COMMUNITY_ID: {
-      const currentCommunityId = action.payload.currentCommunityId;
-      if (currentCommunityId) {
-        localStorage.setItem('currentCommunityId', currentCommunityId);
-      } else {
-        localStorage.removeItem('currentCommunityId');
-      }
-
       return {
         ...state,
         data: { ...state.data, currentCommunityId: action.payload.currentCommunityId }
@@ -205,17 +198,9 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
     }
 
     case chatActions.SET_CURRENT_COMMUNITY_CHANNEL_ID: {
-      const currentCommunityChannelId = action.payload.currentChannelId;
-
-      if (currentCommunityChannelId) {
-        localStorage.setItem('currentCommunityChannelId', currentCommunityChannelId);
-      } else {
-        localStorage.removeItem('currentCommunityChannelId');
-      }
-
       return {
         ...state,
-        data: { ...state.data, currentCommunityChannelId: currentCommunityChannelId }
+        data: { ...state.data, currentCommunityChannelId: action.payload.currentChannelId }
       };
     }
 

@@ -1,7 +1,9 @@
-import { getChannelMetadata } from 'api/chat';
-import { APIChat } from 'api/models/APIChat';
 import { objectToCamel } from 'ts-case-convert';
-import { CamelCasedPropertiesDeep } from 'type-fest';
+
+import { getChannelMetadata } from 'api/chat';
+
+import type { APIChat } from 'api/models/APIChat';
+import type { CamelCasedPropertiesDeep } from 'type-fest';
 
 export type ChannelMetadata = CamelCasedPropertiesDeep<APIChat> & { showFirst?: boolean };
 

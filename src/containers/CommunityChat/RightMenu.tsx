@@ -1,23 +1,25 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Typography from '@material-ui/core/Typography';
 
-import Avatar from 'components/Avatar';
-import RoleBadge from 'components/RoleBadge/RoleBadge';
-import HoverPopup from 'components/HoverPopup/HoverPopup';
-import useStyles from './_styles/rightMenu';
-import ShareLinkWidget from 'components/ShareLinkWidget/ShareLinkWidget';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
 import { buildPath } from 'utils/helpers';
-import { useChannelMetadataById } from 'features/chat';
+
+import Avatar from 'components/Avatar';
+import HoverPopup from 'components/HoverPopup/HoverPopup';
+import RoleBadge from 'components/RoleBadge/RoleBadge';
+import ShareLinkWidget from 'components/ShareLinkWidget/ShareLinkWidget';
+import { useChannelMetadataById, useChatShareLink } from 'features/chat';
 import { selectLocalById } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
-import { getChatShareLink } from 'utils/chat';
+
+import useStyles from './_styles/rightMenu';
 
 const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
   <RouterLink to={link} {...props} ref={ref} />
@@ -35,7 +37,7 @@ const RightMenu = ({ channelId, isCommunityChat }: Props) => {
 
   const users = channelMetadata?.users || local?.users || [];
 
-  const shareLink = getChatShareLink(channelId);
+  const { data: shareLink = '' } = useChatShareLink(channelId);
 
   return (
     <Box display="flex" flexDirection="column" className={classes.container}>

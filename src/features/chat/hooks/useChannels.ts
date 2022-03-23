@@ -1,14 +1,15 @@
 import { useMemo, useRef } from 'react';
-import { useQuery } from 'react-query';
-import { Channel } from 'twilio-chat';
 import moment from 'moment';
+import { useQuery } from 'react-query';
 
+import { useChatClient } from 'features/chat/context/ChatClientProvider';
 import { getChannelBySid, getChannelsFromClient } from 'lib/chat/channels';
 import { useAppSelector } from 'redux/store';
 
 import { useChannelsMetadata } from './useChannelsMetadata';
-import { ChannelMetadata, ChannelsMetadata } from '../api/channels';
-import { useChatClient } from '../context/ChatClientProvider';
+
+import type { ChannelMetadata, ChannelsMetadata } from 'features/chat/api/channels';
+import type { Channel } from 'twilio-chat';
 
 export const QUERY_KEY_CHANNELS = 'channels';
 

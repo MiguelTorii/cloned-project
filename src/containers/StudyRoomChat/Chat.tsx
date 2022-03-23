@@ -201,7 +201,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
         if (!channel || !client) {
           return;
         }
-        setChannelRead(client, channel);
+        await setChannelRead(client, channel);
         const p = await channel.getMessages(10);
         setMessages(p.items);
         setPaginator(p);

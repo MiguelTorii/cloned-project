@@ -1,12 +1,15 @@
-import { AttributeUser, Channel } from 'twilio-chat';
-import moment from 'moment';
-import uuidv4 from 'uuid/v4';
 import parse from 'html-react-parser';
-import { ChatMessages, ChatUser } from '../types/models';
-import { DetailedChatUser } from 'reducers/chat';
-import { ChannelMetadata } from 'features/chat';
-import { AppGetState } from 'redux/store';
-import { URL } from 'constants/navigation';
+import moment from 'moment';
+import { generatePath } from 'react-router';
+import uuidv4 from 'uuid/v4';
+
+import { URL, CHAT_PATH_EXP } from 'constants/navigation';
+
+import type { ChannelMetadata } from 'features/chat';
+import type { DetailedChatUser } from 'reducers/chat';
+import type { AppGetState } from 'redux/store';
+import type { AttributeUser, Channel } from 'twilio-chat';
+import type { ChatMessages, ChatUser } from 'types/models';
 
 export const getTitle = (
   channel: Channel,
@@ -304,11 +307,11 @@ export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata)
   };
 };
 
-export const getChatShareLink = (id?: string) => {
-  if (id) return `${window.location.origin}/chat/${id}`;
-  // In case ID is undefined in chat for some reason
-  return `${window.location.href}`;
-};
-
 export const inChatPage = (getState: AppGetState) =>
   getState().router.location.pathname.includes(URL.CHAT);
+
+export const generateChatPath = (communityId?: string | number, channelId?: string) =>
+  generatePath(CHAT_PATH_EXP, {
+    communityId,
+    ...(communityId !== undefined ? { chatId: channelId } : {})
+  });

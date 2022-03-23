@@ -1,9 +1,13 @@
 import clsx from 'clsx';
-import { useAppSelector } from 'redux/store';
 
 import Box from '@material-ui/core/Box';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
+import { ReactComponent as IconChat } from 'assets/svg/ic_nav_chat.svg';
+import { ReactComponent as IconMyClasses } from 'assets/svg/ic_nav_classes.svg';
+import { ReactComponent as IconAchievements } from 'assets/svg/ic_nav_leaderboard.svg';
+import SemiBoldTypography from 'components/SemiBoldTypography/SemiBoldTypography';
+import useHudAreaSetter from 'hud/frame/useHudRoutes';
 import { useStyles as useNavigationStyles } from 'hud/navigation/HudNavigationStyles';
 import {
   ACHIEVEMENTS_MAIN_AREA,
@@ -13,18 +17,14 @@ import {
   COMMUNITIES_MAIN_AREA,
   LEADERBOARD_AREA
 } from 'hud/navigationState/hudNavigation';
-import useHudRoutes from 'hud/frame/useHudRoutes';
-import SemiBoldTypography from 'components/SemiBoldTypography/SemiBoldTypography';
-import { ReactComponent as IconChat } from 'assets/svg/ic_nav_chat.svg';
-import { ReactComponent as IconMyClasses } from 'assets/svg/ic_nav_classes.svg';
-import { ReactComponent as IconAchievements } from 'assets/svg/ic_nav_leaderboard.svg';
+import { useAppSelector } from 'redux/store';
 
 const ICON_SIZE = '35px';
 const ICON_STYLES = { width: ICON_SIZE, height: ICON_SIZE };
 
 const MobileMenu = () => {
   const classes = useNavigationStyles();
-  const setHudArea = useHudRoutes();
+  const setHudArea = useHudAreaSetter();
 
   const selectedMainArea = useAppSelector((state) => state.hudNavigation.selectedMainArea);
 
