@@ -61,7 +61,6 @@ const ProfileArea = () => {
           edit={canEdit}
           from={from}
           defaultPage={PROFILE_PAGES.points_history}
-          isHud
         />
       )}
 

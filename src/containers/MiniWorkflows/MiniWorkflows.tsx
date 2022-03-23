@@ -1,23 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Paper, Typography, Grid, Box } from '@material-ui/core';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
-import ImgEmptyTask from '../../assets/svg/empty-tasks.svg';
+
+import {Typography, Grid, Box } from '@material-ui/core';
+
+import ImgEmptyTask from 'assets/svg/empty-tasks.svg';
 import useStyles from './styles';
-import { getTodos } from '../../api/workflow';
-import LoadingSpin from '../../components/LoadingSpin/LoadingSpin';
-import GradientButton from '../../components/Basic/Buttons/GradientButton';
+import { getTodos } from 'api/workflow';
+import LoadingSpin from 'components/LoadingSpin/LoadingSpin';
 import Task from './Task';
-import RightPanelCard from '../../components/RightPanelCard/RightPanelCard';
-import TransparentButton from '../../components/Basic/Buttons/TransparentButton';
+import RightPanelCard from 'components/RightPanelCard/RightPanelCard';
+import TransparentButton from 'components/Basic/Buttons/TransparentButton';
 
 const WORKFLOW_HEADING = 'Upcoming Tasks';
 
-export type Props = {
-  isHud?: boolean;
-};
-
-const MiniWorkflows = ({ isHud = false }: Props) => {
+const MiniWorkflows = () => {
   const classes: any = useStyles();
   const dispatch = useDispatch();
   const [tasks, setTasks] = useState([]);
@@ -90,18 +87,7 @@ const MiniWorkflows = ({ isHud = false }: Props) => {
     );
   };
 
-  if (isHud) {
-    return <RightPanelCard title={WORKFLOW_HEADING}>{renderBody()}</RightPanelCard>;
-  }
-
-  return (
-    <Paper className={classes.root} elevation={0} square={false}>
-      <Typography className={classes.title} variant="h6" paragraph>
-        {WORKFLOW_HEADING}
-      </Typography>
-      {renderBody()}
-    </Paper>
-  );
+  return <RightPanelCard title={WORKFLOW_HEADING}>{renderBody()}</RightPanelCard>;
 };
 
 export default MiniWorkflows;

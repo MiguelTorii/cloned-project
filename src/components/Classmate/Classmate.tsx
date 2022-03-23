@@ -83,7 +83,7 @@ const Classmate = ({ courseDisplayName, videoEnabled, width, classmate, meetingI
         setLoadingMessage(false);
       }, 4000);
     },
-    [classmate.firstName, classmate.lastName, classmate.userId, dispatch, isHud, client]
+    [classmate.firstName, classmate.lastName, classmate.userId, dispatch, client]
   );
   const classList = useMemo(() => {
     if (courseDisplayName) {

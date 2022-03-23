@@ -36,7 +36,7 @@ const HudRightPanel = () => {
 
         {selectedMainSubArea !== CALENDAR_AREA && (
           <Box mt={2}>
-            <MiniWorkflows isHud />
+            <MiniWorkflows />
           </Box>
         )}
       </div>

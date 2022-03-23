@@ -18,7 +18,6 @@ const AboutMeSubarea = ({ userIdToDisplay, from, canEdit }: Props) => {
       edit={canEdit}
       from={from}
       defaultPage={PROFILE_PAGES.index}
-      isHud
     />
   );
 };

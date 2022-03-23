@@ -41,7 +41,6 @@ type Props = {
   pushTo?: (...args: Array<any>) => any;
   onLoadMore?: (...args: Array<any>) => any;
   onUserClick?: (...args: Array<any>) => any;
-  isHud?: boolean;
 };
 
 type State = {};
@@ -177,8 +176,7 @@ class FeedList extends React.PureComponent<Props, State> {
       onUserClick,
       schoolId,
       location: { pathname },
-      isFiltering,
-      isHud
+      isFiltering
     } = this.props;
     return (
       <div className={`${classes.container} tour-onboarding-feed`}>
@@ -235,7 +233,7 @@ class FeedList extends React.PureComponent<Props, State> {
                 </Typography>
               </div>
             }
-            scrollableTarget={isHud ? COMMUNITY_SCROLL_CONTAINER_ID : null}
+            scrollableTarget={COMMUNITY_SCROLL_CONTAINER_ID}
           >
             {items.map((item) => (
               <Paper key={item.feedId} className={classes.root} elevation={0}>
