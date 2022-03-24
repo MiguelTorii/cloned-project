@@ -1,8 +1,8 @@
 /* eslint-disable no-await-in-loop */
 
 /* eslint-disable no-restricted-syntax */
-import type { RefObject } from 'react';
 import React from 'react';
+import type { RefObject } from 'react';
 
 import cx from 'classnames';
 import debounce from 'lodash/debounce';
@@ -316,7 +316,7 @@ class MeetUp extends React.Component<Props, State> {
           start_time: this.startTime,
           end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
           type: 'Ended',
-          CHANNEL_SID_NAME: videoRoom.sid
+          [CHANNEL_SID_NAME]: videoRoom.sid
         }
       });
     }
@@ -389,7 +389,7 @@ class MeetUp extends React.Component<Props, State> {
           channelName: videoRoom.name,
           start_time: moment().format('YYYY-MM-DD hh:mm:ss'),
           type: 'Started',
-          CHANNEL_SID_NAME: videoRoom.sid
+          [CHANNEL_SID_NAME]: videoRoom.sid
         }
       });
       this.setState({
@@ -543,7 +543,7 @@ class MeetUp extends React.Component<Props, State> {
             start_time: this.startTime,
             end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
             type: 'Ended',
-            CHANNEL_SID_NAME: videoRoom.sid
+            [CHANNEL_SID_NAME]: videoRoom.sid
           }
         });
       }

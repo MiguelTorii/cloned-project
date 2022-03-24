@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import axios from 'axios';
 import cx from 'classnames';
@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 
+import { CHANNEL_SID_NAME } from 'constants/enums';
 import { getFileAttributes, processMessages } from 'utils/chat';
 
 import { showNotification } from 'actions/notifications';
@@ -161,7 +162,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          CHANNEL_SID_NAME: channel.sid
+          [CHANNEL_SID_NAME]: channel.sid
         }
       });
       const fileAttributes = getFileAttributes(files);
@@ -184,7 +185,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
           event: 'Chat- Send Message',
           props: {
             Content: 'Text',
-            CHANNEL_SID_NAME: channel.sid
+            [CHANNEL_SID_NAME]: channel.sid
           }
         });
         onSend();
@@ -334,7 +335,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
           event: 'Chat- Send Message',
           props: {
             Content: 'Image',
-            CHANNEL_SID_NAME: channel.sid
+            [CHANNEL_SID_NAME]: channel.sid
           }
         });
       } catch (err) {

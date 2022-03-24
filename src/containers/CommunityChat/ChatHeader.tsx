@@ -17,6 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconShare from '@material-ui/icons/Share';
 
 import { PERMISSIONS } from 'constants/common';
+import { CHANNEL_SID_NAME } from 'constants/enums';
 import { getInitials } from 'utils/chat';
 
 import { logEvent } from 'api/analytics';
@@ -190,7 +191,7 @@ const ChatHeader = ({
             event: 'Chat- Send Message',
             props: {
               Content: 'Text',
-              CHANNEL_SID_NAME: channel.sid
+              [CHANNEL_SID_NAME]: channel.sid
             }
           });
         });

@@ -332,7 +332,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           event: 'Chat- Send Message',
           props: {
             Content: 'Text',
-            CHANNEL_SID_NAME: channel.sid
+            [CHANNEL_SID_NAME]: channel.sid
           }
         });
         this.setState(({ count }) => ({
@@ -402,7 +402,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
         event: 'Chat- Send Message',
         props: {
           Content: 'Image',
-          CHANNEL_SID_NAME: channel.sid
+          [CHANNEL_SID_NAME]: channel.sid
         }
       });
       this.setState(({ count }) => ({

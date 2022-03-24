@@ -12,6 +12,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
 import { MessageItemType, PERMISSIONS } from 'constants/common';
+import { CHANNEL_SID_NAME } from 'constants/enums';
 import type { AvatarData } from 'utils/chat';
 import { fetchAvatars, getAvatar, getFileAttributes, processMessages } from 'utils/chat';
 
@@ -441,7 +442,7 @@ const Main = ({
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          CHANNEL_SID_NAME: channel.sid
+          [CHANNEL_SID_NAME]: channel.sid
         }
       });
       const fileAttributes = getFileAttributes(files);
@@ -464,7 +465,7 @@ const Main = ({
           event: 'Chat- Send Message',
           props: {
             Content: 'Text',
-            CHANNEL_SID_NAME: channel.sid
+            [CHANNEL_SID_NAME]: channel.sid
           }
         });
 

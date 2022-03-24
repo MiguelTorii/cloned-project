@@ -60,7 +60,7 @@ const RemoveStudentDialog = ({
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          CHANNEL_SID_NAME: channel.sid
+          [CHANNEL_SID_NAME]: channel.sid
         }
       });
     }

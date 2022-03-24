@@ -222,7 +222,7 @@ class VideoChatChannel extends React.Component<Props, State> {
         event: 'Chat- Send Message',
         props: {
           Content: 'Text',
-          CHANNEL_SID_NAME: channel.sid
+          [CHANNEL_SID_NAME]: channel.sid
         }
       });
     } catch (err) {
@@ -270,7 +270,7 @@ class VideoChatChannel extends React.Component<Props, State> {
         event: 'Chat- Send Message',
         props: {
           Content: 'Image',
-          CHANNEL_SID_NAME: channel.sid
+          [CHANNEL_SID_NAME]: channel.sid
         }
       });
     } catch (err) {
