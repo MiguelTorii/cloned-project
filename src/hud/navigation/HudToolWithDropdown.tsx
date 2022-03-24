@@ -37,6 +37,8 @@ import { useStyles } from './HudNavigationStyles';
 import type { HudToolData } from './HudToolData';
 import type { HudNavigationState } from 'hud/navigationState/hudNavigationState';
 import type { User } from 'types/models';
+import { signOut } from 'actions/sign-in';
+import type { Dispatch } from 'types/store';
 
 type Props = {
   parentNavigationItem: HudToolData;

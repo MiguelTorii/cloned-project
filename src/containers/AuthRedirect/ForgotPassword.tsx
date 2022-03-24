@@ -39,11 +39,16 @@ const validateEmail = (email) => {
   return re.test(email);
 };
 
+const STEPS = {
+  EMAIL: 'email',
+  CODE: 'code'
+};
+
 const ForgotPassword = ({ updateError, setScreen }) => {
   const classes: any = useStyles();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState('email');
+  const [step, setStep] = useState(STEPS.EMAIL);
   const onChange = useCallback(
     (field) => (e) => {
       if (e?.target) {
@@ -62,31 +67,18 @@ const ForgotPassword = ({ updateError, setScreen }) => {
 
       try {
         setLoading(true);
-        const success = await recoverPassword({
+        await recoverPassword({
           email
-        });
-
-        if (success) {
-          setStep('code');
-        } else {
-          updateError({
-            title: 'Error Recovering Password',
-            body: "We couldn't process your request, please try again"
-          });
-        }
-      } catch (err) {
-        updateError({
-          title: 'Error Recovering Password',
-          body: "We couldn't process your request, please try again"
         });
       } finally {
         setLoading(false);
+        setStep(STEPS.CODE);
       }
     },
     [email, updateError]
   );
 
-  if (step === 'email') {
+  if (step === STEPS.EMAIL) {
     return (
       <div className={classes.container}>
         <form onSubmit={onSubmitEmail} className={classes.form}>
@@ -123,11 +115,10 @@ const ForgotPassword = ({ updateError, setScreen }) => {
 
   return (
     <div className={classes.container}>
-      <form className={classes.form}>
-        <Typography variant="h6">
-          If your email is connected to a account, a reset link was sent to it.
-        </Typography>
-      </form>
+      <AuthTitle paragraph>Reset your password</AuthTitle>
+      <Typography variant="h6" align="center">
+        Thanks for providing your email, we sent a link to reset your password. We can't wait to get you back in here!
+      </Typography>
     </div>
   );
 };
