@@ -117,7 +117,8 @@ const ForgotPassword = ({ updateError, setScreen }) => {
     <div className={classes.container}>
       <AuthTitle paragraph>Reset your password</AuthTitle>
       <Typography variant="h6" align="center">
-        Thanks for providing your email, we sent a link to reset your password. We can't wait to get you back in here!
+        Thanks for providing your email, we sent a link to reset your password. We can&apos;t wait
+        to get you back in here!
       </Typography>
     </div>
   );
