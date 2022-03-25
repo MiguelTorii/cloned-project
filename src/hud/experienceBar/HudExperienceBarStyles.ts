@@ -75,5 +75,8 @@ export const useStyles = makeStyles((theme: any) => ({
       transform: 'scale(1)',
       opacity: 0
     }
+  },
+  tooltip: {
+    fontSize: 14
   }
 }));

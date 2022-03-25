@@ -219,3 +219,4 @@ export const CAMPAIGN_NAMES = {
   INVITE_FRIENDS: 'InviteFriendsCampaign',
   REWARDS: 'RewardsCampaign'
 };
+export const XP_BAR_TOOLTIP = 'Win MVP 8+ times in a semester to unlock a scholarship';

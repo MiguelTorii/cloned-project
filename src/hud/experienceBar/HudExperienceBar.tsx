@@ -3,7 +3,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { Typography } from '@material-ui/core';
+import { Tooltip, Typography } from '@material-ui/core';
+
+import { XP_BAR_TOOLTIP } from 'constants/common';
 
 import { apiGetExperiencePoints } from 'api/user';
 import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
@@ -80,14 +82,21 @@ const HudExperienceBar = () => {
           >
             <h3 className={classes.notificationText}>+ {difference} points!</h3>
           </AnimateOnChange>
-          <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
-            <div style={experienceBarFillWidth} className={classes.experienceFiller} />
-            <div className={classes.experienceLabelContainer}>
-              <Typography className={classes.experienceLabel}>
-                MVP: {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
-              </Typography>
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            title={XP_BAR_TOOLTIP}
+            placement="top"
+            arrow
+          >
+            <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
+              <div style={experienceBarFillWidth} className={classes.experienceFiller} />
+              <div className={classes.experienceLabelContainer}>
+                <Typography className={classes.experienceLabel}>
+                  MVP: {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
+                </Typography>
+              </div>
             </div>
-          </div>
+          </Tooltip>
         </div>
       ) : (
         <div className={classes.expertModeBox}>
