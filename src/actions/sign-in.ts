@@ -106,17 +106,49 @@ export const updateUser =
     );
     dispatch(userActions.fetchClasses());
   };
+
+const processInvite = async (dispatch: Dispatch) => {
+  // Check if the user is invited by a referral code
+  const referralCode = store.get(STORAGE_KEYS.REFERRAL_CODE);
+
+  if (!referralCode) {
+    return;
+  }
+
+  const { success, message } = await apiJoinWithReferralCode(referralCode);
+
+  if (success) {
+    dispatch(
+      showNotification({
+        message: 'Thanks for joining CircleIn!',
+        variant: 'success'
+      })
+    );
+  } else {
+    dispatch(
+      showNotification({
+        message,
+        variant: 'error'
+      })
+    );
+  }
+
+  store.remove(STORAGE_KEYS.REFERRAL_CODE);
+};
+
 export const signIn =
   ({ email, password, schoolId }: { email: string; password: string; schoolId: number }) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(requestSignIn());
       const user = await signInUser(email, password, schoolId);
-      dispatch(
+      await dispatch(
         updateUser({
           user
         })
       );
+
+      await processInvite(dispatch);
 
       // Check if this is sign-in from viral loop email.
       // If so, call a logging api.
@@ -162,28 +194,7 @@ export const samlLogin =
           })
         );
 
-        // Check if the user is invited by a referral code
-        const referralCode = store.get(STORAGE_KEYS.REFERRAL_CODE);
-
-        if (referralCode) {
-          const { success, message } = await apiJoinWithReferralCode(referralCode);
-
-          if (success) {
-            dispatch(
-              showNotification({
-                message: 'Thanks for joining CircleIn!',
-                variant: 'success'
-              })
-            );
-          } else {
-            dispatch(
-              showNotification({
-                message,
-                variant: 'error'
-              })
-            );
-          }
-        }
+        await processInvite(dispatch);
       }
 
       return dispatch(

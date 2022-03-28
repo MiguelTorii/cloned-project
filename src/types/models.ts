@@ -683,3 +683,7 @@ export type Campaign = {
 export type GetCampaignsResponse = {
   campaigns: Array<Campaign>;
 };
+export type RefereeList = Array<string>;
+export type GetRefereeListResponse = {
+  referees: RefereeList;
+};

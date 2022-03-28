@@ -20,6 +20,7 @@ import ImgEmptyCover from 'assets/img/empty_cover.png';
 import ImgLogo from 'assets/svg/app-logo.svg';
 import schoolIcon from 'assets/svg/ic_school.svg';
 import Avatar from 'components/Avatar';
+import RefereeListCard from 'components/RefereeListCard';
 
 import { styles } from '../_styles/Profile/header';
 import GradientButton from '../Basic/Buttons/GradientButton';
@@ -250,6 +251,7 @@ class Header extends React.PureComponent<Props, State> {
           </Grid>
         </Paper>
         {this.renderPointsHistory()}
+        {isMyProfile && <RefereeListCard />}
         <Tabs
           value={tab}
           textColor="primary"

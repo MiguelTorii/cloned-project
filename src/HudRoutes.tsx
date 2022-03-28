@@ -110,7 +110,7 @@ const HudRoutes = () => (
           <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
           <Route exact path="/redirect" component={RedirectPage} />
           <Route exact path="/sandbox" component={Sandbox} />
-          <Route exact path="/invite/:code" component={JoinWithReferralCode} />
+          <Route exact path="/invite/:code/login/:schoolId" component={JoinWithReferralCode} />
 
           {/* Show a message and then in 1 sec redirect to "/" */}
           <Route component={Miss} />

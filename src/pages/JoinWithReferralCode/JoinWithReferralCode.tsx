@@ -6,7 +6,7 @@ import store from 'store';
 import { STORAGE_KEYS } from 'constants/app';
 
 const JoinWithReferralCode = () => {
-  const { code } = useParams();
+  const { code, schoolId } = useParams();
   const history = useHistory();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const JoinWithReferralCode = () => {
       store.set(STORAGE_KEYS.REFERRAL_CODE, code);
     }
 
-    history.push('/login');
+    history.push(`/login/${schoolId}`);
   }, [code]);
 
   return <div>Redirecting...</div>;

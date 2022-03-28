@@ -27,7 +27,8 @@ import type {
   InviteLinkData,
   UserProfile,
   JoinWithReferralCodeResponse,
-  GetCampaignsResponse
+  GetCampaignsResponse,
+  GetRefereeListResponse
 } from 'types/models';
 
 export const getUserProfile = async ({ userId }: { userId: string }): Promise<Profile> => {
@@ -737,4 +738,9 @@ export const apiGetCampaigns = async (userId: number): Promise<GetCampaignsRespo
   callApi({
     url: `${API_URL}/campaigns/${userId}`,
     method: 'GET'
+  });
+
+export const apiGetRefereeList = async (): Promise<GetRefereeListResponse> =>
+  callApi({
+    url: `${API_URL}/referral/referee/list`
   });
