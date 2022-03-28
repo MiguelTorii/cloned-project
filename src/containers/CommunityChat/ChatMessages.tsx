@@ -97,11 +97,6 @@ const ChatMessages = React.forwardRef<HTMLDivElement, Props>(
             case 'message':
             case 'own': {
               const isOnline = getIsOnline(item.author);
-              /**
-               * TODO: `members` is an object which doesn't have a length property.
-               * I'm confused as to how this code has ever ever worked correctly,
-               * so just using any type for now
-               */
               return (
                 <ChatMessage
                   key={id}
@@ -111,7 +106,7 @@ const ChatMessages = React.forwardRef<HTMLDivElement, Props>(
                   lastReadMessageIndex={lastReadIndex}
                   userId={item.author}
                   members={channelMembers}
-                  isGroupChannel={(members as any).length === 2}
+                  isGroupChannel={channelMembers.length > 2}
                   name={item.name}
                   messageList={item.messageList}
                   avatar={getAvatar({

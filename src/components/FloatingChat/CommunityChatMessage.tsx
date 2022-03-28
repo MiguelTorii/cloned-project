@@ -110,7 +110,7 @@ const ChatMessage = ({
 
   const handleCloseReport = () => setOpenReport(false);
 
-  const handleOpenBlockMemberModal = (userId, name) => () => {
+  const handleOpenBlockMemberModal = (userId, name) => {
     setBlockuserId(userId);
     setBlockUserName(name);
     setOpenBlockModal(true);
