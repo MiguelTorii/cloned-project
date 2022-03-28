@@ -6,44 +6,41 @@ import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
-import { MessageItemType, PERMISSIONS } from 'constants/common';
+import { PERMISSIONS } from 'constants/common';
 import { CHANNEL_SID_NAME } from 'constants/enums';
 import type { AvatarData } from 'utils/chat';
-import { fetchAvatars, getAvatar, getFileAttributes, processMessages } from 'utils/chat';
+import { fetchAvatars, getFileAttributes } from 'utils/chat';
 
 import { messageLoadingAction } from 'actions/chat';
 import { logEvent } from 'api/analytics';
 import { sendMessage } from 'api/chat';
 import LoadingMessageGif from 'assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
-import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
-import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
 import LoadImg from 'components/LoadImg/LoadImg';
-import { setChannelRead, useChannelMetadataById, useTyping } from 'features/chat';
+import { setChannelRead, useChannelMetadataById, useChatParams, useTyping } from 'features/chat';
 import { usePrevious } from 'hooks';
 import { selectLocalById } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
 
 import useStyles from './_styles/main';
+import ChannelMessageQuill from './ChannelMessageQuill';
 import ChatHeader from './ChatHeader';
+import ChatMessages from './ChatMessages';
 import EmptyMain from './EmptyMain';
 import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
-import MessageQuill from './MessageQuill';
 
+import type { ChannelMetadata } from 'features/chat';
 import type { Channel } from 'twilio-chat';
-import type { Member } from 'types/models';
 
 type Props = {
   channel?: Channel;
   handleBlock?: (...args: Array<any>) => any;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   isCommunityChat?: boolean;
-  lastReadMessageIndex: Channel['lastConsumedMessageIndex'];
   onSend?: (...args: Array<any>) => any;
   rightSpace?: number;
   selectedChannel?: any;
@@ -60,7 +57,6 @@ const Main = ({
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  lastReadMessageIndex,
   channelLength
 }: Props) => {
   const classes: any = useStyles();
@@ -76,7 +72,7 @@ const Main = ({
     (state) => state.chat.data
   );
 
-  const { chatId } = useParams();
+  const { chatId } = useChatParams();
   const usePreviousChannelSid = usePrevious(channel?.sid);
 
   const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
@@ -89,11 +85,10 @@ const Main = ({
   const [paginator, setPaginator] = useState(null);
   const [hasMore, setHasMore] = useState(false);
   const [scroll, setScroll] = useState(true);
-  const [value, setValue] = useState('');
   const [avatars, setAvatars] = useState<AvatarData[]>([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState<{ [index: number]: Member }>({});
+  const [members, setMembers] = useState<{ [index: number]: ChannelMetadata['users'][0] }>({});
   const [showError, setShowError] = useState(false);
   const [focusMessageBox, setFocusMessageBox] = useState(0);
   const [files, setFiles] = useState([]);
@@ -227,36 +222,6 @@ const Main = ({
     }
   }, [channel, currentCommunityChannelId, dispatch, queryClient, chatId, usePreviousChannelSid]);
 
-  const messageItems = useMemo(
-    () =>
-      processMessages({
-        items: messages,
-        userId
-      }),
-    [messages, userId]
-  );
-
-  // Calculate last message index.
-  const lastReadIndex = useMemo(() => {
-    let resultIndex = lastReadMessageIndex;
-    for (const messageItem of messageItems) {
-      if (
-        messageItem.type === MessageItemType.OWN ||
-        messageItem.type === MessageItemType.MESSAGE
-      ) {
-        for (const message of messageItem.messageList) {
-          if (message.index > lastReadMessageIndex) {
-            if (messageItem.type === MessageItemType.MESSAGE) {
-              return resultIndex;
-            }
-            resultIndex = message.index;
-          }
-        }
-      }
-    }
-    return resultIndex;
-  }, [messageItems, lastReadMessageIndex]);
-
   const hasPermission = useMemo(
     () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
     [permission]
@@ -325,111 +290,10 @@ const Main = ({
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
     win.focus();
   }, [channel]);
-  const handleRemoveMessage = useCallback((messageId) => {
+  const handleRemoveMessage = useCallback((messageId: string) => {
     setMessages((oldMessages) => oldMessages.filter((item) => item.state.sid !== messageId));
   }, []);
-  const getRole = useCallback(
-    (userId) => {
-      if (!members[userId]) {
-        return null;
-      }
 
-      const { role } = members[userId];
-      return role;
-    },
-    [members]
-  );
-  const getIsOnline = useCallback(
-    (userId) => {
-      if (!members[userId]) {
-        return null;
-      }
-      const { isOnline } = members[userId];
-      return isOnline;
-    },
-    [members]
-  );
-
-  // TODO Refactor to separate component
-  const renderMessage = useCallback(
-    (item, profileURLs, isLastMessage) => {
-      const { id, type } = item;
-      try {
-        switch (type) {
-          case 'date':
-            return <ChatMessageDate key={id} body={item.body} />;
-
-          case 'message':
-          case 'own': {
-            const role = getRole(item.author);
-            const isOnline = getIsOnline(item.author);
-            // TODO `members` is an object which doesn't have a length property.
-            // I'm confused as to how this code has ever ever worked correctly,
-            // so just using any type for now
-            return (
-              <ChatMessage
-                key={id}
-                isCommunityChat={isCommunityChat}
-                date={item.date}
-                channelId={channel.sid}
-                isOnline={isOnline}
-                isLastMessage={isLastMessage}
-                lastReadMessageIndex={lastReadIndex}
-                isOwn={type === 'own'}
-                currentUserId={userId}
-                userId={item.author}
-                members={channelMembers}
-                isGroupChannel={(members as any).length === 2}
-                name={item.name}
-                messageList={item.messageList}
-                avatar={getAvatar({
-                  id: item.author,
-                  profileURLs
-                })}
-                onImageLoaded={handleScrollToBottom}
-                onStartVideoCall={handleStartVideoCall}
-                onImageClick={handleImageClick}
-                onRemoveMessage={handleRemoveMessage}
-                handleBlock={handleBlock}
-              />
-            );
-          }
-          case 'end':
-            return (
-              <div
-                key={id}
-                style={{
-                  float: 'left',
-                  clear: 'both'
-                }}
-                ref={end}
-              />
-            );
-
-          default:
-            return null;
-        }
-      } catch (err) {
-        setErrorLoadingMessage(true);
-        return null;
-      }
-    },
-    [
-      channel?.sid,
-      channelMembers,
-      getIsOnline,
-      getRole,
-      handleBlock,
-      handleImageClick,
-      handleRemoveMessage,
-      handleScrollToBottom,
-      handleStartVideoCall,
-      isCommunityChat,
-      lastReadIndex,
-      members,
-      userId
-    ]
-  );
   const onSendMessage = useCallback(
     async (message) => {
       setScroll(true);
@@ -482,14 +346,6 @@ const Main = ({
     [channel, firstName, lastName, onSend, files]
   );
 
-  const handleRTEChange = useCallback((updatedValue) => {
-    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
-      setValue('');
-    } else {
-      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '');
-      setValue(currentValue);
-    }
-  }, []);
   const handleImageClose = useCallback(() => setImages([]), []);
   const startVideo = useCallback(() => {
     window.open(`/video-call/${channel.sid}`, '_blank');
@@ -576,9 +432,20 @@ const Main = ({
                   />
                 ) : null)}
               {/* check if it's last message using length - 2, because we have `end` message at the end. */}
-              {messageItems.map((item, index) =>
-                renderMessage(item, avatars, index === messageItems.length - 2)
-              )}
+              <ChatMessages
+                ref={end}
+                avatars={avatars}
+                channel={channel}
+                channelMembers={channelMembers}
+                handleBlock={handleBlock}
+                handleImageClick={handleImageClick}
+                handleRemoveMessage={handleRemoveMessage}
+                handleScrollToBottom={handleScrollToBottom}
+                handleStartVideoCall={handleStartVideoCall}
+                isCommunityChat={isCommunityChat}
+                members={members}
+                messages={messages}
+              />
               {loading && (
                 <div className={classes.progress}>
                   <CircularProgress size={20} />
@@ -595,29 +462,17 @@ const Main = ({
         />
 
         {channel && (
-          <MessageQuill
+          <ChannelMessageQuill
+            channel={channel}
             isNamedChannel={isCommunityChat}
-            value={value}
             userId={userId}
             setFiles={setFiles}
             files={files}
             focusMessageBox={focusMessageBox}
             onSendMessage={onSendMessage}
-            onChange={handleRTEChange}
-            setValue={setValue}
-            onTyping={handleOnTyping}
+            setError={setShowError}
             showError={showError}
           />
-        )}
-
-        {channel && (
-          <div className={classes.typing}>
-            <Typography className={classes.typingText} variant="subtitle1">
-              {typing && typing.channelId === channel.sid
-                ? `${typing.friendlyName} is typing ...`
-                : ''}
-            </Typography>
-          </div>
         )}
       </div>
     </div>

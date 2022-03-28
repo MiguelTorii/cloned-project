@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
+import { useAppSelector } from 'redux/store';
+
 import type { Channel, KeyOfChannelEvents, Member } from 'twilio-chat';
 
 const INITIAL_STATE = { channelId: '', friendlyName: '' };
@@ -10,6 +12,7 @@ export const useTyping = (channel?: Channel) => {
   const [typing, setTyping] = useState(INITIAL_STATE);
 
   const onTyping = useCallback(() => channel?.typing(), [channel]);
+  const userId = useAppSelector((state) => state.user.data.userId);
 
   useEffect(() => {
     const typingCallback = (member: Member) => {
@@ -17,6 +20,7 @@ export const useTyping = (channel?: Channel) => {
         return;
       }
       member.getUser().then((user) => {
+        if (user.identity === userId) return;
         setTyping({
           channelId: channel.sid,
           friendlyName: user.friendlyName

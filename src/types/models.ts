@@ -315,7 +315,7 @@ export type ChatMessage = {
   body: string;
   imageKey: string;
   date: string;
-  messageList: Array<Record<string, any>>;
+  messageList: Array<ChatMessageItem>;
   files?: string[];
 };
 export type CustomMessageAttributes = {

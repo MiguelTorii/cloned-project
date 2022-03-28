@@ -1,5 +1,5 @@
 import 'react-quill/dist/quill.snow.css';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 
 import { useHistory, withRouter } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
@@ -13,6 +13,7 @@ import StudyRoomReport from '../StudyRoomReport/ReportIssue';
 
 import CommunityChatMessageItem from './CommunityChatMessageItem';
 
+import type { ChannelMetadata } from 'features/chat';
 import type { ChatMessageItem } from 'types/models';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
@@ -27,8 +28,8 @@ type Props = {
   date?: string;
   channelId: string;
   isGroupChannel?: boolean;
-  members?: Array<any>;
-  lastReadMessageIndex: number;
+  members?: ChannelMetadata['users'];
+  lastReadMessageIndex: number | null;
   isLastMessage: boolean;
   messageList?: Array<ChatMessageItem>;
   onImageLoaded?: (...args: Array<any>) => any;
@@ -68,9 +69,9 @@ const ChatMessage = ({
       members.forEach((member) => {
         data[member.userId] = {
           userId: member.userId,
-          firstName: member.firstname,
-          lastName: member.lastname,
-          userProfileUrl: member.image
+          firstName: member.firstName,
+          lastName: member.lastName,
+          userProfileUrl: member.profileImageUrl
         };
       });
     }
@@ -131,6 +132,7 @@ const ChatMessage = ({
       {messageList.map((message, index) => (
         <React.Fragment key={message.sid}>
           <CommunityChatMessageItem
+            key={message.sid}
             message={message}
             name={name}
             authorUserId={userId}
@@ -166,4 +168,4 @@ const ChatMessage = ({
   );
 };
 
-export default withRouter(ChatMessage);
+export default ChatMessage;

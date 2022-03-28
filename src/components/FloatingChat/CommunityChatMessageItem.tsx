@@ -78,7 +78,6 @@ const HOVER_MENU_EMOJI_SIZE = 20;
 const CommunityChatMessageItem = ({
   date,
   message,
-  role,
   channelId,
   name,
   authorUserId,

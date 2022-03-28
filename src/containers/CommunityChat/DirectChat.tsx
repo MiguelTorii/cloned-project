@@ -61,13 +61,7 @@ const DirectChat = ({ width }: Props) => {
   const [leftSpace, setLeftSpace] = useState<NumberGridSizes>(2);
   const [rightSpace, setRightSpace] = useState<NumberGridSizes>(0);
   const [prevWidth, setPrevWidth] = useState(null);
-  const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
-    channelId: string | null;
-    lastIndex: Channel['lastConsumedMessageIndex'];
-  }>({
-    channelId: null,
-    lastIndex: null
-  });
+
   const iconClasses = useIconClasses();
 
   const onNewChannel = useCallback(() => {
@@ -137,28 +131,6 @@ const DirectChat = ({ width }: Props) => {
 
     setPrevWidth(width);
   }, [prevWidth, width, curSize, currentChannel, isLoading]);
-
-  // This effect is to keep the index of last read message.
-  useEffect(() => {
-    if (!currentChannel) {
-      return;
-    }
-
-    const sid = currentChannel.sid;
-
-    // We just want to update the last read message info only if the channel is changed.
-    if (sid === lastReadMessageInfo.channelId) {
-      return;
-    }
-
-    if (sid) {
-      setLastReadMessageInfo({
-        lastIndex: currentChannel.lastConsumedMessageIndex,
-        channelId: currentChannel.sid
-      });
-    }
-    // Use `any` type here because `Property 'channelState' is private and only accessible within class 'Channel'.`
-  }, [currentChannel, lastReadMessageInfo]);
 
   const handleBlock = useCallback(
     async (blockedUserId) => {
@@ -232,11 +204,6 @@ const DirectChat = ({ width }: Props) => {
             channel={currentChannel}
             handleBlock={handleBlock}
             handleUpdateGroupName={updateGroupName}
-            lastReadMessageIndex={
-              lastReadMessageInfo.channelId === currentChannel?.sid
-                ? lastReadMessageInfo.lastIndex
-                : null
-            }
             onSend={() => {
               if (onboardingListVisible) {
                 setTimeout(() => getOnboardingList()(dispatch), 1000);

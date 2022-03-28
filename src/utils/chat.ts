@@ -159,7 +159,7 @@ export const processMessages = ({
       if (data.length === 0) {
         data.push({
           type: 'date',
-          id: uuidv4(),
+          id: date,
           name: '',
           author: '',
           body: date,
@@ -169,7 +169,7 @@ export const processMessages = ({
         });
         data.push({
           type: Number(author) === Number(userId) ? 'own' : 'message',
-          id: `${author}-${uuidv4()}`,
+          id: `${author}-${date}-${messageItem.sid}`,
           name: `${firstName} ${lastName}`,
           author,
           body: '',
@@ -181,7 +181,7 @@ export const processMessages = ({
       } else if (data[data.length - 1].date !== date) {
         data.push({
           type: 'date',
-          id: uuidv4(),
+          id: date,
           name: '',
           author: '',
           body: date,
@@ -191,7 +191,7 @@ export const processMessages = ({
         });
         data.push({
           type: Number(author) === Number(userId) ? 'own' : 'message',
-          id: `${author}-${uuidv4()}`,
+          id: `${author}-${date}-${messageItem.sid}`,
           name: `${firstName} ${lastName}`,
           author,
           body: '',
@@ -208,7 +208,7 @@ export const processMessages = ({
         } else {
           data.push({
             type: Number(author) === Number(userId) ? 'own' : 'message',
-            id: `${author}-${uuidv4()}`,
+            id: `${author}-${date}-${messageItem.sid}`,
             name: `${firstName} ${lastName}`,
             author,
             files,
@@ -223,7 +223,7 @@ export const processMessages = ({
 
     data.push({
       type: 'end',
-      id: `end-scroll-${uuidv4()}`,
+      id: `end-scroll`,
       name: '',
       author: '',
       body: '',

@@ -22,11 +22,8 @@ import AttachFile from 'components/FileUpload/AttachFile';
 import styles from './_styles/messageQuill';
 import EditorToolbar, { formats } from './Toolbar';
 
-type Props = {
+export type MessageQuillProps = {
   classes?: any;
-  onChange?: any;
-  value?: any;
-  setValue?: any;
   onSendMessage?: any;
   focusMessageBox?: any;
   showError?: any;
@@ -39,19 +36,27 @@ type Props = {
 
 const MessageQuill = ({
   classes,
-  onChange,
-  value,
-  setValue,
-  onSendMessage,
-  focusMessageBox,
-  showError,
-  onTyping,
-  userId,
-  setFiles,
   files,
-  isNamedChannel
-}: Props) => {
+  focusMessageBox,
+  isNamedChannel,
+  onSendMessage,
+  onTyping,
+  setFiles,
+  showError,
+  userId
+}: MessageQuillProps) => {
   const dispatch = useDispatch();
+
+  const [value, setValue] = useState('');
+
+  const onChange = useCallback((updatedValue) => {
+    if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
+      setValue('');
+    } else {
+      const currentValue = updatedValue.replaceAll('<p><br></p>', '').replaceAll('<p>\n</p>', '');
+      setValue(currentValue);
+    }
+  }, []);
 
   const [loading, setLoading] = useState(false);
   const [isPressEnter, setPressEnter] = useState(false);

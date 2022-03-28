@@ -40,19 +40,12 @@ const CommunityChat = ({ width }: Props) => {
   const [leftSpace, setLeftSpace] = useState(2);
   const [rightSpace, setRightSpace] = useState(['xs'].includes(width) ? 0 : 3);
   const [prevWidth, setPrevWidth] = useState(null);
-  const [lastReadMessageInfo, setLastReadMessageInfo] = useState<{
-    channelId: string;
-    lastIndex: number;
-  }>({
-    channelId: null,
-    lastIndex: null
-  });
 
   const iconClasses = useIconClasses();
 
   const {
     isLoading,
-    data: { currentCommunityChannelId, selectedChannelId }
+    data: { currentCommunityChannelId }
   } = useAppSelector((state) => state.chat);
 
   const { data: currentCommunitySDKChannel } = useSelectChannelById(currentCommunityChannelId);
@@ -68,23 +61,6 @@ const CommunityChat = ({ width }: Props) => {
       }
     }
   }, [currentCommunitySDKChannel, width]);
-
-  // This effect is to keep the index of last read message.
-  useEffect(() => {
-    // We just want to update the last read message info only if the channel is changed.
-    if (
-      selectedChannel?.chat_id === lastReadMessageInfo.channelId ||
-      !currentCommunitySDKChannel ||
-      !selectedChannel
-    ) {
-      return;
-    }
-
-    setLastReadMessageInfo({
-      channelId: selectedChannel?.chat_id,
-      lastIndex: currentCommunitySDKChannel.lastConsumedMessageIndex
-    });
-  }, [selectedChannel, lastReadMessageInfo, currentCommunitySDKChannel]);
 
   const curSize = useMemo(
     () => (width === 'xs' ? 12 : ['md', 'sm'].includes(width) ? 4 : 2),
@@ -184,11 +160,6 @@ const CommunityChat = ({ width }: Props) => {
             channel={currentCommunitySDKChannel}
             channelLength={allCurrentCommunityChannels?.length || 0}
             isCommunityChat
-            lastReadMessageIndex={
-              lastReadMessageInfo.channelId === selectedChannelId
-                ? lastReadMessageInfo.lastIndex
-                : null
-            }
             rightSpace={rightSpace}
             selectedChannel={selectedChannel}
             setRightPanel={handleOpenRightPanel}
