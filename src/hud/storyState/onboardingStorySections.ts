@@ -70,7 +70,7 @@ const classFeedIntroAndNudgeToChat: StorySection = {
   highlightRootAreaId: CHAT_MAIN_AREA,
   highlightLeafAreaId: CHAT_AREA,
   statements: [
-    'Your <strong>Class Feed</strong> is the place to be to share and view study resources! Check out my post above, it’ll help you AND I’m trying to get my Chipotle gift card 🙃. Let’s go to <strong>Chat</strong> next! You can chat and connect with your peers anywhere, any time...'
+    'Your <strong>Class Feed</strong> is the place to be to share and view study resources! Let’s go to <strong>Chat</strong> next! You can chat and connect with your peers anywhere, any time.'
   ]
 };
 
