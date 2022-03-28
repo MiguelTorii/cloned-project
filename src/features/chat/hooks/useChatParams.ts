@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { push } from 'connected-react-router';
 import { useQueryClient } from 'react-query';
@@ -73,6 +73,13 @@ export const useJoinChatByHash = () => {
 
 export const useSelectChatByIdURL = () => {
   const { pathname } = useLocation();
+
+  /**
+   * /chat/:communityId?/:chatId?`
+   * communtiyId should match an existing community/class channel
+   * 0 represents choosing direct messages
+   * chatId should match an existing channel fetched from the SDK
+   */
   const { communityId, chatId, hashId } = useChatParams();
 
   const {
@@ -85,8 +92,10 @@ export const useSelectChatByIdURL = () => {
   const { data: channels } = useChannels();
 
   const dispatch = useAppDispatch();
-
-  // When navigating to /chat,
+  /**
+   * React to navigating to /chat and redirect to any available channel
+   * Communities first, then DMs,
+   */
   useEffect(() => {
     if (
       !pathname.includes(URL.CHAT) ||
@@ -104,7 +113,7 @@ export const useSelectChatByIdURL = () => {
       dispatch(push(generateChatPath(communityId, chatId)));
     } else if (orderedDMChannelList?.length) {
       // Select first DM channel or redirect to stored DM channel
-      dispatch(push(generateChatPath(0, selectedChannelId || orderedDMChannelList[0])));
+      dispatch(navigateToDM(selectedChannelId || orderedDMChannelList[0]));
     }
   }, [
     channels?.length,
@@ -119,7 +128,17 @@ export const useSelectChatByIdURL = () => {
     selectedChannelId
   ]);
 
-  // Set community state based on param
+  const validCommunity = useMemo(
+    () => communitiesWithChannels?.find(({ courseId }) => courseId === Number(communityId)),
+    [communitiesWithChannels, communityId]
+  );
+
+  const allCommunityChannelIds = useMemo(
+    () => validCommunity?.channels.map((channel) => channel.channels.map((c) => c.chat_id)).flat(),
+    [validCommunity?.channels]
+  );
+
+  // React to community state changes or incorrect URL params
   useEffect(() => {
     if (
       !pathname.includes(URL.CHAT) ||
@@ -131,29 +150,27 @@ export const useSelectChatByIdURL = () => {
       return;
     }
 
-    const validCommunity = communitiesWithChannels?.find(
-      ({ courseId }) => courseId === Number(communityId)
-    );
     if (validCommunity) {
       dispatch(setCurrentCommunityIdAction(Number(communityId)));
 
-      if (chatId) return;
-
-      const channelId = validCommunity.channels[0].channels[0].chat_id;
-      dispatch(push(generateChatPath(communityId, channelId)));
+      if (chatId && allCommunityChannelIds?.includes(chatId)) return;
+      // If community exists but channel is wrong, redirect to first channel
+      const firstChannelId = validCommunity.channels[0].channels[0].chat_id;
+      dispatch(push(generateChatPath(communityId, firstChannelId)));
     } else if (Number(communityId) !== 0 && communitiesWithChannels?.length) {
-      // Like with /chat, redirect to first community
+      // If communtiy is not found but communites exist, redirect to first community
       const communityId = communitiesWithChannels[0].courseId;
       const channelId = communitiesWithChannels[0].channels[0].channels[0].chat_id;
-      dispatch(push(generateChatPath(communityId, channelId[0])));
+      dispatch(push(generateChatPath(communityId, channelId)));
     } else {
       // Redirect to DMs
       dispatch(setCurrentCommunityIdAction(0));
-      if (!chatId) {
-        dispatch(push(generateChatPath(0, orderedDMChannelList[0])));
+      if (!chatId || !orderedDMChannelList.includes(chatId)) {
+        dispatch(navigateToDM(orderedDMChannelList[0]));
       }
     }
   }, [
+    allCommunityChannelIds,
     chatId,
     communitiesLoaded,
     communitiesWithChannels,
@@ -162,18 +179,42 @@ export const useSelectChatByIdURL = () => {
     dispatch,
     hashId,
     orderedDMChannelList,
-    pathname
+    pathname,
+    validCommunity
   ]);
 
-  // Selected DM channel based on param
-  useEffect(() => {
-    if (Number(communityId) !== 0 || !communitiesLoaded || selectedChannelId === chatId) return;
-    dispatch(setCurrentChannelSidAction(chatId || orderedDMChannelList[0] || null));
-  }, [chatId, communitiesLoaded, communityId, dispatch, orderedDMChannelList, selectedChannelId]);
-
-  // Select Community channel based on param
+  // Change selected DM state in response to params
   useEffect(() => {
     if (
+      !channels ||
+      Number(communityId) !== 0 ||
+      !communitiesLoaded ||
+      selectedChannelId === chatId
+    ) {
+      return;
+    }
+    const validDM = chatId && orderedDMChannelList.includes(chatId);
+    if (!validDM && orderedDMChannelList.length) {
+      // Select first DM
+      dispatch(navigateToDM(orderedDMChannelList[0]));
+      dispatch(setCurrentChannelSidAction(orderedDMChannelList[0]));
+    } else {
+      dispatch(setCurrentChannelSidAction(chatId || null));
+    }
+  }, [
+    channels,
+    chatId,
+    communitiesLoaded,
+    communityId,
+    dispatch,
+    orderedDMChannelList,
+    selectedChannelId
+  ]);
+
+  // Change selected community state in response to params
+  useEffect(() => {
+    if (
+      !channels ||
       Number(communityId) === 0 ||
       !chatId ||
       !communitiesLoaded ||
@@ -182,5 +223,5 @@ export const useSelectChatByIdURL = () => {
       return;
     }
     dispatch(setCurrentCommunityChannelIdAction(chatId));
-  }, [chatId, communitiesLoaded, communityId, currentCommunityChannelId, dispatch]);
+  }, [channels, chatId, communitiesLoaded, communityId, currentCommunityChannelId, dispatch]);
 };
