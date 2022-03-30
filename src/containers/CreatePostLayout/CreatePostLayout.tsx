@@ -282,7 +282,6 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
         <div className={classes.label}>Posting...</div>
       </Dialog>
       <Grid justifyContent="flex-start" className={classes.container} container spacing={2}>
-        {renderClassSelector()}
         <Grid item xs={12} lg={9}>
           <div className={classes.paperRoot}>
             {renderHudClassSelector()}
