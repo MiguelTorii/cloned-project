@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { useDebouncedValue } from '@mantine/hooks';
 import clsx from 'clsx';
 import Fuse from 'fuse.js';
 import { useParams } from 'react-router';
@@ -21,8 +22,8 @@ import ChatListItem from 'components/CommunityChatListItem/ChatListItem';
 import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput/CreateChatChannelInput';
 import OneTouchSend from 'components/CreateCommunityChatChannelInput/OneTouchSend';
 import Dialog from 'components/Dialog/Dialog';
-import { useChannels, useOrderedChannelList, useChannelsMetadata } from 'features/chat';
-import { useAppSelector, useAppDispatch } from 'redux/store';
+import { useChannels, useChannelsMetadata, useOrderedChannelList } from 'features/chat';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 
 import useStyles from './_styles/leftMenu';
 import EmptyLeftMenu from './EmptyLeftMenu';
@@ -45,12 +46,14 @@ const LeftMenu = ({
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState('');
+  const [debouncedSearch] = useDebouncedValue(search, 200);
+
   const [searchChannels, setSearchChannels] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const expertMode = useAppSelector((state) => state.user.expertMode);
   const {
-    data: { newChannel, selectedChannelId, oneTouchSendOpen, openChannels },
+    data: { newChannel, oneTouchSendOpen },
     isLoading: isChatLoading
   } = useAppSelector((state) => state.chat);
 
@@ -96,23 +99,25 @@ const LeftMenu = ({
   }, [oneTouchSendOpen, handleCreateNewChannel]);
 
   useEffect(() => {
-    if (search && channels) {
+    if (debouncedSearch && channels && channelsMetadata) {
       const list = channels.map((c) => ({
-        name: getTitle(c, userId, channelsMetadata?.users),
+        name: getTitle(c, userId, channelsMetadata[c.sid]?.users),
+        groupName: channelsMetadata[c.sid]?.groupName,
         channel: c
       }));
-      const options = {
+      const fuse = new Fuse(list, {
         includeScore: true,
-        threshold: 0,
-        keys: ['name']
-      };
-      const fuse = new Fuse(list, options);
-      const result = fuse.search(search).map((c) => c.item.channel.sid);
-      setSearchChannels(result);
+        threshold: 0.3,
+        distance: 60,
+        keys: ['name', 'groupName']
+      });
+      const result = fuse.search(debouncedSearch).map((c) => c.item.channel.sid);
+
+      setSearchChannels(result || []);
     } else {
       setSearchChannels(channels ? channels.map((c) => c.sid) : []);
     }
-  }, [search, channels, userId, channelsMetadata?.users]);
+  }, [channels, channelsMetadata, debouncedSearch, userId]);
 
   return (
     <Grid

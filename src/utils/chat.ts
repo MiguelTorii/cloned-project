@@ -40,7 +40,7 @@ export const getTitle = (
 
     const filter = members.filter((o) => {
       if (o.userId) {
-        return o.userId !== userId;
+        return String(o.userId) !== userId;
       }
 
       return false;
