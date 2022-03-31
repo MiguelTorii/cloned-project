@@ -10,6 +10,7 @@ const createEvent = async ({
   category,
   objectId,
   objectIds,
+  messageIds,
   type,
   recommendationType,
   ...rest
@@ -17,6 +18,7 @@ const createEvent = async ({
   category: string;
   objectId: string;
   objectIds: Array<string> | Array<number>;
+  messageIds: Array<string>;
   type: string;
   recommendationType: any;
 }): Promise<void> => {
@@ -32,6 +34,7 @@ const createEvent = async ({
       object_id: objectId ? objectId.toString() : '',
       object_ids: objectIds,
       recommendation_type: recommendationType,
+      message_ids: messageIds,
       type,
       ...rest
     },

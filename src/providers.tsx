@@ -3,6 +3,7 @@ import React from 'react';
 
 import ErrorModal from 'components/ErrorModal/ErrorModal';
 import { DeleteModalContextProvider } from 'contexts/DeleteModalContext';
+import { MessageMonitorContextProvider } from 'contexts/MessageMonitorContext';
 import { PostMonitorContextProvider } from 'contexts/PostMonitorContext';
 import { useChatSubscription } from 'features/chat';
 
@@ -16,9 +17,11 @@ const ChatSubscriptionConsumer = ({ children }) => {
 const ProviderGroup: FC = ({ children }) => (
   <DeleteModalContextProvider>
     <PostMonitorContextProvider>
-      <ErrorModal>
-        <ChatSubscriptionConsumer>{children}</ChatSubscriptionConsumer>
-      </ErrorModal>
+      <MessageMonitorContextProvider>
+        <ErrorModal>
+          <ChatSubscriptionConsumer>{children}</ChatSubscriptionConsumer>
+        </ErrorModal>
+      </MessageMonitorContextProvider>
     </PostMonitorContextProvider>
   </DeleteModalContextProvider>
 );

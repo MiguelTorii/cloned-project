@@ -19,11 +19,11 @@ import { showNotification } from 'actions/notifications';
 import { logEvent } from 'api/analytics';
 import { sendMessage } from 'api/chat';
 import { getPresignedURL } from 'api/media';
+import ChatMessage from 'components/ChatMessage';
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import { setChannelRead, useTyping } from 'features/chat';
 
-import ChatMessage from './ChatMessage';
 import ChatTextField from './ChatTextField';
 
 import type { StudyRoomAvatars, StudyRoomChatMembers } from './StudyRoomChat';
@@ -239,6 +239,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
             return (
               <ChatMessage
                 key={id}
+                messageId={id}
                 role={role}
                 isUserOnline={isMemberOnline(item.author)}
                 userId={item.author}
@@ -255,6 +256,7 @@ const StudyRoomChat = ({ members, channel, classes, avatars }: Props) => {
             return (
               <ChatMessage
                 key={id}
+                messageId={id}
                 messageList={item.messageList}
                 isOwn
                 onImageLoaded={handleScrollToBottom}

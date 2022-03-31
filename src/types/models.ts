@@ -568,6 +568,7 @@ export type EventData = {
   durationMs?: number;
   objectId?: string;
   objectIds?: Array<string> | Array<number>;
+  messageIds?: Array<string>;
   position?: number;
   rating?: number;
   recommendationType?: 'notification';

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import cx from 'classnames';
 import clsx from 'clsx';
@@ -21,7 +21,7 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 
-import { PROFILE_PAGE_SOURCE } from 'constants/common';
+import { MESSAGE_PREVIEW_THRESHOLD_PX, PROFILE_PAGE_SOURCE } from 'constants/common';
 import { buildPath } from 'utils/helpers';
 
 import { showNotification } from 'actions/notifications';
@@ -29,6 +29,8 @@ import { apiDeleteMessage, editMessage } from 'api/chat';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import Avatar from 'components/Avatar';
 import { useDeleteModal } from 'contexts/DeleteModalContext';
+import { useMessageMonitor } from 'contexts/MessageMonitorContext';
+import useIntersection from 'hooks/useIntersection';
 
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
@@ -92,8 +94,11 @@ const CommunityChatMessageItem = ({
   onStartVideoCall,
   onRemoveMessage
 }: Props) => {
+  const rootRef = useRef();
   const classes = useStyles();
   const dispatch = useDispatch();
+  const isInViewport = useIntersection(rootRef, MESSAGE_PREVIEW_THRESHOLD_PX);
+  const { previewMessage } = useMessageMonitor();
 
   const { open: openDeleteModal } = useDeleteModal();
   const myUserId = useSelector<any>((state) => state.user.data.userId);
@@ -104,6 +109,12 @@ const CommunityChatMessageItem = ({
   const [editMessageId, setEditMessageId] = useState('');
   const [files, setFiles] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  useEffect(() => {
+    if (isInViewport) {
+      previewMessage(message.sid);
+    }
+  }, [message, isInViewport]);
 
   const handleMouseEnter = useCallback(() => {
     setIsHover(true);
@@ -339,6 +350,7 @@ const CommunityChatMessageItem = ({
 
   return (
     <ListItem
+      ref={rootRef}
       key={message.sid}
       alignItems="flex-start"
       className={clsx(classes.root, isHover && 'hover')}
