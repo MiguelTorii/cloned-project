@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useLayoutEffect, useMemo } from 'react';
 
 import { MessageItemType } from 'constants/common';
 import type { AvatarData } from 'utils/chat';
@@ -16,7 +16,6 @@ interface Props {
   channelMembers: ChannelMetadata['users'];
   handleBlock: ((...args: Array<any>) => any) | undefined;
   handleImageClick: (src: string | Blob) => void;
-  handleRemoveMessage: (messageId: string) => void;
   handleScrollToBottom: () => void;
   handleStartVideoCall: () => void;
   isCommunityChat: boolean;
@@ -33,7 +32,6 @@ const ChatMessages = React.forwardRef<HTMLDivElement, Props>(
       handleBlock,
       avatars,
       handleImageClick,
-      handleRemoveMessage,
       handleScrollToBottom,
       handleStartVideoCall,
       members,
@@ -47,9 +45,10 @@ const ChatMessages = React.forwardRef<HTMLDivElement, Props>(
       () =>
         processMessages({
           items: messages,
-          userId
+          userId,
+          channelId: channel.sid
         }),
-      [messages, userId]
+      [channel.sid, messages, userId]
     );
 
     // Calculate last message index.
@@ -113,25 +112,14 @@ const ChatMessages = React.forwardRef<HTMLDivElement, Props>(
                     id: item.author,
                     profileURLs: avatars
                   })}
-                  onImageLoaded={handleScrollToBottom}
                   onStartVideoCall={handleStartVideoCall}
                   onImageClick={handleImageClick}
-                  onRemoveMessage={handleRemoveMessage}
                   handleBlock={handleBlock}
                 />
               );
             }
             case 'end':
-              return (
-                <div
-                  key={id}
-                  style={{
-                    float: 'left',
-                    clear: 'both'
-                  }}
-                  ref={ref}
-                />
-              );
+              return <Test key={id} ref={ref} onMount={handleScrollToBottom} />;
 
             default:
               return <></>;
@@ -141,5 +129,23 @@ const ChatMessages = React.forwardRef<HTMLDivElement, Props>(
     );
   }
 );
+
+const Test = React.forwardRef<HTMLDivElement, { onMount: () => void }>(({ onMount }, ref) => {
+  useLayoutEffect(() => {
+    onMount();
+    // Trigger scroll to the bottom only when last item mounts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        float: 'left',
+        clear: 'both'
+      }}
+    />
+  );
+});
 
 export default memo(ChatMessages);

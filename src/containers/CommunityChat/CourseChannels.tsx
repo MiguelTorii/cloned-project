@@ -30,7 +30,6 @@ const CourseChannels = ({ currentCommunity, selectedChannel }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { data: currentCommunityChannel } = useSelectChannelById(selectedChannel?.chat_id);
   const userClasses = useAppSelector((state) => state.user.userClasses);
 
   const currentCommunityWithChannels = useAppSelector(selectCurrentCommunityWithChannels);
@@ -88,11 +87,7 @@ const CourseChannels = ({ currentCommunity, selectedChannel }: Props) => {
           <Typography variant="body2">Go to Class Feed</Typography>
         </Link>
       </Box>
-      <CollapseNavbar
-        channels={communityChannels}
-        currentCommunityChannel={currentCommunityChannel}
-        selectedChannel={selectedChannel}
-      />
+      <CollapseNavbar channels={communityChannels} selectedChannel={selectedChannel} />
     </Box>
   );
 };

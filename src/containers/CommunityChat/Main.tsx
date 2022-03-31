@@ -1,27 +1,28 @@
-/* eslint-disable no-nested-ternary */
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import findIndex from 'lodash/findIndex';
 import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 
 import { PERMISSIONS } from 'constants/common';
 import { CHANNEL_SID_NAME } from 'constants/enums';
-import type { AvatarData } from 'utils/chat';
-import { fetchAvatars, getFileAttributes } from 'utils/chat';
+import { getFileAttributes } from 'utils/chat';
 
-import { messageLoadingAction } from 'actions/chat';
 import { logEvent } from 'api/analytics';
 import { sendMessage } from 'api/chat';
 import LoadingMessageGif from 'assets/gif/loading-chat.gif';
 import LoadingErrorMessageSvg from 'assets/svg/loading-error-message.svg';
 import LoadImg from 'components/LoadImg/LoadImg';
-import { setChannelRead, useChannelMetadataById, useChatParams, useTyping } from 'features/chat';
+import {
+  setChannelRead,
+  useChannelAvatars,
+  useChannelMessages,
+  useChannelMetadataById,
+  useChannelMessagesPaginatorFetch
+} from 'features/chat';
 import { usePrevious } from 'hooks';
 import { selectLocalById } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
@@ -35,6 +36,37 @@ import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
 
 import type { ChannelMetadata } from 'features/chat';
 import type { Channel } from 'twilio-chat';
+
+const ConversationLoading = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.messageLoadingRoot}>
+      <div className={classes.messageLoadingContainer}>
+        <LoadImg url={LoadingMessageGif} className={classes.emptyChatImg} />
+        <Typography className={classes.expertTitle}>Loading your conversation...</Typography>
+      </div>
+    </div>
+  );
+};
+
+const ErrorLoading = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.messageLoadingRoot}>
+      <div className={classes.messageLoadingContainer}>
+        <LoadImg url={LoadingErrorMessageSvg} className={classes.emptyChatImg} />
+        <Typography className={classes.expertTitle}>
+          Uh oh! There was an error trying to load your
+          <br />
+          conversation. Try refreshing your browser or <br />
+          submit a support ticket.
+        </Typography>
+      </div>
+    </div>
+  );
+};
 
 type Props = {
   channel?: Channel;
@@ -59,74 +91,53 @@ const Main = ({
   handleUpdateGroupName,
   channelLength
 }: Props) => {
-  const classes: any = useStyles();
-  const dispatch = useDispatch();
+  const classes = useStyles();
+  const queryClient = useQueryClient();
 
   const {
     expertMode,
     data: { userId, firstName, lastName }
   } = useAppSelector((state) => state.user);
   const permission = useAppSelector((state) => state.user.data.permission);
-  const isLoading = useAppSelector((state) => state.chat.isLoading);
-  const { newChannel, newMessage, messageLoading, currentCommunityChannelId } = useAppSelector(
-    (state) => state.chat.data
+  const { newChannel } = useAppSelector((state) => state.chat.data);
+  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
+
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
+
+  const [images, setImages] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [members, setMembers] = useState<{ [index: number]: ChannelMetadata['users'][0] }>({});
+  const [focusMessageBox, setFocusMessageBox] = useState(0);
+
+  // Data fetching hooks
+  const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
+  const {
+    data: messages,
+    isLoading: areMessagesLoading,
+    error: messagesError
+  } = useChannelMessages(channel);
+  const { data: avatars } = useChannelAvatars(channel);
+
+  const hasMore = Boolean(messages?.hasPrevPage);
+  const { loader: handleLoadMore, isLoading: isLoadingMore } = useChannelMessagesPaginatorFetch(
+    useCallback(() => setErrorLoadingMessage(false), []),
+    useCallback(() => setErrorLoadingMessage(true), []),
+    channel
   );
 
-  const { chatId } = useChatParams();
-  const usePreviousChannelSid = usePrevious(channel?.sid);
-
-  const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
-  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
-  const { current: emptyArr } = useRef([]);
-
-  const end = useRef(null);
-  const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [paginator, setPaginator] = useState(null);
-  const [hasMore, setHasMore] = useState(false);
-  const [scroll, setScroll] = useState(true);
-  const [avatars, setAvatars] = useState<AvatarData[]>([]);
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [members, setMembers] = useState<{ [index: number]: ChannelMetadata['users'][0] }>({});
-  const [showError, setShowError] = useState(false);
-  const [focusMessageBox, setFocusMessageBox] = useState(0);
-  const [files, setFiles] = useState([]);
-  const queryClient = useQueryClient();
-
+  // Legacy member data structure, should be refactored
   const memberKeys = useMemo(() => Object.keys(members), [members]);
   const otherUser = useMemo(() => {
     if (memberKeys.length !== 2) {
       return null;
     }
-
     return members[memberKeys.find((key) => key !== userId)];
   }, [memberKeys, members, userId]);
-
-  const { typing, onTyping } = useTyping(channel);
-
-  const handleOnTyping = useCallback(() => {
-    try {
-      onTyping();
-    } catch (err) {
-      setErrorLoadingMessage(true);
-    }
-  }, [onTyping]);
-
+  // Prevent re-renders every time due to new array reference
+  const { current: emptyArr } = useRef([]);
   const channelMembers = channelMetadata?.users || local?.users || emptyArr;
-
-  const handleScrollToBottom = useCallback(() => {
-    try {
-      if (scroll && end.current) {
-        end.current.scrollIntoView({
-          behavior: 'auto'
-        });
-      }
-    } catch (err) {
-      setErrorLoadingMessage(true);
-    } // eslint-disable-next-line
-  }, [scroll]);
-
+  // TODO Legacy data structure, should be unnecessary
   useEffect(() => {
     if (channel && channelMembers?.length) {
       const newMembers = {};
@@ -137,90 +148,49 @@ const Main = ({
     }
   }, [channel, channelMembers]);
 
-  const previousNewMessage = usePrevious(newMessage);
-
+  // On changing channel, automatically mark it as read
   useEffect(() => {
+    if (!channel) return;
+    setChannelRead(queryClient, channel);
+  }, [channel, queryClient]);
+
+  const lastMessage = messages?.items[messages?.items.length - 1];
+  const previousLastMessage = usePrevious(lastMessage);
+  /**
+   * After onSendMessage, we wait for useChatSubscription
+   * to update the cache with the new message. Once it's received, we know it's done
+   */
+  useEffect(() => {
+    if (lastMessage !== previousLastMessage && sendingMessage) {
+      setSendingMessage(false);
+    }
+  }, [lastMessage, previousLastMessage, sendingMessage]);
+
+  // Handle scrolling
+  const end = useRef<HTMLDivElement>(null);
+  const handleScrollToBottom = useCallback(() => {
+    try {
+      if (end.current) {
+        end.current.scrollIntoView({
+          behavior: 'auto'
+        });
+      }
+    } catch (err) {
+      setErrorLoadingMessage(true);
+    }
+  }, []);
+
+  // On new message from the logged in user, scroll to bottom
+  useLayoutEffect(() => {
     if (
-      channel &&
-      newMessage &&
-      channel.sid === newMessage.channel.sid &&
-      previousNewMessage !== newMessage
+      lastMessage &&
+      previousLastMessage &&
+      previousLastMessage !== lastMessage &&
+      lastMessage.author === userId
     ) {
-      try {
-        setChannelRead(queryClient, channel);
-      } catch (e) {
-        setErrorLoadingMessage(true);
-      }
-
-      const index = findIndex(messages, (m) => m.sid === newMessage.sid);
-
-      if (index === -1) {
-        setMessages([...messages, newMessage]);
-        setTimeout(handleScrollToBottom, 100);
-      }
+      handleScrollToBottom();
     }
-  }, [channel, handleScrollToBottom, messages, newMessage, previousNewMessage, queryClient]);
-
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
-  // TODO Set loading logic by react-query
-  useEffect(() => {
-    if (channelLength && !channel) {
-      dispatch(messageLoadingAction(true));
-    } else if (!channelLength && !isLoading) {
-      dispatch(messageLoadingAction(false));
-    }
-  }, [channelLength, channel, isLoading, dispatch]);
-
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
-  useEffect(() => {
-    const init = async () => {
-      if (!channel) return;
-
-      dispatch(messageLoadingAction(true));
-
-      try {
-        await setChannelRead(queryClient, channel);
-        const [avatars, chatData] = await Promise.all([
-          fetchAvatars(channel),
-          // TODO move channel messages to react-query cache
-          channel.getMessages(10)
-        ]);
-
-        // TODO move channel avatars to react-query cache
-        setAvatars(avatars);
-
-        if (
-          // If there are no messages
-          !chatData?.items?.length ||
-          // Or if there are messages when chat id changes
-          (chatData?.items?.[0]?.channel?.sid &&
-            [chatId, currentCommunityChannelId].includes(chatData.items[0].channel.sid))
-        ) {
-          if (!chatData.hasNextPage) {
-            dispatch(messageLoadingAction(false));
-          }
-
-          setMessages(chatData.items);
-          setPaginator(chatData);
-          setHasMore(!(chatData.items.length < 10));
-        }
-
-        if (end.current) {
-          end.current.scrollIntoView({
-            behavior: 'auto'
-          });
-        }
-        dispatch(messageLoadingAction(false));
-      } catch (e) {
-        setErrorLoadingMessage(true);
-      }
-    };
-
-    // Only init if the SID itself is different, not when selectedChannelId changes
-    if (channel && channel.sid !== usePreviousChannelSid && chatId === channel.sid) {
-      init();
-    }
-  }, [channel, currentCommunityChannelId, dispatch, queryClient, chatId, usePreviousChannelSid]);
+  }, [handleScrollToBottom, lastMessage, previousLastMessage, sendingMessage, userId]);
 
   const hasPermission = useMemo(
     () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
@@ -257,22 +227,6 @@ const Main = ({
     selectedChannel?.chat_name
   ]);
 
-  // TODO CHAT_REFACTOR: Move logic into a chat hook
-  const handleLoadMore = useCallback(() => {
-    setScroll(false);
-
-    try {
-      if (paginator.hasPrevPage) {
-        paginator.prevPage().then((result) => {
-          setMessages([...result.items, ...messages]);
-          setPaginator(result);
-          setHasMore(!(!result.hasPrevPage || result.items.length < 10));
-        });
-      }
-    } catch (err) {
-      setErrorLoadingMessage(true);
-    }
-  }, [messages, paginator]);
   const handleImageClick = useCallback((src) => {
     setImages([
       {
@@ -281,6 +235,7 @@ const Main = ({
     ]);
   }, []);
   const handleStartVideoCall = useCallback(() => {
+    if (!channel) return;
     logEvent({
       event: 'Video- Start Video',
       props: {
@@ -288,16 +243,11 @@ const Main = ({
       }
     });
     const win = window.open(`/video-call/${channel.sid}`, '_blank');
-    win.focus();
+    win?.focus();
   }, [channel]);
-  const handleRemoveMessage = useCallback((messageId: string) => {
-    setMessages((oldMessages) => oldMessages.filter((item) => item.state.sid !== messageId));
-  }, []);
 
   const onSendMessage = useCallback(
     async (message) => {
-      setScroll(true);
-
       if (!channel) {
         return;
       }
@@ -317,7 +267,7 @@ const Main = ({
         isVideoNotification: false,
         files: fileAttributes
       };
-      setLoading(true);
+      setSendingMessage(true);
 
       try {
         await sendMessage({
@@ -337,9 +287,9 @@ const Main = ({
           onSend();
         }
       } catch (err) {
+        setSendingMessage(false);
         setErrorLoadingMessage(true);
       } finally {
-        setLoading(false);
         setFiles([]);
       }
     },
@@ -348,42 +298,19 @@ const Main = ({
 
   const handleImageClose = useCallback(() => setImages([]), []);
   const startVideo = useCallback(() => {
+    if (!channel) return;
     window.open(`/video-call/${channel.sid}`, '_blank');
   }, [channel]);
 
-  const loadingConversation = useCallback(
-    () => (
-      <div className={classes.messageLoadingRoot}>
-        <div className={classes.messageLoadingContainer}>
-          <LoadImg url={LoadingMessageGif} className={classes.emptyChatImg} />
-          <Typography className={classes.expertTitle}>Loading your conversation...</Typography>
-        </div>
-      </div>
-    ),
-    [classes]
-  );
-  const loadingErrorMessage = useCallback(
-    () => (
-      <div className={classes.messageLoadingRoot}>
-        <div className={classes.messageLoadingContainer}>
-          <LoadImg url={LoadingErrorMessageSvg} className={classes.emptyChatImg} />
-          <Typography className={classes.expertTitle}>
-            Uh oh! There was an error trying to load your
-            <br />
-            conversation. Try refreshing your browser or <br />
-            submit a support ticket.
-          </Typography>
-        </div>
-      </div>
-    ),
-    [classes]
-  );
+  if (areMessagesLoading) {
+    return <ConversationLoading />;
+  }
 
-  return messageLoading || isLoading ? (
-    loadingConversation()
-  ) : errorLoadingMessage ? (
-    loadingErrorMessage()
-  ) : (
+  if (errorLoadingMessage || messagesError) {
+    return <ErrorLoading />;
+  }
+
+  return (
     <div className={classes.root}>
       {channel && (channelMetadata || local) && (
         <ChatHeader
@@ -402,7 +329,7 @@ const Main = ({
       )}
       <div className={classes.messageRoot}>
         <div className={classes.messageContainer}>
-          {!channelLength && !isLoading && (
+          {!channelLength && (
             <EmptyMain
               otherUser={otherUser}
               noChannel={!channel}
@@ -410,7 +337,7 @@ const Main = ({
               expertMode={expertMode}
             />
           )}
-          {channel && channelLength && (
+          {channel && channelLength && avatars && messages?.items && (
             <InfiniteScroll
               className={classes.messageScroll}
               threshold={50}
@@ -424,14 +351,20 @@ const Main = ({
               {!hasMore &&
                 (isCommunityChat ? (
                   <CommunityInitialAlert channel={channel} selectedChannel={selectedChannel} />
-                ) : channelMetadata ? (
-                  <DefaultInitialAlert
-                    metadata={channelMetadata}
-                    title={currentTitle}
-                    userId={userId}
-                  />
-                ) : null)}
-              {/* check if it's last message using length - 2, because we have `end` message at the end. */}
+                ) : (
+                  channelMetadata && (
+                    <DefaultInitialAlert
+                      metadata={channelMetadata}
+                      title={currentTitle}
+                      userId={userId}
+                    />
+                  )
+                ))}
+              {isLoadingMore && (
+                <div className={classes.messageLoading}>
+                  <CircularProgress size={20} />
+                </div>
+              )}
               <ChatMessages
                 ref={end}
                 avatars={avatars}
@@ -439,15 +372,14 @@ const Main = ({
                 channelMembers={channelMembers}
                 handleBlock={handleBlock}
                 handleImageClick={handleImageClick}
-                handleRemoveMessage={handleRemoveMessage}
                 handleScrollToBottom={handleScrollToBottom}
                 handleStartVideoCall={handleStartVideoCall}
                 isCommunityChat={isCommunityChat}
                 members={members}
-                messages={messages}
+                messages={messages?.items}
               />
-              {loading && (
-                <div className={classes.progress}>
+              {sendingMessage && (
+                <div className={classes.messageLoading}>
                   <CircularProgress size={20} />
                 </div>
               )}
@@ -470,8 +402,6 @@ const Main = ({
             files={files}
             focusMessageBox={focusMessageBox}
             onSendMessage={onSendMessage}
-            setError={setShowError}
-            showError={showError}
           />
         )}
       </div>

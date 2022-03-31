@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,12 +16,13 @@ import Dialog from 'components/Dialog';
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import {
-  useSelectChannelById,
-  useChannelMetadataById,
-  useUnreadById,
   getChannelUnreadCount,
+  setChannelRead,
   UNREAD_COUNT_QUERY_KEY,
-  setChannelRead
+  useChannelMessagesPrefetch,
+  useChannelMetadataById,
+  useSelectChannelById,
+  useUnreadById
 } from 'features/chat';
 import { useAppSelector } from 'redux/store';
 
@@ -49,7 +49,6 @@ const ChatListItem = ({
   handleUpdateGroupName
 }: Props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -58,6 +57,7 @@ const ChatListItem = ({
 
   const userId = useAppSelector((state) => state.user.data.userId);
   const permission = useAppSelector((state) => state.user.data.permission);
+  const debouncedPrefetch = useChannelMessagesPrefetch(channelId);
 
   const { data: channel, isLoading: isLocalChannelLoading } = useSelectChannelById(channelId);
   const { data: channelMetadata, isLoading: isChannelLoading } = useChannelMetadataById(channelId);
@@ -119,11 +119,13 @@ const ChatListItem = ({
     if (handleRemoveChannel && handleMuteChannel) {
       setShowMenu(true);
     }
+    debouncedPrefetch();
   };
 
   const onMouseLeave = () => {
     setShowMenu(false);
     handleClose();
+    debouncedPrefetch.cancel();
   };
 
   const [removeChat, setRemoveChat] = useState(false);

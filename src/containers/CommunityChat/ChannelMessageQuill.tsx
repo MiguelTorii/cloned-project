@@ -1,5 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react';
-import { useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import { Typography } from '@material-ui/core';
 
@@ -17,15 +16,13 @@ const ChannelMessageQuill = ({
   focusMessageBox,
   onSendMessage,
   setFiles,
-  setError,
-  showError,
   userId,
   isNamedChannel
 }: MessageQuillProps & {
   channel: Channel;
-  setError: Dispatch<SetStateAction<boolean>>;
 }) => {
   const classes = useStyles();
+  const [showError, setShowError] = useState(false);
 
   const { typing, onTyping } = useTyping(channel);
 
@@ -33,9 +30,9 @@ const ChannelMessageQuill = ({
     try {
       onTyping();
     } catch (err) {
-      setError(true);
+      setShowError(true);
     }
-  }, [onTyping, setError]);
+  }, [onTyping]);
 
   return (
     <>

@@ -91,8 +91,7 @@ const CommunityChatMessageItem = ({
   onBlockMember,
   onImageClick,
   onImageLoaded,
-  onStartVideoCall,
-  onRemoveMessage
+  onStartVideoCall
 }: Props) => {
   const rootRef = useRef();
   const classes = useStyles();
@@ -164,11 +163,11 @@ const CommunityChatMessageItem = ({
         'Delete this chat message?',
         'Are you sure you want to delete what you wrote? This action cannot be undone.',
         () => {
-          apiDeleteMessage(channelId, msgId).then(() => onRemoveMessage(msgId));
+          apiDeleteMessage(channelId, msgId);
         }
       );
     },
-    [channelId, onRemoveMessage]
+    [channelId, openDeleteModal]
   );
 
   const handleSaveMessage = useCallback(

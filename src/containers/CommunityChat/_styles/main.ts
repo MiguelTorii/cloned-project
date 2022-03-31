@@ -116,6 +116,12 @@ const useStyles = makeStyles((theme: any) => ({
   },
   banner: {
     width: '100%'
+  },
+  messageLoading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing(1, 0)
   }
 }));
 export default useStyles;

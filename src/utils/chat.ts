@@ -129,10 +129,12 @@ export const getAvatar = ({
 
 export const processMessages = ({
   items,
-  userId
+  userId,
+  channelId
 }: {
   items: Array<Record<string, any>>;
   userId: string;
+  channelId: string;
 }) => {
   try {
     const data: ChatMessages = [];
@@ -223,7 +225,11 @@ export const processMessages = ({
 
     data.push({
       type: 'end',
-      id: `end-scroll`,
+      /**
+       * When the channel changes, the last item is unmounted and will remound with a new key
+       * It will trigger the chat scrollbox to be scrolled to the bottom
+       *  */
+      id: `end-scroll-${channelId}`,
       name: '',
       author: '',
       body: '',

@@ -5,7 +5,6 @@ import moment from 'moment';
 import { useQueryClient } from 'react-query';
 import { objectToCamel } from 'ts-case-convert';
 
-import { URL } from 'constants/navigation';
 import { getGroupTitle } from 'utils/chat';
 
 import {
@@ -26,15 +25,18 @@ import {
   UNREAD_COUNT_QUERY_KEY,
   useChatClient,
   useOrderedChannelList,
-  useChannels
+  useChannels,
+  QUERY_KEY_CHANNEL_MESSAGES
 } from 'features/chat';
 import { useCommunityChatAPI } from 'features/chat/api/communityChannels';
 import { usePrevious } from 'hooks';
 import { getChannelsFromClient, isPaginatorDone, resetChannels } from 'lib/chat';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
-import type { ChannelsMetadata, Unreads } from 'features/chat';
-import type { AppDispatch, AppGetState } from 'redux/store';
+import { QUERY_KEY_CHANNEL_AVATARS } from './useChannelAvatars';
+
+import type { ChannelsMetadata, Unreads, MessagePaginator } from 'features/chat';
+import type { AppDispatch } from 'redux/store';
 import type { Channel } from 'twilio-chat';
 
 export const useChatSubscription = () => {
@@ -43,12 +45,14 @@ export const useChatSubscription = () => {
   useChannelLeaveSubscription();
   useChannelJoinedSubscription();
   useChannelMessageAddedSubscription();
+  useChannelMessageRemovedSubscription();
   useChannelUpdatedSubscription();
   useMemberJoinedSubscription();
   useMemberLeftSubscription();
 };
 
 const useHandleClient = () => {
+  const queryClient = useQueryClient();
   const client = useChatClient();
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.data.userId);
@@ -83,7 +87,8 @@ const useHandleClient = () => {
     });
     dispatch(shutdown());
     resetChannels();
-  }, [channels, client, dispatch, prevUserId, userId]);
+    queryClient.clear();
+  }, [channels, client, dispatch, prevUserId, queryClient, userId]);
 };
 
 const usePreloadChat = () => {
@@ -123,11 +128,8 @@ const usePreloadChat = () => {
   }, [channels, currentCommunityChannelId, dispatch]);
 };
 
-const handleChannelJoined = (sid: string) => (dispatch: AppDispatch, getState: AppGetState) => {
-  const messageLoading = getState().chat.data.messageLoading;
-  if (messageLoading) {
-    dispatch(navigateToDM(sid));
-  }
+const handleChannelJoined = (sid: string) => (dispatch: AppDispatch) => {
+  dispatch(navigateToDM(sid));
 };
 
 const useChannelJoinedSubscription = () => {
@@ -227,7 +229,6 @@ const useChannelLeaveSubscription = () => {
 
       // Both API calls and calls to the client to refetch channels are expensive (1s>) so it's's better to manually change the cache
       // https://github.com/tannerlinsley/react-query/discussions/3313#discussioncomment-2209061
-
       const channelCache = queryClient.getQueryData<Channel[]>(QUERY_KEY_CHANNELS);
       if (channelCache) {
         queryClient.setQueryData<Channel[]>(
@@ -235,6 +236,10 @@ const useChannelLeaveSubscription = () => {
           channelCache.filter((c) => c.sid !== channel.sid)
         );
       }
+
+      // Remove messages and avatars from cache
+      queryClient.removeQueries([QUERY_KEY_CHANNEL_MESSAGES, channel?.sid]);
+      queryClient.removeQueries([QUERY_KEY_CHANNEL_AVATARS, channel?.sid]);
 
       const isCommunityChat = channel.attributes.community_id;
 
@@ -271,25 +276,35 @@ const useChannelMessageAddedSubscription = () => {
     }
 
     client.on('messageAdded', async (message) => {
-      // TODO: Replace with message cache
+      // TODO: This still might be needed for notifications, should be replaced
       dispatch(
         newMessage({
           message
         })
       );
 
+      queryClient.setQueryData<MessagePaginator | undefined>(
+        [QUERY_KEY_CHANNEL_MESSAGES, message.channel.sid],
+        (cache) => {
+          if (!cache) return;
+          return produce(cache, (draft) => {
+            const inCache = draft.items.some((m) => m.sid === message.sid);
+            if (inCache) return;
+            draft.items.push(message);
+          });
+        }
+      );
+
       /**
-       *  TODO update metadata lastReceivedMessage
+       *  TODO migrate community channel's lastReceivedMessage from redux
        * date_sent: string;
        * message: string;
        * user: APIChatUser;
-       *
-       * fetch user from message
-       * rather than refetch, find APIChatUser from channel's users array?
        */
 
+      // Update unread count
       // Do not set new unread if user is looking at current chat
-      if (pathname === URL.CHAT && message.channel.sid !== selectedChannelId) {
+      if (!pathname.includes(message.channel.sid)) {
         // Update message count
         queryClient.invalidateQueries([UNREAD_COUNT_QUERY_KEY, message.channel.sid]);
         // Other unreadCount hooks use an API call that fetches all channels' unread messages
@@ -305,10 +320,8 @@ const useChannelMessageAddedSubscription = () => {
       }
 
       const isCommunityChat = message.channel.attributes.community_id;
-
-      if (isCommunityChat) {
-        return;
-      }
+      // Only DM channels are available from the chats API and returns full metadata
+      if (isCommunityChat) return;
 
       // Update lastMessage
       const metadataCache = queryClient.getQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA);
@@ -329,6 +342,36 @@ const useChannelMessageAddedSubscription = () => {
       client?.removeAllListeners('messageAdded');
     };
   }, [client, dispatch, pathname, queryClient, selectedChannelId, userId]);
+};
+
+const useChannelMessageRemovedSubscription = () => {
+  const client = useChatClient();
+  const queryClient = useQueryClient();
+  const userId = useAppSelector((state) => state.user.data.userId);
+
+  useEffect(() => {
+    if (!userId || !client) {
+      return;
+    }
+
+    client.on('messageRemoved', async (message) => {
+      queryClient.setQueryData<MessagePaginator | undefined>(
+        [QUERY_KEY_CHANNEL_MESSAGES, message.channel.sid],
+        (cache) => {
+          if (!cache) return;
+          return produce(cache, (draft) => {
+            const inCache = draft.items.some((m) => m.sid === message.sid);
+            if (!inCache) return;
+            draft.items = draft.items.filter((m) => m.sid !== message.sid);
+          });
+        }
+      );
+    });
+
+    return () => {
+      client?.removeAllListeners('messageRemoved');
+    };
+  }, [client, queryClient, userId]);
 };
 
 const useChannelUpdatedSubscription = () => {
@@ -384,6 +427,8 @@ const useMemberJoinedSubscription = () => {
           channel: { sid }
         } = member;
         const members = await fetchMembers(sid);
+        // TODO Migrate community chat data to react-query
+        // Community members have to be held in redux
         if (member.channel?.attributes?.community_id) {
           dispatch(
             updateMembers({
