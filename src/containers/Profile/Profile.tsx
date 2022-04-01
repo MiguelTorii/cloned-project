@@ -38,7 +38,6 @@ import SharePost from '../SharePost/SharePost';
 
 import { processSeasons } from './utils';
 
-import type { ChatState } from 'reducers/chat';
 import type { UserState } from 'reducers/user';
 import type { UserProfile, About, UserStatistic, TFeedItem, StudyCircle } from 'types/models';
 import type { State as StoreState } from 'types/state';
@@ -79,7 +78,6 @@ type Props = {
   updateProfileImage?: (...args: Array<any>) => any;
   match?: any;
   defaultPage?: string;
-  chat?: ChatState;
 };
 
 type State = {
@@ -317,19 +315,22 @@ class Profile extends React.PureComponent<Props, State> {
   };
 
   handleStartVideo = () => {
-    const { openChannelWithEntity, chat } = this.props;
+    const { openChannelWithEntity } = this.props;
     const {
       userProfile: { userId, firstName, lastName }
     } = this.state;
     this.setState({
       chatLoading: true
     });
+    const client = this.context;
+
     openChannelWithEntity({
       entityId: userId ? Number(userId) : 0,
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: true,
-      client: chat.data.client
+      fullscreen: true,
+      client
     });
     setTimeout(() => {
       this.setState({
@@ -830,9 +831,8 @@ class Profile extends React.PureComponent<Props, State> {
   }
 }
 
-const mapStateToProps = ({ user, chat }: StoreState): {} => ({
-  user,
-  chat
+const mapStateToProps = ({ user }: StoreState): {} => ({
+  user
 });
 
 const mapDispatchToProps = (dispatch: any): {} =>
