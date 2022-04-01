@@ -118,10 +118,10 @@ const ClassmatesDialog = ({
       setReferralProgram(res);
     };
 
-    if (state && !searchKey) {
+    if (state) {
       init();
     }
-  }, [searchKey, selectedClasses, selectedClasses.length, state, userClasses, userId]);
+  }, [selectedClasses, selectedClasses.length, state, userClasses, userId]);
 
   const Invite = () => {
     if (!referralProgram || !referralProgram.is_visible) {
@@ -161,21 +161,23 @@ const ClassmatesDialog = ({
   };
 
   const handleChange = (e) => {
-    const currentClassMates = [...classmates];
     setSearchKey(e.target.value);
-
-    if (e.target.value) {
-      const filterClassmates = currentClassMates.filter((classmate) =>
-        `${classmate.firstName} ${classmate.lastName}`.includes(e.target.value)
-      );
-      setClassmates(filterClassmates);
-    }
   };
 
   const handleCloseModal = () => {
     setSearchKey('');
     close();
   };
+
+  const filteredClassmates = useMemo(
+    () =>
+      classmates.filter((classmate) =>
+        `${classmate.firstName} ${classmate.lastName}`
+          .toLowerCase()
+          .includes(searchKey.toLowerCase())
+      ),
+    [searchKey, classmates]
+  );
 
   return (
     <div>
@@ -204,7 +206,7 @@ const ClassmatesDialog = ({
           />
         </FormControl>
         <List className={classes.list}>
-          {classmates.map((c) => (
+          {filteredClassmates.map((c) => (
             <Classmate
               meetingInvite={meetingInvite}
               courseDisplayName={courseDisplayName}
