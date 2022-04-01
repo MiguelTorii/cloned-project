@@ -8,12 +8,14 @@ const useStyles = makeStyles((theme: any) => ({
   header: {
     zIndex: 1000,
     left: 0,
-    justifyContent: 'flex-start',
+    display: 'flex',
+    justifyContent: 'center',
     flexDirection: 'row',
     margin: theme.spacing(1.5, 3, 0, 3),
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(1.5, 1, 0, 1)
-    }
+    },
+    cursor: 'pointer'
   },
   root: {
     display: 'flex',
@@ -85,6 +87,10 @@ const useStyles = makeStyles((theme: any) => ({
     '&> :first-child': {
       padding: 0
     }
+  },
+  tooltip: {
+    fontSize: 12,
+    textTransform: 'capitalize'
   }
 }));
 export default useStyles;

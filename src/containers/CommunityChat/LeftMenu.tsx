@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputBase from '@material-ui/core/InputBase';
 import List from '@material-ui/core/List';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import { PERMISSIONS } from 'constants/common';
@@ -23,6 +24,7 @@ import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput/C
 import OneTouchSend from 'components/CreateCommunityChatChannelInput/OneTouchSend';
 import Dialog from 'components/Dialog/Dialog';
 import { useChannels, useChannelsMetadata, useOrderedChannelList } from 'features/chat';
+import useHotkey, { HOTKEYS } from 'hooks/useHotKey';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
 import useStyles from './_styles/leftMenu';
@@ -76,6 +78,8 @@ const LeftMenu = ({
       onNewChannel?.();
     }
   }, [onNewChannel, switchOneTouchSend]);
+
+  useHotkey([HOTKEYS.CREATE_NEW_CHAT.key], handleCreateNewChannel);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -155,18 +159,17 @@ const LeftMenu = ({
         }}
       >
         {(!!channelList.length || isLoading) && (
-          <Grid
-            container
-            classes={{
-              root: classes.header
-            }}
-            justifyContent="center"
-            alignItems="center"
-            direction="column"
-          >
-            <Typography className={classes.createNewChate} variant="subtitle1" component="p">
-              Create New Chat
-            </Typography>
+          <div className={classes.header} onClick={handleCreateNewChannel}>
+            <Tooltip
+              title={HOTKEYS.CREATE_NEW_CHAT.text}
+              arrow
+              placement="top"
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <Typography className={classes.createNewChate} variant="subtitle1" component="p">
+                Create New Chat
+              </Typography>
+            </Tooltip>
 
             <Button
               variant="contained"
@@ -174,11 +177,10 @@ const LeftMenu = ({
                 root: classes.newButton
               }}
               color="primary"
-              onClick={handleCreateNewChannel}
             >
               +
             </Button>
-          </Grid>
+          </div>
         )}
         <Dialog
           className={classes.selectClassmates}

@@ -136,6 +136,7 @@ const ChatMessage = ({
             authorUserId={userId}
             avatar={avatar}
             channelId={channelId}
+            isLastMessage={isLastMessage && index === messageList.length - 1}
             isOnline={isOnline}
             isGroupChannel={isGroupChannel}
             date={date}

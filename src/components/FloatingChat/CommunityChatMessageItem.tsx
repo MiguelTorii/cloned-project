@@ -18,6 +18,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Popover from '@material-ui/core/Popover';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 
@@ -30,6 +31,7 @@ import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import Avatar from 'components/Avatar';
 import { useDeleteModal } from 'contexts/DeleteModalContext';
 import { useMessageMonitor } from 'contexts/MessageMonitorContext';
+import useHotKey, { HOTKEYS } from 'hooks/useHotKey';
 import useIntersection from 'hooks/useIntersection';
 
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
@@ -53,6 +55,7 @@ type Props = {
   isOnline: boolean;
   isGroupChannel: boolean;
   date: string;
+  isLastMessage: boolean;
   onViewProfile: (number) => void;
   onReportIssue: () => void;
   onBlockMember: (number, string) => void;
@@ -86,6 +89,7 @@ const CommunityChatMessageItem = ({
   avatar,
   isOnline,
   isGroupChannel,
+  isLastMessage,
   onViewProfile,
   onReportIssue,
   onBlockMember,
@@ -148,13 +152,35 @@ const CommunityChatMessageItem = ({
       const messageBody = body.replace(/(\r\n|\n|\r)/gm, '<br />');
       setEdit(true);
       if (msgId !== editMessageId) {
-        setEditMessageId(msgId);
         setValue(messageBody);
+        setEditMessageId(msgId);
       }
       setAnchorEl(null);
     },
     [editMessageId]
   );
+
+  // handle what happens on arrow up key press
+  const handleKeyPressEditMessage = useCallback(() => {
+    if (
+      myUserId === authorUserId &&
+      message.body &&
+      !message.isVideoNotification &&
+      isLastMessage
+    ) {
+      handleEdit(message.sid, message.body);
+    }
+  }, [
+    authorUserId,
+    handleEdit,
+    isLastMessage,
+    message.body,
+    message.isVideoNotification,
+    message.sid,
+    myUserId
+  ]);
+
+  useHotKey([HOTKEYS.EDIT_MESSAGE.key], handleKeyPressEditMessage);
 
   const handleDeleteMessage = useCallback(
     (msgId) => {

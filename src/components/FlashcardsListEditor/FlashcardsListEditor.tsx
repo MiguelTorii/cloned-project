@@ -10,6 +10,8 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
+import { HOTKEYS } from 'hooks/useHotKey';
+
 import AddDeckButton from '../FlashcardsDeckManager/AddDeckButton';
 
 import FlashcardEditor from './FlashcardEditor';
@@ -173,8 +175,8 @@ const FlashcardsListEditorComponent = ({
   const ref = useClickOutside(handleOutsideClick);
 
   // Handle Shortcut keys
-  useHotkeys('Tab', handleGoToNextCard, {}, [handleGoToNextCard]);
-  useHotkeys('Shift+Tab', handleGoToPrevCard, {}, [handleGoToPrevCard]);
+  useHotkeys(HOTKEYS.TAB.key, handleGoToNextCard, {}, [handleGoToNextCard]);
+  useHotkeys(HOTKEYS.PRIOR_TAB.key, handleGoToPrevCard, {}, [handleGoToPrevCard]);
 
   return (
     <div ref={ref}>

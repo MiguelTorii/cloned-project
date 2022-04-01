@@ -202,6 +202,10 @@ const useStyles = makeStyles((theme: any) => ({
     '& > p': {
       margin: 0
     }
+  },
+  tooltip: {
+    fontSize: 12,
+    textTransform: 'capitalize'
   }
 }));
 export default useStyles;
