@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { push } from 'connected-react-router';
 import produce from 'immer';
 import moment from 'moment';
 import { useQueryClient } from 'react-query';
 import { objectToCamel } from 'ts-case-convert';
 
-import { getGroupTitle } from 'utils/chat';
+import { generateChatPath, getGroupTitle } from 'utils/chat';
 
 import {
   fetchMembers,
@@ -15,7 +16,8 @@ import {
   removeMember,
   navigateToDM,
   shutdown,
-  updateMembers
+  updateMembers,
+  setNewChannelRequest
 } from 'actions/chat';
 import { getGroupMembers } from 'api/chat';
 import {
@@ -36,7 +38,6 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import { QUERY_KEY_CHANNEL_AVATARS } from './useChannelAvatars';
 
 import type { ChannelsMetadata, Unreads, MessagePaginator } from 'features/chat';
-import type { AppDispatch } from 'redux/store';
 import type { Channel } from 'twilio-chat';
 
 export const useChatSubscription = () => {
@@ -128,15 +129,12 @@ const usePreloadChat = () => {
   }, [channels, currentCommunityChannelId, dispatch]);
 };
 
-const handleChannelJoined = (sid: string) => (dispatch: AppDispatch) => {
-  dispatch(navigateToDM(sid));
-};
-
 const useChannelJoinedSubscription = () => {
   const client = useChatClient();
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.data.userId);
+  const requestingNewChannel = useAppSelector((state) => state.chat.requestingNewChannel);
 
   useEffect(() => {
     if (!userId || !client) {
@@ -164,9 +162,14 @@ const useChannelJoinedSubscription = () => {
         return newUnreads || { [channel.sid]: 0 };
       });
 
-      const isCommunityChat = channel.attributes.community_id;
+      const communityId = channel.attributes.community_id;
 
-      if (isCommunityChat) return;
+      if (communityId) {
+        if (!requestingNewChannel) return;
+        dispatch(push(generateChatPath(communityId, channel.sid)));
+        dispatch(setNewChannelRequest(false));
+        return;
+      }
 
       setTimeout(async () => {
         // Put new channel first
@@ -195,7 +198,9 @@ const useChannelJoinedSubscription = () => {
           queryClient.setQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA, nextMetadata);
           // TODO Improve performance when creating new chat
           // Currently there's too big of a delay when changing channels and the previously selected channel still shows for a second
-          dispatch(handleChannelJoined(channel.sid));
+          if (!requestingNewChannel) return;
+          dispatch(navigateToDM(channel.sid));
+          dispatch(setNewChannelRequest(false));
         }
       }, 1500);
     });
@@ -203,7 +208,7 @@ const useChannelJoinedSubscription = () => {
     return () => {
       client?.removeAllListeners('channelJoined');
     };
-  }, [client, dispatch, queryClient, userId]);
+  }, [client, dispatch, queryClient, requestingNewChannel, userId]);
 };
 
 const useChannelLeaveSubscription = () => {

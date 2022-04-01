@@ -105,6 +105,7 @@ export type ChatState = {
   };
   communitiesLoaded: boolean;
   isLoading: boolean;
+  requestingNewChannel: boolean;
 };
 const defaultState = {
   data: {
@@ -137,6 +138,7 @@ const defaultState = {
     title: '',
     body: ''
   },
+  requestingNewChannel: false,
   isLoading: false
 };
 
@@ -360,6 +362,12 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           },
           channels: [action.payload.channel, ...state.data.channels]
         }
+      };
+
+    case chatActions.JOIN_CHANNEL_REQUEST:
+      return {
+        ...state,
+        requestingNewChannel: action.payload.requesting
       };
 
     case chatActions.REMOVE_CHANNEL_CHAT:

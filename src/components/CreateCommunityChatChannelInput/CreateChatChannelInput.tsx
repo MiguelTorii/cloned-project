@@ -13,7 +13,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import { PERMISSIONS } from 'constants/common';
 import { getInitials } from 'utils/chat';
 
-import { handleNewChannel, messageLoadingAction } from 'actions/chat';
+import {
+  handleNewChannel,
+  messageLoadingAction,
+  navigateToDM,
+  setNewChannelRequest
+} from 'actions/chat';
 import { sendMessage, createChannel } from 'api/chat';
 import { searchUsers } from 'api/user';
 import { useChatClient } from 'features/chat';
@@ -204,7 +209,9 @@ const CreateChatChannelInput = ({
     async (params: any) => {
       setIsLoading(true);
       dispatch(messageLoadingAction(true));
+      dispatch(setNewChannelRequest(true));
       try {
+        const currentChannels = await client?.getLocalChannels();
         const userIds = users.map((item) => Number(item.userId));
         const { chatId } = await createChannel({
           users: userIds,
@@ -212,17 +219,19 @@ const CreateChatChannelInput = ({
           type: chatType === 'group' ? type : '',
           thumbnailUrl: ''
         });
-
         if (!chatId) {
           throw new Error('No chat ID returned.');
         }
-
+        const existingChannel = currentChannels?.find((channel) => channel.sid === chatId);
+        if (existingChannel) {
+          dispatch(messageLoadingAction(false));
+          dispatch(navigateToDM(existingChannel.sid));
+          return;
+        }
         const channel = await client?.getChannelBySid(chatId);
-
         if (!channel) {
           throw new Error('No channel returned.');
         }
-
         if (channelName.length && isShow) {
           const res = await channel?.updateFriendlyName(channelName);
           await handleUpdateGroupName?.(res);
@@ -238,6 +247,7 @@ const CreateChatChannelInput = ({
       } catch (e) {
         console.log(e);
         dispatch(messageLoadingAction(false));
+        dispatch(setNewChannelRequest(false));
       } finally {
         dispatch(handleNewChannel(false));
         setIsLoading(false);

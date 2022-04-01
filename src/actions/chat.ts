@@ -110,6 +110,13 @@ export const messageLoadingAction = (loading) => ({
   }
 });
 
+export const setNewChannelRequest = (requesting: boolean) => ({
+  type: chatActions.JOIN_CHANNEL_REQUEST,
+  payload: {
+    requesting
+  }
+});
+
 export const updateChannel = ({
   channel,
   unread
