@@ -1,26 +1,28 @@
 /* eslint-disable react/no-danger */
-import React, { useRef, useCallback, useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import cx from 'classnames';
 import Textarea from 'react-textarea-autosize';
 
-import ButtonBase from '@material-ui/core/ButtonBase';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import ClearIcon from '@material-ui/icons/Clear';
 import SendIcon from '@material-ui/icons/Send';
 
 import { FILE_LIMIT_SIZE } from 'constants/chat';
+import type { ChatUpload } from 'utils/chat';
 
+import { showNotification } from 'actions/notifications';
 import { uploadMedia } from 'actions/user';
 import { ReactComponent as PaperClip } from 'assets/svg/quill-paper.svg';
 import EmojiSelector from 'components/EmojiSelector/EmojiSelector';
 import AttachFile from 'components/FileUpload/AttachFile';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none'
   },
@@ -129,64 +131,45 @@ const styles = (theme) => ({
     width: 123,
     textAlign: 'center'
   }
-});
+}));
 
-type Props = {
-  classes?: Record<string, any>;
-  onSendMessage?: (...args: Array<any>) => any;
+export type ChatTextFieldProps = {
+  onSendMessage: (message: string, files: ChatUpload[]) => void;
   expanded?: boolean;
-  onSendInput?: (...args: Array<any>) => any;
-  onTyping?: (...args: Array<any>) => any;
-  showNotification?: (...args: Array<any>) => any;
-  userId?: string;
-  message?: string;
-  input?: Record<string, any>;
+  onTyping: () => Promise<void>;
   image?: Record<string, any>;
-  setInput?: (...args: Array<any>) => any;
-  setMessage?: (...args: Array<any>) => any;
-  files?: Array<any>;
-  setFiles?: (...args: Array<any>) => any;
-  onClose?: (...args: Array<any>) => any;
+  files: ChatUpload[];
+  setFiles: Dispatch<SetStateAction<ChatUpload[]>>;
+  onClose: (file: ChatUpload) => void;
 };
 
 const ChatTextField = ({
-  classes,
-  message,
-  setMessage,
   onSendMessage,
-  onSendInput,
-  showNotification,
-  input,
-  userId,
-  setInput,
   expanded,
   onTyping,
   files,
   setFiles,
   onClose
-}: Props) => {
+}: ChatTextFieldProps) => {
+  const userId = useAppSelector((state) => state.user.data.userId);
+  const classes = useStyles();
+  const dispatch = useAppDispatch();
   const [addNextLine, setAddNextLine] = useState(false);
-  const [isHover, setIsHover] = useState(false);
   const fileInput = useRef(null);
+  const [message, setMessage] = useState('');
+
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-
-      if (input && !files.length) {
-        onSendInput(input);
-        setInput(null);
-        setIsHover(false);
-        setInput(null);
-      }
-
       if (message.trim() !== '' || !!files.length) {
         onSendMessage(message, files);
         setMessage('');
         setFiles([]);
       }
     },
-    [input, message, onSendInput, onSendMessage, setInput, setMessage, files, setFiles]
+    [message, onSendMessage, setMessage, files, setFiles]
   );
+
   const handleChange = useCallback(
     (event) => {
       setMessage(event.target.value);
@@ -194,6 +177,7 @@ const ChatTextField = ({
     },
     [onTyping, setMessage]
   );
+
   const handleKeyDown = useCallback(
     (event) => {
       if (event.keyCode === 13 && !addNextLine) {
@@ -205,11 +189,7 @@ const ChatTextField = ({
           setFiles([]);
         }
 
-        if (input || !!files.length) {
-          setInput(null);
-          setIsHover(false);
-          onSendInput(input);
-          setInput(null);
+        if (files.length) {
           setFiles([]);
         }
       }
@@ -218,34 +198,28 @@ const ChatTextField = ({
         setAddNextLine(true);
       }
     },
-    [addNextLine, input, message, onSendInput, onSendMessage, setInput, setMessage, files]
+    [addNextLine, files, message, onSendMessage, setFiles]
   );
+
   const handleKeyUp = useCallback((event) => {
     if (event.keyCode === 16) {
       setAddNextLine(false);
     }
   }, []);
+
   const handleSelect = useCallback(
     (emoji) => {
       setMessage(`${message}${emoji}`);
     },
     [message, setMessage]
   );
+
   const handleOpenInputFile = useCallback(() => {
     if (fileInput.current) {
       fileInput.current.click();
     }
   }, []);
-  const handleMouseEnter = useCallback(() => {
-    setIsHover(true);
-  }, []);
-  const handleMouseLeave = useCallback(() => {
-    setIsHover(false);
-  }, []);
-  const handleRemoveImg = useCallback(() => {
-    setInput(null);
-    setIsHover(false);
-  }, [setInput]);
+
   const handleInputChange = useCallback(async () => {
     const file = fileInput.current.files[0];
     const { type, name, size } = file;
@@ -253,7 +227,7 @@ const ChatTextField = ({
     if (size < FILE_LIMIT_SIZE) {
       const result = await uploadMedia(userId, 1, file);
       const { readUrl } = result;
-      const anyFile = {
+      const anyFile: ChatUpload = {
         type,
         name,
         url: readUrl,
@@ -261,23 +235,27 @@ const ChatTextField = ({
       };
       setFiles([...files, anyFile]);
     } else {
-      showNotification({
-        message: 'Upload File size is over 40 MB',
-        variant: 'warning'
-      });
+      dispatch(
+        showNotification({
+          message: 'Upload File size is over 40 MB',
+          variant: 'warning'
+        })
+      );
     }
-  }, [userId, fileInput, showNotification, files]);
+  }, [dispatch, files, setFiles, userId]);
+
   const checkDisabled = useCallback(() => {
     if (files.length > 0) {
       return false;
     }
 
-    if (!message && !input) {
+    if (!message) {
       return true;
     }
 
     return false;
-  }, [files, message, input]);
+  }, [files, message]);
+
   return (
     <Paper className={classes.root} elevation={1}>
       <form autoComplete="off" className={classes.form} onSubmit={handleSubmit}>
@@ -359,4 +337,4 @@ const ChatTextField = ({
   );
 };
 
-export default withStyles(styles as any)(ChatTextField);
+export default ChatTextField;

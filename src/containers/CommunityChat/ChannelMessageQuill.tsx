@@ -13,12 +13,11 @@ import type { Channel } from 'twilio-chat';
 const ChannelMessageQuill = ({
   channel,
   files,
-  focusMessageBox,
   onSendMessage,
   setFiles,
   userId,
   isNamedChannel
-}: MessageQuillProps & {
+}: Omit<MessageQuillProps, 'onTyping'> & {
   channel: Channel;
 }) => {
   const classes = useStyles();
@@ -41,7 +40,6 @@ const ChannelMessageQuill = ({
         userId={userId}
         setFiles={setFiles}
         files={files}
-        focusMessageBox={focusMessageBox}
         onSendMessage={onSendMessage}
         onTyping={handleOnTyping}
         showError={showError}

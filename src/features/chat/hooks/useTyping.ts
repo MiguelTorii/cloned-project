@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAppSelector } from 'redux/store';
 
@@ -11,7 +11,12 @@ const EVENT_TYPING_ENDED: KeyOfChannelEvents = 'typingEnded';
 export const useTyping = (channel?: Channel) => {
   const [typing, setTyping] = useState(INITIAL_STATE);
 
-  const onTyping = useCallback(() => channel?.typing(), [channel]);
+  const onTyping = useCallback(() => {
+    if (!channel) {
+      return Promise.resolve();
+    }
+    return channel?.typing();
+  }, [channel]);
   const userId = useAppSelector((state) => state.user.data.userId);
 
   useEffect(() => {
@@ -43,7 +48,7 @@ export const useTyping = (channel?: Channel) => {
       channel?.removeListener(EVENT_TYPING_STARTED, typingCallback);
       channel?.removeListener(EVENT_TYPING_ENDED, typingEndCallback);
     };
-  }, [channel]);
+  }, [channel, userId]);
 
   return { typing, onTyping };
 };

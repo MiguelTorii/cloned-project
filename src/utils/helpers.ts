@@ -177,3 +177,12 @@ export const waitUntil = (condition: () => boolean, polling = 100, timeout = 200
       reject('your error msg');
     }, timeout);
   });
+
+export const arrayToObject = <T extends Record<K, any>, K extends keyof any>(
+  array: T[] = [],
+  getKey: (item: T) => K
+) =>
+  array.reduce((obj, cur) => {
+    const key = getKey(cur);
+    return { ...obj, [key]: cur };
+  }, {} as Record<K, T>);

@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { PERMISSIONS } from 'constants/common';
 import { CHANNEL_SID_NAME } from 'constants/enums';
+import type { ChatUpload } from 'utils/chat';
 import { getFileAttributes } from 'utils/chat';
 
 import { logEvent } from 'api/analytics';
@@ -106,9 +107,8 @@ const Main = ({
   const [errorLoadingMessage, setErrorLoadingMessage] = useState(false);
 
   const [images, setImages] = useState([]);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<ChatUpload[]>([]);
   const [members, setMembers] = useState<{ [index: number]: ChannelMetadata['users'][0] }>({});
-  const [focusMessageBox, setFocusMessageBox] = useState(0);
 
   // Data fetching hooks
   const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
@@ -121,9 +121,9 @@ const Main = ({
 
   const hasMore = Boolean(messages?.hasPrevPage);
   const { loader: handleLoadMore, isLoading: isLoadingMore } = useChannelMessagesPaginatorFetch(
+    channel,
     useCallback(() => setErrorLoadingMessage(false), []),
-    useCallback(() => setErrorLoadingMessage(true), []),
-    channel
+    useCallback(() => setErrorLoadingMessage(true), [])
   );
 
   // Legacy member data structure, should be refactored
@@ -168,29 +168,6 @@ const Main = ({
 
   // Handle scrolling
   const end = useRef<HTMLDivElement>(null);
-  const handleScrollToBottom = useCallback(() => {
-    try {
-      if (end.current) {
-        end.current.scrollIntoView({
-          behavior: 'auto'
-        });
-      }
-    } catch (err) {
-      setErrorLoadingMessage(true);
-    }
-  }, []);
-
-  // On new message from the logged in user, scroll to bottom
-  useLayoutEffect(() => {
-    if (
-      lastMessage &&
-      previousLastMessage &&
-      previousLastMessage !== lastMessage &&
-      lastMessage.author === userId
-    ) {
-      handleScrollToBottom();
-    }
-  }, [handleScrollToBottom, lastMessage, previousLastMessage, sendingMessage, userId]);
 
   const hasPermission = useMemo(
     () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
@@ -366,13 +343,11 @@ const Main = ({
                 </div>
               )}
               <ChatMessages
-                ref={end}
                 avatars={avatars}
                 channel={channel}
                 channelMembers={channelMembers}
                 handleBlock={handleBlock}
                 handleImageClick={handleImageClick}
-                handleScrollToBottom={handleScrollToBottom}
                 handleStartVideoCall={handleStartVideoCall}
                 isCommunityChat={isCommunityChat}
                 members={members}
@@ -400,7 +375,6 @@ const Main = ({
             userId={userId}
             setFiles={setFiles}
             files={files}
-            focusMessageBox={focusMessageBox}
             onSendMessage={onSendMessage}
           />
         )}

@@ -243,9 +243,16 @@ export const processMessages = ({
   }
 };
 
+export type ChatUpload = {
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+};
+
 export const getFileExtension = (filename) => filename.split('.').pop();
 
-export const getFileAttributes = (files) =>
+export const getFileAttributes = (files: ChatUpload[]) =>
   files.map((file) => ({
     file_name: file.name,
     file_size: file.size,

@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
+import type { Dispatch, SetStateAction } from 'react';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 import cx from 'classnames';
@@ -13,6 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import { FILE_LIMIT_SIZE } from 'constants/chat';
+import type { ChatUpload } from 'utils/chat';
 import { isMac } from 'utils/helpers';
 
 import { showNotification } from 'actions/notifications';
@@ -24,20 +26,18 @@ import EditorToolbar, { formats } from './Toolbar';
 
 export type MessageQuillProps = {
   classes?: any;
-  onSendMessage?: any;
-  focusMessageBox?: any;
-  showError?: any;
-  onTyping?: any;
+  onSendMessage: (message: string) => void;
+  showError?: boolean;
+  onTyping: () => Promise<void> | void;
   userId?: any;
-  setFiles?: any;
-  files?: any;
-  isNamedChannel?: any;
+  files: ChatUpload[];
+  setFiles: Dispatch<SetStateAction<ChatUpload[]>>;
+  isNamedChannel?: boolean;
 };
 
 const MessageQuill = ({
   classes,
   files,
-  focusMessageBox,
   isNamedChannel,
   onSendMessage,
   onTyping,
@@ -90,7 +90,7 @@ const MessageQuill = ({
       if (size < FILE_LIMIT_SIZE) {
         const result = await uploadMedia(userId, 1, file);
         const { readUrl } = result;
-        const anyFile = {
+        const anyFile: ChatUpload = {
           type,
           name,
           url: readUrl,
@@ -106,7 +106,7 @@ const MessageQuill = ({
         );
       }
     },
-    [setFiles, dispatch, classes, files]
+    [dispatch, files, setFiles, userId]
   );
   const imageHandler = useCallback(
     async (imageDataUrl, type, imageData) => {
@@ -158,7 +158,8 @@ const MessageQuill = ({
     if (quill) {
       quill.focus();
     }
-  }, [focusMessageBox, quill]);
+  }, [quill]);
+
   useEffect(() => {
     if (quill) {
       quill.focus();

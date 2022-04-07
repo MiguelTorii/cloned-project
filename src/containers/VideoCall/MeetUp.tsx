@@ -161,7 +161,7 @@ type Props = {
 
 type State = {
   lockedParticipant: string;
-  participants: Array<Record<string, any>>;
+  participants: Participants;
   videoRoom: Record<string, any> | null | undefined;
   isVideoSharing: boolean;
   sharingTrackIds: any[];
@@ -189,6 +189,14 @@ type State = {
   chatOpen: boolean;
   localSharing: number;
 };
+
+export type Participants = {
+  audio: Video.LocalAudioTrack[];
+  type: string;
+  video: Video.LocalVideoTrack[];
+  data: any[];
+  participant: Video.LocalParticipant;
+}[];
 
 class MeetUp extends React.Component<Props, State> {
   state = {
@@ -357,26 +365,27 @@ class MeetUp extends React.Component<Props, State> {
         roomName,
         updateLoading
       } = this.props;
-      const tracks = [];
+      const audioTracks: Video.LocalAudioTrack[] = [];
+      const videoTracks: Video.LocalVideoTrack[] = [];
 
       if (selectedvideoinput !== '') {
         const localVideoTrack = await Video.createLocalVideoTrack({
           deviceId: selectedvideoinput
         });
-        tracks.push(localVideoTrack);
+        videoTracks.push(localVideoTrack);
       }
 
       if (selectedaudioinput !== '') {
         const localAudioTrack = await Video.createLocalAudioTrack({
           deviceId: selectedaudioinput
         });
-        tracks.push(localAudioTrack);
+        audioTracks.push(localAudioTrack);
       }
 
       const accessToken = await renewTwilioToken(userId);
       const videoRoom = await Video.connect(accessToken, {
         name: roomName,
-        tracks,
+        tracks: [...videoTracks, ...audioTracks],
         dominantSpeaker: true,
         insights: false,
         video: selectedvideoinput !== '',
@@ -402,8 +411,8 @@ class MeetUp extends React.Component<Props, State> {
           {
             type: 'local',
             participant: localParticipant,
-            audio: tracks.filter((item) => item.kind === 'audio'),
-            video: tracks.filter((item) => item.kind === 'video'),
+            audio: audioTracks,
+            video: videoTracks,
             data: []
           }
         ]
@@ -1139,7 +1148,7 @@ class MeetUp extends React.Component<Props, State> {
           />
         </ErrorBoundary>
         <ErrorBoundary>
-          {isOpenMeetingDetails ? (
+          {isOpenMeetingDetails && (
             <MeetingDetails
               setRef={this.setMeetingUriRef}
               meetingUriRef={this.meetingUriRef}
@@ -1148,7 +1157,7 @@ class MeetUp extends React.Component<Props, State> {
               openClassmatesDialog={this.openClassmatesDialog}
               meetingUri={`${VIDEO_SHARE_URL}/${roomName}`}
             />
-          ) : null}
+          )}
         </ErrorBoundary>
         <ErrorBoundary>
           <ClassmatesDialog

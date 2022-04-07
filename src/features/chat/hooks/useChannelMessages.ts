@@ -16,10 +16,9 @@ export const useChannelMessages = (channel?: Channel) =>
   });
 
 export const useChannelMessagesPaginatorFetch = (
-  onSuccess: () => void,
-  onError: () => void,
-  // Because it might take longer to get the channel, we must set it as the last optional param
-  channel?: Channel
+  channel?: Channel,
+  onSuccess?: () => void,
+  onError?: () => void
 ) => {
   const queryClient = useQueryClient();
   const { data: messages } = useChannelMessages(channel);
@@ -36,13 +35,13 @@ export const useChannelMessagesPaginatorFetch = (
           items: [...result.items, ...(messages?.items || [])]
         });
         setIsLoading(false);
-        onSuccess();
+        onSuccess?.();
       })
       .catch(() => {
         setIsLoading(false);
-        onError();
+        onError?.();
       });
   }, [channel, messages, onError, onSuccess, queryClient]);
 
-  return { loader, isLoading };
+  return { messages, loader, isLoading };
 };
