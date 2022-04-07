@@ -13,7 +13,7 @@ const enqueueSnackbarRequest = ({ notification }): Action => ({
   }
 });
 
-const closeSnackbarRequest = ({ key }): Action => ({
+const closeSnackbarRequest = (key): Action => ({
   type: notificationsActions.CLOSE_SNACKBAR_REQUEST,
   payload: {
     dismissAll: !key,
@@ -21,7 +21,7 @@ const closeSnackbarRequest = ({ key }): Action => ({
   }
 });
 
-const removeSnackbarRequest = ({ key }): Action => ({
+const removeSnackbarRequest = (key): Action => ({
   type: notificationsActions.REMOVE_SNACKBAR_REQUEST,
   payload: {
     key
@@ -66,21 +66,11 @@ export const showNotification = ({
       }
     }
   });
-export const closeSnackbar =
-  ({ key }: { key: string }) =>
-  async (dispatch: Dispatch) => {
-    dispatch(
-      closeSnackbarRequest({
-        key
-      })
-    );
-  };
-export const removeSnackbar =
-  ({ key }: { key: string }) =>
-  async (dispatch: Dispatch) => {
-    dispatch(
-      removeSnackbarRequest({
-        key
-      })
-    );
-  };
+
+export const closeSnackbar = (key) => async (dispatch: Dispatch) => {
+  dispatch(closeSnackbarRequest(key));
+};
+
+export const removeSnackbar = (key) => async (dispatch: Dispatch) => {
+  dispatch(removeSnackbarRequest(key));
+};

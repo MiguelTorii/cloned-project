@@ -49,11 +49,7 @@ const useNotifier = () => {
         },
         onExited: (event, myKey) => {
           // removen this snackbar from redux store
-          dispatch(
-            removeSnackbar({
-              key: String(myKey)
-            })
-          );
+          dispatch(removeSnackbar(myKey));
           removeDisplayed(myKey);
         }
       });

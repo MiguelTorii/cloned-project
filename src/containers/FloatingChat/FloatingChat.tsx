@@ -14,7 +14,7 @@ import { truncate } from 'utils/helpers';
 
 import * as chatActions from 'actions/chat';
 import { setCurrentCommunityIdAction, setCurrentChannelSidAction } from 'actions/chat';
-import { enqueueSnackbar } from 'actions/notifications';
+import { enqueueSnackbar, closeSnackbar } from 'actions/notifications';
 import * as OnboardingActions from 'actions/onboarding';
 import { updateTitle } from 'actions/web-notifications';
 import { logEvent } from 'api/analytics';
@@ -69,7 +69,8 @@ type Props = {
   handleRoomClick?: (...args: Array<any>) => any;
   updateOpenChannels?: (...args: Array<any>) => any;
   handleChannelClose?: (...args: Array<any>) => any;
-  enqueueSnackbarAction?: (...args: Array<any>) => any;
+  enqueueSnackbarAction: (...args: Array<any>) => any;
+  closeSnackbarAction: (...args: Array<any>) => any;
   setCurrentCommunityId?: (...args: Array<any>) => any;
   updateTitleAction?: (...args: Array<any>) => any;
   handleMuteChannel?: (...args: Array<any>) => any;
@@ -94,6 +95,7 @@ const FloatingChat = ({
   setCurrentCommunityId,
   handleNewChannel,
   enqueueSnackbarAction,
+  closeSnackbarAction,
   updateTitleAction,
   onboardingListVisible,
   getOnboardingList,
@@ -160,15 +162,24 @@ const FloatingChat = ({
     push('/chat');
   };
 
-  const handleMessageReceived = (channel) => () =>
+  const handleMessageReceived = (channel) => (key) =>
     (
-      <Button
-        onClick={() => {
-          handleOpenChannel(channel);
-        }}
-      >
-        Open
-      </Button>
+      <>
+        <Button
+          onClick={() => {
+            handleOpenChannel(channel);
+          }}
+        >
+          Open
+        </Button>
+        <Button
+          onClick={() => {
+            closeSnackbarAction(key);
+          }}
+        >
+          Dismiss
+        </Button>
+      </>
     );
 
   const notificationMessageWithoutBody = (files, fullName) => {
@@ -317,6 +328,7 @@ const mapDispatchToProps = (dispatch: any): {} =>
       handleNewChannel: chatActions.handleNewChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
+      closeSnackbarAction: closeSnackbar,
       setCurrentCommunityId: chatActions.setCurrentCommunityId,
       getOnboardingList: OnboardingActions.getOnboardingList,
       setCurrentCommunityChannel: chatActions.setCurrentCommunityChannel
