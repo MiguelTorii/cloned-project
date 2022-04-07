@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { INTERVAL, STORAGE_KEYS } from 'constants/app';
 import { CIRCLEIN101_SECTION_ID, CIRCLEIN101_TC } from 'constants/common';
-import { extractTextFromHtml } from 'utils/helpers';
+import { extractPlainTextFromHtml, extractTextFromHtml } from 'utils/helpers';
 
 import { showNotification } from 'actions/notifications';
 
@@ -183,8 +183,8 @@ const FlashcardsDeckManager = ({
 
     const data = mergeEditorData(deckData).filter(
       (card) =>
-        (card.questionImage || !!extractTextFromHtml(card.question)) &&
-        (card.answerImage || !!extractTextFromHtml(card.answer))
+        (card.questionImage || !!extractPlainTextFromHtml(card.question)) &&
+        (card.answerImage || !!extractPlainTextFromHtml(card.answer))
     );
 
     if (deckData.length === 0) {

@@ -69,6 +69,18 @@ export const extractTextFromHtml = (html) => {
   return convert(html);
 };
 
+export const extractPlainTextFromHtml = (html) => {
+  if (!html) {
+    return '';
+  }
+
+  const tempDivElement = document.createElement('div');
+  tempDivElement.innerHTML = html;
+  const result = tempDivElement.textContent || tempDivElement.innerText || '';
+
+  return _.trim(result);
+};
+
 export const englishIdFromNumber = (aNumber: number) => {
   if (aNumber === 0) {
     return 'A';
