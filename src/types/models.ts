@@ -630,6 +630,11 @@ export type Member = {
   roleId: number;
   userId: number;
 };
+export type ChatReactionData = {
+  reaction_type: string;
+  user_ids: Array<number>;
+};
+export type ChatReactionsData = Array<ChatReactionData>;
 export type ChatMessageItem = {
   sid: string;
   index: number;
@@ -637,6 +642,7 @@ export type ChatMessageItem = {
   createdAt: string;
   body: string;
   files: any[];
+  reactions: ChatReactionsData;
   isVideoNotification: boolean;
   firstName: string;
   lastName: string;
@@ -687,4 +693,24 @@ export type GetCampaignsResponse = {
 export type RefereeList = Array<string>;
 export type GetRefereeListResponse = {
   referees: RefereeList;
+};
+export type ChatReactionGroupData = {
+  primaryColon: string;
+  skinTones: Array<string>;
+  count: number;
+  reacted: boolean;
+};
+export type ChatReactionUser = {
+  first_name: string;
+  is_online: boolean;
+  last_name: string;
+  profile_image_url: string;
+  user_id: number;
+};
+export type ChatReactionUserData = {
+  reaction: string;
+  listOfUserInfo: ChatReactionUser[];
+};
+export type ChatReactionsUsersResponse = {
+  reactions: ChatReactionUserData[];
 };

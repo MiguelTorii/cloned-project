@@ -143,7 +143,7 @@ export const processMessages = ({
       const { state } = item;
 
       const { attributes, author, body, sid, timestamp } = state;
-      const { firstName, lastName, imageKey, isVideoNotification, files } = attributes;
+      const { firstName, lastName, imageKey, isVideoNotification, files, reactions } = attributes;
       const date = moment(timestamp).format('MMMM DD');
       const createdAt = moment(timestamp).format('h:mm a');
       const messageItem = {
@@ -151,6 +151,7 @@ export const processMessages = ({
         sid,
         body,
         files,
+        reactions,
         imageKey,
         isVideoNotification,
         firstName,

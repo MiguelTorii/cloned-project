@@ -71,6 +71,6 @@ export const styles = (theme) => ({
     color: theme.circleIn.palette.danger
   },
   headerContainer: {
-    height: 80
+    maxHeight: 80
   }
 });

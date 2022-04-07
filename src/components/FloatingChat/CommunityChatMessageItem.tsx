@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import cx from 'classnames';
 import clsx from 'clsx';
+import { Emoji, Picker } from 'emoji-mart';
 import parse from 'html-react-parser';
-import { useSelector, useDispatch } from 'react-redux';
+import update from 'immutability-helper';
+import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
@@ -22,25 +23,33 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 
-import { MESSAGE_PREVIEW_THRESHOLD_PX, PROFILE_PAGE_SOURCE } from 'constants/common';
+import {
+  DEFAULT_EMOJI_REACTIONS,
+  MESSAGE_PREVIEW_THRESHOLD_PX,
+  PROFILE_PAGE_SOURCE
+} from 'constants/common';
 import { buildPath } from 'utils/helpers';
 
 import { showNotification } from 'actions/notifications';
-import { apiDeleteMessage, editMessage } from 'api/chat';
+import { apiDeleteMessage, editMessage, apiAddChatReaction, apiRemoveChatReaction } from 'api/chat';
+import { ReactComponent as IconAddReaction } from 'assets/svg/add_reaction.svg';
 import { ReactComponent as Camera } from 'assets/svg/camera-join-room.svg';
 import Avatar from 'components/Avatar';
 import { useDeleteModal } from 'contexts/DeleteModalContext';
 import { useMessageMonitor } from 'contexts/MessageMonitorContext';
 import useHotKey, { HOTKEYS } from 'hooks/useHotKey';
 import useIntersection from 'hooks/useIntersection';
+import { useAppSelector } from 'redux/store';
 
 import useStyles from '../_styles/FloatingChat/CommunityChatMessage';
 import AnyFileUpload from '../AnyFileUpload/AnyFileUpload';
 import EditFailedModal from '../EditFailedModal/EditFailedModal';
 
+import ChatReactions from './ChatReactions';
 import MessageQuill from './EditMessageQuill';
+import ReactedUsersModal from './ReactedUsersModal';
 
-import type { ChatMessageItem } from 'types/models';
+import type { ChatMessageItem, ChatReactionsData } from 'types/models';
 
 const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
   <RouterLink to={href} {...props} ref={ref} />
@@ -78,7 +87,7 @@ const linkify = (text) => {
   });
 };
 
-const HOVER_MENU_EMOJI_SIZE = 20;
+const EMOJI_ICON_SIZE = 20;
 
 const CommunityChatMessageItem = ({
   date,
@@ -104,7 +113,7 @@ const CommunityChatMessageItem = ({
   const { previewMessage } = useMessageMonitor();
 
   const { open: openDeleteModal } = useDeleteModal();
-  const myUserId = useSelector<any>((state) => state.user.data.userId);
+  const myUserId = useAppSelector((state) => state.user.data.userId);
   const [isHover, setIsHover] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -112,6 +121,11 @@ const CommunityChatMessageItem = ({
   const [editMessageId, setEditMessageId] = useState('');
   const [files, setFiles] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [emojiPopupAnchorEl, setEmojiPopupAnchorEl] = useState(null);
+  const [emojiReactions, setEmojiReactions] = useState<ChatReactionsData>([]);
+  const [reactedUsersModalOpen, setReactedUsersModalOpen] = useState(false);
+
+  const myUserIdNumber = useMemo(() => parseInt(myUserId, 10), [myUserId]);
 
   useEffect(() => {
     if (isInViewport) {
@@ -125,6 +139,8 @@ const CommunityChatMessageItem = ({
 
   const handleMouseLeave = useCallback(() => {
     setIsHover(false);
+    setAnchorEl(null);
+    setEmojiPopupAnchorEl(null);
   }, []);
 
   const handleOpenThreeDotsMenu = useCallback((event) => {
@@ -146,6 +162,89 @@ const CommunityChatMessageItem = ({
   const handleOpenBlockMemberModal = useCallback(() => {
     onBlockMember(authorUserId, name);
   }, [onBlockMember, authorUserId, name]);
+
+  const handleAddEmojiReaction = useCallback(
+    (emojiColon) => {
+      apiAddChatReaction(channelId, message.sid, emojiColon).then(() => {
+        const emojiIndex = emojiReactions.findIndex(
+          (reaction) => reaction.reaction_type === emojiColon
+        );
+
+        if (emojiIndex >= 0) {
+          setEmojiReactions(
+            update(emojiReactions, {
+              [emojiIndex]: {
+                user_ids: { $push: [myUserIdNumber] }
+              }
+            })
+          );
+        } else {
+          setEmojiReactions(
+            update(emojiReactions, {
+              $push: [
+                {
+                  reaction_type: emojiColon,
+                  user_ids: [myUserIdNumber]
+                }
+              ]
+            })
+          );
+        }
+      });
+    },
+    [myUserIdNumber, emojiReactions, channelId, message.sid]
+  );
+
+  const handleRemoveEmojiReaction = useCallback(
+    (emojiColon) => {
+      apiRemoveChatReaction(channelId, message.sid, emojiColon).then(() => {
+        const newEmojiReactions = [...emojiReactions];
+
+        newEmojiReactions.forEach((reaction) => {
+          if (!reaction.reaction_type.startsWith(emojiColon)) {
+            return;
+          }
+          const userIndex = reaction.user_ids.findIndex((userId) => userId === myUserIdNumber);
+          if (userIndex >= 0) {
+            reaction.user_ids.splice(userIndex, 1);
+          }
+        });
+
+        setEmojiReactions(newEmojiReactions.filter((reaction) => reaction.user_ids.length > 0));
+      });
+    },
+    [myUserIdNumber, emojiReactions, channelId, message.sid]
+  );
+
+  const handleSelectEmojiReaction = useCallback(
+    (emojiColon) => {
+      const emojiIndex = emojiReactions.findIndex(
+        (reactionData) => reactionData.reaction_type === emojiColon
+      );
+
+      // Check if already reacted with the emoji
+      if (emojiIndex >= 0 && emojiReactions[emojiIndex].user_ids.includes(myUserIdNumber)) {
+        handleRemoveEmojiReaction(emojiColon);
+      } else {
+        handleAddEmojiReaction(emojiColon);
+      }
+    },
+    [emojiReactions, myUserIdNumber, handleAddEmojiReaction, handleRemoveEmojiReaction]
+  );
+
+  const handleOpenEmojiPopup = useCallback((event) => {
+    setEmojiPopupAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleSelectEmoji = useCallback(
+    (emojiData) => {
+      handleSelectEmojiReaction(emojiData.colons);
+      setEmojiPopupAnchorEl(null);
+    },
+    [handleSelectEmojiReaction]
+  );
+
+  const handleCloseEmojiPopup = useCallback(() => setEmojiPopupAnchorEl(null), []);
 
   const handleEdit = useCallback(
     (msgId, body) => {
@@ -255,7 +354,7 @@ const CommunityChatMessageItem = ({
 
     if (['add_new_member', 'remove_user'].includes(imageKey)) {
       return (
-        <div className={cx(classes.alertWrapper)}>
+        <div className={classes.alertWrapper}>
           <Typography
             className={classes.alert}
             dangerouslySetInnerHTML={{
@@ -373,6 +472,19 @@ const CommunityChatMessageItem = ({
     renderHtmlWithImage
   ]);
 
+  const handleCloseReactedUserModal = useCallback(() => {
+    setReactedUsersModalOpen(false);
+  }, []);
+
+  const handleOpenReactedUserModal = useCallback(() => {
+    setReactedUsersModalOpen(true);
+    setAnchorEl(null);
+  }, []);
+
+  useEffect(() => {
+    setEmojiReactions(message.reactions || []);
+  }, [message]);
+
   return (
     <ListItem
       ref={rootRef}
@@ -418,19 +530,37 @@ const CommunityChatMessageItem = ({
                   {name}
                 </Link>
               </Typography>
-              <Typography className={cx(classes.createdAt)} variant="caption">
+              <Typography className={classes.createdAt} variant="caption">
                 {date} at {message.createdAt}
               </Typography>
             </Box>
             {isHover && (
               <Box className={classes.chatItemHoverMenu} hidden={!isHover}>
+                {DEFAULT_EMOJI_REACTIONS.map((emoji) => (
+                  <Button
+                    key={emoji}
+                    className={classes.hoverMenuItem}
+                    onClick={() => handleSelectEmojiReaction(emoji)}
+                  >
+                    <Emoji emoji={emoji} size={EMOJI_ICON_SIZE} />
+                  </Button>
+                ))}
+                <Button className={classes.hoverMenuItem} onClick={handleOpenEmojiPopup}>
+                  <IconAddReaction />
+                </Button>
                 <Button className={classes.hoverMenuItem} onClick={handleOpenThreeDotsMenu}>
                   <MoreVerticalIcon />
                 </Button>
               </Box>
             )}
             <Popover
-              id={message.sid}
+              open={Boolean(emojiPopupAnchorEl) && isHover}
+              anchorEl={emojiPopupAnchorEl}
+              onClose={handleCloseEmojiPopup}
+            >
+              <Picker onSelect={handleSelectEmoji} />
+            </Popover>
+            <Popover
               open={Boolean(anchorEl) && isHover}
               anchorEl={anchorEl}
               onClose={handleCloseThreeDotsMenu}
@@ -447,6 +577,9 @@ const CommunityChatMessageItem = ({
               <MenuList className={classes.userMenu}>
                 <MenuItem onClick={handleViewProfile}>
                   <Typography variant="inherit">View Profile</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleOpenReactedUserModal}>
+                  <Typography variant="inherit">Who reacted?</Typography>
                 </MenuItem>
                 {isGroupChannel && (
                   <MenuItem onClick={handleOpenBlockMemberModal}>
@@ -476,7 +609,20 @@ const CommunityChatMessageItem = ({
         )}
         {messageBody}
         <EditFailedModal onOk={handleCloseErrorModal} open={showError} />
+        <ChatReactions
+          data={emojiReactions}
+          onAddEmoji={handleAddEmojiReaction}
+          onRemoveEmoji={handleRemoveEmojiReaction}
+          onSelectEmoji={handleSelectEmojiReaction}
+        />
       </div>
+
+      <ReactedUsersModal
+        messageSid={message.sid}
+        open={reactedUsersModalOpen}
+        onClose={handleCloseReactedUserModal}
+        onRemoveReaction={handleRemoveEmojiReaction}
+      />
     </ListItem>
   );
 };

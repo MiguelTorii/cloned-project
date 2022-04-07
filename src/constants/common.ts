@@ -222,3 +222,4 @@ export const CAMPAIGN_NAMES = {
 export const XP_BAR_TOOLTIP = 'Win MVP 8+ times in a semester to unlock a scholarship';
 export const MESSAGE_PREVIEW_INTERVAL = 5 * 1000;
 export const MESSAGE_PREVIEW_THRESHOLD_PX = '-50px';
+export const CHAT_REACTION_EMOJI_SIZE = 20;

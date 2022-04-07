@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import moment from 'moment';
 import { objectToCamel } from 'ts-case-convert';
 
-import { API_ROUTES } from 'constants/routes';
+import { API_ROUTES, API_URL } from 'constants/routes';
 
 import { callApi } from './api_base';
 import { getToken } from './utils';
@@ -15,7 +15,7 @@ import type { APIChatUser } from './models/APIChatUser';
 import type { APIClassmate } from './models/APIClassmate';
 import type { APICreateChat } from './models/APICreateChat';
 import type { ChannelMetadata } from 'features/chat';
-import type { CreateChat, Classmate } from 'types/models';
+import type { CreateChat, Classmate, ChatReactionsUsersResponse } from 'types/models';
 
 export const sendMessage = async ({
   message,
@@ -410,3 +410,43 @@ export const apiUpdateChat = async (attributes: Record<string, any>): Promise<vo
     }
   });
 };
+
+export const apiGetCommunityShareLink = async (community_id): Promise<{ url: string }> =>
+  callApi({
+    url: `${API_URL}/community/link`,
+    method: 'POST',
+    data: { community_id }
+  });
+
+export const apiAddChatReaction = async (chat_id: string, message_id: string, reaction: string) =>
+  callApi({
+    url: `${API_URL}/chat/reactions`,
+    method: 'POST',
+    data: {
+      chat_id,
+      message_id,
+      reaction
+    }
+  });
+
+export const apiGetChatReactions = async (
+  messageSid: string
+): Promise<ChatReactionsUsersResponse> =>
+  callApi({
+    url: `${API_URL}/chat/reactions/${messageSid}`
+  });
+
+export const apiRemoveChatReaction = async (
+  chat_id: string,
+  message_id: string,
+  reaction: string
+) =>
+  callApi({
+    url: `${API_URL}/chat/reactions`,
+    method: 'DELETE',
+    data: {
+      chat_id,
+      message_id,
+      reaction
+    }
+  });
