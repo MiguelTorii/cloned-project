@@ -25,6 +25,18 @@ import useStyles from '../_styles/RemoveStudentDialog';
 import Dialog from '../Dialog/Dialog';
 import RoleBadge from '../RoleBadge/RoleBadge';
 
+import type { ChannelMetadata } from 'features/chat';
+import type { Channel } from 'twilio-chat';
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  members: ChannelMetadata['users'];
+  channel: Channel;
+  currentUserName: string;
+  isCommunityChat: boolean;
+}
+
 const RemoveStudentDialog = ({
   open,
   onClose,
@@ -32,27 +44,29 @@ const RemoveStudentDialog = ({
   channel,
   currentUserName,
   isCommunityChat = false
-}) => {
+}: Props) => {
   const classes: any = useStyles();
   const [search, searchMember] = useState('');
   const [confirmDialog, setConfirmDialog] = useState(false);
-  const [user, setUser] = useState(null);
-  const [removedUserIds, setRemovedUserIds] = useState([]);
+  const [user, setUser] = useState<ChannelMetadata['users'][0] | null>(null);
+  const [removedUserIds, setRemovedUserIds] = useState<number[]>([]);
   const handleCloseConfirmModal = useCallback(() => {
     setConfirmDialog(false);
     setUser(null);
   }, []);
+
   const removeUserFromChannel = useCallback(async () => {
+    if (!user) return;
     const messageAttribute = {
-      firstName: user.firstname,
-      lastName: user.lastname,
+      firstName: user.firstName,
+      lastName: user.lastName,
       imageKey: 'remove_user'
     };
     const response = await removeUser(user.userId, channel.sid);
 
     if (response) {
       await sendMessage({
-        message: `${currentUserName} removed ${user.firstname} ${user.lastname} from the chat`,
+        message: `${currentUserName} removed ${user.firstName} ${user.lastName} from the chat`,
         chatId: channel.sid,
         ...messageAttribute
       });
@@ -68,6 +82,7 @@ const RemoveStudentDialog = ({
     setUser(null);
     setConfirmDialog(false);
   }, [channel, user, currentUserName]);
+
   const removeMember = useCallback(
     async (member) => {
       if (isCommunityChat) {
@@ -131,9 +146,9 @@ const RemoveStudentDialog = ({
         )}
         <List dense className={classes.listRoot}>
           {members
-            .filter((member) => `${member.firstname} ${member.lastname}`.includes(search))
+            .filter((member) => `${member.firstName} ${member.lastName}`.includes(search))
             .map((m) => {
-              const fullName = `${m.firstname} ${m.lastname}`;
+              const fullName = `${m.firstName} ${m.lastName}`;
               return (
                 <ListItem
                   key={m.userId}
@@ -147,7 +162,7 @@ const RemoveStudentDialog = ({
                     <Avatar
                       isOnline={m.isOnline}
                       onlineBadgeBackground="circleIn.palette.feedBackground"
-                      profileImage={m.image}
+                      profileImage={m.profileImageUrl}
                       fullName={fullName}
                       fromChat
                     />
@@ -183,7 +198,7 @@ const RemoveStudentDialog = ({
       </Dialog>
       <Dialog
         open={confirmDialog}
-        title={`${user?.firstname} ${user?.lastname}?`}
+        title={`${user?.firstName} ${user?.lastName}?`}
         className={classes.dialog}
         hrClass={classes.hrClass}
         okButtonClass={classes.okButtonClass}
@@ -196,7 +211,7 @@ const RemoveStudentDialog = ({
         cancelTitle="Cancel"
       >
         <Typography variant="subtitle1">
-          Are you sure you want to remove <b>{`${user?.firstname} ${user?.lastname}`}</b>? They will
+          Are you sure you want to remove <b>{`${user?.firstName} ${user?.lastName}`}</b>? They will
           be removed from the chat and will no longer have access to it.
         </Typography>
       </Dialog>
