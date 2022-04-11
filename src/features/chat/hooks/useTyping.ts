@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useQueryClient } from 'react-query';
+
+import { selectLocalById } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
 
+import { QUERY_KEY_CHANNEL_METADATA } from './useChannelsMetadata';
+
+import type { ChannelsMetadata } from 'features/chat';
 import type { Channel, KeyOfChannelEvents, Member } from 'twilio-chat';
 
 const INITIAL_STATE = { channelId: '', friendlyName: '' };
@@ -18,18 +24,31 @@ export const useTyping = (channel?: Channel) => {
     return channel?.typing();
   }, [channel]);
   const userId = useAppSelector((state) => state.user.data.userId);
+  const queryClient = useQueryClient();
+  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
 
   useEffect(() => {
-    const typingCallback = (member: Member) => {
+    const typingCallback = async (member: Member) => {
       if (!channel || !member.identity) {
         return;
       }
-      member.getUser().then((user) => {
-        if (user.identity === userId) return;
-        setTyping({
-          channelId: channel.sid,
-          friendlyName: user.friendlyName
-        });
+      const user = await member.getUser();
+      if (user.identity === userId) return;
+
+      let name = user.friendlyName;
+      // New users might not have a friendly name yet
+      if (!name) {
+        const metadata = queryClient.getQueryData<ChannelsMetadata>([QUERY_KEY_CHANNEL_METADATA]);
+        const channelMetadata = metadata?.[channel.sid] || local;
+        const channelUser = channelMetadata?.users.find(
+          (channelUser) => String(channelUser.userId) === user.identity
+        );
+        name = channelUser ? `${channelUser.firstName} ${channelUser.lastName}` : '';
+      }
+
+      setTyping({
+        channelId: channel.sid,
+        friendlyName: name || 'Someone'
       });
     };
 
@@ -48,7 +67,7 @@ export const useTyping = (channel?: Channel) => {
       channel?.removeListener(EVENT_TYPING_STARTED, typingCallback);
       channel?.removeListener(EVENT_TYPING_ENDED, typingEndCallback);
     };
-  }, [channel, userId]);
+  }, [channel, local, queryClient, userId]);
 
   return { typing, onTyping };
 };
