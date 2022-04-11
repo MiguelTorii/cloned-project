@@ -8,7 +8,9 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
@@ -72,34 +74,21 @@ const DeviceSettings = ({
           classes={{
             root: classes.optionLabel
           }}
-          htmlFor="audioinput-native-helper"
         >
           Video
         </InputLabel>
-        <NativeSelect
+        <Select
+          classes={{ selectMenu: classes.selectInput }}
+          className={classes.controlOptions}
           value={selectedvideoinput}
           onChange={handleChange('videoinput')}
-          classes={{
-            root: classes.controlOptions,
-            icon: classes.dropdownArrow
-          }}
-          input={
-            <Input
-              classes={{
-                root: classes.controlOptionLabel,
-                focused: classes.optionFocused
-              }}
-              name="videoinput"
-              id="videoinput-native-helper"
-            />
-          }
         >
           {videoinput.map((item) => (
-            <option key={item.value} value={item.value}>
+            <MenuItem key={item.value} value={item.value}>
               {item.label}
-            </option>
+            </MenuItem>
           ))}
-        </NativeSelect>
+        </Select>
       </FormControl>
       <FormControl
         classes={{
@@ -110,34 +99,21 @@ const DeviceSettings = ({
           classes={{
             root: classes.optionLabel
           }}
-          htmlFor="audioinput-native-helper"
         >
           Mic
         </InputLabel>
-        <NativeSelect
+        <Select
+          classes={{ selectMenu: classes.selectInput }}
+          className={classes.controlOptions}
           value={selectedaudioinput}
-          classes={{
-            root: classes.controlOptions,
-            icon: classes.dropdownArrow
-          }}
           onChange={handleChange('audioinput')}
-          input={
-            <Input
-              classes={{
-                root: classes.controlOptionLabel,
-                focused: classes.optionFocused
-              }}
-              name="audioinput"
-              id="audioinput-native-helper"
-            />
-          }
         >
           {audioinput.map((item) => (
-            <option key={item.value} value={item.value}>
+            <MenuItem key={item.value} value={item.value}>
               {item.label}
-            </option>
+            </MenuItem>
           ))}
-        </NativeSelect>
+        </Select>
       </FormControl>
       <Box className={classes.options} onClick={handleClick}>
         <Typography className={classes.report}>

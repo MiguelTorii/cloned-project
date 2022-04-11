@@ -25,12 +25,11 @@ export const styles = (theme) => ({
     fontSize: 28
   },
   controlOptions: {
-    backgroundColor: theme.circleIn.palette.secondaryText,
     border: `1px solid ${theme.circleIn.palette.appBar}`,
-    boxSizing: 'border-box',
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    borderRadius: 10,
-    color: theme.circleIn.palette.appBar,
+    borderRadius: 10
+  },
+  selectInput: {
     paddingLeft: theme.spacing(3)
   },
   optionFocused: {
