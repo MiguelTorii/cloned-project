@@ -4,20 +4,36 @@ export const useStyles = makeStyles((theme: any) => ({
   root: {
     position: 'relative'
   },
-  experienceBarTrack: {
+  experienceBarContainer: {
     position: 'relative',
-    backgroundColor: theme.circleIn.palette.expBarBackground,
-    borderRadius: '50px',
-    overflow: 'hidden',
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     width: '60%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50
+  },
+  experienceBarTrack: {
+    backgroundColor: theme.circleIn.palette.expBarBackground,
+    borderRadius: '50px',
+    overflow: 'hidden',
+    width: '100%',
     cursor: 'pointer'
   },
+  mvpLoaded: {
+    borderRadius: '50px 0 0 50px'
+  },
+  mvpProgress: {
+    position: 'absolute',
+    right: -45,
+    width: 50
+  },
   experienceFiller: {
-    height: '20px',
+    height: '30px',
     backgroundColor: theme.circleIn.palette.darkActionBlue,
     textAlign: 'right',
     transition: 'width 1s ease-in-out'

@@ -5,20 +5,12 @@ import { API_ROUTES } from 'constants/routes';
 import { callApi } from './api_base';
 import { getToken } from './utils';
 
-export const getLeaderboards = async () => {
-  try {
-    const token = await getToken();
-    const result = await axios.get(API_ROUTES.LEADERBOARD_V2, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    const { data = {} } = result;
-    return data;
-  } catch (err) {
-    return [];
-  }
-};
+import type { LeaderboardResponse } from 'types/models';
+
+export const getLeaderboards = async (): Promise<LeaderboardResponse> =>
+  callApi({
+    url: API_ROUTES.LEADERBOARD_V2
+  });
 export const getGrandPrizeInfo = async () => {
   try {
     const token = await getToken();

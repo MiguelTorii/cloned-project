@@ -714,3 +714,9 @@ export type ChatReactionUserData = {
 export type ChatReactionsUsersResponse = {
   reactions: ChatReactionUserData[];
 };
+// TODO: Define attributes inside as needed in the future.
+export type LeaderboardResponse = {
+  grand_prize: {
+    mvp_count: number;
+  };
+};

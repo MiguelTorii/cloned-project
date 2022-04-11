@@ -72,6 +72,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-big-calendar": "^0.21.0",
     "react-card-flip": "^1.1.5",
+    "react-circular-progressbar": "^2.0.4",
     "react-copy-to-clipboard": "^5.0.1",
     "react-datepicker": "^3.4.1",
     "react-device-detect": "^1.12.1",
