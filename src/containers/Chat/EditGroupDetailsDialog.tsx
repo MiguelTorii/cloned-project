@@ -17,8 +17,10 @@ import AvatarEditor from 'components/AvatarEditor/AvatarEditor';
 import GradientButton from 'components/Basic/Buttons/GradientButton';
 import TextField from 'components/Basic/TextField/TextField';
 import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
+import { useChannelMetadataById } from 'features/chat';
+import { selectLocalById } from 'redux/chat/selectors';
+import { useAppSelector } from 'redux/store';
 
-import type { ChannelMetadata } from 'features/chat';
 import type { Channel } from 'twilio-chat';
 
 const styles = (theme) => ({
@@ -90,7 +92,6 @@ type Props = {
   channel: Channel;
   classes?: any;
   isLoading?: any;
-  metadata: ChannelMetadata;
   onClose?: (...args: Array<any>) => any;
   open?: any;
   title?: string | null | undefined;
@@ -101,24 +102,29 @@ const EditGroupDetailsDialog = ({
   channel,
   classes,
   isLoading,
-  metadata,
   onClose,
   open,
   title,
   updateGroupName
 }: Props) => {
-  const [name, setName] = useState(metadata.groupName);
+  const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
+  const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
+  const metadata = channelMetadata || local;
   const dispatch = useDispatch();
   const [isEditingGroupPhoto, setIsEditingGroupPhoto] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [groupImage, setGroupImage] = useState<string | Blob>(); // Group Image can be URL or Blob
+  const [inputName, setInputName] = useState('');
+  const [groupImage, setGroupImage] = useState<string | Blob>(); // Group Image can be URL or
+
+  // There's problems during conditionals during render in determening friendlyName exists so we have to keep them separate
+  const friendlyName = channel?.friendlyName;
+  const name = friendlyName || (metadata && 'groupName' in metadata) ? metadata?.groupName : '';
 
   useEffect(() => {
-    setName(metadata.groupName);
-  }, [metadata]);
-  useEffect(() => {
-    setGroupImage(metadata.thumbnail);
-  }, [metadata.thumbnail]);
+    if (!metadata && !local) return;
+    setInputName(friendlyName || name);
+  }, [local, metadata, name, friendlyName]);
+
   const groupImageUrl = useMemo(() => {
     if (groupImage instanceof Blob) {
       return window.URL.createObjectURL(groupImage);
@@ -126,35 +132,33 @@ const EditGroupDetailsDialog = ({
 
     return groupImage;
   }, [groupImage]);
-  const handleGroupNameChange = useCallback(
-    (e) => {
-      if (e.target.value.length > 100) {
-        return;
-      }
 
-      setName(e.target.value);
-    },
-    [setName]
-  );
+  const handleGroupNameChange = (e) => {
+    if (e.target.value.length > 100) {
+      return;
+    }
+    setInputName(e.target.value);
+  };
+
   const handleClose = useCallback(() => {
     setIsSaving(false);
     onClose?.();
-    setName(metadata.groupName);
-  }, [metadata.groupName, onClose]);
+    setInputName(friendlyName || name);
+  }, [name, onClose, friendlyName]);
 
   const updateChannelName = async () => {
-    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
-    if (channel.friendlyName) {
+    if (channel.attributes.community_id) {
       return;
     }
-
     try {
-      const res = await channel.updateFriendlyName(name);
+      const res = await channel.updateFriendlyName(inputName);
       await updateGroupName?.(res);
     } catch (err) {}
   };
 
   const handleSubmit = async () => {
+    if (!metadata) return;
+
     setIsSaving(true);
     await updateChannelName();
 
@@ -183,7 +187,7 @@ const EditGroupDetailsDialog = ({
     >
       {isLoading && <CircularProgress className={classes.progress} />}
       <Typography variant="h6" gutterBottom>
-        Are you sure you want to make changes to&nbsp;{name}?
+        Are you sure you want to make changes to&nbsp;{friendlyName || name}?
       </Typography>
       <div className={classes.spacer} />
       <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
@@ -194,8 +198,8 @@ const EditGroupDetailsDialog = ({
             fullWidth
             variant="outlined"
             onChange={handleGroupNameChange}
-            value={name}
-            helperText={`${100 - (name?.length || 0)} characters remaining`}
+            value={inputName}
+            helperText={`${100 - (inputName?.length || 0)} characters remaining`}
             FormHelperTextProps={{
               className: classes.helperText
             }}

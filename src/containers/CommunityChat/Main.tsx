@@ -175,27 +175,24 @@ const Main = ({
   );
 
   const currentTitle = useMemo(() => {
+    const friendlyName = channel?.friendlyName;
+    if (friendlyName) return friendlyName;
+
     const title = isCommunityChat ? selectedChannel?.chat_name : channelMetadata?.groupName;
-    // Use `any` type because `Property 'channelState' is private and only accessible within class 'Channel'.`
-    if (!channel?.friendlyName) {
-      let customTitle = '';
-      let currentIndex = 0;
+    if (title) return title;
+    let customTitle = '';
+    let currentIndex = 0;
 
-      if (channelMembers.length > 3) {
-        channelMembers.forEach((member, index) => {
-          if (index < 3) {
-            customTitle += `${member.firstName} ${member.lastName}, `;
-            currentIndex = index;
-          }
-        });
-        customTitle += `${channelMembers.length - currentIndex - 1} others`;
-        return customTitle;
-      }
-
-      return title;
+    if (channelMembers.length > 3) {
+      channelMembers.forEach((member, index) => {
+        if (index < 3) {
+          customTitle += `${member.firstName} ${member.lastName}, `;
+          currentIndex = index;
+        }
+      });
+      customTitle += `${channelMembers.length - currentIndex - 1} others`;
+      return customTitle;
     }
-
-    return title;
   }, [
     channel?.friendlyName,
     channelMembers,
@@ -295,7 +292,6 @@ const Main = ({
           currentUserName={`${firstName} ${lastName}`}
           handleUpdateGroupName={handleUpdateGroupName}
           isCommunityChat={isCommunityChat}
-          memberKeys={memberKeys}
           members={channelMembers}
           onOpenRightPanel={setRightPanel}
           otherUser={otherUser}

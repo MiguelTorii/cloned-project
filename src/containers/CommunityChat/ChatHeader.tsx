@@ -31,6 +31,7 @@ import { ReactComponent as ChatIcon } from 'assets/svg/community-chat.svg';
 import CreateChatChannelDialog from 'components/CreateChatChannelDialog/CreateChatChannelDialog';
 import RemoveStudentDialog from 'components/RemoveStudentDialog/RemoveStudentDialog';
 import ShareLinkDialog from 'components/ShareLinkDialog/ShareLinkDialog';
+import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
 
 import useStyles from './_styles/chatHeader';
 
@@ -43,7 +44,6 @@ type Props = {
   currentUserName: string;
   handleUpdateGroupName?: (...args: Array<any>) => any;
   isCommunityChat: boolean;
-  memberKeys: Array<any>;
   members: ChannelMetadata['users'];
   onOpenRightPanel?: (...args: Array<any>) => any;
   otherUser: any;
@@ -57,7 +57,6 @@ const ChatHeader = ({
   currentUserName,
   handleUpdateGroupName,
   isCommunityChat,
-  memberKeys,
   members,
   onOpenRightPanel,
   otherUser,
@@ -113,7 +112,7 @@ const ChatHeader = ({
     [permission]
   );
   const showThreeDotsMenu = useMemo(
-    () => (members && Object.keys(members).length > 2 && isShow) || deletePermission,
+    () => (members && members?.length > 2 && isShow) || deletePermission,
     [deletePermission, members, isShow]
   );
   const handleEditGroupDetailsClose = useCallback(() => setEditGroupDetailsOpen(false), []);
@@ -266,7 +265,7 @@ const ChatHeader = ({
             {renderOtherMembers()}
           </Popover>
           <div className={classes.chatIcons}>
-            {(otherUser?.registered || memberKeys.length > 2) && (
+            {(otherUser?.registered || members?.length > 2) && (
               <IconButton aria-label="study-room" className={classes.chatIcon} onClick={startVideo}>
                 <ChatStudyRoom />
               </IconButton>
@@ -289,7 +288,7 @@ const ChatHeader = ({
                 <ChatAddMember />
               </IconButton>
             )}
-            {Object.keys(members).length > 0 && (
+            {members?.length > 0 && (
               <IconButton
                 aria-label="studyroom-members"
                 className={classes.chatIcon}
@@ -334,7 +333,7 @@ const ChatHeader = ({
             >
               <Paper className={classes.paper}>
                 <MenuList>
-                  {Object.keys(members).length > 2 && isShow && (
+                  {!isCommunityChat && members?.length > 2 && isShow && (
                     <MenuItem onClick={handleEditGroup}>Edit Group Details</MenuItem>
                   )}
                   {deletePermission && (
@@ -349,14 +348,13 @@ const ChatHeader = ({
         </Grid>
       )}
       {/* TODO Fix merge */}
-      {/* <EditGroupDetailsDialog
+      <EditGroupDetailsDialog
         title="Edit Group Details"
-        metadata={channel}
-        channel={local[channel.sid]}
+        channel={channel}
         open={editGroupDetailsOpen}
         updateGroupName={handleUpdateGroupName}
         onClose={handleEditGroupDetailsClose}
-      /> */}
+      />
       <CreateChatChannelDialog
         title="ADD CLASSMATES"
         chatType={channelType}
