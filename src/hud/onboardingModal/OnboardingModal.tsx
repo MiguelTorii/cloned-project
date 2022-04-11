@@ -8,7 +8,7 @@ import GradientButton from 'components/Basic/Buttons/GradientButton';
 import Dialog from 'components/Dialog/Dialog';
 
 import HudStory from '../story/HudStory';
-import { closeOnboardingPopup } from '../storyState/hudStoryActions';
+import { closeOnboardingPopup, setCurrentStatement } from '../storyState/hudStoryActions';
 import { introToOnboarding, onboardingCompleted } from '../storyState/onboardingStorySections';
 import useStorySequence from '../storyState/useStorySequence';
 
@@ -42,6 +42,7 @@ const OnboardingModal = () => {
   const skipOrFinishOnboarding = () => {
     sayGreeting();
     dispatch(closeOnboardingPopup(false));
+    dispatch(setCurrentStatement(''));
   };
 
   const dialogTitle = isCurrentSessionOnboardingComplete ? '' : 'Welcome!';
