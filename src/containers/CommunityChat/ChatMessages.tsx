@@ -41,15 +41,11 @@ const ChatMessages = ({
 
   const { ref, handleScrollToBottom } = useChatScrollToBottom(messages);
 
-  const messageItems = useMemo(
-    () =>
-      processMessages({
-        items: messages,
-        userId,
-        channelId: channel.sid
-      }),
-    [channel.sid, messages, userId]
-  );
+  const messageItems = processMessages({
+    items: messages,
+    userId,
+    channelId: channel.sid
+  });
 
   // Calculate last message index.
   const lastReadIndex = useMemo(() => {
@@ -204,4 +200,4 @@ const Last = React.forwardRef<HTMLDivElement, { onMount: () => void }>(({ onMoun
   );
 });
 
-export default memo(ChatMessages);
+export default ChatMessages;

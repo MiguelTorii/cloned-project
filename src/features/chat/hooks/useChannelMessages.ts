@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useQuery, useQueryClient } from 'react-query';
 
@@ -23,6 +23,31 @@ export const useChannelMessagesPaginatorFetch = (
   const queryClient = useQueryClient();
   const { data: messages } = useChannelMessages(channel);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!channel) {
+      return;
+    }
+
+    channel?.on('messageUpdated', async (updatedMessage) => {
+      const oldData = await queryClient.fetchQuery<MessagePaginator>([
+        QUERY_KEY_CHANNEL_MESSAGES,
+        channel.sid
+      ]);
+      const newItems = oldData.items.map((item) => {
+        if (item.sid === updatedMessage.message.sid) {
+          return updatedMessage.message;
+        }
+
+        return item;
+      });
+
+      queryClient.setQueryData<MessagePaginator>([QUERY_KEY_CHANNEL_MESSAGES, channel.sid], {
+        ...oldData,
+        items: newItems
+      });
+    });
+  }, [queryClient, channel?.sid]);
 
   const loader = useCallback(() => {
     if (!messages?.hasPrevPage || !channel) return Promise.resolve();
