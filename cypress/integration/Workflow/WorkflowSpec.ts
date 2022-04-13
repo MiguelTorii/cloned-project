@@ -1,5 +1,5 @@
 // for any tasks that are failed because they are processed too quickly
-const X_WAIT_MS = (ms) => cy.wait(ms);
+export const CYPRESS_WAIT_MS = (ms) => cy.wait(ms);
 
 describe('Workflow', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Workflow', () => {
     cy.get('#board-Overdue .create-task-button').click();
     cy.get('.workflow-task-text-area').type('Create Test Task');
     cy.get('.add-workflow-button').click();
-    X_WAIT_MS(2000);
+    CYPRESS_WAIT_MS(2000);
   });
 
   it('Edit task', () => {
@@ -25,7 +25,7 @@ describe('Workflow', () => {
       });
     cy.contains('3:00 PM').click({ force: true });
     cy.contains('Save').click();
-    X_WAIT_MS(1000);
+    CYPRESS_WAIT_MS(1000);
   });
 
   it('Moves task to done', () => {
@@ -35,7 +35,7 @@ describe('Workflow', () => {
       .trigger('dragover')
       .trigger('drop')
       .trigger('dragend');
-    X_WAIT_MS(2000);
+    CYPRESS_WAIT_MS(2000);
   });
 
   it('Deletes task', () => {
@@ -43,9 +43,9 @@ describe('Workflow', () => {
       .trigger('mouseover')
       .get('#board-Done .workflow-task-delete-button')
       .click();
-    X_WAIT_MS(1000);
+    CYPRESS_WAIT_MS(1000);
     cy.contains('Delete').click();
-    X_WAIT_MS(1000);
+    CYPRESS_WAIT_MS(3000);
   });
 
   it('List View', () => {
