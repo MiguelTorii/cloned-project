@@ -51,37 +51,52 @@ const PostItemCommentQuill = ({
     }
   }, [isPastClassFlashcard, quill]);
 
-  useEffect(() => {
-    if (quill) {
-      quill.on('text-change', () => {
-        if (quill.getSelection(true)) {
-          const container = (quill as any).container;
-          onChange(container.firstChild.innerHTML);
-          const currentFocusPosition = quill.getSelection(true).index;
-          const leftPosition = quill.getBounds(currentFocusPosition).left;
-          const currentTooltipWidth = document.getElementById(
-            `comment-toolbar-${feedId}-${toolbarPrefix}`
-          )
-            ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
-            : 0;
-          const currentEditorWidth = container.firstChild.clientWidth;
+  const onQuillChange = useCallback(() => {
+    if (!quill) return;
+    if (quill.getSelection(true)) {
+      const container = (quill as any).container;
+      onChange(container.firstChild.innerHTML);
+      const currentFocusPosition = quill.getSelection(true).index;
+      const leftPosition = quill.getBounds(currentFocusPosition).left;
+      const currentTooltipWidth = document.getElementById(
+        `comment-toolbar-${feedId}-${toolbarPrefix}`
+      )
+        ? document.getElementById(`comment-toolbar-${feedId}-${toolbarPrefix}`).clientWidth
+        : 0;
+      const currentEditorWidth = container.firstChild.clientWidth;
 
-          // Add an empty line when the caret gets closer to the toolbar.
-          if (
-            !isMobileScreen &&
-            currentEditorWidth - currentTooltipWidth < leftPosition + 80 &&
-            !container.firstChild.innerText.endsWith('\n')
-          ) {
-            quill.insertText(container.firstChild.innerHTML.length.index + 1, '\n');
-          }
+      // Add an empty line when the caret gets closer to the toolbar.
+      if (
+        !isMobileScreen &&
+        currentEditorWidth - currentTooltipWidth < leftPosition + 80 &&
+        !container.firstChild.innerText.endsWith('\n')
+      ) {
+        quill.insertText(container.firstChild.innerHTML.length.index + 1, '\n');
+      }
 
-          if (!container.firstChild.innerText.trim()) {
-            quill.focus();
-          }
-        }
-      });
+      if (!container.firstChild.innerText.trim()) {
+        quill.focus();
+      }
     }
-  }, [feedId, toolbarPrefix, onChange, quill]);
+  }, [feedId, isMobileScreen, onChange, quill, toolbarPrefix]);
+
+  useEffect(() => {
+    let editorChangeCallback: undefined | ((eventName: string) => void);
+
+    if (quill) {
+      const callback = (eventName) => {
+        if (eventName === 'text-change') {
+          onQuillChange();
+        }
+      };
+      editorChangeCallback = callback;
+    }
+    return () => {
+      if (editorChangeCallback) {
+        quill?.off('editor-change', editorChangeCallback);
+      }
+    };
+  }, [onQuillChange, quill]);
 
   useEffect(() => {
     if (quill && value) {

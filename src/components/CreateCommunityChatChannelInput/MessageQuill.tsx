@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { Picker } from 'emoji-mart';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import { useQuill } from 'react-quilljs';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Popover from '@material-ui/core/Popover';
@@ -12,6 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { isMac } from 'utils/helpers';
 
 import { uploadMedia } from 'actions/user';
+import { useChatQuill } from 'features/chat';
 
 import styles from '../_styles/CreateCommunityChatChannelInput/messageQuill';
 
@@ -37,31 +37,34 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
     },
     [userId]
   );
-  const { quill, quillRef, Quill } = useQuill({
-    modules: {
-      toolbar: '#one-touch-send',
-      imageDropAndPaste: {
-        handler: imageHandler
-      },
-      keyboard: {
-        bindings: {
-          emoji: {
-            key: 'J',
-            shortKey: true,
-            altKey: !isMac(),
-            handler: () => {
-              setEmojiPopupOpen(true);
-              return true;
+  const { quill, quillRef, Quill } = useChatQuill(
+    'one-touch-send',
+    {
+      modules: {
+        toolbar: '#one-touch-send',
+        imageDropAndPaste: {
+          handler: imageHandler
+        },
+        keyboard: {
+          bindings: {
+            emoji: {
+              key: 'J',
+              shortKey: true,
+              altKey: !isMac(),
+              handler: () => {
+                setEmojiPopupOpen(true);
+                return true;
+              }
             }
           }
         }
-      }
+      },
+      scrollingContainer: 'editor',
+      formats,
+      placeholder: 'Start typing a message'
     },
-    scrollingContainer: 'editor',
-    formats,
-    placeholder: 'Start typing a message',
-    preserveWhitespace: true
-  } as any);
+    onChange
+  );
   const handleCloseEmojiPopup = useCallback(() => {
     setEmojiPopupOpen(false);
   }, []);
@@ -71,54 +74,16 @@ const MessageQuill = ({ classes, onChange, setValue, userId }) => {
   }
 
   useEffect(() => {
-    if (quill) {
-      quill.focus();
-      quill.on('text-change', () => {
-        if (quill.getSelection(true)) {
-          onChange((quill as any).container.firstChild.innerHTML);
-
-          if (
-            (quill as any).container.firstChild.innerHTML.length > quill.getSelection(true).index
-          ) {
-            quill.setSelection(
-              quill.getSelection(true).index + (quill as any).container.firstChild.innerHTML.length
-            );
-          }
-
-          const currentFocusPosition = quill.getSelection(true).index;
-          const leftPosition = quill.getBounds(currentFocusPosition).left;
-          const currentTooltipWidth = document.getElementById('one-touch-send')
-            ? document.getElementById('one-touch-send').clientWidth
-            : 0;
-          const currentEditorWidth = (quill as any).container.firstChild.clientWidth;
-
-          if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
-            if (!(quill as any).container.firstChild.innerHTML.includes('<p>\n</p>')) {
-              quill.insertText(
-                (quill as any).container.firstChild.innerHTML.length.index + 1,
-                '\n'
-              );
-            }
-          }
-
-          if (!(quill as any).container.firstChild.innerText.trim()) {
-            quill.focus();
-          }
-        }
-      });
-    }
-  }, [onChange, quill, Quill]);
-  useEffect(() => {
-    if (pasteImageUrl) {
-      const range = quill.getSelection(true);
-      quill.insertEmbed(range.index, 'image', pasteImageUrl);
-      quill.insertText(range.index + 1, '\n');
-      setLoading(false);
-      setPasteImageUrl('');
-    }
+    if (!quill || !pasteImageUrl) return;
+    const range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'image', pasteImageUrl);
+    quill.insertText(range.index + 1, '\n');
+    setLoading(false);
+    setPasteImageUrl('');
   }, [quill, pasteImageUrl]);
   const selectLocalImage = useCallback(() => {
     const input = document.createElement('input');
+    if (!input || !quill) return;
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
     input.click();

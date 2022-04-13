@@ -5,7 +5,6 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import cx from 'classnames';
 import { Picker } from 'emoji-mart';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste';
-import { useQuill } from 'react-quilljs';
 import { useDispatch } from 'react-redux';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,6 +19,7 @@ import { isMac } from 'utils/helpers';
 import { showNotification } from 'actions/notifications';
 import { uploadMedia } from 'actions/user';
 import AttachFile from 'components/FileUpload/AttachFile';
+import { useChatQuill } from 'features/chat';
 
 import styles from './_styles/messageQuill';
 import EditorToolbar, { formats } from './Toolbar';
@@ -49,7 +49,7 @@ const MessageQuill = ({
 
   const [value, setValue] = useState('');
 
-  const onChange = useCallback((updatedValue) => {
+  const onChange = useCallback((updatedValue: string) => {
     if (updatedValue.trim() === '<p><br></p>' || updatedValue.trim() === '<p>\n</p>') {
       setValue('');
     } else {
@@ -134,21 +134,26 @@ const MessageQuill = ({
   const handleCloseEmojiPopup = useCallback(() => {
     setEmojiPopupOpen(false);
   }, []);
-  const { quill, quillRef, Quill } = useQuill({
-    modules: {
-      toolbar: '#message-toolbar',
-      keyboard: {
-        bindings
+
+  const { quill, quillRef, Quill } = useChatQuill(
+    'message-toolbar',
+    {
+      modules: {
+        toolbar: '#message-toolbar',
+        keyboard: {
+          bindings
+        },
+        imageDropAndPaste: {
+          handler: imageHandler
+        }
       },
-      imageDropAndPaste: {
-        handler: imageHandler
-      }
+      scrollingContainer: 'editor',
+      formats,
+      placeholder: isNamedChannel ? 'Send a message to channel' : 'Send a message'
     },
-    scrollingContainer: 'editor',
-    formats,
-    placeholder: isNamedChannel ? 'Send a message to channel' : 'Send a message',
-    preserveWhitespace: true
-  } as any);
+    onChange,
+    onTyping
+  );
 
   if (Quill && !quill) {
     Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste);
@@ -160,46 +165,6 @@ const MessageQuill = ({
     }
   }, [quill]);
 
-  useEffect(() => {
-    if (quill) {
-      quill.focus();
-      quill.on('text-change', () => {
-        if (quill.getSelection(true)) {
-          onChange((quill as any).container.firstChild.innerHTML);
-
-          if (
-            (quill as any).container.firstChild.innerHTML.length > quill.getSelection(true).index
-          ) {
-            quill.setSelection(
-              quill.getSelection(true).index + (quill as any).container.firstChild.innerHTML.length
-            );
-          }
-
-          const currentFocusPosition = quill.getSelection(true).index;
-          const leftPosition = quill.getBounds(currentFocusPosition).left;
-          const currentTooltipWidth = document.getElementById('message-toolbar')
-            ? document.getElementById('message-toolbar').clientWidth
-            : 0;
-          const currentEditorWidth = (quill as any).container.firstChild.clientWidth;
-
-          if (currentEditorWidth - currentTooltipWidth < leftPosition + 80) {
-            if (!(quill as any).container.firstChild.innerHTML.includes('<p>\n</p>')) {
-              quill.insertText(
-                (quill as any).container.firstChild.innerHTML.length.index + 1,
-                '\n'
-              );
-            }
-          }
-
-          if (!(quill as any).container.firstChild.innerText.trim()) {
-            quill.focus();
-          }
-        }
-
-        onTyping();
-      });
-    }
-  }, [onChange, quill, Quill, onTyping]);
   useEffect(() => {
     async function sendMessage() {
       if (

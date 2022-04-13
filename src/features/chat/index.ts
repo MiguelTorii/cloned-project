@@ -8,6 +8,7 @@ export * from './hooks/useUnreadCount';
 export * from './hooks/useChannelMessages';
 export * from './hooks/useChannelAvatars';
 export * from './hooks/useChannelMessagesPrefetch';
+export * from './hooks/useChatQuill';
 
 export * from './api/channels';
 export * from './api/communityChannels';
