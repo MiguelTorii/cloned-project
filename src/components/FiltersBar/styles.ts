@@ -2,7 +2,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles((theme: any) => ({
   separator: {
-    color: '#5F6165'
+    color: theme.circleIn.palette.gray3
   },
   item: {
     backgroundColor: 'transparent',

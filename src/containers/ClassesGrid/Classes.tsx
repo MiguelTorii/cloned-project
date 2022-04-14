@@ -13,6 +13,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import withWidth from '@material-ui/core/withWidth';
 
+import { CLASS_PAGE_FILTERS } from 'constants/enums';
 import { cypherClass } from 'utils/crypto';
 import { openSupportWidget } from 'utils/helpers';
 
@@ -31,10 +32,16 @@ import type { State as StoreState } from 'types/state';
 
 const Filters = {
   current: {
-    text: 'Current'
+    display: 'Current',
+    text: "Here are the classes that you're enrolled in currently on CircleIn."
   },
   past: {
-    text: 'Past'
+    display: 'Past',
+    text: 'Here are the past classes that you were enrolled in currently on CircleIn.'
+  },
+  upcoming: {
+    display: 'Upcoming',
+    text: "Here are the classes that are starting within the next 2 weeks, that you're enrolled in currently"
   }
 };
 
@@ -90,7 +97,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const [classList, setClassList] = useState([]);
   const [canAddClasses, setCanAddClasses] = useState(false);
   const [openAddClasses, setOpenAddClasses] = useState(false);
-  const [currentFilter, setCurrentFilter] = useState('current');
+  const [currentFilter, setCurrentFilter] = useState(CLASS_PAGE_FILTERS.CURRENT);
   const [loading, setLoading] = useState(false);
 
   const profile = useSelector<AppState, User>((state) => state.user.data);
@@ -99,7 +106,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     () =>
       Object.keys(Filters).map((key) => ({
         value: key,
-        text: Filters[key].text
+        text: Filters[key].display
       })),
     []
   );
@@ -127,10 +134,26 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
 
       try {
         const {
-          userClasses: { classList, canAddClasses, pastClasses }
+          userClasses: { classList, canAddClasses, pastClasses, upcomingClasses }
         } = user;
 
-        const classListArr = currentFilter === 'current' ? classList : pastClasses;
+        const classSet = () => {
+          switch (currentFilter) {
+            case CLASS_PAGE_FILTERS.CURRENT:
+              return classList;
+
+            case CLASS_PAGE_FILTERS.PAST:
+              return pastClasses;
+
+            case CLASS_PAGE_FILTERS.UPCOMING:
+              return upcomingClasses;
+
+            default:
+              break;
+          }
+        };
+
+        const classListArr = classSet();
 
         if (classListArr) {
           setClassList(
@@ -143,6 +166,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
                 courseDisplayName: cl.courseDisplayName,
                 bgColor: cl.bgColor,
                 isCurrent: cl.isCurrent,
+                startDate: cl.startDate,
                 handleLeaveClass: () =>
                   handleLeaveClass({
                     sectionId: s.sectionId,
@@ -160,7 +184,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
             })
           );
           setCanAddClasses(canAddClasses);
-        } // eslint-disable-next-line no-empty
+        }
       } catch (e) {
       } finally {
         setLoading(false);
@@ -171,10 +195,12 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   }, [handleLeaveClass, user, currentFilter]);
   const navigate = useCallback(
     ({ courseDisplayName, sectionId, classId, isCurrent }) => {
-      document.title = courseDisplayName;
-      pushTo(`/feed?class=${cypherClass({ classId, sectionId })}&pastFilter=${!isCurrent}`);
+      if (currentFilter !== CLASS_PAGE_FILTERS.UPCOMING) {
+        document.title = courseDisplayName;
+        pushTo(`/feed?class=${cypherClass({ classId, sectionId })}&pastFilter=${!isCurrent}`);
+      }
     },
-    [pushTo]
+    [pushTo, currentFilter]
   );
 
   const handleSelectFilter = useCallback((item) => {
@@ -184,6 +210,33 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
   const handleOpenSupport = useCallback(() => {
     openSupportWidget(`${profile.firstName} ${profile.lastName}`, profile.email);
   }, [profile]);
+
+  const emptyPageText = () => {
+    switch (currentFilter) {
+      case CLASS_PAGE_FILTERS.CURRENT:
+        return (
+          <Typography>
+            If a class has already started and it isn’t here,&nbsp;
+            <Link component="button" underline="none" onClick={handleOpenSupport}>
+              <Typography>Contact CircleIn Support.</Typography>
+            </Link>
+          </Typography>
+        );
+
+      case CLASS_PAGE_FILTERS.PAST:
+        return <Typography>When you complete a class, they will show up here!</Typography>;
+
+      case CLASS_PAGE_FILTERS.UPCOMING:
+        return (
+          <Typography>
+            You will see classes you are enrolled in the next 90 days show up here!
+          </Typography>
+        );
+
+      default:
+        break;
+    }
+  };
 
   return (
     <div>
@@ -197,14 +250,16 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
       {classList.length > 0 && (
         <Box display="flex" mt={1} mb={1}>
           <Typography>
-            {currentFilter === 'current'
-              ? "Here are the classes that you're enrolled in currently on CircleIn."
-              : 'Here are the past classes that you were enrolled in currently on CircleIn.'}
-            &nbsp;
-            <Link component="button" underline="none" onClick={handleOpenSupport}>
-              <Typography>Contact CircleIn Support</Typography>
-            </Link>
-            &nbsp;if you have any questions.
+            {Filters[currentFilter].text}
+            {currentFilter === CLASS_PAGE_FILTERS.CURRENT && (
+              <>
+                &nbsp;
+                <Link component="button" underline="none" onClick={handleOpenSupport}>
+                  <Typography>Contact CircleIn Support</Typography>
+                </Link>
+                &nbsp;if you have any questions.
+              </>
+            )}
           </Typography>
         </Box>
       )}
@@ -224,27 +279,20 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
                   sectionDisplayName={cl.sectionDisplayName}
                   instructorDisplayName={cl.instructorDisplayName}
                   courseDisplayName={cl.courseDisplayName}
+                  startDate={cl.startDate}
                   bgColor={cl.bgColor}
                   canLeave={cl.canLeave}
                   handleLeaveClass={cl.handleLeaveClass}
                   isCurrent={cl.isCurrent}
                   navigate={() => navigate({ ...cl })}
+                  isUpcoming={currentFilter === CLASS_PAGE_FILTERS.UPCOMING}
                 />
               </Grid>
             )
         )}
         {!classList?.length && (
           <Box mt={15} display="flex" justifyContent="center">
-            {currentFilter === 'current' ? (
-              <Typography>
-                If a class has already started and it isn’t here,&nbsp;
-                <Link component="button" underline="none" onClick={handleOpenSupport}>
-                  <Typography>Contact CircleIn Support.</Typography>
-                </Link>
-              </Typography>
-            ) : (
-              <Typography>When you complete a class, they will show up here!</Typography>
-            )}
+            {emptyPageText()}
           </Box>
         )}
         {loading && (

@@ -92,6 +92,8 @@ export type UserClass = {
   section: Array<ClassSection>;
   subjectId: number;
   courseDisplayName: string;
+  startDate: string;
+  endDate: string;
   class: string;
   bgColor: string;
   didInviteClassmates: boolean;
@@ -110,6 +112,7 @@ export type UserClasses = {
   permissions: Permissions;
   emptyState: Record<string, any>;
   pastClasses: Array<UserClass>;
+  upcomingClasses: Array<UserClass>;
 };
 export type AvailableClasses = Record<string, UserClasses>;
 export type SelectType = {

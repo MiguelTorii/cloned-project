@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
 
+import { CLASS_PAGE_FILTERS } from 'constants/enums';
+
 import useStyles from './styles';
 
 type Props = {

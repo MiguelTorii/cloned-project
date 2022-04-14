@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import moment from 'moment';
+
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -7,30 +9,32 @@ import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
-// import IconButton from '@material-ui/core/IconButton';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
 import LeaveClassPopover from './LeaveClassPopover';
 
 type Props = {
   sectionDisplayName: string;
   instructorDisplayName: string;
+  startDate: string;
   handleLeaveClass: (...args: Array<any>) => any;
   courseDisplayName: string;
   canLeave: boolean;
   bgColor: string;
   navigate: (...args: Array<any>) => any;
   isCurrent: boolean;
+  isUpcoming: boolean;
 };
 
 const ClassCard = ({
   sectionDisplayName,
   instructorDisplayName,
   courseDisplayName,
+  startDate,
   handleLeaveClass,
   navigate,
   canLeave,
   bgColor,
-  isCurrent
+  isCurrent,
+  isUpcoming
 }: Props) => {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,13 +96,15 @@ const ClassCard = ({
   const classes: any = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // const handleClickIcon = event => {
-  //   event.stopPropagation()
-  //   setAnchorEl(anchorEl ? null : event.currentTarget);
-  // }
   const handleClose = (event) => {
     event.stopPropagation();
     setAnchorEl(null);
+  };
+
+  const convertDate = (startDate) => {
+    if (startDate) {
+      return moment(startDate, 'YYYY-MM-DD hh:mm:ss').format('M/DD/YY');
+    }
   };
 
   return (
@@ -108,16 +114,11 @@ const ClassCard = ({
         handleClose={handleClose}
         leaveClass={handleLeaveClass}
       />
-      <CardHeader // action={
-        //   canLeave && <IconButton onClick={handleClickIcon} aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
-        title={<Typography className={classes.title}>{courseDisplayName}</Typography>}
-      />
+      <CardHeader title={<Typography className={classes.title}>{courseDisplayName}</Typography>} />
       <CardContent className={classes.content}>
         <Typography>{sectionDisplayName}</Typography>
         <Typography>{instructorDisplayName}</Typography>
+        {isUpcoming && <Typography>Available on: {convertDate(startDate)}</Typography>}
       </CardContent>
     </Card>
   );

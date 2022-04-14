@@ -51,10 +51,12 @@ export const clearDialogMessage = () => (dispatch: Dispatch) => {
 
 const setClassesAction = ({
   userClasses,
-  pastClasses
+  pastClasses,
+  upcomingClasses
 }: {
   userClasses: UserClassList;
   pastClasses?: Array<string>;
+  upcomingClasses?: Array<string>;
   emptyState?: Record<string, any>;
 }): Action => ({
   type: userActions.UPDATE_CLASSES,
@@ -80,6 +82,7 @@ export const fetchClasses =
     const {
       classes: classList,
       pastClasses,
+      upcomingClasses,
       emptyState,
       permissions: { canAddClasses }
     } = res;
@@ -95,6 +98,7 @@ export const fetchClasses =
             classList,
             canAddClasses,
             pastClasses,
+            upcomingClasses,
             emptyState: emptyState as EmptyState
           }
         })

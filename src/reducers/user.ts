@@ -10,6 +10,7 @@ import type { User, TFeedItem, UserClass, GetCampaignsResponse, Campaign } from 
 export type UserClassList = {
   classList: Array<UserClass> | null;
   pastClasses?: Array<any>;
+  upcomingClasses?: Array<any>;
   canAddClasses: boolean;
   emptyState: EmptyState;
 };

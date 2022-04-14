@@ -164,6 +164,8 @@ const getClasses = (classes): UserClass[] =>
     })),
     subjectId: Number((userClass.subject_id as number) || 0),
     courseDisplayName: (userClass.course_display_name as string) || '',
+    startDate: (userClass.start_date as string) || '',
+    endDate: (userClass.end_date as string) || '',
     class: (userClass.class as string) || '',
     bgColor: userClass.bg_color || '',
     didInviteClassmates: Boolean(userClass.did_invite_classmates || false),
@@ -187,7 +189,7 @@ export const getUserClasses = async ({
   if (!cache || skipCache) {
     const appId = expertMode ? 3 : 1;
     result = await axios.get(
-      `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}&application_id=${appId}&include_past_classes=true`,
+      `${API_ROUTES.USER_CLASSES_V1_1}?user_id=${userId}&application_id=${appId}&include_past_classes=true&include_upcoming_classes=true`,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -203,6 +205,7 @@ export const getUserClasses = async ({
     data: {
       classes = [],
       past_classes: pastClasses = [],
+      upcoming_classes: upcomingClasses = [],
       permissions = {},
       empty_state: empty = {}
     }
@@ -210,6 +213,7 @@ export const getUserClasses = async ({
   const currentClasses = classes.filter((classEntry) => classEntry.is_current);
   const userCurrentClasses = getClasses(currentClasses);
   const userPastClasses = getClasses(pastClasses || []);
+  const userUpcomingClasses = getClasses(upcomingClasses || []);
   const emptyState = {
     visibility: empty.visibility || false,
     logo: empty.logo_image || '',
@@ -222,6 +226,7 @@ export const getUserClasses = async ({
     classes: userCurrentClasses,
     permissions: userPermissions,
     pastClasses: userPastClasses,
+    upcomingClasses: userUpcomingClasses,
     emptyState
   };
 };
