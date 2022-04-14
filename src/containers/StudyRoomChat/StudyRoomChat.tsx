@@ -14,12 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import type { AvatarData } from 'utils/chat';
 
 import Avatar from 'components/Avatar';
-import {
-  useChannelAvatars,
-  useChannelMessages,
-  useChannelMetadataById,
-  useSelectChannelById
-} from 'features/chat';
+import { useChannelAvatars, useChannelMetadataById, useSelectChannelById } from 'features/chat';
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
@@ -116,9 +111,6 @@ const StudyRoomChat = ({ handleClose, open, selectedTab, participants }: Props) 
   }, [router]);
 
   const { data: channel } = useSelectChannelById(channelId);
-  // Fof some reason messages don't load if this hook is in  Chat
-  // For now, we pass them as props
-  const { data: messages } = useChannelMessages(channel);
 
   const { data: channelMetadata } = useChannelMetadataById(channelId);
   const { data: avatars } = useChannelAvatars(channel);
@@ -181,12 +173,7 @@ const StudyRoomChat = ({ handleClose, open, selectedTab, participants }: Props) 
             </div>
           </TabPanel>
           <TabPanel value={tabs} index={1}>
-            <Chat
-              channel={channel}
-              messages={messages}
-              avatars={avatars}
-              members={channelMetadata?.users}
-            />
+            <Chat channel={channel} avatars={avatars} members={channelMetadata?.users} />
           </TabPanel>
         </div>
       </ClickAwayListener>
