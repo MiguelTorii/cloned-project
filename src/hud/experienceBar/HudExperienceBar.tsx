@@ -100,17 +100,13 @@ const HudExperienceBar = () => {
             placement="top"
             arrow
           >
-            <div className={classes.experienceBarContainer}>
-              <div
-                className={clsx(classes.experienceBarTrack, mvpCount !== null && classes.mvpLoaded)}
-                onClick={handleClickExpBar}
-              >
-                <div style={experienceBarFillWidth} className={classes.experienceFiller} />
-                <div className={classes.experienceLabelContainer}>
-                  <Typography className={classes.experienceLabel}>
-                    MVP: {experiencePoints.toLocaleString()}/{experiencePointTotal.toLocaleString()}
-                  </Typography>
-                </div>
+            <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
+              <div style={experienceBarFillWidth} className={classes.experienceFiller} />
+              <div className={classes.experienceLabelContainer}>
+                <Typography className={classes.experienceLabel}>
+                  Weekly MVP: {experiencePoints.toLocaleString()}/
+                  {experiencePointTotal.toLocaleString()}
+                </Typography>
               </div>
               {mvpCount !== null && (
                 <div className={classes.mvpProgress}>
