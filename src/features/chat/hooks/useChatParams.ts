@@ -24,8 +24,16 @@ import { setChannelRead } from './useUnreadCount';
 
 import type { Channel } from 'twilio-chat';
 
-export const useChatParams = () =>
-  useParams<{ hashId?: string; chatId?: string; communityId?: string }>();
+export const useChatParams = () => {
+  const { hashId, chatId, communityId } =
+    useParams<{ hashId?: string; chatId?: string; communityId?: string }>();
+
+  return {
+    hashId,
+    chatId,
+    communityId: communityId ? Number(communityId) : undefined
+  };
+};
 
 export const useJoinChatByHash = () => {
   const { hashId } = useChatParams();
@@ -129,7 +137,7 @@ export const useSelectChatByIdURL = () => {
   ]);
 
   const validCommunity = useMemo(
-    () => communitiesWithChannels?.find(({ courseId }) => courseId === Number(communityId)),
+    () => communitiesWithChannels?.find(({ courseId }) => courseId === communityId),
     [communitiesWithChannels, communityId]
   );
 
@@ -145,19 +153,19 @@ export const useSelectChatByIdURL = () => {
       hashId ||
       communityId === undefined ||
       !communitiesLoaded ||
-      Number(communityId) === Number(currentCommunityId)
+      communityId === Number(currentCommunityId)
     ) {
       return;
     }
 
     if (validCommunity) {
-      dispatch(setCurrentCommunityIdAction(Number(communityId)));
+      dispatch(setCurrentCommunityIdAction(communityId));
 
       if (chatId && allCommunityChannelIds?.includes(chatId)) return;
       // If community exists but channel is wrong, redirect to first channel
       const firstChannelId = validCommunity.channels[0].channels[0].chat_id;
       dispatch(push(generateChatPath(communityId, firstChannelId)));
-    } else if (Number(communityId) !== 0 && communitiesWithChannels?.length) {
+    } else if (communityId !== 0 && communitiesWithChannels?.length) {
       // If communtiy is not found but communites exist, redirect to first community
       const communityId = communitiesWithChannels[0].courseId;
       const channelId = communitiesWithChannels[0].channels[0].channels[0].chat_id;
@@ -185,12 +193,7 @@ export const useSelectChatByIdURL = () => {
 
   // Change selected DM state in response to params
   useEffect(() => {
-    if (
-      !channels ||
-      Number(communityId) !== 0 ||
-      !communitiesLoaded ||
-      selectedChannelId === chatId
-    ) {
+    if (!channels || communityId !== 0 || !communitiesLoaded || selectedChannelId === chatId) {
       return;
     }
     const validDM = chatId && orderedDMChannelList.includes(chatId);
@@ -215,7 +218,7 @@ export const useSelectChatByIdURL = () => {
   useEffect(() => {
     if (
       !channels ||
-      Number(communityId) === 0 ||
+      communityId === 0 ||
       !chatId ||
       !communitiesLoaded ||
       currentCommunityChannelId === chatId

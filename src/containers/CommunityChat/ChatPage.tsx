@@ -44,7 +44,7 @@ const ChatPage = () => {
   );
 
   useEffect(() => {
-    if (oneTouchSendOpen && Number(communityId)) {
+    if (oneTouchSendOpen && communityId) {
       dispatch(push(`${URL.CHAT}/0}`));
     }
   }, [oneTouchSendOpen, dispatch, communityId]);
@@ -67,9 +67,7 @@ const ChatPage = () => {
           handleSelect={handleSelect}
         />
       </Box>
-      <Box className={classes.directChat}>
-        {Number(communityId) ? <CommunityChat /> : <DirectChat />}
-      </Box>
+      <Box className={classes.directChat}>{communityId ? <CommunityChat /> : <DirectChat />}</Box>
     </div>
   );
 };
