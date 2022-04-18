@@ -3,7 +3,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 import cx from 'classnames';
 import clsx from 'clsx';
 import { push } from 'connected-react-router';
-import _ from 'lodash';
+import capitalize from 'lodash/capitalize';
+import truncate from 'lodash/truncate';
 import moment from 'moment';
 import pluralize from 'pluralize';
 import { animations } from 'react-animation';
@@ -107,7 +108,7 @@ const FlashcardsDeck = ({ data }: Props) => {
         >
           <div>
             <Typography variant="h6" className={classes.title}>
-              {_.truncate(_.capitalize(data.title), {
+              {truncate(capitalize(data.title), {
                 length: 50
               })}
             </Typography>
@@ -119,7 +120,7 @@ const FlashcardsDeck = ({ data }: Props) => {
           <div>
             {deckClass && (
               <Chip
-                label={_.truncate(deckClass.className, {
+                label={truncate(deckClass.className, {
                   length: 25
                 })}
                 size="small"

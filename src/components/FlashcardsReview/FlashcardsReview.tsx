@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react'
 
 import clsx from 'clsx';
 import { differenceInMilliseconds } from 'date-fns';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useIdleTimer } from 'react-idle-timer';
 import { useSelector } from 'react-redux';
 import store from 'store';
@@ -145,7 +145,7 @@ const FlashcardsReview = ({ flashcardId, flashcardTitle, cards, onClose }) => {
     }
   }, [currentLevel, keptCardIndex]);
   useEffect(() => {
-    if (!_.isEmpty(cardsLevel)) {
+    if (!isEmpty(cardsLevel)) {
       store.set(`flashcards-${flashcardId}`, cardsLevel);
     }
   }, [cardsLevel, flashcardId]);

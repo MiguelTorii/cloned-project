@@ -1,5 +1,7 @@
 import { convert } from 'html-to-text';
-import _ from 'lodash';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import trim from 'lodash/trim';
 import moment from 'moment';
 import qs from 'query-string';
 
@@ -8,7 +10,7 @@ import { TIME_ZONE } from 'constants/app';
 export const getPointsText = (points: number) =>
   points ? Math.floor(points).toLocaleString() : '0';
 export const momentWithTimezone = (date: string) => moment(date).tz(TIME_ZONE);
-export const isApiCalling = (type) => (state) => _.get(state.api[type], 'inProgress', false);
+export const isApiCalling = (type) => (state) => get(state.api[type], 'inProgress', false);
 export const getPastClassIds = (classList) =>
   classList
     .map((classEntry) => {
@@ -78,7 +80,7 @@ export const extractPlainTextFromHtml = (html) => {
   tempDivElement.innerHTML = html;
   const result = tempDivElement.textContent || tempDivElement.innerText || '';
 
-  return _.trim(result);
+  return trim(result);
 };
 
 export const englishIdFromNumber = (aNumber: number) => {
@@ -141,10 +143,10 @@ export const commandHotkeyText = (key) => {
  */
 export const isSame = (obj1, obj2) => {
   if (obj1 instanceof Array && obj2 instanceof Array) {
-    return _.isEqual(obj1.sort(), obj2.sort());
+    return isEqual(obj1.sort(), obj2.sort());
   }
 
-  return _.isEqual(obj1, obj2);
+  return isEqual(obj1, obj2);
 };
 
 export const checkPath = (path, urls) => {

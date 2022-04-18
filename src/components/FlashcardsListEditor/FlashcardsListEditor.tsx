@@ -2,7 +2,7 @@ import { useCallback, useContext, memo } from 'react';
 
 import { useClickOutside } from '@mantine/hooks';
 import update from 'immutability-helper';
-import _ from 'lodash';
+import max from 'lodash/max';
 import PropTypes from 'prop-types';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -46,13 +46,13 @@ const FlashcardsListEditorComponent = ({
   // States
   // Event Handlers
   const handleAddNewDeck = useCallback(() => {
-    const maxId = _.max(data.map((item) => item.id));
+    const maxId = max(data.map((item) => item.id)) || 1;
 
     onUpdate(
       update(data, {
         $push: [
           {
-            id: maxId ? maxId + 1 : 1,
+            id: maxId,
             question: '',
             answer: ''
           }

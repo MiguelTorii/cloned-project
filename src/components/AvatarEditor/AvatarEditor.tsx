@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
-import _ from 'lodash';
+import max from 'lodash/max';
 import DefaultAvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
 
@@ -60,7 +60,7 @@ const AvatarEditor = ({ originalImage, open, title, onCancel, onSave }: Props) =
         break;
 
       case 'zoom_out':
-        setScale(_.max([scale - 0.1, 1.0]));
+        setScale(max([scale - 0.1, 1.0]) || 1.0);
         break;
 
       case 'rotate_right':

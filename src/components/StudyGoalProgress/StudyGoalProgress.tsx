@@ -1,7 +1,7 @@
 import React from 'react';
 
 import clsx from 'clsx';
-import _ from 'lodash';
+import min from 'lodash/min';
 import PropTypes from 'prop-types';
 
 import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
@@ -28,7 +28,7 @@ const StudyGoalProgress = ({ title, content, value, total }) => {
           <Box top={0} left={0} position="absolute">
             <CircularProgress
               variant="determinate"
-              value={_.min([(value * 100) / total, 100])}
+              value={min([(value * 100) / total, 100])}
               size={72}
               thickness={3}
             />

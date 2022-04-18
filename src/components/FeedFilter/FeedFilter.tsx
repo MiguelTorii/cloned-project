@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import clsx from 'clsx';
 import update from 'immutability-helper';
-import lodash from 'lodash';
+import debounce from 'lodash/debounce';
 
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -170,7 +170,7 @@ class FeedFilter extends React.PureComponent<Props, State> {
     });
   };
 
-  onChangeSearchDebounced = lodash.debounce((search) => {
+  onChangeSearchDebounced = debounce((search) => {
     const { onChangeSearch } = this.props;
     onChangeSearch(search);
   }, DEFAULT_DEBOUNCE_DURATION_IN_MS);

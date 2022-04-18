@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { push } from 'connected-react-router';
-import lodash from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import qs from 'query-string';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
@@ -188,7 +188,7 @@ const Feed = ({ from }: Props) => {
     });
 
     // Return if filter is not updated.
-    if (!forceReload && lodash.isEmpty(newFilter)) {
+    if (!forceReload && isEmpty(newFilter)) {
       return;
     }
 
@@ -351,7 +351,7 @@ const Feed = ({ from }: Props) => {
     // If a class is selected by URL params, filter class feed.
     if (paramClass?.sectionId) {
       filter.userClasses = [Number(paramClass?.sectionId)];
-    } else if (lodash.isEmpty(feedFilters.userClasses)) {
+    } else if (isEmpty(feedFilters.userClasses)) {
       // If no classes are selected, select all classes by default.
       const { classList, pastClasses } = myClasses;
       const classes = filter.pastFilter ? pastClasses : classList;

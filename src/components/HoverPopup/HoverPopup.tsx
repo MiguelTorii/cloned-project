@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import cx from 'classnames';
 import { push } from 'connected-react-router';
-import _ from 'lodash';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -71,7 +70,7 @@ const HoverPopup = ({
           userId
         });
 
-        const idx = _.findIndex(about, (item) => item.id === 6);
+        const idx = about.findIndex((item) => item.id === 6);
 
         const userbio = idx < 0 ? null : about[idx].answer;
         setBio(userbio);

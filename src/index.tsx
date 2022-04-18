@@ -15,7 +15,6 @@ import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 import store from 'redux/store';
 import * as serviceWorker from 'serviceWorker';
 
-import 'wdyr';
 import './index.css';
 
 defaultKatexRender('White');

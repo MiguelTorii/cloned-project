@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
-import { last, uniq } from 'lodash';
+import last from 'lodash/last';
+import uniq from 'lodash/uniq';
 
 export const HOTKEYS = {
   EDIT_MESSAGE: { key: 'Shift+ArrowUp', text: 'Shift+Up' },

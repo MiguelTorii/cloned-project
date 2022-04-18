@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import _ from 'lodash';
+import capitalize from 'lodash/capitalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@material-ui/core/Box';
@@ -34,7 +34,7 @@ const PointsHistoryCard = ({ profile, onSeeMore }: Props) => {
     () =>
       profile.userId === myUserId
         ? 'Your Points History'
-        : `${_.capitalize(profile.firstName)} ${_.capitalize(profile.lastName)}'s Points History`,
+        : `${capitalize(profile.firstName)} ${capitalize(profile.lastName)}'s Points History`,
     [profile, myUserId]
   );
   useEffect(() => {

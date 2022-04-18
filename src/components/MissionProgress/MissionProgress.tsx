@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import lodash from 'lodash';
+import min from 'lodash/min';
 
 import { Box, LinearProgress, Tooltip, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -44,10 +44,7 @@ const MissionProgress = ({ value, total, label, link }: Props) => {
       placement="right"
     >
       <Box className={classes.root} onClick={handleClickProgress}>
-        <StyledLinearProgress
-          variant="determinate"
-          value={lodash.min([(value * 100) / total, 100])}
-        />
+        <StyledLinearProgress variant="determinate" value={min([(value * 100) / total, 100])} />
         <Box className={classes.textContainer}>
           <SemiBoldTypography className={classes.text}>
             {value.toLocaleString()}/{total.toLocaleString()}

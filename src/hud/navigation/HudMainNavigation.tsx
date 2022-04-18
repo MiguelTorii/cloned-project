@@ -180,6 +180,4 @@ const HudMainNavigation = () => {
   );
 };
 
-HudMainNavigation.whyDidYouRender = true;
-
 export default HudMainNavigation;

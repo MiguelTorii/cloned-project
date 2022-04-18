@@ -1,6 +1,6 @@
 import React from 'react';
 
-import _ from 'lodash';
+import includes from 'lodash/includes';
 
 import { Paper, Grid, IconButton } from '@material-ui/core';
 import { ZoomIn, ZoomOut, RotateRight, RotateLeft } from '@material-ui/icons';
@@ -42,7 +42,7 @@ const Toolbar = ({ onAction, disabledActions }: Props) => {
           <Grid key={action.id} item>
             <IconButton
               onClick={() => onAction(action.id)}
-              disabled={_.includes(disabledActions, action.id)}
+              disabled={includes(disabledActions, action.id)}
             >
               {action.icon}
             </IconButton>

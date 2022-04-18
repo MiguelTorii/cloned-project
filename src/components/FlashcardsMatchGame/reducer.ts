@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import _ from 'lodash';
+import max from 'lodash/max';
 import moment from 'moment';
 
 import { shuffleArray } from 'utils/helpers';
@@ -78,7 +78,7 @@ const getCardPosition = (containerWidth, containerHeight, cardWidth, cardHeight,
   const randomX = Math.floor(Math.random() * containerWidth);
   const randomY = Math.floor(Math.random() * containerHeight);
 
-  const size = _.max([containerWidth, containerHeight]);
+  const size = max([containerWidth, containerHeight]);
 
   let offsetX = 0;
   let offsetY = 0;

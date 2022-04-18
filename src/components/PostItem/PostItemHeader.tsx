@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
-import _ from 'lodash';
+import truncate from 'lodash/truncate';
 import moment from 'moment';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
@@ -349,7 +349,7 @@ class PostItemHeader extends React.PureComponent<Props, State> {
         {!isMarkdown ? (
           <Typography className={classes.body} component="p" variant="h6">
             {showShortSummary
-              ? _.truncate(body, {
+              ? truncate(body, {
                   length: BODY_LENGTH_THRESHOLD
                 })
               : body}

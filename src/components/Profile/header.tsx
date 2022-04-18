@@ -1,6 +1,5 @@
 import React from 'react';
 
-import _ from 'lodash';
 import moment from 'moment';
 
 import { Hidden } from '@material-ui/core';
@@ -106,9 +105,9 @@ class Header extends React.PureComponent<Props, State> {
   findAboutField = (id) => {
     const { about } = this.props;
 
-    const idx = _.findIndex(about, (item) => item.id === id);
+    const idx = about?.findIndex((item) => item.id === id);
 
-    if (idx < 0) {
+    if (!about || !idx || idx < 0) {
       return null;
     }
 

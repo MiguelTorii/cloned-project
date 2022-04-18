@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import _ from 'lodash';
-
 import { Button, Grid, Box } from '@material-ui/core';
 import { Create } from '@material-ui/icons';
 
@@ -34,7 +32,7 @@ const EditProfileModal = ({ profile, about, open, isSaving, onClose, onSave }: P
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const [bioText, setBioText] = useState('');
   useEffect(() => {
-    const bioIndex = _.findIndex(about, (item) => item.id === 6);
+    const bioIndex = about.findIndex((item) => item.id === 6);
 
     if (bioIndex >= 0) {
       setBioText(about[bioIndex].answer);

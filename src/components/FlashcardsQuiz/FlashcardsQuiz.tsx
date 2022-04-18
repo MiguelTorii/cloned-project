@@ -3,7 +3,8 @@ import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react'
 import clsx from 'clsx';
 import { differenceInMilliseconds } from 'date-fns';
 import update from 'immutability-helper';
-import _ from 'lodash';
+import max from 'lodash/max';
+import min from 'lodash/min';
 import { useIdleTimer } from 'react-idle-timer';
 
 import { Select } from '@material-ui/core';
@@ -135,15 +136,15 @@ const FlashcardsQuiz = ({ cards, flashcardId, onClose }) => {
       throw new Error('Number of cards should be greater than zero');
     }
 
-    const matchCount = _.min([_.max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]), count]);
+    const matchCount = min([max([PROBLEM_COUNT_THRESHOLD, Math.ceil(count / 2)]), count]);
 
     const arrIdx = [...(new Array(matchCount) as any).keys()];
     const arr1 = shuffleArray(arrIdx);
     const arr2 = shuffleArray(arrIdx);
 
-    const choiceCount = _.min([_.max([PROBLEM_COUNT_THRESHOLD, Math.floor(count / 2)]), count]);
+    const choiceCount = min([max([PROBLEM_COUNT_THRESHOLD, Math.floor(count / 2)]), count]);
 
-    const optionCount = _.min([choiceCount, MULTIPLE_CHOICE_OPTIONS_COUNT]);
+    const optionCount = min([choiceCount, MULTIPLE_CHOICE_OPTIONS_COUNT]);
 
     const choiceData = [];
     const arrChoiceIdx = [...(new Array(choiceCount) as any).keys()].map(

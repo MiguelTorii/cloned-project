@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useSelector } from 'react-redux';
 
 import { Box, Tab, Tabs, Typography } from '@material-ui/core';
@@ -17,7 +17,7 @@ const ClassmateQuestions = () => {
     setSelectedClass(newClass);
   }, []);
 
-  if (_.isEmpty(myClasses)) {
+  if (isEmpty(myClasses)) {
     return null;
   }
 
