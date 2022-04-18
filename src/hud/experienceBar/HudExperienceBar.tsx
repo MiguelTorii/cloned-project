@@ -6,11 +6,10 @@ import { useHistory } from 'react-router';
 
 import { Tooltip, Typography } from '@material-ui/core';
 
-import { MAXIMUM_MVP_COUNT, XP_BAR_TOOLTIP } from 'constants/common';
+import { XP_BAR_TOOLTIP } from 'constants/common';
 
 import { getLeaderboards } from 'api/leaderboards';
 import { apiGetExperiencePoints } from 'api/user';
-import MvpCircularProgressBar from 'components/MvpCircularProgressBar/MvpCircularProgressBar';
 import AnimateOnChange from 'containers/Wrappers/AnimateOnChange';
 import { usePrevious } from 'hooks';
 import useStorySequence from 'hud/storyState/useStorySequence';
@@ -100,19 +99,16 @@ const HudExperienceBar = () => {
             placement="top"
             arrow
           >
-            <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
-              <div style={experienceBarFillWidth} className={classes.experienceFiller} />
-              <div className={classes.experienceLabelContainer}>
-                <Typography className={classes.experienceLabel}>
-                  Weekly MVP: {experiencePoints.toLocaleString()}/
-                  {experiencePointTotal.toLocaleString()}
-                </Typography>
-              </div>
-              {mvpCount !== null && (
-                <div className={classes.mvpProgress}>
-                  <MvpCircularProgressBar count={mvpCount} total={MAXIMUM_MVP_COUNT} />
+            <div className={classes.experienceBarContainer}>
+              <div className={classes.experienceBarTrack} onClick={handleClickExpBar}>
+                <div style={experienceBarFillWidth} className={classes.experienceFiller} />
+                <div className={classes.experienceLabelContainer}>
+                  <Typography className={classes.experienceLabel}>
+                    Weekly MVP: {experiencePoints.toLocaleString()}/
+                    {experiencePointTotal.toLocaleString()}
+                  </Typography>
                 </div>
-              )}
+              </div>
             </div>
           </Tooltip>
         </div>
