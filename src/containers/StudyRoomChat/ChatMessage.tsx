@@ -344,6 +344,7 @@ class ChatMessageDate extends React.PureComponent<Props> {
                 href={buildPath(`/profile/${userId}`, {
                   from: PROFILE_PAGE_SOURCE.CHAT
                 })}
+                target="_blank"
               >
                 {name}
               </Link>
