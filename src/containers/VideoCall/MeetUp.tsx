@@ -12,7 +12,6 @@ import moment from 'moment';
 import { withSnackbar } from 'notistack';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import Video from 'twilio-video';
 
 import Button from '@material-ui/core/Button';
@@ -589,7 +588,6 @@ class MeetUp extends React.Component<Props, State> {
 
   handleEndCall = async () => {
     const { videoRoom, screenTrack } = this.state;
-    const { history } = this.props;
 
     if (videoRoom) {
       if (screenTrack) {
@@ -600,7 +598,7 @@ class MeetUp extends React.Component<Props, State> {
       await videoRoom.disconnect();
     }
 
-    history.push('/feed');
+    window.location = '/feed';
   };
 
   handleLockParticipant = (sid) => {
@@ -1198,4 +1196,4 @@ const mapStateToProps = ({ user, router, chat }: StoreState): {} => ({
 export default connect<{}, {}, Props>(
   mapStateToProps,
   null
-)(withStyles(styles as any)(withSnackbar(withRouter(MeetUp as any))));
+)(withStyles(styles as any)(withSnackbar(MeetUp as any)));
