@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
+import clsx from 'clsx';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -12,7 +14,7 @@ import { useAppSelector } from 'redux/store';
 
 import LoadImg from '../LoadImg/LoadImg';
 
-import useStyles from './_styles/styles';
+import useStyles from './CommunityMenuStyles';
 import StyledBadge from './StyledBadge';
 
 import type { ChatCommunity } from 'api/models/APICommunity';
@@ -78,7 +80,7 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
           onClick={handleSelectItem}
           selected={Boolean(currentCommunity?.id === item.id)}
           classes={{
-            root: classes.listItem,
+            root: clsx(classes.listItem, !item.active_course_community && classes.pastClassItem),
             selected: classes.selectedItem
           }}
         >
@@ -98,7 +100,7 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
           onClick={handleSelectItem}
           selected={Boolean(currentCommunity?.id === item.id)}
           classes={{
-            root: classes.listItem,
+            root: clsx(classes.listItem, !item.active_course_community && classes.pastClassItem),
             selected: classes.selectedItem
           }}
           style={{

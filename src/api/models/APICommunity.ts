@@ -10,6 +10,7 @@ export type ChatCommunity = {
   private: boolean;
   school_id: number;
   section_id: number;
+  active_course_community: boolean;
 };
 
 export type ChatCommunityData = {

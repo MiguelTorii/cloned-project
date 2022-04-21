@@ -91,6 +91,9 @@ const useStyles = makeStyles((theme: any) => ({
     top: 40,
     left: 0,
     zIndex: 1002
+  },
+  pastClassContainer: {
+    maxWidth: 1600
   }
 }));
 export default useStyles;

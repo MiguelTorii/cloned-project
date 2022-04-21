@@ -3,7 +3,7 @@ import React from 'react';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 
-import CommunityMenu from 'components/CommunityMenu/CommunityMenu';
+import CommunityMenu from 'components/CommunityMenu';
 
 import useStyles from './_styles/collageList';
 import DEFAULT_COMMUNITY_MENU_ITEMS from './constants';
@@ -12,13 +12,14 @@ import type { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
 import type { ChatCommunityWithChannels } from 'reducers/chat';
 
 type Props = {
-  communities: ChatCommunityData[];
+  activeCommunities: ChatCommunityData[];
   communityChannels: ChatCommunityWithChannels[];
   handleSelect: (course: ChatCommunity) => void;
 };
 
-const CollageList = ({ communities, communityChannels, handleSelect }: Props) => {
+const CollageList = ({ activeCommunities, communityChannels, handleSelect }: Props) => {
   const classes = useStyles();
+
   return (
     <List component="nav">
       {/* TODO Create separate default community menu item component */}
@@ -29,7 +30,7 @@ const CollageList = ({ communities, communityChannels, handleSelect }: Props) =>
         }}
       />
       {!!communityChannels?.length &&
-        communities.map((course) => (
+        activeCommunities.map((course) => (
           <CommunityMenu
             key={course.community.id}
             item={course.community}

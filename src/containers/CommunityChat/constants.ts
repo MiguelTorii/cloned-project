@@ -11,6 +11,7 @@ const DEFAULT_COMMUNITY_MENU_ITEMS: ChatCommunity = {
   private: false,
   bg_color: '#5F6165',
   community_icon_url: '',
-  community_banner_url: ''
+  community_banner_url: '',
+  active_course_community: true
 };
 export default DEFAULT_COMMUNITY_MENU_ITEMS;

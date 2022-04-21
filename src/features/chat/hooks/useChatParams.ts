@@ -25,8 +25,11 @@ import { setChannelRead } from './useUnreadCount';
 import type { Channel } from 'types/models';
 
 export const useChatParams = () => {
-  const { hashId, chatId, communityId } =
-    useParams<{ hashId?: string; chatId?: string; communityId?: string }>();
+  const { hashId, chatId, communityId } = useParams<{
+    hashId?: string;
+    chatId?: string;
+    communityId?: string;
+  }>();
 
   return {
     hashId,

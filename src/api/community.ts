@@ -10,7 +10,7 @@ import type { APICommunityChannelGroups } from './models/APICommunityChannelGrou
 
 export const getCommunities = async (): Promise<APICommunities> => {
   const token = await getToken();
-  const result = await axios.get(`${API_ROUTES.GET_COMMUNITY}`, {
+  const result = await axios.get(`${API_ROUTES.GET_COMMUNITY_V1_1}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

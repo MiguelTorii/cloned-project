@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme: any) => ({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 6,
-    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
   },
   itemContent: {
@@ -34,6 +33,9 @@ const useStyles = makeStyles((theme: any) => ({
   },
   tooltip: {
     fontSize: 14
+  },
+  pastClassItem: {
+    marginLeft: theme.spacing(1)
   }
 }));
 export default useStyles;
