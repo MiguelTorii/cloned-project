@@ -44,7 +44,6 @@ export const API_ROUTES = {
   FEEDBACK: `${API_URL}/feedback`,
   NOTES: `${API_URL_V1_1}/notes`,
   TODO: `${API_URL_V1_1}/todo`,
-  EVENT: `${API_URL}/event`,
   SYNC: `${API_URL}/user/sync`,
   LOGIN: `${API_URL}/auth/login`,
   SIGNUP: `${API_URL}/auth/register`,

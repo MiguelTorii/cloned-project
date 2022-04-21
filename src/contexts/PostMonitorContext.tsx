@@ -7,7 +7,7 @@ import { POST_PREVIEW_INTERVAL } from 'constants/common';
 import { logEventLocally } from 'api/analytics';
 
 interface PostMonitorContextTypes {
-  previewPost: (postId: number) => void;
+  previewPost: (feedId: number) => void;
 }
 
 const PostMonitorContext = React.createContext<PostMonitorContextTypes>({
@@ -15,11 +15,11 @@ const PostMonitorContext = React.createContext<PostMonitorContextTypes>({
 });
 
 export const PostMonitorContextProvider: FC = ({ children }) => {
-  const [, setPostIds] = useState<Array<number>>([]);
+  const [, setFeedIds] = useState<Array<number>>([]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setPostIds((oldIds) => {
+      setFeedIds((oldIds) => {
         if (oldIds.length > 0) {
           logEventLocally({
             type: EVENT_TYPES.PREVIEWED,
@@ -35,8 +35,8 @@ export const PostMonitorContextProvider: FC = ({ children }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const previewPost = useCallback((postId: number) => {
-    setPostIds((oldIds) => [...oldIds, postId]);
+  const previewPost = useCallback((feedId: number) => {
+    setFeedIds((oldIds) => [...oldIds, feedId]);
   }, []);
 
   return (

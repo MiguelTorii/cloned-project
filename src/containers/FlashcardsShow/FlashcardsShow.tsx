@@ -32,7 +32,6 @@ import IconShare from '@material-ui/icons/ShareOutlined';
 import { userActions } from 'constants/action-types';
 import { INTERVAL, APP_ROOT_PATH } from 'constants/app';
 import { PROFILE_PAGE_SOURCE, TIMEOUT } from 'constants/common';
-import { getInitials } from 'utils/chat';
 import { isApiCalling, getPastClassIds, buildPath } from 'utils/helpers';
 
 import { bookmarkFlashcards } from 'actions/user';

@@ -194,7 +194,7 @@ export const postEvent = async ({
   try {
     const token = await getToken();
     const result = await axios.post(
-      `${API_ROUTES.EVENT}`,
+      `${API_ROUTES.EVENTS}`,
       {
         section_id: sectionId,
         category,

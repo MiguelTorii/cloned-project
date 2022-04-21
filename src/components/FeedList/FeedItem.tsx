@@ -185,7 +185,7 @@ const FeedItem = ({
 
   useEffect(() => {
     if (isInViewport) {
-      previewPost(data.postId);
+      previewPost(data?.feedId);
     }
   }, [data, isInViewport]);
 
