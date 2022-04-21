@@ -1,5 +1,5 @@
 import type { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
-import type { Client } from 'twilio-chat';
+import type { Client } from '@twilio/conversations';
 import type { Action } from 'types/action';
 
 export const hudChatActions = {

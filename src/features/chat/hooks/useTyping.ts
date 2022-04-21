@@ -8,7 +8,8 @@ import { useAppSelector } from 'redux/store';
 import { QUERY_KEY_CHANNEL_METADATA } from './useChannelsMetadata';
 
 import type { ChannelsMetadata } from 'features/chat';
-import type { Channel, KeyOfChannelEvents, Member } from 'twilio-chat';
+import type { KeyOfChannelEvents, Member } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 const INITIAL_STATE = { channelId: '', friendlyName: '' };
 const EVENT_TYPING_STARTED: KeyOfChannelEvents = 'typingStarted';

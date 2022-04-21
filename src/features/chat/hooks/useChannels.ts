@@ -10,7 +10,7 @@ import { useAppSelector } from 'redux/store';
 import { useChannelsMetadata } from './useChannelsMetadata';
 
 import type { ChannelMetadata, ChannelsMetadata } from 'features/chat/api/channels';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export const QUERY_KEY_CHANNELS = 'channels';
 

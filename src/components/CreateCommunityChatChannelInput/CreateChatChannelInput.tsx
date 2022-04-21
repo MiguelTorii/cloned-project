@@ -211,7 +211,7 @@ const CreateChatChannelInput = ({
       dispatch(messageLoadingAction(true));
       dispatch(setNewChannelRequest(true));
       try {
-        const currentChannels = await client?.getLocalChannels();
+        const currentChannels = await client?.getSubscribedConversations();
         const userIds = users.map((item) => Number(item.userId));
         const { chatId } = await createChannel({
           users: userIds,
@@ -223,12 +223,13 @@ const CreateChatChannelInput = ({
           throw new Error('No chat ID returned.');
         }
         const existingChannel = currentChannels?.find((channel) => channel.sid === chatId);
+
         if (existingChannel) {
           dispatch(messageLoadingAction(false));
           dispatch(navigateToDM(existingChannel.sid));
           return;
         }
-        const channel = await client?.getChannelBySid(chatId);
+        const channel = await client?.getConversationBySid(chatId);
         if (!channel) {
           throw new Error('No channel returned.');
         }

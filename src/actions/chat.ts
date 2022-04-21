@@ -19,13 +19,14 @@ import {
 
 import { uploadMedia } from './user';
 
+import type { Client } from '@twilio/conversations';
 import type { ChatCommunityData } from 'api/models/APICommunity';
 import type { ChannelMetadata } from 'features/chat';
 import type { ChannelWrapper } from 'reducers/chat';
 import type store from 'redux/store';
 import type { AppDispatch, AppGetState } from 'redux/store';
-import type { Client, Channel } from 'twilio-chat';
 import type { Action } from 'types/action';
+import type { Channel } from 'types/models';
 import type { Dispatch } from 'types/store';
 
 const getAvailableSlots = (width) => {
@@ -394,7 +395,7 @@ export const openChannelWithEntity =
         users: [Number(entityId)]
       });
       // Get Created Channel By Chat Id
-      const channel = await client.getChannelBySid(chatId);
+      const channel = await client.getConversationBySid(chatId);
 
       if (channel) {
         if (entityVideo) {

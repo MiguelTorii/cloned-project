@@ -1,7 +1,7 @@
 import { useMemo, createContext, useState, useEffect, useCallback, useContext } from 'react';
 
+import { Client } from '@twilio/conversations';
 import retry from 'async-retry';
-import { Client } from 'twilio-chat';
 
 import { renewTwilioToken } from 'api/chat';
 import { usePrevious } from 'hooks';

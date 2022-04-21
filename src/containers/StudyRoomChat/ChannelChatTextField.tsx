@@ -8,7 +8,7 @@ import ChatTextField from './ChatTextField';
 import { useStyles as useStudyRoomChatStyles } from './StudyRoomChatStyles';
 
 import type { ChatTextFieldProps } from './ChatTextField';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 type Props = Omit<ChatTextFieldProps, 'onTyping'> & {
   channel: Channel;

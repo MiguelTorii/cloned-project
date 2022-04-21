@@ -21,7 +21,7 @@ import { useChannelMetadataById } from 'features/chat';
 import { selectLocalById } from 'redux/chat/selectors';
 import { useAppSelector } from 'redux/store';
 
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 const styles = (theme) => ({
   validatorForm: {

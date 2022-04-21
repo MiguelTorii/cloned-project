@@ -1,6 +1,7 @@
 import { waitUntil } from 'utils/helpers';
 
-import type { Channel, Client } from 'twilio-chat';
+import type { Client, Conversation, Paginator } from '@twilio/conversations';
+import type { Channel } from 'types/models';
 
 let channels: Channel[] | undefined;
 let hasStartedPaginator = false;
@@ -10,12 +11,17 @@ export const isPaginatorDone = () => hasStartedPaginator && hasCompletedPaginato
 
 export const loadSubscribedChannels = async (client: Client) => {
   hasStartedPaginator = true;
-  let paginator = await client.getSubscribedChannels();
+  let paginator = await client.getSubscribedConversations();
+  let channels = paginator.items;
+
   while (paginator.hasNextPage) {
     // eslint-disable-next-line no-await-in-loop
     paginator = await paginator.nextPage();
+    channels = channels.concat(paginator.items);
   }
+
   hasCompletedPaginator = true;
+  return channels;
 };
 
 // Temporary, not using channels object and always pulling fresh ones
@@ -23,21 +29,9 @@ export const getChannelsFromClient = async (client?: Client) => {
   if (!client) {
     return Promise.reject(new Error('No chat client.'));
   }
-  if (!hasStartedPaginator || !channels) {
-    await loadSubscribedChannels(client);
-  }
-  // If a query tries to fetch channels concurrently, when paginator has started but not completed
-  if (hasStartedPaginator && !hasCompletedPaginator) {
-    await waitUntil(isPaginatorDone);
-  }
-  const freshChannels = await client.getLocalChannels({
-    criteria: 'lastMessage',
-    order: 'descending'
-  });
 
-  channels = freshChannels;
-
-  return freshChannels;
+  const channels = await loadSubscribedChannels(client);
+  return channels;
 };
 
 export const getLastChannelsFromClient = () => channels;
@@ -54,7 +48,7 @@ export const getChannelBySid = async (id?: string, client?: Client) => {
     if (!client) {
       return Promise.reject(new Error('No chat client.'));
     }
-    return await client.getChannelBySid(id);
+    return await client.getConversationBySid(id);
   }
 
   return matchingChannel;

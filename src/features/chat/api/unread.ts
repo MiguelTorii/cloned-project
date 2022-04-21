@@ -1,4 +1,4 @@
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export type Unreads = {
   [x: string]: number;
@@ -9,12 +9,12 @@ export const getUnreadCountFromChannel = async (channel: Channel): Promise<Unrea
 
   let unreadCount: number;
 
-  if (channel.lastConsumedMessageIndex === null) {
+  if (channel.lastReadMessageIndex === null) {
     unreadCount = count;
-  } else if (channel.lastConsumedMessageIndex + 1 > count) {
+  } else if (channel.lastReadMessageIndex + 1 > count) {
     unreadCount = 0; // check the channel is new or check lastConsumedMessageIndex is bigger than message count
   } else {
-    unreadCount = count - (channel.lastConsumedMessageIndex + 1);
+    unreadCount = count - (channel.lastReadMessageIndex + 1);
   }
 
   return {

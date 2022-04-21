@@ -1,9 +1,9 @@
-import type { Client, ReplayEventEmitter } from 'twilio-chat';
+import type { Client, ReplayEventEmitter } from '@twilio/conversations';
 
 type NotInEventEmitter<T> = Omit<T, keyof Omit<T, keyof ReplayEventEmitter<{}>>>;
 
-declare module 'twilio-chat' {
-  type KeyOfChannelEvents = Parameters<NotInEventEmitter<Channel>['on']>[0];
+declare module '@twilio/conversations' {
+  type KeyOfChannelEvents = Parameters<NotInEventEmitter<Conversation>['on']>[0];
   type KeyOfClientEvents = Parameters<NotInEventEmitter<Client>['on']>[0];
 
   type AttributeUser = {
@@ -11,12 +11,13 @@ declare module 'twilio-chat' {
     firstName: string;
     lastName: string;
   };
-  interface Channel {
+  interface Conversation {
     attributes: {
       friendlyName: '';
       groupType: '';
       thumbnail: '';
       users: AttributeUser[];
+      community_id: string | number;
     };
   }
 }

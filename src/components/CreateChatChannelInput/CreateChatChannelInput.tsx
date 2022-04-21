@@ -127,7 +127,7 @@ const CreateChatChannelInput = ({
           return;
         }
         try {
-          const channel = await client?.getChannelBySid(chatId);
+          const channel = await client?.getConversationBySid(chatId);
 
           if (!channel || !createMessage) {
             return;

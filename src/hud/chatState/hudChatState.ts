@@ -1,4 +1,4 @@
-import type { Client } from 'twilio-chat';
+import type { Client } from '@twilio/conversations';
 import type { Classmate } from 'types/models';
 
 export type ChannelData = {

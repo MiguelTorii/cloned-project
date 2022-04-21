@@ -8,7 +8,7 @@ import useStyles from './_styles/main';
 import MessageQuill from './MessageQuill';
 
 import type { MessageQuillProps } from './MessageQuill';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 const ChannelMessageQuill = ({
   channel,

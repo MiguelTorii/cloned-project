@@ -36,7 +36,7 @@ import EmptyMain from './EmptyMain';
 import { CommunityInitialAlert, DefaultInitialAlert } from './InitialAlert';
 
 import type { ChannelMetadata } from 'features/chat';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 const ConversationLoading = () => {
   const classes = useStyles();

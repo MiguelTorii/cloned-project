@@ -23,6 +23,7 @@ import MeetUp from './MeetUp';
 import Preview from './Preview';
 import * as utils from './utils';
 
+import type { Client } from '@twilio/conversations';
 import type { UserState } from 'reducers/user';
 import type { State as StoreState } from 'types/state';
 
@@ -247,8 +248,8 @@ class VideoCall extends React.Component<Props, State> {
     });
 
     try {
-      const client = this.context;
-      const channel = await client.getChannelBySid(roomId);
+      const client = this.context as Client;
+      const channel = await client.getConversationBySid(roomId);
       const messageAttributes = {
         firstName,
         lastName,
@@ -313,6 +314,8 @@ class VideoCall extends React.Component<Props, State> {
       audioinputEnabled,
       error
     } = this.state;
+
+    console.log(roomId);
 
     if (!join) {
       return (

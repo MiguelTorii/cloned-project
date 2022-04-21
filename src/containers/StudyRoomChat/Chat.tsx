@@ -28,7 +28,7 @@ import ChannelChatTextField from './ChannelChatTextField';
 import { useStyles as useStudyRoomChatStyles } from './StudyRoomChatStyles';
 
 import type { ChannelMetadata } from 'features/chat';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 type Props = {
   channel?: Channel;

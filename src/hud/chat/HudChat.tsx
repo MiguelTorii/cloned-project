@@ -8,6 +8,7 @@ import ChatChannels from './ChatChannels';
 import ChatMessages from './ChatMessages';
 import { useStyles } from './HudChatStyles';
 
+// TODO: Remove component, doesn't seem used
 const HudChat = () => {
   const classes: any = useStyles();
 

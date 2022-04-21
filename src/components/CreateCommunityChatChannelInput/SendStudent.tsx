@@ -136,7 +136,7 @@ const CreateChatChannelInput = ({
 
         if (chatId !== '') {
           try {
-            const channel = await client.getChannelBySid(chatId);
+            const channel = await client.getConversationBySid(chatId);
 
             if (channelName.length && isShow) {
               const res = await channel.updateFriendlyName(channelName);

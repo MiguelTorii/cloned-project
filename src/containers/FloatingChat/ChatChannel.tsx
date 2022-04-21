@@ -81,7 +81,7 @@ type Props = {
   channels?: Array<any>;
   channel?: any;
   localChannel?: Record<string, any>;
-  getMembers?: (...args: Array<any>) => any;
+  getParticipants?: (...args: Array<any>) => any;
   onClose?: (...args: Array<any>) => any;
   onBlock?: (...args: Array<any>) => any;
   onRemove: (...args: Array<any>) => any;
@@ -114,6 +114,7 @@ type State = {
   createMessage?: any;
 };
 
+// TODO: Remove component, doesn't seem used
 class ChatChannel extends React.PureComponent<Props, State> {
   state = {
     title: '',
@@ -167,7 +168,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
       } = this.props;
 
       try {
-        channel.setAllMessagesConsumed();
+        channel.setAllMessagesRead();
       } catch (err) {
         console.log(err);
       }
@@ -217,7 +218,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
           }));
         } else {
           try {
-            channel.setAllMessagesConsumed();
+            channel.setAllMessagesRead();
           } catch (e) {}
         }
 
@@ -283,7 +284,7 @@ class ChatChannel extends React.PureComponent<Props, State> {
     }
 
     try {
-      channel.setAllMessagesConsumed();
+      channel.setAllMessagesRead();
     } catch (err) {
       console.log(err);
     }

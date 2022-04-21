@@ -5,11 +5,11 @@ import uuidv4 from 'uuid/v4';
 
 import { URL, CHAT_PATH_EXP } from 'constants/navigation';
 
+import type { AttributeUser } from '@twilio/conversations';
 import type { ChannelMetadata } from 'features/chat';
 import type { DetailedChatUser } from 'reducers/chat';
 import type { AppGetState } from 'redux/store';
-import type { AttributeUser, Channel } from 'twilio-chat';
-import type { ChatMessages, ChatUser } from 'types/models';
+import type { Channel, ParticipantAttributes, ChatMessages, ChatUser } from 'types/models';
 
 export const getTitle = (
   channel: Channel,
@@ -80,23 +80,17 @@ export const getSubTitle = (message: Record<string, any>, userId: string) => {
   return `${firstName} ${lastName}: ${body}`;
 };
 
-export interface AvatarData {
+export interface AvatarData extends ParticipantAttributes {
   identity: string;
-  profileImageUrl: string;
 }
 
 export const fetchAvatars = async (channel: Channel): Promise<AvatarData[]> => {
-  const members = await channel.getMembers();
-
-  const promises = members.map((member) => member.getUserDescriptor());
-
-  const userDescriptors = await Promise.all(promises);
-
-  return userDescriptors.map(({ identity = '', attributes = {} }) => {
-    const { profileImageUrl = '' } = attributes;
+  const participants = await channel.getParticipants();
+  return participants.map((participant) => {
+    const attributes = participant.attributes as ParticipantAttributes;
     return {
-      identity,
-      profileImageUrl
+      identity: participant.identity || '',
+      profileImageUrl: attributes.profileImageUrl
     };
   });
 };

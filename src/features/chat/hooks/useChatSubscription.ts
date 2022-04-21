@@ -38,7 +38,7 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import { QUERY_KEY_CHANNEL_AVATARS } from './useChannelAvatars';
 
 import type { ChannelsMetadata, Unreads, MessagePaginator } from 'features/chat';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export const useChatSubscription = () => {
   useHandleClient();
@@ -141,7 +141,7 @@ const useChannelJoinedSubscription = () => {
       return;
     }
 
-    client.on('channelJoined', async (channel) => {
+    client.on('conversationJoined', async (channel) => {
       if (!isPaginatorDone()) return;
 
       const channels = queryClient.getQueryData<Channel[]>(QUERY_KEY_CHANNELS);
@@ -289,7 +289,7 @@ const useChannelMessageAddedSubscription = () => {
       );
 
       queryClient.setQueryData<MessagePaginator | undefined>(
-        [QUERY_KEY_CHANNEL_MESSAGES, message.channel.sid],
+        [QUERY_KEY_CHANNEL_MESSAGES, message.conversation.sid],
         (cache) => {
           if (!cache) return;
           return produce(cache, (draft) => {
@@ -309,22 +309,22 @@ const useChannelMessageAddedSubscription = () => {
 
       // Update unread count
       // Do not set new unread if user is looking at current chat
-      if (!pathname.includes(message.channel.sid)) {
+      if (!pathname.includes(message.conversation.sid)) {
         // Update message count
-        queryClient.invalidateQueries([UNREAD_COUNT_QUERY_KEY, message.channel.sid]);
+        queryClient.invalidateQueries([UNREAD_COUNT_QUERY_KEY, message.conversation.sid]);
         // Other unreadCount hooks use an API call that fetches all channels' unread messages
         // To prevent refetching for all channels, we update cache just the specific channel
 
         const unreadCache = queryClient.getQueryData<Unreads>([UNREAD_COUNT_QUERY_KEY]);
         if (unreadCache) {
           const nextUnread = produce(unreadCache, (draft) => {
-            draft[message.channel.sid] = (draft[message.channel.sid] || 0) + 1;
+            draft[message.conversation.sid] = (draft[message.conversation.sid] || 0) + 1;
           });
           queryClient.setQueryData<Unreads>(UNREAD_COUNT_QUERY_KEY, nextUnread);
         }
       }
 
-      const isCommunityChat = message.channel.attributes.community_id;
+      const isCommunityChat = message.conversation.attributes.community_id;
       // Only DM channels are available from the chats API and returns full metadata
       if (isCommunityChat) return;
 
@@ -332,8 +332,8 @@ const useChannelMessageAddedSubscription = () => {
       const metadataCache = queryClient.getQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA);
       if (metadataCache) {
         const nextMetadata = produce(metadataCache, (draft) => {
-          const users = draft[message.channel.sid].users;
-          draft[message.channel.sid].lastReceivedMessage = {
+          const users = draft[message.conversation.sid].users;
+          draft[message.conversation.sid].lastReceivedMessage = {
             user: users.find((user) => user.userId === Number(message.author)),
             message: message.body,
             dateSent: moment(message.dateCreated).toISOString()
@@ -361,7 +361,7 @@ const useChannelMessageRemovedSubscription = () => {
 
     client.on('messageRemoved', async (message) => {
       queryClient.setQueryData<MessagePaginator | undefined>(
-        [QUERY_KEY_CHANNEL_MESSAGES, message.channel.sid],
+        [QUERY_KEY_CHANNEL_MESSAGES, message.conversation.sid],
         (cache) => {
           if (!cache) return;
           return produce(cache, (draft) => {

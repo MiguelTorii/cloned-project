@@ -3,7 +3,7 @@ import { useRef, useCallback, useLayoutEffect } from 'react';
 import { usePrevious } from 'hooks';
 import { useAppSelector } from 'redux/store';
 
-import type { Message } from 'twilio-chat';
+import type { Message } from '@twilio/conversations';
 
 export const useChatScrollToBottom = (messages?: Message[] | undefined) => {
   const ref = useRef<HTMLDivElement>(null);

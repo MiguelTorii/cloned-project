@@ -6,7 +6,7 @@ import { useSelectChannelById, useChannels } from './useChannels';
 
 import type { Unreads } from 'features/chat/api/unread';
 import type { QueryClient } from 'react-query';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export const UNREAD_COUNT_QUERY_KEY = 'unreadCount';
 
@@ -42,7 +42,7 @@ export const setChannelRead = async (queryClient: QueryClient, channel?: Channel
   if (!channel) {
     return;
   }
-  await channel.setAllMessagesConsumed();
+  await channel.setAllMessagesRead();
   queryClient.setQueryData<Unreads>(UNREAD_COUNT_QUERY_KEY, (currentUnreads) => {
     const unreads = currentUnreads || {};
     return { ...unreads, [channel.sid]: 0 };

@@ -18,7 +18,7 @@ import useStyles from './_styles/initialAlert';
 
 import type { ChannelMetadata } from 'features/chat';
 import type { CommunityChannelData } from 'reducers/chat';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export const DefaultInitialAlert = ({
   metadata,

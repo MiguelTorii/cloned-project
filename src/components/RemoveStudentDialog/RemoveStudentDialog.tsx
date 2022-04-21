@@ -26,7 +26,7 @@ import Dialog from '../Dialog/Dialog';
 import RoleBadge from '../RoleBadge/RoleBadge';
 
 import type { ChannelMetadata } from 'features/chat';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 interface Props {
   open: boolean;

@@ -22,7 +22,7 @@ import { useAppDispatch, useAppSelector } from 'redux/store';
 import { QUERY_KEY_CHANNELS, useChannels, useOrderedChannelList } from './useChannels';
 import { setChannelRead } from './useUnreadCount';
 
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export const useChatParams = () => {
   const { hashId, chatId, communityId } =

@@ -26,7 +26,7 @@ import RightMenu from './RightMenu';
 
 import useIconClasses from 'components/_styles/Icons';
 
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 const RIGHT_GRID_SPAN = 2;
 

@@ -38,6 +38,7 @@ const StyledTab = withStyles((theme) => ({
   }
 }))((props: any) => <Tab {...props} />);
 
+// TODO: Remove component, doesn't seem used
 const ChatChannels = () => {
   const classes: any = useStyles();
 

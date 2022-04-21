@@ -11,13 +11,13 @@ import { fetchCommunityChannels, fetchCommunityMembers } from './hudChatRESTApi'
 
 import type { IBuiltChannels, IBuiltCommunities } from './chatDataBuilder';
 import type { HudChatState } from './hudChatState';
+import type { Client } from '@twilio/conversations';
 import type { APIChat } from 'api/models/APIChat';
 import type { APICommunities } from 'api/models/APICommunities';
 import type { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
 import type { UserState } from 'reducers/user';
 import type { Action, Dispatch } from 'redux';
-import type { Channel, Client } from 'twilio-chat';
-import type { ClassmateGroup, User } from 'types/models';
+import type { Channel, ClassmateGroup, User } from 'types/models';
 
 export interface IChatLoadOptions {
   channelId: string;
@@ -128,6 +128,7 @@ const registerForClientEvents = (client: Client, userId: string) => {
   });
 };
 
+// TODO: Remove hook, doesn't seem used
 const useChat = () => {
   const dispatch: Dispatch<Action> = useDispatch();
 

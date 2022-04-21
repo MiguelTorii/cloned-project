@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useQuery, useQueryClient } from 'react-query';
 
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 export const QUERY_KEY_CHANNEL_MESSAGES = 'channelMessages';
 

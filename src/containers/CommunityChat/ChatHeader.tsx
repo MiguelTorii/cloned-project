@@ -37,7 +37,7 @@ import useStyles from './_styles/chatHeader';
 
 import type { ChannelMetadata } from 'features/chat';
 import type { UserState } from 'reducers/user';
-import type { Channel } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 type Props = {
   channel: Channel;

@@ -131,7 +131,7 @@ const CreateChatChannel = ({
 
       if (chatId !== '') {
         try {
-          const channel = await client.getChannelBySid(chatId);
+          const channel = await client.getConversationBySid(chatId);
           onChannelCreated({
             channel,
             isNew: isNewChat,

@@ -10,8 +10,9 @@ import StudyRoomChatMessage from 'containers/StudyRoomChat/ChatMessage';
 import { useChatScrollToBottom } from 'features/chat/hooks/useChatScrollToBottom';
 import { useAppSelector } from 'redux/store';
 
+import type { Message } from '@twilio/conversations';
 import type { ChannelMetadata } from 'features/chat';
-import type { Channel, Message } from 'twilio-chat';
+import type { Channel } from 'types/models';
 
 interface Props {
   channel: Channel;

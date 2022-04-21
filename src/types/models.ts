@@ -1,3 +1,5 @@
+import type { Conversation } from '@twilio/conversations';
+
 export type UpdateProfile = {
   field: string;
 };
@@ -717,6 +719,12 @@ export type ChatReactionUserData = {
 export type ChatReactionsUsersResponse = {
   reactions: ChatReactionUserData[];
 };
+
+export type Channel = Conversation;
+export type ParticipantAttributes = {
+  profileImageUrl?: string;
+};
+
 // TODO: Define attributes inside as needed in the future.
 export type LeaderboardResponse = {
   grand_prize: {

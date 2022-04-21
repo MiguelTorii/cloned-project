@@ -7,11 +7,12 @@ import { getTitle } from 'utils/chat';
 
 import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
 
+import type { Client, Message } from '@twilio/conversations';
 import type { ChatCommunity, ChatCommunityData } from 'api/models/APICommunity';
 import type { ChannelMetadata } from 'features/chat';
 import type { AppState } from 'redux/store';
-import type { Client, Channel, Message } from 'twilio-chat';
 import type { Action } from 'types/action';
+import type { Channel } from 'types/models';
 
 export type ChatUser = {
   firstname: string;
@@ -275,8 +276,8 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
           newMessage: action.payload.message,
           local: {
             ...state.data.local,
-            [action.payload.message.channel.sid]: {
-              ...state.data.local[action.payload.message.channel.sid],
+            [action.payload.message.conversation.sid]: {
+              ...state.data.local[action.payload.message.conversation.sid],
               lastMessage: {
                 user: {
                   firstname: action.payload.message.attributes.firstName,

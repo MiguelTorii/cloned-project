@@ -22,8 +22,8 @@ import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatTextField from 'components/FloatingChat/ChatTextField';
 import ErrorBoundary from 'containers/ErrorBoundary/ErrorBoundary';
 
-import type { Channel, RestPaginator } from 'twilio-chat';
-import type { User } from 'types/models';
+import type { RestPaginator } from '@twilio/conversations';
+import type { User, Channel } from 'types/models';
 
 const styles = (theme) => ({
   root: {
@@ -137,7 +137,7 @@ class VideoChatChannel extends React.Component<Props, State> {
         if (!open) {
           onUnreadUpdate(1);
         } else {
-          channel.setAllMessagesConsumed();
+          channel.setAllMessagesRead();
           onUnreadUpdate();
         }
 
@@ -183,7 +183,7 @@ class VideoChatChannel extends React.Component<Props, State> {
 
     if (prevProps.open !== open && open === true) {
       try {
-        channel.setAllMessagesConsumed();
+        channel.setAllMessagesRead();
         onUnreadUpdate();
       } catch (err) {
         console.error(err);
