@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 
 import { push } from 'connected-react-router';
+import capitalize from 'lodash/capitalize';
 import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -32,16 +33,16 @@ import type { State as StoreState } from 'types/state';
 
 const Filters = {
   current: {
-    display: 'Current',
+    display: CLASS_PAGE_FILTERS.CURRENT,
     text: "Here are the classes that you're enrolled in currently on CircleIn."
   },
   past: {
-    display: 'Past',
-    text: 'Here are the past classes that you were enrolled in currently on CircleIn.'
+    display: CLASS_PAGE_FILTERS.PAST,
+    text: 'Classes that have concluded will appear here.'
   },
   upcoming: {
-    display: 'Upcoming',
-    text: "Here are the classes that are starting within the next 2 weeks, that you're enrolled in currently"
+    display: CLASS_PAGE_FILTERS.UPCOMING,
+    text: 'Classes that start within 2 weeks will appear here!'
   }
 };
 
@@ -106,7 +107,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
     () =>
       Object.keys(Filters).map((key) => ({
         value: key,
-        text: Filters[key].display
+        text: capitalize(Filters[key].display)
       })),
     []
   );
@@ -227,11 +228,7 @@ const Classes = ({ pushTo, fetchClasses, classes, user }: Props) => {
         return <Typography>When you complete a class, they will show up here!</Typography>;
 
       case CLASS_PAGE_FILTERS.UPCOMING:
-        return (
-          <Typography>
-            You will see classes you are enrolled in the next 90 days show up here!
-          </Typography>
-        );
+        return <Typography>{Filters.upcoming.text}</Typography>;
 
       default:
         break;
