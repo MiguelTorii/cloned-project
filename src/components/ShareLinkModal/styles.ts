@@ -24,5 +24,10 @@ export default makeStyles((theme: any) => ({
     left: 'auto !important',
     right: 4,
     color: theme.circleIn.palette.tooltipBackground
+  },
+  copyLink: {
+    background: 'linear-gradient(180deg, #94DAF9 0%, #1E88E5 100%)',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: 10
   }
 }));

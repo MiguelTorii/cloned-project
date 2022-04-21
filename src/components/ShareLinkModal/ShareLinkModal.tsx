@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import { Button } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import IconLink from 'assets/svg/link.svg';
 import withRoot from 'withRoot';
 
-import GradientButton from '../Basic/Buttons/GradientButton';
 import Dialog from '../Dialog/Dialog';
 import LoadImg from '../LoadImg/LoadImg';
 
@@ -35,7 +35,7 @@ const ShareLinkModal = ({ open, link, title, onClose }: Props) => {
 
   const ShareButton = React.forwardRef<any, any>((props, ref) => (
     <div {...props} ref={ref}>
-      <GradientButton compact>Copy Link</GradientButton>
+      <Button className={classes.copyLink}>Copy Link</Button>
     </div>
   ));
   return (
