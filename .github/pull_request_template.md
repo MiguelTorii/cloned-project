@@ -1,6 +1,6 @@
 ## :pushpin: References
 
-- **Jira Issue:**
+- **Jira Task URL:**
 - **Related pull-requests:**
 
 ## :blue_book: Description
@@ -10,8 +10,4 @@
 ## :cake: Checklist:
 
 - [] I self-reviewed my changes
-- [] My changes follow the style guide: https://circleinapp.atlassian.net/wiki/spaces/EN/pages/957874177/FrontEnd+documentation
-- [] I tested my changes in Chrome
-- [] I tested my changes in Safari
-- [] I tested my changes in Firefox
-- [] I tested mobile views using Chrome dev tools
+- [] My changes follow the style guide: https://creative-earth-33e.notion.site/TT-Style-guide-f6374a916a7d41739e45473111cb1882

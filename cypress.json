@@ -1,7 +1,7 @@
 {
   "video": false,
   "chromeWebSecurity": false,
-  "projectId": "circlein",
+  "projectId": "nhc2da",
   "env": {
     "api": "https://dev-api.circleinapp.com/v1",
     "url": "http://localhost:2000/"
