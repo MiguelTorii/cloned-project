@@ -107,7 +107,9 @@ const EditGroupDetailsDialog = ({
   title,
   updateGroupName
 }: Props) => {
-  const { data: channelMetadata } = useChannelMetadataById(channel?.sid);
+  const { data: channelMetadata, refetch: refetchChannelMetaData } = useChannelMetadataById(
+    channel?.sid
+  );
   const local = useAppSelector((state) => selectLocalById(state, channel?.sid));
   const metadata = channelMetadata || local;
   const dispatch = useDispatch();
@@ -163,7 +165,8 @@ const EditGroupDetailsDialog = ({
     await updateChannelName();
 
     if (groupImage instanceof Blob) {
-      dispatch(handleUpdateGroupPhoto(metadata.id, groupImage, handleClose));
+      await dispatch(handleUpdateGroupPhoto(metadata.id, groupImage, handleClose));
+      refetchChannelMetaData();
     } else {
       handleClose();
     }
@@ -220,7 +223,11 @@ const EditGroupDetailsDialog = ({
       </Box>
       <Box display="flex" justifyContent="center" mt={2}>
         <Box position="relative">
-          <Avatar src={groupImageUrl} alt="group-image" className={classes.avatar}>
+          <Avatar
+            src={groupImageUrl || metadata?.thumbnail}
+            alt="group-image"
+            className={classes.avatar}
+          >
             <GroupIcon />
           </Avatar>
           <Button

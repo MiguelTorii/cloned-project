@@ -299,10 +299,11 @@ export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata)
   const lastUser = otherUsers?.[otherUsers.length - 1];
   const name = lastUser ? `${lastUser.firstName} ${lastUser.lastName}` : '';
   const isOnline = Boolean(otherUsers?.some((user) => user.isOnline));
+
   const thumbnail =
     isDirectChat && lastUser?.profileImageUrl?.match(/\.jpg|\.png|\.jpeg/)
       ? lastUser?.profileImageUrl
-      : '';
+      : metadata?.thumbnail;
 
   return {
     isDirectChat,
