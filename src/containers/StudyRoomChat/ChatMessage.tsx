@@ -135,6 +135,8 @@ type Props = {
   onImageClick?: (...args: Array<any>) => any;
 };
 
+const EMPTY_MESSAGE_BODY = ' ';
+
 class ChatMessageDate extends React.PureComponent<Props> {
   static defaultProps = {
     userId: '',
@@ -196,10 +198,11 @@ class ChatMessageDate extends React.PureComponent<Props> {
           />
         );
       });
+
       return (
         <>
           <div className={cx(classes.bodyWrapper)}>
-            {message && (
+            {message && message !== EMPTY_MESSAGE_BODY && (
               <Typography
                 className={cx(classes.body, isOwn && classes.right, 'ql-editor')}
                 dangerouslySetInnerHTML={{
