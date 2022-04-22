@@ -321,7 +321,10 @@ export const removeCurrentUserFromGroupName = (
   user: { firstName: string; lastName: string }
 ) => {
   const nameExp = new RegExp(`${user.firstName} ${user.lastName},? ?`);
-  return groupName.replace(nameExp, '').trim();
+  const newGroupName = groupName.replace(nameExp, '').trim();
+  const lastComaExp = new RegExp(`,$`);
+
+  return newGroupName.replace(lastComaExp, '').trim();
 };
 
 export const inChatPage = (getState: AppGetState) =>
