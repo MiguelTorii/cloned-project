@@ -315,6 +315,14 @@ export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata)
   };
 };
 
+export const removeCurrentUserFromGroupName = (
+  groupName,
+  user: { firstName: string; lastName: string }
+) => {
+  const nameExp = new RegExp(`${user.firstName} ${user.lastName},? ?`);
+  return groupName.replace(nameExp, '').trim();
+};
+
 export const inChatPage = (getState: AppGetState) =>
   getState().router.location.pathname.includes(URL.CHAT);
 

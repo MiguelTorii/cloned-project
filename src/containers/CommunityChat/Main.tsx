@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { PERMISSIONS } from 'constants/common';
 import { CHANNEL_SID_NAME } from 'constants/enums';
 import type { ChatUpload } from 'utils/chat';
-import { getFileAttributes } from 'utils/chat';
+import { getFileAttributes, removeCurrentUserFromGroupName } from 'utils/chat';
 
 import { logEvent } from 'api/analytics';
 import { sendMessage } from 'api/chat';
@@ -166,41 +166,6 @@ const Main = ({
     }
   }, [lastMessage, previousLastMessage, sendingMessage]);
 
-  // Handle scrolling
-  const end = useRef<HTMLDivElement>(null);
-
-  const hasPermission = useMemo(
-    () => permission && permission.includes(PERMISSIONS.EDIT_GROUP_PHOTO_ACCESS),
-    [permission]
-  );
-
-  const currentTitle = useMemo(() => {
-    const friendlyName = channel?.friendlyName;
-    if (friendlyName) return friendlyName;
-
-    const title = isCommunityChat ? selectedChannel?.chat_name : channelMetadata?.groupName;
-    if (title) return title;
-    let customTitle = '';
-    let currentIndex = 0;
-
-    if (channelMembers.length > 3) {
-      channelMembers.forEach((member, index) => {
-        if (index < 3) {
-          customTitle += `${member.firstName} ${member.lastName}, `;
-          currentIndex = index;
-        }
-      });
-      customTitle += `${channelMembers.length - currentIndex - 1} others`;
-      return customTitle;
-    }
-  }, [
-    channel?.friendlyName,
-    channelMembers,
-    channelMetadata?.groupName,
-    isCommunityChat,
-    selectedChannel?.chat_name
-  ]);
-
   const handleImageClick = useCallback((src) => {
     setImages([
       {
@@ -297,7 +262,11 @@ const Main = ({
           otherUser={otherUser}
           rightSpace={rightSpace}
           startVideo={startVideo}
-          title={currentTitle}
+          title={
+            channel?.friendlyName ||
+            removeCurrentUserFromGroupName(channelMetadata?.groupName, { firstName, lastName }) ||
+            ''
+          }
         />
       )}
       <div className={classes.messageRoot}>
@@ -328,7 +297,14 @@ const Main = ({
                   channelMetadata && (
                     <DefaultInitialAlert
                       metadata={channelMetadata}
-                      title={currentTitle}
+                      title={
+                        channel?.friendlyName ||
+                        removeCurrentUserFromGroupName(channelMetadata.groupName, {
+                          firstName,
+                          lastName
+                        }) ||
+                        ''
+                      }
                       userId={userId}
                     />
                   )

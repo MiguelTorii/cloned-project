@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import { PERMISSIONS } from 'constants/common';
-import { parseChannelMetadata } from 'utils/chat';
+import { parseChannelMetadata, removeCurrentUserFromGroupName } from 'utils/chat';
 
 import Dialog from 'components/Dialog';
 import EditGroupDetailsDialog from 'containers/Chat/EditGroupDetailsDialog';
@@ -56,6 +56,8 @@ const ChatListItem = ({
   const [editGroupDetailsOpen, setEditGroupDetailsOpen] = useState(false);
 
   const userId = useAppSelector((state) => state.user.data.userId);
+  const firstName = useAppSelector((state) => state.user.data.firstName);
+  const lastName = useAppSelector((state) => state.user.data.lastName);
   const permission = useAppSelector((state) => state.user.data.permission);
   const debouncedPrefetch = useChannelMessagesPrefetch(channelId);
 
@@ -166,7 +168,11 @@ const ChatListItem = ({
           isOnline={isOnline}
           imageProfile={thumbnail}
           name={name}
-          roomName={channel?.friendlyName || channelMetadata?.groupName}
+          roomName={
+            channel?.friendlyName ||
+            removeCurrentUserFromGroupName(channelMetadata?.groupName, { firstName, lastName }) ||
+            ''
+          }
           unReadCount={unreadCount}
           selected={selected}
           dark={dark}
