@@ -67,7 +67,7 @@ type State = {
   open: boolean;
 };
 
-class Header extends React.PureComponent<Props, State> {
+class ProfileHeader extends React.PureComponent<Props, State> {
   // eslint-disable-next-line no-undef
   fileInput: HTMLInputElement | null | undefined;
 
@@ -268,4 +268,4 @@ class Header extends React.PureComponent<Props, State> {
   }
 }
 
-export default withStyles(styles as any)(Header);
+export default withStyles(styles as any)(ProfileHeader);

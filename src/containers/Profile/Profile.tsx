@@ -25,8 +25,8 @@ import { addToStudyCircle, removeFromStudyCircle } from 'api/posts';
 import { getUserProfile, updateProfile, updateUserProfileUrl, getStudyCircle } from 'api/user';
 import PointsHistoryDetails from 'components/PointsHistoryDetails/PointsHistoryDetails';
 import EditProfileModal from 'components/Profile/EditProfileModal';
-import ProfileHeader from 'components/Profile/header';
 import ProfilePosts from 'components/Profile/posts';
+import ProfileHeader from 'components/Profile/ProfileHeader';
 import StudyCircleDialog from 'components/StudyCircleDialog/StudyCircleDialog';
 import { ChatClientContext } from 'features/chat';
 import { PROFILE_SOURCE_KEY } from 'routeConstants';
@@ -305,6 +305,7 @@ class Profile extends React.PureComponent<Props, State> {
       entityFirstName: firstName,
       entityLastName: lastName,
       entityVideo: false,
+      fullscreen: true,
       client
     });
     setTimeout(() => {
