@@ -138,13 +138,15 @@ const HeaderNavigation = ({
           noEmpty
           variant="standard"
           allLabel={allLabel}
-          containerStyle={classes.classSelector}
           textFieldStyle={cx(classes.classTextField, allSelected && classes.allClasses)}
           placeholder={!options.length ? 'Select Classes...' : ''}
           externalOptions={options}
           selected={selectedClasses}
           schoolId={schoolId}
           onSelect={handleSelectClasses}
+          classes={{
+            container: classes.classSelector
+          }}
         />
         {isPastFilter && !allSelected && (
           <Typography variant="h5" display="inline" className={classes.pastClassLabel}>

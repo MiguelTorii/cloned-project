@@ -22,6 +22,7 @@ import {
 import { sendMessage, createChannel } from 'api/chat';
 import { searchUsers } from 'api/user';
 import { useChatClient } from 'features/chat';
+import { getChannelsFromClient } from 'lib/chat';
 import { useAppDispatch } from 'redux/store';
 
 import SelectClassmates from './SelectClassmates';
@@ -213,12 +214,14 @@ const CreateChatChannelInput = ({
       try {
         const currentChannels = await client?.getSubscribedConversations();
         const userIds = users.map((item) => Number(item.userId));
+
         const { chatId } = await createChannel({
           users: userIds,
           groupName: chatType === 'group' ? name : '',
           type: chatType === 'group' ? type : '',
           thumbnailUrl: ''
         });
+
         if (!chatId) {
           throw new Error('No chat ID returned.');
         }

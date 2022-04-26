@@ -12,6 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import { MEMBER_ROLES } from 'constants/app';
+import { EMPTY_MESSAGE_BODY } from 'constants/chat';
 import { PROFILE_PAGE_SOURCE } from 'constants/common';
 import { getInitials, bytesToSize } from 'utils/chat';
 import { buildPath } from 'utils/helpers';
@@ -134,8 +135,6 @@ type Props = {
   onStartVideoCall?: (...args: Array<any>) => any;
   onImageClick?: (...args: Array<any>) => any;
 };
-
-const EMPTY_MESSAGE_BODY = ' ';
 
 class ChatMessageDate extends React.PureComponent<Props> {
   static defaultProps = {

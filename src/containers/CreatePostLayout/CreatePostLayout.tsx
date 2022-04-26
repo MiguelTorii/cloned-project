@@ -218,11 +218,13 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
           noEmpty
           variant="standard"
           allLabel={`${firstName}'s Classes`}
-          containerStyle={classes.selectClassTxtContainer}
           externalOptions={options}
           placeholder="Select Classes..."
           selected={selectedClasses}
           onSelect={onSelect}
+          classes={{
+            container: classes.selectClassTxtContainer
+          }}
         />
       ) : (
         <ClassSelector
@@ -248,11 +250,13 @@ const CreatePostLayout = ({ classes, user, postId, questionId, noteId, sharelink
             noEmpty
             variant="standard"
             allLabel={`All Classes`}
-            containerStyle={classes.selectClassTxtContainer}
             externalOptions={options}
             placeholder="Select Classes..."
             selected={selectedClasses}
             onSelect={onSelect}
+            classes={{
+              container: classes.selectClassTxtContainer
+            }}
           />
         ) : (
           <ClassSelector

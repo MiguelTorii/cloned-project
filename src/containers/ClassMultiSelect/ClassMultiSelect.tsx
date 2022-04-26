@@ -1,7 +1,8 @@
 /* eslint-disable no-use-before-define */
 import React, { useCallback, useMemo, memo } from 'react';
 
-import { connect, useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { connect } from 'react-redux';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
@@ -30,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   dropdownIcon: {
     color: theme.circleIn.palette.brand
+  },
+  inputRoot: {
+    '&:before': {
+      borderColor: theme.circleIn.palette.lightBorders
+    }
   }
 }));
 
@@ -38,7 +44,10 @@ type Props = {
   selected?: any;
   allLabel?: any;
   placeholder?: string;
-  containerStyle?: any;
+  classes?: {
+    container?: string;
+    inputRoot?: string;
+  };
   externalOptions?: any;
   variant?: any;
   textFieldStyle?: string;
@@ -50,9 +59,8 @@ type Props = {
 const ClassMultiSelect = ({
   user,
   selected,
-  allLabel,
   placeholder = '',
-  containerStyle,
+  classes: externalClasses,
   externalOptions,
   variant,
   textFieldStyle = '',
@@ -99,7 +107,7 @@ const ClassMultiSelect = ({
     [options.length, selected.length]
   );
   return (
-    <div className={containerStyle || classes.root}>
+    <div className={classNames(classes.root, externalClasses?.container)}>
       <Autocomplete
         multiple
         PaperComponent={(props) => (
@@ -204,6 +212,9 @@ const ClassMultiSelect = ({
             label=""
           />
         )}
+        classes={{
+          inputRoot: classNames(classes.inputRoot, externalClasses?.inputRoot)
+        }}
       />
     </div>
   );
