@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router';
 import { LastLocationProvider } from 'react-router-last-location';
 
-import { CHAT_PATH_EXP } from 'constants/navigation';
+import { CHAT_PATH_EXP, URL } from 'constants/navigation';
 
 import { HudRouteUpdater } from 'hud/frame/useHudRoutes';
 import { history } from 'redux/store';
@@ -17,9 +17,11 @@ import Referral from './containers/Referrals/Referral';
 import HudFrame from './hud/frame/HudFrame';
 import AuthPage from './pages/Auth/AuthPage';
 import AuthRedirectPage from './pages/AuthRedirect/AuthRedirectPage';
-import CanvasPage from './pages/Canvas/CanvasPage';
+import CanvasChat from './pages/CanvasChat';
+import CanvasPage from './pages/CanvasPage/CanvasPage';
 import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
 import JoinWithReferralCode from './pages/JoinWithReferralCode/JoinWithReferralCode';
+import LoginPopupClose from './pages/LoginPopupClose';
 import Miss from './pages/Miss/Miss';
 import OAuthPage from './pages/OAuthRedirect/OAuthPage';
 import RedirectPage from './pages/Redirect/RedirectPage';
@@ -92,6 +94,10 @@ const HudRoutes = () => (
           <Route exact path={CHAT_PATH_EXP} component={withTracker(HudFrame)} />
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
           <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
+
+          {/* Signed in routes: Small Chat for Canvas */}
+          <Route exact path="/canvas-chat" component={withTracker(CanvasChat)} />
+          <Route exact path={URL.LOGIN_POPUP_CLOSE} component={withTracker(LoginPopupClose)} />
 
           {/* Non-signed in routes */}
           <Route exact path="/new" component={withTracker(AuthRedirectPage)} />

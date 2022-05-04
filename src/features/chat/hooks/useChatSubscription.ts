@@ -135,6 +135,9 @@ const useChannelJoinedSubscription = () => {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.data.userId);
   const requestingNewChannel = useAppSelector((state) => state.chat.requestingNewChannel);
+  const preventSubscriptionsRedirects = useAppSelector(
+    (state) => state.chat.preventSubscriptionsRedirects
+  );
 
   useEffect(() => {
     if (!userId || !client) {
@@ -199,7 +202,9 @@ const useChannelJoinedSubscription = () => {
           // TODO Improve performance when creating new chat
           // Currently there's too big of a delay when changing channels and the previously selected channel still shows for a second
           if (!requestingNewChannel) return;
-          dispatch(navigateToDM(channel.sid));
+          if (!preventSubscriptionsRedirects) {
+            dispatch(navigateToDM(channel.sid));
+          }
           dispatch(setNewChannelRequest(false));
         }
       }, 1500);
@@ -217,6 +222,9 @@ const useChannelLeaveSubscription = () => {
   const queryClient = useQueryClient();
   const userId = useAppSelector((state) => state.user.data.userId);
   const selectedChannelId = useAppSelector((state) => state.chat.data.selectedChannelId);
+  const preventSubscriptionsRedirects = useAppSelector(
+    (state) => state.chat.preventSubscriptionsRedirects
+  );
   const channelList = useOrderedChannelList();
 
   useEffect(() => {
@@ -229,7 +237,9 @@ const useChannelLeaveSubscription = () => {
       if (channel.sid === selectedChannelId) {
         const nextSelectedChannelId = channelList.filter((id) => id !== channel.sid)[0];
         // TODO Replace with redux action dispatch
-        dispatch(navigateToDM(nextSelectedChannelId));
+        if (!preventSubscriptionsRedirects) {
+          dispatch(navigateToDM(nextSelectedChannelId));
+        }
       }
 
       // Both API calls and calls to the client to refetch channels are expensive (1s>) so it's's better to manually change the cache

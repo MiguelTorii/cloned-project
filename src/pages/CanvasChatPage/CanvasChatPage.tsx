@@ -34,8 +34,8 @@ type Props = {
   history?: string[];
 };
 
-const ChatChannelPage = ({ history }: Props) => {
-  const classes: any = useStyles();
+const CanvasChatPage = ({ history }: Props) => {
+  const classes = useStyles();
   const dispatch: Dispatch = useDispatch();
 
   const channels = useSelector((state: { chat: ChatState }) => state.chat.data.channels);
@@ -93,4 +93,4 @@ const ChatChannelPage = ({ history }: Props) => {
   );
 };
 
-export default withRoot(withRouter(ChatChannelPage));
+export default withRoot(withRouter(CanvasChatPage));

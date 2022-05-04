@@ -131,7 +131,9 @@ export const STORAGE_KEYS = {
   CIRCLEIN_101_TC_SAVED: 'CIRCLEIN_101_TC_SAVED',
   SAVED_VIDEO_INPUT: 'SAVED_VIDEO_INPUT',
   SAVED_AUDIO_INPUT: 'SAVED_AUDIO_INPUT',
-  VIRAL_LOOP_TYPE: 'VIRAL_LOOP_TYPE'
+  VIRAL_LOOP_TYPE: 'VIRAL_LOOP_TYPE',
+  AUTH_TOKEN: 'TOKEN',
+  AUTH_PAGE_SOURCE: 'AUTH_PAGE_SOURCE'
 };
 export const FEEDS_PER_PAGE = 10;
 export const MOBILE_APP_IOS_URL =
@@ -140,3 +142,4 @@ export const MOBILE_APP_ANDROID_URL =
   'https://play.google.com/store/apps/details?id=com.circlein.android&hl=en_US';
 export const SCHOLARSHIP_HELP_URL = 'https://support.circleinapp.com/scholarships';
 export const CIRCLEIN_REWARDS_URL = 'https://support.circleinapp.com/rewards';
+export const CANVAS_CHAT_STORAGE_CHECK_INTERVAL = 1000;

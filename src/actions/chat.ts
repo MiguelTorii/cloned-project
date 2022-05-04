@@ -83,6 +83,10 @@ const initLocal = ({ local }: { local: Record<string, ChannelWrapper> }): Action
   }
 });
 
+export const disableChatRedirects = (): Action => ({
+  type: chatActions.DISABLE_SUBSCRIPTIONS_REDIRECTS
+});
+
 const initClient = ({ client }: { client: Record<string, any> }): Action => ({
   type: chatActions.INIT_CLIENT_CHAT,
   payload: {

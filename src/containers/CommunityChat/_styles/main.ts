@@ -8,7 +8,8 @@ const useStyles = makeStyles((theme: any) => ({
     width: '100%',
     flexGrow: 1,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    overflow: 'hidden'
   },
   messageRoot: {
     height: 'calc(100% - 120px)',
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: any) => ({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     flexDirection: 'column',
+    overflow: 'hidden',
     [theme.breakpoints.down('xs')]: {
       borderRadius: 0,
       margin: 0
@@ -70,8 +72,14 @@ const useStyles = makeStyles((theme: any) => ({
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      overflow: 'hidden'
     }
+  },
+  reducedMessageContainer: {
+    width: '100%',
+    display: 'block',
+    overflowY: 'auto'
   },
   typing: {
     padding: theme.spacing(0, 2),

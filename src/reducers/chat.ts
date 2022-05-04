@@ -107,6 +107,7 @@ export type ChatState = {
   communitiesLoaded: boolean;
   isLoading: boolean;
   requestingNewChannel: boolean;
+  preventSubscriptionsRedirects: boolean;
 };
 const defaultState = {
   data: {
@@ -185,7 +186,11 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
         data: { ...state.data, selectedChannelId: action.payload.selectedChannelId }
       };
     }
-
+    case chatActions.DISABLE_SUBSCRIPTIONS_REDIRECTS:
+      return {
+        ...state,
+        preventSubscriptionsRedirects: true
+      };
     case chatActions.SET_COMMUNITIES:
       return { ...state, data: { ...state.data, communities: action.payload.communities } };
 

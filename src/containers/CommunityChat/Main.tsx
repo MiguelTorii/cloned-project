@@ -1,5 +1,6 @@
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import classNames from 'classnames';
 import Lightbox from 'react-images';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useQueryClient } from 'react-query';
@@ -79,6 +80,7 @@ type Props = {
   selectedChannel?: any;
   setRightPanel?: (...args: Array<any>) => any;
   channelLength: number;
+  reduced?: boolean;
 };
 
 const Main = ({
@@ -90,7 +92,8 @@ const Main = ({
   setRightPanel,
   handleBlock,
   handleUpdateGroupName,
-  channelLength
+  channelLength,
+  reduced = false
 }: Props) => {
   const classes = useStyles();
   const queryClient = useQueryClient();
@@ -251,7 +254,7 @@ const Main = ({
 
   return (
     <div className={classes.root}>
-      {channel && (channelMetadata || local) && (
+      {!reduced && channel && (channelMetadata || local) && (
         <ChatHeader
           channel={channel}
           currentUserName={`${firstName} ${lastName}`}
@@ -270,7 +273,12 @@ const Main = ({
         />
       )}
       <div className={classes.messageRoot}>
-        <div className={classes.messageContainer}>
+        <div
+          className={classNames(
+            classes.messageContainer,
+            reduced && classes.reducedMessageContainer
+          )}
+        >
           {!channelLength && (
             <EmptyMain
               otherUser={otherUser}
@@ -324,6 +332,7 @@ const Main = ({
                 isCommunityChat={isCommunityChat}
                 members={members}
                 messages={messages?.items}
+                reduced={reduced}
               />
               {sendingMessage && (
                 <div className={classes.messageLoading}>
@@ -348,6 +357,7 @@ const Main = ({
             setFiles={setFiles}
             files={files}
             onSendMessage={onSendMessage}
+            reduced={reduced}
           />
         )}
       </div>

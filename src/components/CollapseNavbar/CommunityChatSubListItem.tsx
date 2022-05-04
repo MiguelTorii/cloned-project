@@ -23,10 +23,12 @@ import type { CommunityChannelData } from 'reducers/chat';
 const CommunityChatSubListItem = memo(
   ({
     channelData,
-    selectedChannelId
+    selectedChannelId,
+    onClick
   }: {
     channelData: CommunityChannelData;
     selectedChannelId?: string;
+    onClick?: (communityId: number, chatId: string) => void;
   }) => {
     const dispatch = useAppDispatch();
     const classes = useStyles();
@@ -43,8 +45,12 @@ const CommunityChatSubListItem = memo(
 
     const handleClick = () => {
       if (selectedChannelId !== channelData.chat_id) {
-        dispatch(push(generateChatPath(channelData.community_id, channelData.chat_id)));
-        dispatch(messageLoadingAction(true));
+        if (onClick) {
+          onClick(channelData.community_id, channelData.chat_id);
+        } else {
+          dispatch(push(generateChatPath(channelData.community_id, channelData.chat_id)));
+          dispatch(messageLoadingAction(true));
+        }
       }
     };
 

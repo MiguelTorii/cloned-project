@@ -3,10 +3,11 @@ import moment from 'moment';
 import { generatePath } from 'react-router';
 import uuidv4 from 'uuid/v4';
 
+import { MessageItemType } from 'constants/common';
 import { URL, CHAT_PATH_EXP } from 'constants/navigation';
 
 import type { AttributeUser } from '@twilio/conversations';
-import type { ChannelMetadata } from 'features/chat';
+import type { ChannelMetadata, ParsedChannelMetadata } from 'features/chat';
 import type { DetailedChatUser } from 'reducers/chat';
 import type { AppGetState } from 'redux/store';
 import type { Channel, ParticipantAttributes, ChatMessages, ChatUser } from 'types/models';
@@ -110,13 +111,7 @@ export const getChannelName = (chatName) => {
   return '';
 };
 
-export const getAvatar = ({
-  id,
-  profileURLs
-}: {
-  id: string;
-  profileURLs: Array<Record<string, any>>;
-}) => {
+export const getAvatar = ({ id, profileURLs }: { id: string; profileURLs: AvatarData[] }) => {
   const item = profileURLs.find((user) => Number(user.identity) === Number(id));
   return item ? item.profileImageUrl : '';
 };
@@ -290,7 +285,14 @@ export const bytesToSize = (bytes, decimals = 1) => {
 };
 
 // TODO: Test if we get better performance and is a better abstraction as a react-query selector function
-export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata) => {
+export const parseChannelMetadata = (
+  userId: string,
+  metadata?: ChannelMetadata
+): ParsedChannelMetadata | null => {
+  if (!metadata) {
+    return null;
+  }
+
   const userLength = metadata?.users?.length;
   const isDirectChat = Boolean(userLength && metadata.users.length === 2);
   const isGroupChat = Boolean(userLength && metadata.users.length > 2);
@@ -305,14 +307,18 @@ export const parseChannelMetadata = (userId: string, metadata?: ChannelMetadata)
       ? lastUser?.profileImageUrl
       : metadata?.thumbnail;
 
+  const lastMessageData = metadata?.lastReceivedMessage;
+
   return {
+    ...metadata,
     isDirectChat,
     isGroupChat,
     isOnline,
     name,
     otherUsers,
     thumbnail,
-    userLength
+    userLength,
+    lastMessageData
   };
 };
 
@@ -335,3 +341,28 @@ export const generateChatPath = (communityId?: string | number, channelId?: stri
     communityId,
     ...(communityId !== undefined ? { chatId: channelId } : {})
   });
+
+export const getChannelLastReadMessageIndex = (
+  lastReadMessageIndex: number | null,
+  messageItems: ChatMessages
+) => {
+  let resultIndex = lastReadMessageIndex;
+  for (const messageItem of messageItems) {
+    if (messageItem.type !== MessageItemType.OWN && messageItem.type !== MessageItemType.MESSAGE) {
+      continue;
+    }
+
+    for (const message of messageItem.messageList) {
+      if (message.index <= (lastReadMessageIndex || 0)) {
+        continue;
+      }
+
+      if (messageItem.type === MessageItemType.MESSAGE) {
+        return resultIndex;
+      }
+
+      resultIndex = message.index;
+    }
+  }
+  return resultIndex;
+};

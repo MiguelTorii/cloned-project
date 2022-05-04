@@ -7,6 +7,17 @@ import type { CamelCasedPropertiesDeep } from 'type-fest';
 
 export type ChannelMetadata = CamelCasedPropertiesDeep<APIChat> & { showFirst?: boolean };
 
+export type ParsedChannelMetadata = ChannelMetadata & {
+  isDirectChat: boolean;
+  isGroupChat: boolean;
+  isOnline: boolean;
+  name: string;
+  otherUsers?: ChannelMetadata['users'];
+  thumbnail: string;
+  userLength?: number;
+  lastMessageData?: ChannelMetadata['lastReceivedMessage'];
+};
+
 export type ChannelsMetadata = {
   [key: string]: ChannelMetadata;
 };

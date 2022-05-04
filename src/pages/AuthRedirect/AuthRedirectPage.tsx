@@ -43,29 +43,6 @@ const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => 
       source: query.get('source')
     };
   }, [search]);
-  const isMasquerading = !!(pathname === '/auth' && userId && refreshToken && email);
-  // Check if there are parameters for masquerading
-  useEffect(() => {
-    if (!isMasquerading) {
-      return;
-    }
-
-    dispatch(masquerade(userId, refreshToken, (isAuth) => !isAuth && history.push('/'))); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  // After the user is authenticated with the refresh token, it redirects to the home page.
-  useEffect(() => {
-    if (isMasquerading && userData.userId) {
-      history.push('/');
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMasquerading, userData]);
-
-  if (isMasquerading) {
-    return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   // Check if the page is visited from viral loop email.
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -80,6 +57,39 @@ const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => 
       apiLogViralLoopEmailClicked(Number(userId), viralLoopType);
     }
   }, [userId, source]);
+
+  useEffect(() => {
+    if (source) {
+      return;
+    }
+
+    store.set(STORAGE_KEYS.AUTH_PAGE_SOURCE, source);
+  }, [source]);
+
+  const isMasquerading = !!(pathname === '/auth' && userId && refreshToken && email);
+  // Check if there are parameters for masquerading
+  useEffect(() => {
+    if (!isMasquerading) {
+      return;
+    }
+
+    dispatch(masquerade(userId, refreshToken, (isAuth) => !isAuth && history.push('/'))); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // After the user is authenticated with the refresh token, it redirects to the home page.
+  useEffect(() => {
+    if (isMasquerading && userData.userId) {
+      history.push('/');
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMasquerading, userData]);
+
+  if (isMasquerading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   /** *
    * Logic for masquerading ends

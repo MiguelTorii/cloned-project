@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 
+import classNames from 'classnames';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { useSelector } from 'react-redux';
 
@@ -23,11 +24,12 @@ import { sendMessage, createChannel } from 'api/chat';
 import { searchUsers } from 'api/user';
 import { useChatClient } from 'features/chat';
 import { getChannelsFromClient } from 'lib/chat';
-import { useAppDispatch } from 'redux/store';
+import { useAppDispatch, useAppSelector } from 'redux/store';
 
 import SelectClassmates from './SelectClassmates';
 
 import type { UserState } from 'reducers/user';
+import type { Channel } from 'types/models';
 
 const styles = (theme) => ({
   validatorForm: {
@@ -118,6 +120,10 @@ type Props = {
   handleClearCreateMessage?: (...args: Array<any>) => any;
   permission?: Array<any>;
   handleUpdateGroupName?: (...args: Array<any>) => any;
+  externalClasses?: {
+    root?: string;
+  };
+  onSuccess?: (channel: Channel) => void;
 };
 
 const CreateChatChannelInput = ({
@@ -127,7 +133,9 @@ const CreateChatChannelInput = ({
   setIsOpen,
   handleClearCreateMessage,
   permission,
-  handleUpdateGroupName
+  handleUpdateGroupName,
+  externalClasses,
+  onSuccess
 }: Props) => {
   const [chatType, setChatType] = useState('single');
   const [name, setName] = useState('');
@@ -139,6 +147,9 @@ const CreateChatChannelInput = ({
   const [inputValue, setInputValue] = useState('');
   const [channelName, setChannelName] = useState('');
   const dispatch = useAppDispatch();
+  const preventSubscriptionsRedirects = useAppSelector(
+    (state) => state.chat.preventSubscriptionsRedirects
+  );
 
   const {
     data: { userId, schoolId }
@@ -212,7 +223,7 @@ const CreateChatChannelInput = ({
       dispatch(messageLoadingAction(true));
       dispatch(setNewChannelRequest(true));
       try {
-        const currentChannels = await client?.getSubscribedConversations();
+        const currentChannels = await getChannelsFromClient(client);
         const userIds = users.map((item) => Number(item.userId));
 
         const { chatId } = await createChannel({
@@ -229,7 +240,10 @@ const CreateChatChannelInput = ({
 
         if (existingChannel) {
           dispatch(messageLoadingAction(false));
-          dispatch(navigateToDM(existingChannel.sid));
+          if (!preventSubscriptionsRedirects) {
+            dispatch(navigateToDM(existingChannel.sid));
+          }
+          if (onSuccess) onSuccess(existingChannel);
           return;
         }
         const channel = await client?.getConversationBySid(chatId);
@@ -248,6 +262,7 @@ const CreateChatChannelInput = ({
             chatId: channel.sid
           });
         }
+        if (onSuccess) onSuccess(channel);
       } catch (e) {
         console.log(e);
         dispatch(messageLoadingAction(false));
@@ -311,7 +326,10 @@ const CreateChatChannelInput = ({
     [setChannelName]
   );
   return (
-    <ValidatorForm className={classes.validatorForm} onSubmit={handleSubmit}>
+    <ValidatorForm
+      className={classNames(classes.validatorForm, externalClasses?.root)}
+      onSubmit={handleSubmit}
+    >
       <div className={classes.header}>
         <Typography className={classes.typography} variant="h6">
           SELECT CLASSMATES

@@ -36,6 +36,7 @@ type Props = {
   onStartVideoCall?: (...args: Array<any>) => any;
   onImageClick?: (...args: Array<any>) => any;
   handleBlock?: (...args: Array<any>) => any;
+  reduced?: boolean;
 };
 
 const ChatMessage = ({
@@ -53,7 +54,8 @@ const ChatMessage = ({
   onImageClick,
   handleBlock,
   lastReadMessageIndex,
-  isLastMessage
+  isLastMessage,
+  reduced = false
 }: Props) => {
   const [openReport, setOpenReport] = useState(false);
   const [blockUserId, setBlockuserId] = useState('');
@@ -146,6 +148,7 @@ const ChatMessage = ({
             onImageClick={onImageClick}
             onImageLoaded={onImageLoaded}
             onStartVideoCall={onStartVideoCall}
+            reduced={reduced}
           />
           {/* Display the line if the message item is not the last item of the last message. */}
           {message.index === lastReadMessageIndex &&

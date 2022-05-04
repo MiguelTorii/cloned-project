@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo } from 'react';
 
-import { MessageItemType } from 'constants/common';
 import type { AvatarData } from 'utils/chat';
-import { getAvatar, processMessages } from 'utils/chat';
+import { getAvatar, processMessages, getChannelLastReadMessageIndex } from 'utils/chat';
 
 import ChatMessageDate from 'components/FloatingChat/ChatMessageDate';
 import ChatMessage from 'components/FloatingChat/CommunityChatMessage';
@@ -25,6 +24,7 @@ interface Props {
   messages: Message[];
   avatars: AvatarData[];
   isVideoChat?: boolean;
+  reduced?: boolean;
 }
 
 const ChatMessages = ({
@@ -36,7 +36,8 @@ const ChatMessages = ({
   handleStartVideoCall,
   members,
   messages,
-  isVideoChat
+  isVideoChat,
+  reduced = false
 }: Props) => {
   const userId = useAppSelector((state) => state.user.data.userId);
 
@@ -48,28 +49,10 @@ const ChatMessages = ({
     channelId: channel.sid
   });
 
-  // Calculate last message index.
-  const lastReadIndex = useMemo(() => {
-    const lastReadMessageIndex = channel.lastConsumedMessageIndex;
-
-    let resultIndex = lastReadMessageIndex;
-    for (const messageItem of messageItems) {
-      if (
-        messageItem.type === MessageItemType.OWN ||
-        messageItem.type === MessageItemType.MESSAGE
-      ) {
-        for (const message of messageItem.messageList) {
-          if (message.index > (lastReadMessageIndex || 0)) {
-            if (messageItem.type === MessageItemType.MESSAGE) {
-              return resultIndex;
-            }
-            resultIndex = message.index;
-          }
-        }
-      }
-    }
-    return resultIndex;
-  }, [channel.lastConsumedMessageIndex, messageItems]);
+  const lastReadIndex = useMemo(
+    () => getChannelLastReadMessageIndex(channel.lastReadMessageIndex, messageItems),
+    [channel.lastReadMessageIndex, messageItems]
+  );
 
   const getIsOnline = useCallback(
     (userId) => {
@@ -107,6 +90,7 @@ const ChatMessages = ({
         onStartVideoCall={handleStartVideoCall}
         onImageClick={handleImageClick}
         handleBlock={handleBlock}
+        reduced={reduced}
       />
     );
   };

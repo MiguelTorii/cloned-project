@@ -51,9 +51,9 @@ import ReactedUsersModal from './ReactedUsersModal';
 
 import type { ChatMessageItem, ChatReactionsData } from 'types/models';
 
-const MyLink = React.forwardRef<any, any>(({ href, ...props }, ref) => (
-  <RouterLink to={href} {...props} ref={ref} />
-));
+const MyLink = React.forwardRef<any, any>(({ href, disabled, ...props }, ref) =>
+  !disabled ? <RouterLink to={href} {...props} ref={ref} /> : <span {...props} />
+);
 
 type Props = {
   message: ChatMessageItem;
@@ -72,6 +72,7 @@ type Props = {
   onImageLoaded: (string) => void;
   onStartVideoCall: () => void;
   onRemoveMessage: (messageId: string) => void;
+  reduced?: boolean;
 };
 
 const linkify = (text) => {
@@ -104,7 +105,8 @@ const CommunityChatMessageItem = ({
   onBlockMember,
   onImageClick,
   onImageLoaded,
-  onStartVideoCall
+  onStartVideoCall,
+  reduced = false
 }: Props) => {
   const rootRef = useRef();
   const classes = useStyles();
@@ -422,7 +424,7 @@ const CommunityChatMessageItem = ({
       );
     }
 
-    if (isVideoNotification) {
+    if (!reduced && isVideoNotification) {
       return (
         <div className={classes.bodyWrapper}>
           <Card className={classes.videoAlertRoot}>
@@ -500,7 +502,7 @@ const CommunityChatMessageItem = ({
             className={classes.avatarLink}
             // eslint-disable-next-line
             // @ts-ignore
-            component={MyLink}
+            component={!reduced ? MyLink : 'span'}
             href={buildPath(`/profile/${authorUserId}`, {
               from: PROFILE_PAGE_SOURCE.CHAT
             })}
@@ -520,15 +522,19 @@ const CommunityChatMessageItem = ({
           <Box>
             <Box display="flex" alignItems="center">
               <Typography variant="subtitle2" className={classes.name}>
-                <Link
-                  className={classes.link}
-                  component={MyLink}
-                  href={buildPath(`/profile/${authorUserId}`, {
-                    from: PROFILE_PAGE_SOURCE.CHAT
-                  })}
-                >
-                  {name}
-                </Link>
+                {reduced ? (
+                  <span>{name}</span>
+                ) : (
+                  <Link
+                    className={classes.link}
+                    component={MyLink}
+                    href={buildPath(`/profile/${authorUserId}`, {
+                      from: PROFILE_PAGE_SOURCE.CHAT
+                    })}
+                  >
+                    {name}
+                  </Link>
+                )}
               </Typography>
               <Typography className={classes.createdAt} variant="caption">
                 {date} at {message.createdAt}
@@ -548,9 +554,11 @@ const CommunityChatMessageItem = ({
                 <Button className={classes.hoverMenuItem} onClick={handleOpenEmojiPopup}>
                   <IconAddReaction />
                 </Button>
-                <Button className={classes.hoverMenuItem} onClick={handleOpenThreeDotsMenu}>
-                  <MoreVerticalIcon />
-                </Button>
+                {!reduced && (
+                  <Button className={classes.hoverMenuItem} onClick={handleOpenThreeDotsMenu}>
+                    <MoreVerticalIcon />
+                  </Button>
+                )}
               </Box>
             )}
             <Popover

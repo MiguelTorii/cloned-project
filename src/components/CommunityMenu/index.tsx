@@ -22,9 +22,19 @@ import type { ChatCommunity } from 'api/models/APICommunity';
 type Props = {
   item: ChatCommunity;
   handleSelect: (course: ChatCommunity) => void;
+  classes?: {
+    badge?: string;
+    listItem?: string;
+  };
+  selected?: boolean;
 };
 
-const CommunityMenu = ({ item, handleSelect }: Props) => {
+const CommunityMenu: React.FC<Props> = ({
+  item,
+  handleSelect,
+  selected,
+  classes: externalClasses = {}
+}) => {
   const classes = useStyles();
 
   const { communityChannels } = useAppSelector((state) => state.chat.data);
@@ -65,6 +75,9 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
     handleSelect(item);
   }, [handleSelect, item]);
 
+  const isSelected =
+    typeof selected !== 'undefined' ? selected : Boolean(currentCommunity?.id === item.id);
+
   return (
     <Tooltip
       title={!item.id ? 'Direct Chat' : item.name}
@@ -78,13 +91,22 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
         <ListItem
           button
           onClick={handleSelectItem}
-          selected={Boolean(currentCommunity?.id === item.id)}
+          selected={isSelected}
           classes={{
-            root: clsx(classes.listItem, !item.active_course_community && classes.pastClassItem),
+            root: clsx(
+              classes.listItem,
+              !item.active_course_community && classes.pastClassItem,
+              externalClasses.listItem
+            ),
             selected: classes.selectedItem
           }}
         >
-          <StyledBadge max={99} badgeContent={unreadCount} color="secondary">
+          <StyledBadge
+            max={99}
+            badgeContent={unreadCount}
+            color="secondary"
+            className={externalClasses.badge}
+          >
             <ListItemIcon
               classes={{
                 root: classes.itemContent
@@ -98,9 +120,13 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
         <ListItem
           button
           onClick={handleSelectItem}
-          selected={Boolean(currentCommunity?.id === item.id)}
+          selected={isSelected}
           classes={{
-            root: clsx(classes.listItem, !item.active_course_community && classes.pastClassItem),
+            root: clsx(
+              classes.listItem,
+              !item.active_course_community && classes.pastClassItem,
+              externalClasses.listItem
+            ),
             selected: classes.selectedItem
           }}
           style={{
@@ -108,7 +134,12 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
           }}
         >
           {!item.id ? (
-            <StyledBadge max={99} badgeContent={unreadCount} color="secondary">
+            <StyledBadge
+              max={99}
+              badgeContent={unreadCount}
+              color="secondary"
+              className={externalClasses.badge}
+            >
               <ListItemIcon
                 classes={{
                   root: classes.itemContent
@@ -125,6 +156,7 @@ const CommunityMenu = ({ item, handleSelect }: Props) => {
               }}
               badgeContent={unreadCount}
               color="secondary"
+              className={externalClasses.badge}
             >
               <ListItemText
                 classes={{

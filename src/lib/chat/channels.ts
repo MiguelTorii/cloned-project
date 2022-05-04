@@ -1,6 +1,4 @@
-import { waitUntil } from 'utils/helpers';
-
-import type { Client, Conversation, Paginator } from '@twilio/conversations';
+import type { Client } from '@twilio/conversations';
 import type { Channel } from 'types/models';
 
 let channels: Channel[] | undefined;

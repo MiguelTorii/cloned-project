@@ -73,7 +73,9 @@ const ChatMessage = ({
   };
 
   const handleImageClick = (url) => () => {
-    onImageClick(url);
+    if (onImageClick) {
+      onImageClick(url);
+    }
   };
 
   const renderHtmlWithImage = (text) => {

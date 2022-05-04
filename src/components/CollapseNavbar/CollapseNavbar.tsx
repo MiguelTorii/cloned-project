@@ -18,9 +18,10 @@ import type { CommunityChannelData, CommunityChannelsData } from 'reducers/chat'
 type Props = {
   channels?: CommunityChannelsData[];
   selectedChannel?: CommunityChannelData;
+  onCommunityChatClick?: (communityId: number, chatId: string) => void;
 };
 
-const CollapseNavbar = ({ channels, selectedChannel }: Props) => {
+const CollapseNavbar = ({ channels, selectedChannel, onCommunityChatClick }: Props) => {
   const classes = useStyles();
 
   const [collapsedStates, setCollapsedStates] = useState({});
@@ -100,6 +101,7 @@ const CollapseNavbar = ({ channels, selectedChannel }: Props) => {
             key={channel.chat_id}
             channelData={channel}
             selectedChannelId={selectedChannel?.chat_id}
+            onClick={onCommunityChatClick}
           />
         ))}
       </List>

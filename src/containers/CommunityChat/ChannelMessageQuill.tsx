@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-import { Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
 import { useTyping } from 'features/chat';
 
@@ -10,14 +10,19 @@ import MessageQuill from './MessageQuill';
 import type { MessageQuillProps } from './MessageQuill';
 import type { Channel } from 'types/models';
 
+type ChannelMessageQuillProps = Omit<MessageQuillProps, 'onTyping'> & {
+  reduced?: boolean;
+};
+
 const ChannelMessageQuill = ({
   channel,
   files,
   onSendMessage,
   setFiles,
   userId,
-  isNamedChannel
-}: Omit<MessageQuillProps, 'onTyping'> & {
+  isNamedChannel,
+  reduced = false
+}: ChannelMessageQuillProps & {
   channel: Channel;
 }) => {
   const classes = useStyles();
@@ -34,7 +39,7 @@ const ChannelMessageQuill = ({
   }, [onTyping]);
 
   return (
-    <>
+    <Box mb={reduced ? 2 : 0}>
       <MessageQuill
         isNamedChannel={isNamedChannel}
         userId={userId}
@@ -44,12 +49,17 @@ const ChannelMessageQuill = ({
         onTyping={handleOnTyping}
         showError={showError}
       />
-      <div className={classes.typing}>
-        <Typography className={classes.typingText} variant="subtitle1">
-          {typing && typing.channelId === channel.sid ? `${typing.friendlyName} is typing ...` : ''}
-        </Typography>
-      </div>
-    </>
+
+      {!reduced && (
+        <div className={classes.typing}>
+          <Typography className={classes.typingText} variant="subtitle1">
+            {typing && typing.channelId === channel.sid
+              ? `${typing.friendlyName} is typing ...`
+              : ''}
+          </Typography>
+        </div>
+      )}
+    </Box>
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import Canvas from 'containers/Canvas/Canvas';
+import CanvasLogin from 'containers/CanvasLogin/CanvasLogin';
 import withRoot from 'withRoot';
 
 type Props = {
@@ -40,7 +40,7 @@ class CanvasPage extends React.Component<Props, State> {
     return (
       <main>
         <CssBaseline />
-        {nonce !== '' && <Canvas nonce={nonce} />}
+        {nonce !== '' && <CanvasLogin nonce={nonce} />}
       </main>
     );
   }

@@ -3,7 +3,8 @@ import store from 'store';
 
 import { signInActions } from 'constants/action-types';
 import { INSIGHTS_DASHBOARD_URI, STORAGE_KEYS } from 'constants/app';
-import { PERMISSIONS } from 'constants/common';
+import { AUTH_PAGE_SOURCE, PERMISSIONS } from 'constants/common';
+import { URL } from 'constants/navigation';
 import { deepLinkCheck } from 'utils/helpers';
 
 import { signInUser, checkUser, samlLogin as samlSignin } from 'api/sign-in';
@@ -195,6 +196,14 @@ export const samlLogin =
         );
 
         await processInvite(dispatch);
+
+        const authPageSource = store.get(STORAGE_KEYS.AUTH_PAGE_SOURCE);
+
+        if (authPageSource === AUTH_PAGE_SOURCE.CANVAS) {
+          dispatch(push(URL.LOGIN_POPUP_CLOSE));
+
+          return;
+        }
       }
 
       return dispatch(

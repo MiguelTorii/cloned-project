@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import cx from 'classnames';
 import clsx from 'clsx';
@@ -33,6 +33,15 @@ const AnyFileUpload = ({
     </div>
   );
 
+  const handleImageClick = useCallback(
+    (readUrl) => {
+      if (onImageClick) {
+        onImageClick(readUrl);
+      }
+    },
+    [onImageClick]
+  );
+
   if (files?.length) {
     const fileHtml = files.map((file) => {
       const { readUrl, fileName, fileType } = file;
@@ -40,7 +49,7 @@ const AnyFileUpload = ({
       if (fileType && fileType.includes('image')) {
         return (
           <div className={classes.bodyWrapper} key={readUrl}>
-            <ButtonBase onClick={() => onImageClick(readUrl)}>
+            <ButtonBase onClick={() => handleImageClick(readUrl)}>
               <img className={classes.image} src={readUrl} alt="chat" onLoad={onImageLoaded} />
             </ButtonBase>
           </div>
