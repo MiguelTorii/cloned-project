@@ -30,24 +30,29 @@ export const useChannelMessagesPaginatorFetch = (
     }
 
     channel?.on('messageUpdated', async (updatedMessage) => {
-      const oldData = await queryClient.fetchQuery<MessagePaginator>([
+      let data = queryClient.getQueryData<MessagePaginator>([
         QUERY_KEY_CHANNEL_MESSAGES,
         channel.sid
       ]);
-      const newItems = oldData.items.map((item) => {
-        if (item.sid === updatedMessage.message.sid) {
-          return updatedMessage.message;
-        }
+      if (!data) {
+        data = await queryClient.fetchQuery<MessagePaginator>([
+          QUERY_KEY_CHANNEL_MESSAGES,
+          channel.sid
+        ]);
+      }
 
-        return item;
-      });
+      const indexOfMessage = data.items.findIndex(
+        (message) => message.sid === updatedMessage.message.sid
+      );
+      if (indexOfMessage !== -1) {
+        data.items[indexOfMessage] = updatedMessage.message;
+      } else {
+        data.items.push(updatedMessage.message);
+      }
 
-      queryClient.setQueryData<MessagePaginator>([QUERY_KEY_CHANNEL_MESSAGES, channel.sid], {
-        ...oldData,
-        items: newItems
-      });
+      queryClient.setQueryData<MessagePaginator>([QUERY_KEY_CHANNEL_MESSAGES, channel.sid], data);
     });
-  }, [queryClient, channel?.sid]);
+  }, [queryClient, channel?.sid, channel]);
 
   const loader = useCallback(() => {
     if (!messages?.hasPrevPage || !channel) return Promise.resolve();
