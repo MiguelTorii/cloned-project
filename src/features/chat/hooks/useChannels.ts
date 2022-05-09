@@ -24,8 +24,8 @@ export const useChannels = <T = Channel[]>(select?: (data: Channel[]) => T | und
   });
 };
 
-export const useSelectChannelById = (id: string) =>
-  useChannels((channels) => channels.find((channel) => channel.sid === id));
+export const useSelectChannelById = (id?: string) =>
+  useChannels((channels) => (id ? channels.find((channel) => channel.sid === id) : undefined));
 
 /**
  * Should not be called on many components at once i.e. chat list items.

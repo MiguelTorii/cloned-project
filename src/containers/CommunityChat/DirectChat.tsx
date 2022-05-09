@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import cx from 'classnames';
-import { useParams } from 'react-router';
 
 import type { GridSize } from '@material-ui/core/Grid';
 import Grid from '@material-ui/core/Grid';
@@ -11,11 +10,11 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import withWidth from '@material-ui/core/withWidth';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
-import { handleNewChannel, navigateToDM, updateFriendlyName } from 'actions/chat';
+import { navigateToDM, updateFriendlyName } from 'actions/chat';
 import { getOnboardingList } from 'actions/onboarding';
 import { blockChatUser, leaveChat } from 'api/chat';
 import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
-import { useSelectChannelById, useOrderedChannelList } from 'features/chat';
+import { useSelectChannelById, useOrderedChannelList, useChatParams } from 'features/chat';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
 import blockUser from './_styles/blockUser';
@@ -41,12 +40,9 @@ const DirectChat = ({ width }: Props) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const {
-    isLoading,
-    data: { selectedChannelId, newChannel, openChannels }
-  } = useAppSelector((state) => state.chat);
+  const isLoading = useAppSelector((state) => state.chat.isLoading);
 
-  const { chatId } = useParams();
+  const { chatId } = useChatParams();
 
   const {
     data: { userId }
@@ -63,10 +59,6 @@ const DirectChat = ({ width }: Props) => {
   const [prevWidth, setPrevWidth] = useState(null);
 
   const iconClasses = useIconClasses();
-
-  const onNewChannel = useCallback(() => {
-    dispatch(handleNewChannel(true));
-  }, [dispatch]);
 
   const handleOpenRightPanel = useCallback(() => {
     if (['xs'].includes(width)) {
@@ -190,7 +182,6 @@ const DirectChat = ({ width }: Props) => {
       {leftSpace !== 0 && (
         <Grid item xs={leftSpace || 1} className={leftSpace !== 0 ? classes.left : classes.hidden}>
           <LeftMenu
-            onNewChannel={onNewChannel}
             onOpenChannel={onOpenChannel}
             handleUpdateGroupName={updateGroupName}
             handleRemoveChannel={handleRemove}

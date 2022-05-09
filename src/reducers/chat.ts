@@ -77,7 +77,7 @@ export type ChatData = {
   defaultCommunity: ChatCommunity;
   communities: ChatCommunityData[];
   communityChannels: ChatCommunityWithChannels[];
-  currentCommunityChannelId: string;
+  currentCommunityChannelId: string | null;
   currentCommunityId: number | null;
   entityFirstName: string;
   entityId: number;
@@ -116,8 +116,8 @@ const defaultState = {
     defaultCommunity: DEFAULT_COMMUNITY_MENU_ITEMS,
     communities: [],
     communityChannels: [],
-    currentCommunityChannelId: localStorage.getItem('currentCommunityChannelId'),
-    currentCommunityId: Number(localStorage.getItem('currentCommunityId')),
+    currentCommunityChannelId: null,
+    currentCommunityId: null,
     entityFirstName: '',
     entityId: 0,
     entityLastName: '',
@@ -140,6 +140,8 @@ const defaultState = {
     title: '',
     body: ''
   },
+  preventSubscriptionsRedirects: false,
+  communitiesLoaded: false,
   requestingNewChannel: false,
   isLoading: false
 };
@@ -175,12 +177,6 @@ export default (state: ChatState = defaultState, action: Action): ChatState => {
       return { ...state, data: { ...state.data, messageLoading: action.payload.loading } };
 
     case chatActions.SET_CURRENT_CHANNEL_ID: {
-      const id = action.payload.selectedChannelId;
-      if (id) {
-        localStorage.setItem('currentDMChannel', action.payload.selectedChannelId);
-      } else {
-        localStorage.removeItem('currentDMChannel');
-      }
       return {
         ...state,
         data: { ...state.data, selectedChannelId: action.payload.selectedChannelId }

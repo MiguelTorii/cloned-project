@@ -21,7 +21,6 @@ import {
   useChannelMessages,
   useChannelMessagesPaginatorFetch
 } from 'features/chat';
-import { useChatScrollToBottom } from 'features/chat/hooks/useChatScrollToBottom';
 import { useAppSelector } from 'redux/store';
 
 import ChannelChatTextField from './ChannelChatTextField';
@@ -65,7 +64,6 @@ const StudyRoomChat = ({ members, channel, avatars }: Props) => {
   }, [channel, isFetched, messages, queryClient]);
 
   const hasMore = Boolean(messages?.hasPrevPage);
-  const { ref: end, handleScrollToBottom } = useChatScrollToBottom(messages?.items);
 
   const onSendMessage = useCallback(
     async (message: string, files: ChatUpload[]) => {
@@ -147,12 +145,10 @@ const StudyRoomChat = ({ members, channel, avatars }: Props) => {
             isReverse
           >
             <ChatMessages
-              ref={end}
               avatars={avatars}
               channel={channel}
               channelMembers={members}
               handleImageClick={handleImageClick}
-              handleScrollToBottom={handleScrollToBottom}
               members={mappedMembers}
               messages={messages?.items}
               isVideoChat

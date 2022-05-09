@@ -14,12 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { PERMISSIONS } from 'constants/common';
 import { getInitials } from 'utils/chat';
 
-import {
-  handleNewChannel,
-  messageLoadingAction,
-  navigateToDM,
-  setNewChannelRequest
-} from 'actions/chat';
+import { messageLoadingAction, navigateToDM, setNewChannelRequest } from 'actions/chat';
 import { sendMessage, createChannel } from 'api/chat';
 import { searchUsers } from 'api/user';
 import { useChatClient } from 'features/chat';
@@ -262,28 +257,28 @@ const CreateChatChannelInput = ({
             chatId: channel.sid
           });
         }
-        if (onSuccess) onSuccess(channel);
+        onSuccess?.(channel);
       } catch (e) {
         console.log(e);
         dispatch(messageLoadingAction(false));
-        dispatch(setNewChannelRequest(false));
       } finally {
-        dispatch(handleNewChannel(false));
+        dispatch(setNewChannelRequest(false));
         setIsLoading(false);
-        // Handling of global chat loading tate in useChatSubscription
       }
     },
     [
-      dispatch,
-      users,
+      channelName,
       chatType,
       client,
-      name,
-      type,
-      channelName,
       createMessage,
+      dispatch,
+      handleUpdateGroupName,
       isShow,
-      handleUpdateGroupName
+      name,
+      onSuccess,
+      preventSubscriptionsRedirects,
+      type,
+      users
     ]
   );
   const handleSubmit = useCallback(async () => {

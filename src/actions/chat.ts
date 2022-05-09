@@ -8,13 +8,12 @@ import { URL } from 'constants/navigation';
 import { generateChatPath, inChatPage } from 'utils/chat';
 
 import {
-  getGroupMembers,
-  muteChannel,
-  unmuteChannel,
-  renewTwilioToken,
-  leaveChat,
+  apiUpdateChat,
   createChannel,
-  apiUpdateChat
+  getGroupMembers,
+  leaveChat,
+  muteChannel,
+  unmuteChannel
 } from 'api/chat';
 
 import { uploadMedia } from './user';
@@ -22,7 +21,6 @@ import { uploadMedia } from './user';
 import type { Client } from '@twilio/conversations';
 import type { ChatCommunityData } from 'api/models/APICommunity';
 import type { ChannelMetadata } from 'features/chat';
-import type { ChannelWrapper } from 'reducers/chat';
 import type store from 'redux/store';
 import type { AppDispatch, AppGetState } from 'redux/store';
 import type { Action } from 'types/action';
@@ -76,36 +74,8 @@ export const endLoading = (): Action => ({
   type: chatActions.CHAT_END_LOADING
 });
 
-const initLocal = ({ local }: { local: Record<string, ChannelWrapper> }): Action => ({
-  type: chatActions.INIT_LOCAL_CHAT,
-  payload: {
-    local
-  }
-});
-
 export const disableChatRedirects = (): Action => ({
   type: chatActions.DISABLE_SUBSCRIPTIONS_REDIRECTS
-});
-
-const initClient = ({ client }: { client: Record<string, any> }): Action => ({
-  type: chatActions.INIT_CLIENT_CHAT,
-  payload: {
-    client
-  }
-});
-
-const initChannels = ({
-  channels,
-  local
-}: {
-  channels: any[];
-  local: Record<string, ChannelWrapper>;
-}): Action => ({
-  type: chatActions.INIT_CHANNELS_CHAT,
-  payload: {
-    channels,
-    local
-  }
 });
 
 export const messageLoadingAction = (loading) => ({
@@ -157,26 +127,6 @@ export const removeMember = ({ member }: { member: Record<string, any> }): Actio
   }
 });
 
-const addChannel = ({
-  members,
-  userId,
-  channel,
-  unread
-}: {
-  channel: Record<string, any>;
-  unread?: number;
-  userId?: string;
-  members: any[];
-}): Action => ({
-  type: chatActions.ADD_CHANNEL_CHAT,
-  payload: {
-    userId,
-    channel,
-    unread,
-    members
-  }
-});
-
 const removeChannel = ({ sid }: { sid: string }): Action => ({
   type: chatActions.REMOVE_CHANNEL_CHAT,
   payload: {
@@ -206,17 +156,6 @@ const muteChannelLocal = ({ sid }: { sid: string }) => ({
   }
 });
 
-const setCurrentChannelAction = ({
-  currentChannel
-}: {
-  currentChannel: Record<string, any> | null;
-}) => ({
-  type: chatActions.SET_CURRENT_CHANNEL,
-  payload: {
-    currentChannel
-  }
-});
-
 export const navigateToDM = (id?: string) => (dispatch: AppDispatch) =>
   dispatch(push(generateChatPath(0, id)));
 
@@ -235,7 +174,7 @@ export const setCurrentCommunityChannelIdAction = (currentChannelId: string | nu
 });
 
 export const setCurrentCommunityChannel =
-  (currentChannel: Channel) => async (dispatch: Dispatch, getState: typeof store.getState) => {
+  (currentChannel: Channel) => async (dispatch: Dispatch) => {
     dispatch(setCurrentCommunityChannelIdAction(currentChannel.sid));
   };
 
@@ -265,20 +204,6 @@ export const setOneTouchSendAction = (open: boolean) => ({
   type: chatActions.SET_OPEN_ONE_TOUCH_SEND,
   payload: {
     open
-  }
-});
-
-const createNewChannel = ({
-  newChannel,
-  openChannels
-}: {
-  newChannel: boolean;
-  openChannels: any[];
-}) => ({
-  type: chatActions.CREATE_NEW_CHANNEL,
-  payload: {
-    newChannel,
-    openChannels
   }
 });
 
@@ -345,25 +270,6 @@ export const loadCommunityChannelData =
 export const closeNewChannel = () => (dispatch: Dispatch) => {
   dispatch(closeNewChannelAction());
 };
-export const handleNewChannel =
-  (newChannel: boolean) => (dispatch: Dispatch, getState: AppGetState) => {
-    const openChannels = getState().chat.data.openChannels;
-    const availableSlots = getAvailableSlots(window.innerWidth);
-    const newState = update(openChannels || [], {
-      $apply: (b) => {
-        const newB = update(b, {
-          $splice: [[availableSlots - 1]]
-        });
-        return [...newB];
-      }
-    });
-    dispatch(
-      createNewChannel({
-        newChannel,
-        openChannels: newState
-      })
-    );
-  };
 
 export const openChannelWithEntity =
   ({
@@ -410,34 +316,6 @@ export const openChannelWithEntity =
         }
       }
     }
-  };
-
-// TODO CHAT_REFACTOR: Move logic into a chat hook.
-export const handleInitChat =
-  (client: Client) => async (dispatch: Dispatch, getState: (...args: Array<any>) => any) => {
-    const {
-      user: {
-        data: { userId }
-      }
-    } = getState();
-
-    dispatch(
-      initLocal({
-        local: {}
-      })
-    );
-
-    client.on('tokenAboutToExpire', async () => {
-      try {
-        const newToken = await renewTwilioToken(userId);
-
-        if (!newToken) {
-          return;
-        }
-
-        await client.updateToken(newToken);
-      } catch (e) {}
-    });
   };
 
 export const handleUpdateGroupPhoto =

@@ -10,7 +10,6 @@ import { generateChatPath, getGroupTitle } from 'utils/chat';
 
 import {
   fetchMembers,
-  handleInitChat,
   loadCommunityChannelData,
   newMessage,
   removeMember,
@@ -19,7 +18,7 @@ import {
   updateMembers,
   setNewChannelRequest
 } from 'actions/chat';
-import { getGroupMembers } from 'api/chat';
+import { getGroupMembers, renewTwilioToken } from 'api/chat';
 import {
   getTransformedChannelsMetada,
   QUERY_KEY_CHANNEL_METADATA,
@@ -60,20 +59,26 @@ const useHandleClient = () => {
   const prevUserId = usePrevious(userId);
   const { data: channels } = useChannels();
 
-  // Handle init
   useEffect(() => {
-    if (!client || !userId) {
-      return;
-    }
+    if (!client || userId) return;
+    client.on('tokenAboutToExpire', async () => {
+      try {
+        const newToken = await renewTwilioToken(userId);
 
-    const hasSubscribedToRemainingEvents = Object.keys((client as any)._events).filter((key) =>
-      ['tokenAboutToExpire'].includes(key)
-    )?.length;
+        if (!newToken) {
+          return;
+        }
 
-    if (!hasSubscribedToRemainingEvents) {
-      dispatch(handleInitChat(client));
-    }
-  }, [client, dispatch, prevUserId, userId]);
+        await client.updateToken(newToken);
+      } catch (e) {
+        console.log('Error refreshing tojen', e);
+      }
+    });
+
+    return () => {
+      client?.removeAllListeners('channelJoined');
+    };
+  }, [client, userId]);
 
   // Handle shutdown
   useEffect(() => {
@@ -165,7 +170,7 @@ const useChannelJoinedSubscription = () => {
         return newUnreads || { [channel.sid]: 0 };
       });
 
-      const communityId = channel.attributes.community_id;
+      const communityId = channel.attributes?.community_id;
 
       if (communityId) {
         if (!requestingNewChannel) return;
@@ -213,7 +218,7 @@ const useChannelJoinedSubscription = () => {
     return () => {
       client?.removeAllListeners('channelJoined');
     };
-  }, [client, dispatch, queryClient, requestingNewChannel, userId]);
+  }, [client, dispatch, preventSubscriptionsRedirects, queryClient, requestingNewChannel, userId]);
 };
 
 const useChannelLeaveSubscription = () => {
@@ -232,7 +237,7 @@ const useChannelLeaveSubscription = () => {
       return;
     }
 
-    client.on('channelLeft', async (channel) => {
+    client.on('conversationLeft', async (channel) => {
       // If the ID is the same as the current channel, set the current channel to the first channel in the list
       if (channel.sid === selectedChannelId) {
         const nextSelectedChannelId = channelList.filter((id) => id !== channel.sid)[0];
@@ -256,7 +261,7 @@ const useChannelLeaveSubscription = () => {
       queryClient.removeQueries([QUERY_KEY_CHANNEL_MESSAGES, channel?.sid]);
       queryClient.removeQueries([QUERY_KEY_CHANNEL_AVATARS, channel?.sid]);
 
-      const isCommunityChat = channel.attributes.community_id;
+      const isCommunityChat = channel.attributes?.community_id;
 
       if (isCommunityChat) {
         return;
@@ -274,7 +279,15 @@ const useChannelLeaveSubscription = () => {
     return () => {
       client?.removeAllListeners('channelLeft');
     };
-  }, [channelList, client, dispatch, queryClient, selectedChannelId, userId]);
+  }, [
+    channelList,
+    client,
+    dispatch,
+    preventSubscriptionsRedirects,
+    queryClient,
+    selectedChannelId,
+    userId
+  ]);
 };
 
 const useChannelMessageAddedSubscription = () => {
@@ -334,7 +347,7 @@ const useChannelMessageAddedSubscription = () => {
         }
       }
 
-      const isCommunityChat = message.conversation.attributes.community_id;
+      const isCommunityChat = message.conversation.attributes?.community_id;
       // Only DM channels are available from the chats API and returns full metadata
       if (isCommunityChat) return;
 
@@ -400,11 +413,11 @@ const useChannelUpdatedSubscription = () => {
       return;
     }
 
-    client.on('channelUpdated', async (data) => {
+    client.on('conversationUpdated', async (data) => {
       const reasons = ['lastConsumedMessageIndex'];
       // TODO Handle lastMessage event, create query cache for messages
       // These should be handled optimistically
-      const { channel, updateReasons } = data;
+      const { conversation, updateReasons } = data;
       if (updateReasons.filter((reason) => !reasons.includes(reason)).length === 0) {
         return;
       }
@@ -412,8 +425,8 @@ const useChannelUpdatedSubscription = () => {
       if (channelCache) {
         const nextCache = produce(channelCache, (draft) => {
           // Keep current order
-          const indexOfChannel = channelCache.findIndex((c) => c.sid === channel.sid);
-          draft[indexOfChannel] = channel;
+          const indexOfChannel = channelCache.findIndex((c) => c.sid === conversation.sid);
+          draft[indexOfChannel] = conversation;
         });
         queryClient.setQueryData<Channel[]>(QUERY_KEY_CHANNELS, nextCache);
       }
@@ -436,15 +449,15 @@ const useMemberJoinedSubscription = () => {
       return;
     }
 
-    client.on('memberJoined', async (member) => {
+    client.on('participantJoined', async (member) => {
       const update = async () => {
         const {
-          channel: { sid }
+          conversation: { sid }
         } = member;
         const members = await fetchMembers(sid);
         // TODO Migrate community chat data to react-query
         // Community members have to be held in redux
-        if (member.channel?.attributes?.community_id) {
+        if (member.conversation?.attributes?.community_id) {
           dispatch(
             updateMembers({
               members,
@@ -483,7 +496,7 @@ const useMemberLeftSubscription = () => {
       return;
     }
 
-    client.on('memberLeft', async (member) => {
+    client.on('participantLeft', async (member) => {
       if (member.identity !== userId) {
         dispatch(
           removeMember({
@@ -496,8 +509,8 @@ const useMemberLeftSubscription = () => {
       const metadata = queryClient.getQueryData<ChannelsMetadata>(QUERY_KEY_CHANNEL_METADATA);
       if (metadata) {
         const nextMetadata = produce(metadata, (draft) => {
-          const users = draft[member.channel.sid].users;
-          draft[member.channel.sid].users = users.filter(
+          const users = draft[member.conversation.sid].users;
+          draft[member.conversation.sid].users = users.filter(
             (user) => String(user.userId) !== String(member.identity)
           );
         });

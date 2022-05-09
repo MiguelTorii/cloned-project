@@ -1,17 +1,65 @@
+import { getChannelMetadata } from 'api/chat';
+import { getCommunities } from 'api/community';
 import DEFAULT_COMMUNITY_MENU_ITEMS from 'containers/CommunityChat/constants';
 
+import { fetchCommunityChannels, fetchCommunityMembers } from './hudChatRESTApi';
+
 import type { ChannelData, CommunityData } from './hudChatState';
+import type { Client } from '@twilio/conversations';
 import type { APIChat } from 'api/models/APIChat';
+import type { APICommunities } from 'api/models/APICommunities';
 import type { ChatCommunityData } from 'api/models/APICommunity';
 import type { APICommunityChannel } from 'api/models/APICommunityChannel';
 import type { APICommunityChannelGroup } from 'api/models/APICommunityChannelGroup';
 import type { APICommunityChannelGroups } from 'api/models/APICommunityChannelGroups';
-import type { Classmate, ClassmateGroup } from 'types/models';
+import type { Channel, Classmate, ClassmateGroup } from 'types/models';
 
 export interface IBuiltCommunities {
   communityIdsInDisplayOrder: string[];
   idToCommunity: Record<string, CommunityData>;
 }
+
+export interface IChatLoadOptions {
+  channelId: string;
+}
+
+export interface ChatSocketData {
+  client: Client;
+  channels: Channel[];
+}
+
+export interface CommunityChannelData {
+  builtCommunities: IBuiltCommunities;
+  builtChannels: IBuiltChannels;
+}
+
+// TODO Investigate how part of this structure can be reused for better community data in react-query
+export const loadCommunities = async (): Promise<CommunityChannelData> => {
+  const { communities }: APICommunities = await getCommunities();
+  const builtCommunities: IBuiltCommunities = buildCommunities(communities);
+
+  const [directChats, channelGroups, memberGroups]: [
+    APIChat[],
+    APICommunityChannelGroups[],
+    ClassmateGroup[]
+  ] = await Promise.all([
+    getChannelMetadata(),
+    fetchCommunityChannels(communities),
+    fetchCommunityMembers(communities)
+  ]);
+
+  const builtChannels: IBuiltChannels = buildChannels(
+    directChats,
+    channelGroups,
+    memberGroups,
+    builtCommunities.idToCommunity
+  );
+
+  return {
+    builtCommunities,
+    builtChannels
+  };
+};
 
 export const buildCommunities = (communities: ChatCommunityData[]): IBuiltCommunities => {
   const communityIdsInDisplayOrder: string[] = [DEFAULT_COMMUNITY_MENU_ITEMS.id];

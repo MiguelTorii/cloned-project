@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
 import clsx from 'clsx';
 import Fuse from 'fuse.js';
-import { useParams } from 'react-router';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -16,14 +15,19 @@ import Typography from '@material-ui/core/Typography';
 import { PERMISSIONS } from 'constants/common';
 import { getTitle } from 'utils/chat';
 
-import { handleNewChannel, navigateToDM, setOneTouchSendAction } from 'actions/chat';
+import { setOneTouchSendAction, setNewChannelRequest } from 'actions/chat';
 import { ReactComponent as ChatSearchIcon } from 'assets/svg/chat-search.svg';
 import BaseChatItem from 'components/CommunityChatListItem/BaseChatItem';
 import ChatListItem from 'components/CommunityChatListItem/ChatListItem';
 import CreateChatChannelInput from 'components/CreateCommunityChatChannelInput/CreateChatChannelInput';
 import OneTouchSend from 'components/CreateCommunityChatChannelInput/OneTouchSend';
 import Dialog from 'components/Dialog/Dialog';
-import { useChannels, useChannelsMetadata, useOrderedChannelList } from 'features/chat';
+import {
+  useChannels,
+  useChannelsMetadata,
+  useChatParams,
+  useOrderedChannelList
+} from 'features/chat';
 import useHotkey, { HOTKEYS } from 'hooks/useHotKey';
 import { useAppDispatch, useAppSelector } from 'redux/store';
 
@@ -41,7 +45,6 @@ type Props = {
 const LeftMenu = ({
   handleMuteChannel,
   onOpenChannel,
-  onNewChannel,
   handleRemoveChannel,
   handleUpdateGroupName
 }: Props) => {
@@ -56,10 +59,11 @@ const LeftMenu = ({
   const expertMode = useAppSelector((state) => state.user.expertMode);
   const {
     data: { newChannel, oneTouchSendOpen },
+    requestingNewChannel,
     isLoading: isChatLoading
   } = useAppSelector((state) => state.chat);
 
-  const { chatId } = useParams();
+  const { chatId } = useChatParams();
 
   const { userId, permission } = useAppSelector((state) => state.user.data);
 
@@ -73,25 +77,15 @@ const LeftMenu = ({
 
   const handleCreateNewChannel = useCallback(() => {
     setIsOpen(true);
-
-    if (!switchOneTouchSend) {
-      onNewChannel?.();
-    }
-  }, [onNewChannel, switchOneTouchSend]);
+    dispatch(setNewChannelRequest(true));
+  }, [dispatch]);
 
   useHotkey([HOTKEYS.CREATE_NEW_CHAT.key], handleCreateNewChannel);
 
   const handleClose = () => {
     setIsOpen(false);
-
     dispatch(setOneTouchSendAction(false));
-
-    dispatch(handleNewChannel(false));
-    // TODO Remove and only use channelId
-    const lastChannelSid = localStorage.getItem('currentDMChannel') || channels?.[0].sid;
-    if (lastChannelSid) {
-      dispatch(navigateToDM(lastChannelSid));
-    }
+    dispatch(setNewChannelRequest(false));
   };
 
   const onChangeSearch = (e) => setSearch(e.target.value);
@@ -213,7 +207,9 @@ const LeftMenu = ({
             isLoading={isLoading}
           />
           <List className={classes.root}>
-            {newChannel && <BaseChatItem roomName="New Chat" selected />}
+            {!oneTouchSendOpen && requestingNewChannel && (
+              <BaseChatItem roomName="New Chat" selected />
+            )}
             {channelList.map((id) => (
               <div key={id} className={clsx(!searchChannels.includes(id) && classes.hidden)}>
                 <ChatListItem

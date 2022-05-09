@@ -325,7 +325,6 @@ const mapDispatchToProps = (dispatch: any): {} =>
       handleRoomClick: chatActions.handleRoomClick,
       updateOpenChannels: chatActions.updateOpenChannels,
       handleChannelClose: chatActions.handleChannelClose,
-      handleNewChannel: chatActions.handleNewChannel,
       updateTitleAction: updateTitle,
       enqueueSnackbarAction: enqueueSnackbar,
       closeSnackbarAction: closeSnackbar,

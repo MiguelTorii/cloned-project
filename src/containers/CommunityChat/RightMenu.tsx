@@ -27,7 +27,7 @@ const MyLink = React.forwardRef<any, any>(({ link, ...props }, ref) => (
 ));
 
 type Props = {
-  channelId: string;
+  channelId?: string;
   isCommunityChat?: boolean;
 };
 

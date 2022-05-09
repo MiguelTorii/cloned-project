@@ -38,7 +38,7 @@ export const useChatQuill = (
       const currentFocusPosition = quill.getSelection(true).index;
       const leftPosition = quill.getBounds(currentFocusPosition).left;
       const currentTooltipWidth = document.getElementById(id)
-        ? document.getElementById(id).clientWidth
+        ? document.getElementById(id)?.clientWidth
         : 0;
       const currentEditorWidth = (quill as any).container.firstChild.clientWidth;
 
