@@ -46,13 +46,13 @@ const FlashcardsListEditorComponent = ({
   // States
   // Event Handlers
   const handleAddNewDeck = useCallback(() => {
-    const maxId = max(data.map((item) => item.id)) || 1;
+    const maxId = max(data.map((item) => item.id)) as number | undefined;
 
     onUpdate(
       update(data, {
         $push: [
           {
-            id: maxId,
+            id: maxId ? maxId + 1 : 1,
             question: '',
             answer: ''
           }
