@@ -6,12 +6,13 @@ import { LastLocationProvider } from 'react-router-last-location';
 
 import { CHAT_PATH_EXP, URL } from 'constants/navigation';
 
-import { HudRouteUpdater } from 'hud/frame/useHudRoutes';
+import { useNotifier, useMessageNotifier } from 'hooks';
+import { useHudRouteUpdater } from 'hud/frame/useHudRoutes';
+import useOnboarding from 'hud/storyState/useOnboarding';
 import { history } from 'redux/store';
 
 import Gondor from './containers/Auth/Gondor';
 import Saml from './containers/Auth/Saml';
-import FloatingChatContainer from './containers/FloatingChat/FloatingChatContainer';
 import Home from './containers/Home/Home';
 import Referral from './containers/Referrals/Referral';
 import HudFrame from './hud/frame/HudFrame';
@@ -39,59 +40,66 @@ const HudRoutes = () => (
   <ConnectedRouter history={history}>
     <LastLocationProvider>
       <div>
-        <HudRouteUpdater />
-        <FloatingChatContainer />
         <Switch>
-          {/* Redirect to a default route based on context */}
-          <Route exact path="/" component={withTracker(Home)} />
+          <HudRouteWrappers>
+            {/* Redirect to a default route based on context */}
+            <Route exact path="/" component={withTracker(Home)} />
 
-          {/* Signed in routes: Community routes */}
-          <Route exact path={CREATE_POST_PATHNAME} component={withTracker(HudFrame)} />
-          <Route exact path="/classes" component={withTracker(HudFrame)} />
-          <Route exact path="/feed" component={withTracker(HudFrame)} />
-          <Route exact path="/bookmarks" component={withTracker(HudFrame)} />
-          <Route exact path="/my_posts" component={withTracker(HudFrame)} />
-          <Route exact path="/post/:postId" component={withTracker(HudFrame)} />
-          <Route exact path="/edit/post/:postId" component={withTracker(HudFrame)} />
-          <Route exact path="/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
-          <Route exact path="/edit/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
-          <Route exact path="/question/:questionId" component={withTracker(HudFrame)} />
-          <Route exact path="/create/question" component={withTracker(HudFrame)} />
-          <Route exact path="/edit/question/:questionId" component={withTracker(HudFrame)} />
-          <Route exact path="/create/sharelink" component={withTracker(HudFrame)} />
-          <Route exact path="/edit/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
-          <Route exact path="/share/:code" component={withTracker(SharePage)} />
+            {/* Signed in routes: Community routes */}
+            {/**
+             * TODO
+             * HudFrame should be a simple container above the routes
+             * As it is, HudFrame unmounts and remounts on every page change
+            causing every hook and logic to re-run
+             */}
+            <Route exact path={CREATE_POST_PATHNAME} component={withTracker(HudFrame)} />
+            <Route exact path="/classes" component={withTracker(HudFrame)} />
+            <Route exact path="/feed" component={withTracker(HudFrame)} />
+            <Route exact path="/bookmarks" component={withTracker(HudFrame)} />
+            <Route exact path="/my_posts" component={withTracker(HudFrame)} />
+            <Route exact path="/post/:postId" component={withTracker(HudFrame)} />
+            <Route exact path="/edit/post/:postId" component={withTracker(HudFrame)} />
+            <Route exact path="/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
+            <Route exact path="/edit/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
+            <Route exact path="/question/:questionId" component={withTracker(HudFrame)} />
+            <Route exact path="/create/question" component={withTracker(HudFrame)} />
+            <Route exact path="/edit/question/:questionId" component={withTracker(HudFrame)} />
+            <Route exact path="/create/sharelink" component={withTracker(HudFrame)} />
+            <Route exact path="/edit/sharelink/:sharelinkId" component={withTracker(HudFrame)} />
+            <Route exact path="/share/:code" component={withTracker(SharePage)} />
 
-          {/* Signed in routes: Study Tools routes */}
-          <Route exact path="/notes" component={withTracker(HudFrame)} />
-          <Route exact path="/create/notes" component={withTracker(HudFrame)} />
-          <Route exact path="/edit/notes/:noteId" component={withTracker(HudFrame)} />
-          <Route exact path="/notes/:noteId" component={withTracker(HudFrame)} />
-          <Route exact path="/workflow" component={withTracker(HudFrame)} />
-          <Route exact path="/flashcards" component={withTracker(HudFrame)} />
-          <Route exact path="/flashcards/:flashcardId" component={withTracker(HudFrame)} />
-          <Route exact path="/edit/flashcards/:flashcardId" component={withTracker(HudFrame)} />
-          <Route exact path="/study" component={withTracker(HudFrame)} />
+            {/* Signed in routes: Study Tools routes */}
+            <Route exact path="/notes" component={withTracker(HudFrame)} />
+            <Route exact path="/create/notes" component={withTracker(HudFrame)} />
+            <Route exact path="/edit/notes/:noteId" component={withTracker(HudFrame)} />
+            <Route exact path="/notes/:noteId" component={withTracker(HudFrame)} />
+            <Route exact path="/workflow" component={withTracker(HudFrame)} />
+            <Route exact path="/flashcards" component={withTracker(HudFrame)} />
+            <Route exact path="/flashcards/:flashcardId" component={withTracker(HudFrame)} />
+            <Route exact path="/edit/flashcards/:flashcardId" component={withTracker(HudFrame)} />
+            <Route exact path="/study" component={withTracker(HudFrame)} />
 
-          {/* Signed in routes: Home routes */}
-          <Route exact path="/home" component={withTracker(HudFrame)} />
+            {/* Signed in routes: Home routes */}
+            <Route exact path="/home" component={withTracker(HudFrame)} />
 
-          {/* Signed in routes: Achievements routes */}
-          <Route exact path="/leaderboard" component={withTracker(HudFrame)} />
+            {/* Signed in routes: Achievements routes */}
+            <Route exact path="/leaderboard" component={withTracker(HudFrame)} />
 
-          {/* Signed in routes: Profile routes */}
-          <Route exact path="/profile" component={withTracker(HudFrame)} />
-          <Route exact path="/profile/:userId/:tab?" component={withTracker(HudFrame)} />
-          <Route exact path="/pointsHistory" component={withTracker(HudFrame)} />
-          <Route exact path="/store" component={withTracker(HudFrame)} />
+            {/* Signed in routes: Profile routes */}
+            <Route exact path="/profile" component={withTracker(HudFrame)} />
+            <Route exact path="/profile/:userId/:tab?" component={withTracker(HudFrame)} />
+            <Route exact path="/pointsHistory" component={withTracker(HudFrame)} />
+            <Route exact path="/store" component={withTracker(HudFrame)} />
 
-          {/* Signed in routes: More routes */}
-          <Route exact path="/feedback" component={withTracker(HudFrame)} />
-          <Route exact path="/getTheMobileApp" component={withTracker(HudFrame)} />
+            {/* Signed in routes: More routes */}
+            <Route exact path="/feedback" component={withTracker(HudFrame)} />
+            <Route exact path="/getTheMobileApp" component={withTracker(HudFrame)} />
 
-          {/* Signed in routes: Chat routes */}
-          <Route exact path="/chat/s/:hashId" component={withTracker(HudFrame)} />
-          <Route exact path={CHAT_PATH_EXP} component={withTracker(HudFrame)} />
+            {/* Signed in routes: Chat routes */}
+            <Route exact path="/chat/s/:hashId" component={withTracker(HudFrame)} />
+            <Route exact path={CHAT_PATH_EXP} component={withTracker(HudFrame)} />
+          </HudRouteWrappers>
+
           <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
           <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
 
@@ -125,5 +133,13 @@ const HudRoutes = () => (
     </LastLocationProvider>
   </ConnectedRouter>
 );
+
+const HudRouteWrappers = ({ children }) => {
+  useNotifier();
+  useMessageNotifier();
+  useOnboarding();
+  useHudRouteUpdater();
+  return children;
+};
 
 export default HudRoutes;

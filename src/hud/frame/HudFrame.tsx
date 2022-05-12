@@ -13,7 +13,6 @@ import { ReactComponent as CollapseIcon } from 'assets/svg/collapse-icon.svg';
 import ChatPage from 'containers/CommunityChat/ChatPage';
 import UserDialog from 'containers/UserDialog/UserDialog';
 import WebNotification from 'containers/WebNotifications';
-import { useNotifier } from 'hooks';
 import AchievementsArea from 'hudAreas/achievements/AchievementsArea';
 import CommunitiesArea from 'hudAreas/communities/CommunitiesArea';
 import ProfileArea from 'hudAreas/profile/ProfileArea';
@@ -46,7 +45,6 @@ import {
 import OnboardingModal from '../onboardingModal/OnboardingModal';
 import HudStory from '../story/HudStory';
 import { openOnboardingPopup } from '../storyState/hudStoryActions';
-import useOnboarding from '../storyState/useOnboarding';
 import HudTitle from '../title/HudTitle';
 
 import { useStyles } from './HudFrameStyles';
@@ -67,9 +65,6 @@ const HudFrame = () => {
   const isSmallWindow = useMediaQuery(theme.breakpoints.down('sm'));
   const [forceHideSideArea, setForceHideSideArea] = useState(false);
   const iconClasses = useIconClasses();
-
-  useNotifier();
-  useOnboarding();
 
   const selectedMainArea: string = useSelector(
     (state: { hudNavigation: HudNavigationState }) => state.hudNavigation.selectedMainArea

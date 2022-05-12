@@ -135,7 +135,7 @@ const querySelector = createDeepEqualSelector(
   (query) => query
 );
 
-export const HudRouteUpdater = () => {
+export const useHudRouteUpdater = () => {
   const pathname: string = useAppSelector((state) => state.router.location.pathname);
   const query = useAppSelector(querySelector);
 
@@ -180,8 +180,6 @@ export const HudRouteUpdater = () => {
       }
     }
   }, [pathname, query, dispatch]);
-
-  return null;
 };
 
 /**

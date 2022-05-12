@@ -194,7 +194,7 @@ const useChannelJoinedSubscription = () => {
               lastReceivedMessage: {
                 message: '',
                 // TODO need to refetch actual data from API from individual channel endpoint
-                user: users.find((user) => user.userId !== userId)!,
+                user: users.find((user) => String(user.userId) !== userId)!,
                 dateSent: moment().toISOString()
               },
               isMuted: false,

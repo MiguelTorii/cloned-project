@@ -23,7 +23,8 @@ import {
   useChannelAvatars,
   useChannelMessages,
   useChannelMetadataById,
-  useChannelMessagesPaginatorFetch
+  useChannelMessagesPaginatorFetch,
+  QUERY_KEY_CHANNEL_MESSAGES
 } from 'features/chat';
 import { usePrevious } from 'hooks';
 import { selectLocalById } from 'redux/chat/selectors';
@@ -118,7 +119,8 @@ const Main = ({
   const {
     data: messages,
     isLoading: areMessagesLoading,
-    error: messagesError
+    error: messagesError,
+    isFetched: areMessagesFetched
   } = useChannelMessages(channel);
   const { data: avatars } = useChannelAvatars(channel);
 
@@ -243,6 +245,16 @@ const Main = ({
     if (!channel) return;
     window.open(`/video-call/${channel.sid}`, '_blank');
   }, [channel]);
+
+  /**
+   * react-query loading messages seems to be flaky when opening chat from notifications
+   * this is a workaroud to make sure messages are loaded when the user opens the chat
+   */
+  useEffect(() => {
+    if (channel && areMessagesFetched && !messages) {
+      queryClient.invalidateQueries([QUERY_KEY_CHANNEL_MESSAGES, channel?.sid]);
+    }
+  }, [areMessagesFetched, channel, messages, queryClient]);
 
   if (areMessagesLoading) {
     return <ConversationLoading />;

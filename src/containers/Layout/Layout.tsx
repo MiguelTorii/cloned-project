@@ -18,7 +18,7 @@ import AddRemoveClasses from 'components/AddRemoveClasses/AddRemoveClasses';
 import BottomNav from 'components/BottomNav/BottomNav';
 import Dialog, { dialogStyle } from 'components/Dialog/Dialog';
 import MainLayout from 'components/MainLayout/MainLayout';
-import { useNotifier } from 'hooks';
+import { useMessageNotifier, useNotifier } from 'hooks';
 
 import BlockedUsersManager from '../BlockedUsersManager/BlockedUsersManager';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
@@ -73,6 +73,7 @@ const Layout = ({
   setBannerHeight
 }: Props) => {
   useNotifier();
+  useMessageNotifier();
 
   const [manageClasses, setManageClasses] = useState(false);
   const [manageBlockedUsers, setManageBlockedUsers] = useState(false);
