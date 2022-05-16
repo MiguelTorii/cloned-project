@@ -17,6 +17,8 @@ import { useMediaQuery } from 'hooks';
 
 import styles from './PostItemCommentQuillStyles';
 
+import type { EditorChangeHandler } from 'quill';
+
 const PostItemCommentQuill = ({
   classes,
   onChange,
@@ -81,19 +83,17 @@ const PostItemCommentQuill = ({
   }, [feedId, isMobileScreen, onChange, quill, toolbarPrefix]);
 
   useEffect(() => {
-    let editorChangeCallback: undefined | ((eventName: string) => void);
+    if (!quill) return;
 
-    if (quill) {
-      const callback = (eventName) => {
-        if (eventName === 'text-change') {
-          onQuillChange();
-        }
-      };
-      editorChangeCallback = callback;
-    }
+    const callback: EditorChangeHandler = (eventName: Parameters<EditorChangeHandler>[0]) => {
+      if (eventName === 'text-change') {
+        onQuillChange();
+      }
+    };
+    quill?.on('editor-change', callback);
     return () => {
-      if (editorChangeCallback) {
-        quill?.off('editor-change', editorChangeCallback);
+      if (callback) {
+        quill?.off('editor-change', callback);
       }
     };
   }, [onQuillChange, quill]);
