@@ -40,8 +40,8 @@ const HudRoutes = () => (
   <ConnectedRouter history={history}>
     <LastLocationProvider>
       <div>
-        <Switch>
-          <HudRouteWrappers>
+        <HudRouteWrappers>
+          <Switch>
             {/* Redirect to a default route based on context */}
             <Route exact path="/" component={withTracker(Home)} />
 
@@ -98,37 +98,37 @@ const HudRoutes = () => (
             {/* Signed in routes: Chat routes */}
             <Route exact path="/chat/s/:hashId" component={withTracker(HudFrame)} />
             <Route exact path={CHAT_PATH_EXP} component={withTracker(HudFrame)} />
-          </HudRouteWrappers>
 
-          <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
-          <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
+            <Route exact path="/video-call/:roomId" component={withTracker(VideoCallPage)} />
+            <Route exact path="/video-call" component={withTracker(StartVideoPage)} />
 
-          {/* Signed in routes: Small Chat for Canvas */}
-          <Route exact path="/canvas-chat" component={withTracker(CanvasChat)} />
-          <Route exact path={URL.LOGIN_POPUP_CLOSE} component={withTracker(LoginPopupClose)} />
+            {/* Signed in routes: Small Chat for Canvas */}
+            <Route exact path="/canvas-chat" component={withTracker(CanvasChat)} />
+            <Route exact path={URL.LOGIN_POPUP_CLOSE} component={withTracker(LoginPopupClose)} />
 
-          {/* Non-signed in routes */}
-          <Route exact path="/new" component={withTracker(AuthRedirectPage)} />
-          <Route exact path="/oauth" component={withTracker(OAuthPage)} />
-          <Route exact path="/auth" component={withTracker(AuthRedirectPage)} />
-          <Route exact path="/reset_password" component={withTracker(AuthRedirectPage)} />
-          <Route exact path="/old" component={withTracker(AuthPage)} />
-          <Route exact path="/login" component={withTracker(SignInPage)} />
-          <Route exact path="/login/:schoolId" component={withTracker(AuthRedirectPage)} />
-          <Route exact path="/signup" component={withTracker(SignUpPage)} />
-          <Route exact path="/saml" component={withTracker(Saml)} />
-          <Route exact path="/gondor" component={withTracker(Gondor)} />
-          <Route exact path="/referral/:code" component={withTracker(Referral)} />
-          <Route exact path="/forgot_password" component={withTracker(ForgotPasswordPage)} />
-          <Route exact path="/terms-of-use" component={withTracker(TermsOfUsePage)} />
-          <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
-          <Route exact path="/redirect" component={RedirectPage} />
-          <Route exact path="/sandbox" component={Sandbox} />
-          <Route exact path="/invite/:code/login/:schoolId" component={JoinWithReferralCode} />
+            {/* Non-signed in routes */}
+            <Route exact path="/new" component={withTracker(AuthRedirectPage)} />
+            <Route exact path="/oauth" component={withTracker(OAuthPage)} />
+            <Route exact path="/auth" component={withTracker(AuthRedirectPage)} />
+            <Route exact path="/reset_password" component={withTracker(AuthRedirectPage)} />
+            <Route exact path="/old" component={withTracker(AuthPage)} />
+            <Route exact path="/login" component={withTracker(SignInPage)} />
+            <Route exact path="/login/:schoolId" component={withTracker(AuthRedirectPage)} />
+            <Route exact path="/signup" component={withTracker(SignUpPage)} />
+            <Route exact path="/saml" component={withTracker(Saml)} />
+            <Route exact path="/gondor" component={withTracker(Gondor)} />
+            <Route exact path="/referral/:code" component={withTracker(Referral)} />
+            <Route exact path="/forgot_password" component={withTracker(ForgotPasswordPage)} />
+            <Route exact path="/terms-of-use" component={withTracker(TermsOfUsePage)} />
+            <Route exact path="/canvas/:nonce" component={withTracker(CanvasPage)} />
+            <Route exact path="/redirect" component={RedirectPage} />
+            <Route exact path="/sandbox" component={Sandbox} />
+            <Route exact path="/invite/:code/login/:schoolId" component={JoinWithReferralCode} />
 
-          {/* Show a message and then in 1 sec redirect to "/" */}
-          <Route component={Miss} />
-        </Switch>
+            {/* Show a message and then in 1 sec redirect to "/" */}
+            <Route component={Miss} />
+          </Switch>
+        </HudRouteWrappers>
       </div>
     </LastLocationProvider>
   </ConnectedRouter>
