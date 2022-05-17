@@ -68,10 +68,45 @@ const CanvasChat = () => {
     [selectChannel]
   );
 
+  const askPermission = () => {
+    document.requestStorageAccess().then(
+      () => {
+        console.log('access granted');
+        localStorage.setItem('VALID_TOKEN', 'Hello world');
+      },
+      () => {
+        console.log('access denied');
+      }
+    );
+  };
+
+  const openClick = () => {
+    // const width = 1024;
+    // const height = 768;
+    // const top = (screen.height - height) / 2;
+    // const left = (screen.width - width) / 2;
+
+    const isComptatibleWithRequestApi =
+      navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Safari');
+
+    if (isComptatibleWithRequestApi) {
+      askPermission();
+    }
+
+    // window.open(
+    //   `http:localhost:2000/auth?source=canvas`,
+    //   'authPopup',
+    //   `menubar=no,toolbar=no,width=${width},height=${height},top=${top},left=${left}`
+    // );
+  };
+
   if (!user.userId) {
     return (
       <Box mt={3}>
         <LoadingSpin />
+        <button type="button" onClick={openClick}>
+          click
+        </button>
       </Box>
     );
   }
