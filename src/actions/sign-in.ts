@@ -154,6 +154,11 @@ export const signIn =
       // Check if this is sign-in from viral loop email.
       // If so, call a logging api.
       const viralLoopType = store.get(STORAGE_KEYS.VIRAL_LOOP_TYPE);
+      const source = store.get(STORAGE_KEYS.AUTH_PAGE_SOURCE);
+      // TODO: dry
+      if (source === 'canvas') {
+        return dispatch(push('/canvas-chat'));
+      }
 
       if (viralLoopType) {
         apiLogViralLoopEmailLogin(Number(user.userId), viralLoopType);

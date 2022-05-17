@@ -59,15 +59,14 @@ const AuthPage = ({ classes, location: { search, state, pathname } }: Props) => 
   }, [userId, source]);
 
   useEffect(() => {
-    if (source) {
+    if (!source) {
       return;
     }
-
     store.set(STORAGE_KEYS.AUTH_PAGE_SOURCE, source);
+    // localStorage.setItem(STORAGE_KEYS.AUTH_PAGE_SOURCE, source);
   }, [source]);
 
   const isMasquerading = !!(pathname === '/auth' && userId && refreshToken && email);
-  console.log(userId, refreshToken, email);
   // Check if there are parameters for masquerading
   useEffect(() => {
     if (!isMasquerading) {

@@ -73,6 +73,7 @@ const CanvasChat = () => {
       () => {
         console.log('access granted');
         localStorage.setItem('VALID_TOKEN', 'Hello world');
+        window.location.replace('http://localhost:2000/auth?source=canvas');
       },
       () => {
         console.log('access denied');
@@ -81,23 +82,12 @@ const CanvasChat = () => {
   };
 
   const openClick = () => {
-    // const width = 1024;
-    // const height = 768;
-    // const top = (screen.height - height) / 2;
-    // const left = (screen.width - width) / 2;
-
-    const isComptatibleWithRequestApi =
+    const isCompatibleWithRequestApi =
       navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Safari');
 
-    if (isComptatibleWithRequestApi) {
+    if (isCompatibleWithRequestApi) {
       askPermission();
     }
-
-    // window.open(
-    //   `http:localhost:2000/auth?source=canvas`,
-    //   'authPopup',
-    //   `menubar=no,toolbar=no,width=${width},height=${height},top=${top},left=${left}`
-    // );
   };
 
   if (!user.userId) {
@@ -105,7 +95,7 @@ const CanvasChat = () => {
       <Box mt={3}>
         <LoadingSpin />
         <button type="button" onClick={openClick}>
-          click
+          auth for safari
         </button>
       </Box>
     );
