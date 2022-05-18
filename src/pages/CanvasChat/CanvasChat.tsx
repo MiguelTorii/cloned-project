@@ -73,7 +73,7 @@ const CanvasChat = () => {
       () => {
         console.log('access granted');
         localStorage.setItem('VALID_TOKEN', 'Hello world');
-        window.location.replace('http://localhost:2000/auth?source=canvas');
+        window.location.replace('https://cloned-project.vercel.app/auth?source=canvas');
       },
       () => {
         console.log('access denied');
@@ -82,8 +82,7 @@ const CanvasChat = () => {
   };
 
   const openClick = () => {
-    const isCompatibleWithRequestApi =
-      navigator.userAgent.includes('Firefox') || navigator.userAgent.includes('Safari');
+    const isCompatibleWithRequestApi = Boolean(document.requestStorageAccess);
 
     if (isCompatibleWithRequestApi) {
       askPermission();

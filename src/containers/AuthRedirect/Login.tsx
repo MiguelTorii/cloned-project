@@ -104,9 +104,27 @@ const Login = ({ role, setScreen, school, signIn, isLoginAsExternalUser }) => {
     },
     []
   );
+
+  const askPermission = () => {
+    document.requestStorageAccess().then(
+      () => {
+        console.log('access granted');
+        localStorage.setItem('VALID_TOKEN_ON_AUTH', 'Hello world');
+        onLogin();
+      },
+      () => {
+        console.log('access denied');
+      }
+    );
+  };
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
+      const isCompatibleWithRequestApi = Boolean(document.requestStorageAccess);
+      if (isCompatibleWithRequestApi) {
+        return askPermission();
+      }
       onLogin();
     },
     [onLogin]

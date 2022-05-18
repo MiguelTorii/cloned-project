@@ -157,6 +157,8 @@ export const signIn =
       const source = store.get(STORAGE_KEYS.AUTH_PAGE_SOURCE);
       // TODO: dry
       if (source === 'canvas') {
+        console.log('redirecting');
+        store.set('keySetAtLoggin', true);
         return dispatch(push('/canvas-chat'));
       }
 
